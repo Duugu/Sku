@@ -1,0 +1,378 @@
+local SKUBEACON_MAJOR, SKUBEACON_MINOR = "SkuBeacon-1.0", 1
+local SkuBeacon, oldminor = LibStub:NewLibrary(SKUBEACON_MAJOR, SKUBEACON_MINOR)
+if not SkuBeacon then return end
+
+local gDebugLevel = 0
+local _G = _G
+local CONST_DYNAME_PING_RATE1 = -1
+local CONST_DYNAME_PING_RATE2 = -2
+local CONST_DYNAME_PING_RATE3 = -3
+local CONST_DYNAME_PING_RATE4 = -4
+local CONST_DYNAME_PING_RATE5 = -5
+
+---------------------------------------------------------------------------------------------------------
+-- repos
+---------------------------------------------------------------------------------------------------------
+local gBeaconRepo = {}
+local gSoundsetRepo = {}
+
+---------------------------------------------------------------------------------------------------------
+-- PRIVATE
+---------------------------------------------------------------------------------------------------------
+local function Debug(...)
+	if gDebugLevel > 0 then
+		local tArgs = {...}
+		local tString = ""
+		for i, v in pairs(tArgs) do 
+			if v then
+				if type(v) ~= "string" and type(v) ~= "number" then
+					v = type(v)
+				end
+				tString = tString.." "..v
+			end
+		end
+		print(tString)
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function GetDirectionTo(aP1x, aP1y, aP2x, aP2y)
+	if aP1x == nil or aP1y == nil or aP2x == nil or aP2y == nil or GetPlayerFacing() == nil then
+		return 0
+	end
+	if aP2x == 0 and aP2y == 0 then
+		return 0
+	end
+		
+	local tEp2x = (aP2x - aP1x)
+	local tEp2y = (aP2y - aP1y)
+	
+	local tWa = math.acos(tEp2x / math.sqrt(tEp2x^2 + tEp2y^2)) * (180 / math.pi)
+	
+	if tEp2y > 0 then
+		tWa = tWa * -1
+	end
+	local tFacing = (GetPlayerFacing() * (180 / math.pi))
+	local tFacingFinal = tFacing
+	if tFacing > 180 then
+		tFacingFinal = (360 - tFacing) * -1
+	end
+
+	local tFinal = tWa + tFacingFinal
+	if tFinal > 180 then
+		tFinal = tFinal - 360
+	elseif tFinal < -180 then
+		tFinal = 360 + tFinal
+	end
+	
+	local tClockFloat = (tFinal + 15) / 30
+	local tClock = math.floor((tFinal + 15) / 30)
+	if tClock < 0 then
+		tClock = 12 + tClock
+	end
+	if tClock == 0 then
+		tClock = 12
+	end
+
+	if tWa == 0 then tFinal = 0 end
+
+	return tClock, tClockFloat, tFinal
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function GetDistance(sx, sy, dx, dy)
+	if not sx or not sy or not dx or not dy then
+		return
+	end
+	return floor(sqrt((sx - dx) ^ 2 + (sy - dy) ^ 2)), sqrt((sx - dx) ^ 2 + (sy - dy) ^ 2)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tTime = 0
+local function OnUpdate(self, aTime)
+	tTime = tTime + aTime
+	if tTime > 0.05 then
+		for iRefs, vRefs in ipairs(gBeaconRepo) do
+			local tBeacons = gBeaconRepo[vRefs]
+			for iBeacons, vBeacons in ipairs(tBeacons) do
+				local tBeacon = tBeacons[vBeacons]
+				if tBeacon.active == true then
+					local tDoPing
+					local tSoundSet = gSoundsetRepo[tBeacon.soundSet]
+					local tPlayerPosX, tPlayerPosY = UnitPosition("player")
+					local tDistance = GetDistance(tPlayerPosX, tPlayerPosY, tBeacon.posX, tBeacon.posY)
+					if not tDistance then
+						SkuBeacon:DestroyBeacon(vRefs, vBeacons)
+						return
+					end
+					local tDirection180 = math.floor(select(3, GetDirectionTo(tPlayerPosX, tPlayerPosY, tBeacon.posX, tBeacon.posY)))
+					local tCleanedDirection = (math.floor(tDirection180 / tSoundSet.degreesStep) +1 ) * tSoundSet.degreesStep
+					local tUnsignedCleanedDirection = tCleanedDirection
+					if tUnsignedCleanedDirection < 0 then tUnsignedCleanedDirection = tUnsignedCleanedDirection * -1 end
+					tBeacon.lastPing = tBeacon.lastPing or GetTime()
+
+					if tBeacon.rate == CONST_DYNAME_PING_RATE1 then
+						local tDynPingRate = tDistance / 30
+						if tDynPingRate < 0.3 then tDynPingRate = 0.3 end
+						if tDynPingRate > 5 then tDynPingRate = 5 end
+						if GetTime() - tBeacon.lastPing > tDynPingRate then
+							tDoPing = true
+						end
+
+						tDistance = math.floor((tDistance + 1) / 2)
+						if tDistance < 0 then tDistance = 0 end
+						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+					elseif tBeacon.rate == CONST_DYNAME_PING_RATE2 then
+						local tDynPingRate = tDistance / 30
+						if tDynPingRate < 0.3 then tDynPingRate = 0.3 end
+						if tDynPingRate > 5 then tDynPingRate = 5 end
+
+						if GetTime() - tBeacon.lastPing > tDynPingRate then
+							tDoPing = true
+						end
+
+						tDistance = math.floor((tDistance + 1) / 2)
+
+						if tUnsignedCleanedDirection > 90 then
+							local tMod = tUnsignedCleanedDirection - 90
+							--tMod 0-90
+							tDistance = tDistance + math.floor((tMod / (tSoundSet.maxDistance / 10)))
+						end
+						if tDistance < 0 then tDistance = 0 end
+						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+					elseif tBeacon.rate == CONST_DYNAME_PING_RATE3 then
+						tDistance = tDistance + 4
+						local tDynPingRate = 1.3
+						local tMinDegree = 45
+						if tUnsignedCleanedDirection < tMinDegree then
+							tDynPingRate = tDynPingRate - (1 - (tUnsignedCleanedDirection / 45))
+						end
+						if tDynPingRate < 0.2 then tDynPingRate = 0.2 end
+						if tDynPingRate > 0.7 then tDynPingRate = 0.7 end
+
+						if GetTime() - tBeacon.lastPing > tDynPingRate then
+							tDoPing = true
+						end
+
+						tDistance = math.floor((tDistance + 1) / 6)
+						if tDistance < 0 then tDistance = 0 end
+						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+					elseif tBeacon.rate == CONST_DYNAME_PING_RATE4 then
+						if GetTime() - tBeacon.lastPing > 1.0 then
+							tDoPing = true
+						end
+
+						tDistance = math.floor((tDistance + 1) / 2)
+						if tDistance < 0 then tDistance = 0 end
+						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+					elseif tBeacon.rate == CONST_DYNAME_PING_RATE5 then
+						if GetTime() - tBeacon.lastPing > 0.5 then
+							tDoPing = true
+						end
+
+						tDistance = math.floor((tDistance + 1) / 2)
+						if tDistance < 0 then tDistance = 0 end
+						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+					end
+
+					if tDoPing then
+						tBeacon.lastPing = GetTime()
+						if tDistance >= tBeacon.silenceRange then
+							local tVolumeMod = math.floor(tDistance + ((100 - tBeacon.volume) / 10)) --tDistance
+							if tVolumeMod < 0 then tVolumeMod = 0 end
+							if tVolumeMod > 30 then tVolumeMod = 30 end
+							local tFile = tSoundSet.path.."\\"..tSoundSet.fileName..";"..tCleanedDirection..";"..tVolumeMod..".mp3"
+							local tWillPlay, tPlayingHandle = PlaySoundFile(tFile, "Talking Head")
+						end
+						break
+					end
+				end
+			end
+		end
+
+		tTime = 0
+	end
+end
+
+---------------------------------------------------------------------------------------------------------
+-- lib instance
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:Create(aReference)
+	Debug("SkuBeacon Create")
+	Debug("  Reference:", aReference)
+
+	-- create our frame for onupdate timer
+	if not _G["SkuBeaconLibControlFrame"] then
+		local f = _G["SkuBeaconLibControlFrame"] or CreateFrame("Frame", "SkuBeaconLibControlFrame", UIParent)
+		f:SetScript("OnUpdate", OnUpdate)
+	end
+
+	--add caller to reference list
+	if not gBeaconRepo[aReference] then
+		table.insert(gBeaconRepo, aReference)
+		gBeaconRepo[aReference] = {}
+	end
+
+	return SkuBeacon
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:Release(aReference)
+	Debug("SkuBeacon Release")
+	Debug("  Reference:", aReference)
+	
+	SkuBeacon:DestroyBeacon(aReference)
+	for i, v in ipairs(gBeaconRepo) do
+		if v == aReference then
+			gBeaconRepo[v] = nil
+			table.remove(gBeaconRepo, i)
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------
+-- PUBLIC
+---------------------------------------------------------------------------------------------------------
+-- mandatory sound file name format for soundsets:
+--		<soundsetName>;<degreeNumber>;<distanceNumber>.mp3
+--			degreeNumber: -180 to 180 in aDegreesStep starting from 0)
+--			distanceNumber: 1 to aMaxDistance
+--		Example file name: beacon_male_one;-1;15.mp3 
+--			(soundset name "beacon_male_one", degree -1, distance 15)
+function SkuBeacon:RegisterSoundSet(aBaseName, aPath, aDegreesStep, aMaxDistance, aFileName)
+	Debug("SkuBeacon RegisterSoundSet")
+	Debug("  BaseName:", aBaseName)
+	Debug("  Path:", aPath)
+	Debug("  DegreesStep:", aDegreesStep)
+	Debug("  MaxDistances:", aMaxDistance)
+
+	if gSoundsetRepo[aBaseName] then return end
+
+	--add the new soundset
+	table.insert(gSoundsetRepo, aBaseName)
+	gSoundsetRepo[aBaseName] = {
+		path = aPath,
+		degreesStep = aDegreesStep,
+		maxDistance = aMaxDistance,
+		fileName = aFileName,
+	}
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:GetSoundSets()
+	return ipairs(gSoundsetRepo)
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY, aRate, aSilenceRange, aVolume)
+	Debug("SkuBeacon CreateBeacon")
+	Debug("  aReference:", aReference)
+	Debug("  aBeaconName:", aBeaconName)
+	Debug("  aSoundSet:", aSoundSet)
+	Debug("  aPosX:", aPosX)
+	Debug("  aPosY:", aPosY)
+
+	if not gBeaconRepo[aReference] then return false end
+	if gBeaconRepo[aReference][aBeaconName] then return false end
+	
+	--add new beacon
+	table.insert(gBeaconRepo[aReference], aBeaconName)
+	gBeaconRepo[aReference][aBeaconName] = {
+		active = false,
+		soundSet = aSoundSet,
+		posX = aPosX,
+		posY = aPosY,
+		rate = aRate,
+		lastPing = GetTime(),
+		silenceRange = aSilenceRange,
+		volume = aVolume or 100,
+	}
+	Debug(gBeaconRepo[aReference][aBeaconName])
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:UpdateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY, aRate, aSilenceRange, aVolume, aNoPingReset)
+	Debug("SkuBeacon UpdateBeacon")
+	Debug("  aReference:", aReference)
+	Debug("  aBeaconName:", aBeaconName)
+	Debug("  aSoundSet:", aSoundSet)
+	Debug("  aPosX:", aPosX)
+	Debug("  aPosY:", aPosY)
+	if not gBeaconRepo[aReference] then return false end
+	if not gBeaconRepo[aReference][aBeaconName] then return false end
+
+	--update beacon
+	gBeaconRepo[aReference][aBeaconName].soundSet = aSoundSet or gBeaconRepo[aReference][aBeaconName].soundSet
+	gBeaconRepo[aReference][aBeaconName].posX = aPosX or gBeaconRepo[aReference][aBeaconName].posX
+	gBeaconRepo[aReference][aBeaconName].posY = aPosY or gBeaconRepo[aReference][aBeaconName].posY
+	gBeaconRepo[aReference][aBeaconName].rate = aRate or gBeaconRepo[aReference][aBeaconName].rate
+	if not aNoPingReset then
+		gBeaconRepo[aReference][aBeaconName].lastPing = GetTime()
+	end
+	gBeaconRepo[aReference][aBeaconName].silenceRange = aSilenceRange or gBeaconRepo[aReference][aBeaconName].silenceRange
+	gBeaconRepo[aReference][aBeaconName].volume = aVolume or gBeaconRepo[aReference][aBeaconName].volume
+end
+
+---------------------------------------------------------------------------------------------------------
+-- destroys aBeaconName or all beacons of aReference if aBeaconName is nil
+function SkuBeacon:DestroyBeacon(aReference, aBeaconName)
+	Debug("SkuBeacon DestroyBeacon")
+	Debug("  aReference:", aReference)
+	Debug("  aBeaconName:", aBeaconName)
+	if not gBeaconRepo[aReference] then return false end
+
+	for i, v in ipairs(gBeaconRepo[aReference]) do
+		if (aBeaconName and v == aBeaconName) or (not aBeaconName) then
+			SkuBeacon:StopBeacon(aReference, aBeaconName)
+			gBeaconRepo[aReference][v] = nil
+			table.remove(gBeaconRepo[aReference], i)
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:GetBeacons(aReference)
+	if not gBeaconRepo[aReference] then return false end
+	return ipairs(gBeaconRepo[aReference])
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:StartBeacon(aReference, aBeaconName)
+	Debug("SkuBeacon StartBeacon")
+	Debug("  aReference:", aReference)
+	Debug("  aBeaconName:", aBeaconName)
+	if not gBeaconRepo[aReference] then return false end
+	if not gBeaconRepo[aReference][aBeaconName] then return false end
+
+	gBeaconRepo[aReference][aBeaconName].active = true
+	--do stuff
+
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:StopBeacon(aReference, aBeaconName)
+	Debug("SkuBeacon StopBeacon")
+	Debug("  aReference:", aReference)
+	Debug("  aBeaconName:", aBeaconName)
+	if not gBeaconRepo[aReference] then return false end
+	if not gBeaconRepo[aReference][aBeaconName] then return false end
+
+	gBeaconRepo[aReference][aBeaconName].active = false
+	--do stuff
+
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:GetBeaconStatus(aReference, aBeaconName)
+	Debug("SkuBeacon GettBeaconStatus")
+	Debug("  aReference:", aReference)
+	Debug("  aBeaconName:", aBeaconName)
+	if not gBeaconRepo[aReference] then return nil end
+	if not gBeaconRepo[aReference][aBeaconName] then return nil end
+
+	return gBeaconRepo[aReference][aBeaconName].active
+end

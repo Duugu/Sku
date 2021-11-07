@@ -1,0 +1,25 @@
+{
+    "Lua.diagnostics.globals": [
+        "LibStub",
+        "SkuQuest",
+        "SkuQuest",
+        "SkuQuest",
+        "SkuCore",
+        "SkuChat",
+        "SkuMob",
+        "SkuNav",
+        "SkuMob",
+        "SkuAudioDataLenIndex",
+        "SkuAudioFileIndex",
+        "SystemFont_Huge1",
+        "BlizzardOptionsPanel_GetCVarSafe",
+        "BlizzardOptionsPanel_SetCVarSafe",
+        "menuEntryTemplate_Menu",
+        "nDCFAddMessage"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-global",
+        "undefined-doc-name",
+        "deprecated"
+    ]
+}
