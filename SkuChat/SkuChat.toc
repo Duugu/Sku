@@ -1,0 +1,9 @@
+## Interface: 20501
+## Title: SkuChat (19.5)
+## SavedVariables: SkuChatDB
+## Dependencies: SkuCore, SkuAudioData
+## Version: 19.5
+locales\enUS.lua
+locales\deDE.lua
+Core.lua
+Options.lua

@@ -1,0 +1,11 @@
+## Interface: 20501
+## Title: SkuCore (19.6)
+## SavedVariables: SkuCoreDB
+## Dependencies: SkuAudioData, SkuDB
+## Version: 19.6
+embeds.xml
+locales\enUS.lua
+locales\deDE.lua
+Core.lua
+mail.lua
+Options.lua

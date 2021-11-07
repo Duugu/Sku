@@ -1,0 +1,9 @@
+{
+    "Lua.diagnostics.globals": [
+        "LibStub",
+        "SkuOptions",
+        "Voice",
+        "GameTooltip_SetDefaultAnchor",
+        "menuEntryTemplate_Menu"
+    ]
+}

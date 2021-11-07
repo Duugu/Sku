@@ -1,0 +1,31 @@
+-------------------------------------------------------------------------------------------------------	
+- FUNKTIONEN DER SKU-ADDONS
+-------------------------------------------------------------------------------------------------------	
+
+SkuCore (erforderlich)
+	Gibt Audiomeldungen bei Spielerstatusänderungen (z. B. Drinnen, Draußen, Schwimmen etc.).
+	Gibt Audiomeldungen beim Feststecken.
+	Ermöglicht die Nutzung von Fenstern (Taschen, Char-Fenster, Flugmeister, Gastwirten, NPC-Dialoge, Questgeber etc.).
+	Ermöglicht das Würfeln in Instanzen.
+
+SkuOptions (erforderlich)
+	Implementiert das Audiomenü und alle konfigurierbaren Optionen (über Slash-Befehle und über das Blizzard-Interface-Menü).
+
+SkuAudioData (erforderlich)
+	Bietet keine eigenen Funktionen. Enthält alle Audiodateien, die von den anderen Sku-Addons genutzt werden.
+
+SkuChat (optional)
+	Gibt Audiohinweise bei neuen Chatnachrichten aus. Stellt den Chat für die TTS-Erkennung dar.
+
+SkuMob (optional)
+	Gibt den Namen, das Level und die HP des aktuellen Ziels als Audio wieder.
+
+SkuNav (optional)
+	Sagt Zonennamen an.
+	Ermöglicht die Erstellung und Nutzung von Wegpunkten und Routen.
+
+SkuQuest (optional)
+	Emöglicht die Nutzung des Questlogs. Questtitel werden vorgelesen. Die restlichen Questinformationen werden für die TTS-Erkennung dargestellt. Quests können abgebrochen und geteilt werden.
+
+SkuBeaconSoundsets (optional)
+	Enthält verschiedene Sounddateien für die Audio-Beacons. Ohne dieses Addon funktionieren die Audio-Beacons nicht.

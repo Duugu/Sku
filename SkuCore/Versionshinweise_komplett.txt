@@ -1,0 +1,1516 @@
+-------------------------------------------------------------------------------------------------------	
+- VERSIONSHINWEISE
+-------------------------------------------------------------------------------------------------------	
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.11
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Das Filtern sollte jetzt auch für die Aktionsleisten korrekt funktionieren und den richtigen Untermenüpunkt hervorbringen.
+			- Bei verringerter Beacon-Maximallautstärke geht das Beacon jetzt nicht mehr komplett aus wenn du weit weg bist.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.10
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Das Filtern sollte jetzt korrekt funktionieren und den richtigen Untermenüpunkt hervorbringen.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.9
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Wenn man aus einem gefilterten Menü in ein Untermenü geht, sollte der Filter nun korrekt gelöscht werden statt für immer bestehen zu bleiben.
+		
+	SkuQuest:
+		Neuerungen
+			- In den Menüs "Annahme", "Ziel" und "Abgabe" von Quests hat sich die Untermenüstruktur geändert.
+			  Es gibt jetzt immer ein erstes Untermenü pro Mob-/NPC-Typ (z. B. "Hexer", "Ritter", "Fußsoldat", wenn du diese drei Mobtypen für eine Quest killen musst.)
+			  Darunter gibt es jeweils drei Menüs: "Route", "Nahe Route" und "Wegpunkt". 
+			  "Route" enthält natürlich alle Ziele mit Route. 
+			  "Nahe Route" enthält nur die Ziel ohne direkte Route, aber mit einer Route, die mindestens bis auf 500 Meter an das Ziel heranführt.
+			    Die Entfernung bei "Nahe Route" setzt sich aus der Entferung über die Route plus die Entferung vom Routenende zum eigentlichen Ziel zusammen.
+			    Diese kombinierte Entferung wird gewichtet. Die Strecke vom Routenende zum eigentlichen Ziel zählt dreifach. 
+			    Das sorgt dafür, dass die Routen bevorzugt werden, bei denen du die letzte Strecke zum Wegpunkt ohne Route möglichst nicht weit laufen musst.
+			  "Wegpunkt" enthält die Wegpunkte für alle Ziele.
+			  Darunter sind jeweils wieder Menüs: "Nach Name" und "Nach Entfernung", mit einer entsprechenden Sortierung.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.8
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Ein Fehler mit den Untermenüs in "Neu" wurde behoben. Können jetzt wieder wie gewohnt zur Benennung verwendet werden.
+
+		Neuerungen
+			- Mit SHIFT + PFEIL RECHTS kannst du dir jetzt den aktuellen Menüpunkt buchstabieren lassen.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.7
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Ein interner Fehler beim Umbenennen von Wegpunkten wurde behoben.
+
+		Neuerungen
+			- Bei der Namenserstellung für Wegpunkte ("... > Neu") kann man jetzt direkt durch Eingabe die komplette Wortliste filtern und auswählen. 
+			  Ohne erst in Untermenüs wie "Alle alphabetisch" gehen zu müssen. Die Untermenüs funktionieren aber natürlich auch weiter.
+			  Dazu hängen direkt unter dem letzten Untermenü für die Worttypen ("Orientierung") Alle Wörter aus der gesamten Wortdatenbank im Neu-Hauptmenü.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.6
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Würfeln mit CTRL-SHIFT-X (Passen) geht jetzt wieder.
+
+		Neuerungen
+			- Das Würfelsystem wurde jetzt komplett auf die Tastenkombinationen umgestellt. Das Lokalmenü mit den Würfeloptionen gibt es nicht mehr. Auch nicht im Kampf in Instanzen.
+			- Beim Würfeln kannst du dir jetzt mit CTRL-SHIFT-T den Tooltip für den Gegenstand anzeigen lassen, um den du gerade würfelst.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.5
+
+	SkuCore:
+		Fehlerkorrekturen
+			- Beim Belegen von Zugriffstasten für die Aktionsleisten werden jetzt die folgenden Tasten ignoriert: Pfeiltasten, w, a, s, d, alle Funktionstasten in Kombination mit SHIFT und CTRL-SHIFT.
+
+	SkuOptions:
+		Neuerungen
+			- Vier neue Wörter wurden unter "Orte" eigenfügt: Azurmythosinsel, Blutmythosinsel, Immersangwald, Geisterlande
+		
+	SkuNav:
+		Neuerungen
+			- Die "Nahe Routen"-Funktion bei Quests zeigt jetzt nur noch Routen an, deren Ausstiegspunkt maximal 500 Meter vom Zielpunkt entfernt ist.
+			- Es sind jetzt ALLE NPCs und Mobs des gesamten Spiels als Standard-Wegpunkte in der Datenbank enthalten. Nicht nur, wie bisher, die ersten drei pro Typ.
+			  Es ist nun also möglich, zum Beispiel unter "SkuNav > Wegpunkt > Auswählen > Aktuelle Karte Entfernung" nach dem tatsächlich nächstgelegenen Mob eines Typs zu suchen.
+			  Bitte gründlich testen und bei Fehlern/Problemen (z. B. Lag im Menü) direkt melden.
+			- Die Liste "SkuNav > Wegpunkt > Auswählen > Alle alphabetisch" heißt jetzt nur noch "Alle" und ist nicht mehr alphabetisch sortiert.
+			  Das hat Performance-Gründe. Außerdem ist es eh längst unmöglich in dieser Liste mit ca. 45.000 Wegpunkten manuell alphabetisch durchzublättern. :)
+			- Über die Sku-Minimap können jetzt Zonen für "Aldor" und "Seher" definiert werden.
+			  NUR FÜR ROUTENERSTELLER WICHTIG:
+			    - Auf der Sku-Minimap und der normalen Minimap werden die neu zusätzlichen Standard-Wegpunkte (also alle über den ersten drei pro Typ) in türkis dargestellt.
+			      Abgesehen davon unterscheidet sie nichts von den bisher schon verfügbaren ersten drei pro Typ (weiter in rosa). Sie können genauso wie alle anderen Punkte verwendet werden.
+			      Durch die drastische Steigerung der anzuzeigenden Wegpunkte kann ein sehr weites Rauszoomen jedoch starkes Lag verursachen. 
+			      In dem Fall einfach wieder etwas weiter reinzoomen. Dann wird es besser. Auf "Arbeitszoomreichweite" ist die Performance akzeptabel.
+				 - Wegpunktkommentare werden jetzt in den Tooltips der Wegpunkte unter dem Namen in gelb angezeigt.
+				 - Mit CTRL-SHIFT + mittlere Maustaste auf einen Wegpunkt löscht du alle Wegpunktkommentare dieses Wegpunktes.
+
+		Fehlerkorrekturen
+			- Es wurden fehlerhafte Zonen-IDs für die folgenden Zonen korrigiert: Der Lordameresee, Tarrens Mühle, Thoradinswall, Burg Durnholde, Dun Garok, Die Felder des Hügellands, Oststrand, Nethandersiedlung, Darrohügel, Südwacht, Thoradinswall, Weststrand, Das verbotene Meer, Gillijim's Isle, Island of Doctor Lapidis, Das große Meer, Der Südstrom, Das verhüllte Meer, Höhlen der Zeit, Onyxias Hort, Tore von Ahn'Qiraj, Das nördliche Meer, Twisting Nether
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.4
+
+	SkuCore:
+		- Der Panikmodus wurde wieder gestrichen.
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Ein Fehler wurde behoben, bei dem sich die Sku-Minimap bei der Größenanderung über den ganzen Bildschirm ausgedehnt hat.
+			- Man kann jetzt auch als Geist Routen und Wegpunkten folgen.
+			- Wenn man sich als Geist wiederbelebt, wird der ausgewählte Schnellwegpunkt zur Leiche jetzt automatisch beendet.
+			- Eine vergessene Debugausgabe wurde entfernt.
+			- Das Starten einer Route über das aktuelle Ziel (CTRL + SHIFT + I) sollte jetzt korrekt funktionieren. 
+			  (Natürlich nur, wenn es sich bei dem Ziel um einen Custom- oder Standardwegpunkt handelt. Ggf. vorher mit CTRL + SHIFT + U hinzufügen.)
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.3
+
+	SkuCore:
+		Neuerungen
+			- Es gibt jetzt eine Panik-Taste: STRG + SHIFT + X
+			  Die Panik-Taste versetzt das Addon in den Panikmodus bzw. schaltet diesen wieder aus.
+			  Der Panikmodus ist für Situationen gedacht, in denen schnell du den Weg zurücklaufen möchtest, den du gekommen bist. Zum Beispiel, weil du aus einem Kampf fliehen möchtest.
+			  Sobald du den Panikmodus gestartet hast, führt dich das Addon über ein dynamisch großzügig positioniertes Beacon über genau den Weg zurück, den du gekommen bist (bis zu 500 Meter).
+			  Du erreichst das Beacon nie. Es gibt keine "Wegpunkt erreicht"-Plings. Sobald du bis auf 20 Meter an das Beacon herankommst, wir es automatisch auf den nächsten Punkt deiner Rücklaufstrecke gesetzt.
+			  Bei jeder Benutzung der Panik-Taste wird die aufgezeichnete Wegstrecke zurückgesetzt und beginnt ab deiner aktuellen Position.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.2
+
+	SkuQuest:
+		Fehlerkorrekturen
+			- Es wurden diverse Fehler bei der Anzeige der verfügbaren Quests und aller Quests in der Questdatenbank behoben, die zu falschen Anzeigen geführt haben.
+			  (Zum Beispiel werden jetzt Quests angezeigt, die bei Objekten starten.)
+			- Bei Quests werden jetzt unter Annahme, Ziel und abgabe noch Routen und Wegpunkte anzeigt die auf dem aktuellen Kontinent liegen.
+
+	SkuOptions:
+		Neuerungen
+			- Ab sofort kann beim Filtern in Menüs das Leerzeichen verwendet werden
+			- Interne Objekt-IDs werden nicht mehr vorgelesen. Nur noch die laufende Nummer.
+			- Sven ist tot! (Will sagen, ich habe einen Fehler behoben, bei dem Quest als verfügbar angezeigt wurden, die nicht mehr verfügbar sind.)
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19.1
+
+	SkuOptions:
+		Neuerungen
+			- Alle Menüs im Lokal-Menü sind jetzt filterbar (z. B. Flugmeister-Flugpunkteliste)
+
+	SkuQuest:
+		Neuerungen
+			- Die Routen- und Wegpunktlisten unter "Questdatenbank > Annahme, Ziel und Abgabe" sind jetzt filterbar.
+			- Bei "Nahe Routen" unter "Questdatenbank > Annahme, Ziel und Abgabe" wird jetzt der Wegpunktname vom Endziel statt der des Ausstiegspunktes der Route angezeigt.
+
+		Fehlerkorrekturen
+			- Ein Fehler bei als verfügbar angezeigten Quests mit bereits erledigten Voraussetzungen wurde behoben. (Beispiel: "Lieferung an Sven" von Elaine Treuwein, wenn man bereits bei Sven war.)
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Eine vergessene Debug-Meldung beim Erreichen von Wegpunkten wurde entfernt.
+			- Die aktuellen Routendaten-Dateien wurden in SkuNav\routedata eingefügt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 19
+
+	SkuCore:
+		Fehlerkorrekturen
+			- Die Questfortschritte werden jetzt lokal für jeden Char einzeln gespeichert.
+			  Bei einem mit mehreren Chars verwendeten Profil sollte der Questfortschritt daher jetzt bei jedem Char korrekt gezählt werden.
+
+		Neuerungen
+			- Fliegen sollte jetzt angesagt werden.
+			- Beim Zaubern außerhalb des Kampfes wird jetzt "Cast" gesagt. (Zeug aufsammeln IST Zaubern.)
+
+	SkuOptions:
+		Neuerungen
+			- Es wurden viele weitere Wörter zur Audioliste hinzugefügt. Zum Beispiel Namen von Zaubern, für die Belegung der Aktionsleisten.
+
+	SkuQuest:
+		Fehlerkorrekturen
+			- Ein Fehler bei Quests mit Pre-Quests in der Anzeige von verfügbaren Quests ("Questdatenbank > Nach Entfernung") wurde behoben. Es sollten jetzt alle verfügbaren Quests angezeigt werden.
+			- Bei der Anzeige der verfügbaren Quest wird nun auch der benötigte Ruf überprüft.
+			- Bei Quests werden jetzt für Routen/Wegpunkte Questannahme, -abgabe und -ziele nur noch Wegpunkte auf dem aktuellen Kontinent berücksichtigt.
+		
+		Neuerungen
+			- Im Questlog gibt es jeweils unter "Annahme", "Ziel" "Abgabe" eine neue Option "Nahe Route". Diese wird angezeigt, wenn es keine direkte Route zum Ziel gibt. 
+			  "Nahe Route" zeigt die Routenenden an, die am nahesten zum jeweiligen Ziel liegen. Sortiert nach der der Entfernung zwischen Routenendpunkt und jeweiligen Ziel.
+			  Dabei wird, wie bei "Route folgen" gewohnt, immer der nächstgelegene Einstiegspunkt verwendet.
+			  Die Einträge enthalten zuerst die Entferung vom Routenendpunkt zum tatsächlichen Ziel, dann die Strecke über die Route zu diesem Endpunkt und dann den Namen des Routenendziels.
+			  Beispiel: "119 Meter ab Ende Route 1147 Meter Häscher der Blutenden Hand". 
+			  Bedeutet: Der nächstgelegene vernetzte Routenpunkt zum Ziel ist "Häscher der Blutenden Hand". 
+			    Er ist noch 119 Meter von deinem eigentlichen Ziel entfernt.
+			    Die Route bis zum Routenziel "Häscher der Blutenden Hand" ist 1147 Meter lang.
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Die Liste der Wegpunkte unter "Wegpunkte > Alle NPCs > ..." hat jetzt Entferungsangaben und nach Entfernung sortiert.
+			- Es wurde ein Fehler behoben, bei dem beim automatischen Löschen von defekten Routen die falschen Routen gelöscht wurden.
+			- Es wurde ein Fehler behoben, der in Dun Morogh dafür gesorgt hat, dass alle Wegpunkte der Welt angezeigt wurden.
+			- Beim Wegpunktbenennen sind jetzt unter "Alle alphabetisch" auch die Zonennamen als Wörter enthalten.
+			- Ein Problem mit der Wegpunktanzeige im Tunnel im Norden von Loch Modan wurde behoben.
+			- In der Tiefenbahn kann man jetzt das Wegpunktmenü öffnen und Wegpunkte auswählen.
+			- Routen, die am selben Punkt beginnen und enden und keine weiteren Zwischenpunkte enthalten, werden jetzt beim Import ignoriert.
+
+		Neuerungen
+			- Die Liste der Standardwegpunkte enthält jetzt auch alle Objekte in der Spielwelt. 
+			  Also, Dinge, die auf dem Boden liegen, die gesammelt werden müssen, die angeklickt werden müssen usw.
+			  Zur Unterscheidung von eigenen und NPC-Wegpunkten ist Objekt-Standardwegpunkten das Wort "OBJEKT" vorangestellt.
+			- Es gibt jetzt unter "SkuNav > Wegpunkt > Verwalten" drei Optionen zur Wegpunktbearbeitung (natürlich nur für selbst erstellte Wegpunkte):
+			  - "Löschen"
+			  - "Umbenennen" (funktioniert nach dem ganz normalen Prinzip der Namenszustammenstellung)
+			  - "Kommentar zuweisen": Mit dieser Funktion kannst du einem einen Audiokommentar zuweisen.
+				 Wenn du sie auswählst, geht ein Eingabefenster auf. In dieses muss du dann direkt den Text für den Audiokommentar eingeben und die Eingabe mit ENTER abschließen.
+				 Der eingegebene Text wird ab dann bei jedem Erreichen des Wegpunktes mit der WoW-TTS Stimme vorgelesen.
+				 Ein Wegpunkt kann beliebig viele Kommentare haben.
+			- Es gibt jetzt markierte Zonen: Weltgrenze, Flugbereich, Fraktion (Allianz oder Horde).
+			  Das Betreten und Verlassen dieser Zonen wird angesagt.
+			- Metarouten werden jetzt beim Start und bei jeder Routen- bzw. Wegpunktänderung berechnet und zwischengespeichert.
+			- Die SkuNav-Option für die Lautstärke der Beacons ist jetzt wieder aktiv.
+			- Beim Routenerstellen werden Schnittpunkte mit anderen Routen bzw. nahe bestehende Routenpunkte jetzt nur noch auf Anforderung erstellt/übernommen, wenn man beim Routenpunkterstellen ALT festhält.
+			  (Im Gegensatz zu vorher, bei dem dies bei gedrückter ALT-Taste _verhindert_ wurde.)
+
+
+		NUR FÜR ROUTENERSTELLER
+			- Es gibt jetzt eine neue grafische Routenanzeige: die Sku-Minimap. 
+			  Die Sku-Minimap wird mit STRG + SHIFT + F geöffnet/geschlossen.
+			  Die Anzeige auf der Minimap gibt es zwar noch, aber sie kann nicht mehr zum Routenerstellen per Klicken verwendet werden und wird auch nicht mehr weiter gepflegt.
+			  Da das für Blinde nicht relevant ist, gibt es alle weiteren Informationen (Mac) dazu im persönlichen Gespräch.
+			- Die Performance der grafischen Anzeige auf der Minimap wurde erneut deutlich optimiert.
+			- Die grafische Anzeige auf der Minimap ist jetzt in allen Zoomstufen korrekt und die Abweichung bei weiter entfernten Punkten ist geringer.
+			- Neue Farben für die Routenanzeige auf der Minimap:
+				- Rot: Custom (selbst erstellte) Wegpunkte bzw. modifizierte Creature-/Objekt-Wegpunkte
+				- Rosa: Standard Creature-Wegpunkte
+				- Grün: Standard Objekt-Wegpunkte
+			- Neue Maustastenaktionen für die Routenaktivitäten auf der Minimap:
+				- STRG + MITTLERE MAUS auf Wegpunkt: Route starten oder beenden
+				- STRG + RECHTE MAUS auf Custom-Wegpunkt: Wegpunkt löschen
+				- STRG + LINKE MAUS auf Custom-Wegpunkt + halten und ziehen: Wegpunkt verschieben
+				- STRG + SHIFT + LINKE MAUS auf Standard-Wegpunkt + halten und ziehen: Wegpunkt verschieben
+				- STRG + MAUS4 bei Routenaufzeichnung: Wegpunkt an Mausposition setzen
+				- STRG + SHIFT + MAUS4 bei Routenaufzeichnung: großen Wegpunkt an Mausposition setzen
+			- Mit CTRL-SHIFT-I kannst du jetzt bei der Routenaufzeichnung die CTRL-MITTLERE-MAUSTASTE-Funktionalität für dein aktuelles Ziel nutzen. 
+			  Statt des angeklickten Punktes wird sie für dein aktuelles Ziel ausgeführt.
+			  Sollte dein aktuelles Ziel kein Standardwegpunkt sein, passiert nichts.
+			  Wenn du weiter als 50 Meter von deinem Ziel entfernt bist, passiert ebenfalls nichts.
+			  Achtung: Das Addon kann bei mehreren gleichnamigen Mobs/NPCs in der Nähe nicht feststellen welcher von denen dein aktuelles Ziel ist.
+			  Wenn es mehrere Mobs/NPCs mit demselben Namen in der Nähe gibt, wird der genommen, der dir am nächsten ist.
+			- Mit CTRL-SHIFT-U kannst du jetzt einen NPC/Mob, der noch kein Standardpunkt ist (d.h. es gibt für diesen keinen rosa/roten Punkt auf der MM, 
+			   weil er nicht zu den 3 Standardpunkten bei Mobs/NPC mit mehreren Spawnpunkten gehört), zu den Standardpunkten hinzufügen.
+			  Den aktuelles Ziel wird zur Liste der Standardpunkte hinzugefügt. Danach kannst du es ganz normal nutzen. Es gilt alles, was oben bei CTRL-SHIFT-I gilt.
+
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 18.1
+
+	SkuCore:
+		Neuerungen
+			- Die Aktionsleisten haben weitere Funktionen erhalten:
+				- Hinter jedem Button wird jetzt die aktuelle Tastaturbelegung für diesen ansagt.
+				- Unter jedem Button gibt es jetzt einen Menüpunkt "Tastenbelegung". Wenn du diesen mit ENTER auswählst, kommst du direkt in den Tastaturbelegungsmodus für diesen Button.
+				  Die nächste Taste oder Tastaturkombination, die du dann drückst, wird direkt für den Button verwendet. Es gibt keine weitere Abfrage oder Warnung.
+				  Sollte die gewählte Tastaturkombination schon für etwas anderes verwendet werden, so wird diese andere Verwendung ohne Nachfrage gelöscht.
+				  Du kannst alternativ den Tastaturbelegungsmodus mit ESCAPE verlassen und den Belegungsvorgang so abbrechen.
+				- Unter jedem Button gibt es jetzt die Menüpunkte "Gegenstände" und "Makros", mit denen du Gegenstände und Makros auf Buttons legen kannst.
+				- Die Listen mit den Zaubern, Gegenständen und Makros sind nun filterbar.
+
+	SkuNav
+		Fehlerkorrekturen
+			- In der Routendatei für die Zangarmarschen wurde ein paar fehlene Routen hinzugefügt.
+			- Die Performance der Routenanzeige auf der Minimap wurde erneut dramatisch verbessert und ist jetzt auch bei sehr, sehr vielen Routen noch brauchbar.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 18
+
+	SkuCore:
+		Neuerungen
+			- Die Aktionsleisten können jetzt in einer ersten Basisversion genutzt werden.
+			  Unter "SkuCore > Aktionsleisten" findest du alle im Spiel verfügbaren Aktionsleisten.
+			  Darunter jeweils alle Buttons auf der entsprechenden Leiste (12 pro Leiste) und die aktuelle Aktion des Buttons.
+			  Unter den Buttons findest du alle Zauber aus deinem Zauberbuch. 
+			  Zuerst ist dort eine Menüebene mit den drei Kategorien deines Zauberbuchs. Darunter dann alle Zauber aus der jeweiligen Kategorie. Passive Zauber werden nicht in der Liste aufgeführt, da sie nicht platziert werden können.
+			  Wählst du dort einen der Zauber aus, wird diese auf den entsprechenden Button der entsprechenden Aktionsleiste platziert.
+			  Viele weitere Dinge im Aktionsleisten Menü fehlen noch und kommen später. Zum Beispiel:
+			  - Gegenstände und Makros auf Leisten legen
+			  - Begleiterleisten
+			  - Tastenbelegung anzeigen/ändern
+			  - Blättern in der Haupt Aktionsleiste
+			  - etc.
+			  Das Ganze funktioniert nur mir den originalen AKtionsleisten von Blizzard. Wenn irgendwelche Actionbar-Addons installiert sind, schlägt es mit größter Wahrscheinlichkeit fehl. Das gilt auch für ElvUI.
+
+	SkuMob:
+		Neuerungen
+			- Unter "SkuMob > Optionen" gibt es eine neue Option namens "Bei markierten Zielen nur Markierung ansagen".
+			  Mit dieser Option wird bei Zielen, die eine der acht Zielmarkierungen (Totenkopf, X, Mond etc.) haben nur noch die Markierung angesagt. Nicht mehr Name, Level etc.
+
+	SkuNav
+		Neuerungen
+			- Es gibt unter "SkuNav > Optionen" eine neue Option namens "Zwischenwegpunkt auf 3 Meter erreichen".
+			  Diese ist standardmäßig EINGESCHALTET.
+			  Bisher musstest du beim Folgen einer Route kleine Zwischenwegpunkte immer bis auf 1 Meter genau erreichen. Das war häufig mühsam, und in 90 % aller Fälle unnötig. Diese Wegpunkte auf 3 Meter zu erreichen genügt auch.
+			  Durch die neue Option brauchst du jetzt beim Routen folgen nur noch auf 3 Meter an die kleinen Zwischenwegpunkte rankommen, damit sie als erreicht gelten.
+			  In manchen Situationen reicht das jedoch nicht. Dann muss es auf 1 Meter genau sein. Zum Beispiel bei einer engen Tür.
+			  Dann kannst du mit STRG + SHIFT + Q auf die Genauigkeit von 1 Meter umschalten. Mit erneutem STRG + SHIFT + Q wechselst du wieder zu 3 Meter.
+			  Wenn du also merkst, dass du mit 3 Meter Genauigkeit bei einem Wegpunkt nicht weiter kommst (feststeckst), schaltest du auf 1 Meter um, gehst zum vorherigen Routenpunkt zurück (mit STRG + SHIFT + S), und versuchst es erneut.
+			- Beim Folgen von Routen über "Ziele Entferung" wird jetzt aus Geschwindigkeitsgründen nur noch der dir am nächsten gelegene Einstiegspunkt angezeigt, statt wie bisher bis zu 10 nahe Einstiegspunkte.
+			  Dafür beträgt die Reichweite, in der nach möglichen Einstiegspunkten gesucht wird, nun 1000 Meter, statt wie bisher nur 30 Meter.
+			  Sollte dieser eine Einstiegspunkt nicht passend sein (z. B., weil er hinter einer Wand liegt), musst du dich ein paar Meter bewegen oder über einen Wegpunkt zu einem anderen Ort wechseln, an dem ein passender Einstiegspunkt der dir am nächsten gelegene ist.
+			- Beim Erreichen eines Routenziels wird jetzt wie gewünscht nicht mehr das erreichte Ziel angesagt, sondern nur noch "Ziel erreicht".
+			- Der Wortliste für die Wegpunktbenennung wurden neue Worte hinzugefügt:
+			  "Aldor", "Seher" (unter "Klassen")
+			  Alle Kartennamen der Scherbenwelt (unter "Orte")
+			  "drinnen" und "draußen" (unter "Orientierung")
+			  Die sechs Hauptstädte aus der alten Welt (unter "Zonen")
+			- Unter "SkuNav > Wegpunkt > Auswählen" gibt es jetzt ganz unten in der Liste eine neue Auswahl namens "Aktuelle Karte Entfernung mit Auto".
+			  In dieser Liste werden alle Wegpunkte der aktuellen Karte INKLUSIVE aller Autopunkte, sortiert nach ihrer Entferung, angezeigt.
+			  Die Liste sollte normalerweise nicht gebraucht werden. Nur, falls du über den nächstgelegenen Routenpunkt in eine Route einsteigen möchtest, und der einzige angezeigte Routenpunkt nicht brauchbar ist (z. B., weil er hinter einer Wand ist). In diesem Fall kannst du diese neue Auswahl nutzen, um nach anderen Punkten (inkl. Autopunkte) Autopunkten in der Nähe zu suchen, diese anzulaufen, und von dort den Routeneinstieg zu machen.
+			- Die Routendatei "alle" (im Ordner "SkuNav > routedata") wurde aktualisiert und enthält nun wieder alle bisher aufgezeichneten Routen.
+
+		Fehlerkorrekturen
+			- Diverse Menüs wie "Alle Wegpunkte alphabetisch" sind dank Optimierungen deutlich schneller geworden.
+			- Die Routenanzeige auf der Minimap (STRG + SHIFT + R) versursacht weniger Lag.
+			- In den Routendaten für Shattrath war die Route zu Vekax defekt und ist jetzt korrigiert.
+			- In den Routendaten für Sturmwind gibt es jetzt einen Wegpunkt "Magiersanktum Portal draußen" der außerhalb direkt vorm Portal in den Magierraum liegt und einen "Magiersanktum Portal drinnen", der innerhalb direkt vor dem Portal liegt.
+			  Die beiden Wegpunkte sind nicht durch eine Route verbunden, da man beim Durchschreiten des Portals in den Magierraum teleportiert wird, und das die Route kaputt machen würde.
+			  Wenn du IN den Raum willst, musst du der Route zu "Magiersanktum Portal draußen" folgen, dann manuell ein paar Schritte vor durch das Portal gehen, und dann drinnen einen Wegpunkt zu einem der NPCs im Raum auswählen.
+			  Wenn du AUS dem Raum willst, musst du zum Wegpunkt "Magiersanktum Portal drinnen" gehen, dann manuell ein paar Schritte vor durch das Portal gehen, und dann draußen von "Magiersanktum Portal draußen" ein Routenfolgen zu deinem eigentlichen Zielpunkt starten.
+
+	SkuQuest
+		Neuerungen
+			- Beim Folgen von Routen über "Questdatenbank > Start in Zone > Nach Entferung > ..." wird jetzt aus Geschwindigkeitsgründen nur noch der dir am nächsten gelegene Einstiegspunkt angezeigt, statt wie bisher bis zu 10 nahe Einstiegspunkte.
+			  Dafür beträgt die Reichweite, in der nach möglichen Einstiegspunkten gesucht wird, nun 1000 Meter, statt wie bisher nur 30 Meter.
+			  Sollte dieser eine Einstiegspunkt nicht passend sein (z. B., weil er hinter einer Wand liegt), musst du dich ein paar Meter bewegen oder über einen Wegpunkt zu einem anderen Ort wechseln, an dem ein passender Einstiegspunkt der dir am nächsten gelegene ist.
+
+		Fehlerkorrekturen
+			- In der Questdatenbank wurde zu Quests unter "Rassen" nur "Horde" ODER "Allianz" angezeigt. Jedoch nicht beides, wenn eine Quest für beide verfügbar ist. Dieser Fehler ist behoben.
+			- In der Questdatenbank werden jetzt keine Quests mehr als verfügbar angezeigt, die Vorquests zu aktuellen Quests in deinem Questlog sind. (@Kai: Testen mit "Sprecht mit Rilak dem Erlösten". Sollte jetzt nicht mehr angeboten werden.)
+			- Ein paar geringfügige Optimierung in der Questdatenbank. Unter Annehme/Ziel/Abgabe gibt es bei vielen Routen (z. B. in Shattrath) immer noch ein kurzes Lag. Es sollte aber zumindest etwas besser sein.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 17.2
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Die Zonenlisten (z. B. "SkuNav > Wegpunkt > Neu > Zonen") sind jetzt wieder verfügbar.
+
+	SkuCore:
+		Fehlerkorrekturen
+			- Bankfach 1 sollte jetzt nicht mehr komplett leer angezeigt werden.
+			- Post-Briefe sollten jetzt gelöscht werden können.
+			- Bereits an einen neuen Brief angehängte Gegenstände werden nun nicht mehr in der Liste angezeigt, um ein doppeltes Anhängen an einen Brief zu verhindern.
+			- Es gibt jetzt eine Option "Alle öffnen", mit der alle Briefe im Postkasten geöffnet werden können. Danach kommen dann die einzelnen Briefe als weitere Menüpunkte.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 17.1
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Einen Fehler behoben, der beim aktiven Wegpunkt/Routen folgen und Ruhestein auftrat.
+
+	SkuCore:
+		Neuerungen
+			- Die Post ist jetzt bedienbar.
+			  Du musst selbst auf den Briefkasten klicken. WoW lässt das Öffnen des Briefkastens über Addons nicht zu.
+			  Falls du nicht weißt wie das geht, frage die Anderen nach einem Skript zur mittigen Positionierung deiner Maus.
+			  Sobald du am Briefkasten mit Rechtsklick die Post öffnest, geht das Audiomenü mit "SkuCore > Post" auf.
+			  Dort findest du als ersten Menüpunkt "Neuer Brief", über dessen Untermenüpunkte du einen neuen Brief schreiben kannst.
+			  Direkt darunter auf derselben Menüebene findest du danach alle Briefe aus deinem Postkasten. Format: Nummer, Absender, Betreff.
+			  Du kannst dir die einzelnen Briefe wie alle Text im Menü mit SHIFT + PFEIL HOCH/RUNTER vorlesen lassen.
+			  Unter jedem Brief gibt es weitere Untermenüpunkte:
+			  - Antworten: funktioniert genauso wie "Neuer Brief")
+			  - Anhänge: Gibt es nur, wenn im Brief Gegenstände oder Gold sind. Unter "Anhänge" findest du "Gold nehmen" (falls Gold drin ist) und/oder "Alle nehmen" und eine Liste mit den Gegenständen im Brief (falls Gegenstände drin sind). Bei jedem Gegenstand kannst du dir mit SHIFT + PFEIL HOCH/RUNTER den Tooltip anzeigen lassen.
+			  - Löschen: Löscht den Brief
+			  Briefe schreiben kannst du entweder über "Neuer Brief" oder über "Antworten" bei einem Brief aus deinem Postkasten. Beides funktioniert identisch.
+			  Es gibt jeweils mehrere Unterpunkte:
+			  - Empfänger
+			  - Betreff
+			  - Text
+			  - Gold
+			  - Gegenstände
+			  - Senden
+			  Wenn du "Empfänger", "Betreff" oder "Text" auswählst, öffnet sich ein Eingabefeld, in das du den entsprechenden Text eingeben und die Eingabe mit ENTER abschließen musst.
+			  Du musst für einen neuen Brief mindestens einen Empfänger und einen Betreff eingeben.
+			  Unter "Gold" gibt es ein Untermenü mit dem du bestimmte Goldbeträge an den Brief anhängen kannst.
+			  Unter "Gegenstände" werden alle Gegenstände aus deinen Taschen aufgeführt. Wenn du einen der Gegenstände auswählst, wird er an den neuen Brief angehängt. Natürlich kannst du dir auch hier mit SHIFT + PFEIL HOCH/RUNTER das Tooltip vorlesen lassen.
+			  Mit "Senden" schickst du den Brief ab, sobald du ihn fertig erstellt hast.
+			  Direkt nach dem Senden gibt es eine Audiorückmeldung, ob das Senden geklappt hat.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 17
+
+	SkuDB:
+		- Aufgrund der inzwischen enormen Datenmengen wurden alle Datenbanktabellen in ein neues verpflichtendes Sku-Addon namens SkuDB ausgelagert.
+		  Dieses bietet keinerlei Funktionalitäten für Benutzer. Es ist für die internen Daten zuständig.
+
+	SkuChat:
+		Neuerungen
+			- Der Chat wird jetzt direkt im Spiel vorgelesen. Dazu verwendet das Addon die neue und noch nicht offiziell verfügbare Ingame-TTS-Engine von Blizzard.
+			  Du öffnest den Chat weiterhin normal mit SHIFT + F2. Die erste Zeile (die letzte Chatnachricht) wird direkt vorgelesen. 
+			  Du kannst mit PFEIL HOCH/RUNTER die restlichen Zeilen durchgehen.
+			  Springst du zu einer anderen Zeilen wenn die aktuelle noch nicht komplett vorgelesen ist, bricht die aktuelle einfach ab und die nächste Zeile beginnt.
+			  Für die Chatausgabe gibt es unter "SkuChat > Optionen" drei neue Einstellungen:
+				TTS Stimme: Listet alle Stimmen auf, die auf deinem Computer (NICHT in WoW) installiert und somit verfügbar sind. Verwendet standardmäßig die erste Stimme in der Liste. Welche das auch immer bei dir sein mag. :)
+				TTS Geschwindigkeit: Sprechgeschwindigkeit
+				TTS Lautstärke: Die Lautstärke NUR für diese Chat-Vorlesefunktion.
+
+	SkuQuest:
+		- Das nervige Quest-Pling beim Einloggen ist jetzt (mal wieder) weg. Bis zum nächsten Mal. :)
+
+	SkuNav:
+		- Die Standardbelegung der Schnellwahltasten wurde geändert:
+			SHIFT F9: SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung
+			SHIFT F10: SkuNav,Route,Route folgen,Ziele Entfernung
+			SHIFT F11: SkuNav,Alles abwählen
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Teilweise wurden Wörter der Audioausgabe abgeschnitten oder waren zu lang.
+			  "Questdatenbank" wurde z. B. nur als "Questda" vorgelesen. Beim Wort "und" war immer eine zu lange Pause dahinter.
+			  Dieses Problem sollte jetzt beseitigt sein.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 16.2
+
+	SkuNav:
+		Neuerungen
+			- Mit STRG + SHIFT + R werden jetzt nicht nur die Routen und deren Wegpunkte auf der Minimap angezeigt, sondern alle Wegpunkte aus der Datenbank.
+			  Das ist zurzeit sehr, sehr laggy und nicht zum Spielen gedacht! Es dient nur zur internen Entwicklung.
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Leere Taschenplätze werden jetzt wieder korrekt angezeigt.
+			- Handeln sollte jetzt auch mehrmals hintereinander ohne Fehler funktionieren.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 16.1
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Mehrere Probleme mit falschen Karten-IDs bei Routen wurde behoben. (Unterzonen Level 3, identische Unterzonennamen in unterschiedlichen Zonen)
+
+	SkuQuest:
+		Fehlerkorrekturen
+			- Einen Fehler behoben, bei dem mit einem leeren Questlog in der Questdatenbank keine verfügbaren Quest für die Zone angezeigt wurden.
+			- Vor Quests im Questlog werden jetzt wenn zutreffend diverse Statuswerte angesagt:
+			  - Fehlgeschlagen
+			  - Fertig
+			  - Gruppe/Schlachtzug
+			  - Daily
+			  - PvP
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 16
+
+	SkuQuest:
+		Neuerungen
+			- SkuQuest ist jetzt Teil des Menüs. 
+			  Das Questlog ist weiterhin mit L zu öffnen. Aber es wird dabei das Audiomenü mit dem Pfad "SkuQuest > Aktuelle Quests" geöffnet.
+			  SkuQuest hat zwei neue Untermenüs bekommen:
+			  - Aktuelle Quests: Enthält alle Quests in deinem Questlog. Erster Untermenüpunkt "Alle" enthält alle Quests aus dem Log. Darunter sind weitere Untermenüs in denen die Quests aus dem Log nach Zonen sortiert sind.
+			  - Questdatenbank: Das ist eine komplette durchsuchbare Datenbank aller Quests im Spiel (von Questie geklaut).
+			  In den Untermenüs kann du wie bekannt bei jeder Quest "SHIFT + PFEIL RUNTER/HOCH" drücken, um die die Questdetails für die aktuell angezeigt vorlesen zu lassen.
+			  Du kannst wie bisher mit "STRG + SHIFT * PFEIL RUNTER/HOCH" zwischen den Abschnitten blättern. Die Questdetails für die Quests aus dem Questlog sehen wie bisher aus.
+			  Die Questdetails für die Quests in der Questdatenbank umfassen etwas andere Informationen:
+				- Quest ID
+				- Name
+				- Status: offen/abgelossen/im Log
+				- Zone
+				- Level: Questlevel und in Klammer das Mindestlevel
+				- Ziele: der Kurztext zum Questziel
+				- Rassen: Horde, Allianz oder ggf. Einzelrassen, falls es Beschränkungen gibt
+				- Klassen: falls es Beschränkungen auf Klassen gibt
+				- Pre Quest: Die Namen aller erforderlichen Pre Quests
+				- Quests Gruppe: Diese Quests musst du zusätzlich zur angezeigten Quest abschließen, um die Folgequest freizuschalten
+				- Eigenschaften: Teilbar, Episch, Raid, Täglich			  
+			  
+			  Die Questdatenbank hat zwei Untermenüs:
+			  - Start in Zone: 
+			    Dieses Untermenü enthält eine gefilterte Liste aller Quest, die du annehmen kannst. Mit der Entferung zum Questgeber, sortiert nach Entfernung.
+			    Dazu werden die folgenden Bedingungen berücksichtigt: 
+				 - aktuelle Zone
+				 - Fraktion
+				 - Klasse
+				 - Level
+				 - Vorgequests erledigt
+				 - noch nicht abgeschlossen und nicht im Questlog
+			  - Alle: 
+			    Dieses Untermenü enthälte eine unsortiert Liste ALLER Quests im Spiel (zu Recherchezwecken)
+			  
+			  Unter jeder Quest in der Questdatenbank findest du jeweils mehrere Untermenüs:
+			  - Pre Quests: Wenn die Quest pre Quests hat, werden die in diesem Menü aufgeführt. Wenn du eine der Pre Quests in diesem Menü auswählst, springt das Menü zu dieser Quest.
+			  - Annahme: Enthält die Namen der NPCs, bei der du die Quest annehmen kannst (Normalerweise nur einer). 
+			    Unter jedem Namen sind weitere Untermenüs: "Route" und "Wegpunkt". 
+				 "Route" ist nur vorhanden, wenn es eine Route zu diesem NPC gibt. Wegpunkt ist immer vorhanden.
+				 In "Route" und "Wegpunkt" kann du direkt das Folgen einre Route bzw. eines Wegpunkts zu diesen NPC (dem Questgeber) starten. Die Auswahl hat weitere Untermenüs, die genauso wie das normale Folgen einer Route/eines Wegpunkts funktionieren.
+			  - Abgabe: Genau wie "Annahme". Nur für den NPC, bei dem die fertige Quest abgegeben wird (meist mit "Annahme" identisch).
+			  - Ziele: Eine Liste der Questziele, die du ebenfalls wieder in den jeweiligen Untermenüs als Route (falls vorhanden) oder Wegpunkt auswählen kannst.
+			    Wenn keine Ziele da sind, fehlt dieser Punkt.
+			    Im Moment werden Ziele nur für Quest angezeigt, bei denen man Mobs killen oder mit NPCs interagieren muss.
+				 Weitere Ziele werden folgen. Beispielsweise Objekte, mit denen man interagieren muss
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Das Weiterschalten zwischen Routenwegpunkten, die Auswahl von Schnellwegpunkten und das Festlegen von Schnellwegpunkten ist jetzt auch im Kampf möglich.	
+			- Mit Version 14.4 wurde eine Funktion eingebaut, mit der man die Beacon-Lautstärke anpassen kann ("SkuNav > Optionen > Beacon Lautstärke". 
+			  Ich habe das Gefühl, dass diese die 3D-Ortung verschlechtert hat. Daher habe ich sie jetzt erstmal deaktivert. 
+			  Sind die Beacon-Positionen jetzt wieder besser erkennbar?
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 15.5
+
+	SkuNav:
+		Neuerungen
+			- Beim Folgen von Routen wird jetzt bei jedem erreichten Wegpunkt die Anzahl der verbleibenden Punkte bis zum Ziel angesagt.
+			- Beim Folgen von Routen kann jetzt zum vorherigen/nächsten Wegpunkt gewechselt werden.
+				STRG + SHIFT + W: nächster Wegpunkt
+				STRG + SHIFT + S: vorheriger Wegpunkt
+
+	SkuMob:
+		Neuerungen
+			- Wenn ein neuer Gegner ins Ziel genommen wird, gibt es jetzt bei allen Gegnern die bereits mit dir oder einem Gruppenmitglied im Kampf sind einen kurzen Piepser.
+			- Wenn Gegnern ein Zielsymbol zugewiesen ist, wird dieses jetzt vor dem Gegnernamen angesagt. Es gibt die folgenden Symbole:
+				- Kopf (kurz für "Totenkopf", meist das Primärziel)
+				- Kreuz (ein rotes X, meist das zweite Ziel)
+				- Mond (ein weißer Mond, häufig ein CC-Ziel, z. B. Schaf)
+				- Quadrat (ein blaues Quadrat, häufig ein CC-Ziel, z. B. Eisfalle)
+				- Stern (ein gelber Stern)
+				- Kreis (ein orangener Kreis)
+				- Diamant (ein lila Diamant)
+				- Dreieck (ein grünes Dreieck)
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 15.4
+
+	SkuNav:
+		Neuerungen
+			- Wenn bei der Auswahl eines Wegpunktes bzw. einer Route bereits einem Wegpunkt oder einer Route gefolgt wurde, gab es bisher nur eine Fehlermeldung.
+			  Ab sofort wird dabei automatisch der alte Wegpunkt bzw. die alte Route abgewählt und der neue Wegpunkt bzw. die neue Route wird ausgewählt. 
+			  Es ist nicht mehr nötig vorher explizit das laufende Folgen zu beenden.
+			- Es gibt jetzt "kleine" und "große" Wegpunkte. Die Größe eines Punktes bestimmt wie nahe man an ihn herankommen muss, damit er als erreicht gilt.
+			  An "Kleine" Punkte muss man bis auf 2 Meter herankommen. An die neuen "großen" Punkte muss man nur auf 8 Meter herankommen.
+			  Die großen Punkte haben zur Unterscheidung ein anderes Audio-Beacon.
+			  Die Größe eines Punktes wird bei seiner Erstellung festgelegt.
+			  Bei der Routenerstellung gibt es dazu jetzt zwei Tastenkombinationen für Zwischen-Wegpunkte:
+			    Kleiner Punkt: STRG + SHIFT P
+			    Großer Punkt: STRG + SHIFT * O
+			  Bei der Erstellung neuer Wegpunkte und Routen-Endpunkte kann man die Größe unter "Neu" mit dem Menüpunkt "Größe" festlegen (Standard: klein).
+
+		Fehlerkorrekturen
+			- Ein Problem mit Routen/Wegpunkten am dunklen Portal wurde behoben, das dafür gesorgt hat, dass der Import/Export von Routen pro Zone einen Fehler verursacht hat.
+			- Beim Import und Export von Routendaten tritt jetzt kein spürbares Lag mehr auf.
+			  Der Import geschieht jetzt direkt nachdem die Importdaten mit STRG + V eingefügt wurden. ENTER zu drücken ist nicht mehr nötigt. Das Addon sagt das auch so.
+		
+	SkuOptions:
+		Fehlerkorrekturen
+			- Ein Prozentzeichen (%) im Text wird jetzt vorgelesen und bleibt nicht einfach stumm.
+			- Die TTS-Engine (Sprachausgabe) wurde teilweise neu implementiert, um das manchmal auftretende Problem mit durcheinandergewürfelten Wörtern zu beheben.
+			  In diesem Zusammenhang musste die Funktionsweise der Einstellung für die Geschwindigkeit der Ausgabe (Audio Dauer Pause) überarbeitet werden.
+			  Daher wurde die Einstellung mit dieser Version auf ihren Standardwert zurückgesetzt (85 Prozent).
+			  Falls du diese Einstellung verändert hattest, musst du deine Änderung erneut durchführen. (SkuOptions > Optionen > Audio Dauer Pause)
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 15.3
+
+	SkuOptions:
+		Neuerungen
+			- Das Würfeln auf Dinge kann jetzt per Tastendruck erfolgen. Dazu stehen folgende Tastenkombinationen zur Verfügung:
+			    Bedarf: STRG + SHIFT + B
+			    Gier: STRG + SHIFT + G
+			    Passen: STRG + SHIFT + X
+			    Aktuellen Würfel-Gegenstand erneut ansagen: STRG + SHIFT + C
+			- Wenn das Würfelfenster im Kampf aufgeht, wird nicht das Audiomenü geöffnet. (Das ist im Kampf nicht möglich.)
+			  Stattdessen sagt das Addon jetzt an, dass auf einen Gegenstand gewürfelt werden muss. Es sagt folgendes an, sobald ein Würfelfenster aufgeht:
+			    Gegenstandsname, Qualität ("Selten", "Episch" etc.), Bind-Typ (BOE, BOP), Gegenstandtyp (z. B. "Waffe"), Untertyp (z. B. "Einhandaxt")
+			  Dann drückst du eine der Tastenkombinationen (STRG + SHIFT + B/G/X) zum Würfeln.
+			  Sollten das Würfelfenster mehrere Gegenstände enthalten, sagt dir das Addon nach dem Würfeln auf den ersten direkt den nächsten an. Dann würfelst du mit der Tastenkombi auf diesen. Und so weiter.
+			  ACHTUNG: Wenn du auf einen BOP-Gegenstand würfelst, bestätigt das Addon für dich ohne Rückfrage die Warnung dazu, dass der Gegenstand an dich gebunden ist, wenn du ihn lootest. Es gibt also keine Extra-Warnung dazu mehr!
+			- Bei einem Würfelfenster außerhalb des Kampfes geht weiterhin ganz normal das Audiomenü mit dem Lokal-Menü auf. Dort kannst du weiterhin würfeln und dir auch das Items detailliert anzeigen lassen.
+			  Zusätzlich kannst du auch mit dem offenen Audiomenü die neuen Tastenkombinationen für das Würfeln nutzen.
+
+		Fehlerkorrekturen
+			- Diverse vergessene Chat-Ausgaben mit Debugmeldungen wurden entfernt. :)
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Es wurde, mal wieder, ein Fehler mit dem Datenimport behoben.
+
+	SkuCore:
+		Fehlerkorrekturen
+			- Es wurde ein Fehler behoben, bei dem SkuFluegel-Nutzern der Status manchmal erst nach 5 Sekunden angezeigt wurde.
+			- Wie gewünscht, wird ab sofort auch dann wieder "Folgen" gesagt, wenn man bei bereits aktivem Folgen erneut das Folgen aktiviert.
+
+	SkuChat:
+		Neuerungen
+			- SkuChat sammelt jetzt testweise im hintergrund alle Wörter aus dem Chat, für die es noch keine Audiodateien gibt.
+			  Ich werde versuchen damit eine Wortdatenbank der häufigsten Wörter aufzubauen, damit wir früher oder später den Chat Ingame vorlesen lassen können.
+			  Es wäre daher gut, wenn ihr von Zeit zu Zeit eure Liste mit den fehlenden Wörtern an mich weitergebt.
+			  Ihr könnt sie ganz einfach über das Audiomenü abrufen: "SkuOptions > Optionen > Liste mit fehlenden Wörtern". 
+			  Dann kopiert ihr die Liste mit STRG + C und fügt den kopierten Text irgendwo für mich ein. In Dicord. Oder in eine Textdatei, die ihr mir schickt. Oder in eine E-Mail and duugu@duugu.com, die ihr mit schickt. Oder wo auch immer.
+			  Achtung: bei jedem kopieren der Liste über das Menü wird die Liste geleert!
+
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 15.2
+
+	SkuNav:
+		Fehlerkorrekturen
+			- "Route > Route folgen > Ziele Entferung" hat jetzt keine Verzögerung mehr. Auch nicht bei vielen Routen/Wegpunkten.
+			  Außerdem werden bei den erreichbaren Zielen keine Autopunkte mehr aufgeführt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 15.1
+
+	SkuNav:
+		Neuerungen
+			- Alle Standard-Wegpunkte für Flugmeister und Gastwirte wurden entfernt, da jetzt hinter den NPC-Standardpunkten die Rollen angesagt werden.
+			- Wenn NPCs einen Subnamen haben (z. B. "Priesterlehrer"), wird dieser jetzt in allen NPC-Listen mit angezeigt. Gibt es keinen Subnamen, werden mögliche Rollen angezeigt (z. B. "Händler", "Klassenlehrer" etc.).
+			- In der Routenerstellung können jetzt Auto-Wegpunkte (automatisch beim Routenaufzeichnen erstellt Zwischenwegpunkte) als Punkt A oder B ausgewählt werden.
+			  Dies dient dazu, neue Routen einfacher an das Routennetz anbinden zu können, wenn es bereits Routen mit Zwischenwegpunkten in der Nähe gibt.
+			- Bei der Routenaufzeichnungg kann jetzt die linke ALT-Taste gedrückt werden, um zu verhindern, dass neue Routenpunkte bei Kreuzungen mit bestehenden Routen erstellt werden, oder dass bestehende Routenpunkte in der Nähe übernommen werden.
+			  Solange die linke ALT-Taste gedrückt ist, passiert beides nicht.
+			- Beim erstellen einer neuen Route gibt es jetzt für Punkt B eine neue Option "Bei Beenden festlegen".
+			  Mit dieser Option legst du den Zielpunkt (seinen Namen für neue Punkte, bzw. den gewünschten bestehenden Wegpunkt) erst am Ziel fest.
+			  Wählst du die Option für Punkt B, öffnet sich beim Abschließen der Route über "Route > Aufzeichnung abschließen" ein Untermenü "Punkt B", in dem du nachträglich wie gewohnt den Punkt B definieren oder auswählen muss. Hast du das erledigt, wird die Aufzeichnung abgeschlossen.
+			  Hast du Punkt B bereits bei Aufzeichnungsbeginn definiert oder ausgewählt, wir die Aufzeichnung bei "Route > Aufzeichnung abschließen" direkt abgeschlossen - ohne den Untermenüpunkt "Punkt B".
+			  Diese neue Funktion "Bei Beenden festlegen" für Punkt B ist hilfreich, wenn man vorher nicht genau weiß, wo die Route hingehen soll, oder welche bestehenden Wegpunkte am Ziel vorhanden sind.
+			- Die Option mit den aktuellen Koordinaten bei der Benennung neuer Wegpunkte wurde entfernt.
+			- Bei jedem Einloggen werden ab sofort alle bestehenden Routen überprüft. Defekte Routen (z. B. mit ungültigen Wegpunkten durch Disconnects, veralteten Wegpunktdaten etc.) werden dabei gelöscht.
+			  Auch alle Wegpunkten aus den betroffenen Routen, die nicht von anderen Routen verwendet werden, werden gelöscht.
+			  Sollten dabei Routen und Wegpunkte gelöscht worden sein, sagt das Addon dies direkt nach dem Einloggen an.
+			- Unter "Route > Verwalten > Löschen" können jetzt alle Routen, alle in der aktuellen Zone und einzelne Routen gelöscht werden.
+
+		Fehlerkorrekturen
+			- Weitere Fehler beim Import und Export von Daten wurden behoben.
+			- Es wurde ein Fehler beim Abbrechen einer Routenaufzeichnung behoben, bei dem Autopunkte nicht gelöscht wurden.
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Ein Problem mit der Audioausgabe, bei der Audioausgaben zu spät, in falscher Reihenfolge oder scheinbar ohne Zusammenhang kamen, wurde (hoffentlich) behoben. (Zum Beispiel "Menü geschlossen" irgendwo mittendrin.)
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 15
+
+	SkuOptions:
+		Neuerungen
+			- Das Audiomenü sagt jetzt grundsätzlich keine Koordinaten mehr an.
+
+		Fehlerkorrekturen
+			- Die Gildenbank ist jetzt über das Lokal-Menü zugreifbar. Allerdings nur Fach eins. Der Zugriff auf Fach zwei steht auf der Todo-Liste.
+
+	SkuChat:
+		Fehlerkorrekturen
+			- Einen Fehler behoben, durch den bei gleichzeitiger Nutzung des SkuFluegel-Addons der Chat nicht mehr im TTS-Fenster angezeigt wurde.
+			- Chat-Nachrichten werden jetzt auch im Kampf erfasst. Es gibt allerdings nach wie vor im Kampf kein Audiosignal bei neuen Nachrichten.
+			  Sollten im Kampf neue Nachrichten gekommen sein, gibt es nach dem Kampf ein einziges Audiosignal dafür.
+
+	SkuNav:
+		Neuerungen
+			- Alle standardmäßigen NPC-Wegpunkte wurden hinter dem Namen des NPCs um seine Rolle(n) erweitert.
+			  Aufgrund dieser grundsätzlichen Namensänderung für NPC-Wegpunkte werden mit dieser Version (Sku 15) alle bereits erstellten Routen und Wegpunkte gelöscht!
+			  Die folgenden NPC-Rollen werden berücksichtigt/angesagt:
+				Questgeber
+				Trainer
+				Klassentrainer
+				Berufstrainer
+				Händler
+				Munition
+				Essen
+				Gift
+				Reagenzien
+				Reparieren
+				Flugmeister
+				Geistheiler
+				Gastwirt
+				Banker
+				Auktionator
+				Stallmeister
+			- Unter "SkuNav > Route > Neue Route > Punkt A/B > Aktuelle Karte Entfernung" werden jetzt auch alle Auto-Wegpunkte aufgeführt. 
+			   So können neue Routen möglichst nah an das bestehende Netz angebunden werden.
+			- Unter "SkuNav > Route > Verwalten" gibt es jetzt Optionen zur Routenverwaltung:
+				Löschen: Die ausgewählte Route (Auflistung nach Entfernung; filterbar) und alle nicht in anderen Routen verwendeten benutzerdefinierten Wegpunkte in der Route werden gelöscht.
+				Umbenennen (noch nicht implementiert): Die ausgewählte Route umbenennen.
+				Bearbeiten (noch nicht implementiert): Die Wegpunkte der ausgewählten Route verändern/bearbeiten.
+			- Unter "SkuNav > Wegpunkt > Verwalten" gibt es jetzt Optionen zur Wegpunktverwaltung. Wegpunkte, die in derzeit einer Route verwendet werden, können nicht gelöscht, umbenannt oder geändert werden.
+				Löschen (noch nicht implementiert): Den ausgewählten Wegpunkt (Auflistung nach Entfernung; filterbar) löschen.
+				Umbenennen (noch nicht implementiert): Den ausgewählte Wegpunkt umbenennen.
+				Bearbeiten (noch nicht implementiert): Die Koordinaten des ausgewählten Wegpunkts neu setzen.
+
+	SkuAudiodata:
+		Fehlerkorrekturen
+			- Es wurde weitere fehlende Audiodateien hinzugefügt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 14.7
+
+	Allgemein:
+		Neuerungen
+			- Das Addon "BugSack" ist jetzt Teil des Sku-Paketes. Es sammelt Fehlermeldungen, sodass diese nicht mehr im Chat angezeigt werden.
+			  Es fügt der Minimap ein Icon mit einem grünen Beutel hinzu. Wenn der Beutel rot wird, hat es einen Fehler abgefangen.
+			  Das Addon kann eine Audiomeldung bei einem Fehler ausgeben. Das ist standardmäßig aus. (Siehe unten.)
+
+	SkuOptions:
+		Neuerungen
+			- Du findest eine neue Option für eine Audiomeldung bei Fehlern unter "SkuOptions > Optionen > Debug Optionen > Sound bei Fehler".
+			- Du kannst bei Bedarf den letzten Fehler in einem Fenster anzeigen lassen: "SkuOptions > Optionen > Debug Optionen > Fehler anzeigen".
+
+		Fehlerkorrekturen
+			- Den aktuellen Audiotext mit rechter Shift-Taste abbrechen funktioniert jetzt auch für Wegpunkt-Ansagen.
+
+	SkuCore:
+		Fehlerkorrekturen
+			- Die Opton für Jäger sagt jetzt wirklich alle 15 Sekunden ein nicht glückliches Tier an - und nicht wie bisher versehentlich alle 3 Minuten. :)
+
+	SkuQuest:
+		Fehlerkorrekturen
+			- Die vielen Plings nach dem ersten Einloggen gibt es nicht mehr.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 14.6
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Ein weiterer Fehler im Import und Export von Routen wurde behoben. Sie könnten jetzt funktionieren. Es sei denn, Kai finde noch einen übersehenen Fehler. :)
+			- Nach dem Import und Export wird jetzt angesagt wir viele Routen/Wegpunkte von wie vielen importiert/exportiert wurden.
+
+	SkuOptions:
+		Neuerungen
+			- "Menünummern ansagen" und "Untermenüs ansagen" sind jetzt standardmäßig aus.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 14.5
+
+	SkuQuest:
+		Neuerungen
+			- Das Questlog kann jetzt mit ESCAPE geschlossen werden ohne dass danach die Escape-Taste blockiert wird.
+
+	SkuNav:
+		Neuerungen
+			- Es gibt jetzt direkt unter SkuNav eine neue Option namens "Alles abwählen".
+			  Mit dieser wird sowohl ein aktueller Wegpunkt als auch eine aktuelle Route abgewählt.
+
+		Fehlerkorrekturen
+			- Die Beacons bei Wegpunkten und Routen laufen jetzt bis zum Erreichen es Ziels, statt nur bis 4 Meter davor.
+
+	SkuCore:
+		Fehlerkorrektur
+			- Die Funktion zur Ansage der Zufriedenheit des Tiers von Jägern funktioniert jetzt.
+			  Sie alle 15 Sekunden "Unzufrieden" bzw. "Zufrieden" an.
+			  Ist das Tier "Glücklich" sagt sie nix.
+
+	SkuOptions:
+		Neuerungen
+			- Es gibt jetzt ein grafisches "Audiomenü".
+			  Das grafische Menü zeigt für Sehende parallel zum Audiomenü alle Menüoptionen in einer visuellen Baumstruktur an.
+			  Das grafische Menü ist standardmäßig ausgeschaltet.
+			  Du muss es in den Blizzard-Interfaceeinstellungen unter "Interface > Addons > Sku-Addons > SkuOptions > Audio Menü visuell" aktivieren.
+			  Es geht auf und zu, sobald man das Audiomenü auf und zu macht (mit SHIFT + F1).
+			  Alles was im Audiomenü passiert, wird parallel im grafischen Menü durchgeführt, und andersrum.
+
+		Fehlerkorrekturen
+			- Das Beenden der aktuellen Audioausgabe wurde von der rechten Steuerungstaste auf rechte Shift-Taste verschoben.
+			- Die Optionen zum Routen-Import und -Export für die aktuelle Zone funktionieren jetzt.
+
+	SkuAudiodata:
+		Fehlerkorrekturen
+			- Das Audiomenü macht jetzt nicht mehr nach dem Wort "für" eine zu lange Pause.
+			- Es wurde weitere fehlende Audiodateien hinzugefügt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 14.4
+
+	Allgemein:
+		- Das Addon "BugGrabber" ist jetzt Teil des Sku-Paketes. Es fängt nervige Fehlermeldungen ab.
+		- Weitere fehlende Audiodateien wurden hinzugefügt.
+
+	SkuCore:
+		Neuerungen
+			- SkuCore hat unter "Optionen" ein neues Untermenü namens "Klassen" bekommen. Darunter befinden sich weitere Untermenüs für die einzelnen Klassen.
+			  In diesen Menüs werden zukünfigt klassenbezogene Optionen zur Verfügung stehen.
+			  Den Anfang macht der Jäger, für den es jetzt eine Funktion gibt, um anzusagen wenn das Tier Hunger hat. (Standard: Ein)
+
+	SkuNav:
+		Neuerungen
+			- Es gibt jetzt nicht nur "Import" und "Export", sondern auch "Import Zone" und "Export Zone". Damit werden nur die Wegpunkte und Routen im-/exportiert, die in der aktuellen Zone liegen oder mindestens einen Endpunkt in dieser haben.
+			- Die Beacon-Lautstärke kann jetzt in Prozent angepasst werden: "SkuNav > Optionen > Beacon Lautstärke". (Wird nur auf neue Beacons angewendet. Nicht auf schon laufende.)
+			- Die Optionen zum Löschen und Umbenennen von Wegpunkten und Routen wurden vorübergehend deaktiviert.
+			- Die Entferung zu einem Wegpunkt wird jetzt als "x Uhr y Meter" angesagt, statt nur die beiden zahlen zu sagen. Diese ausführliche Ansage kann unter "SkuNav > Optionen > Ausführliche Richtung und Entfernung" ausgestellt werden. Standardmäßig ist sie an.
+
+		Fehlerkorrekturen
+			- Die Optionen zum Entfernen der Standardwegpunkte (Flugmeister, Briefkasten etc.) wurden entfernt.
+			- Beim Sterben geht jetzt das aktuelle Beacon aus. Schnellwegpunkt 4 wird beim Geist freilassen auf die Leiche gesetzt. Es geht ein korrektes Beacon für Schnellwegpunkt 4 an.
+			- Unter "SkuNav > Routen > Route folgen > Ziele Entfernung" werden jetzt nur noch die 10 nahesten Einstiegspunkte angezeigt.
+			- Die starke Verzögerung bei der Auswahl von Metarouten (Routen > Route Folgen > Ziele Entfernung) wurde behoben.
+			- Die Routenanzeige auf der Minimap ist jetzt standardmäßig aus.
+			- Die Routenanzeige auf der Minimap zeigt jetzt nur noch die Routen auf dem aktuellen Kontinent an.
+			- Der Routenimport wurde gefixt und funktioniert jetzt ohne Absturz.
+			- Die Nummerierungen für importierte Doubletten bei Routen-/Wegpunktnamen werden jetzt korrekt vorgelesen.
+			- Automatisch erstelle Zwischenwegpunkte werden jetzt einfach alle nur noch als "Auto" vorgelesen. Ohne eine Nummerierung dahinter.
+			- Die Optionen für die Zwischenwegpunkte beim Aufzeichnen von Routen wurden (zur Verdeutlichung) umbenannt und leicht verändert. Es gibt jetzt folgende:
+				Manuell
+				10 Grad 10 Meter
+				20 Grad 20 Meter
+				20 Grad 30 Meter
+				40 Grad 40 Meter
+
+	SkuOptions:
+		Neuerungen
+			- Das geöffnete Handelsfenster ist jetzt über das Lokal-Audiomenü bedienbar.
+			- Mit der rechten STRG-Taste kannst du jetzt jede gerade laufende Audioansage abbrechen.
+			- Man kann jetzt im Taschenmenü direkt zum vorherigen/nächsten nicht leeren Taschenplatz wechseln, indem man zweimal ganz schnell hintereinander Pfeil runter oder hoch drückt.
+			- Die Liste mit den fehlenden Wörtern (Piepser) kann jetzt direkt im Spiel kopiert werden:
+			  Du rufst sie unter "SkuOptionen > Optionen > Fehlende Audio Wörter kopieren" auf. Dann einfach STRG + C zum Kopieren in die Zwischenablage drücken, und die kopierte Liste über eine Textdatei, per Discord, per E-Mail (an duugu@duugu.com) oder über einen anderen Weg weiterleiten.
+
+		Fehlerkorrekturen
+			- Bei Texten mit Anführungsstrichen (z. B. NPC-Namen) wird jetzt nicht mehr "Backslash" mitgesprochen.
+			- Das Neuladen des Interface mit /reload beendet jetzt sämtliche noch laufenden Audioinhalte (Beacons, Menü-Hintergrund etc.)
+
+	SkuQuest:
+		Fehlerkorrekturen
+			- Die aktuelle Quest mit STRG + SHIFT + T teilen funktioniert jetzt wieder. Zudem wird jetzt angesagt, wenn die Quest nicht teilbar ist.
+
+	SkuMob:
+		Neuerungen
+			- Das aktuelle Ziel kann angehandelt werden: "SkuMob > Ziel Menü". Dann weiter mit "Lokal > Dropdown Liste 1 > Handeln > Linksklick".
+
+	SkuChat:
+		Neuerungen
+			- Die Chat-Anzeige kann jetzt mit ESCAPE geschlossen werden.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 14.3
+
+	SkuNav:
+		Neuerungen
+			- SkuNav kann jetzt automatisch bei einem neuen TomTom-Pfeil ein Audio-Beacon and die entsprechende Stelle setzen.
+			  Die Option ist standardmäßig aus. Aktivieren unter "SkuNav > Optionen > Auto Signal bei Tom Tom Pfeil".
+
+		Fehlerkorrekturen
+			- Unter "SkuNav > Wegpunkte > Auswählen" werden jetzt bei "Aktuelle Karte und "Aktuelle Karte Entfernung" ebenfalls alle Standardwegpunkte angezeigt (NPCs, Briefkasten, Flugmeister etc.).
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 14.2
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Das Abwählen von Wegpunkten ("SkuNav > Wegpunkt > Abwählen") funktioniert jetzt.
+			- Das Auswählen von Standardwegpunkten funktioniert jetzt wieder.
+
+	SkuNav:
+		Neuerungen
+			- Die Option "Routen > Aufzeichnung beenden" heißt zur besseren Verdeutlichung jetzt "Routen > Aufzeichnung abschließen".
+			- Es gibt unter Routen jetzt eine Option "Aufzeichnung abbrechen". Mit dieser wird eine laufende Routenaufzeichnung beendet und die gerade aufgezeichnete Route wird gelöscht.
+
+		Fehlerkorrekturen
+			- Beim Abschließen der Aufzeichnung einer Route werden jetzt möglicherweise noch laufende Beacons deaktiviert.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 14.1
+
+	SkuChat:
+		Fehlerkorrekturen
+			- Der Chat funktioniert wieder.
+
+	SkuNav:
+		Neuerungen
+			- Unter "SkuNav" gibt es jetzt eine Option "Route folgen beenden".
+			- Die Tastenkombination für einen neuen Zwischenwegpunkt bei der Aufzeichnung einer Route ist jetzt STRG + SHIFT + P
+			- Bei einem Ausgewählten Wegpunkt wird nun mit ALTGr die Richtung (Uhrzeit) und die Entfernung (Meter) angesagt. Erste Zahl Richtung, zweite Zahl Entfernung.
+			- Unter "SkuNav > Optionen > Reichweite für nahe Routenstarts" kann jetzt die Entfernung festgelegt werden in der mögliche Einstiegs-Wegpunkte  beim Folgen von Routen über die "Ziele Entfernung"-Funktion berücksichtigt werden. Der Standardwert ist 30 Meter.
+			- Die Anzeige der vorhandenen Routen auf der Minimap für Sehende kann jetzt mit STRG + SHIFT + R ein- und ausgeblendet werden.
+			- Bei der Routenerstellung werden jetzt wirklich alle Wegpunkte zur Auswahl als bestehender Wegpunkt für Punkt A oder B aufgeführt. Auch alle Standardwegpunkte und alle NPC-Wegpunkte.
+			  Bisher waren dort nur die selbst erstellten Wegpunkt aufgeführt. Keine Standardwegpunkte wie Flugmeister, Briefkästen, NPCs etc.
+			  Dies betrifft die folgenden Menüoptionen unter "Route > Neue Route > Punkt A/B":
+				- Aktuelle Karte
+				- Aktuelle Karte Entferung
+				- Alle alphabetisch
+			- Unter "SkuNav" gibt es jetzt die Option "Daten". Darunter gibt es die Unterpunkte "Import", "Export alle" und "Export aktuelle Karte".
+			  Diese Optionen dient dazu, Wegpunkte und Routen an Andere weiterzugeben oder von diesen zu erhalten.
+			  Die Verwendung ist quasi selbsterklärend. Der Export erstellt eine lange Zeichenfolge und zeigt diese in WoW in einem Fenster an. Du kopierst sie mit STRG + C.
+			  Dann gibst du die Zeichenfolge an jemanden weiter. Dieser wählt den "Import" bei SkuNav, das Addon zeigt ein Fenster an, derjenige fügt die Zeichenfolge mit STRG + V ein, und drückt ENTER. Fertig.
+			  Beim Import von Wegpunkten und Routen kann es zu Doubletten kommen!
+			  Wegpunkte und Routen haben Namen. Haben unter den importierten Wegpunkten und Routen welche die gleichen Namen wie bestehende, so führt das zu eine Doublette bzw. einem Konflikt.
+			  SkuNav löst diese Importkonflikte folgendermaßen auf:
+			  - Ist der Wegpunkt bzw. die Route mit dem gleiche Namen mit der zu importierenden identisch (gleiche Koordinaten), so wird der zu importierende einfach ignoriert.
+			  - Hat der zu importierende den gleichen Namen, aber andere Daten (z. B. Koordinaten), so wird der zu importierende umbenannt und importiert. Es wird eine laufende Nummer angehängt.
+
+		Fehlerkorrekturen
+			- Bei Audio-Beacons nimmt die Lautstärke jetzt mit der Entfernung weniger schnell ab. Die Minimallautstärke wird jetzt erst 3 mal weiter entfernt als zuvor erreicht.
+			- Ein Fehler beim Import und Export von Wegpunkt- und Routendaten wurde behoben (SkuNav > Daten).
+			  Ich kann keine Importfehler mehr finden. Das heißt nicht, dass keine da sind. Bitte gründlich testen.
+
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Einige vergessen Debug-Ausgaben im Chat wurden entfernt.
+			- Wenn eine Liste unter einem Audiomenüpunkt leer war (z. B. "SkuNav > Wegpunkt > Auswählen > Aktuelle Karte", ohne einen vorhanden Wegpunkt in der aktuellen Karte), dann ist das Menü beim öffnen eines solchen leeren Menüpunktes bisher einfach immer zurück zum vorherigen Menüpunkt gesprungen.
+			  Das war verwirrend. Ab sofort wird daher unter solchen leeren Menüpunkten stattdessen ein einziger Eintrag namens "Liste leer" angezeigt. Wenn man den Eintrag "Liste leer" auswählt, passiert nichts. 
+			  Das Menü bleibt jedoch in dem Menüpunkt und springt nicht einfach kommentarlos zurück.
+			- Ab sofort sind immer alle Menüoptionen sichtbar - auch diejenigen, die gerade nicht nutzbar sind. Dies löst das Problem, dass irgendwann beispielsweise die "Route folgen"-Option verschwunden war.
+			  Bisher wurden bestimmte Menüoptionen ausgeblendet, wenn sie nicht genutzt werden konnten. Beispiel: Der Menüpunkt "Wegpunkt > Umbenennen" war nicht sichtbar, wenn kein Wegpunkt ausgewählt war.
+			  Durch die teilweise ausgeblendeten Menüpunkte wurde das Menü unübersichtlich und der Schnellzugriff wurde gestört.
+			  Das Menü kontrolliert jetzt stattdessen bei der Auswahl eines Menüpunktes, ob dieser möglich ist.
+			  Beispiel: Auswahl von "Wegpunkt > Neu" bei bereits aktivem Folgen zu einem Wegpunkt. In dem Fall sagt das Menü bei "Neu", dass dies nicht möglich ist und macht nichts.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 14
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Bei der Namenenszusammenstellung ist es jetzt in filterbaren Listen nicht mehr möglich einen eingegebenen Filterbegriff mit ENTER als irregulären Namensbestandteil auszuwählen.
+
+		Neuerungen
+			- Die Sku-Addons kommunizieren jetzt insgeheim über dunkle Kanäle mit dem zusätzlichen Addon namens "SkuFluegel", dass Fluegelleuten den Status des Geführten anzeigt.
+			  Flügelleute können über SkuFluegel folgendes zum Geführten sehen: Folgen, Zaubern, Interagieren (NPCs, Questgeber), Reiten und Looten
+			  In den Sku-Addons selbst hat das jedoch keine Auswirkungen.
+
+	SkuChat:
+		Fehlerkorrekturen
+			- Die Textdarstellung im TTS-Panel für die Texterkennung (NVDA) wurde optimiert.
+
+	SkuNav:
+		Neuerungen
+			- Die neuen Audio-Beacons wurden intergriert. Jeder Wegpunkt wird jetzt mit einem Beacon markiert.
+
+			- Es gibt jetzt Standardwegpunkte für alle NPCs und Mobs. Diese können überall verwendet werden, wo Wegpunkte (Wegpunkt auswählen, Route erstellen etc.) relevant sind.
+			  In der Liste der NPC-Wegpunkte finden sich alle Spawnpunkte pro NPC/Mob.
+			  Hat ein NPC oder Mob mehrere Spawnpunkte, so werden in der alphabetischen Liste aller Wegpunkte aus Geschwindigkeitsgründen nur die ersten 3 aufgeführt.
+
+			- Die Routen-Funktion ist jetzt fertig und kann verwendet werden.
+			  1. Definition von Routen:
+				Eine Route besteht aus Wegpunkten. Es gibt für jede Route mindestens zwei End-Wegpunkte (Punkt A und Punkt B). Dazu kann es beliebig viele Zwischen-Wegpunkte geben.
+			  	Auch Routen-Wegpunkte sind ganz normale Wegpunkte, mit Namen und allem drum und dran. Du kannst sie also auch ohne Route normal wie bekannt als Wegpunkt nutzen. Und du kannst auch normale Wegpunkte für Routen nutzen.
+				Metarouten sind virtuelle Routen, die aus mehreren echten Routen bestehen. Wenn du beispielsweise von deinem Standpunkt Ziel x über Route 1, dann weiter über Route 2 und dann weiter über Route 3 erreichen kannst, dann ist dieser gesamte Weg eine Metaroute.
+			  2. Routen erstellen:
+			  	- Beim Erstellen einer Route definierst du vor dem Start der Aufzeichnung die beiden End-Wegpunkte Punkt A und Punkt B der Route, sowie gegebenenfalls die Aufzeichnungsmethode für Zwischen-Wegpunkte (manuell oder automatisch).
+			  	  Punkt A und B kannst du im Rahmen der Routendefinition jeweils neu erstellen ("Neu" und dann einen Namen zusammenstellen, wie beim Erstellen von Wegpunkten), oder du kannst bereits bestehende Wegpunkte auswählen.
+			  	  Im Rahmen der Routendefinition bzw. Routenaufzeichnung ist Punkt A der Punkt, an dem die Routenaufzeichnung beginnt. Punkt B ist der Punkt, an dem die Routenaufzeichnung endet.
+			  	  Erstellst du Punkt A neu, beginnt die Routenaufzeichnung da wo du gerade stehst. Erstellst du Punkt B neu, endet die Routenaufzeichnung da, wo du stehst wenn du die Aufzeichnung beendest.
+			  	  Wählst du einen bestehenden Punkt A aus, führt dich das Addon vor dem Beginn der Aufzeichnung über die normalen Richtungs- und Entfernungsangaben für Wegpunkte zum bestehenden Wegpunkt A.
+				  Erst, wenn du Punkt A erreicht hast, beginnt die Routenaufzeichnung.
+			  	  Wählst du einen bestehenden Punkt B aus, führt dich das Addon ab dem Beginn der Aufzeichnung Richtung Punkt B, bis du Punkt B erreicht hast. 
+				  An Punkt B endet die Aufzeichnung dann automatisch.
+				  Wenn die Aufzeichnung an Punkt A begonnen hat, werden auf dem Weg zu Punkt B automatisch Zwischenwegpunkte erstellt (wenn du das bei der Routen-Definition vor dem Start ausgwählt hattest).
+				  Alternativ kannst an jeder beliebigen Stelle mit STRG + SHIFT + PLUS manuell einen Zwischen-Wegpunkt erstellen.
+				- Die Zwischen-Wegpunkte sind intern auch ganz normale Wegpunkte. Sie haben aber keine Namen, sondern heißen alle "Auto" und werden einfach durchnummeriert. Du kannst auf die Zwischen-Wegpunkt nicht über das Wegpunktmenü zugreifen.
+				- Solltest du beim Aufzeichnen eine bestehende Route kreuzen, wird automatisch am Kreuzungspunkt ein Zwischenwegpunkt erstellt.
+				- Solltest du dich beim Erstellen (egal ob manuell oder automatisch) eines neuen Zwischenwegpunktes in der Nähe eines bestehenden Routenwegpunktes befinden, wird statt einen neuen Wegpunkt zu erstellen der bestehende Wegpunkt verwendet.
+			  3. Routen folgen:
+				Du hast unter "Route > Route folgen" mehrere Optionen:
+				- Ziele Entferung: 
+				  Dieses Menü zeigt dir Metarouten für alle Ziele an, die du über Routenpunkte in deiner Nähe erreichen kannst.
+				  Im ersten Untermenü findest du alle Routenpunkte in der Nähe. Mit Entfernungsangabe. Sortiert nach der Entfernung.
+				  Unter dem jeweiligen Punkt findest du dann im nächsten Untermenü alle Ziele, die du von dort aus erreichen kannst. Mit der Entfernung zu diesem Ziel.
+				  Wählst du eines der Ziele aus, führt dich das Addon über die Metaroute zum Ziel.
+				- Alle nach Entferung:
+				  Dieses Menü zeigt alle Routen an. Sortiert nach der Entferung zum nahesten ihrer jeweilien Routenpunkte.
+				  Du kannst für die Entfernung im nächsten Untermenü nur die Endpunkte (A/B) oder auch alle Zwischenpunkte berücksichtigen.
+				  Hast du eine Route ausgewählt, gibt dir das nächste Untermenü alle Routenpunkte der Route an. Du wählst einen aus, bei dem du in die Route einsteigen willst.
+				  Hast du den Einstiegspunkt ausgewählt, musst du zum Schluss noch auswählen, in welche Richtung der Route du von diesem Einstiegspunkt folgen möchtes. Richtung A oder B.
+				- Endpunkt in Zone:
+				  Dieses Menü zeigt alle Routen an, die mindestens einen Endpunkt (A/B) in deiner aktuellen Zone ahben.
+				  Hier wählst du nach Auswahl der Route noch aus, von welchem Endpunkt du starten möchtest.
+				- Alle alphabetisch:
+				  Alle Routen, alphabetisch sortiert.
+				  Auch hier wählst du nach Auswahl der Route noch aus, von welchem Endpunkt du starten möchtest.
+			  4. Tipps zum Erstellen von Routen:
+				- Möglichst keinen neuen Wegpunkte direkt neben einen bestehenden setzen. Stattdessen den bestehenden Wegpunkte nutzen.
+				- Möglichst keine parallelen Routen erstellen. Bestehende Routen nutzen, und von diesen Abzweigen. Oder Wegpunkte von bestehenden Routen nutzen.
+				- Neue Routen-Endpunkte (A und B) konsistent und sinnvoll benennen.
+
+	SkuCore:
+		Neuerungen
+			- Es gibt eine neue Funktion, die das durch einen Auto-Nahkampfangriff unterbrochene Folgen nach dem Kampf automatisch wiederaufnimmt.
+			  Sie ist standardmäßig AUS. Du findest sie unter "SkuCore > Optionen > Auto folgen".
+			  Sie funktioniert nur, wenn du in einer Gruppe bist und einem Gruppenmitglied folgst.
+			  Wenn du das Folgen absichtlich unterbrichst (durch Bewegen oder einen Befehl), wird es nicht wiederaufgenommen.
+
+	SkuAudio:
+		Fehlerkorrekturen
+			- Es wurde weitere gemeldete fehlende Audiodateien hinzugefügt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 13.1
+
+	SkuChat:
+		Fehlerkorrekturen
+			- Die mehrfache Chatausgabe ist beseitigt. Sie trat auf, wenn man eine Instanz betreten oder verlassen hat.
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Wenn man mit ausgewähltem Wegpunkt den Ruhestein oder ein Portal nimmt, gibt es jetzt keinen Fehler mehr.
+			- In der Tiefenbahn gibt es jetzt nicht mehr das Dauergeräusch.
+
+	SkuCore:
+		Neuerungen
+			- Das Würfelfenster ist jetzt testweise Teil des Lokal-Audiomenüs. Bitte ausprobieren.
+			  Wenn um einen Gegenstand gewürfelt werden kann, geht das Lokal-Menü auf.
+			  Das funktioniert natürlich nur außerhalb des Kampfes. Sollte das Würfelfenster im Kampf geöffnet werden, geht das Menü nach Kampfende auf, falls die Würfelfrist dann noch nicht abelaufen ist.
+			- Ab blauen Gegenständen geht beim looten (nicht beim Würfeln) von BoP-Gegenständen ein Fenster auf, mit dem man das Looten bestätigen muss. Dieses Fenster ist jetzt ebenfalls in das Lokal-Menü integriert.
+
+		Fehlerkorrekturen
+			- Wenn man bereits auf Folgen ist, und erneut folgen auswählt, sagt Sku jetzt nicht mehr "Folgen beendet" und dann "Folgen", sondern nur noch einmal "Folgen".
+
+	SkuOptions:
+		Neuerungen
+			- Es gibt jetzt unter "SkuOptions > Optionen > Lokal aktiv" die Möglichkeit das Lokal-Menü für alle Fenster wie Taschen, Char, Händler etc. auszuschalten.
+			  Es gibt keine Tastenkombination dafür. Wenn du darauf häufig und schnell zugreifen möchtest, kannst du dir den Menüpunkt auf eine Schnellwahltaste legen (STRG + SHIFT + F9 bis F12 zum festlegen, SHIFT + F9 bis F12 zum aufrufen)
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 13
+
+	Allgemein:
+		- Ein paar vergessene Debug-Meldungen wurden entfernt und tauchen jetzt nicht mehr im Chat auf.
+
+	SkuAudioData:
+		Neuerungen
+			- 195 gemeldete Char-Namen und fehlende Wörter wurden eingefügt.
+
+	SkuNav:
+		Fehlerkorrekturen
+			- Beim Erreichen eines Wegpunktes gibt es jetzt keinen Fehler mehr und die Wegpunktverfolgung wird normal beendet.
+			
+	SkuOptions:
+		Fehlerkorrekturen
+			- Der Hintergrundsound wird jetzt in einer Endlosschleife abgespielt, statt nach einem Abspielen abzubrechen.
+		Neuerungen
+			- Den Hintergrundsounds wurde "Slow Reggae" hinzugefügt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 12.3
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Bei einem Händler wird jetzt mit ESC im Menü wieder wie vorher das Händler-Fenster und das Taschenfenster geschlossen.
+			- Beim manuellen öffnen des Menüs mit SHIFT+F1 kann jetzt auch wieder das (leere) Lokal-Menü ohne Fehler ausgewählt werden.
+			- Der Hintergrundsound im Menü ändert sich jetzt wieder direkt nach der Auswahl eines Sounds statt erst beim nächsten Öffnen.
+
+	SkuMob:
+		Fehlerkorrekturen
+			- Das Kontextmenü für das Ziel ("SkuMob > Ziel Menü") bleibt jetzt auf bis was ausgewählt oder das Menü geschlossen wird. Questie wurde gemaßregelt und macht das jetzt nicht mehr kaputt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 12.2
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Einen Fehler mit dem Händer-Fenster beseitigt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 12.1
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Fehler mit Questie beseitigt.
+			- Fehler mit dauerhaften Geräuschen in Instanzen beseitigt.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 12
+	SkuAudioData:
+		Neuerungen
+			- Diverse Char-Namen sind jetzt als Audiodaten vorhanden und sollten angesagt werden.
+
+	SkuOptions:
+		Fehlerkorrekturen
+			- Bei ESCAPE wird jetzt beim Öffnen des Spielmenüs wieder der bekannte Sound gemacht.
+			- Im Audiomenü wird jetzt beim Wechseln von Menüoptionen immer derselbe "Zisch"-Sound gemacht. Kein "Klack" mehr bei "Auswählen".
+
+		Änderungen
+			- Das Audiomenü kann nun beim Folgen und Auto-Laufen geöffnet werden. Nur, wenn eine Bewegung über die WASD- oder Pfeiltasten stattfindet, bleibt das Menü geschlossen.
+		
+		Neuerungen
+			- Das Audiomenü kann im geöffneten Zustand mit einem leisen Hintergrundsound unterlegt werden. 
+			  Der Sound ist unter "SkuOptions > Optionen > Hintergrund Audio" auswählbar.
+			  Die Voreinstellung ist "Nichts". Ich persönlich mag "Walgesang". :D
+
+	SkuMob:
+		Neuerungen
+			- Im Menü "SkuMob" gibt es jetzt eine neue Unteroption namens "Ziel Menü". Diese öffnet bei einem ausgewählten Ziel das Kontextmenü für das Ziel.
+			  Bei Auswahl der "Ziel Menü"-Funktion geht das Lokal-Menü mit den entsprechenden Optionen wie Betrachten, Einladen, Handeln, Flüstern etc auf (Dropdown Liste 1).
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 11.2
+	SkuNav:
+		Fehlerkorrekturen
+			- Beim Erreichen eines Wegpunktes gab es einen Fehler. Das ist behoben. Echt jetzt. Wirklich. Isch schwör. :)
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 11.1
+	Allgemein:
+		Fehlerkorrekturen
+			- Eine übersehende Debug-Meldung im Chat wurde entfernt ("OnAction Generic ...").
+
+	SkuQuest:
+		Fehlerkorrekturen
+			- Wenn das offene Questlog mit ESCAPE statt mit L geschlossen wurde, konnte man beim nächsten Öffnen nicht mehr zwischen den Quest wechseln. Das ist jetzt behoben.
+
+	SkuNav:
+		Fehlerkorrekturen
+			- In bestimten Bereichen in Hauptstädten konnte keine Wegpunkte erstellt werden und das Questlog hat Fehler produziert (durch unvollständige Questie-Daten). Das ist behoben.
+			- Beim Erreichen eines Wegpunktes gab es einen Fehler. Das ist behoben.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 11
+	Allgemein:
+		Fehlerkorrekturen
+			- In Instanzen gibt es jetzt keine Fehlermeldungen mehr. Trotzdem funktionieren natürlich auch weiterhin keine Navi-Funktionen. Auch die Feststecken-Anzeige funktioniert natürlich nicht. (Pauschal funktioniert alles nicht, was auf Koordinaten basiert.)
+
+	SkuNav:
+		Änderungen
+			- Das Menü "Alle" beim Zusammenbauen von Namen (z. B. "SkuNav > Wegpunkt > Neu") heißt jetzt "Alle alphabetisch" und ist alphabetisch sortiert. Es befinde sich jetzt außerdem in der Liste über den einzelnen Glossar-Untermenüs, statt darunter.
+			- Im Glossar beim beim Zusammenbauen von Namen gibt es jetzt einen Untermenüpunkt "Zahlen" mit den Wörtern "Eins" bis "Zehn".
+			
+		Fehlerkorrekturen
+			- Folgende Probleme bei "SkuNav > Wegpunkt > Auswählen > Letzte" behoben:
+			  - Es gab einen Fehler, wenn noch keine zuletzt ausgewählten Wegpunkte in der Liste sind. "Letzte" wir jetzt nur noch angezeigt, wenn zuvor schon mal Wegpunkte ausgewählt wurden.
+			  - War ein Wegpunkt beim Auswählen schon in der "Letzte" Liste, wurde er erneut eingefügt. Jetzt ist jeder Wegpunkt nur noch einmal in der Liste.
+			  - Automatisch generierte Wegpunkte aus Routen wurden in der "Letzte"-Liste angezeigt. Das ist jetzt nicht mehr so.
+			- Die Liste der Wegpunkte unter "SkuNav > Wegpunkt > Auswählen > Alle alphabetisch" ist jetzt tatsächlich alphabetisch sortiert. :)
+
+	SkuOptions:
+		Änderungen
+			- Das Spielmenü (ESC) ist jetzt nicht mehr in das Audiomenü eingebunden.
+
+		Fehlerkorrekturen
+			- Das & Zeichen sollte jetzt korrekt vorgelesen werden.
+			- Beim Öffnen des Lokal-Menüs wird jetzt nicht mehr das Geräusch von ins Ziel nehmen abgespielt.
+			- Die Tooltipanzeige bei Buttons im Lokal-Menü (SHIFT + Pfeil runter) geht jetzt korrekt zu, sobald SHIFT losgelassen wird.
+			- Wenn bei offenem Menü (z. B. Tasche) ein Popup-Fenster aufgeht (z. B. Anlegen Ja/Nein bei BoE-Gegenständen), springt das Menü nun zum Popup-Fenster.
+			- Wenn das "Lokal"-Menü geöffnet wird, unterdrückt das Addon jetzt wie beabsichtigt kurz alle Anderen Sounds (z. B. was ein Händler beim Anklicken sagt.) Dies dient dazu, dass das Audiomenü besser zu verstehen ist, und nicht von der NPC-Begrüßung übertönt wird.
+			- Über die Schnellzugriffstasten bzw. über den Slash-Befehl "Short" wurde zwar das Menü geöffnet, aber es hat nicht funktionert. Das ist behoben.
+
+	SkuQuest:
+		Fehlerkorrekturen
+			- Der Goldbetrag bei Questbelohnungen wird jetzt korrekt angezeigt.
+			- Feste Questbelohnungen sollten jetzt angezeigt werden.
+
+	SkuCore: 
+		Fehlerkorrekturen
+			- Das Audiomenü sagt bei leeren Taschenplätzen keine alte Anzahl mehr an.
+
+		Änderungen
+			- Das Audiomenü sagt jetzt bei Taschenplätzen die Nummer des Taschenplatzes an. Beispiel "Button: 5 Gegenstandsname" bei Taschenplatz 5.
+			- Durch die Nummerierung der Taschenplätze ist es jetzt möglich Untermenü einer Tasche mit den Tasten 1-9 direkt zum entsprechenden Taschenplatz zu springen.
+			- Das Audiomenü sagt jetzt bei Taschenplätzen und Händlern die Anzahl der Gegenstände am entsprechenden Platz hinter dem Gegenstandsnamen an (statt wie bisher vor dem Gegenstandsnamen).
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 10
+	Allgemein:
+		Änderungen
+			- Alle Audioausgaben wurden mit einer neuen und besseren Stimme aufgenommen.
+			- Alle Audioausgaben werden nun aus einzelnen Wörtern zusammengebaut. Das sorgt für eine etwas unnatürlichere Wiedergabe,
+			  aber auch gleichzeitig für enorme Flexibilität und Möglichkeiten bei den Audioausgaben.
+			  Die Pause zwischen den Wörtern kann eingestellt werden (unter "SkuOptions > Optionen > Audio Dauer Pause")
+			- Bei jedem Wort ohne Audiodatei gibt es jetzt einen Beep-Ton. Außerdem wird das Wort intern gespeichert.
+			  Das dient dazu, die fehlenden Wörter später hinzufügen zu können.
+			- Alle Einstellungen bzw. Daten (dazu zählen auch alle bereits angelegten Wegpunkte) aus den älteren Versionen sind mit Version 10 zurückgesetzt bzw. gelöscht.
+			- Die Schrift im TTS-Panel (z. B. beim Questlog, bei Dialogen oder im Chat) ist jetzt kleiner, damit mehr Text auf den Bildschirm passt.
+			  (Schriftgröße von 25 Punkt auf 18 Punkt verkleinert)
+
+		Neuerungen
+			- Es ist ein neues Sku-Addon hinzugekommen: SkuOptions
+			  Es ist dafür zuständig das Audiomenü sowie alle Einstellungen/Optionen aller Sku-Addons zentral zusammenzuführen.
+			  Wenn man das Audiomenü mit SHIFT + F1 aufruft, gibt es jetzt erstmal 5 Untermenüs namens "SkuNav", "SkuMob" usw.
+			  In diesen Untermenüs findet man dann die Menüs für die einzelnen Addons. Die Wegpunkte vom Navi finden sich jetzt also z. B. in der zweiten Ebene unter "SkuNav > Wegpunkte".
+			  Alle über das Audiomenü erreichbaren Optionen sind jetzt zusätzlich für Sehende über das Blizzard-Interace-Menü erreichbar (ESC > Interface > Addons > Sku-Addons).
+			- Alle Anzeigen im TTS-Panel (z. B. Quests und Dialoge) können jetzt im Spiel vom Addon vorgelesen werden.
+			  Es wird immer eine Zeile vorgelesen. Wenn das TTS-Panel offen ist und Text anzeigt, kannst du den folgenden Tasten zur nächsten/vorherigen Zeile springen:
+			  	Zur nächsten Zeile: SHIFT + PFEIL RUNTER
+			  	Zur vorherigen Zeile: SHIFT + PFEIL HOCH
+			  Außerdem sind alle Inhalte im TTS-Panel intern in "Abschnitte" zusammengefasst. Abschnitte sind zusammenhängende Blöcke aus mehreren der Zeilen.
+			  Bei einer Quest gibt zum Beispiel die Abschnittte "Questtitel", "Ziele", "Belohnungen" und "Beschreibung".
+			  Statt mit SHIFT + PFEIL RUNTER/HOCH immer nur eine Zeile weiter zu springen, kannst du mit den folgenden Tasten direkt einen ganzen Abschnitt weiter springen:
+			  	Zum nächsten Abschnitt: STRG + SHIFT + PFEIL RUNTER
+			  	Zum vorherigen Abschnitt: STRG + SHIFT + PFEIL HOCH
+			  Wenn du also z. B. ganz oben bist, und schnell zu ersten Zeile der Beschreibung ganz unten willst, dann drückst du nicht x mal eine Zeile weiter, sondern nur dreimal einen Abschnitt weiter. Das geht viel schneller.
+			- Neuer Audio-Kanal: Bisher wurden alle Sku-Sounds über den Wow-Kanal "Dialog" abgespielt. 
+			  Jetzt werden alle Sounds über einen neuen Audio-Kanal namens "Sku" abgespielt. 
+			- Audiobegrüßungen bei NPCs werden jetzt unterdrückt, damit das Audiomenü zu verstehen ist.
+			- Am oberen Bildschirmrand gibt es jetzt einen einzeiligen schwarzen Balken, in dem der aktuelle Menüpunkt als Text angezeigt wird.
+
+	SkuOptions:
+		Änderungen
+			- Das Audiomenü wird jetzt bei Kampfbeginn automatisch geschlossen.
+			- Das Audiomenü wird jetzt erst bei Kampfende oder Bewegungsende geöffnet, falls das Öffnen im Kampf oder in der Bewegung angefordert wurde.
+			- Bei Optionen im Audiomenü ist jetzt automatisch der aktuell eingestellte Wert einer Option vorausgewählt.
+
+		Neuerungen
+			- Im Audiomenü unter "SkuOptions > Optionen > Audio-Kanäle" gibt es jetzt Einstellungen für die Lautstärke der einzelnen Audio-Kanäle
+			  (Sound, Musik, Umgebung, Dialog) sowie für die Gesamtlautstärke.
+			- Unter "SkuOptions > Optionen > Audio-Kanäle > Sku Kanal" kann die Audioausgabe der Sku-Addons auf einen anderen Kanal gelegt werden.
+			  (Standard ist der neue "Sku"-Kanal.)
+			- Die Sprechgeschwindigkeit, also die Sprachpausen zwischen den einzelnen Wörtern, kann im Audiomenü geändert werden.
+			  Menüpunkt: "SkuOptions > Optionen > Audio Dauer Pause"
+			  Der Wert geht von 1 bis 100 (das ist der Prozentwert für die Länge der Pause).
+			  Der Standardwert ist 75.
+			- Das Audiomenü unterstützt jetzt Slash-Befehle. Der Slash-Befehl lautet: /sku
+			  Jeder beliebige Menüpunkt kann über den Slash-Befehl "/sku short" aufgerufen werden.
+			  Hinter "/sku short " wird einfach der komplette Menüpfad mit Kommas getrennt angegeben.
+			  Wird ein Menüpunkt mit weiteren Untermenüs aufgerufen (z. B. "SkuNav > Wegpunkt > Neu"), so wird das Audiomenü mit dem 
+			  entsprechenden Menüpfad ausgewählt geöffnet. Du kannst dann direkt dort im Menü weiterarbeiten.
+			  Wird ein Menüpunkt ohne weitere Untermenüs aufgerufen (z. B. "SkuNav > Wegpunkt > Abwählen"), so wird der Menüpunkt 
+			  direkt ausgeführt, ohne das Audiomenü zu öffnen.
+			  Beispiele für Menü-Slash-Befehle: 
+			    /sku short,skunav,wegpunkt,neu
+			    /sku short,skunav,wegpunkt,auswählen,aktuelle karte,schnellwegpunkt;1
+			- Das Audiomenü hat jetzt 4 frei belegbare Schnellwahlziele. Diese führen direkt zu einem bestimmten Menüpunkt.
+			  Die Schnellwahlziele werden mit SHIFT + F9 bis F12 aufgerufen. Sie funktionieren exakt so wie der oben beschriebene Slash-Befehl "/sku short".
+			  Vorbelegt sind die folgenden Schnellwahlziele:
+				SHIFT + F9: SkuNav > Wegpunkt > Auswählen
+				SHIFT + F10: SkuNav > Wegpunkt > Abwählen
+				SHIFT + F11: SkuNav > Wegpunkt > Neu
+				SHIFT + F12: SkuNav > Route				  
+			  Die vordefinierten Schnellwahlziele lassen sich mit STRG + SHIFT + F9 bis F12 beliebig neu belegen. 
+			  Dazu öffnest du das Menü, gehst du dem Menüpunkt, den du für die Schnellwahl verwenden möchtest, und drückst dann STRG + SHIFT + F9 bis F12
+			  Dann wird das entsprechende Schnellwahlziel mit dem aktuellen Menüpunkt verknüpft.
+
+	SkuNav: 
+		Neuerungen:
+			- Unter "Wegpunkt > Auswählen" wird jetzt als erstes Untermenü "Letzte" angezeigt. 
+			  Es enthält die letzten 10 ausgewählten Wegpunkte (von neu nach alt).
+			- Beim Zusammenbauen von Namen ("Wegpunkt > Neu" oder Umbenennen) gibt es jetzt ein Untermenü "Alle". In diesem finden sich alle Wörter 
+			  aus dem Glossar. Es ist filterbar.
+			- Mit SHIFT + M kann jetzt die Minimap vergrößert werden. Erneutes SHIFT + M macht sie wieder klein.
+
+		Änderungen
+			- Der Welt-Kompass wird jetzt als Himmelsrichtung in einer männlichen Stimme angesagt.
+			- Die Schnellwegpunkte werden jetzt nicht mehr im Menü angezeigt (können also auch nicht mehr umbenannt oder gelöscht werden).
+			- Die Schnellwegpunkte werden jetzt nicht mehr beim ausloggen gespeichert.
+
+		Fehlerkorrekturen
+			- Auch wenn es niemand gemerkt hat - die Standardwegpunkte in Westfall waren kaputt und funktionieren jetzt. :)
+			
+	SkuQuest: 
+		Neuerungen:
+			- Die aktuelle Quest im geöffneten Questlog kann jetzt mit STRG + SHIFT + T geteilt werden.
+			  Die Rückmeldung, ob das Teilen geklappt hat, steht im Chat. Also bitte danach ggf. mit SHIFT + F2 nachsehen.
+			- Wie oben beschrieben werden die Questinfos im TTS-Panel nun vorgelesen.
+
+	SkuCore: 
+		Neuerungen:
+			- Folgende Spielerzustände werden jetzt von der männlichen Stimme angesagt:
+			  Drinnen, Draußen, Verstohlenheit, Geist, Tot, Schwimmen, Tauchen, Reiten, Reiten beendet, Fallen (ab 1 Sekunde Falldauer), 
+			  Laufen, Gehen, Folgen, Folgen beendet, Rasten, AFK		
+
+			- Inhalte von vielen Fenster sind im Audiomenü verfügbar:
+			  Ab sofort werden die auswählbaren Optionen in allen wichtigen Fenstern und Dialogfenstern wiedergegeben und können genutzt werden.
+			  Zurzeit gilt das für die folgenden Fenster:
+			  Flugmeister
+			  Questgeber
+			  Händler
+			  Gastwirte
+			  Bänker
+			  Trainer
+			  Taschen
+			  Char-Fenster
+			  Talentfenster
+			  Stall-Fenster
+			  Spielmenü (ESC)
+			  Alle Pop-up-Fenster (z. B. "Wiederbeleben"-Fenster, "Port annehmen"-Fenster etc.)
+
+			  Sobald eines oder mehrere der betreffenden Fenster/Dialoge geöffnet ist, geht das Audiomenü auf.
+			  Es springt automatisch zu einem neuen ad-hoc Untermenü namens "Lokal".
+			  In "Lokal" werden in erster Ebene alle offenen bedienbaren Fenster aufgeführt. Darunter finden sich dann jeweils als Untermenüs alle Texte und Bedienelemente aus dem jeweiligen Fenster.
+			  (Das Audiomenü geht dabei mit einer ganz kleinen Verzögerung von 0,65 Sekunden auf. Das lässt sich intern nicht vermeiden.)
+			  
+			  Das Audiomenü bildet das jeweilige Fenster automatisch 1:1 so ab, wie es in der Benutzeroberfläche vorhanden ist. Dazu liest es intern die einzelnen Bedienelemente aus.
+			  Die Bedienelemente in den Fenster der Benutzeroberfläche sind nicht immer hundertprozentig logisch angeordnet. Außerdem haben sind intern nicht allen Namen bzw. Titel zugewiesen.
+			  Daher kann die Reihenfolge der Elemente im Audiomenü teilweise etwas ungewöhnlich sein. So kann beispielsweise der "Schließen" Button eines Fensters zuerst erscheinen, obwohl der im echten Fenster ganz unten ist.
+			  Die Fensterelemente mit fehlenden Namen werden im Audiomenü durch generische Bezeichnungen wie "Fensterbereich", "Unterbereich" oder "Container X" ersetzt.
+			  Durch die Inhalte der Audiomenüs musst du dich durchfuchsen und lernen, was beim jeweiligen Dialog wo zu finden ist. Dazu ist bei den ersten Schritte sicher die Hilfe eines Sehenden sinnvoll, wenn du die tatsächlichen Fenster nicht wirklich kennst bzw. auswendig kennst.
+
+			  Die Audiomenüinhalte haben drei Typen: Untermenüs, Text und Buttons. Wenn es sich um einen Text oder Button handelt, steht das vor dem jeweiligen Menüelement.
+
+			  Text-Menüelemente werden auf 40 Zeichen gekürzt. Sollte der echte entsprechende Text aus der Benutzeroberfläche länger sein, endet der Menüeintrag auf "...".
+			  Du kannst dir den restlichen Text über das TTS-Panel anzeigen lassen. Genau wie beim Questfenster. Dazu drückst du mit dem ausgewählten Menüpunkt SHIFT + Pfeil Hoch bzw. SHIFT + Pfeil runter. Dann geht das TTS-Panel auf, und zeigt den Kompletttext. Du kannst dann mit SHIFT + Pfeil runter/hoch die einzelnen Zeilen vorlesen lassen.
+			  Springst du zum nächsten Audiomenüpunkt, oder lässt du SHIFT los, geht das TTS-Panel zu.
+			  
+			  Button-Menüelemente sind alle Schaltflächen, Gegenstände, Zauber etc. im entsprechenden Fenster in der Benutzeroberfläche. Sie enthalten ebenfalls häufig mehr Text. Zum Beispiel den gesamten Tooltiptext, falls es sich um einen Gegenstand handelt. Auch dann drückst du einfach wie oben mit dem ausgewählten Menüpunkt SHIFT + Pfeil Hoch bzw. SHIFT + Pfeil runter, um dir den Tooltip anzeigen zu lassen.
+			  Button-Menüelemente enthalten jeweils zwei Unterelemente namens "Linksklick" und "Rechtsklick". (Text hat die nicht, da es da nix zu klicken gibt.)
+			  Indem du eines der beiden Unterelemente eines Buttons auswählst, führst du einen Klick in der Benutzeroberfläche aus.
+			  Klickst du beispielsweise mit rechts auf einen Gegenstand in der Liste eines Händlers, wird dieses gekauft und landet in deiner Tasche.
+			  Klickst du mit links auf einen Gegenstand in deiner Tasche, wird dieser aus der Tasche genommen und an den Mauszeiger geheftet. Klickst du dann erneut mit links auf einen anderen, freien Taschenplatz, wird der Gegenstand am Mauszeiger dort abgelegt.
+			  Sobald sich etwas am Mauszeiger befindet (also etwas aufgenommen wurde), wird dies mit dem Gegenstandsnamen angesagt. 
+
+		Änderungen
+			- Die Feststecken-Meldung sollte jetzt auch im Brachland korrekt funktionieren. 
+			  Zudem berücksichtigt sie langsamere Geschwindigkeiten wie bei Schwimmen, Verstohlenheit etc.
+
+	SkuMob: 
+		Neuerungen:
+			- Hinter dem Level wird jetzt "Weltboss", "Rare Elite", "Elite" oder "Elite" angesagt, falls eines davon auf das Ziel zutrifft.
+			- Sollte das Ziel eine Unterbezeichnung haben (z. B. "Händler für Rüstungen" oder "Zirkel des Cenarius"), wird diese jetzt nach
+			  dem Namen und Level angesagt.
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 9
+
+	SkuMob: 
+		Fehlerkorrekturen
+			- Mobs/NPCs mit einem Hochkomma im Namen werden jetzt korrekt angesagt.
+		Änderungen
+			- Die HP-Zahlen werden jetzt zur besseren Unterscheidung testweise in einer anderen Frauenstimme angesagt.
+	
+	SkuQuest: 
+		Neuerungen
+			- Die aktuell angezeigte Quest kann mit STRG + SHIFT + D abgebrochen werden.
+			  Vorsicht: Es gibt keine weitere Abfrage. Die Quest wird direkt abgebrochen. Nach dem Abbrechen einer Quest geht das Questlog zu.
+			- SkuQuest kann jetzt im Kampf nicht mehr geöffnet werden.
+	
+	SkuChat: 
+		Neuerungen
+			- SkuChat kann jetzt im Kampf nicht mehr geöffnet werden.
+	
+	SkuCore: 
+		Neuerungen
+			- Es werden jetzt verschiedene Ereignisse/Zustände bei deren Auftreten angesagt:
+				Drinnen - kein Reiten möglich
+				Draußen - Reiten möglich
+				Schwimmen
+				Tauchen
+				Geist - nach Geist freilassen
+				Laufen
+				Gehen
+				Folgen
+				Folgende beendet
+				Reiten
+				Verstohlenheit
+				Fallen - nicht, dass diese Ansage was nützen würde, wenn man bereits fällt ;P
+				Rasten
+		Fehlerkorrekturen
+			- Eine kleine Änderung bei der Feststecken-Anzeige sorgt jetzt hoffentlich dafür, dass diese weniger sensibel ist, und nicht beim ganz normalen Laufen aktiv wird.
+
+	SkuNav: 
+		Neuerungen
+			- Es gibt einen weiteren Schnellwegpunkt (Nr. 4). Er wird mit STRG + SHIFT + F8 festgelegt und mit mit SHIFT + F8 ausgewählt.
+			- Es gibt jetzt einen neuen Menüpunkt "Wegpunkt > Umbenennen". Über diesen kann der Name eines ausgewählten Wegpunkts geändert werden. 
+			  Er ist natürlich nur sichtbar, wenn auch ein Wegpunkt ausgwählt ist.
+			  Die Funktionsweise für die Zusammenstellung des neuen Wegpunktnamens entspricht der von "Wegpunkt > Neu".
+
+		Fehlerkorrekturen
+			- Unter "Wegpunkt > Neu" wird beim Speichern des zusammgengebauten Wegpunkts der Ansagetext "Auswahl:" nicht mehr im Wegpunktnamen mitgespeichert.
+			- Bei Filtereingaben wird jetzt nicht mehr zwischen Groß/Kleinschreibung unterschieden.
+			- Bei Filtereingaben können jetzt auch Umlaute verwendet werden.
+
+		Änderungen
+			- Unter "Wegpunkt > Koordinaten aktualisieren > Aktuelle Position" werden die Koordinaten des ausgewählten Wegpunkts jetzt nicht mehr direkt mit der Auwahl des Menüpunkts aktualisiert.
+			  Stattdessen gibt es jetzt zwei Untermenüpunkte namens "Aktualisieren" und "Abbrechen". Er bei der Auswahl von "Aktualisieren" werden die Koordinaten des ausgewählten Wegpunkts aktualisiert.
+			- Unter "Wegpunkt löschen > <Liste der Wegpunkte>" wird der Wegpunkt nach der Auswahl des zu löschenden Wegpunktes jetzt nicht mehr direkt gelöscht. 
+			  Stattdessen gibt es nach der Auswahl des zu löschenden Wegpunktes ein Untermenü mit "Löschen" und "Abbrechen".
+			- Die Menüpunkte "Wegpunkt > Koordinaten aktualisieren", "Wegpunkt > Abwählen", "Wegpunkt > Löschen" und "Wegpunkt > Umbenennen" sind nur noch eingeblendet, wenn in dem Moment auch 
+			  ein Wegpunkt ausgewählt ist.
+			- Eine Tastebelegung wurde geändert:
+				- Bei ausgewähltem Wegpunkt Entfernung ansagen: ALTGr _oder_ STRG + ALT
+			- Beim Geist freilassen wird die Position der Leiche nun auf den neuen Schnellwegpunkt 4 statt auf den Schnellwegpunkt 1 gesetzt.
+			- Das Bennenungsmenü enthält jetzt eine Menge neue Untermenüs mit Namensbestandteilen zur Auswahl. Diese sind in folgende Kategorien geordnet:
+				Orte (z. B. Ein- und Ausgang, Gebäude, Klassenlehrer)
+				Bindewörter (z. B. auf, durch, im)
+				Orientierung (z. B. nördlich, südöstlich)
+				Klassen (z. B. Krieger, Schurke)
+				Gegnertypen (z. B. Boss, Dämonen)
+				Berufe (z. B. Alchemie, Angeln)
+				Tätigkeiten (z. B. Farmen, Questen)
+				Spezial (z. B. achtung, Allianz, gut zugänglich)
+				Maßeinheiten (Meter, Einheiten)
+				Farben (z. B. Blau, Braun
+				Zahlen (1-100)
+				Buchstaben (a-z)
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 8
+
+	SkuNav: 
+		- Kampfbeginn und Kampfende werden jetzt angesagt.
+		- Das Navi kann im Kampf nicht mehr geöffnet werden.
+
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 7
+
+	SkuCore:
+		- Die Feststecken-Benachrichtigung hat sich geändert. Statt einfach nur beim kompletten Feststecken einen Sound zu machen, gibt es jetzt Piepgeräusche in 5 verschiedenen Tonhöhen. Die Tonhöhe zeigt an, wie stark du dich noch bewegst. Ein ganz hoher Piep heisst fast gar nicht mehr (du steckst irgendwo komplett fest). Ein tiefer Ton heiß, dass du dich noch bewegst, aber nicht so stark wie normal (z. B. wenn du irgendwo schräg gegen eine Wand läufst).
+	SkuChat:
+		- Die Chat-Anzeige wird nun mit SHIFT + F2 geöffnet und geschlossen.
+	SkuMob:
+		- Es sind viele weitere Mob-/NPC-Namen als Audioansagen dazugekommen.
+	SkuQuest:
+		- Die Questanzeige geht jetzt nur noch auf, wenn das WoW-Questlog geöffnet wird (Stardardtaste: L).
+		- Die Questanzeige wird jetzt mit Escape direkt geschlossen.
+		- Hoch und runter in der Questliste geht jetzt mit Pfeil hoch/runter - nicht mehr mit Bild hoch/runter.
+		- Es sind Audioansagen für weitere Quests hinzugekommen.
+		- Der Questfortschritt ("x von y") wird jetzt in der TTS-Ausgabe des Questlogs angezeigt.
+	SkuNav: 
+		Allgemeines
+			- Das Navi-Menü wird nun mit SHIFT + F1 geöffnet und geschlossen.
+			- Das Menü wird jetzt mit Escape direkt geschlossen.
+			- öffnen und schließen des Navis ergibt jetzt eine Sprachansage (auf/zu).
+			- Mit SHIFT + ALT wird nun unabhängig von Wegpunkten immer als Kompass die aktuelle Blickrichtung als Uhrzeit angesagt (12 Norden, 6 Süden usw).  Die Ansage ist auf einmal pro Sekunde begrenzt.
+			- Das Navi sagt jetzt bei jedem Wechsel einer Zone oder Unterzone den Zonennamen an. (Kann man ausstellen unter "Optionen > Zonennamen ansagen".)
+			- Es gibt jetzt 3 Schnellwegpunkte zur kurzfristigen Navigation. Diese haben feste Namen ("Schnellwegpunkt 1-3"). 
+			Sie dienen zur kurzfristigen ad-hoc Navigation. Mit STRG+SHIFT+F5 (1), STRG+SHIFT+F6 (2) und STRG+SHIFT+F7 (3) wird der jeweilige Schnellwegpunkt auf die aktuellen Koordinaten festgelegt. 
+			Mit SHIFT+F5 bis F7 wird der jeweilige Schnellwegpunkt ausgewählt.
+			- Wenn du stirbst und den Geist freilässt, wir der Schnellwegpunkt 1 automatisch auf die Position deiner Leiche gesetzt und ausgewählt.
+		Menünavigation
+			- Vor einem Menüpunkt wird jetzt die Nummer des Menüpunkts angesagt. (Kann man ausstellen unter "Optionen > Menünummern ansagen".)
+			- Nach einem Menüpunkt mit einem Untermenü wird nur "Plus" angesagt. (Kann man ausstellen unter "Optionen > Untermenüs ansagen".)
+			- Man kann mit den Pfeiltasten durch das Menü navigieren (hoch, runter, rechts links).
+			- Eine Option auswählen mit der Eingabetaste. Eine Option abbrechen mit Backspace/Rückschritt.
+			- Man kann mit a-z zum ersten Menüpunkt mit dem jeweiligen Anfangsbuchstaben springen.
+			- Man kann mit 1-9 zum jeweiligen Untermenüpunkt springen.
+			- Auf der jeweils untersten Menüebene (z. B. "Wegpunkt > Auswählen > Aktuelle Karte > " kann man nun die Liste der Auswahlmöglichkeiten filtern. 
+				Wenn du ein Wort (bzw. mindestens 2 Buchstaben) eingibst, kommst du in den Filtermodus. Dann wird die Liste der Auswahlmöglichkeiten nach diesem Wort gefiltert.
+				Gibst du im Filtermodus weitere Buchstaben ein, werden die zum Filterbegriff hinzugefügt.
+				Beispiel: 
+					- Du gibst in einem Untermenü "du" ein. Du landest im Filtermodus. Der Filterbegriff lautet "du".
+					- Du gibst im Filtermodus "ro" ein. Der Filterbegriff lautet "duro".
+					- Du gibst immer noch im Filtermodus "tar" ein. Der Filterbegriff lautet "durotar".
+				Du verlässt den Filtermodus mit Backspace/Rückschritt. Dann wird der Filterbegriff gelöscht und die ungefilterte Liste wird angezeigt.
+				Sollte dein Filterbegriff keine Treffer ergeben, wird nur noch das erste Element der Liste angezeigt.
+		Wegpunkt
+			Erstellen
+				- Erstellte Wegpunkte werden jetzt im aktuell ausgewählten Profil gespeichert. 
+				- Wenn ein Wegpunkt mit einem bereits vorhandenen Wegpunktnamen erstellt wird, bekommt der neue Wegpunkt automatisch eine Nummer angehängt ("Briefkasten Orgrimmar", "Briefkasten Orgrimmar 1", "Briefkasten Orgrimmar 2" usw)
+				- Das Benennungsmenü für neue Wegpunkte (Wegpunkt > Erstellen) wurde erweitert. Es zeigt jetzt viele auswählbaren Namenskomponenten an. Teilweise mit Untermenüs (z. B. bei "Bindewörter", "Orte" etc.). Es enthält die folgenden Menüpunkte:
+					- Name der Zone in der aktuellen Karte (wenn vorhanden)
+					- Name der aktuellen Karte
+					- Wenn etwas im Ziel ist: Der Namen des aktuellen Ziels
+					- Untermenü "Ort" (z. B. Auktionshaus, Bank, Briefkasten etc.)
+					- Untermenü "Bindewörter" (z. B. bei, in, mit etc.)
+					- Untermenü "Orientierung" (z. B. links, rechts, Norden, Süden etc.)
+					- Untermenü "Attribute" (zurzeit nur Horde, Allianz)
+					- Untermenü "Quests" (alle Titel der Quests im Questlog)
+			Auswählen
+				- Bei Auswahl eines Wegpunktes wird das Menü automatisch geschlossen.
+				- Die Ansage der aktuellen Entfernung bei einem ausgewählten Wegpunkt wird jetzt mit STRG + UMSCHALT ausgelöst. Die Ansage ist auf einmal pro Sekunde begrenzt.
+				- Bei einem ausgewählten Wegpunkt werden jetzt auch Entfernungen über 100 Meter korrekt angesagt.
+				- Das Menü "Wegpunkt > Auswählen" enthält jetzt Untermenüs:
+					- Aktuelle Karte: Enthält eine unsortierte Liste alle Wegpunkte in der Karte, in der man sich gerade befindet (z. B. Durotar).
+					- Aktuelle Karte Entfernung: Enthält alle Wegpunkte in Karte (z. B. Durotar), in der man sich gerade befindet, sortiert nach deren Entfernung zum Spieler (von nah nach fern).
+					- Alle alphabetisch: Enthält alle Wegpunkte aus allen Karten in alphabetischer Sortierung.
+					- Standardwegpunkte: Enthält eine großere Menge vordefinierte Wegpunkte. Diese sind in den folgenden Untermenüs zu finden:
+						- Karten (enthält Untermenüs: "Kontinent > Karte")
+						- Gastwirte (enthält Untermenüs für Fraktion)
+						- Flugpunkte (enthält Untermenüs für Fraktion)
+						- Briefkästen (enthält Untermenüs für Fraktion)
+						Die Namen der Standardwegpunkte für Gastwirte, Briefkästen und Flugpunkte beginnen immer mit einem s (für "Standard"). 
+						Danach folgt gegebenenfalls ein h oder a für Horde oder Allianz. Dann kommt der Typ und der Name (z. B. "Durotar" oder der Namen ds Flugmeisters).
+						Die Namen der Standardwegpunkte für Karten sind nach dem Schema "Kontinent > Karte > Zone > Unterzone" aufgebaut. Auch bei diesen steht ein s für "Standard" davor.
+			Abwählen
+				- Damit wird einfach der aktuell ausgewählte Wegpunkt abgewählt.
+			Koordinaten aktualisieren
+				- Damit werden die Koordinaten des im Moment ausgewählten Wegpunkts mit den Koordination des Spielers aktualisiert. Es gibt zwei Untermenüs:
+				- Aktuelle Position: Der ausgewählte Wegpunkt bekommt deine momentanen Koordinaten
+				- Koordinaten eingeben: Damit kannst du eine Karte und x und y Koordinaten für die Position des Wegpunktes festlegen. Dazu gibt es die Untermenüs "Karte", "X" und "Y". 
+					Du musst aus allen drei Menüs einen Wert auswählen, damit die Koordinaten des Wegpunkts neu festgelegt werden. Welche der drei Werte noch fehlen wird angesagt. 
+					Die X und Y Untermenüs enthalten alle möglichen Koordinaten von 0 bis 100 in Schritten von 0,1. Da sind also jeweils 1000 Einträge in der Liste (0,1, 0,2, 0,3 und so weiter).
+					Du kannst jedoch in allen drei Untermenüs filtern. Auch in X und Y.
+					Wenn du z. B. in "X" eine Zahl mit mindestens zwei Stellen eingibst, wird nach dieser Zahl gefiltert. 
+					Beispiel: Gibst du 53 ein, so zeigt das Menü nur noch Zahlen an, die vor dem Komma eine 53 enthalten. Also 53,0, 53,1 53,2 und so weiter bis 53,9.
+					Sobald du alle drei Werte (Karte, X und Y) ausgewählt hast, werden die neuen Koordinaten im aktuellen Wegpunkt gespeichert. Verlässt du das "Koordinaten eingeben"-Menü vorher, wird nix gespeichert.
+			Löschen
+				- Noch nicht implementiert
+		Route
+			- Noch nicht implementiert
+		Optionen
+			Die ersten Optionen sind verfügbar. Man findet sie im Menü unter "Optionen". Sie haben bei der Auswahl immer zwei Unteroptionen namens "Ein" und "Aus".
+				- Menünummern ansagen (Ansage der laufenden Nummer vor jeden Menüpunkt)
+				- Untermenüs ansagen (Ansage von "plus" nach dem Menüpunkt, falls das Menü unterpunkte hat)
+				- Zonennamen ansagen (Automatische Ansage der Zone bei einem Zonenwechsel)
+				- Standardwegpunkte Karten/Gastwirte/Flugpunkte/Briefkästen (damit kannst du die Integration der Standardwegpunkte im Wegpunktmenü ein und ausschalten)

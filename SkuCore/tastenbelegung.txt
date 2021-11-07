@@ -1,0 +1,39 @@
+-------------------------------------------------------------------------------------------------------	
+- TASTATURBELEGUNG
+-------------------------------------------------------------------------------------------------------	
+	Alle:
+		Bei geöffnetem TTS-Panel (Questlog, Dialoge, Fenster-Elemente etc.):
+			Nächste/vorherige Zeile vorlesen: SHIFT + PFEIL RUNTER/HOCH
+			Zum nächsten/vorherigen Abschnitt springen: STRG + SHIFT + PFEIL RUNTER/HOCH
+
+	SkuNav:
+		Bei ausgewähltem Wegpunkt Richtung und Entfernung ansagen: ALTGr oder STRG + ALT
+		Globalen Kompass ansagen: SHIFT + ALT
+		Schnellwegpunkt 1 bis 3 auswählen: SHIFT + F5 bis F7
+		Schnellwegpunkt 1 bis 3 festlegen: STRG + SHIFT + F5 bis F7
+		Minimap vergrößern: SHIFT + M
+		Bei Routenaufzeichnung kleinen Zwischen-Wegpunkt einfügen: STRG + SHIFT + P
+		Bei Routenaufzeichnung großen Zwischen-Wegpunkt einfügen: STRG + SHIFT + O
+		Routen auf der Minimap ein- und ausblenden: STRG + SHIFT + R
+		Beim folgen einer Route zum nächsten Wegpuntk wechseln: STRG + SHIFT + W
+		Beim folgen einer Route zum vorherigen Wegpuntk wechseln: STRG + SHIFT + S
+		Reichweite für das Erreichen von kleinen Routenwegpunkten umschalten (1 oder 3 Meter): STRG + SHIFT + Q
+		
+	SkuChat
+		Chat öffnen/schließen: SHIFT + F2
+		
+	SkuQuest
+		Questlog öffnen/schließen: L
+		Aktuell angezeigte Quest abbrechen: STRG + SHIFT + D
+		Aktuell angezeigte Quest teilen: STRG + SHIFT + T
+
+	SkuOptions:
+		Audiomenü öffnen/schließen: SHIFT + F1
+		Audiomenü-Schnellwahl 1 bis 4 auswählen: SHIFT + F9 bis F12
+		Audiomenü-Schnellwahl 1 bis 4 festlegen: STRG + SHIFT + F9 bis F12
+		Lokal-Menü Button-Tooltip anzeigen: SHIFT + PFEIL RUNTER
+		Aktuelle Audioausgabe abbrechen: rechte SHIFT-Taste
+		Bedarf würfeln: STRG + SHIFT + B
+		Gier würfeln: STRG + SHIFT + G
+		Auf Gegenstand passen: STRG + SHIFT + X
+		Gegenstand, um den gewürfelt wird, erneut ansagen: STRG + SHIFT + C

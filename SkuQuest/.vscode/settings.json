@@ -1,0 +1,19 @@
+{
+    "Lua.diagnostics.globals": [
+    "SkuDB",
+    "LibStub",
+    "SkuCore",
+    "Voice",
+    "SkuOptions",
+    "menuEntryTemplate_Menu",
+    "TTS",
+    "ToggleQuestLog",
+    "QuestLogFrame",
+    "GetNumQuestLogEntries",
+    "GetQuestLogTitle",
+	"SkuQuest.questDataTBC",
+	"SkuQuest.questLookup",
+	"SkuQuest.objectDataTBC"
+    ],
+    "Lua.diagnostics.workspaceDelay": -1
+}
