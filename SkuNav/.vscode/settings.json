@@ -1,0 +1,23 @@
+{
+    "Lua.diagnostics.globals": [
+        "LibStub",
+        "SkuDB.InternalAreaTable",
+        "SkuDB.ExternalMapID",
+        "SkuOptions",
+        "Voice",
+        "Voice",
+        "SkuCore",
+        "menuEntryTemplate_Menu",
+        "MinimapCluster",
+        "TomTom",
+        "HBD",
+        "HBDP",
+        "BackdropTemplateMixin",
+        "Minimap",
+        "SkuCoreDB",
+        "SkuDB"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-doc-name"
+    ]
+}
