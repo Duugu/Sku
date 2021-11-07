@@ -1,0 +1,16 @@
+﻿local f = CreateFrame("Frame")
+f:RegisterEvent("PLAYER_ENTERING_WORLD")
+f:SetScript("OnEvent", function()
+   local SkuBeacon = LibStub("SkuBeacon-1.0")
+   if SkuBeacon then
+      SkuBeacon:RegisterSoundSet("beacon_male_one1", "Interface\\AddOns\\SkuBeaconSoundsets\\assets\\beacon_male_one", 5, 30, "beacon_male_one")
+      SkuBeacon:RegisterSoundSet("1_de_Vicki", "Interface\\AddOns\\SkuBeaconSoundsets\\assets\\1_de_Vicki", 5, 30, "1_de_Vicki")
+      SkuBeacon:RegisterSoundSet("notification_soft_100", "Interface\\AddOns\\SkuBeaconSoundsets\\assets\\Notification_soft_100", 5, 30, "notification_soft_100")
+      SkuBeacon:RegisterSoundSet("probe_deep_1", "Interface\\AddOns\\SkuBeaconSoundsets\\assets\\probe_deep_1", 5, 30, "probe_deep_1")
+      SkuBeacon:RegisterSoundSet("probe_deep_1_b", "Interface\\AddOns\\SkuBeaconSoundsets\\assets\\probe_deep_1_b", 5, 30, "probe_deep_1")
+      SkuBeacon:RegisterSoundSet("steel_gong", "Interface\\AddOns\\SkuBeaconSoundsets\\assets\\steel_gong", 5, 30, "steel_gong")
+      SkuBeacon:RegisterSoundSet("probe_mid_1", "Interface\\AddOns\\SkuBeaconSoundsets\\assets\\probe_mid_1", 5, 30, "probe_mid_1")
+      SkuBeacon:RegisterSoundSet("beacon_male_one", "Interface\\AddOns\\SkuBeaconSoundsets\\assets\\beacon_male_one", 1, 30, "beacon_male_one")
+   end
+   f:UnregisterAllEvents()
+end)
