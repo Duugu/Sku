@@ -1,0 +1,7 @@
+## Interface: 20501
+## Title: SkuAudioData (19.5)
+## SavedVariables: 
+## Version: 19.5
+assets\SkuAudioFileIndex.lua
+assets\SkuAudioDataLenIndex.lua
+Core.lua
