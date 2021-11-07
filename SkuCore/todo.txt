@@ -6,12 +6,6 @@ Fehler
 -------------------------------------------------------------------------------------------------------
 Prio 1:
 - quest einfaches memorandum - werden klassen korrekt gefiltert?
-- gold handeln geht nivht
-	fenster in liste
-	gold einfügen
-- gnomeregan in dun morogh wird nix mehr angezeigt
-- farmmodus
-	automatisch zumn nächsten mob vom selben typ mit abklingzeit für besuchte
 - start und end identisch ohne zwischen-wp muss verowrfen werden beim beenden
 - lokal menü filter raus rein löscht den filter nicht
 - gildenbank lässt sich nicht mehr bedienen
