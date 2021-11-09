@@ -226,7 +226,7 @@ end
 function SkuCore:PanikModeStartStopBackgroundSound(aStartStop)
 	if aStartStop == true then
 		if SkuCore.currentBackgroundSoundHandle == nil then
-			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\SkuCore\\assets\\audio\\background\\benny_hill.mp3", "Talking Head")
+			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\background\\benny_hill.mp3", "Talking Head")
 			if soundHandle then
 				SkuCore.currentBackgroundSoundHandle = soundHandle
 				if SkuCore.currentBackgroundSoundTimerHandle then

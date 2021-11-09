@@ -229,7 +229,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 
 	if status then
 		--creature in combat indicator
-		local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\SkuMob\\assets\\Target_in_combat_low.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+		local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 	end
 
 	--raidtarget

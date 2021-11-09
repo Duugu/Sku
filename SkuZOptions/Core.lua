@@ -418,7 +418,7 @@ end
 function SkuOptions:StartStopBackgroundSound(aStartStop)
 	if aStartStop == true then
 		if SkuOptions.currentBackgroundSoundHandle == nil then
-			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\SkuZOptions\\assets\\audio\\background\\"..SkuOptions.db.profile[MODULE_NAME].backgroundSound, "Talking Head")
+			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuZOptions\\assets\\audio\\background\\"..SkuOptions.db.profile[MODULE_NAME].backgroundSound, "Talking Head")
 			if soundHandle then
 				SkuOptions.currentBackgroundSoundHandle = soundHandle
 				if SkuOptions.currentBackgroundSoundTimerHandle then

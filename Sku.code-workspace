@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": ".git"
+		},
+		{
+			"path": "SkuChat"
+		},
+		{
+			"path": "SkuCore"
+		},
+		{
+			"path": "SkuDB"
+		},
+		{
+			"path": "SkuMob"
+		},
+		{
+			"path": "SkuNav"
+		},
+		{
+			"path": "SkuQuest"
+		},
+		{
+			"path": "SkuZOptions"
+		}
+	]
+}

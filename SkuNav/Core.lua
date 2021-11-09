@@ -3724,9 +3724,9 @@ function SkuNavDrawLine(sx, sy, ex, ey, lineW, lineAlpha, r, g, b, prt, linefram
 
 	lineframe = SkuWaypointLineRepoMM:Acquire()
 	if tSkuNavMMZoom < 1.75 then
-		if lineframe:GetTexture() ~= "Interface\\AddOns\\SkuNav\\assets\\line64" then lineframe:SetTexture("Interface\\AddOns\\SkuNav\\assets\\line64") end
+		if lineframe:GetTexture() ~= "Interface\\AddOns\\Sku\\SkuNav\\assets\\line64" then lineframe:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\line64") end
 	else
-		if lineframe:GetTexture() ~= "Interface\\AddOns\\SkuNav\\assets\\line" then lineframe:SetTexture("Interface\\AddOns\\SkuNav\\assets\\line") end
+		if lineframe:GetTexture() ~= "Interface\\AddOns\\Sku\\SkuNav\\assets\\line" then lineframe:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\line") end
 	end
 	--lineframe.aText = "line"
 
@@ -3775,7 +3775,7 @@ local function SkuNavMMUpdateContent()
 			for tx = 1, 63, 1 do
 				local tPrevFrame
 				for ty = 1, 63, 1 do
-					_G["SkuMapTile_"..tx.."_"..ty].mapTile:SetTexture("Interface\\AddOns\\SkuNav\\assets\\MinimapData\\"..tContintentIdDataSubstrings[currentContinentId].."\\map"..(tx - 1).."_"..(64 - (ty - 1))..".blp")
+					_G["SkuMapTile_"..tx.."_"..ty].mapTile:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\MinimapData\\"..tContintentIdDataSubstrings[currentContinentId].."\\map"..(tx - 1).."_"..(64 - (ty - 1))..".blp")
 				end
 			end
 		end
@@ -3804,15 +3804,15 @@ local function SkuNavMMUpdateContent()
 		for ty = 1, 63, 1 do
 			_G["SkuMapTile_"..tx.."_"..ty].tileindext:SetTextHeight(18 * tSkuNavMMZoom)	
 			if tSkuNavMMZoom < 0.04 then
-				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\SkuNav\\assets\\tile_border64.tga")
+				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\tile_border64.tga")
 			elseif tSkuNavMMZoom < 0.07 then
-				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\SkuNav\\assets\\tile_border128.tga")
+				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\tile_border128.tga")
 			elseif tSkuNavMMZoom < 0.3 then
-				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\SkuNav\\assets\\tile_border256.tga")
+				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\tile_border256.tga")
 			elseif tSkuNavMMZoom < 0.5 then
-				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\SkuNav\\assets\\tile_border512.tga")
+				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\tile_border512.tga")
 			else
-				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\SkuNav\\assets\\tile_border1024.tga")
+				_G["SkuMapTile_"..tx.."_"..ty].borderTex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\tile_border1024.tga")
 			end
 		end
 	end
@@ -4085,9 +4085,9 @@ function SkuNavMMOpen()
 			local rb = CreateFrame("Button", "SkuNavMMMainFrameResizeButton", _G["SkuNavMMMainFrame"])
 			rb:SetPoint("BOTTOMRIGHT", 0, 0)
 			rb:SetSize(16, 16)
-			rb:SetNormalTexture("Interface\\AddOns\\SkuNav\\assets\\resize.tga")
-			rb:SetHighlightTexture("Interface\\AddOns\\SkuNav\\assets\\resize_hightlighted.tga")
-			rb:SetPushedTexture("Interface\\AddOns\\SkuNav\\assets\\resize_hightlighted.tga")
+			rb:SetNormalTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\resize.tga")
+			rb:SetHighlightTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\resize_hightlighted.tga")
+			rb:SetPushedTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\resize_hightlighted.tga")
 			local tRbIsDrag = false
 			rb:SetScript("OnUpdate", function(self, button)
 				if SkuOptions.db.profile[MODULE_NAME].showSkuMM == true then
@@ -4141,9 +4141,9 @@ function SkuNavMMOpen()
 			local rb = CreateFrame("Button", "SkuNavMMMainCollapseButton", _G["SkuNavMMMainFrame"])
 			rb:SetPoint("LEFT")
 			rb:SetSize(16, 16)
-			rb:SetNormalTexture("Interface\\AddOns\\SkuNav\\assets\\expand1.tga")
-			rb:SetHighlightTexture("Interface\\AddOns\\SkuNav\\assets\\expand_hightlighted1.tga")
-			rb:SetPushedTexture("Interface\\AddOns\\SkuNav\\assets\\expand_hightlighted1.tga")
+			rb:SetNormalTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\expand1.tga")
+			rb:SetHighlightTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\expand_hightlighted1.tga")
+			rb:SetPushedTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\expand_hightlighted1.tga")
 			rb:SetScript("OnMouseUp", function(self, button)
 				self:GetHighlightTexture():Show()
 				if _G["SkuNavMMMainFrameOptionsParent"]:IsShown() then
@@ -4379,12 +4379,12 @@ function SkuNavMMOpen()
 					end
 					tPrevFrame = f1
 					local tex = f1:CreateTexture(nil, "BACKGROUND")
-					tex:SetTexture("Interface\\AddOns\\SkuNav\\assets\\MinimapData\\expansion01\\map"..(tx - 1).."_"..(64 - (ty - 1))..".blp")
+					tex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\MinimapData\\expansion01\\map"..(tx - 1).."_"..(64 - (ty - 1))..".blp")
 					tex:SetAllPoints()
 					f1.mapTile = tex
 					--[[
 					local tex = f1:CreateTexture(nil, "BORDER")
-					tex:SetTexture("Interface\\AddOns\\SkuNav\\assets\\tile_border1024.tga")
+					tex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\tile_border1024.tga")
 					tex:SetAllPoints()
 					f1.borderTex = tex
 					--tex:SetColorTexture(1, 1, 1, 1)
@@ -4481,7 +4481,7 @@ function SkuNavMMOpen()
 			f1:Show()
 
 			local tex = f1:CreateTexture("playerArrow", "BACKGROUND")
-			tex:SetTexture("Interface\\AddOns\\SkuNav\\assets\\player_arrow.tga")
+			tex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\player_arrow.tga")
 			tex:SetSize(30,30)
 			tex:SetPoint("CENTER", _G["SkuNavMMMainFrameScrollFrameMapMainDraw1"], "CENTER", 0, 0)--_G["playerArrow"]
 

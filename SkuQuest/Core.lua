@@ -382,7 +382,7 @@ function SkuQuest:CheckQuestProgress(aSilent)
 						end
 						if ( finished ) then
 							objectivesCompleted = objectivesCompleted + 1
-							--PlaySoundFile("Interface\\AddOns\\SkuCore\\assets\\audio\\sounds_non-voice\\unused\\success\\3.mp3", "Dialog")
+							--PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\sounds_non-voice\\unused\\success\\3.mp3", "Dialog")
 						end
 					end
 				end
