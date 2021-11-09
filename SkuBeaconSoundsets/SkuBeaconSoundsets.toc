@@ -1,4 +1,0 @@
-## Interface: 20501
-## Title: SkuBeaconSoundsets (19.5)
-## Version: 19.5
-Core.lua
