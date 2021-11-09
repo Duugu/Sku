@@ -1,9 +1,0 @@
-## Interface: 20501
-## Title: SkuQuest (19.9)
-## SavedVariablesPerCharacter: SkuQuestDB
-## Dependencies: SkuCore, SkuAudioData, SkuDB
-## Version: 19.9
-locales\enUS.lua
-locales\deDE.lua
-Core.lua
-Options.lua
