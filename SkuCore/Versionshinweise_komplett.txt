@@ -26,7 +26,7 @@
 
 	Addon-Download
 		Alle Addons (Sku, SkuAudiodata, SkuBeaconSoundsets, SkuFluegel) stehen ab sofort nicht mehr über Discord, sondern über eine zentrale Webseite zum Download bereit.
-		Die URL der Downloadseite lautet: 
+		Die URL der Downloadseite lautet: https://duugu.github.io/Sku/
 		Die Seite ist extrem einfach gehalten und kann problemlos mit einem Screenreader gelesen werden.
 		In Discord gibt es weiterhin den Channel "newsticker-sku-addon". Dort wird neben allgemeinen Infos zum Addon bei jeder neuen Version der Sku-Addons automatisch eine Meldung gepostet.
 		Der Download findet jetzt jedoch über die zentrale neue Webseite statt.
