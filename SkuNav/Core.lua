@@ -1797,7 +1797,9 @@ function SkuNav:OnEnable()
 	if tCacheNbWpsTimer then
 		tCacheNbWpsTimer:Cancel()
 	end
-	CacheNbWps(20)
+	C_Timer.After(60, function()
+		CacheNbWps(20)
+	end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

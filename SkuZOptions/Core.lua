@@ -520,10 +520,10 @@ function SkuOptions:OnInitialize()
 	SkuOptions:RegisterChatCommand("Sku", "SlashFunc")
 
 	SkuOptions.AceConfig = LibStub("AceConfig-3.0")
-	SkuOptions.AceConfig:RegisterOptionsTable("Sku-Addons", options, {"taop"})
+	SkuOptions.AceConfig:RegisterOptionsTable("Sku", options, {"taop"})
 
 	SkuOptions.AceConfigDialog = LibStub("AceConfigDialog-3.0")
-	SkuOptions.AceConfigDialog:AddToBlizOptions("Sku-Addons")
+	SkuOptions.AceConfigDialog:AddToBlizOptions("Sku")
 
 	SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults) -- TODO: fix default values for subgroups
 
