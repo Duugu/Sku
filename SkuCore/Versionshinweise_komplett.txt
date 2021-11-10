@@ -31,6 +31,9 @@
 		In Discord gibt es weiterhin den Channel "newsticker-sku-addon". Dort wird neben allgemeinen Infos zum Addon bei jeder neuen Version der Sku-Addons automatisch eine Meldung gepostet.
 		Der Download findet jetzt jedoch über die zentrale neue Webseite statt.
 
+	SkuDB
+		Fehlerkorrekturen
+			- Einige Kartendaten wurden entfern. Daher funktionieren jetzt alle Zonen vor Instanzen korrekt (z. B. Gnomeregan, Uldaman etc.)
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 19.11
