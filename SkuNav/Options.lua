@@ -1,10 +1,12 @@
 local MODULE_NAME = "SkuNav"
+local L = Sku.L
+
 SkuNav.options = {
 	name = MODULE_NAME,
 	type = "group",
 	args = {
 		enable = {
-			name = "Modul aktiviert" ,
+			name = L["Module enabled"],
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
@@ -70,7 +72,7 @@ SkuNav.options = {
 ]]		
 		beaconVolume = {
 			order = 2,
-			name = "Beacon Lautstärke" ,
+			name = L["Beacon Volume"],
 			desc = "",
 			type = "range",
 			set = function(info,val)
@@ -81,7 +83,7 @@ SkuNav.options = {
 			end
 		},
 		vocalizeFullDirectionDistance = {
-			name = "Ausführliche Richtung und Entfernung",
+			name = L["Detailed direction and distance"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -92,7 +94,7 @@ SkuNav.options = {
 			end
 		},
 		vocalizeZoneNames = {
-			name = "Zonennamen ansagen",
+			name = L["Announce zone names"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -103,7 +105,7 @@ SkuNav.options = {
 			end
 		},
 		showRoutesOnMinimap = {
-			name = "Routen auf Minimap anzeigen",
+			name = L["Show routes on minimap"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -114,7 +116,7 @@ SkuNav.options = {
 			end
 		},
 		showSkuMM = {
-			name = "Extra Minimap anzeigen",
+			name = L["Show extra minimap"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -126,7 +128,7 @@ SkuNav.options = {
 		},
 		nearbyWpRange = {
 			order = 4,
-			name = "Reichweite für nahe Routenstarts" ,
+			name = L["Range for near route starts"],
 			desc = "",
 			type = "range",
 			set = function(info,val)
@@ -138,7 +140,7 @@ SkuNav.options = {
 		},
 		tomtomWp = {
 			order = 4,
-			name = "Auto Signal bei Tom Tom Pfeil" ,
+			name = L["Auto sound on Tom Tom arrow"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -150,7 +152,7 @@ SkuNav.options = {
 		},
 		standardWpReachedRange = {
 			order = 4,
-			name = "Zwischen wegpunkt auf 3 Meter erreichen" ,
+			name = L["reach intermediate waypoint at 3 meters"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -220,11 +222,11 @@ local SkuNav_MenuBuilder_PointX_OnAction = function(self, aValue, aName)
 		SkuOptions.tmpNpcWayPointNameBuilder_Npc = ""
 		SkuOptions.tmpNpcWayPointNameBuilder_Zone = ""
 		SkuOptions.tmpNpcWayPointNameBuilder_Coords = ""
-		if aName == "Keine Auswahl" then
+		if aName == L["Nothing selected"] then
 			return
 		end
-		if sfind(aName, "Auswahl;") then
-			aName = string.sub(aName, string.len("Auswahl;") + 1)
+		if sfind(aName, L["Selected"]..";") then
+			aName = string.sub(aName, string.len(L["Selected"]..";") + 1)
 		end
 		self.parent:OnAction(self.parent, aName, self.name)
 	end
@@ -232,26 +234,26 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
-	if self.name == "Punkt B" and self.parent.name ~= "Aufzeichnung abschließen" then
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Bei Beenden festlegen"}, menuEntryTemplate_Menu)
+	if self.name == L["Point B"] and self.parent.name ~= L["Complete recording"] then
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set on completion"]}, menuEntryTemplate_Menu)
 		tNewMenuEntry.dynamic = true
 	end
-	local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, "Neu")
+	local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, L["New"])
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.OnAction = function(self, aValue, aName)
 		--print("SkuNav_MenuBuilder_PointX_BuildChildren", self.selectTarget, self.selectTarget.name, self.selectTarget.TMPSize)		
 		self.parent.TMPSize = self.selectTarget.TMPSize
 		--print("OnAction Neu --", self.name, self, aValue, aName)
-		if aName == "Keine Auswahl" then
+		if aName == L["Nothing selected"] then
 			return
 		end
-		if sfind(aName, "Auswahl;") > 0 then
-			aName = string.sub(aName, string.len("Auswahl;") + 1)
+		if sfind(aName, L["Selected"]..";") > 0 then
+			aName = string.sub(aName, string.len(L["Selected"]..";") + 1)
 		end
 		--print(aName, SkuNav:GetWaypoint(aName))
 		if SkuNav:GetWaypoint(aName) then
-			Voice:OutputString("nicht erstellt", false, true, 0.3, true)
-			Voice:OutputString("name schon vorhanden", false, true, 0.3, true)
+			Voice:OutputString(L["not created"], false, true, 0.3, true)
+			Voice:OutputString(L["name already exists"], false, true, 0.3, true)
 			return
 		else
 			self.parent:OnAction(self.parent, aName, self.name)
@@ -260,7 +262,7 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 	end
 
 	--sub with recent wps 
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Letzte"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["History"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.BuildChildren = function(self)
@@ -268,13 +270,13 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 			--print("recent: ", i, v)
 		end
 		if #SkuOptions.db.profile[MODULE_NAME].RecentWPs == 0 then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 		else
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, SkuOptions.db.profile[MODULE_NAME].RecentWPs, menuEntryTemplate_Menu)
 		end
 	end
 	--sub with wps in current map
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Aktuelle Karte"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Current map"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.BuildChildren = function(self)
@@ -292,7 +294,7 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 			local tWaypoint = SkuNav:GetWaypoint(v)
 			if tWaypoint then
 				if tSubAreaIds[tWaypoint.areaId] then
-					if not sfind(v, "Schnellwegpunkt") and not sfind(v, "auto;") then
+					if not sfind(v, L["Quick waypoint"]) and not sfind(v, L["auto"]..";") then
 						table.insert(tWaypointList, v)
 					end
 				end
@@ -300,13 +302,13 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 		end
 
 		if #tWaypointList == 0 then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 		else
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tWaypointList, menuEntryTemplate_Menu)
 		end
 	end
 	--sub with wps in current map sortet by range
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Aktuelle Karte Entfernung"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Current map distance"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.BuildChildren = function(self)
@@ -324,7 +326,7 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 			local tWayP = SkuNav:GetWaypoint(v)
 			if tWayP then
 				if tSubAreaIds[tWayP.areaId] then
-					if not sfind(v, "Schnellwegpunkt") then
+					if not sfind(v, L["Quick waypoint"]) then
 						local tWpX, tWpY = tWayP.worldX, tWayP.worldY
 						local tPlayX, tPlayY = UnitPosition("player")
 						local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
@@ -336,16 +338,16 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 
 		local tSortedWaypointList = {}
 		for k,v in SkuSpairs(tWaypointList, function(t,a,b) return t[b] > t[a] end) do --nach wert
-			table.insert(tSortedWaypointList, v..";Meter#"..k)
+			table.insert(tSortedWaypointList, v..";"..L["Meter"].."#"..k)
 		end
 		if #tSortedWaypointList == 0 then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 		else
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedWaypointList, menuEntryTemplate_Menu)
 		end
 	end
 	-- all wps sortet by name
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.BuildChildren = function(self)
@@ -353,17 +355,17 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 		local tWaypointList = SkuNav:ListWaypoints(false, nil, nil, tPlayerContintentId, nil, true, true)--aSort, aFilter, aAreaId, aContinentId, aExcludeRoute, aRetAsTable
 
 		if #tWaypointList == 0 then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 		else
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tWaypointList, menuEntryTemplate_Menu)
 		end
 	end
 	-- SkuNav.DefaultWaypoints
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Standardwegpunkte"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Default Waypoints"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
 		--.Zones
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Zonen"}, menuEntryTemplate_Menu)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zones"]}, menuEntryTemplate_Menu)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)--continents
 			local tWaypointList = {}
@@ -435,7 +437,7 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 		end
 		]]
 		-- .Postbox
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Briefkästen"}, menuEntryTemplate_Menu)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Mailboxes"]}, menuEntryTemplate_Menu)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)--continents
 			local tWaypointList = {}
@@ -459,7 +461,7 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 		end
 	end
 	--all npcs
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle NPCs"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All NPCs"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.BuildChildren = function(self)
@@ -553,7 +555,7 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 		end
 	end
 	--all npcs in zone
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle NPCs in Zone"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All NPCs in zone"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.BuildChildren = function(self)
@@ -657,7 +659,7 @@ end
 function SkuNav:MenuBuilder(aParentEntry)
 	--print("SkuNav:MenuBuilder", aParentEntry)
 	--wegpunkte
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {"Alles abwählen"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Deselect all"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.OnAction = function(self, aValue, aName)
 		--print("Route und Wegpunkt abwählen", self.name, aName)
 		SkuNav:EndFollowingWpOrRt()
@@ -665,25 +667,25 @@ function SkuNav:MenuBuilder(aParentEntry)
 	end
 
 	--wps
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {"Wegpunkt"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Waypoint"]}, menuEntryTemplate_Menu)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
 
-		local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, "Neu")
+		local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, L["New"])
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("Wegpunkt neu OnAction", self.name, aName, self.TMPSize, self.selectTarget, self.selectTarget.name, self.selectTarget.TMPSize)
 			--print(self.selectTarget.TMPSize)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing  == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
-			if aName == "Keine Auswahl" then
+			if aName == L["Nothing selected"] then
 				return
 			end
 
-			if sfind(aName, "Auswahl;") > 0 then
-				aName = string.sub(aName, string.len("Auswahl;") + 1)
+			if sfind(aName, L["Selected"]..";") > 0 then
+				aName = string.sub(aName, string.len(L["Selected"]..";") + 1)
 			end
 			if SkuNav:GetWaypoint(aName) then
 				Voice:OutputString("nicht erstellt", false, true, 0.3, true)
@@ -704,8 +706,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction Auswählen", self.name,aValue,  aName, SkuOptions.tmpNpcWayPointNameBuilder_Npc)
 			if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
 				return
 			end
 
@@ -729,7 +731,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
 				end
 			else
-				Voice:OutputString("Fehler", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
 				Voice:OutputString("Wegpunkt nicht ausgewählt", false, true, 0.3, true)
 			end
 		end
@@ -744,7 +746,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 						--print("recent: ", i, v)
 					end
 					if #SkuOptions.db.profile[MODULE_NAME].RecentWPs == 0 then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 					else
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, SkuOptions.db.profile[MODULE_NAME].RecentWPs, menuEntryTemplate_Menu)
 					end
@@ -765,7 +767,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					local tWaypoint = SkuNav:GetWaypoint(v)
 					if tWaypoint then
 						if tSubAreaIds[tWaypoint.areaId] then
-							if not sfind(v, "Schnellwegpunkt") and not sfind(v, "auto;") then
+							if not sfind(v, L["Quick waypoint"]) and not sfind(v, "auto;") then
 								table.insert(tWaypointList, v)
 							end
 						end
@@ -773,7 +775,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 
 				if #tWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 				else
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tWaypointList, menuEntryTemplate_Menu)
 				end
@@ -792,7 +794,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					local tWayP = SkuNav:GetWaypoint(v)
 					if tWayP then
 						if tSubAreaIds[tonumber(tWayP.areaId)] then
-							if not sfind(v, "Schnellwegpunkt") and not sfind(v, "auto;") then
+							if not sfind(v, L["Quick waypoint"]) and not sfind(v, "auto;") then
 								local tWpX, tWpY = tWayP.worldX, tWayP.worldY
 								local tPlayX, tPlayY = UnitPosition("player")
 								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
@@ -807,7 +809,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					table.insert(tSortedWaypointList, v..";Meter#"..k)
 				end
 				if #tSortedWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 				else
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedWaypointList, menuEntryTemplate_Menu)
 				end
@@ -822,14 +824,14 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local tWaypointList = SkuNav:ListWaypoints(false, nil, nil, tPlayerContintentId, nil, true, true)--aSort, aFilter, aAreaId, aContinentId, aExcludeRoute, aRetAsTable
 		
 				if #tWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 				else
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tWaypointList, menuEntryTemplate_Menu)
 				end
 			end
 
 			--all npcs
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle NPCs"}, menuEntryTemplate_Menu)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All NPCs"]}, menuEntryTemplate_Menu)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
@@ -913,7 +915,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 																local tWayP = SkuNav:GetWaypoint(tWpName)
 																--print(tWpName, tWayP)
 																if tWayP then
-																	if not sfind(tWpName, "Schnellwegpunkt") then
+																	if not sfind(tWpName, L["Quick waypoint"]) then
 																		local tWpX, tWpY = tWayP.worldX, tWayP.worldY
 																		local tPlayX, tPlayY = UnitPosition("player")
 																		local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
@@ -926,7 +928,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 																table.insert(tSortedWaypointList, v..";Meter#"..k)
 															end
 															if #tSortedWaypointList == 0 then
-																local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+																local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 															else
 																local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedWaypointList, menuEntryTemplate_Menu)
 															end
@@ -1050,11 +1052,11 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 			-- SkuNav.DefaultWaypoints
 			--if SkuOptions.db.profile[MODULE_NAME].includeDefaultMapWaypoints == true  or SkuOptions.db.profile[MODULE_NAME].includeDefaultInkeeperWaypoints == true or SkuOptions.db.profile[MODULE_NAME].includeDefaultTaxiWaypoints == true or SkuOptions.db.profile[MODULE_NAME].includeDefaultPostboxWaypoints == true then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Standardwegpunkte"}, menuEntryTemplate_Menu)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Default Waypoints"]}, menuEntryTemplate_Menu)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					--.Zones
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Zonen"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zones"]}, menuEntryTemplate_Menu)
 					tNewMenuEntry.dynamic = true
 					tNewMenuEntry.BuildChildren = function(self)--continents
 						local tWaypointList = {}
@@ -1165,7 +1167,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					local tWayP = SkuNav:GetWaypoint(v)
 					if tWayP then
 						if tSubAreaIds[tonumber(tWayP.areaId)] then
-							if not sfind(v, "Schnellwegpunkt") then
+							if not sfind(v, L["Quick waypoint"]) then
 								local tWpX, tWpY = tWayP.worldX, tWayP.worldY
 								local tPlayX, tPlayY = UnitPosition("player")
 								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
@@ -1180,7 +1182,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					table.insert(tSortedWaypointList, v..";Meter#"..k)
 				end
 				if #tSortedWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 				else
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedWaypointList, menuEntryTemplate_Menu)
 				end
@@ -1191,8 +1193,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction Aktuellen abwählen", self.name, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
 
@@ -1222,8 +1224,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 			tNewMenuEntry.OnAction = function(self, aValue, aName, aChildName)
 				--print("OnAction Löschen", self.name, aValue, aName, aChildName)
 				if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
-					Voice:OutputString("Fehler", false, true, 0.3, true)
-					Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+					Voice:OutputString(L["Error"], false, true, 0.3, true)
+					Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 					return
 				end
 	
@@ -1242,7 +1244,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 							end
 							CacheNbWps()		
 						elseif tSuccess == false then
-							Voice:OutputString("Fehler", false, true, 0.3, true)
+							Voice:OutputString(L["Error"], false, true, 0.3, true)
 							Voice:OutputString("Wir in route verwendet;Erst die Route löschen", false, true, 0.3, true)
 						else
 							Voice:OutputString("Unbekannter Fehler", false, true, 0.3, true)
@@ -1256,7 +1258,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local tWaypointList = {}
 				local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 				for i, v in SkuNav:ListWaypoints(false, "custom", SkuNav:GetCurrentAreaId(), tPlayerContinentID) do --aSort, aFilter, aAreaId, aContinentId, aExcludeRoute
-					if not sfind(v, "Schnellwegpunkt") then
+					if not sfind(v, L["Quick waypoint"]) then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, menuEntryTemplate_Menu)
 						tNewMenuEntry.dynamic = true
 						tNewMenuEntry.BuildChildren = function(self)
@@ -1275,7 +1277,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local tWaypointList = {}
 				local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 				for i, v in SkuNav:ListWaypoints(false, "custom", SkuNav:GetCurrentAreaId(), tPlayerContinentID) do --aSort, aFilter, aAreaId, aContinentId, aExcludeRoute
-					if not sfind(v, "Schnellwegpunkt") then
+					if not sfind(v, L["Quick waypoint"]) then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, menuEntryTemplate_Menu)
 						tNewMenuEntry.dynamic = true
 						tNewMenuEntry.BuildChildren = function(self)
@@ -1284,16 +1286,16 @@ function SkuNav:MenuBuilder(aParentEntry)
 								--print("Wegpunkt umbenennen OnAction", self.name, aName, self.TMPSize, self.selectTarget, self.selectTarget.name, "-", self.parent.name)
 								--print(self.selectTarget.TMPSize)
 								if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing  == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
-									Voice:OutputString("Fehler", false, true, 0.3, true)
-									Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+									Voice:OutputString(L["Error"], false, true, 0.3, true)
+									Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 									return
 								end
-								if aName == "Keine Auswahl" then
+								if aName == L["Nothing selected"] then
 									return
 								end
 					
-								if sfind(aName, "Auswahl;") > 0 then
-									aName = string.sub(aName, string.len("Auswahl;") + 1)
+								if sfind(aName, L["Selected"]..";") > 0 then
+									aName = string.sub(aName, string.len(L["Selected"]..";") + 1)
 								end
 
 								local tOldName = self.parent.name
@@ -1318,7 +1320,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 									end
 									CacheNbWps()		
 								else
-									Voice:OutputString("Fehler", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+									Voice:OutputString(L["Error"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 								end
 							end
 						end
@@ -1352,7 +1354,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local tWaypointList = {}
 				local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 				for i, v in SkuNav:ListWaypoints(false, "custom", SkuNav:GetCurrentAreaId(), tPlayerContinentID) do --aSort, aFilter, aAreaId, aContinentId, aExcludeRoute
-					if not sfind(v, "Schnellwegpunkt") then
+					if not sfind(v, L["Quick waypoint"]) then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, menuEntryTemplate_Menu)
 					end
 				end
@@ -1373,8 +1375,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 			--print("Neue Route OnAction", self.TMPSize)
 			--print("OnAction: Neue Route AB --", self.name, aName, aChildName, self.tmpWPA, self.tmpWPB)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
 
@@ -1382,7 +1384,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				self.tmpWPA = aName
 				self.tmpWPASize = self.TMPSize or 1
 			end
-			if aChildName == "Punkt B" then
+			if aChildName == L["Point B"] then
 				self.tmpWPB = aName
 				self.tmpWPBSize = self.TMPSize or 1
 			end
@@ -1401,7 +1403,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 			--a/b setup complete
 			if self.tmpWPA and self.tmpWPB then
-				local tIntWPmethod = self.tmpIntWP or "Manuell"
+				local tIntWPmethod = self.tmpIntWP or L["Manually"]
 				local tWpNameA = self.tmpWPA
 				local tWpNameB = self.tmpWPB
 
@@ -1499,7 +1501,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			tNewMenuEntry.OnAction = SkuNav_MenuBuilder_PointX_OnAction
 			tNewMenuEntry.BuildChildren = SkuNav_MenuBuilder_PointX_BuildChildren
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Punkt B"}, menuEntryTemplate_Menu)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Point B"]}, menuEntryTemplate_Menu)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
@@ -1526,10 +1528,10 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Aufzeichnung abschließen"}, menuEntryTemplate_Menu)
-		if SkuOptions.db.profile[MODULE_NAME].routeRecording == true and sfind(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute, "Bei Beenden festlegen") then
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Complete recording"]}, menuEntryTemplate_Menu)
+		if SkuOptions.db.profile[MODULE_NAME].routeRecording == true and sfind(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute, L["Set on completion"]) then
 			tNewMenuEntry.BuildChildren = function(self)
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Punkt B"}, menuEntryTemplate_Menu)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Point B"]}, menuEntryTemplate_Menu)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.filterable = true
 				tNewMenuEntry.isSelect = true
@@ -1541,17 +1543,17 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = function(self, aValue, aName, aChildName)
 			--print("OnAction Aufzeichnung abschließen", self.name, "-", aName, "-", aChildName, "-", self.tmpWPA, "-", self.tmpWPB)
 			if SkuOptions.db.profile[MODULE_NAME].routeRecording == false then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
 				Voice:OutputString("Es läuft keine Aufzeichnung", false, true, 0.3, true)
 				return
 			end
 
 			--do we need to update the rt as b was set on completing the recording?
-			if sfind(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute, "Bei Beenden festlegen") then
+			if sfind(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute, L["Set on completion"]) then
 				--print("ist Bei Beenden festlegen")
 				-- yes > update b wp name and update the route name
 				-- aName is the new b name
-				local updatedRtName = SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute:gsub("Bei Beenden festlegen", aName)
+				local updatedRtName = SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute:gsub(L["Set on completion"], aName)
 				--print("neue b name", updatedRtName)
 				local updatedRtData = SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute]
 				updatedRtData.tEndWPName = aName
@@ -1612,7 +1614,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction neu", self.name, aName)
 			if SkuOptions.db.profile[MODULE_NAME].routeRecording == false then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
 				Voice:OutputString("Es läuft keine Aufzeichnung", false, true, 0.3, true)
 				return
 			end
@@ -1620,7 +1622,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			if SkuNav:DeleteRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute, true) == true then
 				Voice:OutputString("aufzeichnung;abgebrochen;route;gelöscht", false, true, 0.3, true)
 			else
-				Voice:OutputString("fehler", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+				Voice:OutputString(L["Error"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 			end
 
 			if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
@@ -1648,8 +1650,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction", self.name, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
 				return
 			end
 
@@ -1660,8 +1662,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 			SkuOptions.db.profile[MODULE_NAME].metapathFollowing = false
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart then
 				if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths then
-					if sfind(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, "Meter#") then
-						SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = string.sub(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, sfind(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, "Meter#") + 6)
+					if sfind(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, L["Meter"].."#") then
+						SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = string.sub(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, sfind(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, L["Meter"].."#") + string.len(L["Meter"].."#"))
 					end
 
 					SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = aName
@@ -1739,7 +1741,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 
 				if #tSortedWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 				else
 					local tCount = 0
 					for k, v in SkuSpairs(tSortedWaypointList) do
@@ -1762,7 +1764,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 								end
 
 								if #tSortedList == 0 then
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 								else
 									for tK, tV in ipairs(tSortedList) do
 										local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tMetapaths[tV].distance..";Meter#"..tV}, menuEntryTemplate_Menu)
@@ -1802,7 +1804,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 						table.insert(tSortedWaypointList, v..";Meter#"..k)
 					end
 					if #tSortedWaypointList == 0 then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 					else
 
 						for i, v in ipairs(tSortedWaypointList) do
@@ -1812,10 +1814,10 @@ function SkuNav:MenuBuilder(aParentEntry)
 							tNewMenuEntry.filterable = true
 							tNewMenuEntry.BuildChildren = function(self)
 								local tRouteName
-								local tF = sfind(v, "Meter#")
+								local tF = sfind(v, L["Meter"].."#")
 								--print(self.name, tF)
 								if tF then	
-									tRouteName = string.sub(v, tF + 6)
+									tRouteName = string.sub(v, tF + string.len(L["Meter"].."#"))
 								end
 								SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute = tRouteName
 								local tWpX, tWpY = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[1]).worldX, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[1]).worldY
@@ -1868,7 +1870,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					end
 
 					if #tSortedRoutesList == 0 then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 					else
 						for i, v in ipairs(tSortedRoutesList) do
 							--print(i, v)
@@ -1877,10 +1879,10 @@ function SkuNav:MenuBuilder(aParentEntry)
 							tNewMenuEntry.filterable = true
 							tNewMenuEntry.BuildChildren = function(self)
 								local tRouteName
-								local tF = sfind(self.name, "Meter#")
+								local tF = sfind(self.name, L["Meter"].."#")
 								--print(self.name, tF)
 								if tF then	
-									tRouteName = string.sub(self.name, tF + 6)
+									tRouteName = string.sub(self.name, tF + string.len(L["Meter"].."#"))
 								end
 								SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute = tRouteName
 
@@ -1900,7 +1902,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 									for x = 2, #SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs - 1 do
 										local tWpX, tWpY = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[x]).worldX, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[x]).worldY
 										local tDistanceX, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
-										local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Start bei#"..x.."#"..tDistanceX.." Meter"}, menuEntryTemplate_Menu)
+										local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Start bei#"..x.."#"..tDistanceX.." "..L["Meter"]}, menuEntryTemplate_Menu)
 										tNewMenuEntry.dynamic = true
 										tNewMenuEntry.filterable = true
 										tNewMenuEntry.BuildChildren = function(self)
@@ -1978,7 +1980,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					end
 
 					if #tSortedWaypointList == 0 then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 					else
 						for i, v in ipairs(tSortedWaypointList) do
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, menuEntryTemplate_Menu)
@@ -1986,9 +1988,9 @@ function SkuNav:MenuBuilder(aParentEntry)
 							tNewMenuEntry.filterable = true
 							tNewMenuEntry.BuildChildren = function(self)
 								local tRouteName = v
-								local tF = sfind(v, "Meter#")
+								local tF = sfind(v, L["Meter"].."#")
 								if tF then
-									tRouteName = string.sub(v, tF + 6)
+									tRouteName = string.sub(v, tF + string.len(L["Meter"].."#"))
 								end
 								SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute = tRouteName
 								local tWpX, tWpY = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[1]).worldX, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[1]).worldY
@@ -2027,7 +2029,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 
 				if #tSortedWaypointList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 				else
 					for i, v in ipairs(tSortedWaypointList) do
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, menuEntryTemplate_Menu)
@@ -2035,9 +2037,9 @@ function SkuNav:MenuBuilder(aParentEntry)
 						tNewMenuEntry.filterable = true
 						tNewMenuEntry.BuildChildren = function(self)
 							local tRouteName = v
-							local tF = sfind(v, "Meter#")
+							local tF = sfind(v, L["Meter"].."#")
 							if tF then
-								tRouteName = string.sub(v, tF + 6)
+								tRouteName = string.sub(v, tF + string.len(L["Meter"].."#"))
 							end
 							SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute = tRouteName
 							local tWpX, tWpY = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[1]).worldX, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[1]).worldY
@@ -2058,7 +2060,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			if (SkuOptions.db.profile[MODULE_NAME].metapathFollowing == false and SkuOptions.db.profile[MODULE_NAME].routeFollowing == false) or SkuOptions.db.profile[MODULE_NAME].routeRecording == true and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == "" then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
 				Voice:OutputString("Wegpunkt oder Route folgen läuft nicht oder Aufzeichnung läuft", false, true, 0.3, true)
 				return
 			end
@@ -2081,8 +2083,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction", self.name, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing  == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
 
@@ -2102,8 +2104,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 					SkuOptions.MenuRtToDelete = nil
 
 					if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing  == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-						Voice:OutputString("Fehler", false, true, 0.3, true)
-						Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+						Voice:OutputString(L["Error"], false, true, 0.3, true)
+						Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 						return
 					end
 
@@ -2146,8 +2148,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 						end
 
 					else
-						if sfind(tRtToDelete, "Meter#") then
-							tRtToDelete = string.sub(tRtToDelete, sfind(tRtToDelete, "Meter#") + 6)
+						if sfind(tRtToDelete, L["Meter"].."#") then
+							tRtToDelete = string.sub(tRtToDelete, sfind(tRtToDelete, L["Meter"].."#") + string.len(L["Meter"].."#"))
 						end
 
 						--print("delete", tRtToDelete)
@@ -2229,7 +2231,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 
 				if #tSortedRoutesList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 				else
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle"}, menuEntryTemplate_Menu)
 					tNewMenuEntry.dynamic = true
@@ -2303,7 +2305,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 
 				if #tSortedRoutesList == 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"liste;leer"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 				else
 					for i, v in ipairs(tSortedRoutesList) do
 						--print(i, v)
@@ -2354,8 +2356,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Import"}, menuEntryTemplate_Menu)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
 
@@ -2364,22 +2366,22 @@ function SkuNav:MenuBuilder(aParentEntry)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Import aktuelle Karte"}, menuEntryTemplate_Menu)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
 			if SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()) then
 				SkuOptions:ImportWpAndRouteData(SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId())))
 			else
-				Voice:OutputString("Fehler", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
 				Voice:OutputString("In dieser Karte nicht möglich", false, true, 0.3, true)
 			end
 		end
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Export alle"}, menuEntryTemplate_Menu)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
 			SkuOptions:ExportWpAndRouteData()
@@ -2387,19 +2389,19 @@ function SkuNav:MenuBuilder(aParentEntry)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Export aktuelle Karte"}, menuEntryTemplate_Menu)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-				Voice:OutputString("Fehler", false, true, 0.3, true)
-				Voice:OutputString("Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
+				Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
 			if SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()) then
 				SkuOptions:ExportWpAndRouteData(SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId())))
 			else
-				Voice:OutputString("Fehler", false, true, 0.3, true)
+				Voice:OutputString(L["Error"], false, true, 0.3, true)
 				Voice:OutputString("In dieser Karte nicht möglich", false, true, 0.3, true)
 			end
 		end
 	end
 
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Optionen"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)
 	SkuOptions:IterateOptionsArgs(SkuNav.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end

@@ -70,7 +70,7 @@
 			    Diese kombinierte Entferung wird gewichtet. Die Strecke vom Routenende zum eigentlichen Ziel zählt dreifach. 
 			    Das sorgt dafür, dass die Routen bevorzugt werden, bei denen du die letzte Strecke zum Wegpunkt ohne Route möglichst nicht weit laufen musst.
 			  "Wegpunkt" enthält die Wegpunkte für alle Ziele.
-			  Darunter sind jeweils wieder Menüs: "Nach Name" und "Nach Entfernung", mit einer entsprechenden Sortierung.
+			  Darunter sind jeweils wieder Menüs: "Nach Name" und L["By distance"], mit einer entsprechenden Sortierung.
 
 
 -------------------------------------------------------------------------------------------------------	
@@ -359,7 +359,7 @@
 			  "Aldor", "Seher" (unter "Klassen")
 			  Alle Kartennamen der Scherbenwelt (unter "Orte")
 			  "drinnen" und "draußen" (unter "Orientierung")
-			  Die sechs Hauptstädte aus der alten Welt (unter "Zonen")
+			  Die sechs Hauptstädte aus der alten Welt (unter L["Zones"])
 			- Unter "SkuNav > Wegpunkt > Auswählen" gibt es jetzt ganz unten in der Liste eine neue Auswahl namens "Aktuelle Karte Entfernung mit Auto".
 			  In dieser Liste werden alle Wegpunkte der aktuellen Karte INKLUSIVE aller Autopunkte, sortiert nach ihrer Entferung, angezeigt.
 			  Die Liste sollte normalerweise nicht gebraucht werden. Nur, falls du über den nächstgelegenen Routenpunkt in eine Route einsteigen möchtest, und der einzige angezeigte Routenpunkt nicht brauchbar ist (z. B., weil er hinter einer Wand ist). In diesem Fall kannst du diese neue Auswahl nutzen, um nach anderen Punkten (inkl. Autopunkte) Autopunkten in der Nähe zu suchen, diese anzulaufen, und von dort den Routeneinstieg zu machen.
@@ -678,11 +678,11 @@
 			  Dies dient dazu, neue Routen einfacher an das Routennetz anbinden zu können, wenn es bereits Routen mit Zwischenwegpunkten in der Nähe gibt.
 			- Bei der Routenaufzeichnungg kann jetzt die linke ALT-Taste gedrückt werden, um zu verhindern, dass neue Routenpunkte bei Kreuzungen mit bestehenden Routen erstellt werden, oder dass bestehende Routenpunkte in der Nähe übernommen werden.
 			  Solange die linke ALT-Taste gedrückt ist, passiert beides nicht.
-			- Beim erstellen einer neuen Route gibt es jetzt für Punkt B eine neue Option "Bei Beenden festlegen".
+			- Beim erstellen einer neuen Route gibt es jetzt für Punkt B eine neue Option L["Set on completion"].
 			  Mit dieser Option legst du den Zielpunkt (seinen Namen für neue Punkte, bzw. den gewünschten bestehenden Wegpunkt) erst am Ziel fest.
-			  Wählst du die Option für Punkt B, öffnet sich beim Abschließen der Route über "Route > Aufzeichnung abschließen" ein Untermenü "Punkt B", in dem du nachträglich wie gewohnt den Punkt B definieren oder auswählen muss. Hast du das erledigt, wird die Aufzeichnung abgeschlossen.
-			  Hast du Punkt B bereits bei Aufzeichnungsbeginn definiert oder ausgewählt, wir die Aufzeichnung bei "Route > Aufzeichnung abschließen" direkt abgeschlossen - ohne den Untermenüpunkt "Punkt B".
-			  Diese neue Funktion "Bei Beenden festlegen" für Punkt B ist hilfreich, wenn man vorher nicht genau weiß, wo die Route hingehen soll, oder welche bestehenden Wegpunkte am Ziel vorhanden sind.
+			  Wählst du die Option für Punkt B, öffnet sich beim Abschließen der Route über "Route > Aufzeichnung abschließen" ein Untermenü L["Point B"], in dem du nachträglich wie gewohnt den Punkt B definieren oder auswählen muss. Hast du das erledigt, wird die Aufzeichnung abgeschlossen.
+			  Hast du Punkt B bereits bei Aufzeichnungsbeginn definiert oder ausgewählt, wir die Aufzeichnung bei "Route > Aufzeichnung abschließen" direkt abgeschlossen - ohne den Untermenüpunkt L["Point B"].
+			  Diese neue Funktion L["Set on completion"] für Punkt B ist hilfreich, wenn man vorher nicht genau weiß, wo die Route hingehen soll, oder welche bestehenden Wegpunkte am Ziel vorhanden sind.
 			- Die Option mit den aktuellen Koordinaten bei der Benennung neuer Wegpunkte wurde entfernt.
 			- Bei jedem Einloggen werden ab sofort alle bestehenden Routen überprüft. Defekte Routen (z. B. mit ungültigen Wegpunkten durch Disconnects, veralteten Wegpunktdaten etc.) werden dabei gelöscht.
 			  Auch alle Wegpunkten aus den betroffenen Routen, die nicht von anderen Routen verwendet werden, werden gelöscht.
@@ -839,7 +839,7 @@
 
 	SkuCore:
 		Neuerungen
-			- SkuCore hat unter "Optionen" ein neues Untermenü namens "Klassen" bekommen. Darunter befinden sich weitere Untermenüs für die einzelnen Klassen.
+			- SkuCore hat unter L["Options"] ein neues Untermenü namens "Klassen" bekommen. Darunter befinden sich weitere Untermenüs für die einzelnen Klassen.
 			  In diesen Menüs werden zukünfigt klassenbezogene Optionen zur Verfügung stehen.
 			  Den Anfang macht der Jäger, für den es jetzt eine Funktion gibt, um anzusagen wenn das Tier Hunger hat. (Standard: Ein)
 
@@ -859,7 +859,7 @@
 			- Die Routenanzeige auf der Minimap zeigt jetzt nur noch die Routen auf dem aktuellen Kontinent an.
 			- Der Routenimport wurde gefixt und funktioniert jetzt ohne Absturz.
 			- Die Nummerierungen für importierte Doubletten bei Routen-/Wegpunktnamen werden jetzt korrekt vorgelesen.
-			- Automatisch erstelle Zwischenwegpunkte werden jetzt einfach alle nur noch als "Auto" vorgelesen. Ohne eine Nummerierung dahinter.
+			- Automatisch erstelle Zwischenwegpunkte werden jetzt einfach alle nur noch als L["auto"] vorgelesen. Ohne eine Nummerierung dahinter.
 			- Die Optionen für die Zwischenwegpunkte beim Aufzeichnen von Routen wurden (zur Verdeutlichung) umbenannt und leicht verändert. Es gibt jetzt folgende:
 				Manuell
 				10 Grad 10 Meter
@@ -1010,7 +1010,7 @@
 				  An Punkt B endet die Aufzeichnung dann automatisch.
 				  Wenn die Aufzeichnung an Punkt A begonnen hat, werden auf dem Weg zu Punkt B automatisch Zwischenwegpunkte erstellt (wenn du das bei der Routen-Definition vor dem Start ausgwählt hattest).
 				  Alternativ kannst an jeder beliebigen Stelle mit STRG + SHIFT + PLUS manuell einen Zwischen-Wegpunkt erstellen.
-				- Die Zwischen-Wegpunkte sind intern auch ganz normale Wegpunkte. Sie haben aber keine Namen, sondern heißen alle "Auto" und werden einfach durchnummeriert. Du kannst auf die Zwischen-Wegpunkt nicht über das Wegpunktmenü zugreifen.
+				- Die Zwischen-Wegpunkte sind intern auch ganz normale Wegpunkte. Sie haben aber keine Namen, sondern heißen alle L["auto"] und werden einfach durchnummeriert. Du kannst auf die Zwischen-Wegpunkt nicht über das Wegpunktmenü zugreifen.
 				- Solltest du beim Aufzeichnen eine bestehende Route kreuzen, wird automatisch am Kreuzungspunkt ein Zwischenwegpunkt erstellt.
 				- Solltest du dich beim Erstellen (egal ob manuell oder automatisch) eines neuen Zwischenwegpunktes in der Nähe eines bestehenden Routenwegpunktes befinden, wird statt einen neuen Wegpunkt zu erstellen der bestehende Wegpunkt verwendet.
 			  3. Routen folgen:
@@ -1541,7 +1541,7 @@
 		Route
 			- Noch nicht implementiert
 		Optionen
-			Die ersten Optionen sind verfügbar. Man findet sie im Menü unter "Optionen". Sie haben bei der Auswahl immer zwei Unteroptionen namens "Ein" und "Aus".
+			Die ersten Optionen sind verfügbar. Man findet sie im Menü unter L["Options"]. Sie haben bei der Auswahl immer zwei Unteroptionen namens "Ein" und "Aus".
 				- Menünummern ansagen (Ansage der laufenden Nummer vor jeden Menüpunkt)
 				- Untermenüs ansagen (Ansage von "plus" nach dem Menüpunkt, falls das Menü unterpunkte hat)
 				- Zonennamen ansagen (Automatische Ansage der Zone bei einem Zonenwechsel)

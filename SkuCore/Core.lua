@@ -12,7 +12,7 @@ local tStartDebugTimestamp = GetTime() or 0
 SkuCoreDB = {}
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore = LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("SkuCore", false)
+local L = Sku.L
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 CLASS_IDS = {
@@ -465,7 +465,7 @@ end
 
 local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
-local SkuCorePetHappinessString = {[1] = "Unzufrieden", [2] = "Zufrieden", [3] = "Glücklich"}
+local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnEnable()
@@ -483,7 +483,7 @@ function SkuCore:OnEnable()
 					if SkuCoreOldPetHappinessCounter > 15 then
 						local happiness, damagePercentage, loyaltyRate = GetPetHappiness()
 						if happiness and happiness ~= 3 then
-							Voice:OutputString("Tier;"..SkuCorePetHappinessString[happiness], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+							Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 							SkuCoreOldPetHappinessCounter = 0
 						end
 					end
@@ -506,14 +506,14 @@ function SkuCore:OnEnable()
 							tResult = infoType
 						end
 					else
-						tResult = "leer"
+						tResult = L["Empty"]
 					end
 					oinfoType = infoType
 					oitemID = itemID
 					oitemLink = itemLink
 				end
 				if tResult then
-					Voice:OutputString("Cursor "..tResult, true, true, 0.2, true)
+					Voice:OutputString(L["Cursor"]..tResult, true, true, 0.2, true)
 				end
 
 				if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
@@ -932,11 +932,11 @@ function SkuCore:PLAYER_MOUNT_DISPLAY_CHANGED(...)--taxi
 	--print("PLAYER_MOUNT_DISPLAY_CHANGED", ...)
 	if PLAYER_CONTROL_LOST_flag == 1 then
 		PLAYER_CONTROL_LOST_flag = 0
-		Voice:OutputString("flug;gestartet", true, true, nil, true)
+		Voice:OutputString(L["taxi;started"], true, true, nil, true)
 	end
 	if PLAYER_CONTROL_GAINED_flag == 1 then
 		PLAYER_CONTROL_GAINED_flag = 0
-		Voice:OutputString("flug;beendet", true, true, nil, true)
+		Voice:OutputString(L["taxi;ended"], true, true, nil, true)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1054,7 +1054,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	if aUnitTarget == "player" and SkuCore.inCombat == false then
-		Voice:OutputString("cast", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+		Voice:OutputString(L["cast"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1139,13 +1139,13 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 	end
 	_G["SkuCoreControlOption1"]:Hide()
 	SkuCore.inCombat = true
-	Voice:OutputString("Kampfbeginn", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	Voice:OutputString(L["Combat start"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_REGEN_ENABLED(...)
 	SkuCore.inCombat = false
-	Voice:OutputString("Kampfende", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	Voice:OutputString(L["Combat end"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 	if SkuOptions.db.profile[MODULE_NAME].autoFollow == true then
 		if SkuStatus.followUnitId then
 			if SkuStatus.followUnitId ~= "" then
@@ -1179,7 +1179,7 @@ function SkuCore:GossipFrameAvailableQuestsUpdate(...)
 	for i=1, select("#", ...), 7 do
 		local titleButton = _G["GossipTitleButton" .. SkuCore.GossipFramebuttonIndex];
 		local titleText, level, isTrivial, frequency, isRepeatable, isLegendary, isIgnored = select(i, ...);
-		SkuCore.tGossipList[SkuCore.GossipFramebuttonIndex] = "Quest;verfügbar;"..splitString(titleText)
+		SkuCore.tGossipList[SkuCore.GossipFramebuttonIndex] = L["Quest;available"]..";"..splitString(titleText)
 		SkuCore.GossipFramebuttonIndex = SkuCore.GossipFramebuttonIndex + 1;
 		titleIndex = titleIndex + 1;
 	end
@@ -1198,7 +1198,7 @@ function SkuCore:GossipFrameActiveQuestsUpdate(...)
 	for i=1, numActiveQuestData, 6 do
 		titleButton = _G["GossipTitleButton" .. SkuCore.GossipFramebuttonIndex];
 		titleButton:SetFormattedText(NORMAL_QUEST_DISPLAY, select(i, ...));
-		SkuCore.tGossipList[SkuCore.GossipFramebuttonIndex] = "Quest;aktiv;"..splitString(select(i, ...))
+		SkuCore.tGossipList[SkuCore.GossipFramebuttonIndex] = L["Quest;aktive"]..";"..splitString(select(i, ...))
 		SkuCore.GossipFramebuttonIndex = SkuCore.GossipFramebuttonIndex + 1;
 		titleIndex = titleIndex + 1;
 	end
@@ -1214,7 +1214,7 @@ function SkuCore:GossipFrameOptionsUpdate(...)
 	local titleButtonIcon;
 	for i=1, select("#", ...), 2 do
 		titleButton = _G["GossipTitleButton" .. SkuCore.GossipFramebuttonIndex];
-		SkuCore.tGossipList[SkuCore.GossipFramebuttonIndex] = "Option;"..splitString(select(i, ...))
+		SkuCore.tGossipList[SkuCore.GossipFramebuttonIndex] = L["Option"]..";"..splitString(select(i, ...))
 		SkuCore.GossipFramebuttonIndex = SkuCore.GossipFramebuttonIndex + 1;
 		titleIndex = titleIndex + 1;
 		titleButton:Show();
@@ -1378,16 +1378,16 @@ end
 
 
 local tButtonsWoFontstrings = {
-	PrevPage = "Zurück",
-	NextPage = "Weiter",
-	MoneyFrameCopper = "Kupfer",
-	MoneyFrameSilver = "Silber",
-	MoneyFrameGold = "Gold",
-	FrameTab = "Registerkarte",
-	CollapseAll = "Alles zusammenklappen",
-	NextPageButton = "Weiter",
-	PrevPageButton = "Zurück",
-	CloseButton = "Schließen",
+	PrevPage = L["Previous"],
+	NextPage = L["Next"],
+	MoneyFrameCopper = L["Copper"],
+	MoneyFrameSilver = L["Silver"],
+	MoneyFrameGold = L["Gold"],
+	FrameTab = L["Tab"],
+	CollapseAll = L["Collapse all"],
+	NextPageButton = L["Next"],
+	PrevPageButton = L["Previous"],
+	CloseButton = L["Close"],
 	}
 
 local function tprint (tbl, indent)
@@ -1443,49 +1443,48 @@ local blockedWidgetStrings = {
 }
 
 local friendlyFrameNames = {
-	["GroupLootContainer"] = "Würfeln",
-	["InspectFrame"] = "Betrachten",
-	["QuestFrame"] = "Quest",
-	["TaxiFrame"] = "Flugmeister",
-	["GossipFrame"] = "Dialog",
-	["MerchantFrame"] = "Händler",
-	["StaticPopup1"] = "Popup 1",
-	["StaticPopup2"] = "Popup 2",
-	["StaticPopup3"] = "Popup 3",
-	["PetStableFrame"] = "Stallmeister",
-	["MailFrame"] = "Post",
-	["ContainerFrame1"] = "Tasche 1",
-	["ContainerFrame2"] = "Tasche 2",
-	["ContainerFrame3"] = "Tasche 3",
-	["ContainerFrame4"] = "Tasche 4",
-	["ContainerFrame5"] = "Tasche 5",
-	["ContainerFrame6"] = "Tasche 6",
-	["DropDownList2"] = "Dropdown Liste 2",
-	["DropDownList1"] = "Dropdown Liste 1",
-	["TalentFrame"] = "Talente",
-	["SendMailFrame"] = "Postausgang",
-	["AuctionFrame"] = "Auktionshaus",
-	["ClassTrainerFrame"] = "Lehrer",
-	["CharacterFrame"] = "Char",
-	["ReputationFrame"] = "Ruf",
-	["SkillFrame"] = "Fertigkeiten",
-	["HonorFrame"] = "Ehre",
-	["BagnonInventoryFrame1"] = "Bagnon Taschen",
-	["SpellBookFrame"] = "Zauberbuch",
-	["PlayerTalentFrame"] = "Talente",
-	["FriendsFrame"] = "Geselligkeit",
-	["TradeFrame"] = "Handeln",
-	--["GameMenuFrame"] = "Spielmenü",
+	["GroupLootContainer"] = L["Loot roll"],
+	["InspectFrame"] = L["Inspect"],
+	["QuestFrame"] = L["Quest"],
+	["TaxiFrame"] = L["Taxi"],
+	["GossipFrame"] = L["Gossip"],
+	["MerchantFrame"] = L["Merchant"],
+	["StaticPopup1"] = L["Popup 1"],
+	["StaticPopup2"] = L["Popup 2"],
+	["StaticPopup3"] = L["Popup 3"],
+	["PetStableFrame"] = L["Pet Stable"],
+	["MailFrame"] = L["Mail"],
+	["ContainerFrame1"] = L["Bag 1"],
+	["ContainerFrame2"] = L["Bag 2"],
+	["ContainerFrame3"] = L["Bag 3"],
+	["ContainerFrame4"] = L["Bag 4"],
+	["ContainerFrame5"] = L["Bag 5"],
+	["ContainerFrame6"] = L["Bag 6"],
+	["DropDownList2"] = L["Dropdown List 2"],
+	["DropDownList1"] = L["Dropdown List 1"],
+	["TalentFrame"] = L["Talents"],
+	["SendMailFrame"] = L["Send Mail"],
+	["AuctionFrame"] = L["Auction house"],
+	["ClassTrainerFrame"] = L["Class Trainer"],
+	["CharacterFrame"] = L["Character"],
+	["ReputationFrame"] = L["Reputation"],
+	["SkillFrame"] = L["Skills"],
+	["HonorFrame"] = L["Honor"],
+	["BagnonInventoryFrame1"] = L["Bagnon Taschen"],
+	["SpellBookFrame"] = L["Spellbook"],
+	["PlayerTalentFrame"] = L["Talents"],
+	["FriendsFrame"] = L["Friends"],
+	["TradeFrame"] = L["Trade"],
+	--["GameMenuFrame"] = L["Game Menu"],
 	--["MainMenuBar"] = "",
 	--["MultiBarLeft"] = "",
 	--["MultiBarRight"] = "",
 	--["MultiBarBottomLeft"] = "",
 	--["MultiBarBottomRight"] = "",
-	["BagnonBankFrame1"] = "Bagnon Bank",
-	["BagnonGuildFrame1"] = "Bagnon Gilde",
-	["BagnonBankFrame1"] = "Bagnon Bank",
-	["BankFrame"] = "Bank",
-	["GuildBankFrame"] = "Bank Gilde",
+	["BagnonGuildFrame1"] = L["Bagnon Guild"],
+	["BagnonBankFrame1"] = L["Bagnon Bank"],
+	["BankFrame"] = L["Bank"],
+	["GuildBankFrame"] = L["Guild Bank"],
 	[""] = "",
 }
 local containerFrames = {
@@ -1498,18 +1497,18 @@ local containerFrames = {
 	["ContainerFrame5"] = "ContainerFrame5",
 }
 local friendlyFrameNamesParts = {
-	["FrameGreetingPanel"] = "Fensterbereich",
-	["GreetingScrollFrame"] = "Unterbereich",
-	["DetailPanel"] = "Details",
-	["DetailScrollFrame"] = "Detail Bereich",
-	["ScrollFrame"] = "Unterbereich",
-	["RewardsFrame"] = "Belohnungen",
-	["MoneyFrame"] = "Geld",
-	["PaperDollFrame"] = "Ausrüstung",
-	["CharacterAttributesFrame"] = "Werte",
-	["CharacterResistanceFrame"] = "Widerstände",
-	["PaperDollItemsFrame"] = "Gegenstände",
-	["ProgressPanel"] = "Fortschritt",
+	["FrameGreetingPanel"] = L["Panel"],
+	["GreetingScrollFrame"] = L["Sub panel"],
+	["DetailPanel"] = L["Details"] ,
+	["DetailScrollFrame"] = L["Details panel"],
+	["ScrollFrame"] = L["Sub panel"],
+	["RewardsFrame"] = L["Rewards"],
+	["MoneyFrame"] = L["Money"],
+	["PaperDollFrame"] = L["Equiment"] ,
+	["CharacterAttributesFrame"] = L["Attributes"],
+	["CharacterResistanceFrame"] = L["Resistance"],
+	["PaperDollItemsFrame"] = L["Items"],
+	["ProgressPanel"] = L["Progress"],
 }
 
 local function GetTableID(aTable)
@@ -1776,13 +1775,13 @@ local function IterateChildren(t, tab)
 										tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
 									else
 										--no friendly name > name as Container x
-										tResults[fName].textFirstLine = "Container "..x --fName
+										tResults[fName].textFirstLine = L["Container"].." "..x --fName
 									end
 								end
 								--if there is no text/childs > remove
 								if tResults[fName].textFirstLine == "" and tResults[fName].textFull == "" and #tResults[fName].childs == 0 then
 									if string.find(fName, "ContainerFrame") then
-										tResults[fName].textFirstLine = "Leer "
+										tResults[fName].textFirstLine = L["Empty"].." "
 									else
 										tResults[fName] = nil
 										table.remove(tResults, #tResults)
@@ -1802,7 +1801,7 @@ local function IterateChildren(t, tab)
 						if string.find(fName, "ContainerFrame") or string.find(fName, "ItemButton") then
 							if _G[fName.."Count"] then
 								if tResults[fName] and _G[fName.."Count"]:GetText() then
-									if not string.find(tResults[fName].textFirstLine, "Leer ") then
+									if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") then
 										tResults[fName].textFirstLine = tResults[fName].textFirstLine.." ".._G[fName.."Count"]:GetText()
 									else
 										tResults[fName].textFirstLine = tResults[fName].textFirstLine
@@ -1830,7 +1829,7 @@ local function CleanUpGossipList(aTable)
 		local value = aTable[aTable[x]]
 
 		local tGold, tSilver, tCopper = 0, 0, 0
-		if value.textFirstLine == "Geld" then
+		if value.textFirstLine == L["Money"] then
 			--print("GELD", #value.childs)
 			for q = 1, #value.childs do
 				--print("  q", q, value.childs[q])
@@ -1850,17 +1849,17 @@ local function CleanUpGossipList(aTable)
 
 			if tGold ~= nil and tSilver ~= nil and  tCopper ~= nil then
 				--print(tGold, tSilver, tCopper)
-				value.textFirstLine = tGold.." Gold "..tSilver.." Silber "..tCopper.." Kupfer"
+				value.textFirstLine = tGold.." "..L["Gold"].." "..tSilver.." "..L["Silver"].." "..tCopper.." "..L["Copper"]
 				value.childs = {}
 			end
 		end
 
 		if value.type == "FontString" then
-			value.textFirstLine = "Text: "..value.textFirstLine
+			value.textFirstLine = L["Text"]..": "..value.textFirstLine
 		end
 
 		if value.type == "Button" and value.func then
-			value.textFirstLine = "Button: "..value.textFirstLine
+			value.textFirstLine = L["Button"]..": "..value.textFirstLine
 		end
 
 		aTable[aTable[x]] = value
@@ -1940,7 +1939,7 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 				--print("tFirstFrame", tFirstFrame)
 			end
 			--print("aForceLocalRoot", aForceLocalRoot)
-			SkuOptions:SlashFunc("short,lokal")
+			SkuOptions:SlashFunc(L["short"]..","..L["Local"])
 
 			local tFlag = false
 
@@ -1949,7 +1948,7 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 					if v == tFirstFrame then
 						if _G[i] then
 							if _G[i]:IsVisible() then
-								SkuOptions:SlashFunc("short,"..tBread)
+								SkuOptions:SlashFunc(L["short"]..","..tBread)
 								tFlag = true
 							end
 						end
@@ -1958,22 +1957,22 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 			end
 			
 			if tFlag == false or  aForceLocalRoot == true then
-				SkuOptions:SlashFunc("short,lokal")
+				SkuOptions:SlashFunc(L["short"]..","..L["Local"])
 			end
 			
 			for q = 1, #tOpenFrames do
 				if tOpenFrames[q] == "StaticPopup1" and aForceLocalRoot ~= true then
-					SkuOptions:SlashFunc("short,lokal,Popup 1")
+					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Popup 1"])
 				end
 			end
 			for q = 1, #tOpenFrames do
 				if tOpenFrames[q] == "StaticPopup2" and aForceLocalRoot ~= true then
-					SkuOptions:SlashFunc("short,lokal,Popup 2")
+					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Popup 2"])
 				end
 			end
 			for q = 1, #tOpenFrames do
 				if tOpenFrames[q] == "StaticPopup3" and aForceLocalRoot ~= true then
-					SkuOptions:SlashFunc("short,lokal,Popup 3")
+					SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Popup 3"])
 				end
 			end
 

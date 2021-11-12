@@ -1,3 +1,5 @@
+local L = Sku.L
+
 SKU_KONSTANTS = {
 	["SOUNDCHANNELS"] = {
 		["Master"] = "Gesamt",
@@ -323,7 +325,7 @@ SkuOptions.defaults = {
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilder(aParentEntry)
 	--print("SkuOptions:MenuBuilder", aParentEntry)
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Optionen"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {"Profil"}, menuEntryTemplate_Menu)
@@ -341,7 +343,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		return SkuOptions.db:GetCurrentProfile()
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Neu"}, menuEntryTemplate_Menu)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["New"]}, menuEntryTemplate_Menu)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)

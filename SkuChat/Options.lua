@@ -1,4 +1,5 @@
 local MODULE_NAME = "SkuChat"
+local L = Sku.L
 
 SkuChat.WowTtsVoices = {
 	[1] = "def Microsoft Hedda Desktop - German",
@@ -11,7 +12,7 @@ SkuChat.options = {
 	args = {
 		enable = {
 			order = 1,
-			name = "Modul aktiviert" ,
+			name = L["Module enabled"],
 			desc = "",
 			type = "toggle",
 			set = function(info, val) 
@@ -23,8 +24,8 @@ SkuChat.options = {
 		},
 		audio = {
 			order = 2,
-			name = "Audiomeldung bei Chatnachricht" ,
-			desc = "Enables / disables audio on new chat line",
+			name = L["Audio notification on chat message"],
+			desc = L["Enables / disables audio on new chat line"],
 			type = "toggle",
 			set = function(info,val) 
 				SkuOptions.db.profile[MODULE_NAME].audio = val
@@ -35,7 +36,7 @@ SkuChat.options = {
 			},
 		WowTtsVoice = {
 			order = 3,
-			name = "TTS Stimme" ,
+			name = L["TTS voice"],
 			desc = "",
 			type = "select",
 			values = SkuChat.WowTtsVoices,
@@ -48,7 +49,7 @@ SkuChat.options = {
 		},
 		WowTtsSpeed = {
 			order = 4,
-			name = "TTS Geschwindigkeit" ,
+			name = L["TTS speed"],
 			desc = "",
 			type = "range",
 			set = function(info,val)
@@ -60,7 +61,7 @@ SkuChat.options = {
 		},
 		WowTtsVolume = {
 			order = 5,
-			name = "TTS Lautstärke" ,
+			name = L["TTS volume"],
 			desc = "",
 			type = "range",
 			set = function(info,val)
@@ -90,7 +91,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 
 	--optionen
 	--to add: ace slider, dropdown widgets
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Optionen"}, menuEntryTemplate_Menu)
+	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)
 	SkuOptions:IterateOptionsArgs(SkuChat.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 
 end

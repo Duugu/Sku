@@ -6,7 +6,7 @@ local ADDON_NAME = ...
 --local _G = _G
 
 SkuOptions = SkuOptions or LibStub("AceAddon-3.0"):NewAddon("SkuOptions", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("SkuOptions", false)
+local L = Sku.L
 LibStub("AceComm-3.0"):Embed(SkuOptions)
 TTS = LibStub("SkuTTS-1.0"):Create("SkuCore", false)
 Voice = LibStub("SkuVoice-1.0"):Create("SkuCore", false)
@@ -78,7 +78,7 @@ function SkuOptions:SlashFunc(input)
 			print("SkuOptions off")
 		end
 		]]
-		if fields[1] == "short" then
+		if fields[1] == L["short"] then
 			if SkuCore.inCombat == true then
 				SkuCore.openMenuAfterCombat = true
 				SkuCore.openMenuAfterPath = input
@@ -225,16 +225,16 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		end
 		]]
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Größe"}, menuEntryTemplate_Menu)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Size"]}, menuEntryTemplate_Menu)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Klein"}, menuEntryTemplate_Menu)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Small"]}, menuEntryTemplate_Menu)
 			tNewMenuEntry.OnEnter = function(self, aValue, aName)
 				--print("OnEnter Klein", self.name, value, aValue, self.selectTarget.name)
 				self.selectTarget.TMPSize = 1
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Groß"}, menuEntryTemplate_Menu)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Large"]}, menuEntryTemplate_Menu)
 			tNewMenuEntry.OnEnter = function(self, aValue, aName)
 				--print("OnEnter Groß", self.name, value, aValue, self.selectTarget.name)
 				self.selectTarget.TMPSize = 5
@@ -244,7 +244,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		if SkuQuest then
 			if SkuQuest:GetQuestTitlesList()  then
 				if #SkuQuest:GetQuestTitlesList() > 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Quests"}, menuEntryTemplate_Menu)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Quests"]}, menuEntryTemplate_Menu)
 						tNewMenuEntry.dynamic = true
 						tNewMenuEntry.BuildChildren = function(self)
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, SkuQuest:GetQuestTitlesList(), menuEntryTemplate_Menu)
@@ -253,7 +253,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 			end
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"NPC Namen"}, menuEntryTemplate_Menu)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["NPC names"]}, menuEntryTemplate_Menu)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -306,7 +306,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 			end
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Zonen Namen"}, menuEntryTemplate_Menu)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zonen names"]}, menuEntryTemplate_Menu)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -324,7 +324,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		end
 
 		--npc namen, quests von oben noch hinzufügen
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle alphabetisch"}, menuEntryTemplate_Menu)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All alphabetically"]}, menuEntryTemplate_Menu)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -529,6 +529,7 @@ function SkuOptions:OnInitialize()
 
 	options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(SkuOptions.db)
 
+	--[[
 	--delete all wps and rts if this is the first load of >= v15.4, as we've changed the queue mechanic. Old TTSSepPause isn't valid.
 	if SkuOptions.db.profile["SkuOptions"].firstLoadOfVersion15_4 ~= false then
 		SkuOptions.db.profile["SkuOptions"].firstLoadOfVersion15_4 = false
@@ -544,6 +545,7 @@ function SkuOptions:OnInitialize()
 		SkuOptions.db.profile["SkuNav"].RecentWPs = {}
 		print("Sku-Version 15. Alle bestehenden Wegpunkte und Routen wurden gelöscht.")
 	end
+	]]
 
 	SkuOptions.db.RegisterCallback(self, "OnProfileChanged", "RefreshConfig")
 	SkuOptions.db.RegisterCallback(self, "OnProfileCopied", "RefreshConfig")
@@ -596,7 +598,7 @@ function SkuOptions:OnInitialize()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].NeedButton:Click()
-						Voice:OutputString("Bedarf", true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						Voice:OutputString(L["Need"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 						C_Timer.NewTimer(0.5, function()
 							if _G["StaticPopup1"]:IsVisible() then
 								_G["StaticPopup1Button1"]:Click()
@@ -612,7 +614,7 @@ function SkuOptions:OnInitialize()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].GreedButton:Click()
-						Voice:OutputString("Gier", true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						Voice:OutputString(L["Greed"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 						C_Timer.NewTimer(0.5, function()
 							if _G["StaticPopup1"]:IsVisible() then
 								_G["StaticPopup1Button1"]:Click()
@@ -628,7 +630,7 @@ function SkuOptions:OnInitialize()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].PassButton:Click()
-						Voice:OutputString("Gepasst", true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						Voice:OutputString(L["Pass"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 					end
 				end
 			end
@@ -638,7 +640,7 @@ function SkuOptions:OnInitialize()
 			local tItem
 			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 			if SkuOptions.nextRollFrameNumber then
-				Voice:OutputString("Würfeln für "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+				Voice:OutputString(L["Roll on "]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 			end
 			return
 		end
@@ -777,10 +779,10 @@ function SkuOptions:OnInitialize()
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuOptions:MenuBuilder(tNewMenuEntry)
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"Lokal"}, menuEntryTemplate_Menu)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Local"]}, menuEntryTemplate_Menu)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
-					SkuOptions:MenuBuilderLocal(tNewMenuEntry, {"leer"}, function(a, b, c, d) 
+					SkuOptions:MenuBuilderLocal(tNewMenuEntry, {L["Empty"]}, function(a, b, c, d) 
 						--print(a, b, c, d) 
 					end)
 				end
@@ -839,30 +841,30 @@ function SkuOptions:OnInitialize()
 					CloseMail();
 				end
 
-				Voice:OutputString("Menü;geschlossen", false, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
-				SkuCore.Debug("", "Menü geschlossen", true)
+				Voice:OutputString(L["Menu;closed"], false, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
+				SkuCore.Debug("", L["Menu;closed"], true)
 
 			else
 				self:Show()
 				SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
 				PlaySound(811)
-				Voice:OutputString("Menü;geöffnet", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
+				Voice:OutputString(L["Menu;open"], true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
 				Voice:OutputString(SkuOptions.Menu[1].name, false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 				SkuCore.Debug("", SkuOptions.currentMenuPosition.name, true)
 			end
 		end
 
 		if a == "SHIFT-F9" then
-			SkuOptions:SlashFunc("short,"..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1)
+			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1)
 		end
 		if a == "SHIFT-F10" then
-			SkuOptions:SlashFunc("short,"..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2)
+			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2)
 		end
 		if a == "SHIFT-F11" then
-			SkuOptions:SlashFunc("short,"..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3)
+			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3)
 		end
 		if a == "SHIFT-F12" then
-			SkuOptions:SlashFunc("short,"..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4)
+			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4)
 		end
 
 		if a == "CTRL-SHIFT-F9" or a == "CTRL-SHIFT-F10" or a == "CTRL-SHIFT-F11" or a == "CTRL-SHIFT-F12" then
@@ -876,22 +878,22 @@ function SkuOptions:OnInitialize()
 
 				if a == "CTRL-SHIFT-F9" then
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1 = tBread
-					Voice:OutputString("Schnellwahl;F9;neu;belegt;mit;"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+					Voice:OutputString(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 				end
 				if a == "CTRL-SHIFT-F10" then
-					Voice:OutputString("Schnellwahl;F10;neu;belegt;mit;"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+					Voice:OutputString(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2 = tBread
 				end
 				if a == "CTRL-SHIFT-F11" then
-					Voice:OutputString("Schnellwahl;F11;neu;belegt;mit;"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+					Voice:OutputString(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3 = tBread
 				end
 				if a == "CTRL-SHIFT-F12" then
-					Voice:OutputString("Schnellwahl;F12;neu;belegt;mit;"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+					Voice:OutputString(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4 = tBread
 				end
 			else
-				Voice:OutputString("Nicht möglich. Menö ist nicht geöffnet", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+				Voice:OutputString(L["Impossible. Menu is not open."], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 			end
 		end
 
@@ -1030,7 +1032,7 @@ function SkuOptions:OnInitialize()
 				local tOldMenuName = ""
 				while tOut == false do
 					SkuOptions.currentMenuPosition:OnPrev()
-					if not string.find(SkuOptions.currentMenuPosition.name, "Leer") then
+					if not string.find(SkuOptions.currentMenuPosition.name, L["Empty"]) then
 						tOut = true
 					end
 					if SkuOptions.currentMenuPosition.name == tOldMenuName then
@@ -1048,7 +1050,7 @@ function SkuOptions:OnInitialize()
 				local tOldMenuName = ""
 				while tOut == false do
 					SkuOptions.currentMenuPosition:OnNext()
-					if not string.find(SkuOptions.currentMenuPosition.name, "Leer") then
+					if not string.find(SkuOptions.currentMenuPosition.name, L["Empty"]) then
 						tOut = true
 					end
 					if SkuOptions.currentMenuPosition.name == tOldMenuName then
@@ -1303,11 +1305,11 @@ function SkuOptions:ApplyFilter(aFilterstring)
 
 		local tChildrenFiltered = {}
 		local tFilterEntry = SkuOptions:TableCopy(tOldChildren[1])
-		tFilterEntry.name = "Filter;"..aFilterstring
+		tFilterEntry.name = L["Filter"]..";"..aFilterstring
 		table.insert(tChildrenFiltered, tFilterEntry)
 		for x = 1, #tOldChildren do
 			local tHayStack = string.lower(tOldChildren[x].name)
-			tHayStack = string.gsub(tHayStack, "OBJEKT;%d+;", "OBJEKT;")
+			tHayStack = string.gsub(tHayStack, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
 			tHayStack = string.gsub(tHayStack, ";", " ")
 			tHayStack = string.gsub(tHayStack, "#", " ")
 
@@ -1331,7 +1333,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		if #tChildrenFiltered == 0 then
 			table.insert(tChildrenFiltered, tOldChildren[1])
 			--SkuCore:Debug("ApplyFilter: keine Ergebnisse f�r filter, element 1 wird angezeigt")
-			Voice:OutputString("Keine Ergebnisse", true, true, 0.2)
+			Voice:OutputString(L["No results"], true, true, 0.2)
 		end
 
 		for x = 1, #tChildrenFiltered do
@@ -1350,7 +1352,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		SkuOptions.currentMenuPosition.parent.children = tChildrenFiltered--tOldChildren)
 		SkuOptions.currentMenuPosition:OnFirst()
 
-		Voice:OutputString("Filter angewendet", true, true, 0.3)
+		Voice:OutputString(L["Filter applied"], true, true, 0.3)
 		--SkuCore:Debug("ApplyFilter: filter applied, menu updated")
 	end
 	if aFilterstring == "" then
@@ -1371,7 +1373,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 			SkuOptions.currentMenuPosition:OnFirst()
 			tOldChildren = false
 
-			Voice:OutputString("Filter entfernt", true, true, 0.3)
+			Voice:OutputString(L["Filter removed"], true, true, 0.3)
 			--SkuCore:Debug("ApplyFilter: filter cleared, menu updated")
 		else
 			--SkuCore:Debug("ApplyFilter: error: no old child data. this should not happen!")
@@ -1413,7 +1415,7 @@ local oDCFAddMessage = nil--DEFAULT_CHAT_FRAME.AddMessage
 function nDCFAddMessage(...)
 	local _, b = ...
 	if b then
-		local tResult = string.find(b, "Momentan ist kein Spieler mit dem Namen")
+		local tResult = string.find(b, L["is no player with"])
 		if not tResult then
 			oDCFAddMessage(...)
 		else
@@ -1434,7 +1436,7 @@ function nDCFAddMessage(...)
 				if SkuFluegel.TrackingTarget then
 					for q = 1, 4 do
 						if tTargetName == SkuFluegel.TrackingTarget[q] then
-							SkuFluegel.TrackingTarget[q] = "Kein Ziel"
+							SkuFluegel.TrackingTarget[q] = L["No target"]
 							SkuFluegel:RefreshVisuals()
 						end
 					end
@@ -1460,7 +1462,7 @@ function SkuOptions:START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		Voice:OutputString("Würfeln für "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		Voice:OutputString(L["Roll on "]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1469,7 +1471,7 @@ function SkuOptions:CANCEL_LOOT_ROLL(rollID, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		Voice:OutputString("Würfeln für "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		Voice:OutputString(L["Roll on "]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1478,7 +1480,7 @@ function SkuOptions:LOOT_SLOT_CHANGED(lootSlot, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		Voice:OutputString("Würfeln für "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		Voice:OutputString(L["Roll on "]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 	end
 end
 
@@ -1507,7 +1509,7 @@ end
 function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine)
 	--print("VocalizeMultipartString", aStr)
 	-- don't vocalize object numbers
-	local tTempHayStack = string.gsub(aStr, "OBJEKT;%d+;", "OBJEKT;")
+	local tTempHayStack = string.gsub(aStr, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
 	aStr = tTempHayStack
 
 	if not engine then
@@ -1568,9 +1570,9 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 
 	--handle filter placeholder
 	local tUncleanValue = SkuOptions.currentMenuPosition.name
-	if string.sub(tUncleanValue, 1, string.len("Filter;")) == "Filter;" then
-		local tSecondSegment = string.sub(tUncleanValue, string.len("Filter;") + 1)
-		tUncleanValue = "Filter;"
+	if string.sub(tUncleanValue, 1, string.len(L["Filter"]..";")) == L["Filter"]..";" then
+		local tSecondSegment = string.sub(tUncleanValue, string.len(L["Filter"]..";") + 1)
+		tUncleanValue = L["Filter"]..";"
 		for q = 1, string.len(tSecondSegment) do
 			tUncleanValue = tUncleanValue..string.sub(tSecondSegment, q, q)..";"
 		end
@@ -1595,7 +1597,7 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 	tFinalString = tFinalString..tCleanValue
 	if SkuOptions.db.profile[MODULE_NAME].vocalizeSubmenus == true then
 		if #SkuOptions.currentMenuPosition.children > 0 then
-			tFinalString = tFinalString..";plus"
+			tFinalString = tFinalString..";"..L["plus"]
 		end
 	end
 
@@ -1678,7 +1680,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			end
 			if tNewMenuEntry and aGossipListTable[index].click == true then
 				if aGossipListTable[index].func then
-					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {"Linksklick"}, menuEntryTemplate_Menu)
+					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Left click"]}, menuEntryTemplate_Menu)
 					if aGossipListTable[index].containerFrameName then
 						tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames()"
 						if aGossipListTable[index].obj.GetParent then
@@ -1704,7 +1706,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							end
 						end
 					end
-					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {"Rechtsklick"}, menuEntryTemplate_Menu)
+					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Right click"]}, menuEntryTemplate_Menu)
 					if aGossipListTable[index].containerFrameName then
 						tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
 						--print("rechts mac", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
@@ -1744,14 +1746,14 @@ function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFun
 
 	SkuCore.GossipList = SkuCore.GossipList or {}
 	if #SkuCore.GossipList < 1 then
-		table.insert(SkuCore.GossipList, "Leer")
-		SkuCore.GossipList["Leer"] ={
-				frameName = "leer",
+		table.insert(SkuCore.GossipList, L["Empty"])
+		SkuCore.GossipList[L["Empty"]] ={
+				frameName = L["Empty"],
 				RoC = "Region",
 				type = "FontString",
 				childs = {},
 				obj = nil,
-				textFirstLine = "Leer",
+				textFirstLine = L["Empty"],
 				textFull = "",
 			}
 	end
@@ -1779,24 +1781,24 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
-					if aName == "Ein" then
+					if aName == L["On"] then
 						self.profilePath[self.profileIndex] = true
-					elseif aName == "Aus" then
+					elseif aName == L["Off"] then
 						self.profilePath[self.profileIndex] = false
 					end
 					--PlaySound(835)
 				end
 				tNewMenuEntry.BuildChildren = function(self)
-					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Ein"}, menuEntryTemplate_Menu)
-					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Aus"}, menuEntryTemplate_Menu)
+					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, menuEntryTemplate_Menu)
+					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, menuEntryTemplate_Menu)
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-					local tValue = "Ein"
+					local tValue = L["On"]
 					--if self.profilePath[self.profileIndex] == true then
 					if self.optionsPath[self.profileIndex]:get() == true then
 						tValue = "Ein"
 					else
-						tValue = "Aus"
+						tValue = L["Off"]
 					end
 					return tValue
 				end
@@ -2141,7 +2143,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ImportWpAndRouteData(aAreaId)
 	PlaySound(88)
-	Voice:OutputString("Jetzt Import Daten einfügen", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	Voice:OutputString(L["Paste data to import now"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)
@@ -2185,7 +2187,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 				--import wps
 				for i, v in ipairs(tWaypoints) do
 					--in area?
-					if not string.find(v, "Schnellwegpunkt") then
+					if not string.find(v, L["Quick waypoint"]) then
 						local tWayp = tWaypoints[v] or SkuNav:GetWaypoint(v)
 
 						if (aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) or not aAreaId or tImprableRouteWps[v] then
@@ -2416,7 +2418,7 @@ function SkuOptions:ExportWpAndRouteData(aAreaId)
 		end
 
 		for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Waypoints) do
-			if not string.find(v, "Schnellwegpunkt") then
+			if not string.find(v, L["Quick waypoint"]) then
 				if SkuOptions.db.profile["SkuNav"].Waypoints[v] then
 					if SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId)) == aAreaId then
 						if not tExportDataTable.waypoints[v] then
@@ -2430,7 +2432,7 @@ function SkuOptions:ExportWpAndRouteData(aAreaId)
 		for i, v in ipairs(tExportDataTable.routes) do
 			local tRoute = v
 			for i1, v1 in ipairs(SkuOptions.db.profile["SkuNav"].Routes[tRoute].WPs) do
-				if not string.find(v1, "Schnellwegpunkt") then
+				if not string.find(v1, L["Quick waypoint"]) then
 					if SkuOptions.db.profile["SkuNav"].Waypoints[v1] then
 						if not tExportDataTable.waypoints[v1] then
 							table.insert(tExportDataTable.waypoints, v1)
@@ -2443,7 +2445,7 @@ function SkuOptions:ExportWpAndRouteData(aAreaId)
 	else
 		tExportDataTable.routes = SkuOptions.db.profile["SkuNav"].Routes
 		for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Waypoints) do
-			if not string.find(v, "Schnellwegpunkt") then
+			if not string.find(v, L["Quick waypoint"]) then
 				if SkuOptions.db.profile["SkuNav"].Waypoints[v] then
 					if not tExportDataTable.waypoints[v] then
 						table.insert(tExportDataTable.waypoints, v)

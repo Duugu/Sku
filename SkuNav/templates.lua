@@ -2,7 +2,7 @@ local ADDON_NAME = ...
 local _G = _G
 
 SkuNav = SkuNav or LibStub("AceAddon-3.0"):NewAddon("SkuNav", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("SkuNav", false)
+local L = Sku.L
 
 UNIT_NPC_FLAG_NONE = 0x00000000
 UNIT_NPC_FLAG_GOSSIP= 0x00000001
@@ -53,14 +53,14 @@ SkuNav.NPCRolesToRecognize = {
 
 SkuNav.routeRecordingIntWpMethods = {
 	names = {
-		"Manuell",
+		L["Manually"],
 		"10 Grad 10 Meter",
 		"20 Grad 20 Meter",
 		"20 Grad 30 Meter",
 		"40 Grad 40 Meter",
 		},
 	values = {
-		["Manuell"] = {
+		[L["Manually"]] = {
 			rot = 1000,
 			dist = 100000,
 		},

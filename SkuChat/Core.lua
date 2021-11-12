@@ -3,7 +3,7 @@ local ADDON_NAME = ...
 local _G = _G
 
 SkuChat = LibStub("AceAddon-3.0"):NewAddon("SkuChat", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("SkuChat", false)
+local L = Sku.L
 
 local SkuChatChatBuffer = {}
 

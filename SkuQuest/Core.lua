@@ -4,7 +4,7 @@ local ADDON_NAME = ...
 local _G = _G
 
 SkuQuest = LibStub("AceAddon-3.0"):NewAddon("SkuQuest", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("SkuQuest", false)
+local L = Sku.L
 
 local PLAYER_ENTERING_WORLD_flag = true
 

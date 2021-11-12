@@ -11,15 +11,14 @@ SkuZOptions\Libs\HereBeDragons\HereBeDragons-2.0.lua
 SkuZOptions\Libs\HereBeDragons\HereBeDragons-Pins-2.0.lua
 SkuZOptions\Libs\HereBeDragons\HereBeDragons-Migrate.lua
 
+locales\enUS.lua
+locales\deDE.lua
+
 Core.lua
 
-SkuChat\locales\enUS.lua
-SkuChat\locales\deDE.lua
 SkuChat\Core.lua
 SkuChat\Options.lua
 
-SkuCore\locales\enUS.lua
-SkuCore\locales\deDE.lua
 SkuCore\Core.lua
 SkuCore\mail.lua
 SkuCore\Options.lua
@@ -35,25 +34,16 @@ SkuDB\assets\objects.lua
 SkuDB\assets\spells.lua
 SkuDB\assets\polygons.lua
 
-SkuMob\locales\enUS.lua
-SkuMob\locales\deDE.lua
-SkuMob\assets\mobdata.lua
 SkuMob\Core.lua
 SkuMob\Options.lua
 
-SkuNav\locales\enUS.lua
-SkuNav\locales\deDE.lua
 SkuNav\templates.lua
 SkuNav\Core.lua
 SkuNav\Options.lua
 
-SkuQuest\locales\enUS.lua
-SkuQuest\locales\deDE.lua
 SkuQuest\Core.lua
 SkuQuest\Options.lua
 
-SkuZOptions\locales\enUS.lua
-SkuZOptions\locales\deDE.lua
 SkuZOptions\Core.lua
 SkuZOptions\templates.lua
 SkuZOptions\Options.lua

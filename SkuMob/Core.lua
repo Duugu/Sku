@@ -4,7 +4,7 @@ local _G = _G
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuMob = LibStub("AceAddon-3.0"):NewAddon("SkuMob", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("SkuMob", false)
+local L = Sku.L
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -37,19 +37,19 @@ local SkuMobDB = {
 		[20] = [[Interface\AddOns\SkuAudioData\assets\audio\021321052314.mp3]],
 		[10] = [[Interface\AddOns\SkuAudioData\assets\audio\021321052311.mp3]],
 		[0] = [[Interface\AddOns\SkuAudioData\assets\audio\female2--0.mp3]],
-		["tot"] = [[Interface\AddOns\SkuAudioData\assets\audio\0805210501-10.mp3]],
+		[L["dead"]] = [[Interface\AddOns\SkuAudioData\assets\audio\0805210501-10.mp3]],
 		},
 	}
 
 local SkuMobRaidTargetStrings = {
-	[1] = "stern",
-	[2] = "kreis",
-	[3] = "diamant",
-	[4] = "dreieck",
-	[5] = "mond",
-	[6] = "quadrat",
-	[7] = "kreuz",
-	[8] = "kopf",
+	[1] = L["Star"],
+	[2] = L["Circle"],
+	[3] = L["Diamond"],
+	[4] = L["Triangle"],
+	[5] = L["Moon"],
+	[6] = L["Square"],
+	[7] = L["Cross"],
+	[8] = L["Skull"],
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -243,7 +243,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 	
 	local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
 	if hp == 0 then
-		Voice:OutputString("tot", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+		Voice:OutputString(L["dead"], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 		Voice:OutputString(tUnitName, false, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
 	else
 		if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
@@ -256,24 +256,23 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 	
 	local tClassification = UnitClassification("target") or ""
 	local tClassifications = {
-		["worldboss"] = "Weltboss", 
-		["rareelite"] = "Rare Elite", 
-		["elite"] = "Elite", 
-		["rare"] = "Rare", 
+		["worldboss"] = L["world boss"] , 
+		["rareelite"] = L["Rare Elite"], 
+		["elite"] = L["Elite"], 
+		["rare"] = L["Rare"], 
 		["normal"] = "", 
 		["trivial"] = "", 
 		["minus"] = "",
 	}
 
-	--if SkuMobData[tUnitName] then
 	if tRaidTargetString == "" or SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == false then
 		if tUnitLevel then
 			if tUnitLevel ~= -1 then
-				Voice:OutputString("level", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+				Voice:OutputString(L["level"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 				Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 			else
-				Voice:OutputString("level", false, true, 2.2)-- file: string, reset: bool, wait: bool, length: int
-				Voice:OutputString("unbekannt", false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+				Voice:OutputString(L["level"], false, true, 2.2)-- file: string, reset: bool, wait: bool, length: int
+				Voice:OutputString(L["Unknown"], false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 			end
 		end
 		GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
@@ -284,7 +283,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 			local tLineTwoText = left:GetText()
 			if tLineTwoText then
 				if tLineTwoText ~= "" then
-					if not string.find(tLineTwoText, "Stufe") then
+					if not string.find(tLineTwoText, L["level"]) then
 						Voice:OutputString(tLineTwoText, false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 					end
 				end

@@ -2,7 +2,7 @@ local ADDON_NAME = ...
 local _G = _G
 
 SkuOptions = SkuOptions or LibStub("AceAddon-3.0"):NewAddon("SkuOptions", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("SkuOptions", false)
+local L = Sku.L
 
 local MENU_MENU = 1
 local MENU_DROPDOWN = 2
@@ -435,11 +435,11 @@ menuEntryTemplate_Menu = {
 			self.selectTarget.macroID = macroID
 	
 		end
-		if string.find(self.name, "Filter;") then
+		if string.find(self.name, L["Filter"]..";") then
 			return
 		end
 
-		if self.name == "liste;leer" then
+		if self.name == L["Empty;list"] then
 			return
 		end
 
@@ -450,7 +450,7 @@ menuEntryTemplate_Menu = {
 		if self.dynamic == true then
 			self.children = {}
 			if self.isMultiselect == true then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Keine Auswahl"}, menuEntryTemplate_Menu)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Nothing selected"]}, menuEntryTemplate_Menu)
 				self.selectTarget = tNewMenuEntry
 			end
 			if self.isSelect == true then
@@ -484,20 +484,20 @@ menuEntryTemplate_Menu = {
 		else
 			if self.selectTarget and self.selectTarget ~= self then
 				if self.selectTarget.parent.isMultiselect == true then
-					if self.selectTarget.name == "Keine Auswahl" and (self.name ~= "Klein" and self.name ~= "Groß") then
-						self.selectTarget.name = "Auswahl;"..self.name
+					if self.selectTarget.name == L["Nothing selected"] and (self.name ~= L["Small"] and self.name ~= L["Large"]) then
+						self.selectTarget.name = L["Selected"]..";"..self.name
 					else
-						if self.name ~= "Klein" and self.name ~= "Groß" then
+						if self.name ~= L["Small"] and self.name ~= L["Large"] then
 							self.selectTarget.name = self.selectTarget.name..";"..self.name
 						end
 					end
 					SkuOptions.currentMenuPosition = self.selectTarget
 				end
 				if self.selectTarget.isSelect == true then
-					if not string.find(self.name, "Filter;") then
+					if not string.find(self.name, L["Filter"]..";") then
 						local rValue = self.name
-						if string.sub(rValue, 1, string.len("Auswahl;")) == "Auswahl;" then
-							rValue = string.sub(rValue,  string.len("Auswahl;") + 1)
+						if string.sub(rValue, 1, string.len(L["Selected"]..";")) == L["Selected"]..";" then
+							rValue = string.sub(rValue,  string.len(L["Selected"]..";") + 1)
 						end
 
 						local tUncleanValue = self.name
@@ -527,8 +527,8 @@ menuEntryTemplate_Menu = {
 					tCleanValue = string.sub(tUncleanValue,  tPos + 1)
 				end
 				
-				if string.sub(rValue, 1, string.len("Auswahl;")) == "Auswahl;" then
-					rValue = string.sub(rValue,  string.len("Auswahl;") + 1)
+				if string.sub(rValue, 1, string.len(L["Selected"]..";")) == L["Selected"]..";" then
+					rValue = string.sub(rValue,  string.len(L["Selected"]..";") + 1)
 				end
 				if #self.children > 0 or self.selectTarget == self then
 					self.parent:OnAction(self, tCleanValue, self.parent.name)

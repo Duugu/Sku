@@ -2,7 +2,7 @@
 
 local MODULE_NAME = "SkuCore"
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
-local L = LibStub("AceLocale-3.0"):GetLocale("SkuCore", false)
+local L = Sku.L
 
 local gLastError = ""
 ------------------------------------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ end
 function SkuCore:MAIL_INBOX_UPDATE(...)
    --print("MAIL_INBOX_UPDATE", ...)
    if MailboxOpenFlag == true then
-      SkuOptions:SlashFunc("short,SkuCore,Post")
+      SkuOptions:SlashFunc(L["short"]..",SkuCore,"..L["Mail"])
       --MailboxOpenFlag = false
    end
 end
@@ -55,7 +55,7 @@ end
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_SEND_SUCCESS(...)
    --print("MAIL_SEND_SUCCESS", ...)
-   Voice:OutputString("Gesendet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+   Voice:OutputString(L["Sent"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 end
 
 ------------------------------------------------------------------------------------------------------------
@@ -86,14 +86,14 @@ end
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_FAILED(...)
    --print("MAIL_FAILED", ...)
-   Voice:OutputString("Senden Fehlgeschlagen", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+   Voice:OutputString(L["Send failed"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
    Voice:OutputString(gLastError, false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MailEditor(aTargetValue)
 	PlaySound(88)
-	Voice:OutputString("Jetzt Text eingeben und Enter drücken.", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	Voice:OutputString(L["Enter text and press ENTER key"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 
 	--SkuOptions:EditBoxPasteShow("", function(self)
    SkuOptions:EditBoxShow(" ", function(self)
@@ -101,10 +101,10 @@ function SkuCore:MailEditor(aTargetValue)
       local tText = SkuOptionsEditBoxEditBox:GetText()
       SkuOptions.currentMenuPosition[aTargetValue] = tText
       if not SkuOptions.currentMenuPosition.TmpTo then
-         Voice:OutputString("Empfänger fehlt", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+         Voice:OutputString(L["No recepient"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
       end
       if not SkuOptions.currentMenuPosition.TmpSubject then
-         Voice:OutputString("Betreff fehlt", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+         Voice:OutputString(L["Topic missing"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
       end
 
 	end)
