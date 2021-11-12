@@ -1,44 +1,6 @@
+local MODULE_NAME = "SkuOptions"
 local L = Sku.L
 
-SKU_KONSTANTS = {
-	["SOUNDCHANNELS"] = {
-		["Master"] = "Gesamt",
-		["SFX"] = "Soundeffekte",
-		["Music"] = "Musik",
-		["Ambience"] = "Umgebung",
-		["Dialog"] = "Dialog",
-		["Talking Head"] = "Sku",
-	},
-}
-
-SkuOptions.BackgroundSoundFiles = {
-	["silence.mp3"] = "Nichts",
-	["benny_hill.mp3"] = "Benny Hill",
-	["chor1.mp3"] = "Chormusik 1",
-	["chor2.mp3"] = "Chormusik 2",
-	["chor3.mp3"] = "Chormusik 3",
-	["chor4.mp3"] = "Chormusik 4",
-	["entspannungsmusik.mp3"] = "Entspannungsmusik",
-	["gewitter.mp3"] = "Gewitter",
-	["nachts_im_wald.mp3"] = "Nachts im Wald",
-	["wald.mp3"] = "Vögel",
-	["walgesang.mp3"] = "Walgesang",
-	["slowreggaet.mp3"] = "Slow Reggae",
-}
-SkuOptions.BackgroundSoundFilesLen = {
-	["benny_hill.mp3"] = 238,8,
-	["chor1.mp3"] = 167,75,
-	["chor2.mp3"] = 186,55,
-	["chor3.mp3"] = 62.841541666666664,
-	["chor4.mp3"] = 317,15,
-	["entspannungsmusik.mp3"] = 112,95,
-	["gewitter.mp3"] = 125,91,
-	["nachts_im_wald.mp3"] = 100,41,
-	["wald.mp3"] = 59,13,
-	["walgesang.mp3"] = 141,37,
-	["slowreggaet.mp3"] = 152,36,
-}
-local MODULE_NAME = "SkuOptions"
 SkuOptions.options = {
 	name = MODULE_NAME,
 	handler = SkuOptions,
@@ -390,7 +352,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 					end
 				end
 				PlaySound(88)
-				Voice:OutputString("Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int										
+				SkuOptions.Voice:OutputString("Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int										
 				SkuOptions:EditBoxShow(tText, function(self) PlaySound(89) end)
 				SkuOptions.db.realm.missingAudio = {}
 			end

@@ -1,5 +1,4 @@
 ﻿local MODULE_NAME = "SkuChat"
-local ADDON_NAME = ...
 local _G = _G
 
 SkuChat = LibStub("AceAddon-3.0"):NewAddon("SkuChat", "AceConsole-3.0", "AceEvent-3.0")
@@ -114,9 +113,9 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 		if SkuChat.inCombat == true then
 			SkuChatNewLineInCombat = true
 		else
-			Voice:OutputString("sound-newChatLine", false, true, 0.1)
+			SkuOptions.Voice:OutputString("sound-newChatLine", false, true, 0.1)
 
-			--Voice:CollectString(body, false, true)
+			--SkuOptions.Voice:CollectString(body, false, true)
 		end
 	end
 end
@@ -141,8 +140,8 @@ function SkuChat:OnSkuChatToggle(a, b, c)
 		return
 	end
 	
-	if TTS:IsVisible() then
-		TTS:Output("", -1)
+	if SkuOptions.TTS:IsVisible() then
+		SkuOptions.TTS:Output("", -1)
 		ClearOverrideBindings(_G["OnSkuChatToggle"])
 		return
 	end
@@ -159,7 +158,7 @@ function SkuChat:OnSkuChatToggle(a, b, c)
 			tText = "  "..tBlank.." "..tRep.." - "..SkuChatChatBuffer[x].timestamp.."\r\n\r\n"..tText
 		end
 		SkuOptions.ChatOpen = true
-		TTS:Output("\r\n"..tText, 10000)
+		SkuOptions.TTS:Output("\r\n"..tText, 10000)
 
 		SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
 		if SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then
@@ -170,7 +169,7 @@ function SkuChat:OnSkuChatToggle(a, b, c)
 		end
 
 	else
-		TTS:Output("", 10000)
+		SkuOptions.TTS:Output("", 10000)
 		SkuOptions.ChatOpen = false
 	end
 	SetOverrideBindingClick(_G["OnSkuChatToggle"], true, "ESCAPE", "OnSkuChatToggle", "ESCAPE")

@@ -122,10 +122,10 @@ function SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset, aEngine)
 		if (sections[aSectionNumber]) then
 			if sections[aSectionNumber][aLineNumber] then
 				if not aEngine then
-					Voice:OutputString(sections[aSectionNumber][aLineNumber], aNoReset, true)
+					SkuOptions.Voice:OutputString(sections[aSectionNumber][aLineNumber], aNoReset, true)
 				else
-					--Voice:OutputString(" ", true)
-					Voice:OutputString(sections[aSectionNumber][aLineNumber], aNoReset, true, nil, nil, false, nil, aEngine)
+					--SkuOptions.Voice:OutputString(" ", true)
+					SkuOptions.Voice:OutputString(sections[aSectionNumber][aLineNumber], aNoReset, true, nil, nil, false, nil, aEngine)
 				end
 			end
 		end
@@ -192,8 +192,8 @@ function SkuTTS:Output(text, duration) --string, integer
 	SkuTTS.MainFrame.FS:SetText(text)
 	if duration > 0 then
 		if SkuTTS.MainFrame:IsVisible() == false then
-			--Voice:OutputString("sound-on3_1")
-			Voice:OutputString("sound-on3_1", true, true, 0.2, true)
+			--SkuOptions.Voice:OutputString("sound-on3_1")
+			SkuOptions.Voice:OutputString("sound-on3_1", true, true, 0.2, true)
 			SkuTTS.MainFrame:Show()
 		end
 	end
@@ -207,7 +207,7 @@ end
 function SkuTTS:Hide()
 	--SkuTTS.MainFrame.FS:SetText("")
 	if SkuTTS.MainFrame:IsVisible() == true then
-		Voice:OutputString("sound-off2", true, true, 0.2)
+		SkuOptions.Voice:OutputString("sound-off2", true, true, 0.2)
 	end
 	SkuTTS.MainFrame:Hide()
 end

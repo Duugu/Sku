@@ -1,4 +1,3 @@
-local ADDON_NAME = ...
 local _G = _G
 
 SkuOptions = SkuOptions or LibStub("AceAddon-3.0"):NewAddon("SkuOptions", "AceConsole-3.0", "AceEvent-3.0")
@@ -7,260 +6,6 @@ local L = Sku.L
 local MENU_MENU = 1
 local MENU_DROPDOWN = 2
 local MENU_DROPDOWN_MULTI = 3
-
-SkuOptions.BindTypeStrings = {
-	[0] = "ungebunden",
-	[1] = "BOP",
-	[2] = "BOE",
-	[3] = "BOU",
-	[4] = "BOQ",
-
-}
-
-SkuOptions.Glossary1 = {
-	["Routen Wörter"] = {
-		"Zentralpunkt",
-		"Kreuzungspunkt",
-		"Startgebiet",
-		"Zielgebiet",
-		"Questgeber",
-		"Questziel",
-	},
-	["Orte"] = {
-		"Anleger",
-		"Auktionshaus",
-		"Berg",
-		"Brunnen",
-		"Bank",
-		"Gildenbank",
-		"Briefkasten",
-		"Brücke",
-		"Bündelpunkt",
-		"Ein- und Ausgang",
-		"Fahrstuhl",
-		"Farmgebiet",
-		"Flugpunkt",
-		"Flusslauf",
-		"Friedhof",
-		"Gabelung",
-		"Gasthaus",
-		"Gasse",
-		"Gebäude",
-		"Gegnergebiet",
-		"Gewässer",
-		"Gruft",
-		"Haus",
-		"Höhle",
-		"Instanzeingang",
-		"Kirche",
-		"Kreuzung",
-		"Klassenlehrer",
-		"Lager",
-		"Meer",
-		"Passage",
-		"Pfad",
-		"Portal",
-		"Questgeber",
-		"Questgebiet",
-		"Rampe",
-		"Reiseroute",
-		"Reparieren",
-		"Route",
-		"Ruhepunkt",
-		"Schlucht",
-		"Schiff",
-		"Schmiede",
-		"See",
-		"Spawnpunkt",
-		"Spot",
-		"Stadttor",
-		"Stall",
-		"Stallmeister",
-		"Stammesgebiet",
-		"Steg",
-		"Strand",
-		"Straße",
-		"Tal",
-		"Tal",
-		"Tiertrainer",
-		"Tiefenbahn",
-		"Trainer",
-		"Treffpunkt",
-		"Treppe",
-		"Treppenhaus",
-		"Tunnel",
-		"Turm",
-		"Tür/Tor",
-		"Übergang",
-		"Überquerung",
-		"Verkaufen",
-		"Versammlungsstein",
-		"Weg",
-		"Wegpunkt",
-		"Zelt",
-		"Zentralerpunkt",
-		"Zeppelin",
-		"Scherbenwelt",
-		"Nethersturm",
-		"Schergrat",
-		"Zangarmarschen",
-		"Höllenfeuerhalbinsel",
-		"Nagrand",
-		"Wälder von Terokkar",
-		"Schattemondtal",
-		"Shattrath",
-		"Azurmythosinsel",
-		"Blutmythosinsel",
-		"Immersangwald",
-		"Geisterlande",
-	},
-	["Bindewörter"] = {
-		"auf",
-		"bei",
-		"bis",
-		"da",
-		"das",
-		"der",
-		"die",
-		"direkt",
-		"dort",
-		"durch",
-		"ein",
-		"einem",
-		"hier",
-		"hinter",
-		"im",
-		"im Umkreis",
-		"in",
-		"in Umgebung",
-		"mit",
-		"nach",
-		"neben",
-		"über",
-		"umliegend",
-		"unter",
-		"von",
-		"vom",
-		"vor",
-		"zum",
-		"zu",
-		"zur",
-		"zwischen",
-	},
-	 ["Orientierung"] = {
-		"Richtung",
-		"Links",
-		"Rechts",
-		"Oben",
-		"Unten",
-		"nördlich",
-		"nordöstlich",
-		"östlich",
-		"südöstlich",
-		"südlich",
-		"südwestlich",
-		"westlich",
-		"nordwestlich",
-		"drinnen",
-		"draußen",
-	},
-	 ["Klassen"] = {
-		"Krieger",
-		"Schurke",
-		"Druide",
-		"Paladin",
-		"Schamane",
-		"Priester",
-		"Hexenmeister",
-		"Magier",
-		"Jäger",
-		"Aldor",
-		"Seher",
-	},
-	 ["Gegnertypen"] = {
-		"Boss",
-		"Dämonen",
-		"Drachkin",
-		"Elementar",
-		"Elite",
-		"Entartung",
-		"Humanoid",
-		"Mechanisch",
-		"Questgegner",
-		"Riese",
-		"Tier",
-		"Untot",
-		"Wildtier",
-	},
-	 ["Berufe"] = {
-		"Alchemie",
-		"Angeln",
-		"Bergbau",
-		"Erste Hilfe",
-		"Ingeneur",
-		"Kochen",
-		"Kräuterkunde",
-		"Kürschnerei",
-		"Lederverarbeitung",
-		"Schmied",
-		"Schneiderei",
-		"Spezialisierung",
-		"Verzauberkunst",
-	},
-	 ["Tätigkeiten"] = {
-		"Farmen",
-		"Grinden",
-		"Questen",
-		"Reisen",
-	},
-	["Spezial"] = {
-		"achtung",
-		"Allianz",
-		"Bel",
-		"geheim",
-		"gut zugänglich",
-		"Horde",
-		"Klassenquest",
-		"Level",
-		"privat",
-		"PVE",
-		"PVP",
-		"Quest",
-		"schlecht zugänglich",
-		"Sku",
-		"Stufe",
-		"Versuch",
-		"vorsichtig",
-		"Wichtig",
-	},
-	["Maßeinheiten"] = {
-		"Meter",
-		"Einheiten",
-	},
-	["Farben"] = {
-		"Blau",
-		"Braun",
-		"Gelb",
-		"Grau",
-		"Grün",
-		"Orange",
-		"Rot",
-		"Schwarz",
-	},
-	["Zahlen"] = {
-		"Eins",
-		"Zwei",
-		"Drei",
-		"Vier",
-		"Fünf",
-		"Sechs",
-		"Sieben",
-		"Acht",
-		"Neun",
-		"Zehn",
-	},
-}
-
 
 SkuOptions.MenuMT = {
 	__add = function(thisTable, newTable)
@@ -551,3 +296,192 @@ menuEntryTemplate_Menu = {
 end,
 }
 setmetatable(menuEntryTemplate_Menu, SkuOptions.MenuMT)
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {aEntryName}, menuEntryTemplate_Menu)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.isMultiselect = true
+	tNewMenuEntry.filterable = true
+
+	tNewMenuEntry.BuildChildren = function(self)
+		self.parent.oldWpName = SkuOptions.db.profile.SkuNav.selectedWaypoint
+		if GetSubZoneText() ~= "" then
+			SkuOptions:InjectMenuItems(self, {GetSubZoneText()}, menuEntryTemplate_Menu)
+		end
+		if GetSubZoneText() ~= GetZoneText() then
+			SkuOptions:InjectMenuItems(self, {GetZoneText()}, menuEntryTemplate_Menu)
+		end
+		if UnitName("target") then
+			local name, realm = UnitName("target")
+			SkuOptions:InjectMenuItems(self, {name}, menuEntryTemplate_Menu)
+		end
+		--[[
+		if UnitPosition("player") then
+			local x, y = UnitPosition("player")
+			SkuOptions:InjectMenuItems(self, {string.format("%d", x)..";"..string.format("%d", y)}, menuEntryTemplate_Menu)
+		end
+		]]
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Size"]}, menuEntryTemplate_Menu)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Small"]}, menuEntryTemplate_Menu)
+			tNewMenuEntry.OnEnter = function(self, aValue, aName)
+				--print("OnEnter Klein", self.name, value, aValue, self.selectTarget.name)
+				self.selectTarget.TMPSize = 1
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Large"]}, menuEntryTemplate_Menu)
+			tNewMenuEntry.OnEnter = function(self, aValue, aName)
+				--print("OnEnter Groß", self.name, value, aValue, self.selectTarget.name)
+				self.selectTarget.TMPSize = 5
+			end
+		end
+
+		if SkuQuest then
+			if SkuQuest:GetQuestTitlesList()  then
+				if #SkuQuest:GetQuestTitlesList() > 0 then
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Quests"]}, menuEntryTemplate_Menu)
+						tNewMenuEntry.dynamic = true
+						tNewMenuEntry.BuildChildren = function(self)
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, SkuQuest:GetQuestTitlesList(), menuEntryTemplate_Menu)
+						end
+				end
+			end
+		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["NPC names"]}, menuEntryTemplate_Menu)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			self.children = {}
+			--collectgarbage("collect")
+			local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
+			local tWaypointList = {}
+			for i, v in pairs(SkuDB.NpcData.NamesDE) do
+				local tHasValidSpawns = false
+				if not string.find((SkuDB.NpcData.Data[i][1]), "UNUSED") then				
+					if SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]] then
+						for is, vs in pairs(SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]) do
+							if tHasValidSpawns == false then
+								if SkuDB.InternalAreaTable[is] then
+									local tCID = SkuDB.InternalAreaTable[is].ContinentID
+									local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
+									if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
+										tHasValidSpawns = true
+									end
+								end
+							end
+						end
+					end
+				end
+				if tHasValidSpawns == true then
+					local tRoles = SkuNav:GetNpcRoles(v[1], i)
+					local tRolesString = ""
+					if #tRoles > 0 then
+						for i, v in pairs(tRoles) do
+							tRolesString = tRolesString..";"..v
+						end
+						tRolesString = tRolesString..""
+					end
+					table.insert(tWaypointList, v[1]..tRolesString)
+				end
+			end
+
+			if #tWaypointList > 0 then
+				local tSortedWaypointList = {}
+				for k,v in SkuSpairs(tWaypointList, function(t,a,b) return t[b] > t[a] end) do --nach wert
+					table.insert(tSortedWaypointList, v)
+				end
+				if #tSortedWaypointList > 0 then
+					for z = 1, #tSortedWaypointList do
+						--print(z, tSortedWaypointList[z])
+						local tMenuName = tSortedWaypointList[z]
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tMenuName}, menuEntryTemplate_Menu)
+					end
+				end
+			end
+		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zonen names"]}, menuEntryTemplate_Menu)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tWaypointList = {}
+			for q = 1, #SkuDB.DefaultWaypoints2.Zones do
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints2.Zones[q]}, menuEntryTemplate_Menu)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.filterable = true
+				tNewMenuEntry.BuildChildren = function(self)--continents
+					for q = 1, #SkuDB.DefaultWaypoints2.Zones[self.name] do
+						local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints2.Zones[self.name][q]}, menuEntryTemplate_Menu)
+					end
+				end
+			end
+		end
+
+		--npc namen, quests von oben noch hinzufügen
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All alphabetically"]}, menuEntryTemplate_Menu)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tFullGlossary = {}
+			local tIndex = 1
+			for i, v in pairs(SkuOptions.Glossary1) do
+				for i1, v1 in pairs(v) do
+					tFullGlossary[string.lower(v1)] = string.lower(v1)
+					tIndex = tIndex + 1
+				end
+			end
+			for q = 1, #SkuDB.DefaultWaypoints2.Zones do
+				for w = 1, #SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]] do
+					tFullGlossary[string.lower(SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]][w])] = string.lower(SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]][w])
+					tIndex = tIndex + 1
+				end
+			end
+
+			local tSortedGlossary = {}
+			for k,v in SkuSpairs(tFullGlossary) do
+				table.insert(tSortedGlossary, k)
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedGlossary, menuEntryTemplate_Menu)
+		end
+
+		for i, v in pairs(SkuOptions.Glossary1) do
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {i}, menuEntryTemplate_Menu)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, v, menuEntryTemplate_Menu)
+			end
+		end
+
+		--SkuOptions:InjectMenuItems(self, {"Ab hier komplette Wortliste"}, menuEntryTemplate_Menu)
+		local tFullGlossary = {}
+		local tIndex = 1
+		for i, v in pairs(SkuOptions.Glossary1) do
+			for i1, v1 in pairs(v) do
+				tFullGlossary[string.lower(v1)] = string.lower(v1)
+				tIndex = tIndex + 1
+			end
+		end
+		for q = 1, #SkuDB.DefaultWaypoints2.Zones do
+			for w = 1, #SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]] do
+				tFullGlossary[string.lower(SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]][w])] = string.lower(SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]][w])
+				tIndex = tIndex + 1
+			end
+		end
+
+		local tSortedGlossary = {}
+		for k,v in SkuSpairs(tFullGlossary) do
+			table.insert(tSortedGlossary, k)
+		end	
+		local tSubMenu = SkuOptions:InjectMenuItems(self, tSortedGlossary, menuEntryTemplate_Menu)
+		tSubMenu.removeFilter = true
+		
+	end
+
+	
+	return tNewMenuEntry
+end

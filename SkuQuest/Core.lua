@@ -1,6 +1,5 @@
 ﻿---@diagnostic disable: undefined-global
 local MODULE_NAME = "SkuQuest"
-local ADDON_NAME = ...
 local _G = _G
 
 SkuQuest = LibStub("AceAddon-3.0"):NewAddon("SkuQuest", "AceConsole-3.0", "AceEvent-3.0")
@@ -138,16 +137,16 @@ function SkuQuest:OnEnable()
 		end
 		
 		if aKey == "SHIFT-UP" then
-			TTS:PreviousLine()
+			SkuOptions.TTS:PreviousLine()
 		end
 		if aKey == "SHIFT-DOWN" then
-			TTS:NextLine()
+			SkuOptions.TTS:NextLine()
 		end
 		if aKey == "CTRL-SHIFT-UP" then
-			TTS:PreviousSection()
+			SkuOptions.TTS:PreviousSection()
 		end
 		if aKey == "CTRL-SHIFT-DOWN" then
-			TTS:NextSection()
+			SkuOptions.TTS:NextSection()
 		end
 
 
@@ -170,7 +169,7 @@ function SkuQuest:OnEnable()
 --				_G["SkuQuestMain"]:Hide()
 			--end
 			--_G["QuestLogFrame"]:Hide()
-			--TTS:Output("", -1)--HideUIPanel(QuestLogFrame)
+			--SkuOptions.TTS:Output("", -1)--HideUIPanel(QuestLogFrame)
 			--SkuQuest:ToggleQuestLogHook()
 			HideUIPanel(QuestLogFrame)
 			--self:GetScript("OnHide")(self)
@@ -191,7 +190,7 @@ function SkuQuest:OnEnable()
 		end
 		
 		PlaySound(88)
-		Voice:OutputString("Quest;geöffnet", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+		SkuOptions.Voice:OutputString("Quest;geöffnet", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 		--[[
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "SkuQuestMainOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "SkuQuestMainOption1", "CTRL-SHIFT-DOWN")
@@ -214,8 +213,8 @@ function SkuQuest:OnEnable()
 			return
 		end
 		
-		Voice:OutputString("Quest;geschlossen", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
-		--TTS:Output("", -1)
+		SkuOptions.Voice:OutputString("Quest;geschlossen", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+		--SkuOptions.TTS:Output("", -1)
 		ClearOverrideBindings(self)
 		PlaySound(89)
 	end)
@@ -235,9 +234,9 @@ end
 function SkuQuest:OnSkuQuestPush()
 	if (GetQuestLogPushable()) then
 		QuestLogPushQuest()
-		Voice:OutputString("quest;geteilt", true, true, 0.2, true)
+		SkuOptions.Voice:OutputString("quest;geteilt", true, true, 0.2, true)
 	else
-		Voice:OutputString("quest;nicht;teilbar", true, true, 0.2, true)
+		SkuOptions.Voice:OutputString("quest;nicht;teilbar", true, true, 0.2, true)
 	end
 end
 
@@ -247,8 +246,8 @@ function SkuQuest:OnSkuQuestAbandon()
 	AbandonQuest()
 	--SkuQuest:ToggleQuestLogHook()
 	HideUIPanel(QuestLogFrame)
-	--TTS:Output("", -1)
-	Voice:OutputString("quest;abgebrochen", true, true, 0.2, true)
+	--SkuOptions.TTS:Output("", -1)
+	SkuOptions.Voice:OutputString("quest;abgebrochen", true, true, 0.2, true)
 	if _G["OnSkuOptionsMain"]:IsVisible() == true then
 		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
 	end
@@ -374,7 +373,7 @@ function SkuQuest:CheckQuestProgress(aSilent)
 									objectivesChanged = true
 									--print("success 1")
 									if not aSilent then
-										Voice:OutputString("sound-success1", true, true, 0.1, true)
+										SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
 									end
 									SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] = text
 								end
@@ -391,7 +390,7 @@ function SkuQuest:CheckQuestProgress(aSilent)
 					if objectivesChanged == true then
 						-- quest completed
 						if not aSilent then
-							Voice:OutputString("sound-success2", true, true, 0.1, true)
+							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.1, true)
 						end
 					end
 				end
@@ -641,8 +640,8 @@ function SkuQuest:GetTTSText(aQuestID)
 		table.insert(tSections, "Questtext\r\n"..questDescription)
 	end
 
-	--TTS:Output(tSections, 10000)
-	--Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest), false, true, 0.3)
+	--SkuOptions.TTS:Output(tSections, 10000)
+	--SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest), false, true, 0.3)
 	return tSections
 
 
@@ -888,29 +887,29 @@ function SkuQuest:ShowForTTS(aQuestID)
 		table.insert(tSections, "Questtext\r\n"..questDescription)
 	end
 
-	TTS:Output(tSections, 10000)
-	--Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest), false, true, 0.3)
+	SkuOptions.TTS:Output(tSections, 10000)
+	--SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest), false, true, 0.3)
 
 	if isHeader then
-		Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest).." zone "..questLogTitleText, true, true)
-		--Voice:OutputString(questLogTitleText, false, true)
+		SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest).." zone "..questLogTitleText, true, true)
+		--SkuOptions.Voice:OutputString(questLogTitleText, false, true)
 	--elseif SkuQuest_QuestTitlesAudioIndex[questID] then
 	else
 		if tTextFailedCompleted then
 			if tTextFailedCompleted == "Abgeschlossen" then
-				--Voice:OutputString("abgeschlossen", false, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
+				--SkuOptions.Voice:OutputString("abgeschlossen", false, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
 			elseif tTextFailedCompleted == "Fehlgeschlagen" then
-				--Voice:OutputString("fehlgeschlagen", false, true, 0.8)
+				--SkuOptions.Voice:OutputString("fehlgeschlagen", false, true, 0.8)
 			end
 		else
 			tTextFailedCompleted = ""
 		end
 	
-		--Voice:Output(SkuQuest_QuestTitlesAudioIndex[questID])
-		Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest).." "..tTextFailedCompleted.." "..questLogTitleText, true, true)
+		--SkuOptions.Voice:Output(SkuQuest_QuestTitlesAudioIndex[questID])
+		SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest).." "..tTextFailedCompleted.." "..questLogTitleText, true, true)
 	end
 	
-	--TTS:Output(tText, 10000)
+	--SkuOptions.TTS:Output(tText, 10000)
 
 
 end
@@ -932,10 +931,10 @@ function SkuQuest:ToggleQuestLogHook(...)
 	end
 
 	if ( QuestLogFrame:IsVisible() ) then
-		--TTS:Output("", 10000)--HideUIPanel(QuestLogFrame)
+		--SkuOptions.TTS:Output("", 10000)--HideUIPanel(QuestLogFrame)
 		C_Timer.NewTimer(0.1, function()
 			SkuOptions:SlashFunc("short,SkuQuest")
-			--Voice:OutputString(self.name, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+			--SkuOptions.Voice:OutputString(self.name, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 		end)
 
 		--[[
@@ -954,7 +953,7 @@ function SkuQuest:ToggleQuestLogHook(...)
 			_G["SkuQuestMainOption1"]:Hide()
 		end
 		]]
-		--TTS:Output("", -1)--ShowUIPanel(QuestLogFrame)
+		--SkuOptions.TTS:Output("", -1)--ShowUIPanel(QuestLogFrame)
 	end
 end
 

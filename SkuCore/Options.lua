@@ -359,7 +359,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					PlaceAction(self.buttonObj.action)
 					ClearCursor()
 				elseif aName == L["Bind key"] then
-					Voice:OutputString(L["Press new key or Escape to cancel"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
+					SkuOptions.Voice:OutputString(L["Press new key or Escape to cancel"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
 					local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
 					f.menuTarget = self
 					f:SetSize(80, 22)
@@ -400,9 +400,9 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 							self.menuTarget.name = L["Button"].." "..x..";"..ButtonContentNameHelper(actionType, id, subType, aActionBarName, x)
 							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-							Voice:OutputString(L["New key"]..";"..aKey, true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
+							SkuOptions.Voice:OutputString(L["New key"]..";"..aKey, true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
 						else
-							Voice:OutputString(L["Binding canceled"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
+							SkuOptions.Voice:OutputString(L["Binding canceled"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
 						end
 						ClearOverrideBindings(self)
 					end)
@@ -582,7 +582,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					if totalItems > 0 then
 						C_Timer.After(1, bootlegRepeatingTimer)
 					else
-						Voice:OutputString(L["All opened"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
+						SkuOptions.Voice:OutputString(L["All opened"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
 					end
 				end
 				bootlegRepeatingTimer()

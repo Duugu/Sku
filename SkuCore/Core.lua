@@ -5,7 +5,6 @@
 skudebuglevel = 1
 
 local MODULE_NAME = "SkuCore"
-local ADDON_NAME = ...
 local _G = _G
 local tStartDebugTimestamp = GetTime() or 0
 
@@ -483,7 +482,7 @@ function SkuCore:OnEnable()
 					if SkuCoreOldPetHappinessCounter > 15 then
 						local happiness, damagePercentage, loyaltyRate = GetPetHappiness()
 						if happiness and happiness ~= 3 then
-							Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+							SkuOptions.Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 							SkuCoreOldPetHappinessCounter = 0
 						end
 					end
@@ -513,7 +512,7 @@ function SkuCore:OnEnable()
 					oitemLink = itemLink
 				end
 				if tResult then
-					Voice:OutputString(L["Cursor"]..tResult, true, true, 0.2, true)
+					SkuOptions.Voice:OutputString(L["Cursor"]..tResult, true, true, 0.2, true)
 				end
 
 				if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
@@ -539,7 +538,7 @@ function SkuCore:OnEnable()
 					if SkuStatus.falling ~= -1 then
 						if SkuStatus.falling > 0 then
 							if GetTime() - SkuStatus.falling > 1.00 then
-								Voice:OutputString("male-Fallen", true, true, 0.2)
+								SkuOptions.Voice:OutputString("male-Fallen", true, true, 0.2)
 								SkuStatus.falling = -1
 							end
 						else
@@ -552,7 +551,7 @@ function SkuCore:OnEnable()
 				if UnitIsAFK("player") == true then
 					if SkuStatus.afk == 0 then
 						SkuStatus.afk = GetTime()
-						Voice:OutputString("male-Fallen", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Fallen", false, true, 0.2)
 					end
 				else
 					SkuStatus.afk = 0
@@ -560,7 +559,7 @@ function SkuCore:OnEnable()
 				if UnitIsDead("player") == true then
 					if SkuStatus.dead == 0 then
 						SkuStatus.dead = GetTime()
-						Voice:OutputString("male-Tot", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Tot", false, true, 0.2)
 					end
 				else
 					SkuStatus.dead = 0
@@ -568,7 +567,7 @@ function SkuCore:OnEnable()
 				if IsResting() == true then
 					if SkuStatus.rest == 0 then
 						SkuStatus.rest = GetTime()
-						Voice:OutputString("male-Rasten", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Rasten", false, true, 0.2)
 					end
 				else
 					SkuStatus.rest = 0
@@ -576,7 +575,7 @@ function SkuCore:OnEnable()
 				if UnitIsGhost("player") == true then
 					if SkuStatus.ghost == 0 then
 						SkuStatus.ghost = GetTime()
-						Voice:OutputString("male-Geist", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Geist", false, true, 0.2)
 					end
 				else
 					SkuStatus.ghost = 0
@@ -584,7 +583,7 @@ function SkuCore:OnEnable()
 				if IsOutdoors() == true then
 					if SkuStatus.outdoor == 0 then
 						SkuStatus.outdoor = GetTime()
-						Voice:OutputString("male-Draußen", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Draußen", false, true, 0.2)
 					end
 				else
 					SkuStatus.outdoor = 0
@@ -592,7 +591,7 @@ function SkuCore:OnEnable()
 				if IsIndoors() == true then
 					if SkuStatus.indoor == 0 then
 						SkuStatus.indoor = GetTime()
-						Voice:OutputString("male-Drinnen", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Drinnen", false, true, 0.2)
 					end
 				else
 					SkuStatus.indoor = 0
@@ -601,7 +600,7 @@ function SkuCore:OnEnable()
 					if SkuStatus.submerged == 0 then
 						SkuStatus.submerged = GetTime()
 						SkuStatus.swimming = 0
-						Voice:OutputString("male-Tauchen", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Tauchen", false, true, 0.2)
 					end
 				else
 					SkuStatus.submerged = 0
@@ -609,7 +608,7 @@ function SkuCore:OnEnable()
 				if IsSwimming() == true and SkuStatus.submerged == 0 then
 					if SkuStatus.swimming == 0 then
 						SkuStatus.swimming = GetTime()
-						Voice:OutputString("male-Schwimmen", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Schwimmen", false, true, 0.2)
 					end
 				else
 					SkuStatus.swimming = 0
@@ -617,23 +616,23 @@ function SkuCore:OnEnable()
 				if IsMounted() == true then
 					if SkuStatus.riding == 0 then
 						SkuStatus.riding = GetTime()
-						Voice:OutputString("male-Reiten", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Reiten", false, true, 0.2)
 					end
 				else
 					if SkuStatus.riding > 0 then
 						SkuStatus.riding = 0
-						Voice:OutputString("male-Reiten beendet", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Reiten beendet", false, true, 0.2)
 					end
 				end
 				if IsFlying() == true then
 					if SkuStatus.flying == 0 then
 						SkuStatus.flying = GetTime()
-						Voice:OutputString("male-Fliegen", false, true, 0.2)
+						SkuOptions.Voice:OutputString("male-Fliegen", false, true, 0.2)
 					end
 				else
 					if SkuStatus.flying > 0 then
 						SkuStatus.flying = 0
-						Voice:OutputString("Fliegen beendet", false, true, 0.2)
+						SkuOptions.Voice:OutputString("Fliegen beendet", false, true, 0.2)
 					end
 				end
 
@@ -688,7 +687,7 @@ function SkuCore:OnEnable()
 										if SkuCoreMovement.counter > 5 and tSound > 0 then
 											SkuCoreMovement.counter = 0
 											--print(tSound, t * 10000)
-											Voice:OutputString("sound-stuck"..tSound, true, false, 0.8)-- file: string, reset: bool, wait: bool, length: int
+											SkuOptions.Voice:OutputString("sound-stuck"..tSound, true, false, 0.8)-- file: string, reset: bool, wait: bool, length: int
 										end
 									end
 
@@ -753,16 +752,16 @@ function SkuCore:OnEnable()
 		end
 
 		if aKey == "SHIFT-UP" then
-			TTS:PreviousLine()
+			SkuOptions.TTS:PreviousLine()
 		end
 		if aKey == "SHIFT-DOWN" then
-			TTS:NextLine()
+			SkuOptions.TTS:NextLine()
 		end
 		if aKey == "CTRL-SHIFT-UP" then
-			TTS:PreviousSection()
+			SkuOptions.TTS:PreviousSection()
 		end
 		if aKey == "CTRL-SHIFT-DOWN" then
-			TTS:NextSection()
+			SkuOptions.TTS:NextSection()
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self) 
@@ -823,11 +822,11 @@ function SkuCore:OnEnable()
 		if SkuStatus.running > 0 then
 			SkuStatus.running = 0
 			SkuStatus.walking = GetTime()
-			Voice:OutputString("male-Gehen", false, true, 0.2)
+			SkuOptions.Voice:OutputString("male-Gehen", false, true, 0.2)
 		elseif SkuStatus.walking > 0 then
 			SkuStatus.running = GetTime()
 			SkuStatus.walking = 0
-			Voice:OutputString("male-Laufen", false, true, 0.2)
+			SkuOptions.Voice:OutputString("male-Laufen", false, true, 0.2)
 		end
 	end)
 end
@@ -857,11 +856,11 @@ function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
 		end
 		--C_Timer.After(0.1, function()
 			--if SkuStatus.follow ~= 0 then
-				--Voice:OutputString("male-Folgen", false, true, 0.2)
+				--SkuOptions.Voice:OutputString("male-Folgen", false, true, 0.2)
 			--end
 		--end)
 	end
-	Voice:OutputString("male-Folgen", false, true, 0.2)
+	SkuOptions.Voice:OutputString("male-Folgen", false, true, 0.2)
 	SkuOptions:SendTrackingStatusUpdates("F-1")
 	SkuOptions:SendTrackingStatusUpdates("FN-"..SkuStatus.followUnitName)
 end
@@ -873,7 +872,7 @@ function SkuCore:AUTOFOLLOW_END(event, ...)
 			if SkuStatus.follow ~= 0 then
 				SkuStatus.follow = 0
 				if SkuStatus.follow == 0 then
-					Voice:OutputString("male-Folgen beendet", false, true, 0.2)
+					SkuOptions.Voice:OutputString("male-Folgen beendet", false, true, 0.2)
 					SkuStatus.followUnitName = ""
 				end
 				if SkuStatus.followUnitId then
@@ -896,12 +895,12 @@ function SkuCore:UPDATE_STEALTH(eventName, ...)--ok
 	--print("UPDATE_STEALTH", eventName, ...)
 	if IsStealthed() == true then
 		SkuStatus.stealth = GetTime()
-		Voice:OutputString("male-Verstohlenheit", false, true, 0.2)
+		SkuOptions.Voice:OutputString("male-Verstohlenheit", false, true, 0.2)
 	else
 		SkuStatus.stealth = 0
 	end
 end
---Voice:OutputString("Verstohlenheit;beendet", true, true, nil, true)
+--SkuOptions.Voice:OutputString("Verstohlenheit;beendet", true, true, nil, true)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:BAG_UPDATE(...)
@@ -932,11 +931,11 @@ function SkuCore:PLAYER_MOUNT_DISPLAY_CHANGED(...)--taxi
 	--print("PLAYER_MOUNT_DISPLAY_CHANGED", ...)
 	if PLAYER_CONTROL_LOST_flag == 1 then
 		PLAYER_CONTROL_LOST_flag = 0
-		Voice:OutputString(L["taxi;started"], true, true, nil, true)
+		SkuOptions.Voice:OutputString(L["taxi;started"], true, true, nil, true)
 	end
 	if PLAYER_CONTROL_GAINED_flag == 1 then
 		PLAYER_CONTROL_GAINED_flag = 0
-		Voice:OutputString(L["taxi;ended"], true, true, nil, true)
+		SkuOptions.Voice:OutputString(L["taxi;ended"], true, true, nil, true)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1054,7 +1053,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	if aUnitTarget == "player" and SkuCore.inCombat == false then
-		Voice:OutputString(L["cast"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+		SkuOptions.Voice:OutputString(L["cast"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1139,13 +1138,13 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 	end
 	_G["SkuCoreControlOption1"]:Hide()
 	SkuCore.inCombat = true
-	Voice:OutputString(L["Combat start"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	SkuOptions.Voice:OutputString(L["Combat start"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_REGEN_ENABLED(...)
 	SkuCore.inCombat = false
-	Voice:OutputString(L["Combat end"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	SkuOptions.Voice:OutputString(L["Combat end"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 	if SkuOptions.db.profile[MODULE_NAME].autoFollow == true then
 		if SkuStatus.followUnitId then
 			if SkuStatus.followUnitId ~= "" then
@@ -1389,43 +1388,6 @@ local tButtonsWoFontstrings = {
 	PrevPageButton = L["Previous"],
 	CloseButton = L["Close"],
 	}
-
-local function tprint (tbl, indent)
-	if not indent then indent = 0 end
-	for k, v in pairs(tbl) do
-		local formatting = string.rep("  ", indent)..k..": "
-		if k == 'obj' then
-			if v ~= nil then
-				print(formatting.."<obj>")
-			else
-				print(formatting.."nil")
-			end
-		elseif k == 'func' then
-			if v ~= nil then
-				print(formatting.."<func>")
-			else
-				print(formatting.."nil")
-			end
-		elseif k == 'onActionFunc' then
-			if v ~= nil then
-				print(formatting.."<onActionFunc>")
-			else
-				print(formatting.."nil")
-			end
-		else
-			if type(v) == "table" then
-				print(formatting)
-				tprint(v, indent+1)
-			elseif type(v) == 'boolean' then
-				print(formatting..tostring(v))      
-			elseif type(v) == 'string' then
-				print(formatting..string.gsub(v, "\r\n", " "))
-			else
-				print(formatting..v)
-			end
-		end
-	end
-end
 
 local validTypes = {
 	Frame = true,

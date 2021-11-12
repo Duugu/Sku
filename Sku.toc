@@ -44,6 +44,8 @@ SkuNav\Options.lua
 SkuQuest\Core.lua
 SkuQuest\Options.lua
 
+SkuZOptions\utilities.lua
 SkuZOptions\Core.lua
+SkuZOptions\data.lua
 SkuZOptions\templates.lua
 SkuZOptions\Options.lua

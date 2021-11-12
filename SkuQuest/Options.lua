@@ -380,8 +380,8 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				--print("metapathFollowingEndTarget", SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget)
 
 				if SkuOptions.db.profile["SkuNav"].routeRecording == true then
-					Voice:OutputString(L["Error"], false, true, 0.3, true)
-					Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
+					SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
+					SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
 					return
 				end
 				if SkuOptions.db.profile["SkuNav"].metapathFollowing == true or SkuOptions.db.profile["SkuNav"].routeFollowing == true or SkuOptions.db.profile["SkuNav"].selectedWaypoint ~= "" then
@@ -399,7 +399,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
 						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
-						Voice:OutputString(L["Following metaroute"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+						SkuOptions.Voice:OutputString(L["Following metaroute"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 						if _G["OnSkuOptionsMain"]:IsVisible() == true then
 							_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
 						end
@@ -507,8 +507,8 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				--print("OnAction", self.name, aValue, aName)
 
 				if SkuOptions.db.profile["SkuNav"].routeRecording == true then
-					Voice:OutputString(L["Error"], false, true, 0.3, true)
-					Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
+					SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
+					SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
 					return
 				end
 				if SkuOptions.db.profile["SkuNav"].metapathFollowing == true or SkuOptions.db.profile["SkuNav"].routeFollowing == true or SkuOptions.db.profile["SkuNav"].selectedWaypoint ~= "" then
@@ -529,7 +529,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
 						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
-						Voice:OutputString("Metaroute folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+						SkuOptions.Voice:OutputString("Metaroute folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 						if _G["OnSkuOptionsMain"]:IsVisible() == true then
 							_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
 						end
@@ -630,8 +630,8 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 			tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 				--print("OnAction Wegpunkt auswählen", self.name, aValue, aName)
 				if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
-					Voice:OutputString(L["Error"], false, true, 0.3, true)
-					Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
+					SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
+					SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
 					return
 				end
 
@@ -647,8 +647,8 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
 					end
 				else
-					Voice:OutputString(L["Error"], false, true, 0.3, true)
-					Voice:OutputString("Wegpunkt nicht ausgewählt", false, true, 0.3, true)
+					SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
+					SkuOptions.Voice:OutputString("Wegpunkt nicht ausgewählt", false, true, 0.3, true)
 				end
 
 			end
@@ -746,7 +746,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					C_Timer.NewTimer(0.1, function()
 						SkuOptions:SlashFunc("short,SkuQuest,Questdatenbank,Alle,"..self.name)
-						Voice:OutputString(self.name, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						SkuOptions.Voice:OutputString(self.name, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 					end)
 				end
 			end
