@@ -10,6 +10,7 @@
 ## Änderungen in Version 20
 
 +++ ACHTUNG: Wenn du deine Einstellungen behalten möchtest, lies zwingend unten die Infos dazu! +++
++++ ACHTUNG: Für Version 20 ist es unbedingt erforderlich, dass du vor der Installation erst alle Sku-Addons im Addon-Ordner löscht! +++
 
 *Die Organisationsstruktur der Sku-Addons wurde stark verändert*
 
