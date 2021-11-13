@@ -1,10 +1,8 @@
 # Downloads
 
-[Sku 20](https://github.com/Duugu/Sku/archive/refs/tags/v19.11.zip)
-
-[SkuAudioData 19.11]()
-
-[SkuBeaconSoundsets  19.11]()
+[Sku 20](https://github.com/Duugu/Sku/archive/refs/tags/v19.11.zip) <br>
+[SkuAudioData 19.11]() <br>
+[SkuBeaconSoundsets  19.11]() <br>
 
 
 # Versionshinweise
