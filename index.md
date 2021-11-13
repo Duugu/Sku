@@ -50,6 +50,7 @@ Wenn du das vor dem ersten Spielstart machst, bleiben alle Einstellungen erhalte
 ### SkuCore
 *Neuerungen*
 - Das Berufefenster ist im Lokal-Menü verfügbar.
+- Im offenen Berufefenster kannst du jetzt mit BILD-HOCH und BILD-RUNTER in der Liste scrollen.
 - Das Ausbildungsfenster für Jägertiere ist im Lokal-Menü verfügbar.
 - Das Stall-Fenster für Jägertiere ist im Lokal-Menü verfügbar.
 
