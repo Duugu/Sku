@@ -7,7 +7,7 @@
 [SkuBeaconSoundsets  19.11]()
 
 
-# Release Notes
+# Versionshinweise
 
 ## Änderungen in Version 20
 
