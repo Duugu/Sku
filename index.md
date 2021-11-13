@@ -5,6 +5,7 @@
 [SkuBeaconSoundsets 19.6](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.6/SkuBeaconSoundsets-r19.6-bcc.zip) <br>
 [SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
 
+# Bugs und Todo
 [Bug-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Abug) <br>
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
@@ -37,9 +38,10 @@
 Wenn du das vor dem ersten Spielstart machst, bleiben alle Einstellungen erhalten. Wenn nicht, hast du ein komplett jungfräuliches Sku-Addon.
 
 *Addon-Download*
-  Alle Addons (Sku, SkuAudiodata, SkuBeaconSoundsets, SkuFluegel) stehen ab sofort nicht mehr über Discord, sondern über eine zentrale Webseite zum Download bereit.
+
+  Alle Addons (Sku, SkuAudiodata, SkuBeaconSoundsets, SkuFluegel) stehen ab sofort nicht mehr über Discord, sondern die zentrale Webseite zum Download bereit.
   
-  Die URL der Downloadseite lautet: [https://duugu.github.io/Sku/](https://duugu.github.io/Sku/)
+  Die URL dieser Downloadseite lautet: [https://duugu.github.io/Sku/](https://duugu.github.io/Sku/)
   
   Die Seite ist extrem einfach gehalten und kann problemlos mit einem Screenreader gelesen werden.<br>
   In Discord gibt es weiterhin den Channel "newsticker-sku-addon". Dort wird neben allgemeinen Infos zum Addon bei jeder neuen Version der Sku-Addons automatisch eine Meldung gepostet.<br>
