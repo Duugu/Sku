@@ -1,37 +1,56 @@
-## Welcome to GitHub Pages
+# Downloads
 
-You can use the [editor on GitHub](https://github.com/Duugu/Sku/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[Sku 20](https://github.com/Duugu/Sku/archive/refs/tags/v19.11.zip)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+[SkuAudioData 19.11]()
 
-### Markdown
+[SkuBeaconSoundsets  19.11]()
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
+# Release Notes
 
-# Header 1
-## Header 2
-### Header 3
+## Änderungen in Version 20
 
-- Bulleted
-- List
++++ ACHTUNG: Wenn du deine Einstellungen behalten möchtest, lies zwingend unten die Infos dazu! +++
 
-1. Numbered
-2. List
+Die Organisationsstruktur der Sku-Addons wurde stark verändert
+  Ab sofort gibt es nur noch ein Sku-Addon (also auch noch einen Odern), in dem sich alle Sku-Module befinden.
+  Es muss nur noch dieses eine Sku-Addon aktualisiert werden.
+  "SkuAudioData" und "SkuBeaconSoundsets" bleiben davon ausgeschlossen und getrennte Einzeladdons.
+  Das hat mehrere Vorteile:
+  - Die Addonliste und die Struktur werden übersichtlicher.
+  - Beim Aktualisieren muss man nicht mehr mit vielen Ordnern hantieren.
+  - Die Sku-Addons und die Audiodaten (SkuAudioData, SkuBeaconSoundsets) können problemlos getrennt voneinander aktualisiert werden.
 
-**Bold** and _Italic_ and `Code` text
+Einstellungen übernehmen
+  Durch die Neuorganisation werden alle deine Einstellungen, Profile und Daten der Sku-Addons beim ersten Anmelden mit Version 20 gelöscht.
+  Wenn du sie behalten möchtest, muss du VOR DEM ERSTEN START mit Version 20 eine Datei umbenennen:
+  - Rufe folgenden Ordnern auf: <Dein-World-of-Warcraft-Ordner>\_classic_\WTF\Account\DEIN-ACCOUNTNAME\SavedVariables
+  - Benenne in diesem Ordner die Datei SkuZOptions.lua in Sku.lua um.
+  - Starte dann erst das Spiel.
+  Wenn du das vor dem ersten Spielstart machst, bleiben alle Einstellungen erhalten. Wenn nicht, hast du ein komplett jungfräuliches Sku-Addon.
 
-[Link](url) and ![Image](src)
-```
+Addon-Download
+  Alle Addons (Sku, SkuAudiodata, SkuBeaconSoundsets, SkuFluegel) stehen ab sofort nicht mehr über Discord, sondern über eine zentrale Webseite zum Download bereit.
+  Die URL der Downloadseite lautet: https://duugu.github.io/Sku/
+  Die Seite ist extrem einfach gehalten und kann problemlos mit einem Screenreader gelesen werden.
+  In Discord gibt es weiterhin den Channel "newsticker-sku-addon". Dort wird neben allgemeinen Infos zum Addon bei jeder neuen Version der Sku-Addons automatisch eine Meldung gepostet.
+  Der Download findet jetzt jedoch über die zentrale neue Webseite statt.
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+### SkuCore
+*Neuerungen*
+- Das Berufefenster ist im Lokal-Menü verfügbar.
+- Das Ausbildungsfenster für Jägertiere ist im Lokal-Menü verfügbar.
+- Das Stall-Fenster für Jägertiere ist im Lokal-Menü verfügbar.
 
-### Jekyll Themes
+### SkuDB
+*Fehlerkorrekturen*
+- Einige Kartendaten wurden entfern. Daher funktionieren jetzt alle Zonen vor Instanzen korrekt (z. B. Gnomeregan, Uldaman etc.)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Duugu/Sku/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Änderungen in Version 19.11
 
-### Support or Contact
+### SkuOptions
+*Fehlerkorrekturen*
+- Das Filtern sollte jetzt auch für die Aktionsleisten korrekt funktionieren und den richtigen Untermenüpunkt hervorbringen.
+- Bei verringerter Beacon-Maximallautstärke geht das Beacon jetzt nicht mehr komplett aus wenn du weit weg bist.
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
