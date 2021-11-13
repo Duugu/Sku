@@ -9,6 +9,8 @@ Instructions for translators:
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
 
+L["Zone: Unknown"] = "Zone: unbekannt"
+L["Crafting"] = "Handwerk"
 L["Training"] = "Ausbildung"
 L["Enabled"] = "Aktiviert"
 L["Enables / disables the addon"] = "Aktiviert/deaktiviert das Addon"
@@ -301,6 +303,8 @@ L["All NPCs in zone"] = "Alle NPCs in Zone"
 L["Deselect all"] = "Alles abwählen"  
 L["Waypoint"] = "Wegpunkt"  
 L["Trade skill"] = "Handwerk"  
+L["Scroll up"] = "Hoch scrollen"  
+L["Scroll down"] = "Runter scrollen"  
 
 --L[""] = ""  
 -- weiter bei skucore core.lua Voice:OutputString("nicht erstellt", false, true, 0.3, true)

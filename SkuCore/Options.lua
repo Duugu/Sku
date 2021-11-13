@@ -263,7 +263,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarName, aButtonId)
-	--print(aActionType, aId, aSubType)
+	--print(aActionType, aId, aSubType, aActionBarName, aButtonId)
 	local rName = L["Empty"]
 
 	if aActionType then
@@ -290,7 +290,7 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 
 	local tKeysString, key1, key2 = "", GetBindingKey(tActionBarData[aActionBarName].command..aButtonId)
 	if key1 then
-		tKeysString = ";"..L["Key"]";"..GetBindingText(key1)
+		tKeysString = ";"..L["Key"]..";"..GetBindingText(key1)
 	end
 	if key2 and tKeysString == "" then
 		tKeysString = ";"..L["Key"]..";"..GetBindingText(key2)

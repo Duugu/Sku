@@ -87,6 +87,7 @@ SkuCoreMovement = {
 		["casting"] = 0,
 	}
 
+	SkuCore.interactFramesListHooked = {}
 	SkuCore.interactFramesList = {
 		"QuestFrame",--o
 		"TaxiFrame",--o
@@ -494,6 +495,21 @@ function SkuCore:OnEnable()
 			if ttime > 0.15 then
 				--SkuCore:PanikModeCollectData()
 
+
+				for x = 1, #SkuCore.interactFramesList do
+					if SkuCore.interactFramesList[x] and not SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] then
+						if _G[SkuCore.interactFramesList[x]] then
+							hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
+							hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
+							SkuCore:GENERIC_OnOpen()
+							SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
+						end
+					end
+				end
+		
+
+
+
 				local infoType, itemID, itemLink = GetCursorInfo()
 				local tResult
 				if infoType ~= oinfoType or itemID~= oitemID or itemLink ~= oitemLink then
@@ -766,6 +782,7 @@ function SkuCore:OnEnable()
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self) 
+		--print("SkuCoreControlOption1 OnShow")
 		if SkuCore.inCombat == true then
 			SkuCore.openMenuAfterCombat = true
 			return
@@ -782,6 +799,7 @@ function SkuCore:OnEnable()
 	end)
 	--SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-X", "SkuCoreControlOption1", "CTRL-SHIFT-X")
 	tFrame:SetScript("OnHide", function(self) 
+		--print("SkuCoreControlOption1 OnHide")
 		if SkuCore.inCombat == true then
 			return
 		end
@@ -1104,6 +1122,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			if _G[SkuCore.interactFramesList[x]] then
 				hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
 				hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
+				SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
 			end
 		end
 		SkuCore.TalentTempFlag = false
@@ -1286,7 +1305,6 @@ function SkuCore:GENERIC_OnOpen(self)
 	if GENERIC_OnOpenFlag == false then
 		GENERIC_OnOpenFlag = true
 		C_Timer.After(0.1, function() 
-			--print("GENERIC_OnOpen")
 			SkuCore:CheckFrames()
 			SkuOptions:StopSounds(5)
 			SkuOptions:SendTrackingStatusUpdates()
@@ -1406,7 +1424,7 @@ local blockedWidgetStrings = {
 }
 
 local friendlyFrameNames = {
-	["CraftFrame"] = L["Training"],
+	["CraftFrame"] = L["Crafting"],
 	["GroupLootContainer"] = L["Loot roll"],
 	["InspectFrame"] = L["Inspect"],
 	["QuestFrame"] = L["Quest"],
@@ -1460,6 +1478,7 @@ local containerFrames = {
 	["ContainerFrame3"] = "ContainerFrame3",
 	["ContainerFrame4"] = "ContainerFrame4",
 	["ContainerFrame5"] = "ContainerFrame5",
+
 }
 local friendlyFrameNamesParts = {
 	["FrameGreetingPanel"] = L["Panel"],

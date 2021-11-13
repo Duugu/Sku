@@ -261,7 +261,7 @@ function SkuOptions:CreateMainFrame()
 
 	SkuOptions.TooltipReaderText = ""
 	tFrame:SetScript("OnClick", function(self, a, b)
-		--print(self, a, b)
+		--print(self, "OnSkuOptionsMainOnClick ", a, b)
 
 		if a == "CTRL-SHIFT-B" then
 			if SkuOptions.nextRollFrameNumber then
@@ -475,7 +475,7 @@ function SkuOptions:CreateMainFrame()
 					
 					["QuestFrame"] = "QuestFrameCloseButton",
 					["TaxiFrame"] = "TaxiCloseButton",
-					["PetStableFrame"] = "",
+					["PetStableFrame"] = "PetStableFrameCloseButton",
 					["AuctionFrame"] = "AuctionFrameCloseButton",
 					["ReputationFrame"] = "CharacterFrameCloseButton",
 					["SkillFrame"] = "CharacterFrameCloseButton",
@@ -623,6 +623,28 @@ function SkuOptions:CreateMenuFrame()
 	local OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		--print("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
+
+
+		if aKey == "PAGEDOWN" then
+			if SkuOptions.currentMenuPosition then
+				if _G["CraftListScrollFrameScrollBarScrollDownButton"] then
+					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
+					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
+					SkuCore:CheckFrames()
+				end
+			end
+			return
+		end
+
+		if aKey == "PAGEUP" then
+			if SkuOptions.currentMenuPosition then
+				if _G["CraftListScrollFrameScrollBarScrollUpButton"] then
+					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
+					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
+				end
+			end
+			return
+		end
 
 		if aKey == "SHIFT-RIGHT" then
 			if SkuOptions.currentMenuPosition then
@@ -841,6 +863,7 @@ function SkuOptions:CreateMenuFrame()
 	end)
 
 	tFrame:SetScript("OnShow", function(self)
+		--print("OnSkuOptionsMainOption1 OnShow")
 		if SkuCore.inCombat == true then
 			SkuCore.openMenuAfterCombat = true
 			return
@@ -853,6 +876,8 @@ function SkuOptions:CreateMenuFrame()
 		SkuCore.openMenuAfterMoving = false	
 		PlaySound(88)
 		--SkuOptions.Voice:OutputString("Navi geöffnet", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+		SetOverrideBindingClick(self, true, "PAGEUP", "OnSkuOptionsMainOption1", "PAGEUP")
+		SetOverrideBindingClick(self, true, "PAGEDOWN", "OnSkuOptionsMainOption1", "PAGEDOWN")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-D", "SkuQuestMainOption1", "CTRL-SHIFT-D")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-T", "SkuQuestMainOption1", "CTRL-SHIFT-T")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "OnSkuOptionsMainOption1", "CTRL-SHIFT-UP")
@@ -894,12 +919,26 @@ function SkuOptions:CreateMenuFrame()
 	end)
 
 	tFrame:SetScript("OnHide", function(self)
+		--print("OnSkuOptionsMainOption1 OnHide")
 		if SkuCore.inCombat == true then
 			return
 		end
 		--SkuOptions.Voice:OutputString("Navi geschlossen", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 		ClearOverrideBindings(self)
 		PlaySound(89)
+
+		if _G["CraftFrame"] then
+			if _G["CraftFrame"]:IsVisible() == true then
+				--_G["QuestFrameDetailPanel"]:Hide()
+				_G["CraftFrameCloseButton"]:GetScript("OnClick")(_G["CraftFrameCloseButton"])
+			end
+		end
+		if _G["TradeSkillFrame"] then
+			if _G["TradeSkillFrame"]:IsVisible() == true then
+				--_G["QuestFrameDetailPanel"]:Hide()
+				_G["TradeSkillFrameCloseButton"]:GetScript("OnClick")(_G["TradeSkillFrameCloseButton"])
+			end
+		end
 
 		if _G["QuestFrameDetailPanel"]:IsVisible() == true then
 			--_G["QuestFrameDetailPanel"]:Hide()

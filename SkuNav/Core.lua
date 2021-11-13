@@ -2521,16 +2521,18 @@ function SkuNav:PLAYER_LOGIN(...)
 
 			local worldx, worldy = UnitPosition("player")
 			local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
-			table.insert(SkuOptions.db.profile[MODULE_NAME].Waypoints, tWaypointName)
-			SkuNav:SetWaypoint(tWaypointName, {
-				["contintentId"] = tPlayerContintentId,
-				["areaId"] = tAreaId,
-				["worldX"] = worldx,
-				["worldY"] = worldy,
-				["createdAt"] = GetTime(), 
-				["createdBy"] = "SkuNav",
-				["size"] = 1,
-			})
+			if SkuOptions.db.profile[MODULE_NAME].Waypoints then
+				table.insert(SkuOptions.db.profile[MODULE_NAME].Waypoints, tWaypointName)
+				SkuNav:SetWaypoint(tWaypointName, {
+					["contintentId"] = tPlayerContintentId,
+					["areaId"] = tAreaId,
+					["worldX"] = worldx,
+					["worldY"] = worldy,
+					["createdAt"] = GetTime(), 
+					["createdBy"] = "SkuNav",
+					["size"] = 1,
+				})
+			end
 		else
 			--reset
 			local worldx, worldy = UnitPosition("player")

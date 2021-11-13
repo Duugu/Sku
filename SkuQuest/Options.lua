@@ -91,7 +91,7 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 		table.insert(tSections, L["Zone: Unknown"])
 	end
 
-	table.insert(tSections, L["Level"]": "..SkuDB.questDataTBC[i][SkuDB.questKeys["questLevel"]].." ("..SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]]..")")
+	table.insert(tSections, L["Level"]..": "..SkuDB.questDataTBC[i][SkuDB.questKeys["questLevel"]].." ("..SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]]..")")
 
 	if SkuDB.questLookup[i][3] then
 		table.insert(tSections, L["Objectives"].."\r\n"..(SkuDB.questLookup[i][3][1] or ""))
@@ -127,7 +127,7 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 			tRaceText = tRaceText..SkuQuest.racesFriendly[v]..";"
 		end
 	end
-	table.insert(tSections, L["Races"]": "..tRaceText)
+	table.insert(tSections, L["Races"]..": "..tRaceText)
 
 	local tClasses = {}
 	for iR, vR in pairs(SkuDB.classKeys) do
