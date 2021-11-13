@@ -6,12 +6,12 @@ skudebuglevel = 1
 
 local MODULE_NAME = "SkuCore"
 local _G = _G
+local L = Sku.L
+
 local tStartDebugTimestamp = GetTime() or 0
 
 SkuCoreDB = {}
----------------------------------------------------------------------------------------------------------------------------------------
 SkuCore = LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
-local L = Sku.L
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 CLASS_IDS = {
@@ -116,9 +116,10 @@ SkuCoreMovement = {
 		"BagnonBankFrame1",
 		"GuildBankFrame",
 		"BankFrame",
+		"CraftFrame",
 		--"GroupLootContainer",
 		"TradeFrame",
-		--"TradeSkillFrame",
+		"TradeSkillFrame",
 		--"DropDownList2",
 		--"FriendsFrame",
 		--"GameMenuFrame",
@@ -1405,6 +1406,7 @@ local blockedWidgetStrings = {
 }
 
 local friendlyFrameNames = {
+	["CraftFrame"] = L["Training"],
 	["GroupLootContainer"] = L["Loot roll"],
 	["InspectFrame"] = L["Inspect"],
 	["QuestFrame"] = L["Quest"],
@@ -1447,6 +1449,7 @@ local friendlyFrameNames = {
 	["BagnonBankFrame1"] = L["Bagnon Bank"],
 	["BankFrame"] = L["Bank"],
 	["GuildBankFrame"] = L["Guild Bank"],
+	["TradeSkillFrame"] = L["Trade skill"],
 	[""] = "",
 }
 local containerFrames = {

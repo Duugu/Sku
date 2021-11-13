@@ -1,8 +1,14 @@
-local ADDON_NAME = ...
+local MODULE_NAME = "SkuNav"
+local L = Sku.L
 local _G = _G
 
-SkuNav = SkuNav or LibStub("AceAddon-3.0"):NewAddon("SkuNav", "AceConsole-3.0", "AceEvent-3.0")
-local L = Sku.L
+SkuNavWpSize = {
+	[1] = 1,
+	[2] = 2,
+	[3] = 3,
+	[4] = 4,
+	[5] = 8,
+}
 
 UNIT_NPC_FLAG_NONE = 0x00000000
 UNIT_NPC_FLAG_GOSSIP= 0x00000001

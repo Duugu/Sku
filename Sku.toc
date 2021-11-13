@@ -1,4 +1,4 @@
-## Interface: 20501
+## Interface: 20502
 ## Title: Sku (20)
 ## SavedVariables: SkuOptionsDB
 ## Dependencies: SkuAudioData, SkuBeaconSoundsets
@@ -37,8 +37,9 @@ SkuDB\assets\polygons.lua
 SkuMob\Core.lua
 SkuMob\Options.lua
 
-SkuNav\templates.lua
 SkuNav\Core.lua
+SkuNav\SkuMM.lua
+SkuNav\data.lua
 SkuNav\Options.lua
 
 SkuQuest\Core.lua
