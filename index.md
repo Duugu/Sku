@@ -3,7 +3,7 @@
 [Sku 20](https://github.com/Duugu/Sku/archive/refs/tags/r20.zip) <br>
 [SkuAudioData 19.7](https://github.com/Duugu/SkuAudioData/archive/refs/tags/r19.7.zip) <br>
 [SkuBeaconSoundsets 19.5](https://github.com/Duugu/SkuBeaconSoundsets/archive/refs/tags/r19.5.zip) <br>
-
+[SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
 
 # Versionshinweise
 
