@@ -37,16 +37,6 @@
 
 Wenn du das vor dem ersten Spielstart machst, bleiben alle Einstellungen erhalten. Wenn nicht, hast du ein komplett jungfräuliches Sku-Addon.
 
-*Addon-Download*
-
-  Alle Addons (Sku, SkuAudiodata, SkuBeaconSoundsets, SkuFluegel) stehen ab sofort nicht mehr über Discord, sondern die zentrale Webseite zum Download bereit.
-  
-  Die URL dieser Downloadseite lautet: [https://duugu.github.io/Sku/](https://duugu.github.io/Sku/)
-  
-  Die Seite ist extrem einfach gehalten und kann problemlos mit einem Screenreader gelesen werden.<br>
-  In Discord gibt es weiterhin den Channel "newsticker-sku-addon". Dort wird neben allgemeinen Infos zum Addon bei jeder neuen Version der Sku-Addons automatisch eine Meldung gepostet.<br>
-  Der Download findet jetzt jedoch über die zentrale neue Webseite statt.
-
 ### SkuCore
 *Neuerungen*
 - Das Berufefenster ist im Lokal-Menü verfügbar.
