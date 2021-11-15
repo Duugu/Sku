@@ -1,6 +1,8 @@
 # Downloads
 
-[Sku 20](https://github.com/Duugu/Sku/releases/download/r20/Sku-r20-bcc.zip) <br>
++++ ACHTUNG: Wenn du noch Version 19 verwendest, musst du unbedingt erst unten die Versionshinweise zu Version 20 lesen! +++
+
+[Sku 20.1](https://github.com/Duugu/Sku/releases/download/r20/Sku-r20-bcc.zip) <br>
 [SkuAudioData 20](https://github.com/Duugu/SkuAudioData/releases/download/r20/SkuAudioData-r20-bcc.zip) <br>
 [SkuBeaconSoundsets 19.6](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.6/SkuBeaconSoundsets-r19.6-bcc.zip) <br>
 [SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
@@ -10,6 +12,32 @@
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.1
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Das ö kann jetzt genau wie alle anderen Umlaute zum Filtern im Menü verwendet werden.
+
+### SkuCore
+*Fehlerkorrekturen*
+- BILD-HOCH scrollt jetzt nicht nur in Berufefenstern, sondern aktualisiert auch das Menü entsprechend.
+- Scrollen mit BILD-HOCH/RUNTER sollte jetzt in allen Handwerksfenstern funktionieren.
+- Das Lokal-Menü geht jetzt nicht mehr auf solange Bewegungstasten gedrückt sind. Geist freilassen und danach ungewollt automatisch laufen sollte daher nicht mehr vorkommen.
+- Diverse Änderungen am Post-Menü:
+  - Das Post-Menü ist jetzt filterbar.
+  - Das Senden von Gegenständen per Post sollte jetzt funktionieren.
+  - Das Gegenstände-Menü bei einem neuen Brief ist jetzt filterbar.
+  - Fehlender Empfänger und/oder Betreff werden jetzt beim Senden angesagt.
+- Der Zugriff auf die Gildenbank funktioniert jetzt wieder.
+
+### SkuNav
+*Fehlerkorrekturen*
+- Karten-Bug für die eigenartige Zone zwischen Ödland und sengende Schlucht behoben.
+- Karten-Bug im Steinwerkpass behoben. Gebiet wurde Loch Modan zugeschlagen.
+- STRG + rechte Maustaste (Wegpunkt löschen) und STRG + Maustaste 5 (neuer Zonenpunkt) haben ihre Funktion getauscht.
+- Routen mit identischem Start- und Endpunkt und ohne weitere Zwischenwegpunkte werden jetzt ohne weitere Info automatisch gelöscht.
+- Bei eingeblendeter Sku-Minimap werden jetzt bei nicht sichtbaren Wegpunkten keine Tooltips mehr angezeigt.
 
 ## Änderungen in Version 20
 
