@@ -265,7 +265,7 @@ end
 local StartUpdateTimer
 local function UpdateCurrentPosition(instanceCheck)
     -- retrieve current zone
-    local uiMapID = C_Map.GetBestMapForUnit("player")
+    local uiMapID = SkuNav:GetBestMapForUnit("player")
 
     -- try to override the instance if possible
     if instanceCheck then

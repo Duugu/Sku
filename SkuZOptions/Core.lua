@@ -15,7 +15,7 @@ SkuOptions.Serializer = LibStub("AceSerializer-3.0")
 
 SkuOptions.Menu = {}
 SkuOptions.currentMenuPosition = nil
-SkuOptions.MenuAccessKeysChars = {" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ä", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", "shift-,",}
+SkuOptions.MenuAccessKeysChars = {" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ö", "ü", "ä", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", "shift-,",}
 SkuOptions.MenuAccessKeysNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 
 local ssplit = string.split
@@ -630,8 +630,12 @@ function SkuOptions:CreateMenuFrame()
 				if _G["CraftListScrollFrameScrollBarScrollDownButton"] then
 					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
 					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
-					SkuCore:CheckFrames()
 				end
+				if _G["TradeSkillListScrollFrameScrollBarScrollDownButton"] then
+					_G["TradeSkillListScrollFrameScrollBarScrollDownButton"]:Click()
+					_G["TradeSkillListScrollFrameScrollBarScrollDownButton"]:Click()
+				end
+				SkuCore:CheckFrames()
 			end
 			return
 		end
@@ -642,6 +646,11 @@ function SkuOptions:CreateMenuFrame()
 					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
 					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
 				end
+				if _G["TradeSkillListScrollFrameScrollBarScrollUpButton"] then
+					_G["TradeSkillListScrollFrameScrollBarScrollUpButton"]:Click()
+					_G["TradeSkillListScrollFrameScrollBarScrollUpButton"]:Click()
+				end
+				SkuCore:CheckFrames()
 			end
 			return
 		end
@@ -661,7 +670,6 @@ function SkuOptions:CreateMenuFrame()
 			tIsDoubleDown = true
 		end
 		OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
-
 
 		if SkuOptions.MenuAccessKeysChars[aKey] then
 			aKey = string.lower(aKey)
@@ -1049,7 +1057,7 @@ function SkuOptions:ClearFilter()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ApplyFilter(aFilterstring)
-	--SkuCore:Debug("aFilterstring", aFilterstring, SkuOptions.currentMenuPosition.parent.filterable)
+	--print("aFilterstring", aFilterstring, SkuOptions.currentMenuPosition.parent.filterable)
 
 	aFilterstring = string.lower(aFilterstring)
 

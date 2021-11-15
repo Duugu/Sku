@@ -1022,7 +1022,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
-			local tUiMap = SkuNav:GetAreaIdFromUiMapId(C_Map.GetBestMapForUnit("player"))
+			local tUiMap = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 			local tPlayX, tPlayY = UnitPosition("player")
 			local tShowQuestsTable = {}
 

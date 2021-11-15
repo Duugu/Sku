@@ -280,7 +280,7 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.BuildChildren = function(self)
-		local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(C_Map.GetBestMapForUnit("player"))
+		local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 		local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
 		tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
 
@@ -312,7 +312,7 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.BuildChildren = function(self)
-		local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(C_Map.GetBestMapForUnit("player"))
+		local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 		local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
 		tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
 
@@ -758,7 +758,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
-				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(C_Map.GetBestMapForUnit("player"))
+				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 				local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
 				tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
 
@@ -785,7 +785,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
-				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(C_Map.GetBestMapForUnit("player"))
+				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 				local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
 				tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
 
@@ -1158,7 +1158,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
-				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(C_Map.GetBestMapForUnit("player"))
+				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 				local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
 				tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
 
@@ -1935,7 +1935,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
 				--print("_Start in aktueller Karte_ buildchilds")
-				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(C_Map.GetBestMapForUnit("player"))
+				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 				local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
 				tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
 				local tRoutesList = {}
@@ -2121,7 +2121,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 						SkuOptions.Voice:OutputString("Alle Routen gelöscht", false, true, 0.3, true)
 
 					elseif tRtToDelete == "Alle in Zone" then
-						local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(C_Map.GetBestMapForUnit("player"))
+						local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 						local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
 						tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
 						local tRoutesList = {}

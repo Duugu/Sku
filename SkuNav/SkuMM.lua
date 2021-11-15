@@ -96,7 +96,8 @@ function SkuNav:DrawTerrainData(aFrame)
 	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true or not SkuCoreDB.TerrainData then
 		return
 	end
-	local tExtMap = C_Map.GetBestMapForUnit("player")
+	local tExtMap = SkuNav:GetBestMapForUnit("player")
+
 	if not SkuCoreDB.TerrainData[tExtMap] then
 		return
 	end

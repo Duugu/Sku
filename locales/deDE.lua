@@ -8,7 +8,9 @@ Instructions for translators:
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
-
+L["No Recipient"] = "Empfänger fehlt"
+L["No topic"] = "Betreff fehlt"
+L["Stonewrought-Pass"] = "Steinwerkpass"
 L["Zone: Unknown"] = "Zone: unbekannt"
 L["Crafting"] = "Handwerk"
 L["Training"] = "Ausbildung"

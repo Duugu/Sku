@@ -129,7 +129,7 @@ SkuCoreMovement = {
 		--"MultiBarRight",
 		--"MultiBarBottomLeft",
 		--"MultiBarBottomRight",
-		--"BagnonGuildFrame1",
+		"BagnonGuildFrame1",
 		--"MainMenuBar",
 	}
 
@@ -711,7 +711,7 @@ function SkuCore:OnEnable()
 
 									--collect terrain data test
 									--[[
-									local tExtMap = C_Map.GetBestMapForUnit("player")
+									local tExtMap = SkuNav:GetBestMapForUnit("player")
 									if not SkuCoreDB.TerrainData then
 										SkuCoreDB.TerrainData = {}
 									end
@@ -1864,6 +1864,13 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 	end
 
 	if SkuOptions.db.profile["SkuOptions"].localActive == false then
+		return
+	end
+	
+	if SkuCore.isMoving == true then
+		C_Timer.After(0.5, function()
+			SkuCore:CheckFrames()
+		end)
 		return
 	end
 

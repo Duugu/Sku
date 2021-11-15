@@ -1,8 +1,8 @@
 ﻿local MODULE_NAME = "SkuChat"
 local _G = _G
+local L = Sku.L
 
 SkuChat = LibStub("AceAddon-3.0"):NewAddon("SkuChat", "AceConsole-3.0", "AceEvent-3.0")
-local L = Sku.L
 
 local SkuChatChatBuffer = {}
 

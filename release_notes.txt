@@ -2,6 +2,35 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.1
+
+	SkuOptions
+		Fehlerkorrekturen
+			- Das ö kann jetzt genau wie alle anderen Umlaute zum Filtern im Menü verwendet werden.
+
+	SkuCore
+		Fehlerkorrekturen
+			- BILD-HOCH scrollt jetzt nicht nur in Berufefenstern, sondern aktualisiert auch das Menü entsprechend.
+			- Scrollen mit BILD-HOCH/RUNTER sollte jetzt in allen Handwerksfenstern funktionieren.
+			- Das Lokal-Menü geht jetzt nicht mehr auf solange Bewegungstasten gedrückt sind. Geist freilassen und danach ungewollt automatisch laufen sollte daher nicht mehr vorkommen.
+			- Diverse Änderungen am Post-Menü:
+				- Das Post-Menü ist jetzt filterbar.
+				- Das Senden von Gegenständen per Post sollte jetzt funktionieren.
+				- Das Gegenstände-Menü bei einem neuen Brief ist jetzt filterbar.
+				- Fehlender Empfänger und/oder Betreff werden jetzt beim Senden angesagt.
+			- Der Zugriff auf die Gildenbank funktioniert jetzt wieder.
+
+	SkuNav
+		Fehlerkorrekturen
+			- Karten-Bug für die eigenartige Zone zwischen Ödland und sengende Schlucht behoben.
+			- Karten-Bug im Steinwerkpass behoben. Gebiet wurde Loch Modan zugeschlagen.
+			- STRG + rechte Maustaste (Wegpunkt löschen) und STRG + Maustaste 5 (neuer Zonenpunkt) haben ihre Funktion getauscht.
+			- Routen mit identischem Start- und Endpunkt und ohne weitere Zwischenwegpunkte werden jetzt ohne weitere Info automatisch gelöscht.
+			- Bei eingeblendeter Sku-Minimap werden jetzt bei nicht sichtbaren Wegpunkten keine Tooltips mehr angezeigt.
+
+
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20
 

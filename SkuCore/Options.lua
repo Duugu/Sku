@@ -476,6 +476,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	--print("SkuCore:MenuBuilder", aParentEntry)
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Mail"]}, menuEntryTemplate_Menu)
 	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
 	end
 	tNewMenuParentEntry.BuildChildren = function(self)
@@ -495,13 +496,20 @@ function SkuCore:MenuBuilder(aParentEntry)
 			elseif aName == L["Send"] then
 				if self.TmpTo and self.TmpSubject then --and tNewMenuEntry.TmpBody then
 					--versenden
-					SendMail(self.TmpTo, self.TmpSubject, self.TmpBody)
+					SendMail(self.TmpTo, self.TmpSubject, self.TmpBody or " ")
 					self.TmpTo = nil
 					self.TmpSubject = nil
 					self.TmpBody = nil
 					self.TmpMoney = nil
 					self.TmpItems = nil
 					self.TmpItemsLock = nil
+				else
+					if not self.TmpTo then
+						SkuOptions.Voice:OutputString(L["No Recipient"], false, true, 0.2)
+					end
+					if not self.TmpSubject then
+						SkuOptions.Voice:OutputString(L["No topic"], false, true, 0.2)
+					end
 				end
 			elseif tonumber(aName) then
 				SetSendMailMoney(tonumber(aName) * 10000)
@@ -542,6 +550,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 				end
 			end
 			local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Items"]}, menuEntryTemplate_Menu)
+			tNewMenuParentEntrySubSub.filterable = true
 			tNewMenuParentEntrySubSub.dynamic = true
 			tNewMenuParentEntrySubSub.BuildChildren = function(self)
 				for bag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do

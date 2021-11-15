@@ -41,6 +41,19 @@ SkuNav.PrintMT = {
 	}
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+--this is a temp hack for the weird transit zone between badlands and Searing Gorge. due to unknown reasons SkuNav:GetBestMapForUnit returns 1415 (eastern kingdoms) there.
+function SkuNav:GetBestMapForUnit(aUnitId)
+	local tPlayerUIMap = C_Map.GetBestMapForUnit(aUnitId)
+	if tPlayerUIMap == 1415 then
+		tPlayerUIMap = 1418
+		if GetMinimapZoneText() == L["Stonewrought-Pass"] then
+			tPlayerUIMap = 1432
+		end
+	end
+	return tPlayerUIMap
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PlayWpComments(aWpName)
 	if not aWpName then
 		return
@@ -311,7 +324,7 @@ end
 function SkuNav:GetAreaIdFromAreaName(aAreaName)
 	--print("GetAreaIdFromAreaName", aAreaName)
 	local rAreaId
-	local tPlayerUIMap = C_Map.GetBestMapForUnit("player")
+	local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
 	for i, v in pairs(SkuDB.InternalAreaTable) do
 		if (v.AreaName_lang == aAreaName) and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
 			rAreaId = i
@@ -365,7 +378,7 @@ function SkuNav:GetCurrentAreaId()
 		end
 	end
 	if not tAreaId then
-		local tExtMapId = SkuDB.ExternalMapID[C_Map.GetBestMapForUnit("player")]
+		local tExtMapId = SkuDB.ExternalMapID[SkuNav:GetBestMapForUnit("player")]
 		if tExtMapId then
 			for i, v in pairs(SkuDB.InternalAreaTable) do
 				if v.AreaName_lang == tExtMapId.Name_lang then
@@ -440,6 +453,10 @@ function SkuNav:CheckRoute(aRouteName)
 	else
 		return false
 		--print("Check FAIL:", aRouteName, "valid = false")
+	end
+
+	if SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].tEndWPName == SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].tStartWPName and #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs == 2 then
+		return false
 	end
 
 	return true
@@ -894,25 +911,30 @@ function SkuNav:CreateSkuNavControl()
 					for i, v in SkuWaypointWidgetRepoMM:EnumerateActive() do
 						if i.aText ~= "line" then
 							if i:IsMouseOver() then
-								if i.aText ~= SkuWaypointWidgetCurrent then
-									SkuWaypointWidgetCurrent = i.aText
+								local _, _, _, x, y = i:GetPoint(1)
+								local MMx, MMy = _G["SkuNavMMMainFrame"]:GetSize()
+								MMx, MMy = MMx / 2, MMy / 2
+								if x > -MMx and x < MMx and y > -MMy and y < MMy then
+									if i.aText ~= SkuWaypointWidgetCurrent then
+										SkuWaypointWidgetCurrent = i.aText
 
-									GameTooltip.SkuWaypointWidgetCurrent = i.aText
-									GameTooltip:ClearLines()
-									GameTooltip:SetOwner(i, "ANCHOR_RIGHT")
-									GameTooltip:AddLine(i.aText, 1, 1, 1)
-									if i.aComments then
-										for x = 1, #i.aComments do
-											GameTooltip:AddLine(i.aComments[x], 1, 1, 0)
+										GameTooltip.SkuWaypointWidgetCurrent = i.aText
+										GameTooltip:ClearLines()
+										GameTooltip:SetOwner(i, "ANCHOR_RIGHT")
+										GameTooltip:AddLine(i.aText, 1, 1, 1)
+										if i.aComments then
+											for x = 1, #i.aComments do
+												GameTooltip:AddLine(i.aComments[x], 1, 1, 0)
+											end
 										end
-									end
-									GameTooltip:Show()
-									i.oldColor = i:GetVertexColor()
-									i:SetColorTexture(0, 1, 1)
-								else
-									--i:SetSize(2, 2)
-									if i.oldColor then
-										i:SetColorTexture(i.oldColor)
+										GameTooltip:Show()
+										i.oldColor = i:GetVertexColor()
+										i:SetColorTexture(0, 1, 1)
+									else
+										--i:SetSize(2, 2)
+										if i.oldColor then
+											i:SetColorTexture(i.oldColor)
+										end
 									end
 								end
 							end
@@ -1019,13 +1041,13 @@ function SkuNav:CreateSkuNavControl()
 				--dead
 				if UnitIsGhost("player") then
 					if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == "" then
-						local tUiMap = C_Map.GetBestMapForUnit("player")
+						local tUiMap = SkuNav:GetBestMapForUnit("player")
 						if tUiMap then
 							local tCorpse = C_DeathInfo.GetCorpseMapPosition(tUiMap)
 							if tCorpse then
 								local cX, cY = tCorpse:GetXY()
 								local tmapPos = CreateVector2D(cX, cY)
-								local _, worldPosition = C_Map.GetWorldPosFromMapPos(C_Map.GetBestMapForUnit("player"), tmapPos)
+								local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetBestMapForUnit("player"), tmapPos)
 								local tX, tY = worldPosition:GetXY()
 
 								local tPlayerx, tPlayery = UnitPosition("player")
@@ -1822,11 +1844,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseRightUp()
 	--print("R up")
-	if SkuWaypointWidgetCurrent then
-		local wpObj = SkuNav:GetWaypoint(SkuWaypointWidgetCurrent)
-		if wpObj then
-			SkuNav:DeleteWaypoint(SkuWaypointWidgetCurrent)
-		end
+	if SkuNavRecordingPoly > 0 and SkuNavRecordingPolyFor then
+		local tWorldY, tWorldX = SkuNavMMContentToWorld(SkuNavMMGetCursorPositionContent2())
+		SkuDB.Polygons.data[SkuNavRecordingPolyFor].nodes[#SkuDB.Polygons.data[SkuNavRecordingPolyFor].nodes + 1] = {x = tWorldX, y = tWorldY,}
 	end
 end
 
@@ -2085,9 +2105,12 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouse5Up()
-	if SkuNavRecordingPoly > 0 and SkuNavRecordingPolyFor then
-		local tWorldY, tWorldX = SkuNavMMContentToWorld(SkuNavMMGetCursorPositionContent2())
-		SkuDB.Polygons.data[SkuNavRecordingPolyFor].nodes[#SkuDB.Polygons.data[SkuNavRecordingPolyFor].nodes + 1] = {x = tWorldX, y = tWorldY,}
+	--print("R up")
+	if SkuWaypointWidgetCurrent then
+		local wpObj = SkuNav:GetWaypoint(SkuWaypointWidgetCurrent)
+		if wpObj then
+			SkuNav:DeleteWaypoint(SkuWaypointWidgetCurrent)
+		end
 	end
 end
 
