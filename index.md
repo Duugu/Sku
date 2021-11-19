@@ -1,7 +1,5 @@
 # Downloads
 
-+++ ACHTUNG: Wenn du noch Version 19 verwendest, musst du unbedingt erst unten die Versionshinweise zu Version 20 lesen! +++
-
 Aktualisiert: <br>
 [Sku 20.2](https://github.com/Duugu/Sku/releases/download/r20.2/Sku-r20.2-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
@@ -14,6 +12,29 @@ Aktualisiert: <br>
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.2
+
+###	SkuChat
+*Fehlerkorrekturen*
+- Der Chat-Verlauf hat jetzt 100 Zeilen.
+
+###	SkuOptions
+*Fehlerkorrekturen*
+- Die rechte Shift-Taste beendet jetzt auch die Sprachausgabe vom Ingame-TTS (Wegpunkthinweise).
+
+###	SkuNav
+*Neuerungen*
+- Zur besseren Beacon-Ortung gibt es jetzt ein "Klick"-Geräusch, wenn du dich in die Richtung eines Beacons drehst. Achtung: Dazu benötigst du SkuBeaconSoundsets 19.7!
+Sobald du +/- 5 Grad in die Richtung des Beacons schaust, mach es "Klick". Wenn du den 5-Grad-Bereich wieder verlässt, macht es "Klack".
+Dazu gibt es unter "SkuNav > Optionen" drei neue Einstellungsmöglichkeiten:
+  - "Klick bei Beacons": Damit kannst du das "Klick"-Feature ein-/ausschalten (Standard: Ein)
+  - "Winkel für Klick bei Beacons": Damit kannst du den Grad-Bereich verändern, in dem der Klick auftritt (Standard: 5). Der Gradbereich gilt nur in Fünferschritten. 8, 9 oder 10 macht also keinen Unterschied. 5, 10 und 15 schon.
+  - "Ton für Klick bei Beacons": Damit kannst du zwischen zwei Sound-Sets wählen. "Klick" ist ein "Klick"/"Klack"-Geräusch. "Beep" ist das gleiche mit einem Piep-Geräusch (Standard: Klick).
+
+*Fehlerkorrekturen*
+- Die globale Himmelsrichtung kann jetzt auch mit STRG + ALT statt nur über ALTGr angesagt werden.
+
 
 ## Änderungen in Version 20.1
 
