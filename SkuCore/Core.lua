@@ -506,9 +506,6 @@ function SkuCore:OnEnable()
 						end
 					end
 				end
-		
-
-
 
 				local infoType, itemID, itemLink = GetCursorInfo()
 				local tResult
@@ -550,7 +547,6 @@ function SkuCore:OnEnable()
 					end
 				end
 	
-
 				if IsFalling() == true then
 					if SkuStatus.falling ~= -1 then
 						if SkuStatus.falling > 0 then

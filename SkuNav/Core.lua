@@ -1072,7 +1072,7 @@ function SkuNav:CreateSkuNavControl()
 				--global direction
 				local tText = UnitPosition("player")
 				if tText then
-					if IsShiftKeyDown() and IsAltKeyDown() then
+					if (IsShiftKeyDown() and IsAltKeyDown()) or (IsControlKeyDown() and IsAltKeyDown()) then
 						if GetServerTime() - ttimeDistanceOutput > 0.5 then
 							local x, y = UnitPosition("player")
 							ttimeDistanceOutput = GetServerTime()
@@ -2448,7 +2448,13 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 		tBeaconType = "probe_mid_1"
 		--tBeaconType = "probe_deep_1_b"
 	end
-	SkuOptions.BeaconLib:CreateBeacon("SkuOptions", aWpName, tBeaconType, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume)
+
+	if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
+		if SkuOptions.db.profile[MODULE_NAME].clickClackSoundset and SkuOptions.db.profile[MODULE_NAME].clickClackSoundset ~= "off" then
+			tBeaconType = tBeaconType..SkuOptions.db.profile[MODULE_NAME].clickClackSoundset
+		end
+	end
+	SkuOptions.BeaconLib:CreateBeacon("SkuOptions", aWpName, tBeaconType, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange)
 	SkuOptions.BeaconLib:StartBeacon("SkuOptions", aWpName)
 
 	if not string.find(aWpName, L["auto"]..";") then
@@ -2576,9 +2582,11 @@ function SkuNav:PLAYER_LOGIN(...)
 	--check all rts; remove invalid rts and their unused wps
 	--cleanup broken rts
 	local tRtsToDelete = {}
-	for x = 1, #SkuOptions.db.profile["SkuNav"].Routes do
-		if SkuNav:CheckRoute(SkuOptions.db.profile["SkuNav"].Routes[x]) == false then
-			tRtsToDelete[#tRtsToDelete + 1] = SkuOptions.db.profile["SkuNav"].Routes[x]
+	if SkuOptions.db.profile["SkuNav"].Routes then
+		for x = 1, #SkuOptions.db.profile["SkuNav"].Routes do
+			if SkuNav:CheckRoute(SkuOptions.db.profile["SkuNav"].Routes[x]) == false then
+				tRtsToDelete[#tRtsToDelete + 1] = SkuOptions.db.profile["SkuNav"].Routes[x]
+			end
 		end
 	end
 	if #tRtsToDelete > 0 then

@@ -499,6 +499,7 @@ function SkuVoice:StopOutputEmptyQueue()
 		end
 	end
 	mSkuVoiceQueue = {}
+	C_VoiceChat.StopSpeakingText()
 end
 
 ---------------------------------------------------------------------------------------------------------

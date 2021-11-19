@@ -104,7 +104,7 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 			["body"] = body,
 		})
 
-		if table.getn(SkuChatChatBuffer) > 12 then
+		if table.getn(SkuChatChatBuffer) > 100 then
 			table.remove(SkuChatChatBuffer, 1) 
 		end
 	end

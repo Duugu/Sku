@@ -2,6 +2,29 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.2
+
+	SkuChat
+		Fehlerkorrekturen
+			- Der Chat-Verlauf hat jetzt 100 Zeilen.
+
+	SkuOptions
+		Fehlerkorrekturen
+			- Die rechte Shift-Taste beendet jetzt auch die Sprachausgabe vom Ingame-TTS (Wegpunkthinweise).
+
+	SkuNav
+		Neuerungen
+			- Zur besseren Beacon-Ortung gibt es jetzt ein "Klick"-Geräusch, wenn du dich in die Richtung eines Beacons drehst. 
+			  Sobald du +/- 5 Grad in die Richtung des Beacons schaust, mach es "Klick". Wenn du den 5-Grad-Bereich wieder verlässt, macht es "Klack".
+			  Dazu gibt es unter "SkuNav > Optionen" drei neue Einstellungsmöglichkeiten:
+			  - "Klick bei Beacons": Damit kannst du das "Klick"-Feature ein-/ausschalten (Standard: Ein)
+			  - "Winkel für Klick bei Beacons": Damit kannst du den Grad-Bereich verändern, in dem der Klick auftritt (Standard: 5). Der Gradbereich gilt nur in Fünferschritten. 8, 9 oder 10 macht also keinen Unterschied. 5, 10 und 15 schon.
+			  - "Ton für Klick bei Beacons": Damit kannst du zwischen zwei Sound-Sets wählen. "Klick" ist ein "Klick"/"Klack"-Geräusch. "Beep" ist das gleiche mit einem Piep-Geräusch (Standard: Klick).
+
+		Fehlerkorrekturen
+			- Die globale Himmelsrichtung kann jetzt auch mit STRG + ALT statt nur über ALTGr angesagt werden.
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.1

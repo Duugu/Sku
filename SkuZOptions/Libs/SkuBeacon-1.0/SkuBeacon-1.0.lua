@@ -89,6 +89,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tTime = 0
+local tPrevCleanedDirection = true
 local function OnUpdate(self, aTime)
 	tTime = tTime + aTime
 	if tTime > 0.05 then
@@ -149,6 +150,22 @@ local function OnUpdate(self, aTime)
 						if tUnsignedCleanedDirection < tMinDegree then
 							tDynPingRate = tDynPingRate - (1 - (tUnsignedCleanedDirection / 45))
 						end
+
+					if tSoundSet.clackFileName then
+						local tClickClackDeg = tBeacon.clickSoundRange or 10
+						if tCleanedDirection > tClickClackDeg or tCleanedDirection < -tClickClackDeg then
+							if tPrevCleanedDirection == true then
+								local tWillPlay, tPlayingHandle = PlaySoundFile(tSoundSet.path.."\\"..tSoundSet.clackFileName, "Talking Head")
+								tPrevCleanedDirection = false
+							end
+						else
+							if tPrevCleanedDirection == false then
+								local tWillPlay, tPlayingHandle = PlaySoundFile(tSoundSet.path.."\\"..tSoundSet.clickFileName, "Talking Head")
+								tPrevCleanedDirection = true
+							end
+						end
+					end
+
 						if tDynPingRate < 0.2 then tDynPingRate = 0.2 end
 						if tDynPingRate > 0.7 then tDynPingRate = 0.7 end
 
@@ -243,7 +260,7 @@ end
 --			distanceNumber: 1 to aMaxDistance
 --		Example file name: beacon_male_one;-1;15.mp3 
 --			(soundset name "beacon_male_one", degree -1, distance 15)
-function SkuBeacon:RegisterSoundSet(aBaseName, aPath, aDegreesStep, aMaxDistance, aFileName)
+function SkuBeacon:RegisterSoundSet(aBaseName, aPath, aDegreesStep, aMaxDistance, aFileName, aClickFileName, aClackFileName)
 	Debug("SkuBeacon RegisterSoundSet")
 	Debug("  BaseName:", aBaseName)
 	Debug("  Path:", aPath)
@@ -259,6 +276,8 @@ function SkuBeacon:RegisterSoundSet(aBaseName, aPath, aDegreesStep, aMaxDistance
 		degreesStep = aDegreesStep,
 		maxDistance = aMaxDistance,
 		fileName = aFileName,
+		clickFileName = aClickFileName,
+		clackFileName = aClackFileName,
 	}
 end
 
@@ -268,7 +287,7 @@ function SkuBeacon:GetSoundSets()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY, aRate, aSilenceRange, aVolume)
+function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY, aRate, aSilenceRange, aVolume, aClickSoundRange)
 	Debug("SkuBeacon CreateBeacon")
 	Debug("  aReference:", aReference)
 	Debug("  aBeaconName:", aBeaconName)
@@ -290,6 +309,7 @@ function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY
 		lastPing = GetTime(),
 		silenceRange = aSilenceRange,
 		volume = aVolume or 100,
+		clickSoundRange = aClickSoundRange,
 	}
 	Debug(gBeaconRepo[aReference][aBeaconName])
 end

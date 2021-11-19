@@ -1,6 +1,13 @@
 local MODULE_NAME = "SkuNav"
 local L = Sku.L
 
+SkuNav.ClickClackSoundsets = {
+	["off"] = "Nichts",
+	["click"] = "Klick",
+	["beep"] = "Ping",
+}
+
+
 SkuNav.options = {
 	name = MODULE_NAME,
 	type = "group",
@@ -162,7 +169,43 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange
 			end
 		},
-
+		clickClackEnabled = {
+			order = 4,
+			name = "Klick bei Beacons",
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].clickClackEnabled = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].clickClackEnabled
+			end
+		},
+		clickClackRange = {
+			order = 4,
+			name = "Winkel für Klick bei Beacons",
+			desc = "",
+			type = "range",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].clickClackRange = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].clickClackRange
+			end
+		},
+		clickClackSoundset = {
+			order = 4,
+			name = "Ton für Klick bei Beacons" ,
+			desc = "",
+			type = "select",
+			values = SkuNav.ClickClackSoundsets,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].clickClackSoundset = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].clickClackSoundset
+			end
+		},
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -182,6 +225,9 @@ SkuNav.defaults = {
 	nearbyWpRange = 30,
 	tomtomWp = false,
 	standardWpReachedRange = true,
+	clickClackEnabled = true,
+	clickClackRange = 5,
+	clickClackSoundset = "click",
 }
 
 local slower = string.lower
