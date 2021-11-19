@@ -2,9 +2,9 @@
 
 +++ ACHTUNG: Wenn du noch Version 19 verwendest, musst du unbedingt erst unten die Versionshinweise zu Version 20 lesen! +++
 
-[Sku 20.2]() <br>
+<!--[Sku 20.2]() <br>-->
 [SkuAudioData 20](https://github.com/Duugu/SkuAudioData/releases/download/r20/SkuAudioData-r20-bcc.zip) <br>
-[SkuBeaconSoundsets 19.7]() <br>
+<!--[SkuBeaconSoundsets 19.7]() <br>-->
 [SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
 
 # Bugs und Todo
