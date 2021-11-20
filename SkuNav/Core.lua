@@ -1072,7 +1072,7 @@ function SkuNav:CreateSkuNavControl()
 				--global direction
 				local tText = UnitPosition("player")
 				if tText then
-					if (IsShiftKeyDown() and IsAltKeyDown()) or (IsControlKeyDown() and IsAltKeyDown()) then
+					if (IsShiftKeyDown() and IsAltKeyDown())then
 						if GetServerTime() - ttimeDistanceOutput > 0.5 then
 							local x, y = UnitPosition("player")
 							ttimeDistanceOutput = GetServerTime()

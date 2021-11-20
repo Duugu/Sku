@@ -60,62 +60,65 @@ end
 local currentLine = 1
 local currentSection = 1
 local sections = {}
-function SkuTTS:NextSection(aEngine)
+function SkuTTS:NextSection(aEngine, aReset)
+	--print("NextSection")	
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if currentSection < #sections then
 			currentSection = currentSection + 1
 			currentLine = 1
-			SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+			SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		else
-			SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+			SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		end
 	end
 end
-function SkuTTS:PreviousSection(aEngine)
+function SkuTTS:PreviousSection(aEngine, aReset)
+	--print("PreviousSection")	
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if currentSection > 1 then
 			currentSection = currentSection - 1
 			currentLine = 1
-			SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+			SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		else
-			SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+			SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		end
 	end
 end
-function SkuTTS:NextLine(aEngine)
+function SkuTTS:NextLine(aEngine, aReset)
 	--print("NextLine")	
 	if SkuTTS.MainFrame:IsVisible() == true then
-		SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+		--SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
 		if currentLine < #sections[currentSection] then
 			currentLine = currentLine + 1
-			SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+			SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		elseif currentSection < #sections then
 				currentSection = currentSection + 1
 				currentLine = 1
-				SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+				SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		else
-			SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+			SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		end
 	end
 end
-function SkuTTS:PreviousLine(aEngine)
+function SkuTTS:PreviousLine(aEngine, aReset)
 	--print("PreviousLine", currentSection, currentLine)		
 	if SkuTTS.MainFrame:IsVisible() == true then
 		if currentLine > 1 then
 			currentLine = currentLine - 1
-			SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+			SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		elseif currentLine <= 1 then
 				if currentSection > 1 then
 					currentSection = currentSection - 1
 					currentLine = #sections[currentSection]
 				end
-				SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+				SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		else
-			SkuTTS:ReadLineNumber(currentSection, currentLine, nil, aEngine)
+			SkuTTS:ReadLineNumber(currentSection, currentLine, aReset, aEngine)
 		end
 	end
 end
 function SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset, aEngine)
+	--print("ReadLineNumber", aSectionNumber, aLineNumber, aNoReset, aEngine)
 	if  aNoReset == nil then aNoReset = true end
 	if SkuTTS.MainFrame:IsVisible() == true then
 		aSectionNumber, aLineNumber = aSectionNumber or currentSection, aLineNumber or currentLine

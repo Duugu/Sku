@@ -3,6 +3,24 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.3
+
+	SkuCore
+		Neuerungen
+			- Neues Feature: Übersichtsseite
+			  Mit SHIFT + PFEIL RUNTER kannst du eine Übersichtsseite aufrufen, auf der die folgenden Informationen angezeigt werden:
+			  	- Gruppenmitglieder (nur in Gruppen)
+				- Reparaturstatus
+				- Gold
+				- Freie Taschenplätze
+			  Du kannst, wie bei allen anderen Ausgaben, mit PFEIL + HOCH/RUNTER zur nächsten/vorherigen Zeile blättern und mit SHIFT + PFEIL HOCH/RUNTER zum nächsten/vorherigen Abschnitt.
+
+	SkuNav
+		Fehlerkorrekturen
+			- Die Ansage der globale Himmelsrichtung mit STRG + ALT wurde wieder entfernt.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.2
 
 	SkuChat

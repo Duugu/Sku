@@ -222,6 +222,70 @@ local function unescape(str)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:UpdateOverviewText()
+	local tSections = {}
+
+	--party
+	if IsInGroup() ~= false then
+		local tTmpText
+		local tCount = 0
+		for x = 1, 5 do
+			local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
+			print(x, name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole)
+			if name then
+				local tPlayerName = UnitName("player")
+				if name ~= tPlayerName then
+					tCount = tCount + 1
+					tTmpText = (tTmpText or "")..tCount.." "..name.." "..class.."\r\n"
+				end
+			end
+		end
+		if tTmpText then
+			table.insert(tSections, "Gruppe".."\r\n"..tTmpText)
+		end
+	end
+
+	--repair status
+	local tDurabilityStatus = {[0] = 0, [1] = 0, [2] = 0,}
+	for index, value in pairs(INVENTORY_ALERT_STATUS_SLOTS) do
+		tDurabilityStatus[GetInventoryAlertStatus(index)] = tDurabilityStatus[GetInventoryAlertStatus(index)] + 1
+	end
+	local tTmpText = ""
+	if tDurabilityStatus[2] > 0 then
+		tTmpText = tTmpText..tDurabilityStatus[2].." rot\r\n"
+	end
+	if tDurabilityStatus[1] > 0 then
+		tTmpText = tTmpText..tDurabilityStatus[1].." gelb\r\n"
+	end
+	if tDurabilityStatus[0] > 0 then
+		tTmpText = tTmpText..tDurabilityStatus[0].." ok\r\n"
+	end
+	table.insert(tSections, "Reparatur status\r\n"..tTmpText)
+
+	--money
+	local tMoney = ContainerFrame1MoneyFrame.staticMoney or BagnonMoneyFrame1.staticMoney
+	if tMoney then
+		local tTmpText = GetCoinText(tMoney)
+		table.insert(tSections, "Geld\r\n"..tTmpText)
+	end
+
+	--bag space
+	local tFreeCount = 0
+	for x = 0, 4 do
+		local t = GetContainerFreeSlots(x)
+		if t then
+			tFreeCount = tFreeCount + #t
+		end
+	end
+	table.insert(tSections, "Freie Taschenplätze\r\n"..tFreeCount)
+
+	--buffs/debuffs
+
+
+	return tSections--rOverviewText
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:CreateControlFrame()
 	local ttime = 0
 	local f = CreateFrame("Frame", "SkuOptionsControl", UIParent)
@@ -355,13 +419,16 @@ function SkuOptions:CreateMainFrame()
 			end			
 			return
 		end
+
+		SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
+
 		if a == "SHIFT-UP" then 
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 					end
-					SkuOptions.TTS:PreviousLine()
+					SkuOptions.TTS:PreviousLine(2, true)
 				end
 			end
 			return
@@ -371,8 +438,10 @@ function SkuOptions:CreateMainFrame()
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
+						SkuOptions.TTS:PreviousLine(2, true)
+					else
+						SkuOptions.TTS:NextLine(2, true)
 					end
-					SkuOptions.TTS:NextLine()
 				end
 			end
 			return
@@ -383,7 +452,7 @@ function SkuOptions:CreateMainFrame()
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 					end
-					SkuOptions.TTS:PreviousSection()
+					SkuOptions.TTS:PreviousSection(2, true)
 				end
 			end
 			return
@@ -393,8 +462,10 @@ function SkuOptions:CreateMainFrame()
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
+						SkuOptions.TTS:PreviousSection(2, true)
+					else
+						SkuOptions.TTS:NextSection(2, true)
 					end
-					SkuOptions.TTS:NextSection()
 				end
 			end
 			return
