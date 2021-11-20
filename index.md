@@ -1,7 +1,7 @@
 # Downloads
 
 Aktualisiert: <br>
-[Sku 20.3](https://github.com/Duugu/Sku/releases/download/r20.3/Sku-r20.3-bcc.zip) <br>
+<!-- [Sku 20.3](https://github.com/Duugu/Sku/releases/download/r20.3/Sku-r20.3-bcc.zip) <br>-->
  <br>Nicht aktualisiert: <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [SkuAudioData 20](https://github.com/Duugu/SkuAudioData/releases/download/r20/SkuAudioData-r20-bcc.zip) <br>
