@@ -1,9 +1,9 @@
 # Downloads
 
 Aktualisiert: <br>
-[Sku 20.2](https://github.com/Duugu/Sku/releases/download/r20.2/Sku-r20.2-bcc.zip) <br>
-[SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
+[Sku 20.3](https://github.com/Duugu/Sku/releases/download/r20.3/Sku-r20.3-bcc.zip) <br>
  <br>Nicht aktualisiert: <br>
+[SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [SkuAudioData 20](https://github.com/Duugu/SkuAudioData/releases/download/r20/SkuAudioData-r20-bcc.zip) <br>
 [SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
 
@@ -12,6 +12,20 @@ Aktualisiert: <br>
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.3
+
+### SkuCore
+*Neuerungen*
+- Neues Feature: Übersichtsseite<br>Mit SHIFT + PFEIL RUNTER kannst du eine Übersichtsseite aufrufen. Du kannst, wie bei allen anderen Ausgaben, mit PFEIL + HOCH/RUNTER zur nächsten/vorherigen Zeile blättern und mit SHIFT + PFEIL HOCH/RUNTER zum nächsten/vorherigen Abschnitt.<br>Die Seite zeigt die folgenden Informationen an:
+  - Gruppenmitglieder (nur in Gruppen)
+  - Reparaturstatus
+  - Gold
+  - Freie Taschenplätze
+
+### SkuNav
+*Fehlerkorrekturen*
+- Die Ansage der globale Himmelsrichtung mit STRG + ALT wurde wieder entfernt.
 
 ## Änderungen in Version 20.2
 
