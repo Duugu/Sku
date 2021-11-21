@@ -136,10 +136,10 @@ function SkuQuest:OnEnable()
 			return
 		end
 		
-		if aKey == "SHIFT-UP" then
+		if aKey == "CTRL-UP" then
 			SkuOptions.TTS:PreviousLine()
 		end
-		if aKey == "SHIFT-DOWN" then
+		if aKey == "CTRL-DOWN" then
 			SkuOptions.TTS:NextLine()
 		end
 		if aKey == "CTRL-SHIFT-UP" then
@@ -988,6 +988,10 @@ local QuestiePlayer
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:PLAYER_LOGIN(...)
 	SkuDB:FixQuestDB()
+	SkuDB:FixItemDB()
+	SkuDB:FixCreaturesDB()
+	SkuDB:FixObjectsDB()
+	
 	C_Timer.NewTimer(10, function() PLAYER_ENTERING_WORLD_flag = false end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------

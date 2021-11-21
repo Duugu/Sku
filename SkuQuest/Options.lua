@@ -361,10 +361,10 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 
 
 
-
-
+	local tHasContent = false
 	for unitGeneralName, wpTable in pairs(tResultWPs) do
 		--print(unitGeneralName, wpTable)
+		tHasContent = true
 		local tNewMenuGeneralName = SkuOptions:InjectMenuItems(aParent, {unitGeneralName}, menuEntryTemplate_Menu)
 		tNewMenuGeneralName.dynamic = true
 		tNewMenuGeneralName.BuildChildren = function(self)
@@ -456,6 +456,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 									SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
 								end
 								tCoveredWps[tV] = true
+								--tHasContent = true
 							end
 						end
 					end
@@ -488,6 +489,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 											SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
 										end
 										tCoveredWps[tV] = true
+										--tHasContent = true
 									end
 								end
 							end
@@ -596,6 +598,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 									SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
 								end
 								tCoveredWps[tV] = true
+								--tHasContent = true
 							end
 						end
 					end
@@ -617,6 +620,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 									SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
 								end
 								tCoveredWps[tV] = true
+								--tHasContent = true
 							end
 						end
 					end
@@ -678,6 +682,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							tNewMenuGeneralSp.OnEnter = function(self, aValue, aName)
 								SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint = tV
 							end
+							--tHasContent = true
 						end
 					end
 				end
@@ -706,11 +711,16 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							tNewMenuGeneralSp.OnEnter = function(self, aValue, aName)
 								SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint = tV
 							end
+							--tHasContent = true
 						end
 					end
 				end
 			end
 		end
+	end
+
+	if tHasContent == false then
+		local tNewMenuGeneralName = SkuOptions:InjectMenuItems(aParent, {L["Empty"]}, menuEntryTemplate_Menu)
 	end
 end
 
@@ -762,14 +772,10 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 		--setmetatable(tObjectives, SkuNav.PrintMT)
 		--print(tObjectives)
 		if tstartedBy then
-			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {"Annahme"}, menuEntryTemplate_Menu)
-			tNewMenuSubEntry.dynamic = true
-			tNewMenuSubEntry.filterable = true
 			--print("objectives", tObjectives[1], tObjectives[2], tObjectives[3], tObjectives[4], tObjectives[5])
 			local tTargets = {}
 			local tTargetType = nil
 			if tstartedBy[1] then --creatures
-				-- funktioniert print("objective creatures")
 				--tTargets = tObjectives[1][1]
 				for i, v in pairs(tstartedBy[1]) do
 					tTargets[#tTargets+1] = v
@@ -777,7 +783,6 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				tTargetType = "creature"
 	
 			elseif tstartedBy[2] then --objects
-				-- funktioniert print("objective objects")
 				for i, v in pairs(tstartedBy[2]) do
 					tTargets[#tTargets+1] = v
 				end
@@ -794,6 +799,10 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				end
 				tTargetType = "item"
 			end		
+
+			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {"Annahme"}, menuEntryTemplate_Menu)
+			tNewMenuSubEntry.dynamic = true
+			tNewMenuSubEntry.filterable = true
 			tNewMenuSubEntry.BuildChildren = function(self)
 				tHasEntries = true
 				CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)

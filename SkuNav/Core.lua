@@ -50,6 +50,11 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 			tPlayerUIMap = 1432
 		end
 	end
+	if tPlayerUIMap == 1414 then
+		if GetMinimapZoneText() == L["Maraudon"] then
+			tPlayerUIMap = 1443
+		end
+	end
 	return tPlayerUIMap
 end
 

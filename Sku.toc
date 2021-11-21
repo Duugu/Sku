@@ -29,8 +29,11 @@ SkuDB\assets\default_waypoints.lua
 SkuDB\assets\quests.lua
 SkuDB\assets\quests_fixes.lua
 SkuDB\assets\creatures.lua
+SkuDB\assets\creatures_fixes.lua
 SkuDB\assets\items.lua
+SkuDB\assets\items_fixes.lua
 SkuDB\assets\objects.lua
+SkuDB\assets\objects_fixes.lua
 SkuDB\assets\spells.lua
 SkuDB\assets\polygons.lua
 

@@ -226,23 +226,29 @@ function SkuOptions:UpdateOverviewText()
 	local tSections = {}
 
 	--party
-	if IsInGroup() ~= false then
-		local tTmpText
-		local tCount = 0
-		for x = 1, 5 do
-			local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-			print(x, name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole)
-			if name then
-				local tPlayerName = UnitName("player")
-				if name ~= tPlayerName then
-					tCount = tCount + 1
-					tTmpText = (tTmpText or "")..tCount.." "..name.." "..class.."\r\n"
-				end
+	local tTmpText
+	local tCount = 1
+
+	local tPosX, tPosY = 0, 0
+	if C_Map.GetBestMapForUnit("player") then
+		tPosX, tPosY = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player"):GetXY()
+	end
+	tTmpText = tCount.." "..UnitName("player")..", "..GetMinimapZoneText()..", "..math.floor(tPosX * 100).." "..math.floor(tPosY * 100).."\r\n"
+	
+	for x = 1, 5 do
+		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
+		if online then online = "online" else online = "offline" end
+		if isDead then isDead = "tot" else isDead = "lebt" end
+		if name then
+			local tPlayerName = UnitName("player")
+			if name ~= tPlayerName then
+				tCount = tCount + 1
+				tTmpText = tTmpText..tCount.." "..name..", "..class..", "..level..", "..zone..", "..online..", "..isDead.."\r\n"
 			end
 		end
-		if tTmpText then
-			table.insert(tSections, "Gruppe".."\r\n"..tTmpText)
-		end
+	end
+	if tTmpText then
+		table.insert(tSections, "Gruppe".."\r\n"..tTmpText)
 	end
 
 	--repair status
@@ -252,21 +258,21 @@ function SkuOptions:UpdateOverviewText()
 	end
 	local tTmpText = ""
 	if tDurabilityStatus[2] > 0 then
-		tTmpText = tTmpText..tDurabilityStatus[2].." rot\r\n"
+		tTmpText = tTmpText..tDurabilityStatus[2].." rot "
 	end
 	if tDurabilityStatus[1] > 0 then
-		tTmpText = tTmpText..tDurabilityStatus[1].." gelb\r\n"
+		tTmpText = tTmpText..tDurabilityStatus[1].." gelb "
 	end
 	if tDurabilityStatus[0] > 0 then
-		tTmpText = tTmpText..tDurabilityStatus[0].." ok\r\n"
+		tTmpText = tTmpText..tDurabilityStatus[0].." ok "
 	end
-	table.insert(tSections, "Reparatur status\r\n"..tTmpText)
+	table.insert(tSections, "Reparatur status: "..tTmpText)
 
 	--money
 	local tMoney = ContainerFrame1MoneyFrame.staticMoney or BagnonMoneyFrame1.staticMoney
 	if tMoney then
 		local tTmpText = GetCoinText(tMoney)
-		table.insert(tSections, "Geld\r\n"..tTmpText)
+		table.insert(tSections, "Geld: "..tTmpText)
 	end
 
 	--bag space
@@ -277,12 +283,126 @@ function SkuOptions:UpdateOverviewText()
 			tFreeCount = tFreeCount + #t
 		end
 	end
-	table.insert(tSections, "Freie Taschenplätze\r\n"..tFreeCount)
+	table.insert(tSections, "Freie Taschenplätze: "..tFreeCount)
 
 	--buffs/debuffs
 
 
-	return tSections--rOverviewText
+	--time
+	local tTime = date("*t")
+	table.insert(tSections, "Zeit: "..tTime.hour..":"..tTime.min.." Uhr")
+
+	--mail
+	local sender1, sender2, sender3 = GetLatestThreeSenders()
+	local tTmpText = "keine"
+	if sender1 then
+		tTmpText = sender1
+	end
+	if sender2 then
+		tTmpText = tTmpText .." "..sender2
+	end
+	if sender3 then
+		tTmpText = tTmpText .." "..sender3
+	end
+	table.insert(tSections, "Post: "..tTmpText)
+
+	--hearthstone
+	local tTmpText = "Keiner vorhanden"
+	local tHearthstoneId = PlayerHasHearthstone()
+	if tHearthstoneId then
+		local startTime, duration, enable = GetItemCooldown(tHearthstoneId)
+		if duration == 0 then
+			tTmpText = " bereit"
+		else
+			tTmpText = math.floor((duration / 60) + ((startTime -  GetTime()) / 60)).." Minuten"
+		end
+		tTmpText = tTmpText.." "..GetBindLocation()
+	end
+	table.insert(tSections, "Ruhestein: "..tTmpText)
+
+	--xp
+	local tPlayerXPExhaustion = GetXPExhaustion()
+	local tPlayercurrXP, tPlayernextXP = UnitXP("player"), UnitXPMax("player")
+	table.insert(tSections, "XP: "..(math.floor(tPlayercurrXP / (tPlayernextXP / 100))).." Prozent ("..tPlayercurrXP.." von "..tPlayernextXP.." für "..(UnitLevel("player") + 1)..")\r\nRuhebonus: "..tPlayerXPExhaustion)
+
+	--loot
+	local lootStrings = 	{
+		["freeforall"] = "Jeder gegen jeden",
+		["roundrobin"] = "Reihum",
+		["group"] = "Als Gruppe",
+		["needbeforegreed"] = "Bedarf bevor Gier",
+		["master"] = "Plündermeister",
+		["personalloot"] = "Persönliche Beute",
+	}
+	local lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
+	table.insert(tSections, "Plündern: "..lootStrings[lootmethod])
+
+	--skills
+	local tTmpText = ""
+	for x = 1, GetNumSkillLines() do
+		local skillName, header, isExpanded, skillRank, numTempPoints, skillModifier, skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType, skillDescription = GetSkillLineInfo(x)
+		if not header then
+			tTmpText = tTmpText.."\r\n"..skillName.." ("..skillRank.." / "..skillMaxRank..")"
+		end
+	end
+	table.insert(tSections, "Fertigkeiten:\r\n"..tTmpText)
+
+	--reputation
+	ExpandAllFactionHeaders()
+	local tTmpText = ""
+	for x = 1, GetNumFactions() do
+		local name, description, standingID, barMin, barMax, barValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfo(x)
+		if not isHeader then
+			local tRep = {
+			[8] = 42000,
+			[7] = 21000,
+			[6] = 9000,
+			[5] = 3000,
+			[4] = 0,
+			[3] = -3000,
+			[2] = -6000,
+			[1] = -36000,
+			}
+			local tRepLevel = 0
+			for y = 1, 8 do
+				if barValue >= tRep[y] == true then
+					tRepLevel = y
+				end
+			end
+			barValue = barValue - tRep[tRepLevel]
+			barMax = barMax - tRep[tRepLevel]
+			if standingID then
+				tTmpText = tTmpText.."\r\n"..name..", "..getglobal("FACTION_STANDING_LABEL"..tRepLevel).." ("..barValue.." / "..barMax..")"
+			end
+		end
+	end
+	table.insert(tSections, "Ruf:\r\n"..tTmpText)
+
+	--guild members
+	local tTmpText = ""
+	for x = 1, GetNumGuildMembers() do
+		local name, rankName, rankIndex, level, classDisplayName, zone, publicNote, officerNote, isOnline, status, class, achievementPoints, achievementRank, isMobile, canSoR, repStanding, GUID = GetGuildRosterInfo(x)
+		if string.find(name,"-") then
+			name = string.sub(name, 1, string.find(name,"-") - 1)
+		end
+		if name and isOnline == true then
+			tTmpText = tTmpText.."\r\n"..name..", "..classDisplayName..", "..level..", "..publicNote
+		end
+	end
+	table.insert(tSections, "Gilde:\r\n"..tTmpText)
+
+	--pet
+	local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
+	if UnitName("playerpet") then
+		table.insert(tSections, "Tier XP: "..tPetcurrXP.." von "..tPetnextXP.." für "..UnitLevel("playerpet") + 1)
+	end
+	--GetPetFoodTypes
+
+
+	--consumables
+
+
+	return tSections
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -297,10 +417,10 @@ function SkuOptions:CreateControlFrame()
 
 			ttime = ttime + time
 			if ttime > 0.1 then
-				if SkuOptions.TTS:IsVisible() == true and IsShiftKeyDown() == false and (_G["QuestLogFrame"]:IsVisible() == false) then
+				if SkuOptions.TTS:IsVisible() == true and IsControlKeyDown() == false then --and (_G["QuestLogFrame"]:IsVisible() == false) then
 					if SkuOptions.ChatOpen then
 						if SkuOptions.ChatOpen == false then
-							--SkuOptions.TTS:Output("", -1)
+							SkuOptions.TTS:Output("", -1)
 							SkuOptions.TTS.MainFrame:Hide()
 						end
 					else
@@ -332,7 +452,7 @@ function SkuOptions:CreateMainFrame()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].NeedButton:Click()
-						SkuOptions.Voice:OutputString(L["Need"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						SkuOptions.Voice:OutputString(L["Need rolled"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 						C_Timer.NewTimer(0.5, function()
 							if _G["StaticPopup1"]:IsVisible() then
 								_G["StaticPopup1Button1"]:Click()
@@ -348,7 +468,7 @@ function SkuOptions:CreateMainFrame()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].GreedButton:Click()
-						SkuOptions.Voice:OutputString(L["Greed"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						SkuOptions.Voice:OutputString(L["Greed rolled"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 						C_Timer.NewTimer(0.5, function()
 							if _G["StaticPopup1"]:IsVisible() then
 								_G["StaticPopup1Button1"]:Click()
@@ -364,7 +484,7 @@ function SkuOptions:CreateMainFrame()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].PassButton:Click()
-						SkuOptions.Voice:OutputString(L["Pass"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						SkuOptions.Voice:OutputString(L["Pass rolled"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 					end
 				end
 			end
@@ -374,7 +494,7 @@ function SkuOptions:CreateMainFrame()
 			local tItem
 			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 			if SkuOptions.nextRollFrameNumber then
-				SkuOptions.Voice:OutputString(L["Roll on "]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+				SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 			end
 			return
 		end
@@ -420,9 +540,8 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 
-		SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
-
-		if a == "SHIFT-UP" then 
+		if a == "CTRL-UP" then 
+			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -433,7 +552,8 @@ function SkuOptions:CreateMainFrame()
 			end
 			return
 		end
-		if a == "SHIFT-DOWN" then
+		if a == "CTRL-DOWN" then
+			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -447,6 +567,7 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 		if a == "CTRL-SHIFT-UP" then
+			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -458,6 +579,7 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 		if a == "CTRL-SHIFT-DOWN" then
+			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -659,8 +781,8 @@ function SkuOptions:CreateMainFrame()
 	end)
 
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-T", tFrame:GetName(), "CTRL-SHIFT-T")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-UP", tFrame:GetName(), "SHIFT-UP")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-DOWN", tFrame:GetName(), "SHIFT-DOWN")
+	SetOverrideBindingClick(tFrame, true, "CTRL-UP", tFrame:GetName(), "CTRL-UP")
+	SetOverrideBindingClick(tFrame, true, "CTRL-DOWN", tFrame:GetName(), "CTRL-DOWN")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-UP", tFrame:GetName(), "CTRL-SHIFT-UP")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-DOWN", tFrame:GetName(), "CTRL-SHIFT-DOWN")
 
@@ -872,7 +994,7 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 
-		if aKey ~= "SHIFT-UP" and aKey ~= "SHIFT-DOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
+		if aKey ~= "CTRL-UP" and aKey ~= "CTRL-DOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
 			if SkuOptions.TTS:IsVisible() then
 				--SkuOptions.TTS:Output("", -1)
 				SkuOptions.TTS.MainFrame:Hide()
@@ -886,7 +1008,7 @@ function SkuOptions:CreateMenuFrame()
 			SkuQuest:OnSkuQuestPush()
 		end
 
-		if aKey == "SHIFT-UP" then 
+		if aKey == "CTRL-UP" then 
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -896,7 +1018,7 @@ function SkuOptions:CreateMenuFrame()
 				end
 			end
 		end
-		if aKey == "SHIFT-DOWN" then
+		if aKey == "CTRL-DOWN" then
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -961,8 +1083,8 @@ function SkuOptions:CreateMenuFrame()
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-T", "SkuQuestMainOption1", "CTRL-SHIFT-T")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "OnSkuOptionsMainOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "OnSkuOptionsMainOption1", "CTRL-SHIFT-DOWN")
-		SetOverrideBindingClick(self, true, "SHIFT-UP", "OnSkuOptionsMainOption1", "SHIFT-UP")
-		SetOverrideBindingClick(self, true, "SHIFT-DOWN", "OnSkuOptionsMainOption1", "SHIFT-DOWN")
+		SetOverrideBindingClick(self, true, "CTRL-UP", "OnSkuOptionsMainOption1", "CTRL-UP")
+		SetOverrideBindingClick(self, true, "CTRL-DOWN", "OnSkuOptionsMainOption1", "CTRL-DOWN")
 
 		SetOverrideBindingClick(self, true, "SHIFT-RIGHT", "OnSkuOptionsMainOption1", "SHIFT-RIGHT")
 		SetOverrideBindingClick(self, true, "HOME", "OnSkuOptionsMainOption1", "HOME")
@@ -1306,7 +1428,7 @@ function SkuOptions:START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on "]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 	end
 end
 
@@ -1316,7 +1438,7 @@ function SkuOptions:CANCEL_LOOT_ROLL(rollID, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on "]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 	end
 end
 
@@ -1326,7 +1448,7 @@ function SkuOptions:LOOT_SLOT_CHANGED(lootSlot, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on "]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
 	end
 end
 
