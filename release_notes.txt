@@ -5,7 +5,13 @@
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.4
 
-	SkuOptions
+	SkuNav
+		Neuerungen
+			- Im Menü unter "SkuNav > Daten" gibt es eine neue Option "Export aktueller Kontinent".
+			- Im Ordner "Sku > SkuNav > routedata" gibt es jetzt Routen-Einzeldateien für die drei Kontinente: Kalimdor, Östliche Königreiche, Scherbenwelt.
+			  Eine Gesamtdatei mit allen Routen gibt es nicht mehr (diese wurde mit der steigenden Routenzahl zu groß).
+
+	SkuQuest
 		Fehlerkorrekturen
 			- Die NPC-, Objekt-, Item- und Questdatenbanken wurden mit einer vierstelligen Anzahl von Updates/Fixes aus Questie aktualisiert. 
 

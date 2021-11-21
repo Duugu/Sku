@@ -2359,20 +2359,22 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aZone int export just for area id
-function SkuOptions:ExportWpAndRouteData(aAreaId)
+function SkuOptions:ExportWpAndRouteData(aAreaId, aContinentId)
 	local tExportDataTable = {
 		routes = {},
 		waypoints = {},
 	}
 	--setmetatable(tExportDataTable, SkuNav.PrintMT)
 
-	if aAreaId then
+	if aAreaId or aContinentId then
 		for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Routes) do
 			local tRoute = v
 			local tInArea = false
 			for i1, v1 in ipairs(SkuOptions.db.profile["SkuNav"].Routes[tRoute].WPs) do
 				if SkuNav:GetWaypoint(v1) then
-					if SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuNav:GetWaypoint(v1).areaId)) == aAreaId then
+					if SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuNav:GetWaypoint(v1).areaId)) == aAreaId
+						or SkuNav:GetWaypoint(v1).contintentId == aContinentId 
+					then
 						tInArea = true
 					end
 				end
@@ -2388,7 +2390,9 @@ function SkuOptions:ExportWpAndRouteData(aAreaId)
 		for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Waypoints) do
 			if not string.find(v, L["Quick waypoint"]) then
 				if SkuOptions.db.profile["SkuNav"].Waypoints[v] then
-					if SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId)) == aAreaId then
+					if SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId)) == aAreaId 
+						or SkuOptions.db.profile["SkuNav"].Waypoints[v].contintentId == aContinentId 
+					then
 						if not tExportDataTable.waypoints[v] then
 							table.insert(tExportDataTable.waypoints, v)
 							tExportDataTable.waypoints[v] = SkuOptions.db.profile["SkuNav"].Waypoints[v]

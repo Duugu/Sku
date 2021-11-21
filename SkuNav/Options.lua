@@ -2432,6 +2432,25 @@ function SkuNav:MenuBuilder(aParentEntry)
 			end
 			SkuOptions:ExportWpAndRouteData()
 		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Export aktueller Kontinent"}, menuEntryTemplate_Menu)
+		tNewMenuEntry.OnAction = function(self, aValue, aName)
+			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+				SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
+				SkuOptions.Voice:OutputString(L["Active waypoint or route or recording"], false, true, 0.3, true)
+				return
+			end
+			local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
+			if tPlayerContintentId then
+				SkuOptions:ExportWpAndRouteData(nil, tPlayerContintentId)
+			else
+				SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
+				SkuOptions.Voice:OutputString("Auf diesem Kontinent nicht möglich", false, true, 0.3, true)
+			end
+		end
+
+
+
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Export aktuelle Karte"}, menuEntryTemplate_Menu)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
