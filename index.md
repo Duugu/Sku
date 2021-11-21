@@ -1,13 +1,17 @@
 # Downloads
 
-Aktualisiert: <br>
-<!--[Sku 20.4](https://github.com/Duugu/Sku/releases/download/r20.4/Sku-r20.4-bcc.zip) <br>-->
- <br>Nicht aktualisiert: <br>
+Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
+
+*Aktualisiert:* <br>
+[Sku 20.4](https://github.com/Duugu/Sku/releases/download/r20.4/Sku-r20.4-bcc.zip) <br>
+
+*Nicht aktualisiert:*<br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [SkuAudioData 20](https://github.com/Duugu/SkuAudioData/releases/download/r20/SkuAudioData-r20-bcc.zip) <br>
 [SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
+[BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
-# Bugs und Todo
+# Bug- und Todo-Liste
 [Bug-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Abug) <br>
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
@@ -19,15 +23,21 @@ Aktualisiert: <br>
 *Fehlerkorrekturen*
 - In Maraudon wurde ein Kartenproblem behoben.
 
-### SkuOptions
+*Neuerungen*
+- Im Menü unter "SkuNav > Daten" gibt es eine neue Option "Export aktueller Kontinent".
+- Im Ordner "Sku > SkuNav > routedata" gibt es jetzt Routen-Einzeldateien für die drei Kontinente: Kalimdor, Östliche Königreiche, Scherbenwelt.<br>
+Eine Gesamtdatei mit allen Routen gibt es nicht mehr (diese wurde mit der steigenden Routenzahl zu groß).
+
+### SkuQuest
 *Fehlerkorrekturen*
 - Die NPC-, Objekt-, Item- und Questdatenbanken wurden mit einer vierstelligen Anzahl von Updates/Fixes aus Questie aktualisiert. 
 
-*Neuerungen*
-- SHIFT und STRG haben bei der Anzeige von Detailinformationen die Funktionen getauscht.<br>
+### SkuOptions
+*Fehlerkorrekturen*
+- Aufgrund von Problemen mit NVDA und der Shift-Taste, haben SHIFT und STRG bei der Anzeige von Detailinformationen die Funktionen getauscht.<br>
 Ab sofort ist eine Zeile vor oder zurück blättern STRG + PFEIL RUNTER/HOCH (statt wie bisher SHIFT + PFEIL).<br>
 Einen ganzen Abschnitt vor oder zurück blättern bleibt wie bisher STRG + SHIFT + PFEIL RUNTER/HOCH.
-- Die aktuellen Routendateien (Stand 20.11.2021) wurde in "Sku > SkuNav > routedata" hinzugefügt.
+Dies gilt für alle Bereiche, in denen Detailinformationen gelesen werden können (Quest, Infofenster, Tooltips, Lokal-Menü etc).
 
 ### SkuCore
 *Fehlerkorrekturen*
