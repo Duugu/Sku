@@ -1,7 +1,7 @@
 # Downloads
 
 Aktualisiert: <br>
-[Sku 20.3](https://github.com/Duugu/Sku/releases/download/r20.3/Sku-r20.3-bcc.zip) <br>
+<!--[Sku 20.4](https://github.com/Duugu/Sku/releases/download/r20.4/Sku-r20.4-bcc.zip) <br>-->
  <br>Nicht aktualisiert: <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [SkuAudioData 20](https://github.com/Duugu/SkuAudioData/releases/download/r20/SkuAudioData-r20-bcc.zip) <br>
@@ -13,6 +13,37 @@ Aktualisiert: <br>
 
 # Versionshinweise
 
+## Änderungen in Version 20.4
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Die NPC-, Objekt-, Item- und Questdatenbanken wurden mit einer vierstelligen Anzahl von Updates/Fixes aus Questie aktualisiert. 
+
+*Neuerungen*
+- SHIFT und STRG haben bei der Anzeige von Detailinformationen die Funktionen getauscht.<br>
+Ab sofort ist eine Zeile vor oder zurück blättern STRG + PFEIL RUNTER/HOCH (statt wie bisher SHIFT + PFEIL).<br>
+Einen ganzen Abschnitt vor oder zurück blättern bleibt wie bisher STRG + SHIFT + PFEIL RUNTER/HOCH.
+- Die aktuellen Routendateien (Stand 20.11.2021) wurde in "Sku > SkuNav > routedata" hinzugefügt.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Beim Würfeln sagt das Addon jetzt zur besseren Wahrnehmbarkeit "gewürfelt gier/bedarf/gepasst" statt nur "gier/bedarf/gepasst".
+
+*Neuerungen*
+- Änderungen an der Übersichtsseite:
+  - Der Spieler selbst ist jetzt in der Gruppenübersicht.
+  - Was in einer Zeile dargestellt werden kann ist jetzt in einer Zeile.
+  - Neue Inhalte:
+    - Uhrzeit
+    - Post
+    - Ruhestein
+    - XP/Erholung
+    - Plündern Einstellung
+    - Fertigkeiten
+    - Ruf
+    - Gildenmitglieder online
+    - Tier XP
+     
 ## Änderungen in Version 20.3
 
 ### SkuCore
