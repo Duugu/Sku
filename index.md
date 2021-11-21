@@ -15,6 +15,10 @@ Aktualisiert: <br>
 
 ## Änderungen in Version 20.4
 
+### SkuNav
+*Fehlerkorrekturen*
+- In Maraudon wurde ein Kartenproblem behoben.
+
 ### SkuOptions
 *Fehlerkorrekturen*
 - Die NPC-, Objekt-, Item- und Questdatenbanken wurden mit einer vierstelligen Anzahl von Updates/Fixes aus Questie aktualisiert. 
