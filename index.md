@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.4](https://github.com/Duugu/Sku/releases/download/r20.4/Sku-r20.4-bcc.zip) <br>
+[Sku 20.5](https://github.com/Duugu/Sku/releases/download/r20.5/Sku-r20.5-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
@@ -16,6 +16,30 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.5
+
+### SkuCore
+*Fehlerkorrekturen*
+- Die Meldung "Noch x" beim Erreichen eines Wegpunktes auf einer Route kann jetzt nicht mehr unerwünscht durch andere Audioausgaben abgebrochen/überschrieben werden.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Das Infofenster funktioniert nun auch, wenn man keine Ruhe-XP hat.
+- Die Gildenmitglieder im Infofenster werden jetzt bei jeder Anzeige des Fensters aktualisiert.<br>
+Da diese Informationen vom Server kommen, und nicht sofort verfügbar sind, kann es trotzdem sein, dass die Informationen nicht sekundengenau aktuell sind.
+
+### SkuQuest
+*Fehlerkorrekturen*
+- Die Quest "Vahlarriels suche" wird jetzt korrekt im Questlog angezeigt.
+
+### SkuOptions
+*Fehlerkorrekturen*
+- SHIFT und STRG haben bei der Anzeige von Detailinformationen erneut die Funktionen getauscht.<br>
+Nun ist wieder SHIFT + PFEIL eine Zeile weiter und SHIFT + STRG + PFEIL einen Abschnitt weiter - wie vorher.<br>
+Dafür geht das Infofenster jetzt nach 30 Sekunden ohne Zeilen- oder Abschnittswechsel automatisch zu.
+- Beim TTS wurde Fehler mit verschiedenen Zeichen behoben (z. B. > und <). Daher sollten jetzt weniger Piepser für fehlende Wörter zu hören sein.
+- Fehler beim Durchschreiten von Instanz-Portalen (z. B. Eingang Tiefenbahn) wurden behoben.
 
 ## Änderungen in Version 20.4
 
