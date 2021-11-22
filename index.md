@@ -4,10 +4,10 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 *Aktualisiert:* <br>
 [Sku 20.5](https://github.com/Duugu/Sku/releases/download/r20.5/Sku-r20.5-bcc.zip) <br>
+[SkuAudioData 21](https://github.com/Duugu/SkuAudioData/releases/download/r21/SkuAudioData-r21-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
-[SkuAudioData 20](https://github.com/Duugu/SkuAudioData/releases/download/r20/SkuAudioData-r20-bcc.zip) <br>
 [SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
