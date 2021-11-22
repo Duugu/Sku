@@ -322,6 +322,7 @@ function SkuOptions:UpdateOverviewText()
 
 	--xp
 	local tPlayerXPExhaustion = GetXPExhaustion()
+	tPlayerXPExhaustion = tPlayerXPExhaustion or 0
 	local tPlayercurrXP, tPlayernextXP = UnitXP("player"), UnitXPMax("player")
 	table.insert(tSections, "XP: "..(math.floor(tPlayercurrXP / (tPlayernextXP / 100))).." Prozent ("..tPlayercurrXP.." von "..tPlayernextXP.." für "..(UnitLevel("player") + 1)..")\r\nRuhebonus: "..tPlayerXPExhaustion)
 
@@ -379,6 +380,8 @@ function SkuOptions:UpdateOverviewText()
 	table.insert(tSections, "Ruf:\r\n"..tTmpText)
 
 	--guild members
+	SetGuildRosterShowOffline(false)
+	GuildRoster()
 	local tTmpText = ""
 	for x = 1, GetNumGuildMembers() do
 		local name, rankName, rankIndex, level, classDisplayName, zone, publicNote, officerNote, isOnline, status, class, achievementPoints, achievementRank, isMobile, canSoR, repStanding, GUID = GetGuildRosterInfo(x)
@@ -417,13 +420,15 @@ function SkuOptions:CreateControlFrame()
 
 			ttime = ttime + time
 			if ttime > 0.1 then
-				if SkuOptions.TTS:IsVisible() == true and IsControlKeyDown() == false then --and (_G["QuestLogFrame"]:IsVisible() == false) then
+				--print(IsShiftKeyDown())
+				if SkuOptions.TTS:IsVisible() == true and IsShiftKeyDown() == false then --and (_G["QuestLogFrame"]:IsVisible() == false) then
 					if SkuOptions.ChatOpen then
 						if SkuOptions.ChatOpen == false then
 							SkuOptions.TTS:Output("", -1)
 							SkuOptions.TTS.MainFrame:Hide()
 						end
 					else
+						SkuOptions.TTS:Output("", -1)
 						SkuOptions.TTS.MainFrame:Hide()
 					end
 				end
@@ -509,7 +514,7 @@ function SkuOptions:CreateMainFrame()
 						if tText then
 							if string.len(tText) > 0 then
 								SkuOptions.TooltipReaderText = tText
-								SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
+								SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
 								SkuOptions.TTS:PreviousLine()
 							end
 						end
@@ -528,7 +533,7 @@ function SkuOptions:CreateMainFrame()
 							if tText then
 								if string.len(tText) > 0 then
 									SkuOptions.TooltipReaderText = tText
-									SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
+									SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
 									SkuOptions.TTS:PreviousLine()
 								end
 							end
@@ -540,24 +545,24 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 
-		if a == "CTRL-UP" then 
+		if a == "SHIFT-UP" then 
 			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
+						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
 					end
 					SkuOptions.TTS:PreviousLine(2, true)
 				end
 			end
 			return
 		end
-		if a == "CTRL-DOWN" then
+		if a == "SHIFT-DOWN" then
 			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
+						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
 						SkuOptions.TTS:PreviousLine(2, true)
 					else
 						SkuOptions.TTS:NextLine(2, true)
@@ -571,7 +576,7 @@ function SkuOptions:CreateMainFrame()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
+						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
 					end
 					SkuOptions.TTS:PreviousSection(2, true)
 				end
@@ -583,7 +588,7 @@ function SkuOptions:CreateMainFrame()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
+						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
 						SkuOptions.TTS:PreviousSection(2, true)
 					else
 						SkuOptions.TTS:NextSection(2, true)
@@ -781,8 +786,8 @@ function SkuOptions:CreateMainFrame()
 	end)
 
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-T", tFrame:GetName(), "CTRL-SHIFT-T")
-	SetOverrideBindingClick(tFrame, true, "CTRL-UP", tFrame:GetName(), "CTRL-UP")
-	SetOverrideBindingClick(tFrame, true, "CTRL-DOWN", tFrame:GetName(), "CTRL-DOWN")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-UP", tFrame:GetName(), "SHIFT-UP")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-DOWN", tFrame:GetName(), "SHIFT-DOWN")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-UP", tFrame:GetName(), "CTRL-SHIFT-UP")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-DOWN", tFrame:GetName(), "CTRL-SHIFT-DOWN")
 
@@ -994,7 +999,7 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 
-		if aKey ~= "CTRL-UP" and aKey ~= "CTRL-DOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
+		if aKey ~= "SHIFT-UP" and aKey ~= "SHIFT-DOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
 			if SkuOptions.TTS:IsVisible() then
 				--SkuOptions.TTS:Output("", -1)
 				SkuOptions.TTS.MainFrame:Hide()
@@ -1008,7 +1013,7 @@ function SkuOptions:CreateMenuFrame()
 			SkuQuest:OnSkuQuestPush()
 		end
 
-		if aKey == "CTRL-UP" then 
+		if aKey == "SHIFT-UP" then 
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -1018,7 +1023,7 @@ function SkuOptions:CreateMenuFrame()
 				end
 			end
 		end
-		if aKey == "CTRL-DOWN" then
+		if aKey == "SHIFT-DOWN" then
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -1083,8 +1088,8 @@ function SkuOptions:CreateMenuFrame()
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-T", "SkuQuestMainOption1", "CTRL-SHIFT-T")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "OnSkuOptionsMainOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "OnSkuOptionsMainOption1", "CTRL-SHIFT-DOWN")
-		SetOverrideBindingClick(self, true, "CTRL-UP", "OnSkuOptionsMainOption1", "CTRL-UP")
-		SetOverrideBindingClick(self, true, "CTRL-DOWN", "OnSkuOptionsMainOption1", "CTRL-DOWN")
+		SetOverrideBindingClick(self, true, "SHIFT-UP", "OnSkuOptionsMainOption1", "SHIFT-UP")
+		SetOverrideBindingClick(self, true, "SHIFT-DOWN", "OnSkuOptionsMainOption1", "SHIFT-DOWN")
 
 		SetOverrideBindingClick(self, true, "SHIFT-RIGHT", "OnSkuOptionsMainOption1", "SHIFT-RIGHT")
 		SetOverrideBindingClick(self, true, "HOME", "OnSkuOptionsMainOption1", "HOME")
@@ -1413,12 +1418,15 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:PLAYER_ENTERING_WORLD(...)
-	SkuOptions:RegisterComm("Sku")
-	if not oDCFAddMessage then
-		oDCFAddMessage = DEFAULT_CHAT_FRAME.AddMessage
-		DEFAULT_CHAT_FRAME.AddMessage = nDCFAddMessage
-	end
+	local event, isInitialLogin, isReloadingUi = ...
 
+	if isInitialLogin == true or isReloadingUi == true then
+		SkuOptions:RegisterComm("Sku")
+		if not oDCFAddMessage then
+			oDCFAddMessage = DEFAULT_CHAT_FRAME.AddMessage
+			DEFAULT_CHAT_FRAME.AddMessage = nDCFAddMessage
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

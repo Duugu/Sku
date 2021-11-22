@@ -136,10 +136,10 @@ function SkuQuest:OnEnable()
 			return
 		end
 		
-		if aKey == "CTRL-UP" then
+		if aKey == "SHIFT-UP" then
 			SkuOptions.TTS:PreviousLine()
 		end
-		if aKey == "CTRL-DOWN" then
+		if aKey == "SHIFT-DOWN" then
 			SkuOptions.TTS:NextLine()
 		end
 		if aKey == "CTRL-SHIFT-UP" then
@@ -436,7 +436,6 @@ function SkuQuest:GetTTSText(aQuestID)
 
 	local questDescription, questObjectives = GetQuestLogQuestText()
 	--questDescription = questDescription:gsub("[\n\r]", " ")
-
 	questTag = questTag or ""
 
 	local tText = ""
@@ -476,6 +475,10 @@ function SkuQuest:GetTTSText(aQuestID)
 			if ( not text or strlen(text) == 0 ) then
 				text = ttype
 			end
+			if ( not text or strlen(text) == 0 ) then
+				text = "Keine Informationen vorhanden"
+			end
+
 			if ( finished ) then
 				string:SetTextColor(0.2, 0.2, 0.2)
 				text = text.." ("..COMPLETE..")"

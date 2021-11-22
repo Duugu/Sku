@@ -196,6 +196,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:PLAYER_ENTERING_WORLD(...)
-	
+	local event, isInitialLogin, isReloadingUi = ...
 end
 

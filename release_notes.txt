@@ -2,6 +2,33 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.5
+
+	SkuCore
+		Fehlerkorrekturen
+			- Die Meldung "Noch x" beim Erreichen eines Wegpunktes auf einer Route kann jetzt nicht mehr unerwünscht durch andere Audioausgaben abgebrochen/überschrieben werden.
+
+	SkuCore
+		Fehlerkorrekturen
+			- Das Infofenster funktioniert nun auch, wenn man keine Ruhe-XP hat.
+			- Die Gildenmitglieder im Infofenster werden jetzt bei jeder Anzeige des Fensters aktualisiert.
+			  Da diese Informationen vom Server kommen, und nicht sofort verfügbar sind, kann es trotzdem sein, dass die Informationen nicht sekundengenau aktuell sind.
+
+	SkuQuest
+		Fehlerkorrekturen
+			- Die Quest "Vahlarriels suche" wird jetzt korrekt im Questlog angezeigt.
+
+	SkuOptions
+		Fehlerkorrekturen
+			- SHIFT und STRG haben bei der Anzeige von Detailinformationen erneut die Funktionen getauscht.
+			  Nun ist wieder SHIFT + PFEIL eine Zeile weiter und SHIFT + STRG + PFEIL einen Abschnitt weiter - wie vorher.
+			  Dafür geht das Infofenster jetzt nach 30 Sekunden ohne Zeilen- oder Abschnittswechsel automatisch zu.
+			- Beim TTS wurde Fehler mit verschiedenen Zeichen behoben (z. B. > und <). Daher sollten jetzt weniger Piepser für fehlende Wörter zu hören sein.
+			- Fehler beim Durchschreiten von Instanz-Portalen (z. B. Eingang Tiefenbahn) wurden behoben.
+
+
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.4
 

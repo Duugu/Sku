@@ -1057,6 +1057,7 @@ function SkuCore:QuestFrameDetailPanel_OnHide(...)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_LOGIN(...)
+	--print("PLAYER_LOGIN", ...)
 	SkuCore.TalentTempFlag = true
 
 	local f = CreateFrame("GameTooltip", "SkuScanningTooltip"); -- Tooltip name cannot be nil
@@ -1092,59 +1093,61 @@ function SkuCore:UNIT_HAPPINESS(unitTarget)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+
 function SkuCore:PLAYER_ENTERING_WORLD(...)
-    -- process the event
-	--print("PLAYER_ENTERING_WORLD", ...)
+	local event, isInitialLogin, isReloadingUi = ...
+	--print("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
 
-	WorldMapFrame:Show()
-	WorldMapFrame:Hide()
+	if isInitialLogin == true or isReloadingUi == true then
+		WorldMapFrame:Show()
+		WorldMapFrame:Hide()
 
-	hooksecurefunc(TaxiFrame, "Show", SkuCore.TaxiFrame_OnShow)
-	hooksecurefunc(TaxiFrame, "Hide", SkuCore.TaxiFrame_OnHide)
-	
-	MainMenuBarBackpackButton:Click()
-	MainMenuBarBackpackButton:Click()
+		hooksecurefunc(TaxiFrame, "Show", SkuCore.TaxiFrame_OnShow)
+		hooksecurefunc(TaxiFrame, "Hide", SkuCore.TaxiFrame_OnHide)
+		
+		MainMenuBarBackpackButton:Click()
+		MainMenuBarBackpackButton:Click()
 
-	if SkuCore.TalentTempFlag == true then
-		_G["TalentMicroButton"]:Click()
-	end
-	
-	C_Timer.NewTimer(1, function()
 		if SkuCore.TalentTempFlag == true then
 			_G["TalentMicroButton"]:Click()
 		end
 		
-		for x = 1, #SkuCore.interactFramesList do
-			if _G[SkuCore.interactFramesList[x]] then
-				hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
-				hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
-				SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
+		C_Timer.NewTimer(1, function()
+			if SkuCore.TalentTempFlag == true then
+				_G["TalentMicroButton"]:Click()
+			end
+			
+			for x = 1, #SkuCore.interactFramesList do
+				if _G[SkuCore.interactFramesList[x]] then
+					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
+					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
+					SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
+				end
+			end
+			SkuCore.TalentTempFlag = false
+		end)
+
+
+		for x = 1, 5 do
+			if _G["StaticPopup"..x] then
+				hooksecurefunc(_G["StaticPopup"..x], "Show", SkuCore.StaticPopup_Show)
+				hooksecurefunc(_G["StaticPopup"..x], "Hide", SkuCore.StaticPopup_Hide)
 			end
 		end
-		SkuCore.TalentTempFlag = false
-	end)
 
+		hooksecurefunc(QuestFrameProgressPanel, "Show", SkuCore.QuestFrameProgressPanel_OnShow)
+		hooksecurefunc(QuestFrameProgressPanel, "Hide", SkuCore.QuestFrameProgressPanel_OnHide)
+		hooksecurefunc(QuestFrameDetailPanel, "Show", SkuCore.QuestFrameDetailPanel_OnShow)
+		hooksecurefunc(QuestFrameDetailPanel, "Hide", SkuCore.QuestFrameDetailPanel_OnHide)
+		hooksecurefunc(QuestFrameGreetingPanel, "Show", SkuCore.QuestFrameGreetingPanel_OnShow)
+		hooksecurefunc(QuestFrameGreetingPanel, "Hide", SkuCore.QuestFrameGreetingPanel_OnHide)
 
-	for x = 1, 5 do
-		if _G["StaticPopup"..x] then
-			hooksecurefunc(_G["StaticPopup"..x], "Show", SkuCore.StaticPopup_Show)
-			hooksecurefunc(_G["StaticPopup"..x], "Hide", SkuCore.StaticPopup_Hide)
+		for x = 1, 10 do
+			if _G["GroupLootFrame"..x] then
+				_G["GroupLootFrame"..x]:SetParent(_G["GroupLootContainer"])
+			end
 		end
 	end
-
-	hooksecurefunc(QuestFrameProgressPanel, "Show", SkuCore.QuestFrameProgressPanel_OnShow)
-	hooksecurefunc(QuestFrameProgressPanel, "Hide", SkuCore.QuestFrameProgressPanel_OnHide)
-	hooksecurefunc(QuestFrameDetailPanel, "Show", SkuCore.QuestFrameDetailPanel_OnShow)
-	hooksecurefunc(QuestFrameDetailPanel, "Hide", SkuCore.QuestFrameDetailPanel_OnHide)
-	hooksecurefunc(QuestFrameGreetingPanel, "Show", SkuCore.QuestFrameGreetingPanel_OnShow)
-	hooksecurefunc(QuestFrameGreetingPanel, "Hide", SkuCore.QuestFrameGreetingPanel_OnHide)
-
-	for x = 1, 10 do
-		if _G["GroupLootFrame"..x] then
-			_G["GroupLootFrame"..x]:SetParent(_G["GroupLootContainer"])
-		end
-	end
-
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
