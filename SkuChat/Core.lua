@@ -141,6 +141,7 @@ function SkuChat:OnSkuChatToggle(a, b, c)
 	end
 	
 	if SkuOptions.TTS:IsVisible() then
+		SkuOptions.ChatOpen = false
 		SkuOptions.TTS:Output("", -1)
 		ClearOverrideBindings(_G["OnSkuChatToggle"])
 		return
@@ -163,7 +164,7 @@ function SkuChat:OnSkuChatToggle(a, b, c)
 		SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
 		if SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then
 			if SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body then
-			C_VoiceChat.StopSpeakingText()
+				C_VoiceChat.StopSpeakingText()
 				C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
 			end
 		end

@@ -420,16 +420,11 @@ function SkuOptions:CreateControlFrame()
 
 			ttime = ttime + time
 			if ttime > 0.1 then
-				--print(IsShiftKeyDown())
-				if SkuOptions.TTS:IsVisible() == true and IsShiftKeyDown() == false then --and (_G["QuestLogFrame"]:IsVisible() == false) then
-					if SkuOptions.ChatOpen then
-						if SkuOptions.ChatOpen == false then
-							SkuOptions.TTS:Output("", -1)
-							SkuOptions.TTS.MainFrame:Hide()
-						end
-					else
+				if SkuOptions.TTS:IsVisible() == true then
+					if IsShiftKeyDown() == false and SkuOptions.ChatOpen ~= true then
 						SkuOptions.TTS:Output("", -1)
-						SkuOptions.TTS.MainFrame:Hide()
+						--SkuOptions.TTS.MainFrame:Hide()
+						SkuOptions.TTS:Hide()
 					end
 				end
 
@@ -514,7 +509,7 @@ function SkuOptions:CreateMainFrame()
 						if tText then
 							if string.len(tText) > 0 then
 								SkuOptions.TooltipReaderText = tText
-								SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
+								SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 								SkuOptions.TTS:PreviousLine()
 							end
 						end
@@ -533,7 +528,7 @@ function SkuOptions:CreateMainFrame()
 							if tText then
 								if string.len(tText) > 0 then
 									SkuOptions.TooltipReaderText = tText
-									SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
+									SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 									SkuOptions.TTS:PreviousLine()
 								end
 							end
@@ -550,7 +545,7 @@ function SkuOptions:CreateMainFrame()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
+						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 					end
 					SkuOptions.TTS:PreviousLine(2, true)
 				end
@@ -562,7 +557,7 @@ function SkuOptions:CreateMainFrame()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
+						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 						SkuOptions.TTS:PreviousLine(2, true)
 					else
 						SkuOptions.TTS:NextLine(2, true)
@@ -576,7 +571,7 @@ function SkuOptions:CreateMainFrame()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
+						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 					end
 					SkuOptions.TTS:PreviousSection(2, true)
 				end
@@ -588,7 +583,7 @@ function SkuOptions:CreateMainFrame()
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 30)
+						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 						SkuOptions.TTS:PreviousSection(2, true)
 					else
 						SkuOptions.TTS:NextSection(2, true)
