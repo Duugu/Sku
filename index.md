@@ -17,6 +17,18 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
+## Änderungen in Version 20.6
+
+### SkuCore
+*Fehlerkorrekturen*
+- Lobet den Herrn, werft Blumen, opfert eure Erstgeborenen ... nach langer Fehlersuche funktioniert das Infofenster jetzt endlich normal. :)<br>
+Es geht, wie vorgesehen, zuverlässig beim Loslassen der Shift-Taste statt nach 30 Sekunden zu.
+- Außerdem mach das Infofenster jetzt beim Öffnen "Bing" und beim Schließen "Bong". Wie der Chat.
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Das TTS spricht jetzt "klammer auf/zu" im Text nur noch als "klammer" aus.
+
 ## Änderungen in Version 20.5
 
 ### SkuCore
