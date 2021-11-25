@@ -4,6 +4,38 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.7
+
+	SkuNav
+		Fehlerkorrekturen
+			- Es wurde etwas am Cachen geändert.
+
+	SkuCore
+		Neuerungen
+			- Es gibt einen neuen Menüpunkt "SkuCore > Optionen > Fehler Feedback".
+			  In diesem Menü kannst du für acht verschiedene Fehlertypen Audiomeldungen einstellen:
+			  - Nicht in Reichweite (Ziel ist zu weit entfernt für die Fähigkeit)
+			  - Nicht in Bewegung (Fähigkeit kann nicht in Bewegung verwendet werden)
+			  - Keine Sichtlinie (keine Sichtlinie zu Ziel)
+			  - Ziel ungültig (Ziel ist nicht angreifbar)
+			  - In kampf (Fähigkeit ist nicht im Kampf möglich)
+			  - Ressource fehlt (Mana, Wut, Energie reicht nicht)
+			  - Objekt beschäftigt (Interaktion mit Ziel nicht möglich, weil es von einer anderen Person verwendet wird)
+			  - Richtung falsch (Ziel ist nicht vor dir)
+			  - Gestunnt (du bist gestunnt und kannst die Fähigkeit nicht nutzen)
+			  - Unterbrochen (die Fähigkeit wie z. B. ein Zauber wurde unterbrochen - von dir, einem Mob etc.)
+		 	  Du kannst im Menü für jeden Fehlertyp einen Sound auswählen.
+			  Dazu stehen Töne zur Verfügung (Beep, Wusch, Bonk etc.), und es gibt eine gesprochene Meldung (mit einer neuen Stimme) pro Fehlertyp ("Sichtlinie", "Bewegung", "Reichweite" etc.)
+			  Wenn du im Untermenü für einen Fehlertyp durch die Sounds blätterst, wird der jeweilige Sound zu Demonstration abgespielt.
+			  Außerdem kannst du ganz oben unter "Sound Kanal" den Kanal für diese Sounds auswählen.
+
+		Fehlerkorrekturen
+			- Die Infoseite wurde leicht verändert.
+			  - Der eingestellte Plündertyp wurde unter den Abschnitt "Gruppe" verschoben.
+			  - Alle Einzelzeilen wie Reparatur, Geld etc. wurden unter einen gemeinsamen Abschnitt "Allgemein" verschoben.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.6
 
 	SkuCore
@@ -23,9 +55,6 @@
 	SkuCore
 		Fehlerkorrekturen
 			- Die Meldung "Noch x" beim Erreichen eines Wegpunktes auf einer Route kann jetzt nicht mehr unerwünscht durch andere Audioausgaben abgebrochen/überschrieben werden.
-
-	SkuCore
-		Fehlerkorrekturen
 			- Das Infofenster funktioniert nun auch, wenn man keine Ruhe-XP hat.
 			- Die Gildenmitglieder im Infofenster werden jetzt bei jeder Anzeige des Fensters aktualisiert.
 			  Da diese Informationen vom Server kommen, und nicht sofort verfügbar sind, kann es trotzdem sein, dass die Informationen nicht sekundengenau aktuell sind.

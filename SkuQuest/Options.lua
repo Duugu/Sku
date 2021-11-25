@@ -343,24 +343,9 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 		CreatureIdHelper(aSubIDTable, tResultWPs, tResultNames)
 	end
 
-
-
-
-
-
-
-
-
-
 	local tPlayX, tPlayY = UnitPosition("player")
 	local tRoutesInRange = SkuNav:GetAllRoutesInRangeToCoords(tPlayX, tPlayY, 1000)--SkuOptions.db.profile["SkuNav"].nearbyWpRange)
-
-
-
-
-
-
-
+	
 	local tHasContent = false
 	for unitGeneralName, wpTable in pairs(tResultWPs) do
 		--print(unitGeneralName, wpTable)

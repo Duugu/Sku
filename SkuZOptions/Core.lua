@@ -247,11 +247,25 @@ function SkuOptions:UpdateOverviewText()
 			end
 		end
 	end
+
+	--loot
+	local lootStrings = 	{
+		["freeforall"] = "Jeder gegen jeden",
+		["roundrobin"] = "Reihum",
+		["group"] = "Als Gruppe",
+		["needbeforegreed"] = "Bedarf bevor Gier",
+		["master"] = "Plündermeister",
+		["personalloot"] = "Persönliche Beute",
+	}
+	local lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
+
 	if tTmpText then
-		table.insert(tSections, "Gruppe".."\r\n"..tTmpText)
+		table.insert(tSections, "Gruppe".."\r\n"..tTmpText.."\r\nPlündern: "..lootStrings[lootmethod])
 	end
 
+	--general
 	--repair status
+	local tGeneral = "Allgemeines"
 	local tDurabilityStatus = {[0] = 0, [1] = 0, [2] = 0,}
 	for index, value in pairs(INVENTORY_ALERT_STATUS_SLOTS) do
 		tDurabilityStatus[GetInventoryAlertStatus(index)] = tDurabilityStatus[GetInventoryAlertStatus(index)] + 1
@@ -266,13 +280,13 @@ function SkuOptions:UpdateOverviewText()
 	if tDurabilityStatus[0] > 0 then
 		tTmpText = tTmpText..tDurabilityStatus[0].." ok "
 	end
-	table.insert(tSections, "Reparatur status: "..tTmpText)
+	tGeneral = tGeneral.."\r\n".."Reparatur status: "..tTmpText
 
 	--money
 	local tMoney = ContainerFrame1MoneyFrame.staticMoney or BagnonMoneyFrame1.staticMoney
 	if tMoney then
 		local tTmpText = GetCoinText(tMoney)
-		table.insert(tSections, "Geld: "..tTmpText)
+		tGeneral = tGeneral.."\r\n".."Geld: "..tTmpText
 	end
 
 	--bag space
@@ -283,14 +297,13 @@ function SkuOptions:UpdateOverviewText()
 			tFreeCount = tFreeCount + #t
 		end
 	end
-	table.insert(tSections, "Freie Taschenplätze: "..tFreeCount)
+	tGeneral = tGeneral.."\r\n".."Freie Taschenplätze: "..tFreeCount
 
 	--buffs/debuffs
 
-
 	--time
 	local tTime = date("*t")
-	table.insert(tSections, "Zeit: "..tTime.hour..":"..tTime.min.." Uhr")
+	tGeneral = tGeneral.."\r\n".."Zeit: "..tTime.hour..":"..tTime.min.." Uhr"
 
 	--mail
 	local sender1, sender2, sender3 = GetLatestThreeSenders()
@@ -304,7 +317,7 @@ function SkuOptions:UpdateOverviewText()
 	if sender3 then
 		tTmpText = tTmpText .." "..sender3
 	end
-	table.insert(tSections, "Post: "..tTmpText)
+	tGeneral = tGeneral.."\r\n".."Post: "..tTmpText
 
 	--hearthstone
 	local tTmpText = "Keiner vorhanden"
@@ -318,25 +331,15 @@ function SkuOptions:UpdateOverviewText()
 		end
 		tTmpText = tTmpText.." "..GetBindLocation()
 	end
-	table.insert(tSections, "Ruhestein: "..tTmpText)
+	tGeneral = tGeneral.."\r\n".."Ruhestein: "..tTmpText
 
 	--xp
 	local tPlayerXPExhaustion = GetXPExhaustion()
 	tPlayerXPExhaustion = tPlayerXPExhaustion or 0
 	local tPlayercurrXP, tPlayernextXP = UnitXP("player"), UnitXPMax("player")
-	table.insert(tSections, "XP: "..(math.floor(tPlayercurrXP / (tPlayernextXP / 100))).." Prozent ("..tPlayercurrXP.." von "..tPlayernextXP.." für "..(UnitLevel("player") + 1)..")\r\nRuhebonus: "..tPlayerXPExhaustion)
+	tGeneral = tGeneral.."\r\n".."XP: "..(math.floor(tPlayercurrXP / (tPlayernextXP / 100))).." Prozent ("..tPlayercurrXP.." von "..tPlayernextXP.." für "..(UnitLevel("player") + 1)..")\r\nRuhebonus: "..tPlayerXPExhaustion
 
-	--loot
-	local lootStrings = 	{
-		["freeforall"] = "Jeder gegen jeden",
-		["roundrobin"] = "Reihum",
-		["group"] = "Als Gruppe",
-		["needbeforegreed"] = "Bedarf bevor Gier",
-		["master"] = "Plündermeister",
-		["personalloot"] = "Persönliche Beute",
-	}
-	local lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
-	table.insert(tSections, "Plündern: "..lootStrings[lootmethod])
+	table.insert(tSections, tGeneral)
 
 	--skills
 	local tTmpText = ""
@@ -1782,6 +1785,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
+					--print("type select OnAction", self, aValue, aName)
 					for ia, va in pairs(v.values) do
 						if va == aName then
 							self.profilePath[self.profileIndex] = ia

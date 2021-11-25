@@ -1,8 +1,8 @@
 ## Interface: 20502
-## Title: Sku (20.6)
+## Title: Sku (20.7)
 ## SavedVariables: SkuOptionsDB
 ## Dependencies: SkuAudioData, SkuBeaconSoundsets
-## Version: 20.6
+## Version: 20.7
 
 embeds.xml
 
@@ -20,6 +20,8 @@ SkuChat\Core.lua
 SkuChat\Options.lua
 
 SkuCore\Core.lua
+SkuCore\data.lua
+SkuCore\UIErrors.lua
 SkuCore\mail.lua
 SkuCore\Options.lua
 

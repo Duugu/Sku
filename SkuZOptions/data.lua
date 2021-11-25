@@ -256,17 +256,6 @@ SkuOptions.Glossary1 = {
 	},
 }
 
-SKU_KONSTANTS = {
-	["SOUNDCHANNELS"] = {
-		["Master"] = "Gesamt",
-		["SFX"] = "Soundeffekte",
-		["Music"] = "Musik",
-		["Ambience"] = "Umgebung",
-		["Dialog"] = "Dialog",
-		["Talking Head"] = "Sku",
-	},
-}
-
 SkuOptions.BackgroundSoundFiles = {
 	["silence.mp3"] = "Nichts",
 	["benny_hill.mp3"] = "Benny Hill",

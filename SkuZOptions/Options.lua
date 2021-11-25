@@ -154,7 +154,7 @@ SkuOptions.options = {
 						name = "Sku Kanal" ,
 						desc = "",
 						type = "select",
-						values = SKU_KONSTANTS.SOUNDCHANNELS,
+						values = SKU_CONSTANTS.SOUNDCHANNELS,
 						set = function(info,val)
 							SkuOptions.db.profile[MODULE_NAME].soundChannels.SkuChannel = val
 						end,

@@ -57,6 +57,7 @@ SkuOptions.MenuMT = {
 	end,
 	}
 
+local tPrevErrorUtterance
 menuEntryTemplate_Menu = {
 	name = "menuEntryTemplate_Menu name",
 	type = MENU_MENU,
@@ -146,6 +147,22 @@ menuEntryTemplate_Menu = {
 	end,
 	OnEnter = function(self, value, aValue)
 		--print("OnEnter generic", self.name, value, aValue)
+		if string.find(self.name, L["error;sound"].."#") then
+			for i, v in pairs(SkuCore.Errors.Sounds) do
+				if self.name == v then
+					C_Timer.After(1.5, function()
+						if tPrevErrorUtterance then
+							StopSound(tPrevErrorUtterance)
+						end
+						local willPlay, soundHandle = PlaySoundFile(i, SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head")
+						if willPlay then
+							tPrevErrorUtterance = soundHandle
+						end
+					end)
+				end
+			end
+		end
+
 		if self.macrotext then
 			--print("macrotext", self.macrotext)
 			if _G["SecureOnSkuOptionsMainOption1"] then
@@ -248,7 +265,8 @@ menuEntryTemplate_Menu = {
 						local tUncleanValue = self.name
 						local tCleanValue = self.name
 						local tPos = string.find(tUncleanValue, "#")
-						if tPos then
+						local tErrorSoundFound = string.find(tUncleanValue, L["error;sound"].."#")
+						if tPos and not tErrorSoundFound then
 							tCleanValue = string.sub(tUncleanValue,  tPos + 1)
 						end
 

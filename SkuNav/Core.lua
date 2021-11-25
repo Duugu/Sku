@@ -120,10 +120,9 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 		end
 	end
 
-	if SkuCacheFlag == false then
-		return
-	end
-
+	--if SkuCacheFlag == false then
+		--return
+	--end
 	local tCacheNbWpsTimerWpList = {}
 	if aListOfRouteNamesToReCache then
 		for i, tRouteName in ipairs(aListOfRouteNamesToReCache) do
@@ -1746,14 +1745,8 @@ function SkuNav:OnEnable()
 		SkuNav:CreateSkuNavMain()		
 	end
 
-	--cache meta rt stuff
 	SkuNeighbCache = {}
-	if tCacheNbWpsTimer then
-		tCacheNbWpsTimer:Cancel()
-	end
-	C_Timer.After(60, function()
-		CacheNbWps(20)
-	end)
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2278,8 +2271,8 @@ function GetNeighbToWp(aWpName, aTicker)
 	if SkuNeighbCache[aWpName] then
 		return SkuNeighbCache[aWpName]
 	end
-	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
-	local tUIMap = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId())
+	--local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
+	--local tUIMap = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId())
 
 	local tFoundNeighb = {}
 
@@ -2635,8 +2628,9 @@ function SkuNav:PLAYER_LOGIN(...)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_ENTERING_WORLD(...)
+	--print("PLAYER_ENTERING_WORLD")
 	C_Timer.NewTimer(25, function() SkuDrawFlag = true end)
-	C_Timer.NewTimer(45, function() SkuCacheFlag = true end)
+	C_Timer.NewTimer(15, function() SkuCacheFlag = true end)
 	SkuOptions.db.profile[MODULE_NAME].routeFollowing = false
 	SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute = nil
 	SkuOptions.db.profile[MODULE_NAME].routeFollowingStartWP = nil
@@ -2648,6 +2642,14 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	SkuOptions.db.profile[MODULE_NAME].routeRecording = false
 	--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
 	SkuNav:SelectWP("", true)
+
+	--cache meta rt stuff
+	if tCacheNbWpsTimer then
+		tCacheNbWpsTimer:Cancel()
+	end
+	C_Timer.After(10, function()
+		CacheNbWps(20)
+	end)	
 end
 
 local old_ZONE_CHANGED_X = ""

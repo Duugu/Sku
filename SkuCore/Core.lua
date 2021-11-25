@@ -194,7 +194,7 @@ function SkuCore:OnInitialize()
 	--SkuCore:RegisterEvent("PET_STABLE_CLOSED")
 
 	SkuCore:MailOnInitialize()
-
+	SkuCore:UIErrorsOnInitialize()
 end
 
 --[[
@@ -222,7 +222,6 @@ local function LineLenght(sx, sy, dx, dy)
 	c = math.sqrt(a^2 + b^2)
 	return math.floor(c)
 end
-
 
 function SkuCore:PanikModeStartStopBackgroundSound(aStartStop)
 	if aStartStop == true then

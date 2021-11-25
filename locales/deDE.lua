@@ -8,6 +8,41 @@ Instructions for translators:
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
+L["error;sound"] = "Fehler;Sound"
+L["Error feedback"] = "Fehler Feedback"
+L["out of range"] = "Nicht in Reichweite"
+L["Moving"] = "Nicht in Bewegung"
+L["No LoS"] ="Keine Sichtlinie"
+L["Bad Target"] ="Ziel ungültig"
+L["In Combat"] ="In kampf"
+L["No ressource"] ="ressource fehlt"
+L["Object Busy"] ="Objekt beschäftigt"
+L["Not Facing"] ="Richtung falsch"
+L["Crowd Controlled"] ="gestunnt"
+L["Interrupted"] ="Unterbrochen"
+L["sound channel"] = "Sound Kanal"
+-- START status to vocalize; keep them as short as possible
+L["Range"] = "Reichweite"
+L["Move"] = "Bewegung"
+L["LOS"] = "Sicht"
+L["Target"] = "Ziel"
+L["IC"] = "Kampf"
+L["Res"] = "Ressource"
+L["Busy"] = "Beschäftigt"
+L["Dir"] = "Richtung"
+L["Stun"] = "Gestunnt"
+L["Inter"] = "Unterbrochen"
+L["silent"] = "stumm" --this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3
+L["brang"] = "brang"--this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_brang.ogg
+L["bring"] = "bring"--this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_bring.ogg
+L["dang"] = "dang"--this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_dang.ogg
+L["drmm"] = "drmm"--this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_drmm.ogg
+L["shhhup"] = "shhhup"--this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_shhhup.ogg
+L["spoing"] = "spoing"--this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_spoing.ogg
+L["swoosh"] = "swoosh" --this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_swoosh.ogg
+L["tsching"] = "tsching" --this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg
+-- END
+
 L["No Recipient"] = "Empfänger fehlt"
 L["No topic"] = "Betreff fehlt"
 L["Stonewrought-Pass"] = "Steinwerkpass"

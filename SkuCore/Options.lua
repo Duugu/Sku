@@ -37,24 +37,175 @@ SkuCore.options = {
 					type = "group",
 					order = 1,
 					args= {
-							petHappyness = {
-								order = 2,
-								name = L["Notice on pet starving"],
-								desc = "",
-								type = "toggle",
-								set = function(info,val)
-									SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness = val
-								end,
-								get = function(info)
-									return SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness
-								end
-							},
+						petHappyness = {
+							order = 2,
+							name = L["Notice on pet starving"],
+							desc = "",
+							type = "toggle",
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness
+							end
 						},
 					},
 				},
 			},
 		},
+		UIErrors={
+			name = L["Error feedback"],
+			type = "group",
+			order = 1,
+			args= {
+				ErrorSoundChannel={
+					name = L["sound channel"],
+					order = 1,
+					desc = "",
+					type = "select",
+					values = SKU_CONSTANTS.SOUNDCHANNELS,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.ErrorSoundChannel = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.ErrorSoundChannel
+					end
+				},
+				OutOfRange={
+					name = L["out of range"],
+					order = 2,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange
+					end
+				},
+				Moving={
+					name = L["Moving"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.Moving = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Moving
+					end
+				},
+				NoLoS={
+					name = L["No LoS"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS
+					end
+				},
+				BadTarget={
+					name = L["Bad Target"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget
+					end
+				},
+				InCombat={
+					name = L["In Combat"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.InCombat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.InCombat
+					end
+				},
+				NoMana={
+					name = L["No ressource"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana
+					end
+				},
+				ObjectBusy={
+					name = L["Object Busy"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy
+					end
+				},
+				NotFacing={
+					name = L["Not Facing"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing
+					end
+				},
+				CrowdControlled={
+					name = L["Crowd Controlled"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled
+					end
+				},
+				Interrupted={
+					name = L["Interrupted"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.Interrupted = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Interrupted
+					end
+				},
+			},
+		},
+	},
 }
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.defaults = {
 	enable = true,
@@ -63,6 +214,19 @@ SkuCore.defaults = {
 		hunter = {
 			petHappyness = true,
 		},
+	},
+	UIErrors = {
+		ErrorSoundChannel = "Talking Head",
+		OutOfRange = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		Moving = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		NoLoS = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		BadTarget = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		InCombat = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		NoMana = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		ObjectBusy = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		NotFacing = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		CrowdControlled = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		Interrupted = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
 	},
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
