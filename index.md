@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.6](https://github.com/Duugu/Sku/releases/download/r20.6/Sku-r20.6-bcc.zip) <br>
+[Sku 20.6](https://github.com/Duugu/Sku/releases/download/r20.7/Sku-r20.7-bcc.zip) <br>
+[SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
-[SkuAudioData 21](https://github.com/Duugu/SkuAudioData/releases/download/r21/SkuAudioData-r21-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
@@ -16,6 +16,36 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.7
+
+### SkuNav
+*Fehlerkorrekturen*
+- Es wurde etwas am Cachen geändert.
+
+### SkuCore
+*Neuerungen*
+- Es gibt einen neuen Menüpunkt "SkuCore > Optionen > Fehler Feedback".<br>
+In diesem Menü kannst du für acht verschiedene Fehlertypen Audiomeldungen einstellen:
+    - Nicht in Reichweite (Ziel ist zu weit entfernt für die Fähigkeit)
+    - Nicht in Bewegung (Fähigkeit kann nicht in Bewegung verwendet werden)
+    - Keine Sichtlinie (keine Sichtlinie zu Ziel)
+    - Ziel ungültig (Ziel ist nicht angreifbar)
+    - In kampf (Fähigkeit ist nicht im Kampf möglich)
+    - Ressource fehlt (Mana, Wut, Energie reicht nicht)
+    - Objekt beschäftigt (Interaktion mit Ziel nicht möglich, weil es von einer anderen Person verwendet wird)
+    - Richtung falsch (Ziel ist nicht vor dir)
+    - Gestunnt (du bist gestunnt und kannst die Fähigkeit nicht nutzen)
+    - Unterbrochen (die Fähigkeit wie z. B. ein Zauber wurde unterbrochen - von dir, einem Mob etc.)
+- Du kannst im Menü für jeden Fehlertyp einen Sound auswählen.<br>
+Dazu stehen Töne zur Verfügung (Beep, Wusch, Bonk etc.), und es gibt eine gesprochene Meldung (mit einer neuen Stimme) pro Fehlertyp ("Sichtlinie", "Bewegung", "Reichweite" etc.)<br>
+Wenn du im Untermenü für einen Fehlertyp durch die Sounds blätterst, wird der jeweilige Sound zu Demonstration abgespielt.<br>
+Außerdem kannst du ganz oben unter "Sound Kanal" den Kanal für diese Sounds auswählen.
+
+*Fehlerkorrekturen*
+- Die Infoseite wurde leicht verändert.
+    - Der eingestellte Plündertyp wurde unter den Abschnitt "Gruppe" verschoben.
+    - Alle Einzelzeilen wie Reparatur, Geld etc. wurden unter einen gemeinsamen Abschnitt "Allgemein" verschoben.
 
 ## Änderungen in Version 20.6
 
