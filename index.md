@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.6](https://github.com/Duugu/Sku/releases/download/r20.7/Sku-r20.7-bcc.zip) <br>
+[Sku 20.7](https://github.com/Duugu/Sku/releases/download/r20.7/Sku-r20.7-bcc.zip) <br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
