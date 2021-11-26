@@ -930,28 +930,30 @@ function SkuCore:MenuBuilder(aParentEntry)
 								local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Take all"]}, menuEntryTemplate_Menu)
 								--tNewMenuParentEntrySubSub.dynamic = true
 								--tNewMenuParentEntrySubSub.ttsEngine = 2
-								for y = 1, totalItems do
+								for y = 1, ATTACHMENTS_MAX_RECEIVE do
 									local itemLink = GetInboxItemLink(x, y)
-									itemLink = itemLink or L["Empty"]
-									local name = GetInboxItem(x, y)
-									name = name or L["Empty"]
-									local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {y.." "..name}, menuEntryTemplate_Menu)
-									--tNewMenuParentEntrySubSub.dynamic = true
-									--tNewMenuParentEntrySubSub.ttsEngine = 2
-									tNewMenuParentEntrySubSub.OnEnter = function(self, aValue, aName)
-										if itemLink ~= L["Empty"] then
-											local name, itemID, texture, count, quality, canUse  = GetInboxItem(x, y)
-											if itemID then
-												_G["SkuScanningTooltip"]:ClearLines()
-												_G["SkuScanningTooltip"]:SetItemByID(itemID)
-												if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-													if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-														local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-														SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+									--itemLink = itemLink or L["Empty"]
+									if itemLink then
+										local name = GetInboxItem(x, y)
+										name = name or L["Empty"]
+										local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {y.." "..name}, menuEntryTemplate_Menu)
+										--tNewMenuParentEntrySubSub.dynamic = true
+										--tNewMenuParentEntrySubSub.ttsEngine = 2
+										tNewMenuParentEntrySubSub.OnEnter = function(self, aValue, aName)
+											if itemLink ~= L["Empty"] then
+												local name, itemID, texture, count, quality, canUse  = GetInboxItem(x, y)
+												if itemID then
+													_G["SkuScanningTooltip"]:ClearLines()
+													_G["SkuScanningTooltip"]:SetItemByID(itemID)
+													if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+														if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+															local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+															SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+														end
 													end
 												end
+												self.selectTarget.TmpMailItemIndexAttachmentIndex = y
 											end
-											self.selectTarget.TmpMailItemIndexAttachmentIndex = y
 										end
 									end
 								end

@@ -193,11 +193,16 @@ function SkuCore:OnInitialize()
 	--SkuCore:RegisterEvent("PET_STABLE_SHOW")
 	--SkuCore:RegisterEvent("PET_STABLE_CLOSED")
 
+	--SkuCore:RegisterEvent("UNIT_NAME_UPDATE")
+	SkuCore:RegisterEvent("NAME_PLATE_CREATED")
+	SkuCore:RegisterEvent("NAME_PLATE_UNIT_ADDED")
+	SkuCore:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 end
 
---[[
+
 local function ExtendLine(A, B, length)
 	local lenAB = math.sqrt(math.pow(A.x - B.x, 2.0) + math.pow(A.y - B.y, 2.0));
 	local C = {x = 0, y = 0}
@@ -223,7 +228,8 @@ local function LineLenght(sx, sy, dx, dy)
 	return math.floor(c)
 end
 
-function SkuCore:PanikModeStartStopBackgroundSound(aStartStop)
+function SkuCore:PanicModeStartStopBackgroundSound(aStartStop)
+	if 1 == 1 then return end
 	if aStartStop == true then
 		if SkuCore.currentBackgroundSoundHandle == nil then
 			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\background\\benny_hill.mp3", "Talking Head")
@@ -270,18 +276,18 @@ function SkuCore:PanikModeStartStopBackgroundSound(aStartStop)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local tPanikData = {}
+local tPanicData = {}
 local ttimeDegreesChangeInitial = nil
 local tLastPanicPos = {x = 0, y = 0}
 local tPanicMaxRecDistance = 500
-local tPanikModeOn = false
-local tPanikBeaconName = "SkuPanikBeacon"
-local SkuCorePanikControl
-local SkuCorePanikBeaconDistance = 20
-local SkuCorePanikCurrentPoint = 1
-local SkuCorePanikBeaconType = "probe_mid_1"
-function SkuCore:PanikModeCollectData()
-	if tPanikModeOn == false then
+local tPanicModeOn = false
+local tPanicBeaconName = "SkuPanicBeacon"
+local SkuCorePanicControl
+local SkuCorePanicBeaconDistance = 20
+local SkuCorePanicCurrentPoint = 1
+local SkuCorePanicBeaconType = "probe_mid_1"
+function SkuCore:PanicModeCollectData()
+	if tPanicModeOn == false then
 		local tMaxDiff = 20--SkuNav.routeRecordingIntWpMethods.values["20 Grad 20 Meter"].rot
 		local tMinDist = 20--SkuNav.routeRecordingIntWpMethods.values["20 Grad 20 Meter"].dist
 		local x, y = UnitPosition("player")
@@ -317,30 +323,30 @@ function SkuCore:PanikModeCollectData()
 			ttimeDegreesChangeInitial = tDegreesFinal
 			tLastPanicPos.x = x
 			tLastPanicPos.y = y
-			table.insert(tPanikData, 1, {x = x, y = y})
+			table.insert(tPanicData, 1, {x = x, y = y})
 			local tFullDistance = 0
 			local tDelFrom = 999
-			for x = 1, #tPanikData do
-				if tPanikData[x] and tPanikData[x + 1] then
-					tFullDistance = tFullDistance + SkuNav:Distance(tPanikData[x].x, tPanikData[x].y, tPanikData[x + 1].x, tPanikData[x + 1].y)
+			for x = 1, #tPanicData do
+				if tPanicData[x] and tPanicData[x + 1] then
+					tFullDistance = tFullDistance + SkuNav:Distance(tPanicData[x].x, tPanicData[x].y, tPanicData[x + 1].x, tPanicData[x + 1].y)
 					if tFullDistance > tPanicMaxRecDistance then
 						tDelFrom = x
 					end
 				end
 			end
 
-			for x = tDelFrom, #tPanikData do
-				tPanikData[x] = nil
+			for x = tDelFrom, #tPanicData do
+				tPanicData[x] = nil
 			end
 		end
 		
 		-------------------- tmp draw path
 		if skudebuglevel == 0 then
-			if #tPanikData > 1 then
+			if #tPanicData > 1 then
 				local tP1Obj
-				for line = 1, #tPanikData do
+				for line = 1, #tPanicData do
 					local tRouteColor = {r = 1, g = 0, b = 0, a = 1,}
-					local x1, y1 = SkuNavMMWorldToContent(tPanikData[line].x, tPanikData[line].y)
+					local x1, y1 = SkuNavMMWorldToContent(tPanicData[line].x, tPanicData[line].y)
 					local tP2Obj = SkuNavDrawWaypointWidgetMM(x1, y1, 1,  1, 3, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, _G["SkuNavMMMainFrameScrollFrameContent1"], v, tRouteColor.r, tRouteColor.g, tRouteColor.b, 1)
 					if line > 1 then
 						local point, relativeTo, relativePoint, xOfs, yOfs = tP2Obj:GetPoint(1)
@@ -359,19 +365,31 @@ function SkuCore:PanikModeCollectData()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:PanikModeStart()
-	if tPanikModeOn == false then
-		tPanikModeOn = true
+function SkuCore:PanicModeStart()
+	if SkuCore.inCombat == false then
+		return
+	end
+	if tPanicModeOn == false then
+		tPanicModeOn = true
 
-		SkuCore:PanikModeStartStopBackgroundSound(true)
-		SkuCorePanikControl = C_Timer.NewTicker(0.1, function()
+		SkuCore:PanicModeStartStopBackgroundSound(true)
+		SkuCorePanicControl = C_Timer.NewTicker(0.1, function()
+			if SkuCore.inCombat == false then
+				SkuCorePanicControl:Cancel()
+				SkuCore:PanicModeStartStopBackgroundSound(false)
+				SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", tPanicBeaconName)
+				tPanicModeOn = false
+				tPanicData = {}
+				SkuCorePanicCurrentPoint = 1
+				return
+			end
 			------------------------------------------------- draw path
 			if skudebuglevel == 0 then
-				if #tPanikData > 1 then
+				if #tPanicData > 1 then
 					local tP1Obj
-					for line = 1, #tPanikData do
+					for line = 1, #tPanicData do
 						local tRouteColor = {r = 1, g = 0, b = 0, a = 1,}
-						local x1, y1 = SkuNavMMWorldToContent(tPanikData[line].x, tPanikData[line].y)
+						local x1, y1 = SkuNavMMWorldToContent(tPanicData[line].x, tPanicData[line].y)
 						local tP2Obj = SkuNavDrawWaypointWidgetMM(x1, y1, 1,  1, 3, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, _G["SkuNavMMMainFrameScrollFrameContent1"], v, tRouteColor.r, tRouteColor.g, tRouteColor.b, 1)
 						if line > 1 then
 							local point, relativeTo, relativePoint, xOfs, yOfs = tP2Obj:GetPoint(1)
@@ -388,18 +406,18 @@ function SkuCore:PanikModeStart()
 			end
 			------------------------------------------------- calculate final
 			local tPlayerPosX, tPlayerPosY = UnitPosition("player")
-			if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanikData[SkuCorePanikCurrentPoint].x, tPanikData[SkuCorePanikCurrentPoint].y) < SkuCorePanikBeaconDistance then
-				if SkuCorePanikCurrentPoint == #tPanikData then
-					SkuCore:PanikModeStart()
+			if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y) < SkuCorePanicBeaconDistance then
+				if SkuCorePanicCurrentPoint == #tPanicData then
+					SkuCore:PanicModeStart()
 				else
-					for x = SkuCorePanikCurrentPoint, #tPanikData do
-						if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanikData[x].x, tPanikData[x].y) > SkuCorePanikBeaconDistance then
-							SkuCorePanikCurrentPoint = x
-							if not SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanikBeaconName) then
-								SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanikBeaconName, SkuCorePanikBeaconType, tPanikData[SkuCorePanikCurrentPoint].x, tPanikData[SkuCorePanikCurrentPoint].y, -3, 0, 100)
-								SkuOptions.BeaconLib:StartBeacon("SkuOptions", tPanikBeaconName)
+					for x = SkuCorePanicCurrentPoint, #tPanicData do
+						if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[x].x, tPanicData[x].y) > SkuCorePanicBeaconDistance then
+							SkuCorePanicCurrentPoint = x
+							if not SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanicBeaconName) then
+								SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanicBeaconName, SkuCorePanicBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, 66)
+								SkuOptions.BeaconLib:StartBeacon("SkuOptions", tPanicBeaconName)
 							else
-								SkuOptions.BeaconLib:UpdateBeacon("SkuOptions", tPanikBeaconName, SkuCorePanikBeaconType, tPanikData[SkuCorePanikCurrentPoint].x, tPanikData[SkuCorePanikCurrentPoint].y, -3, 0, 100, true)
+								SkuOptions.BeaconLib:UpdateBeacon("SkuOptions", tPanicBeaconName, SkuCorePanicBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, 66, true)
 							end
 	
 							break
@@ -409,11 +427,11 @@ function SkuCore:PanikModeStart()
 			end
 			------------------------------------------------- draw lin to final
 			if skudebuglevel == 0 then
-				if SkuCorePanikCurrentPoint > 0 and #tPanikData > 0 then
+				if SkuCorePanicCurrentPoint > 0 and #tPanicData > 0 then
 					local tRouteColor = {r = 0, g = 1, b = 0, a = 1,}
 					local x1, y1 = SkuNavMMWorldToContent(tPlayerPosX, tPlayerPosY)
 					local tP1Obj = SkuNavDrawWaypointWidgetMM(x1, y1, 1,  1, 3, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, _G["SkuNavMMMainFrameScrollFrameContent1"], v, tRouteColor.r, tRouteColor.g, tRouteColor.b, 1)
-					local x1, y1 = SkuNavMMWorldToContent(tPanikData[SkuCorePanikCurrentPoint].x, tPanikData[SkuCorePanikCurrentPoint].y)
+					local x1, y1 = SkuNavMMWorldToContent(tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y)
 					local tP2Obj = SkuNavDrawWaypointWidgetMM(x1, y1, 1,  1, 3, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, _G["SkuNavMMMainFrameScrollFrameContent1"], v, tRouteColor.r, tRouteColor.g, tRouteColor.b, 1)
 					local point, relativeTo, relativePoint, xOfs, yOfs = tP2Obj:GetPoint(1)
 					if relativeTo then
@@ -422,23 +440,23 @@ function SkuCore:PanikModeStart()
 							SkuNavDrawLine(xOfs, yOfs, PrevxOfs, PrevyOfs, 3, tRouteColor.a, tRouteColor.r, tRouteColor.g, tRouteColor.b, _G["SkuNavMMMainFrameScrollFrameContent1"], nil, relativeTo, PrevrelativeTo) 
 						end
 					end
-					if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanikBeaconName) then
-						SkuOptions.BeaconLib:UpdateBeacon("SkuOptions", tPanikBeaconName, SkuCorePanikBeaconType, tPanikData[SkuCorePanikCurrentPoint].x, tPanikData[SkuCorePanikCurrentPoint].y, -3, 0, 100, true)
+					if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanicBeaconName) then
+						SkuOptions.BeaconLib:UpdateBeacon("SkuOptions", tPanicBeaconName, SkuCorePanicBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, 66, true)
 					end
 				end
 			end
 		end)
 
 	else
-		SkuCorePanikControl:Cancel()
-		SkuCore:PanikModeStartStopBackgroundSound(false)
-		SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", tPanikBeaconName)
-		tPanikModeOn = false
-		tPanikData = {}
-		SkuCorePanikCurrentPoint = 1
+		SkuCorePanicControl:Cancel()
+		SkuCore:PanicModeStartStopBackgroundSound(false)
+		SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", tPanicBeaconName)
+		tPanicModeOn = false
+		tPanicData = {}
+		SkuCorePanicCurrentPoint = 1
 	end
 end
-]]
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Distance(sx, sy, dx, dy)
 	--[[sx = sx or 0
@@ -463,13 +481,87 @@ function SkuCore:IsPlayerMoving()
     return rValue
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+local tSkuCoreNamePlateRepo = {}
+function SkuCore:NAME_PLATE_CREATED(...)
+	--print("NAME_PLATE_CREATED", ...)
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:NAME_PLATE_UNIT_ADDED(aEvent, aPlateName)
+	--print("NAME_PLATE_UNIT_ADDED", aPlateName, UnitName(aPlateName))
+	local tName = UnitName(aPlateName)
+	if tName then
+		local tReaction = UnitReaction("player", aPlateName)
+		if tReaction > 3 then --https://wowpedia.fandom.com/wiki/API_UnitReaction
+			table.insert(tSkuCoreNamePlateRepo, {name = tName, plate = aPlateName})
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:NAME_PLATE_UNIT_REMOVED(aEvent, aPlateName)
+	--print("NAME_PLATE_UNIT_REMOVED", aPlateName)
+	tSkuCoreNamePlateRepo[aPlateName] = nil
+	for x = 1, #tSkuCoreNamePlateRepo do
+		if tSkuCoreNamePlateRepo[x].plate ==aPlateName then
+			table.remove(tSkuCoreNamePlateRepo, x)
+			return
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
 local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
 local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
-
----------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnEnable()
 	--print("SkuCore OnEnable")
+
+	--fake ctrl shift tab for untargetable units in starting areas	
+	local tFrame = CreateFrame("Button", "SkuCoreSecureTabButton", _G["UIParent"], "SecureActionButtonTemplate")
+	tFrame:SetSize(1, 1)
+	tFrame:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
+	tFrame:Show()
+	tFrame:SetAttribute("type1", "macro") 
+	tFrame:SetAttribute("macrotext1", "")
+	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-TAB", "SkuCoreSecureTabButton")
+
+	local tLastPlayerTargetNr = 0
+	local tSkuCoreSecureTabButtonTime = 0
+	tFrame:SetScript("OnUpdate", function(self, time)
+		tSkuCoreSecureTabButtonTime = tSkuCoreSecureTabButtonTime + time
+		if tSkuCoreSecureTabButtonTime > 0.1 then
+			if SkuCore.inCombat ~= true then
+				if GetCVar("nameplateShowFriends") == "0" then
+					SetCVar("nameplateShowFriends", "1")
+				end
+
+				if #tSkuCoreNamePlateRepo > 0 then
+					if tLastPlayerTargetNr == 0 then
+						tLastPlayerTargetNr = 1
+					end
+					local tName = UnitName("target")
+					if tName then
+						if not tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
+							tLastPlayerTargetNr = 1
+						end
+						if tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
+							if tName == tSkuCoreNamePlateRepo[tLastPlayerTargetNr].name then
+								tLastPlayerTargetNr = tLastPlayerTargetNr + 1
+								if tLastPlayerTargetNr > #tSkuCoreNamePlateRepo then
+									tLastPlayerTargetNr = 1
+								end
+							end
+						end
+					end
+					if tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
+						_G["SkuCoreSecureTabButton"]:SetAttribute("macrotext1", "/tar "..tSkuCoreNamePlateRepo[tLastPlayerTargetNr].name)	
+					end
+				else
+					_G["SkuCoreSecureTabButton"]:SetAttribute("macrotext1", "/cleartarget")	
+				end
+			end
+			tSkuCoreSecureTabButtonTime = 0
+		end
+	end)
 
 	local ttime = 0
 	local f = _G["SkuCoreControl"] or CreateFrame("Frame", "SkuCoreControl", UIParent)
@@ -492,7 +584,7 @@ function SkuCore:OnEnable()
 
 			ttime = ttime + time
 			if ttime > 0.15 then
-				--SkuCore:PanikModeCollectData()
+				SkuCore:PanicModeCollectData()
 
 
 				for x = 1, #SkuCore.interactFramesList do
@@ -672,7 +764,7 @@ function SkuCore:OnEnable()
 								local _, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player"))
 								local tNewX, tNewY = worldPosition:GetXY()
 
-								if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true then
+								if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true then
 									local _, tDistance = SkuCore:Distance(tNewX, tNewY, SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y)
 									local currentSpeed, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed("player")
 									local tMod = currentSpeed / 7
@@ -749,11 +841,11 @@ function SkuCore:OnEnable()
 	tFrame:SetPoint("TOP", _G["SkuCoreControl"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		--print("SkuCoreControlOption1", self, aKey, aB)
-		--[[
-		if aKey == "CTRL-SHIFT-X" then
-			SkuCore:PanikModeStart()
+		
+		if aKey == "CTRL-SHIFT-Y" then
+			SkuCore:PanicModeStart()
 		end
-		]]
+		
 		if SkuCore.inCombat == true then
 			--SkuCore.openMenuAfterCombat = true
 			return
@@ -799,7 +891,7 @@ function SkuCore:OnEnable()
 			return
 		end
 		ClearOverrideBindings(self)
-		--SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-X", "SkuCoreControlOption1", "CTRL-SHIFT-X")
+		SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Y", "SkuCoreControlOption1", "CTRL-SHIFT-Y")
 	end)
 	
 	tFrame:Hide()

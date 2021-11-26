@@ -2,6 +2,40 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.8
+
+	SkuCore
+		Fehlerkorrekturen
+			- Ein Fehler mit der Hochscrollen-Taste für Berufefenster wurde behoben.
+			- Der Feststecken-Sound funktioniert jetzt auch wenn man rückwärts läuft.
+			- Bei Briefen mit mehreren angehängten Gegenständen werden jetzt unter "Anhänge" alle angehängten Gegenstände und nicht nur der erste angezeigt.
+
+		Neuerungen
+			- Alle gesprochenen Fehler-Sounds sind jetzt zusätzlich in der männlichen Stimme "Hans" verfügbar (dem Namen ist jeweils "Hans" vorangestellt).
+			- SkuCore kann jetzt über STRG + SHIFT + TAB auch NPCs anvisieren, die nicht anvisierbar sind (Startgebiete etc.).
+			  Dazu übernimmt es dauerhaft die Tastenkombination STRG + SHIFT + TAB (war vorher "vorherigen Freund anvisieren").
+			  Das Addon steuert das Anvisieren über die Namensbalken der NPCs. Du bekommst daher mit STRG + SHIFT + TAB immer den nächsten NPC aus allen
+			  ins Ziel deren Namensbalken gerade sichbar sind. Das muss _nicht_ (wie beim normalen Anvisieren) ein NPC vor dir sein.
+			  Außerdem werden die Namensbalken standardmäßig erst ab 20 Meter Entfernung eingeblendet. Das Anvisieren mit STRG + SHIFT + TAB hat also eine deutlich
+			  kleinere Reichweite als das normale Anvisieren.
+			  Du solltest auch weiterhin mit STRG + TAB das nächste freundliches Ziel anvisieren. Es sei denn, du bist in einem Startgebiet, und bekommst es damit nicht ins Ziel.
+			  Dann kannst du jetzt die neue Funktion mit STRG + SHIFT + TAB verwenden.
+			- Der Panikmodus ist wieder da!
+			  Diesmal mit der Tastenkombination STRG + SHIFT + Y zur Aktivierung, einem ein Drittel leiseren Beacon, und der Titelmelodien aus "Der weiße Hai" im Hintergrund.
+			  Ansonsten funktioniert er exakt so wie vorher. Hier die alte Beschreibung:
+			    Die Panik-Taste versetzt das Addon in den Panikmodus bzw. schaltet diesen wieder aus.
+			    Der Panikmodus ist für Situationen gedacht, in denen schnell du den Weg zurücklaufen möchtest, den du gekommen bist. Zum Beispiel, weil du aus einem Kampf fliehen möchtest.
+			    Sobald du den Panikmodus gestartet hast, führt dich das Addon über ein dynamisch großzügig positioniertes Beacon über den Weg zurück, den du gekommen bist (bis zu 500 Meter).
+			    Du erreichst das Beacon nie. Es gibt keine "Wegpunkt erreicht"-Plings. Sobald du bis auf 20 Meter an das Beacon herankommst, wir es automatisch auf den nächsten Punkt deiner Rücklaufstrecke gesetzt.
+			    Sobald du aus dem Kampf kommst, endet der Panik-Modus automatisch.
+			    Bei jeder Benutzung der Panik-Taste wird die aufgezeichnete Wegstrecke zurückgesetzt und beginnt ab deiner aktuellen Position.
+			  Das mit dem weißen Hai war btw nur ein Witz.
+
+	SkuOptions
+		Fehlerkorrekturen
+			- Ein angewendeter Filter wird jetzt korrekt entfernt, wenn man die Menüebene mit PFEIL LINKS verlässt.
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.7

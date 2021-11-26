@@ -918,6 +918,10 @@ function SkuOptions:CreateMenuFrame()
 					SkuOptions:ApplyFilter(SkuOptions.Filterstring)
 					aKey = ""
 				end
+				if aKey == "LEFT" then
+					SkuOptions.Filterstring = ""
+					SkuOptions:ApplyFilter(SkuOptions.Filterstring)
+				end
 			end
 		end
 

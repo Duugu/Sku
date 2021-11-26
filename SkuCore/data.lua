@@ -14,7 +14,6 @@ SkuCore.Errors.Sounds = {
    ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg"] = L["error;sound"].."#"..L["tsching"],
    ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3"] = L["error;sound"].."#"..L["silent"],
 
-
    ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\error_Range.mp3"] = L["error;sound"].."#"..L["Range"],
    ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\error_Move.mp3"] = L["error;sound"].."#"..L["Move"],
 	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\error_LOS.mp3"] = L["error;sound"].."#"..L["LOS"],
@@ -26,7 +25,16 @@ SkuCore.Errors.Sounds = {
 	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\error_Stun.mp3"] = L["error;sound"].."#"..L["Stun"],
 	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\error_Inter.mp3"] = L["error;sound"].."#"..L["Inter"],
 
-
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Range.mp3"] = L["error;sound"].."#Hans;"..L["Range"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Move.mp3"] = L["error;sound"].."#Hans;"..L["Move"],
+	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_LOS.mp3"] = L["error;sound"].."#Hans;"..L["LOS"],
+	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Target.mp3"] = L["error;sound"].."#Hans;"..L["Target"],
+	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_IC.mp3"] = L["error;sound"].."#Hans;"..L["IC"],
+	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Res.mp3"] = L["error;sound"].."#Hans;"..L["Res"],
+	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Busy.mp3"] = L["error;sound"].."#Hans;"..L["Busy"],
+	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Dir.mp3"] = L["error;sound"].."#Hans;"..L["Dir"],
+	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Stun.mp3"] = L["error;sound"].."#Hans;"..L["Stun"],
+	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Inter.mp3"] = L["error;sound"].."#Hans;"..L["Inter"],
 }
 
 SKU_CONSTANTS = {

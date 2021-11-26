@@ -190,7 +190,7 @@ menuEntryTemplate_Menu = {
 		SkuOptions.Filterstring = ""
 		SkuOptions:ApplyFilter(SkuOptions.Filterstring)
 
-	if self.selectTarget then
+		if self.selectTarget then
 			--print("   ", self.selectTarget.name)
 			self.selectTarget.spellID = spellID
 			self.selectTarget.itemID = itemID
@@ -311,8 +311,8 @@ menuEntryTemplate_Menu = {
 			--SkuOptions.Filterstring = ""
 			--SkuOptions:ApplyFilter(SkuOptions.Filterstring)
 		--end
-end,
-}
+	end,
+	}
 setmetatable(menuEntryTemplate_Menu, SkuOptions.MenuMT)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
