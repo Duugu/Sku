@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.7](https://github.com/Duugu/Sku/releases/download/r20.7/Sku-r20.7-bcc.zip) <br>
-[SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
+[Sku 20.8](https://github.com/Duugu/Sku/releases/download/r20.8/Sku-r20.8-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
+[SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
@@ -16,6 +16,39 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.8
+
+### SkuCore
+*Fehlerkorrekturen*
+- Ein Fehler mit der Hochscrollen-Taste für Berufefenster wurde behoben.
+- Der Feststecken-Sound funktioniert jetzt auch wenn man rückwärts läuft.
+- Bei Briefen mit mehreren angehängten Gegenständen werden jetzt unter "Anhänge" alle angehängten Gegenstände und nicht nur der erste angezeigt.
+
+*Neuerungen*
+- Alle gesprochenen Fehler-Sounds sind jetzt zusätzlich in der männlichen Stimme "Hans" verfügbar (dem Namen ist jeweils "Hans" vorangestellt).
+- SkuCore kann jetzt über STRG + SHIFT + TAB auch NPCs anvisieren, die nicht anvisierbar sind (Startgebiete etc.).<br>
+Dazu übernimmt es dauerhaft die Tastenkombination STRG + SHIFT + TAB (war vorher "vorherigen Freund anvisieren").<br>
+Das Addon steuert das Anvisieren über die Namensbalken der NPCs. Du bekommst daher mit STRG + SHIFT + TAB immer den nächsten NPC aus allen ins Ziel deren Namensbalken gerade sichbar sind. Das muss _nicht_ (wie beim normalen Anvisieren) ein NPC vor dir sein.<br>
+Außerdem werden die Namensbalken standardmäßig erst ab 20 Meter Entfernung eingeblendet. Das Anvisieren mit STRG + SHIFT + TAB hat also eine deutlich kleinere Reichweite als das normale Anvisieren.<br>
+Du solltest auch weiterhin mit STRG + TAB das nächste freundliches Ziel anvisieren. Es sei denn, du bist in einem Startgebiet, und bekommst es damit nicht ins Ziel.<br>
+Dann kannst du jetzt die neue Funktion mit STRG + SHIFT + TAB verwenden.
+- Der Panikmodus ist wieder da!<br>
+Diesmal mit der Tastenkombination STRG + SHIFT + Y zur Aktivierung, einem ein Drittel leiseren Beacon, und der Titelmelodien aus "Der weiße Hai" im Hintergrund.<br>
+Ansonsten funktioniert er exakt so wie vorher. Hier die alte Beschreibung:<br>
+
+    - Die Panik-Taste versetzt das Addon in den Panikmodus bzw. schaltet diesen wieder aus.
+    - Der Panikmodus ist für Situationen gedacht, in denen schnell du den Weg zurücklaufen möchtest, den du gekommen bist. Zum Beispiel, weil du aus einem Kampf fliehen möchtest.
+    - Sobald du den Panikmodus gestartet hast, führt dich das Addon über ein dynamisch großzügig positioniertes Beacon über den Weg zurück, den du gekommen bist (bis zu 500 Meter).
+    - Du erreichst das Beacon nie. Es gibt keine "Wegpunkt erreicht"-Plings. Sobald du bis auf 20 Meter an das Beacon herankommst, wir es automatisch auf den nächsten Punkt deiner Rücklaufstrecke gesetzt.
+    - Sobald du aus dem Kampf kommst, endet der Panik-Modus automatisch.
+    - Bei jeder Benutzung der Panik-Taste wird die aufgezeichnete Wegstrecke zurückgesetzt und beginnt ab deiner aktuellen Position.
+
+    Das mit dem weißen Hai war btw nur ein Witz.
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Ein angewendeter Filter wird jetzt korrekt entfernt, wenn man die Menüebene mit PFEIL LINKS verlässt.
 
 ## Änderungen in Version 20.7
 
