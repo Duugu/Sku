@@ -259,7 +259,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
-	--print("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
+	print("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
 	 tResultWPs = {}
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 
@@ -801,7 +801,6 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 	--print(tObjectives)
 	if tObjectives then
 		tHasEntries = true
-		--print("objectives", tObjectives[1], tObjectives[2], tObjectives[3], tObjectives[4], tObjectives[5])
 		local tTargets = {}
 		local tTargetType = nil
 		if tObjectives[1] then --creatures
@@ -861,18 +860,18 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 		end
 	end
 
-	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] then
+	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
 		tHasEntries = true
 		local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {"Abgabe"}, menuEntryTemplate_Menu)
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.filterable = true
 		local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
-		--setmetatable(tObjectives, SkuNav.PrintMT)
-		--print(tObjectives)
+		--setmetatable(tFinishedBy, SkuNav.PrintMT)
 		if tFinishedBy then
 			--print("objectives", tObjectives[1], tObjectives[2], tObjectives[3], tObjectives[4], tObjectives[5])
 			local tTargets = {}
 			local tTargetType = nil
+			--print(tFinishedBy[1], tFinishedBy[2], tFinishedBy[3])
 			if tFinishedBy[1] then --creatures
 				-- funktioniert print("objective creatures")
 				--tTargets = tObjectives[1][1]
