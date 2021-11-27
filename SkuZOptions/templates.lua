@@ -161,6 +161,20 @@ menuEntryTemplate_Menu = {
 					end)
 				end
 			end
+		elseif string.find(self.name, L["sound"].."#") then
+			for i, v in pairs(SkuCore.RangeCheckSounds) do
+				if self.name == v then
+					C_Timer.After(1.5, function()
+						if tPrevErrorUtterance then
+							StopSound(tPrevErrorUtterance)
+						end
+						local willPlay, soundHandle = PlaySoundFile(i, "Talking Head")
+						if willPlay then
+							tPrevErrorUtterance = soundHandle
+						end
+					end)
+				end
+			end
 		end
 
 		if self.macrotext then

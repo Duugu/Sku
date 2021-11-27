@@ -8,6 +8,8 @@ Instructions for translators:
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
+L["sound"] = "Sound"
+L["vocalized"] = "Gesprochen"
 L["error;sound"] = "Fehler;Sound"
 L["Error feedback"] = "Fehler Feedback"
 L["out of range"] = "Nicht in Reichweite"

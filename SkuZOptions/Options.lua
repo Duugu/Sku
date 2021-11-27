@@ -337,7 +337,15 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Zurücksetzen"}, menuEntryTemplate_Menu)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-		print(SkuOptions.db:ResetProfile())
+		print("db", SkuOptions.db:ResetProfile())
+		SkuOptions.db.char["SkuCore"] = {}
+		SkuOptions.db.char["SkuCore"].RangeChecks = {
+			Friendly = {},
+			Hostile = {},
+			Misc = {},
+		}
+		
+	
 	end
 
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {"Fehlende Audio Wörter kopieren"}, menuEntryTemplate_Menu)

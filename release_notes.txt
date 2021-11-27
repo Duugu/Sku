@@ -9,6 +9,23 @@
 		Fehlerkorrekturen
 			- Es wurde in Fehler behoben, durch den Objekte und Gegenstände nicht unter "Abgabe" aufgeführt wurden.
 
+	SkuCore
+		Neuerungen
+			- Es gibt jetzt eine Entfernungsansage für dein Ziel. Du findest sie unter "SkuCore > Entfernung".
+			  Standardmäßig sind alle Entfernungsansagen aus.
+			  Funktionsweise:
+			  Die Entfernung wird damit nicht wirklich gemessen. Das ist nicht möglich. 
+			  Stattdessen verwendet das Addon bestimmte Aktionen (Betrachten, Handeln etc.) und deine Zauber, um festzustellen welche davon für das Ziel funktionieren. 
+			  Da das alles eine bestimmte Reichweite hat, kann es so zumindest gewisse Entfernungen erkennen.
+			  Dieser "Trick" führt dazu, dass du die Entfernung immer nur in bestimmten Schritten ansagen kannst. Zum Beispiel, 5, 8, 15, 22, 30, 40 Meter.
+			  Welche Entfernungen abgefragt/angesagt werden können, hängt von deinem Char, seinen Skill, seinen Zauber, seinen Gegenständen und vor allem vom Ziel ab (einen Feind kann man z. B. nicht anhandeln).
+			  Im Menü unter "Entfernung" sind drei Kategorien für verschiedene Zieltypen: Freundlich, Feindlich, Unbekannt. 
+			  Unter jeder Kategorie werden die Entfernungen aufgeführt, die du mit deinem aktuellen Char für die Kategorie messen kannst.
+			  Unter den verschiedenen Entfernungen findest du dann jeweils ein Untermenü mit Sounds, die du abspielen kannst, wenn das Ziel in der entsprechenden Entfernung ist.
+			  Mit "Gesprochen" wird die Entfernung alternativ von Hans als Zahl angesagt.
+			  Achtung: Die messbaren Entfernungen können sich im Laufe der Zeit verändern. Wenn du z. B. einen neuen Zauber lernst. Oder ein Item zerstörst.
+			  Wenn sich die Liste der messbaren Entfernungen verändert, sagt das Addon dies an.
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.8

@@ -37,6 +37,18 @@ SkuCore.Errors.Sounds = {
 	["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Inter.mp3"] = L["error;sound"].."#Hans;"..L["Inter"],
 }
 
+SkuCore.RangeCheckSounds = {
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_brang.ogg"] = L["sound"].."#"..L["brang"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_bring.ogg"] = L["sound"].."#"..L["bring"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_dang.ogg"] = L["sound"].."#"..L["dang"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_drmm.ogg"] = L["sound"].."#"..L["drmm"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_shhhup.ogg"] = L["sound"].."#"..L["shhhup"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_spoing.ogg"] = L["sound"].."#"..L["spoing"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_swoosh.ogg"] = L["sound"].."#"..L["swoosh"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg"] = L["sound"].."#"..L["tsching"],
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3"] = L["sound"].."#"..L["silent"],
+}
+
 SKU_CONSTANTS = {
 	["SOUNDCHANNELS"] = {
 		["Master"] = "Gesamt",

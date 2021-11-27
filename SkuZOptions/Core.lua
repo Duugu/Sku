@@ -12,6 +12,7 @@ SkuOptions.Voice = LibStub("SkuVoice-1.0"):Create("SkuCore", false)
 SkuOptions.HBD = LibStub("HereBeDragons-2.0")
 SkuOptions.BeaconLib = LibStub("SkuBeacon-1.0"):Create("SkuOptions", false)
 SkuOptions.Serializer = LibStub("AceSerializer-3.0")
+SkuOptions.RangeCheck = LibStub("LibRangeCheck-2.0")
 
 SkuOptions.Menu = {}
 SkuOptions.currentMenuPosition = nil

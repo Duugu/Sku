@@ -636,6 +636,44 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function RangecheckMenuBuilder(aParent, aType)
+	for i = 1, 100 do 
+		if SkuCore.RangeCheckValues.Ranges[aType][i] then 
+			local tIsConfiguredWith = ";"..L["silent"]
+			if SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i] then
+				if SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i].sound == L["vocalized"] then
+					tIsConfiguredWith = ";"..L["vocalized"]
+				else
+					tIsConfiguredWith = ";"..SkuCore.RangeCheckSounds[SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i].sound]
+				end
+			end
+			local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {i..tIsConfiguredWith}, menuEntryTemplate_Menu)
+			tNewSubMenuEntry.dynamic = true
+			tNewSubMenuEntry.isSelect = true
+			tNewSubMenuEntry.OnAction = function(self, aValue, aName, aParentMenuName)
+				local tRange = string.split(";", aParentMenuName)
+				if aName == L["vocalized"] then
+					SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][tonumber(tRange)] = {sound = L["vocalized"],}
+				else
+					for qi, qv in pairs(SkuCore.RangeCheckSounds) do
+						if string.find(qv, aName) then
+							SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][tonumber(tRange)] = {sound = qi,}
+						end
+					end
+				end
+				self.name = tRange..";"..aName
+			end
+			tNewSubMenuEntry.BuildChildren = function(self)
+				local tNewSubSoundMenuEntry = SkuOptions:InjectMenuItems(self, {L["vocalized"]}, menuEntryTemplate_Menu)
+				for x, v in pairs(SkuCore.RangeCheckSounds) do
+					local tNewSubSoundMenuEntry = SkuOptions:InjectMenuItems(self, {v}, menuEntryTemplate_Menu)
+					tNewSubSoundMenuEntry.dynamic = true
+				end
+			end
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MenuBuilder(aParentEntry)
 	--print("SkuCore:MenuBuilder", aParentEntry)
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Mail"]}, menuEntryTemplate_Menu)
@@ -1007,6 +1045,26 @@ function SkuCore:MenuBuilder(aParentEntry)
 		--tNewMenuEntry.dynamic = true
 		--tNewMenuEntry.BuildChildren = function(self)
 		--end
+	end
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Entfernung"}, menuEntryTemplate_Menu)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.BuildChildren = function(self)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Freundlich"}, menuEntryTemplate_Menu)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			RangecheckMenuBuilder(self, "Friendly")
+		end
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Feindlich"}, menuEntryTemplate_Menu)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			RangecheckMenuBuilder(self, "Hostile")
+		end
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Unbekannt"}, menuEntryTemplate_Menu)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			RangecheckMenuBuilder(self, "Misc")
+		end
 	end
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)

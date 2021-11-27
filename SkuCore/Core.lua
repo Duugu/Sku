@@ -200,6 +200,7 @@ function SkuCore:OnInitialize()
 
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
+	SkuCore:RangeCheckOnInitialize()
 end
 
 
@@ -514,6 +515,7 @@ local SkuCoreOldPetHappinessCounter = 0
 local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 function SkuCore:OnEnable()
 	--print("SkuCore OnEnable")
+	SkuCore:RangeCheckOnEnable()
 
 	--fake ctrl shift tab for untargetable units in starting areas	
 	local tFrame = CreateFrame("Button", "SkuCoreSecureTabButton", _G["UIParent"], "SecureActionButtonTemplate")
@@ -529,6 +531,9 @@ function SkuCore:OnEnable()
 	tFrame:SetScript("OnUpdate", function(self, time)
 		tSkuCoreSecureTabButtonTime = tSkuCoreSecureTabButtonTime + time
 		if tSkuCoreSecureTabButtonTime > 0.1 then
+
+			SkuCore:DoRangeCheck()
+
 			if SkuCore.inCombat ~= true then
 				if GetCVar("nameplateShowFriends") == "0" then
 					SetCVar("nameplateShowFriends", "1")

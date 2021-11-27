@@ -22,6 +22,7 @@ SkuChat\Options.lua
 SkuCore\Core.lua
 SkuCore\data.lua
 SkuCore\UIErrors.lua
+SkuCore\RangeCheck.lua
 SkuCore\mail.lua
 SkuCore\Options.lua
 
