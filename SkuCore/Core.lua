@@ -293,6 +293,10 @@ function SkuCore:PanicModeCollectData()
 		local tMinDist = 20--SkuNav.routeRecordingIntWpMethods.values["20 Grad 20 Meter"].dist
 		local x, y = UnitPosition("player")
 
+		if not x then
+			return
+		end
+		
 		local _, _, tDegreesFinal = SkuNav:GetDirectionTo(x, y, 30000, y)
 		if not ttimeDegreesChangeInitial then
 			ttimeDegreesChangeInitial = tDegreesFinal

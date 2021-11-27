@@ -259,7 +259,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
-	print("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
+	--print("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
 	 tResultWPs = {}
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 

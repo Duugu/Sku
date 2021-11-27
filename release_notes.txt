@@ -3,6 +3,18 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.10
+
+	SkuQuest
+		Fehlerkorrekturen
+			- Vergessene Debug-Meldngen entfernt.
+
+	SkuCore
+		Fehlerkorrekturen
+			- Fehler mit Dauer-Fehlermeldungen in Instanzen behoben.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.9
 
 	SkuQuest
