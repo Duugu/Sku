@@ -1705,6 +1705,15 @@ SkuDB.DefaultWaypoints2 = {
          "Eisenschmiede", -- [1]
          "Sturmwind", -- [2]
          "Unterstadt", -- [3]
+         "Verwüstete Lande",
+         ["Verwüstete Lande"] = {
+            ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+            ["contintentId"] = 0,
+            ["createdBy"] = "SkuNav",
+            ["worldY"] = -3389.016357421875,
+            ["worldX"] = -10997.69921875,
+            ["areaId"] = 4,
+         },
          ["Vorgebirge von Hillsbrad"] = {
             "s;Östliche Königreiche;Vorgebirge von Hillsbrad;Southshore", -- [1]
             "s;Östliche Königreiche;Vorgebirge von Hillsbrad;Tarrens Mühle", -- [2]

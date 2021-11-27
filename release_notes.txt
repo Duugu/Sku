@@ -3,6 +3,15 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.11
+
+	SkuOptions
+		Fehlerkorrekturen
+			- "Verwüstete Lande" zur Wortliste für Wegpunkte hinzugefügt.
+			- Auch, wenn es niemand bemerkt hat, wurde ein Problem behoben, dass die Anzeige der Liste aller NPC-Wegpunkte unter SkuNav > Wegpunkt > Auswählen" verhindert hat.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.10
 
 	SkuQuest

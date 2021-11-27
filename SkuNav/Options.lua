@@ -888,37 +888,39 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local tWaypointList = {}
 				for i, v in pairs(SkuDB.NpcData.NamesDE) do
 					local tHasValidSpawns = false
-					if not sfind((SkuDB.NpcData.Data[i][1]), "UNUSED") then
-						local tSpawns = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]
-						if tSpawns then
-							for is, vs in pairs(tSpawns) do
-								if tHasValidSpawns == false then
-									if SkuDB.InternalAreaTable[is] then
-										local tCID = SkuDB.InternalAreaTable[is].ContinentID
-										local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
-										if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
-											tHasValidSpawns = true
+					if SkuDB.NpcData.Data[i] then
+						if not sfind((SkuDB.NpcData.Data[i][1]), "UNUSED") then
+							local tSpawns = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]
+							if tSpawns then
+								for is, vs in pairs(tSpawns) do
+									if tHasValidSpawns == false then
+										if SkuDB.InternalAreaTable[is] then
+											local tCID = SkuDB.InternalAreaTable[is].ContinentID
+											local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
+											if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
+												tHasValidSpawns = true
+											end
 										end
 									end
 								end
 							end
 						end
-					end
-					if tHasValidSpawns == true then
-						local tSubname = SkuDB.NpcData.NamesDE[i][2]
-						local tRolesString = ""
-						if not tSubname then
-							local tRoles = SkuNav:GetNpcRoles(v[1], i)
-							if #tRoles > 0 then
-								for i, v in pairs(tRoles) do
-									tRolesString = tRolesString..";"..v
+						if tHasValidSpawns == true then
+							local tSubname = SkuDB.NpcData.NamesDE[i][2]
+							local tRolesString = ""
+							if not tSubname then
+								local tRoles = SkuNav:GetNpcRoles(v[1], i)
+								if #tRoles > 0 then
+									for i, v in pairs(tRoles) do
+										tRolesString = tRolesString..";"..v
+									end
+									tRolesString = tRolesString..""
 								end
-								tRolesString = tRolesString..""
+							else
+								tRolesString = tRolesString..";"..tSubname
 							end
-						else
-							tRolesString = tRolesString..";"..tSubname
+							table.insert(tWaypointList, v[1]..tRolesString)
 						end
-						table.insert(tWaypointList, v[1]..tRolesString)
 					end
 				end
 
@@ -1009,39 +1011,41 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local tWaypointList = {}
 				for i, v in pairs(SkuDB.NpcData.NamesDE) do
 					local tHasValidSpawns = false
-					if not sfind((SkuDB.NpcData.Data[i][1]), "UNUSED") then
-						local tSpawns = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]
-						if tSpawns then
-							for is, vs in pairs(tSpawns) do
-								if tHasValidSpawns == false then
-									if SkuDB.InternalAreaTable[is] then
-										local tCID = SkuDB.InternalAreaTable[is].ContinentID
-										local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
-										if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
-											if tPlayerAreaId == SkuNav:GetUiMapIdFromAreaId(is) then
-												tHasValidSpawns = true
+					if SkuDB.NpcData.Data[i] then
+						if not sfind((SkuDB.NpcData.Data[i][1]), "UNUSED") then
+							local tSpawns = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]
+							if tSpawns then
+								for is, vs in pairs(tSpawns) do
+									if tHasValidSpawns == false then
+										if SkuDB.InternalAreaTable[is] then
+											local tCID = SkuDB.InternalAreaTable[is].ContinentID
+											local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
+											if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
+												if tPlayerAreaId == SkuNav:GetUiMapIdFromAreaId(is) then
+													tHasValidSpawns = true
+												end
 											end
 										end
 									end
 								end
 							end
 						end
-					end
-					if tHasValidSpawns == true then
-						local tSubname = SkuDB.NpcData.NamesDE[i][2]
-						local tRolesString = ""
-						if not tSubname then
-							local tRoles = SkuNav:GetNpcRoles(v[1], i)
-							if #tRoles > 0 then
-								for i, v in pairs(tRoles) do
-									tRolesString = tRolesString..";"..v
+						if tHasValidSpawns == true then
+							local tSubname = SkuDB.NpcData.NamesDE[i][2]
+							local tRolesString = ""
+							if not tSubname then
+								local tRoles = SkuNav:GetNpcRoles(v[1], i)
+								if #tRoles > 0 then
+									for i, v in pairs(tRoles) do
+										tRolesString = tRolesString..";"..v
+									end
+									tRolesString = tRolesString..""
 								end
-								tRolesString = tRolesString..""
+							else
+								tRolesString = tRolesString..";"..tSubname
 							end
-						else
-							tRolesString = tRolesString..";"..tSubname
+							table.insert(tWaypointList, v[1]..tRolesString)
 						end
-						table.insert(tWaypointList, v[1]..tRolesString)
 					end
 				end
 

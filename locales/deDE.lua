@@ -44,7 +44,6 @@ L["spoing"] = "spoing"--this is the text reprensentation of an actual sound; sou
 L["swoosh"] = "swoosh" --this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_swoosh.ogg
 L["tsching"] = "tsching" --this is the text reprensentation of an actual sound; sound file: Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg
 -- END
-
 L["No Recipient"] = "Empfänger fehlt"
 L["No topic"] = "Betreff fehlt"
 L["Stonewrought-Pass"] = "Steinwerkpass"
