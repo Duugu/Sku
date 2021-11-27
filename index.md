@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.8](https://github.com/Duugu/Sku/releases/download/r20.8/Sku-r20.8-bcc.zip) <br>
+[Sku 20.9](https://github.com/Duugu/Sku/releases/download/r20.9/Sku-r20.9-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
@@ -16,6 +16,29 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.9
+
+### SkuQuest
+*Fehlerkorrekturen*
+- Es wurde in Fehler behoben, durch den Objekte und Gegenstände nicht unter "Abgabe" aufgeführt wurden.
+
+### SkuCore
+*Neuerungen*
+- Es gibt jetzt eine Entfernungsansage für dein Ziel. Du findest sie unter "SkuCore > Entfernung".<br>
+    - Standardmäßig sind alle Entfernungsansagen aus.<br>
+    - Funktionsweise:<br>
+            Die Entfernung wird damit nicht wirklich gemessen. Das ist nicht möglich. <br>
+            Stattdessen verwendet das Addon bestimmte Aktionen (Betrachten, Handeln etc.) und deine Zauber, um festzustellen welche davon für das Ziel funktionieren. <br>
+            Da das alles eine bestimmte Reichweite hat, kann es so zumindest gewisse Entfernungen erkennen.<br>
+            Dieser "Trick" führt dazu, dass du die Entfernung immer nur in bestimmten Schritten ansagen kannst. Zum Beispiel, 5, 8, 15, 22, 30, 40 Meter.<br>
+            Welche Entfernungen abgefragt/angesagt werden können, hängt von deinem Char, seinen Skill, seinen Zauber, seinen Gegenständen und vor allem vom Ziel ab (einen Feind kann man z. B. nicht anhandeln).<br>
+            Im Menü unter "Entfernung" sind drei Kategorien für verschiedene Zieltypen: Freundlich, Feindlich, Unbekannt. <br>
+            Unter jeder Kategorie werden die Entfernungen aufgeführt, die du mit deinem aktuellen Char für die Kategorie messen kannst.<br>
+            Unter den verschiedenen Entfernungen findest du dann jeweils ein Untermenü mit Sounds, die du abspielen kannst, wenn das Ziel in der entsprechenden Entfernung ist.<br>
+            Mit "Gesprochen" wird die Entfernung alternativ von Hans als Zahl angesagt.<br>
+            Achtung: Die messbaren Entfernungen können sich im Laufe der Zeit verändern. Wenn du z. B. einen neuen Zauber lernst. Oder ein Item zerstörst.<br>
+            Wenn sich die Liste der messbaren Entfernungen verändert, sagt das Addon dies an.
 
 ## Änderungen in Version 20.8
 
