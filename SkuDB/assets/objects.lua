@@ -11092,6 +11092,7 @@ SkuDB.objectLookup = {
    [186267] = "Kürbisschrein",
    [186272] = "Werkzeugsatz",
    [186273] = "Beschädigte Tauchausrüstung",
+   [186283] = "Zeppelintrümmer",
    [186301] = "Waffen der Schwarzhufe",
    [186302] = "Kiste mit Orcgrog",
    [186314] = "Leicht aufgewühlte Erde",

@@ -4184,8 +4184,26 @@ local SkuQuestFixesAlliance = {
    },
 }
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+local SkuQuestFixesSKU = {
+    [1204] = {
+        [questKeys.preQuestSingle] = {},
+    },
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
 function SkuDB:FixQuestDB()
     for i, v in pairs(SkuQuestFixes) do
+        for k, val in pairs(v) do
+            if SkuDB.questDataTBC[i] then
+                SkuDB.questDataTBC[i][k] = val
+            else
+                SkuDB.questDataTBC[i] = v         
+            end
+        end
+    end
+    for i, v in pairs(SkuQuestFixesSKU) do
         for k, val in pairs(v) do
             if SkuDB.questDataTBC[i] then
                 SkuDB.questDataTBC[i][k] = val

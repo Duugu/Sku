@@ -272,7 +272,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 					local tObjectId = SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]][x]
 					local tObjectData = SkuDB.objectDataTBC[tObjectId]
 					local tObjectSpawns = tObjectData[SkuDB.objectKeys["spawns"]]
-					local tObjectName = SkuDB.objectLookup[tObjectId]
+					local tObjectName = SkuDB.objectLookup[tObjectId] or SkuDB.objectDataTBC[tObjectId][1]
 					if tObjectSpawns then
 						for is, vs in pairs(tObjectSpawns) do
 							local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)

@@ -3,6 +3,20 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 20.12
+
+	SkuQuest
+		Neuerungen
+			- Ab sofort ist es für uns möglich eigene Korrekturen an der Questdatenbank vorzunehmen (statt nur die von Questie zu übernehmen.)
+			  Den Anfang machen die Quests "Schlammpanzersuppe mit Käfern" ("Morgan Stern" ist keine erforderliche Pre-Quest mehr) und "Bergt die Fracht" (Ziel hinzugefügt).
+
+	SkuNav
+		Fehlerkorrekturen
+			- Kaputte Routen in Importdaten konnten dafür sorgen, dass der Import für die aktuelle Zone mit einem Fehler abgebrochen wurde.
+			  Das passiert jetzt nicht mehr. Die kaputten Routen werden beim Import entfernt.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.11
 
 	SkuMob

@@ -2262,86 +2262,91 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 				for i, v in ipairs(tRoutes) do
 					local tStartWP = tWaypoints[tRoutes[v].tStartWPName] or SkuNav:GetWaypoint(tRoutes[v].tStartWPName)
 					local tEndWP = tWaypoints[tRoutes[v].tEndWPName] or SkuNav:GetWaypoint(tRoutes[v].tEndWPName)
-					if 
-						(((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tStartWP.areaId)) == aAreaId) == true or not aAreaId) 
-						or ((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tEndWP.areaId)) == aAreaId) == true or not aAreaId) ) == true
-					then
-						if (tRoutes[v].tStartWPName == tRoutes[v].tEndWPName) and #tRoutes[v].WPs <= 2 then
-							tIgnoredCounterRts = tIgnoredCounterRts + 1
-						else
-							if not SkuOptions.db.profile["SkuNav"].Routes[v] then
-								-- new rt name
-								table.insert(SkuOptions.db.profile["SkuNav"].Routes, v)
-								SkuOptions.db.profile["SkuNav"].Routes[v] = tRoutes[v]
-								SkuNav:UpdateRtContinentAndAreaIds(v)
-								tImportCounterRts = tImportCounterRts + 1
+					if not tStartWP or not tEndWP then
+						tIgnoredCounterRts = tIgnoredCounterRts + 1
+					else
+						if 
+							(((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tStartWP.areaId)) == aAreaId) == true or not aAreaId) 
+							or ((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tEndWP.areaId)) == aAreaId) == true or not aAreaId) ) == true
+						then
+							if (tRoutes[v].tStartWPName == tRoutes[v].tEndWPName) and #tRoutes[v].WPs <= 2 then
+								tIgnoredCounterRts = tIgnoredCounterRts + 1
 							else
-								--rt name exists
-								--is the same as existing?
-								local tExistingRtData = ""
-								tExistingRtData = tExistingRtData..v
-								tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tStartWPName or "nil")
-								tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tEndWPName or "nil")
-								for iWp, vWp in ipairs(SkuOptions.db.profile["SkuNav"].Routes[v].WPs) do
-									tExistingRtData =  tExistingRtData..vWp
-								end
-
-								local tImportRtData = ""
-								tImportRtData = tImportRtData..v
-								tImportRtData = tImportRtData..(tRoutes[v].tStartWPName or "nil")
-								tImportRtData = tImportRtData..(tRoutes[v].tEndWPName or "nil")
-								for iWp, vWp in ipairs(tRoutes[v].WPs) do
-									tImportRtData =  tImportRtData..vWp
-								end
-
-								if tExistingRtData ~= tImportRtData then
-									--not the same update import rts name
-									local tNewRtName = v
-									local tCounter = 1
-									local tInsert = true
-									while SkuOptions.db.profile["SkuNav"].Routes[v..";"..tCounter] do
-										local tExistingRtData = ""
-										tExistingRtData = tExistingRtData..v
-										tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tStartWPName or "nil")
-										tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tEndWPName or "nil")
-										for iWp, vWp in ipairs(SkuOptions.db.profile["SkuNav"].Routes[v].WPs) do
-											tExistingRtData =  tExistingRtData..vWp
-										end
-			
-										local tImportRtData = ""
-										tImportRtData = tImportRtData..v
-										tImportRtData = tImportRtData..(tRoutes[v].tStartWPName or "nil")
-										tImportRtData = tImportRtData..(tRoutes[v].tEndWPName or "nil")
-										for iWp, vWp in ipairs(tRoutes[v].WPs) do
-											tImportRtData =  tImportRtData..vWp
-										end
-
-										if tExistingRtData ~= tImportRtData then
-											tInsert = false
-											tIgnoredCounterRts = tIgnoredCounterRts + 1
-											break
-										else
-											tCounter = tCounter + 1
-										end
-									end
-									tNewRtName = v..";"..tCounter
-
-									if tInsert == true then
-										table.insert(SkuOptions.db.profile["SkuNav"].Routes, tNewRtName)
-										SkuOptions.db.profile["SkuNav"].Routes[tNewRtName] = tRoutes[v]
-										SkuNav:UpdateRtContinentAndAreaIds(tNewRtName)
-										tImportCounterRts = tImportCounterRts + 1
-										tRenameCounterRts = tRenameCounterRts + 1
-									end
+								if not SkuOptions.db.profile["SkuNav"].Routes[v] then
+									-- new rt name
+									table.insert(SkuOptions.db.profile["SkuNav"].Routes, v)
+									SkuOptions.db.profile["SkuNav"].Routes[v] = tRoutes[v]
+									SkuNav:UpdateRtContinentAndAreaIds(v)
+									tImportCounterRts = tImportCounterRts + 1
 								else
-									--same name same data, ignore
-									tIgnoredCounterRts = tIgnoredCounterRts + 1
+									--rt name exists
+									--is the same as existing?
+									local tExistingRtData = ""
+									tExistingRtData = tExistingRtData..v
+									tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tStartWPName or "nil")
+									tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tEndWPName or "nil")
+									for iWp, vWp in ipairs(SkuOptions.db.profile["SkuNav"].Routes[v].WPs) do
+										tExistingRtData =  tExistingRtData..vWp
+									end
+
+									local tImportRtData = ""
+									tImportRtData = tImportRtData..v
+									tImportRtData = tImportRtData..(tRoutes[v].tStartWPName or "nil")
+									tImportRtData = tImportRtData..(tRoutes[v].tEndWPName or "nil")
+									for iWp, vWp in ipairs(tRoutes[v].WPs) do
+										tImportRtData =  tImportRtData..vWp
+									end
+
+									if tExistingRtData ~= tImportRtData then
+										--not the same update import rts name
+										local tNewRtName = v
+										local tCounter = 1
+										local tInsert = true
+										while SkuOptions.db.profile["SkuNav"].Routes[v..";"..tCounter] do
+											local tExistingRtData = ""
+											tExistingRtData = tExistingRtData..v
+											tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tStartWPName or "nil")
+											tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tEndWPName or "nil")
+											for iWp, vWp in ipairs(SkuOptions.db.profile["SkuNav"].Routes[v].WPs) do
+												tExistingRtData =  tExistingRtData..vWp
+											end
+				
+											local tImportRtData = ""
+											tImportRtData = tImportRtData..v
+											tImportRtData = tImportRtData..(tRoutes[v].tStartWPName or "nil")
+											tImportRtData = tImportRtData..(tRoutes[v].tEndWPName or "nil")
+											for iWp, vWp in ipairs(tRoutes[v].WPs) do
+												tImportRtData =  tImportRtData..vWp
+											end
+
+											if tExistingRtData ~= tImportRtData then
+												tInsert = false
+												tIgnoredCounterRts = tIgnoredCounterRts + 1
+												break
+											else
+												tCounter = tCounter + 1
+											end
+										end
+										tNewRtName = v..";"..tCounter
+
+										if tInsert == true then
+											table.insert(SkuOptions.db.profile["SkuNav"].Routes, tNewRtName)
+											SkuOptions.db.profile["SkuNav"].Routes[tNewRtName] = tRoutes[v]
+											SkuNav:UpdateRtContinentAndAreaIds(tNewRtName)
+											tImportCounterRts = tImportCounterRts + 1
+											tRenameCounterRts = tRenameCounterRts + 1
+										end
+									else
+										--same name same data, ignore
+										tIgnoredCounterRts = tIgnoredCounterRts + 1
+									end
 								end
 							end
+						else
+							tIgnoredCounterRts = tIgnoredCounterRts + 1
 						end
-					else
-						tIgnoredCounterRts = tIgnoredCounterRts + 1
 					end
+
 				end
 
 				local tRtsToDelete = {}
