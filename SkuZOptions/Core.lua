@@ -2167,12 +2167,17 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 				local tImprableRouteWps = {}
 				if aAreaId then
 					for iR, vR in ipairs(tRoutes) do
+						print(iR, vR)
 						for iWp, vWp in ipairs(tRoutes[vR].WPs) do
-							--print(iR, vR, iWp, vWp)
-							--print(tWaypoints[vWp], SkuNav:GetWaypoint(vWp))
+							print("  ", iWp, vWp)
+							print("    ", tWaypoints[vWp], SkuNav:GetWaypoint(vWp))
 							local tWayp = tWaypoints[vWp] or SkuNav:GetWaypoint(vWp)
-							if (SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) then
-								tImprableRouteWps[vWp] = true
+							if tWayp then
+								if (SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) then
+									tImprableRouteWps[vWp] = true
+								end
+							else
+								print("ignore:", vWp)
 							end
 						end
 					end

@@ -196,10 +196,11 @@ local SkuCreaturesFixes = {
     [8580] = {
         [npcKeys.spawns] = {[zoneIDs.THE_TEMPLE_OF_ATAL_HAKKAR] = {{-1,-1}}},
     },
+    --[[
     [10182] = {
         [npcKeys.spawns] = {[zoneIDs.DESOLACE] = {{25.6,70.0}}},
         [npcKeys.waypoints] = {},
-    },
+    },]]
     [11943] = {
         [npcKeys.spawns] = {[zoneIDs.DUROTAR] = {{51,41}}},
     },
