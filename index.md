@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.10](https://github.com/Duugu/Sku/releases/download/r20.10/Sku-r20.10-bcc.zip) <br>
+[Sku 20.11](https://github.com/Duugu/Sku/releases/download/r20.11/Sku-r20.11-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
@@ -17,7 +17,26 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
--------------------------------------------------------------------------------------------------------	
+## Änderungen in Version 20.11
+
+### SkuMob
+*Neuerungen*
+- Bei gelben Gegnern (die einen nicht von sich aus angreifen), sagt das Addon jetzt "passiv" vor dem Namen.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Es wurde (hoffentlich) ein Fehler beim automatischen Folgen nach dem Kampf behoben.
+
+### SkuOptions
+*Fehlerkorrekturen*
+- "Verwüstete Lande" zur Wortliste für Wegpunkte hinzugefügt.
+- Auch, wenn es niemand bemerkt hat, wurde ein Problem behoben, dass die Anzeige der Liste aller NPC-Wegpunkte unter SkuNav > Wegpunkt > Auswählen > Alle NPCs" verhindert hat.
+- Bei Filtern in Menüs werden Umlaute jetzt korrekt buchstabiert.
+
+### SkuNav
+*Fehlerkorrekturen*
+- Alle Standardwegpunkte (beginnen mit "s;") in Feralas wurden gelöscht, da sie offensichtlich falsch waren.
+
 ## Änderungen in Version 20.10
 
 ### SkuQuest
