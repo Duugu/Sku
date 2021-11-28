@@ -952,11 +952,11 @@ function SkuCore:PLAYER_DEAD(...)
 	--print("UnitIsDead", UnitIsDead("player"))
 end
 function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
-	--print("AUTOFOLLOW_BEGIN")
+	--print("AUTOFOLLOW_BEGIN", event, target, ...)
 	SkuStatus.followEndFlag = false
-	SkuStatus.followUnitName = UnitName("TARGET")
+	SkuStatus.followUnitName = target or UnitName("TARGET")
 	if SkuStatus.follow == 0 then
-		SkuStatus.followUnitName = UnitName("TARGET")
+		SkuStatus.followUnitName = target or UnitName("TARGET")
 		SkuStatus.follow = GetTime()
 		if SkuOptions.db.profile[MODULE_NAME].autoFollow == true then
 			SkuStatus.followUnitId = ""
@@ -977,7 +977,9 @@ function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
 	end
 	SkuOptions.Voice:OutputString("male-Folgen", false, true, 0.2)
 	SkuOptions:SendTrackingStatusUpdates("F-1")
-	SkuOptions:SendTrackingStatusUpdates("FN-"..SkuStatus.followUnitName)
+	if SkuStatus.followUnitName then
+		SkuOptions:SendTrackingStatusUpdates("FN-"..SkuStatus.followUnitName)
+	end
 end
 function SkuCore:AUTOFOLLOW_END(event, ...)
 	--print("AUTOFOLLOW_END")

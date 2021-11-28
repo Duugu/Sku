@@ -1549,6 +1549,20 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 
 	--handle filter placeholder
 	local tUncleanValue = SkuOptions.currentMenuPosition.name
+	--handle unicode chars
+	local tString = ""
+	if string.find(tUncleanValue, L["Filter"]..";") then
+		tUncleanValue = string.lower(tUncleanValue:sub(string.len(L["Filter"]..";") + 1))
+		for tChr in tUncleanValue:gmatch("[\33-\127\192-\255]?[\128-\191]*") do
+			tString = tString..tChr..";"
+		end
+		while string.find(tString, ";;") do
+			tString = string.gsub(tString, ";;", ";")
+		end
+		tUncleanValue = tString
+	end
+
+
 	if string.sub(tUncleanValue, 1, string.len(L["Filter"]..";")) == L["Filter"]..";" then
 		local tSecondSegment = string.sub(tUncleanValue, string.len(L["Filter"]..";") + 1)
 		tUncleanValue = L["Filter"]..";"

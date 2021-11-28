@@ -8,6 +8,8 @@ Instructions for translators:
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
+L["passive"] = "passiv" --unit reaction (will attack or just defend)
+L["aggressive"] = "agressiv" --unit reaction (will attack or just defend)
 L["sound"] = "Sound"
 L["vocalized"] = "Gesprochen"
 L["error;sound"] = "Fehler;Sound"

@@ -5,10 +5,23 @@
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 20.11
 
+	SkuMob
+		Neuerungen
+			- Bei gelben Gegnern (die einen nicht von sich aus angreifen), sagt das Addon jetzt "passiv" vor dem Namen.
+
+	SkuCore
+		Fehlerkorrekturen
+			- Es wurde (hoffentlich) ein Fehler beim automatischen Folgen nach dem Kampf behoben.
+
 	SkuOptions
 		Fehlerkorrekturen
 			- "Verwüstete Lande" zur Wortliste für Wegpunkte hinzugefügt.
-			- Auch, wenn es niemand bemerkt hat, wurde ein Problem behoben, dass die Anzeige der Liste aller NPC-Wegpunkte unter SkuNav > Wegpunkt > Auswählen" verhindert hat.
+			- Auch, wenn es niemand bemerkt hat, wurde ein Problem behoben, dass die Anzeige der Liste aller NPC-Wegpunkte unter SkuNav > Wegpunkt > Auswählen > Alle NPCs" verhindert hat.
+			- Bei Filtern in Menüs werden Umlaute jetzt korrekt buchstabiert.
+
+	SkuNav
+		Fehlerkorrekturen
+			- Alle Standardwegpunkte (beginnen mit "s;") in Feralas wurden gelöscht, da sie offensichtlich falsch waren.
 
 
 -------------------------------------------------------------------------------------------------------	

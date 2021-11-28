@@ -1182,6 +1182,7 @@ SkuDB.DefaultWaypoints2 = {
             },
          },
          ["Feralas"] = {
+            --[[
             "s;Kalimdor;Feralas;Außenposten der Gordunni;Lariss' Pavillon", -- [1]
             "s;Kalimdor;Feralas;Die Insel des Schreckens;Shalzarus Unterschlupf", -- [2]
             "s;Kalimdor;Feralas;Die verwundene Tiefe;Waldpfotenbau", -- [3]
@@ -1253,7 +1254,7 @@ SkuDB.DefaultWaypoints2 = {
                ["worldY"] = -863.048,
                ["worldX"] = -4835.2,
                ["areaId"] = 2520,
-            },
+            },]]
          },
          ["Silithus"] = {
             "s;Kalimdor;Silithus;Basislager der Twilight;Basislager der Twilight", -- [1]

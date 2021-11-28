@@ -240,6 +240,17 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 		end
 	end
 	
+	--for passive but attackable targets
+	local tReactionText = ""
+	if UnitCanAttack("player", "target") then
+		if TargetFrameNameBackground then
+			local r, g, b, a = TargetFrameNameBackground:GetVertexColor()
+			if r > 0.99 and g > 0.99 and b == 0 then
+				tReactionText = L["passive"]..";"
+			end
+		end
+	end
+
 	local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
 	if hp == 0 then
 		SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
@@ -248,7 +259,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 		if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
 			SkuOptions.Voice:OutputString(tRaidTargetString, true, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
 		else
-			SkuOptions.Voice:OutputString(tRaidTargetString..tUnitName, true, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
+			SkuOptions.Voice:OutputString(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
 		end
 	end
 	
