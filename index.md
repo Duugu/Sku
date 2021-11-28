@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.12](https://github.com/Duugu/Sku/releases/download/r20.12/Sku-r20.12-bcc.zip) <br>
+[Sku 20.13](https://github.com/Duugu/Sku/releases/download/r20.13/Sku-r20.13-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
@@ -16,6 +16,12 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.13
+
+### SkuNav
+*Fehlerkorrekturen*
+- Einen Fehler mit "Rokaro;Champion der Horde;Feralas" behoben.
 
 ## Änderungen in Version 20.12
 
