@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.11](https://github.com/Duugu/Sku/releases/download/r20.11/Sku-r20.11-bcc.zip) <br>
+[Sku 20.12](https://github.com/Duugu/Sku/releases/download/r20.12/Sku-r20.12-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
@@ -16,6 +16,18 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 20.12
+
+### SkuQuest
+*Neuerungen*
+- Ab sofort ist es für uns möglich eigene Korrekturen an der Questdatenbank vorzunehmen (statt nur die von Questie zu übernehmen.)
+Den Anfang machen die Quests "Schlammpanzersuppe mit Käfern" ("Morgan Stern" ist keine erforderliche Pre-Quest mehr) und "Bergt die Fracht" (Ziel hinzugefügt).
+
+### SkuNav
+*Fehlerkorrekturen*
+- Kaputte Routen in Importdaten konnten dafür sorgen, dass der Import für die aktuelle Zone mit einem Fehler abgebrochen wurde.<br>
+Das passiert jetzt nicht mehr. Die kaputten Routen werden beim Import entfernt.
 
 ## Änderungen in Version 20.11
 
