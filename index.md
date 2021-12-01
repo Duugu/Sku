@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 20.13](https://github.com/Duugu/Sku/releases/download/r20.13/Sku-r20.13-bcc.zip) <br>
+[Sku 21](https://github.com/Duugu/Sku/releases/download/r21/Sku-r21-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
@@ -16,6 +16,39 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 21
+
+### SkuAuras
+*Neuerungen*
+- Es gibt ein neues Modul im Menü: SkuAuras. Allerdings ist es noch ohne Funktion.
+
+### SkuNav
+*Fehlerkorrekturen*
+- Ein Fehler beim Löschen von Wegpunkten wurde behoben, durch den es nicht möglich war einen neuen Wegpunkt mit demselben Namen wie ein bereits gelöschter Wegpunkt zu erstellen.
+
+*Neuerungen*
+- Unter "SkuNav > Daten" gibt es einen neuen Menüpunkt "Alle Routen und Wegpunkte löschen". Dieser löscht ohne weitere Nachfrage alle Custom-Wegpunkte und Routen für die gesamte Welt. <br>
+Danach hast du nur noch die jungfräuliche Wegpunkt- und Routen-Liste (also nur noch Standard-Wegpunkte). Wie nach einem Zurücksetzen des Profils.
+- In der SkuMinimap gibt es links im Ausklappmenü zwei neue Buttons:
+    - Custom w/o: Zeigt auf der SkuMinimap nur noch die selbst erstellten Wegpunkte (rot) an, die nicht in einer Route verwendet werden.
+    - Default w/o: Zeigt auf der SkuMinimap nur noch die Standard-Wegpunkte (rosa, grün, türkis) an, die nicht in einer Route verwendet werden.<br>
+Bei beiden Buttons kannst du erneut auf den Button klicken, um zur Normaldarstellung zurückzukehren. Das passiert ebenfalls beim Schließen der SkuMinimap.
+Bei beiden Buttons wird zusätzlich im Textfeld darunter eine Liste der entsprechenden Wegpunktnamen ausgegeben. Die kannst du dir dann da raus kopieren.
+- Importfehler werden vorläufig einzeln im Chat ausgegeben, statt nur gezählt. Sollten welche auftauchen, musst du dich vor einem Export mit den Ursachen befassen.<br>
+Rote Fehlermeldungen musst du unbedingt beheben. Gelbe solltest du überprüfen. Weiße sind nur zur Informationen und vermutlich kein Problem.
+
+### SkuQuest
+*Fehlerkorrekturen*
+- Lady Jaina Prachtmeer ist nach Theramore zurückgekehrt. Sie war nur eben Bier holen.
+- Es wurden ein paar Haufen lockere Erde im Sumpfland hinzugefügt. Außerdem habe ich im Meer an der Küste eine warme Stelle gefunden.
+- Es wurde eine fehlende Information zu erforderlichen Pre-Quest in die Abfrage implementiert (Beispiel: "Graben in der Erde").
+
+### SkuCore
+*Fehlerkorrekturen*
+- Die Entfernungseinstellungen werden jetzt gespeichert. Auch zwischen Spielesitzungen.<br>
+Da die entsprechenden Informationen vom Server abgerufen werden müssen, und dies zwischen 10 und 90 Sekunden dauern kann, ist die Entfernungsfunktion immer erst nach 10-90 Sekunden nach dem Anmelden verfügbar.<br>
+Bis dahin zeigt das Menü "Entfernung" nichts an, und es werden auch keine Reichweiten angesagt.
 
 ## Änderungen in Version 20.13
 
