@@ -8,8 +8,11 @@ Instructions for translators:
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
+
+L["The Temple Of Atal'Hakkar"] = "Der Tempel von Atal'Hakkar" -- do not translate freely, use the exact ingame name in you target lang
 L["passive"] = "passiv" --unit reaction (will attack or just defend)
 L["aggressive"] = "agressiv" --unit reaction (will attack or just defend)
+L["Parent quest"] = "Pre-Quest"
 L["sound"] = "Sound"
 L["vocalized"] = "Gesprochen"
 L["error;sound"] = "Fehler;Sound"

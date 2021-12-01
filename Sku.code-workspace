@@ -23,6 +23,9 @@
 		},
 		{
 			"path": "SkuZOptions"
+		},
+		{
+			"path": "SkuAuras"
 		}
 	]
 }

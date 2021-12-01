@@ -2469,6 +2469,12 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.Voice:OutputString("In dieser Karte nicht möglich", false, true, 0.3, true)
 			end
 		end
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle Routen und Wegpunkte löschen"}, menuEntryTemplate_Menu)
+		tNewMenuEntry.OnAction = function(self, aValue, aName)
+			SkuOptions.db.profile[MODULE_NAME].Routes = {}
+			SkuOptions.db.profile[MODULE_NAME].Waypoints = {}
+			SkuOptions.Voice:OutputString("Alles gelöscht", false, true, 0.3, true)
+		end
 	end
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)

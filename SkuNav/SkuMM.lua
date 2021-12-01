@@ -482,6 +482,8 @@ local function DrawPolyZonesMM(aFrame)
 	end
 end
 -----------------------------------------------------------------------------------------------------------------------
+local SkuNavMMShowCustomWo = false
+local SkuNavMMShowDefaultWo = false
 function SkuNavDrawWaypointsMM(aFrame)
 	--print("SkuNavDrawWaypointsMM")
 	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true then
@@ -499,38 +501,44 @@ function SkuNavDrawWaypointsMM(aFrame)
 	tWpFrames = {}
 	tWpObjects = {}
 
---local tCounted = 0
---custom;
+	--wp draw
 	for i, v in SkuNav:ListWaypoints(false, nil, tAreaId, tPlayerContintentId, nil) do
 		local tWP = SkuNav:GetWaypoint(v)
 		if tWP then
 			if tWP.worldX and tWP.worldY then
 				local tFinalX, tFinalY = SkuNavMMWorldToContent(tWP.worldX, tWP.worldY)
 				if tFinalX > -(tTileSize * 1.5) and tFinalX < (tTileSize * 1.5) and tFinalY > -(tTileSize * 1.5) and tFinalY < (tTileSize * 1.5) then
---tCounted	= tCounted + 1
-					if not sfind(v, L["OBJECT"]) or SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
-						if SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
-							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments)
-						else
-							if tWP.spawnNr then
-								if tWP.spawnNr > 3 then
-									tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments)
+					if (((SkuNavMMShowCustomWo == true and SkuOptions.db.profile["SkuNav"].Waypoints[v] and SkuNav:IsWpPartOfRt(v) == false) or (SkuNavMMShowDefaultWo == true and not SkuOptions.db.profile["SkuNav"].Waypoints[v] and SkuNav:IsWpPartOfRt(v) == false))) or (SkuNavMMShowCustomWo == false and SkuNavMMShowDefaultWo == false) then
+						if not sfind(v, L["OBJECT"]) or SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
+							if SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
+								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments)
+							else
+								if tWP.spawnNr then
+									if tWP.spawnNr > 3 then
+										tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments)
+									else
+										tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
+									end
 								else
 									tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
 								end
-							else
-								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
 							end
+						else
+							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments)
 						end
-					else
-						tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments)
 					end
+					tWpObjects[v] = tWP
 				end
-				tWpObjects[v] = tWP
 			end
 		end
 	end
---print(tCounted)
+
+	--skip rt draw if req
+	if SkuNavMMShowCustomWo == true or SkuNavMMShowDefaultWo == true then
+		return
+	end	
+
+	-- rt draw
 	for i, v in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes) do
 		local tCurrentRouteName = v
 
@@ -656,6 +664,9 @@ function SkuNav:SkuNavMMOpen()
 	SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY = SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY or UIParent:GetHeight() / 2
 
 	if SkuOptions.db.profile[MODULE_NAME].showSkuMM == true then
+		SkuNavMMShowCustomWo = false
+		SkuNavMMShowDefaultWo = false
+
 		tCacheNbWpsTimerRate = 10
 		if tCacheNbWpsTimer then
 			tCacheNbWpsTimer:Cancel()
@@ -841,6 +852,7 @@ function SkuNav:SkuNavMMOpen()
 					print("no recording in process: ")--, SkuDB.Polygons.eTypes[SkuNavRecordingPoly][2][SkuNavRecordingPolySub][1])
 				end
 			end)
+
 			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameWrite", tOptionsParent, "Write", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, 0)
 			tButtonObj:SetScript("OnMouseUp", function(self, button)
 				local tStr = tostring(SkuDB.Polygons.data)
@@ -855,10 +867,42 @@ function SkuNav:SkuNavMMOpen()
 				_G["SkuNavMMMainEditBoxEditBox"]:ClearFocus()
 			end)
 
+			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowCustomWo", tOptionsParent, "Custom w/o", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, -20)
+			tButtonObj:SetScript("OnMouseUp", function(self, button)
+				SkuNavMMShowCustomWo = SkuNavMMShowCustomWo ~= true
+
+				local tAreaId = SkuNav:GetCurrentAreaId()
+				local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
+
+				local tText = ""
+				for i, v in SkuNav:ListWaypoints(false, nil, tAreaId, tPlayerContintentId, nil) do
+					if SkuOptions.db.profile["SkuNav"].Waypoints[v] and SkuNav:IsWpPartOfRt(v) == false then
+						tText = tText..v.."\r\n"
+					end
+				end
+				_G["SkuNavMMMainEditBoxEditBox"]:SetText(tText)
+			end)
+
+			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowDefaultWo", tOptionsParent, "Default w/o", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameShowCustomWo"], "TOPLEFT", 95, 0)
+			tButtonObj:SetScript("OnMouseUp", function(self, button)
+				SkuNavMMShowDefaultWo = SkuNavMMShowDefaultWo ~= true
+				
+				local tAreaId = SkuNav:GetCurrentAreaId()
+				local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
+			
+				local tText = ""
+				for i, v in SkuNav:ListWaypoints(false, nil, tAreaId, tPlayerContintentId, nil) do
+					if not SkuOptions.db.profile["SkuNav"].Waypoints[v] and SkuNav:IsWpPartOfRt(v) == false then
+						tText = tText..v.."\r\n"
+					end
+				end				
+				_G["SkuNavMMMainEditBoxEditBox"]:SetText(tText)
+			end)
+
 			-- EditBox
 			local f = CreateFrame("Frame", "SkuNavMMMainFrameEditBox", tOptionsParent, BackdropTemplateMixin and "BackdropTemplate" or nil)--, "DialogBoxFrame")
-			f:SetPoint("TOPLEFT", _G["SkuNavMMMainFrameWrite"], "TOPLEFT", 2, -20)
-			f:SetSize(170,170)
+			f:SetPoint("TOPLEFT", _G["SkuNavMMMainFrameWrite"], "TOPLEFT", 2, -40)
+			f:SetSize(170,150)
 			f:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",edgeFile = "", Size = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 },})
 			f:SetBackdropBorderColor(0, .44, .87, 0.5) -- darkblue
 			f:Show()

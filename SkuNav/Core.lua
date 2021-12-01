@@ -49,6 +49,9 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 		if GetMinimapZoneText() == L["Stonewrought-Pass"] then
 			tPlayerUIMap = 1432
 		end
+		if GetMinimapZoneText() == L["The Temple Of Atal'Hakkar"] then
+			tPlayerUIMap = 1435
+		end
 	end
 	if tPlayerUIMap == 1414 then
 		if GetMinimapZoneText() == L["Maraudon"] then
@@ -2812,6 +2815,21 @@ end
 function SkuNav:SetWaypoint(aName, aData)
 		SkuOptions.db.profile["SkuNav"].Waypoints[aName] = aData
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:IsWpPartOfRt(aName)
+	local tRoutes = SkuOptions.db.profile["SkuNav"].Routes
+	for iR, vR in ipairs(tRoutes) do
+		for iWp, vWp in ipairs(tRoutes[vR].WPs) do
+			if aName == vWp then
+				return true
+			end
+		end
+	end
+
+	return false
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 local SkuNavNpcWaypointCache = {}
 local SkuNavObjWaypointCache = {}
@@ -3363,8 +3381,8 @@ function SkuNav:DeleteWaypoint(aWpName, aDeleteRtsWith2WpsRemaining)
 			if SkuNav:GetWaypoint(aWpName) then
 				for i, v in ipairs(SkuOptions.db.profile[MODULE_NAME].Waypoints) do
 					if v == aWpName then
-						v = nil
 						table.remove(SkuOptions.db.profile[MODULE_NAME].Waypoints, i)
+						SkuOptions.db.profile[MODULE_NAME].Waypoints[v] = nil
 						rValue = true
 					end
 				end

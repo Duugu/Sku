@@ -638,6 +638,9 @@ local SkuObjectsFixes = {
         [objectKeys.spawns] = {[zoneIDs.THOUSAND_NEEDLES]={{39.34,41.53}}},
         [objectKeys.zoneID] = zoneIDs.THOUSAND_NEEDLES,
     },
+    [20985] = {
+        [objectKeys.spawns] = {[15]={{55.44,25.92},{35.6,47.9},{36.1,48.8},{34.3,50.9},{34.7,52.5},{33.4,51.5},{32.2,50.8},{32.3,48.6},{33.2,46.3},{34.4,44.5},},},
+    },
 
     -- Below are fake objects
     [400000] = {

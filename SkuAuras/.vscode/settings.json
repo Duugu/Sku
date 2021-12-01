@@ -1,0 +1,10 @@
+{
+    "Lua.diagnostics.globals": [
+        "SkuOptions",
+        "Voice",
+        "LibStub",
+        "menuEntryTemplate_Menu",
+        "SkuAudioFileIndex",
+        "TTS",
+    ]
+}

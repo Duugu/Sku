@@ -166,6 +166,12 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 		table.insert(tSections, L["Quests group"]..": "..inGroupWith)
 	end
 
+	if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - to be completed additional to this before next in series
+		local parentQuest = ""
+		parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..SkuDB.questLookup[SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
+		table.insert(tSections, L["Parent quest"]..": "..parentQuest)
+	end
+
 
 	--if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- 
 		--table.insert(tSections, "parentQuest: "..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]])
@@ -725,6 +731,11 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 		for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]]) do
 			tPreQuestTable[#tPreQuestTable+1] = vR
 		end
+	end
+
+	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - one to be completed before next in series
+		local parentQuest = ""
+		tPreQuestTable[#tPreQuestTable+1] = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]]
 	end
 
 	if #tPreQuestTable > 0 then

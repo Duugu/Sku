@@ -759,7 +759,7 @@ SkuDB.InternalAreaTable = {
     [1445] = {ZoneName = "BlackrockMountain", AreaName_lang = "Der Schwarzfels", ContinentID = 0, ParentAreaID = 51, Faction = 0, Flags = 1073741888,},
     [1446] = {ZoneName = "ThoriumPoint", AreaName_lang = "Thoriumspitze", ContinentID = 0, ParentAreaID = 51, Faction = 0, Flags = 1073741888,},
     [1457] = {ZoneName = "GarrisonArmory", AreaName_lang = "Garnisonswaffenkammer", ContinentID = 0, ParentAreaID = 4, Faction = 0, Flags = 1073741888,},
-    [1477] = {ZoneName = "TheTempleOfAtal'Hakkar", AreaName_lang = "Der Tempel von Atal'Hakkar", ContinentID = 109, ParentAreaID = 0, Faction = 0, Flags = 0,},
+    --[1477] = {ZoneName = "TheTempleOfAtal'Hakkar", AreaName_lang = "Der Tempel von Atal'Hakkar", ContinentID = 109, ParentAreaID = 0, Faction = 0, Flags = 0,},
     [1497] = {ZoneName = "Undercity", AreaName_lang = "Unterstadt", ContinentID = 0, ParentAreaID = 0, Faction = 4, Flags = 312,},
     [1517] = {ZoneName = "Uldaman", AreaName_lang = "Uldaman", ContinentID = 0, ParentAreaID = 3, Faction = 0, Flags = 1073741888,},
     [1518] = {ZoneName = "NotIUsedDeadmines", AreaName_lang = "Not Used Deadmines", ContinentID = 0, ParentAreaID = 40, Faction = 0, Flags = 1073741888,},

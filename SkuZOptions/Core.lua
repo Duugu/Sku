@@ -7,8 +7,8 @@ local _G = _G
 
 SkuOptions = SkuOptions or LibStub("AceAddon-3.0"):NewAddon("SkuOptions", "AceConsole-3.0", "AceEvent-3.0")
 LibStub("AceComm-3.0"):Embed(SkuOptions)
-SkuOptions.TTS = LibStub("SkuTTS-1.0"):Create("SkuCore", false)
-SkuOptions.Voice = LibStub("SkuVoice-1.0"):Create("SkuCore", false)
+SkuOptions.TTS = LibStub("SkuTTS-1.0"):Create("SkuOptions", false)
+SkuOptions.Voice = LibStub("SkuVoice-1.0"):Create("SkuOptions", false)
 SkuOptions.HBD = LibStub("HereBeDragons-2.0")
 SkuOptions.BeaconLib = LibStub("SkuBeacon-1.0"):Create("SkuOptions", false)
 SkuOptions.Serializer = LibStub("AceSerializer-3.0")
@@ -20,6 +20,25 @@ SkuOptions.MenuAccessKeysChars = {" ", "a", "b", "c", "d", "e", "f", "g", "h", "
 SkuOptions.MenuAccessKeysNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"}
 
 local ssplit = string.split
+
+---------------------------------------------------------------------------------------------------------------------------------------
+--
+SkuOptions.DebugToChatFlag = true
+function SkuOptions:DebugToChat(...)
+	local args = {...}
+	local tFirstLine = false
+	if SkuOptions.DebugToChatFlag == true then
+		for i, v in pairs(args) do
+			if tFirstLine == false then
+				print(v)
+			else
+				print("  ", v)
+			end
+			tFirstLine = true
+		end
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local options = {
@@ -140,6 +159,9 @@ function SkuOptions:RefreshConfig()
 	end
 	if SkuQuest then
 		SkuQuest:OnEnable()
+	end
+	if SkuAuras then
+		SkuAuras:OnEnable()
 	end
 	if SkuOptions then
 		SkuOptions:OnEnable()
@@ -641,6 +663,12 @@ function SkuOptions:CreateMainFrame()
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuCore:MenuBuilder(tNewMenuEntry)
 				end
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuAuras"}, menuEntryTemplate_Menu)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.BuildChildren = function(self)
+					SkuAuras:MenuBuilder(tNewMenuEntry)
+				end
+
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuOptions"}, menuEntryTemplate_Menu)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
@@ -1205,6 +1233,10 @@ function SkuOptions:OnInitialize()
 	if SkuCore then
 		options.args["SkuCore"] = SkuCore.options
 		defaults.profile["SkuCore"] = SkuCore.defaults
+	end
+	if SkuAuras then
+		options.args["SkuAuras"] = SkuAuras.options
+		defaults.profile["SkuAuras"] = SkuAuras.defaults
 	end
 	if SkuChat then
 		options.args["SkuChat"] = SkuChat.options
@@ -2172,9 +2204,11 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 							if tWayp then
 								if (SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) then
 									tImprableRouteWps[vWp] = true
+									SkuOptions:DebugToChat("\124cffff0000RT-WP ignoriert\124r", iR, vR, "Wegpunkt nicht in Zone:", aAreaId)
 								end
 							else
 								tIgnoredCounterRts = tIgnoredCounterRts + 1
+								SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", iR, vR, "Unbekannter Wegpunkt:", iWp, vWp)
 							end
 						end
 					end
@@ -2218,6 +2252,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 											tInsert = false
 											--print("renamed as", tNewWpName, "found")
 											tIgnoredCounterWps = tIgnoredCounterWps + 1
+											SkuOptions:DebugToChat("\124cffffff00WP ignoriert(*)\124r", i, v, "Schon identisch vorhanden:", v..";"..tCounter)
 											break
 										else
 											tCounter = tCounter + 1
@@ -2249,13 +2284,16 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 								else
 									--same name, same data, just ignore
 									tIgnoredCounterWps = tIgnoredCounterWps + 1
+									SkuOptions:DebugToChat("\124cffffff00WP ignoriert\124r", i, v, "Schon identisch vorhanden")
 								end
 							end
 						else
 							tIgnoredCounterWps = tIgnoredCounterWps + 1
-							end
+							SkuOptions:DebugToChat("\124cffff0000WP ignoriert\124r", i, v, "Nicht in Zone:", aAreaId)
+						end
 					else
 						tIgnoredCounterWps = tIgnoredCounterWps + 1
+						SkuOptions:DebugToChat("WP ignoriert", i, v, "Ist Schnell-WP")
 					end
 				end
 
@@ -2266,6 +2304,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 					local tEndWP = tWaypoints[tRoutes[v].tEndWPName] or SkuNav:GetWaypoint(tRoutes[v].tEndWPName)
 					if not tStartWP or not tEndWP then
 						tIgnoredCounterRts = tIgnoredCounterRts + 1
+						SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", i, v, "Start/End fehlt:", tStartWP ~= false, tEndWP ~= false)
 					else
 						if 
 							(((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tStartWP.areaId)) == aAreaId) == true or not aAreaId) 
@@ -2273,6 +2312,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 						then
 							if (tRoutes[v].tStartWPName == tRoutes[v].tEndWPName) and #tRoutes[v].WPs <= 2 then
 								tIgnoredCounterRts = tIgnoredCounterRts + 1
+								SkuOptions:DebugToChat("RT ignoriert", i, v, "Start/End identisch, keine IM-WPs:", tRoutes[v].tStartWPName)
 							else
 								if not SkuOptions.db.profile["SkuNav"].Routes[v] then
 									-- new rt name
@@ -2324,6 +2364,8 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 											if tExistingRtData ~= tImportRtData then
 												tInsert = false
 												tIgnoredCounterRts = tIgnoredCounterRts + 1
+												SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", iR, vR, "Unbekannter Wegpunkt:", iWp, vWp)
+
 												break
 											else
 												tCounter = tCounter + 1
@@ -2341,11 +2383,14 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 									else
 										--same name same data, ignore
 										tIgnoredCounterRts = tIgnoredCounterRts + 1
+										SkuOptions:DebugToChat("RT ignoriert", i, v, "Identische RT vorhanden (inkl. Daten):", tExistingRtData)
+
 									end
 								end
 							end
 						else
 							tIgnoredCounterRts = tIgnoredCounterRts + 1
+							SkuOptions:DebugToChat("\124cffff00ffRT ignoriert\124r", i, v, "Start/End nicht in zone:", aAreaId)
 						end
 					end
 
@@ -2355,6 +2400,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 				local tImportDeleteCounterRts = 0
 				for x = 1, #SkuOptions.db.profile["SkuNav"].Routes do
 					if SkuNav:CheckRoute(SkuOptions.db.profile["SkuNav"].Routes[x]) == false then
+						SkuOptions:DebugToChat("\124cffff0000RT CheckRoute failed (delete incl. WPs\124r)", x, SkuOptions.db.profile["SkuNav"].Routes[x])
 						tRtsToDelete[#tRtsToDelete + 1] = SkuOptions.db.profile["SkuNav"].Routes[x]
 					end
 				end

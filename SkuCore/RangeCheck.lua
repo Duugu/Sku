@@ -15,22 +15,36 @@ SkuCore.RangeCheckValues = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:RangeCheckOnInitialize()
-   SkuOptions.RangeCheck.RegisterCallback(self, SkuOptions.RangeCheck.CHECKERS_CHANGED, SkuCore.RangeCheckUpdateRanges)
+   SkuOptions.RangeCheck.RegisterCallback(self, SkuOptions.RangeCheck.CHECKERS_CHANGED, SkuCore.CHECKERS_CHANGED)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:CHECKERS_CHANGED()
+   SkuCore:RangeCheckUpdateRanges()
+end
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:RangeCheckOnEnable()
-   SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
-   SkuOptions.db.char[MODULE_NAME].RangeChecks = SkuOptions.db.char[MODULE_NAME].RangeChecks or {
-      Friendly = {},
-      Hostile = {},
-      Misc = {},
-   }
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tFirstRangeUpdateSilent = true
 function SkuCore:RangeCheckUpdateRanges()
+   if SkuOptions.RangeCheck.frame:IsVisible() == true then
+      C_Timer.After(0.1, SkuCore.RangeCheckUpdateRanges)
+      return
+   end
+   if not SkuOptions.db.char[MODULE_NAME] then
+      SkuOptions.db.char[MODULE_NAME] = {}
+   end
+
+   if not SkuOptions.db.char[MODULE_NAME].RangeChecks then
+      SkuOptions.db.char[MODULE_NAME].RangeChecks = {
+         Friendly = {},
+         Hostile = {},
+         Misc = {},
+      }
+   end
+
    if tFirstRangeUpdateSilent then
       tFirstRangeUpdateSilent = nil
    else
@@ -66,12 +80,16 @@ function SkuCore:RangeCheckUpdateRanges()
          SkuOptions.db.char[MODULE_NAME].RangeChecks.Misc[i] = nil
       end
    end   
+
 end
    
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tRangeCheckLastTarget
 local tRangeCheckLastTargetminRange = 0
 function SkuCore:DoRangeCheck()
+   if not SkuOptions.db.char[MODULE_NAME] then
+      return
+   end
 
    local tCheckRequired = false
    local tMinRange = SkuOptions.RangeCheck:GetRange("target")
