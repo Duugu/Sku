@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21](https://github.com/Duugu/Sku/releases/download/r21/Sku-r21-bcc.zip) <br>
+[Sku 21.1](https://github.com/Duugu/Sku/releases/download/r21.1/Sku-r21.1-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
@@ -16,6 +16,34 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 21.1
+
+### SkuOptions
+*Fehlerkorrekturen*<br>
+- Ein Fehler bei "SkuNav > Daten > Import nach Karte" wurde behoben, bei dem eine Menge Falschmeldungen zu Importfehlern angezeigt wurden.
+
+### SkuNav
+*Neuerungen*<br>
+
+Im Ausklappmenü der Sku-Minimap gibt es fünf neue Schalter, um die angezeigten Wegpunkte zu filtern. Diese dienen zur einfacheren Routenerstellung und sind nur für Mac interessant.
+- **Filter** <br>
+    Standard: aktiv <br>
+    Schaltet das Filtern insgesamt an und aus. Wenn aktiviert, werden immer alle Wegpunkte gefiltert, die kein Quest-Start, -Ziel oder -Abgabe sind.<br>
+    Custom-Wegpunkte und Wegpunkte mit Route werden niemals gefiltert.
+- **Starts**<br>
+    Standard: aktiv<br>
+    Zeigt bei _aktiviertem_ Filter alle Wegpunkte an, die ein Quest-Start sind.<br>
+- **Objectives** <br>
+    Standard: aktiv<br>
+    Zeigt bei _aktiviertem_ Filter alle Wegpunkte an, die ein Quest-Ziel sind.<br>
+- **Finish** <br>
+    Standard: aktiv<br>
+    Zeigt bei _aktiviertem_ Filter alle Wegpunkte an, die eine Quest-Abgabe sind.<br>
+- **Limit** <br>
+    Standard: inaktiv<br>
+    Begrenzt die angezeigten Wegpunkte bei _aktiviertem_ Filter auf die ersten drei pro Typ (z. B. "Verstörter Hölleneber 1-3").<br>
+    Die ersten drei sind, wie bisher, die, die in rosa angezeigt werden.<br>
 
 ## Änderungen in Version 21
 
