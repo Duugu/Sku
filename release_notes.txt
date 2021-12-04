@@ -4,6 +4,29 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.1
+
+	SkuOptions
+		Fehlerkorrekturen
+			- Ein Fehler bei "SkuNav > Daten > Import nach Karte" wurde behoben, bei dem eine Menge Falschmeldungen zu Importfehlern angezeigt wurden.
+
+	SkuNav
+		Neuerungen
+			Im Ausklappmenü der Sku-Minimap gibt es fünf neue Schalter, um die angezeigten Wegpunkte zu filtern. Diese dienen zur einfacheren Routenerstellung und sind nur für Mac interessant.
+			- Filter (Standard aktiv): 
+			  Schaltet das Filtern insgesamt an und aus. Wenn aktiviert, werden immer alle Wegpunkte gefiltert, die kein Quest-Start, -Ziel oder -Abgabe sind.
+			  Custom-Wegpunkte und Wegpunkte mit Route werden niemals gefiltert.
+			- Starts (Standard aktiv):
+			  Zeigt bei _aktiviertem_ Filter alle Wegpunkte an, die ein Quest-Start sind.
+			- Objectives (Standard aktiv):
+			  Zeigt bei _aktiviertem_ Filter alle Wegpunkte an, die ein Quest-Ziel sind.
+			- Finish (Standard aktiv):
+			  Zeigt bei _aktiviertem_ Filter alle Wegpunkte an, die eine Quest-Abgabe sind.
+			- Limit (Standard inaktiv):
+			  Begrenzt die angezeigten Wegpunkte bei _aktiviertem_ Filter auf drei ersten pro Typ (z. B. "Verstörter Hölleneber 1-3").
+			  Die ersten drei sind wie bisher die, die in rosa angezeigt werden.
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21
 
 	SkuAuras

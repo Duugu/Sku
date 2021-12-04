@@ -10364,6 +10364,7 @@ SkuDB.objectLookup = {
    [181372] = "Höllenwirbelkraut",
    [181378] = "Drachenfalkenei",
    [181385] = "Felshetzerei",
+[181433] = "Irradiated Power Crystal",
    [181555] = "Teufelseisenvorkommen",
    [181556] = "Adamantitablagerung",
    [181557] = "Khoriumvorkommen",

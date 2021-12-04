@@ -937,7 +937,7 @@ function SkuQuest:ToggleQuestLogHook(...)
 		--SkuOptions.TTS:Output("", 10000)--HideUIPanel(QuestLogFrame)
 		C_Timer.NewTimer(0.1, function()
 			SkuOptions:SlashFunc("short,SkuQuest")
-			--SkuOptions.Voice:OutputString(self.name, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+			--SkuOptions.Voice:OutputString(self.name, true, true, 0.3, true)
 		end)
 
 		--[[
@@ -1019,4 +1019,58 @@ function SkuQuest:VARIABLES_LOADED(...)
 	--hooksecurefunc("QuestLog_Update", SkuQuest.OnQuestLog_OnEvent)
 	hooksecurefunc("ToggleQuestLog", SkuQuest.ToggleQuestLogHook)
 	--hooksecurefunc("HideUIPanel", SkuQuest.ToggleQuestLogHook)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+SkuQuest.QuestWpCache = {}
+function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
+	--print("GetAllQuestWps", aQuestID, aStart, aObjective, aFinish, aOnly3)
+	local tResultWPs = {}
+
+	if aStart == true then
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
+			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][2]
+			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3]
+		then
+			local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
+			if tstartedBy then
+				local tTargets = {}
+				local tTargetType = nil
+				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
+				if	tTargetType then
+					SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
+				end
+			end
+		end
+	end
+	if aObjective == true then
+		local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
+		if tObjectives then
+			local tTargets = {}
+			local tTargetType = nil
+			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
+			if	tTargetType then
+				SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
+			end
+		end
+	end
+	if aFinish == true then
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
+			local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
+			if tFinishedBy then
+				local tTargets = {}
+				local tTargetType = nil
+				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
+				if	tTargetType then
+					SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
+				end
+			end
+		end
+	end
+
+	for i, v in pairs(tResultWPs) do
+		for ri, rv in pairs(v) do
+			SkuQuest.QuestWpCache[rv] = true
+		end
+	end
 end

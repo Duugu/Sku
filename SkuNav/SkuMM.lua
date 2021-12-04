@@ -512,19 +512,24 @@ function SkuNavDrawWaypointsMM(aFrame)
 						if not sfind(v, L["OBJECT"]) or SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
 							if SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
 								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments)
+								tWpFrames[v].hasLine = false
 							else
 								if tWP.spawnNr then
 									if tWP.spawnNr > 3 then
 										tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments)
+										tWpFrames[v].hasLine = false
 									else
 										tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
+										tWpFrames[v].hasLine = false
 									end
 								else
 									tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
+									tWpFrames[v].hasLine = false
 								end
 							end
 						else
 							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments)
+							tWpFrames[v].hasLine = false
 						end
 					end
 					tWpObjects[v] = tWP
@@ -532,6 +537,7 @@ function SkuNavDrawWaypointsMM(aFrame)
 			end
 		end
 	end
+
 
 	--skip rt draw if req
 	if SkuNavMMShowCustomWo == true or SkuNavMMShowDefaultWo == true then
@@ -590,7 +596,10 @@ function SkuNavDrawWaypointsMM(aFrame)
 									local tPrevPinFrame, tPrevInUse = tWpFrames[tPrevWpName], true
 									if tPrevInUse == true and tPrevPinFrame then
 										local Prevpoint, PrevrelativeTo, PrevrelativePoint, PrevxOfs, PrevyOfs = tPrevPinFrame:GetPoint(1)
+
 										if PrevrelativeTo then
+											tWidgetTexture.hasLine = true
+											tPrevPinFrame.hasLine = true
 											SkuNavDrawLine(xOfs, yOfs, PrevxOfs, PrevyOfs, 3, tRouteColor.a, tRouteColor.r, tRouteColor.g, tRouteColor.b, aFrame, nil, relativeTo, PrevrelativeTo) 
 										end
 									end
@@ -601,6 +610,26 @@ function SkuNavDrawWaypointsMM(aFrame)
 					end
 				end
 			end
+		end
+	end
+
+	for i, v in pairs(tWpFrames) do
+		--print(i, v)
+		local tShow = false
+		if _G["SkuNavMMMainFrameShowFilter"].selected == true then
+			if SkuQuest.QuestWpCache[i] or SkuOptions.db.profile["SkuNav"].Waypoints[i] then
+				tShow = true
+			end
+		else
+			tShow = true
+		end
+		if v.hasLine == true then
+			tShow = true
+		end
+
+		if tShow == false then
+			--print(i)
+			v:Hide()	
 		end
 	end
 end
@@ -614,6 +643,8 @@ local function CreateButtonFrameTemplate(aName, aParent, aText, aWidth, aHeight,
 	tWidget:SetHeight(aHeight) 
 	tWidget:SetPoint(aPoint, aRelativeTo,aAnchor, aOffX, aOffY)
 	tWidget:SetMouseClickEnabled(true)
+	tWidget.selectedDefault = false
+	tWidget.selected = false
 	tWidget:SetScript("OnEnter", function(self) 
 		self:SetBackdrop({bgFile="Interface\\Tooltips\\UI-Tooltip-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 1, right = 1, top = 1, bottom = 1 }})
 		self:SetBackdropColor(0.5, 0.5, 0.5, 1)
@@ -621,9 +652,23 @@ local function CreateButtonFrameTemplate(aName, aParent, aText, aWidth, aHeight,
 	tWidget:SetScript("OnLeave", function(self) 
 		self:SetBackdrop({bgFile="Interface\\Tooltips\\UI-Tooltip-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 2, right = 2, top = 2, bottom = 2 }})
 		self:SetBackdropColor(0.3, 0.3, 0.3, 1)
+		if self.selected == true then
+			self:SetBackdropColor(0.5, 0.5, 0.5, 1)
+		end
+	end)
+	tWidget:SetScript("OnShow", function(self) 
+		self:SetBackdrop({bgFile="Interface\\Tooltips\\UI-Tooltip-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 2, right = 2, top = 2, bottom = 2 }})
+		self:SetBackdropColor(0.3, 0.3, 0.3, 1)
+		if self.selected == true then
+			self:SetBackdropColor(0.5, 0.5, 0.5, 1)
+		end
 	end)
 	tWidget:SetScript("OnMouseUp", function(self, button) 
-		--print(button)
+		self:SetBackdrop({bgFile="Interface\\Tooltips\\UI-Tooltip-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 2, right = 2, top = 2, bottom = 2 }})
+		self:SetBackdropColor(0.3, 0.3, 0.3, 1)
+		if self.selected == true then
+			self:SetBackdropColor(0.5, 0.5, 0.5, 1)
+		end
 	end)
 	fs = tWidget:CreateFontString(aName.."Text", "OVERLAY", "GameTooltipText")
 	fs:SetTextHeight(12)
@@ -691,6 +736,12 @@ function SkuNav:SkuNavMMOpen()
 				_G["SkuNavMMMainFrame"]:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosX, SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY)
 
 			end)
+			MainFrameObj:SetScript("OnShow", function(self)
+				local children = {_G["SkuNavMMMainFrameOptionsParent"]:GetChildren()}
+				for i, child in ipairs(children) do
+					child.selected = child.selectedDefault
+				end
+			end)			
 			MainFrameObj:SetBackdrop({bgFile="Interface\\Tooltips\\UI-Tooltip-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
 			MainFrameObj:SetBackdropColor(1, 1, 1, 1)
 			MainFrameObj:SetMovable(true)
@@ -899,10 +950,90 @@ function SkuNav:SkuNavMMOpen()
 				_G["SkuNavMMMainEditBoxEditBox"]:SetText(tText)
 			end)
 
+
+			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowFilter", tOptionsParent, "Filter", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, -40)
+			tButtonObj:SetScript("OnMouseUp", function(self, button)
+				self.selected  = self.selected  ~= true
+				SkuQuest.QuestWpCache = {}
+				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+				for i, _ in pairs(SkuDB.questDataTBC) do
+					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
+					end
+				end
+			end)
+			_G["SkuNavMMMainFrameShowFilter"].selectedDefault = true
+
+			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowQuestStartWps", tOptionsParent, "Starts", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, -60)
+			tButtonObj:SetScript("OnMouseUp", function(self, button)
+				self.selected  = self.selected  ~= true
+				SkuQuest.QuestWpCache = {}
+				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+				for i, _ in pairs(SkuDB.questDataTBC) do
+					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
+					end
+				end
+			end)
+			_G["SkuNavMMMainFrameShowQuestStartWps"].selectedDefault = true
+
+			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowQuestObjectiveWps", tOptionsParent, "Objectives", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameShowQuestStartWps"], "TOPLEFT", 95, 0)
+			tButtonObj:SetScript("OnMouseUp", function(self, button)
+				self.selected  = self.selected  ~= true
+				SkuQuest.QuestWpCache = {}
+				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+				for i, _ in pairs(SkuDB.questDataTBC) do
+					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
+					end
+				end				
+			end)
+			_G["SkuNavMMMainFrameShowQuestObjectiveWps"].selectedDefault = true
+
+			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowQuestFinishWps", tOptionsParent, "Finish", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameShowQuestStartWps"], "TOPLEFT", 0, -20)
+			tButtonObj:SetScript("OnMouseUp", function(self, button)
+				self.selected  = self.selected  ~= true
+				SkuQuest.QuestWpCache = {}
+				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+				for i, _ in pairs(SkuDB.questDataTBC) do
+					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
+					end
+				end				
+			end)
+			_G["SkuNavMMMainFrameShowQuestFinishWps"].selectedDefault = true
+
+			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowLimitWps", tOptionsParent, "Limit", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameShowQuestFinishWps"], "TOPLEFT", 95, 0)
+			tButtonObj:SetScript("OnMouseUp", function(self, button)
+				self.selected  = self.selected  ~= true
+				SkuQuest.QuestWpCache = {}
+				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+				for i, _ in pairs(SkuDB.questDataTBC) do
+					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
+					end
+				end				
+			end)
+			_G["SkuNavMMMainFrameShowLimitWps"].selectedDefault = false
+	
+			--init
+			_G["SkuNavMMMainFrameShowFilter"].selected = _G["SkuNavMMMainFrameShowFilter"].selectedDefault
+			_G["SkuNavMMMainFrameShowQuestStartWps"].selected = _G["SkuNavMMMainFrameShowQuestStartWps"].selectedDefault
+			_G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected = _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selectedDefault
+			_G["SkuNavMMMainFrameShowQuestFinishWps"].selected = _G["SkuNavMMMainFrameShowQuestFinishWps"].selectedDefault
+			_G["SkuNavMMMainFrameShowLimitWps"].selected = _G["SkuNavMMMainFrameShowLimitWps"].selectedDefault
+			SkuQuest.QuestWpCache = {}
+			local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+			for i, _ in pairs(SkuDB.questDataTBC) do
+				if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+					SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
+				end
+			end				
+
 			-- EditBox
 			local f = CreateFrame("Frame", "SkuNavMMMainFrameEditBox", tOptionsParent, BackdropTemplateMixin and "BackdropTemplate" or nil)--, "DialogBoxFrame")
-			f:SetPoint("TOPLEFT", _G["SkuNavMMMainFrameWrite"], "TOPLEFT", 2, -40)
-			f:SetSize(170,150)
+			f:SetPoint("TOPLEFT", _G["SkuNavMMMainFrameWrite"], "TOPLEFT", 2, -100)
+			f:SetSize(170,80)
 			f:SetBackdrop({bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",edgeFile = "", Size = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 },})
 			f:SetBackdropBorderColor(0, .44, .87, 0.5) -- darkblue
 			f:Show()
@@ -1136,9 +1267,11 @@ function SkuNav:SkuNavMMOpen()
 			tex:SetTexture("Interface\\AddOns\\Sku\\SkuNav\\assets\\player_arrow.tga")
 			tex:SetSize(30,30)
 			tex:SetPoint("CENTER", _G["SkuNavMMMainFrameScrollFrameMapMainDraw1"], "CENTER", 0, 0)--_G["playerArrow"]
-
 		end
-		_G["SkuNavMMMainFrame"]:Show()
+
+		if not _G["SkuNavMMMainFrame"]:IsShown() then
+			_G["SkuNavMMMainFrame"]:Show()
+		end
 
 		if not SkuWaypointWidgetRepoMM then
 			SkuWaypointWidgetRepoMM = CreateTexturePool(_G["SkuNavMMMainFrameScrollFrameMapMainDraw1"], "ARTWORK")

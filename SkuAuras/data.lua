@@ -2,11 +2,45 @@
 local _G = _G
 local L = Sku.L
 
+
+SkuAuras.Components = {}
+
+SkuAuras.Components.unit = {
+   player = {},
+}
+SkuAuras.Components.object = {
+   buff = {
+      attributes = {
+         [1] = {
+            name = "name",
+            get = function()
+            end,
+         },
+      }
+   },
+}
+SkuAuras.Components.status = {
+   received = {},
+}
+SkuAuras.Components.value = {
+   bool = {
+      iterator = function()
+      end,
+   },
+}
+SkuAuras.Components.action = {
+   print = {},
+}
+
+--object      subject     status      value    conditionPost     action
+--buff (gs)   player      received    true     then              print
+
+
 --[[
-conditionPreObject	   status      bool     conditionPost	action
+conditionPreObject	   status     is     value    conditionPost	action
 If	         player	   Bereit	         wahr     dann	         sagen
 If not	   party (1-4)	Nicht bereit	   false    dann nicht	   sound
-While	      target	   Vorhanden	      
+While	      target	   Vorhanden	      x
 Until    	pet	      Nicht vorhanden   
             item        erhalten			
             spell       verloren			

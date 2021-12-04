@@ -478,7 +478,7 @@ function SkuOptions:CreateMainFrame()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].NeedButton:Click()
-						SkuOptions.Voice:OutputString(L["Need rolled"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						SkuOptions.Voice:OutputString(L["Need rolled"], true, true, 0.3, true)
 						C_Timer.NewTimer(0.5, function()
 							if _G["StaticPopup1"]:IsVisible() then
 								_G["StaticPopup1Button1"]:Click()
@@ -494,7 +494,7 @@ function SkuOptions:CreateMainFrame()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].GreedButton:Click()
-						SkuOptions.Voice:OutputString(L["Greed rolled"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						SkuOptions.Voice:OutputString(L["Greed rolled"], true, true, 0.3, true)
 						C_Timer.NewTimer(0.5, function()
 							if _G["StaticPopup1"]:IsVisible() then
 								_G["StaticPopup1Button1"]:Click()
@@ -510,7 +510,7 @@ function SkuOptions:CreateMainFrame()
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].PassButton:Click()
-						SkuOptions.Voice:OutputString(L["Pass rolled"], true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+						SkuOptions.Voice:OutputString(L["Pass rolled"], true, true, 0.3, true)
 					end
 				end
 			end
@@ -520,7 +520,7 @@ function SkuOptions:CreateMainFrame()
 			local tItem
 			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 			if SkuOptions.nextRollFrameNumber then
-				SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+				SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
 			end
 			return
 		end
@@ -1471,7 +1471,7 @@ function SkuOptions:START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
 	end
 end
 
@@ -1481,7 +1481,7 @@ function SkuOptions:CANCEL_LOOT_ROLL(rollID, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
 	end
 end
 
@@ -1491,7 +1491,7 @@ function SkuOptions:LOOT_SLOT_CHANGED(lootSlot, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)-- aText, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel
+		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
 	end
 end
 
@@ -2202,9 +2202,9 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 						for iWp, vWp in ipairs(tRoutes[vR].WPs) do
 							local tWayp = tWaypoints[vWp] or SkuNav:GetWaypoint(vWp)
 							if tWayp then
-								if (SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) then
+								if (SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) ~= tonumber(aAreaId)) then
 									tImprableRouteWps[vWp] = true
-									SkuOptions:DebugToChat("\124cffff0000RT-WP ignoriert\124r", iR, vR, "Wegpunkt nicht in Zone:", aAreaId)
+									SkuOptions:DebugToChat("\124cffff0000RT-WP ignoriert\124r", iR, vR, "Wegpunkt nicht in Zone:", iWp, vWp, tWayp.areaId, aAreaId)
 								end
 							else
 								tIgnoredCounterRts = tIgnoredCounterRts + 1
