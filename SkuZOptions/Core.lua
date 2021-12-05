@@ -468,10 +468,14 @@ function SkuOptions:CreateMainFrame()
 	tFrame:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 	tFrame:SetPoint("CENTER")
 
-
 	SkuOptions.TooltipReaderText = ""
 	tFrame:SetScript("OnClick", function(self, a, b)
-		--print(self, "OnSkuOptionsMainOnClick ", a, b)
+		--print("OnSkuOptionsMain OnClick ", a, b)
+
+		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
+			SkuCore.openMenuAfterMoving = true
+			return
+		end
 
 		if a == "CTRL-SHIFT-B" then
 			if SkuOptions.nextRollFrameNumber then
@@ -808,6 +812,7 @@ function SkuOptions:CreateMainFrame()
 	end)
 	tFrame:Hide()
 	tFrame:SetScript("OnHide", function(self, a, b)
+		--print("OnSkuOptionsMain OnHide")
 		--ClearOverrideBindings(self)
 		SkuOptions:HideVisualMenu()
 	end)
@@ -848,7 +853,6 @@ function SkuOptions:CreateMenuFrame()
 	local OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		--print("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
-
 
 		if aKey == "PAGEDOWN" then
 			if SkuOptions.currentMenuPosition then
@@ -1109,6 +1113,7 @@ function SkuOptions:CreateMenuFrame()
 			SkuCore.openMenuAfterMoving = true
 			return
 		end
+
 		SkuCore.openMenuAfterCombat = false
 		SkuCore.openMenuAfterMoving = false	
 		PlaySound(88)
@@ -1948,6 +1953,9 @@ function SkuOptions:ProcessComm(aSender, aIndex, aValue)
 		end
 
 		SkuOptions:SendTrackingStatusUpdates()
+	elseif aIndex == "followme" then
+		FollowUnit(aSender)
+
 	end
 end
 

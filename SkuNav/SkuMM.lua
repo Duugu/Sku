@@ -1032,6 +1032,9 @@ function SkuNav:SkuNavMMOpen()
 			_G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected = _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selectedDefault
 			_G["SkuNavMMMainFrameShowQuestFinishWps"].selected = _G["SkuNavMMMainFrameShowQuestFinishWps"].selectedDefault
 			_G["SkuNavMMMainFrameShowLimitWps"].selected = _G["SkuNavMMMainFrameShowLimitWps"].selectedDefault
+			if not SkuQuest.QuestZoneCache then
+				SkuQuest:BuildQuestZoneCache()
+			end
 			SkuQuest.QuestWpCache = {}
 			local tPlayerAreaId = SkuNav:GetCurrentAreaId()
 			for i, _ in pairs(SkuDB.questDataTBC) do

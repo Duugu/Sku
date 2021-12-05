@@ -4,11 +4,27 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.3
+
+	SkuNav
+		Fehlerkorrekturen
+			- Fehler beim Einloggen mit geöffneter Sku-Minimap behoben.
+			- Der Kartenfehler vor Onys Hort wurde behoben.
+
+	SkuCore
+		Neuerungen
+			- Wer das SkuFluegel-Addon 5.4 hat, kann dich jetzt von sich aus mit einem Tastendruck auf Folgen setzen. Du kannst also AFK gehen. ;P
+
+		Fehlerkorrekturen
+			- Das Problem mit der unfreiwilligen Dauer-Drehung beim Öffnen des Menüs (z. B. beim Questlog, am Briefkasten etc.) wurde beseitigt.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.2
 
 	SkuNav
 		Fehlerkorrekturen
-			Im Ausklappmenü der Sku-Minimap wurden die Filteroptionen bearbeitet. Sie filtern jetzt korrekt.
+			- Im Ausklappmenü der Sku-Minimap wurden die Filteroptionen bearbeitet. Sie filtern jetzt korrekt.
 
 
 -------------------------------------------------------------------------------------------------------	

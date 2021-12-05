@@ -110,6 +110,7 @@ function SkuQuest:OnEnable()
 	tFrame:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 	tFrame:SetPoint("CENTER")
 	tFrame:SetScript("OnClick", function(self, a, b) 
+		--print("SkuQuestMain OnClick", a, b)
 		if _G["SkuQuestMainOption1"]:IsVisible() then
 			HideUIPanel(QuestLogFrame)
 			--_G["SkuQuestMainOption1"]:Hide()
@@ -121,6 +122,7 @@ function SkuQuest:OnEnable()
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self)
+		--print("SkuQuestMain OnShow")
 		SetOverrideBindingClick(self, true, "CTRL-Q", "SkuQuestMain", "CTRL-Q")
 	end)
 	tFrame:Show()
@@ -132,6 +134,7 @@ function SkuQuest:OnEnable()
 	tFrame:SetText("SkuQuestMainOption1")
 	tFrame:SetPoint("TOP", _G["SkuQuestMain"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
+		--print("SkuQuestMainOption1 OnClick", aKey, aB)
 		if SkuCore.inCombat == true then
 			return
 		end
@@ -184,7 +187,7 @@ function SkuQuest:OnEnable()
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self)
-		--print(self:GetName(), "OnShow")
+		--print("SkuQuestMainOption1 OnShow")
 		if SkuCore.inCombat == true then
 			return
 		end
@@ -209,6 +212,7 @@ function SkuQuest:OnEnable()
 		end
 	end)
 	tFrame:SetScript("OnHide", function(self)
+		--print("SkuQuestMainOption1 OnHide")
 		if SkuCore.inCombat == true then
 			return
 		end
