@@ -994,7 +994,8 @@ function SkuQuest:PLAYER_LOGIN(...)
 	SkuDB:FixItemDB()
 	SkuDB:FixCreaturesDB()
 	SkuDB:FixObjectsDB()
-	
+	SkuQuest:BuildQuestZoneCache()
+
 	C_Timer.NewTimer(10, function() PLAYER_ENTERING_WORLD_flag = false end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1025,7 +1026,6 @@ end
 SkuQuest.QuestWpCache = {}
 function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
 	--print("GetAllQuestWps", aQuestID, aStart, aObjective, aFinish, aOnly3)
-	local tResultWPs = {}
 
 	if aStart == true then
 		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
@@ -1038,11 +1038,18 @@ function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
 				local tTargetType = nil
 				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
 				if	tTargetType then
+					local tResultWPs = {}
 					SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
+					for i, v in pairs(tResultWPs) do
+						for ri, rv in pairs(v) do
+							SkuQuest.QuestWpCache[rv] = true
+						end
+					end
 				end
 			end
 		end
 	end
+
 	if aObjective == true then
 		local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
 		if tObjectives then
@@ -1050,7 +1057,13 @@ function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
 			local tTargetType = nil
 			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
 			if	tTargetType then
+				local tResultWPs = {}
 				SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
+				for i, v in pairs(tResultWPs) do
+					for ri, rv in pairs(v) do
+						SkuQuest.QuestWpCache[rv] = true
+					end
+				end
 			end
 		end
 	end
@@ -1062,15 +1075,156 @@ function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
 				local tTargetType = nil
 				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
 				if	tTargetType then
+					local tResultWPs = {}
 					SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, aOnly3)
+					for i, v in pairs(tResultWPs) do
+						for ri, rv in pairs(v) do
+							SkuQuest.QuestWpCache[rv] = true
+						end
+					end
 				end
 			end
 		end
 	end
 
-	for i, v in pairs(tResultWPs) do
-		for ri, rv in pairs(v) do
-			SkuQuest.QuestWpCache[rv] = true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function GetCreatureArea(aQuestID, aCreatureId)
+	if SkuDB.NpcData.Data[aCreatureId] then
+		local tSpawns = SkuDB.NpcData.Data[aCreatureId][7]
+		if tSpawns then
+			for is, vs in pairs(tSpawns) do
+				SkuQuest.QuestZoneCache[aQuestID][is] = is
+			end
+		end
+	end
+end
+local function GetObjectArea(aQuestID, aObjectId)
+	if not SkuDB.objectDataTBC[aObjectId] then
+		return
+	end
+	if SkuDB.objectDataTBC[aObjectId][SkuDB.objectKeys['spawns']] then
+		for sAreaID, vi in pairs(SkuDB.objectDataTBC[aObjectId][SkuDB.objectKeys['spawns']]) do
+			SkuQuest.QuestZoneCache[aQuestID][sAreaID] = sAreaID
+		end
+	end
+end
+function SkuQuest:BuildQuestZoneCache()
+	SkuQuest.QuestZoneCache = {}
+	for aQuestID = 1, 100000 do
+		if SkuDB.questDataTBC[aQuestID] then
+			SkuQuest.QuestZoneCache[aQuestID] = {}
+
+			--starts
+			local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
+			if tstartedBy[1] then
+				--creatureStart
+				for i, v in pairs(tstartedBy[1]) do
+					GetCreatureArea(aQuestID, v)
+				end
+			end
+			if tstartedBy[2] then
+				--objectStart
+				for i, id in pairs(tstartedBy[2]) do
+					GetObjectArea(aQuestID, id)
+				end
+			end
+			if tstartedBy[3] then
+				--itemStart
+				for i, v in pairs(tstartedBy[3]) do
+					--print("  itemStart", i, v)
+					if SkuDB.itemDataTBC[v][SkuDB.itemKeys['npcDrops']] then
+						for z = 1, #SkuDB.itemDataTBC[v][SkuDB.itemKeys['npcDrops']] do
+							GetCreatureArea(aQuestID, SkuDB.itemDataTBC[v][SkuDB.itemKeys['npcDrops']][z])
+						end
+					end
+					if SkuDB.itemDataTBC[v][SkuDB.itemKeys['objectDrops']] then
+						for z = 1, #SkuDB.itemDataTBC[v][SkuDB.itemKeys['objectDrops']] do
+							GetObjectArea(aQuestID, SkuDB.itemDataTBC[v][SkuDB.itemKeys['objectDrops']][z])
+						end
+					end
+					if SkuDB.itemDataTBC[v][SkuDB.itemKeys['itemDrops']] then
+						for z = 1, #SkuDB.itemDataTBC[v][SkuDB.itemKeys['itemDrops']] do
+							local tItemId = SkuDB.itemDataTBC[v][SkuDB.itemKeys['itemDrops']][z]
+							if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']] then
+								for z = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']] do
+									GetCreatureArea(aQuestID, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']][z])
+								end
+							end
+							if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']] then
+								for z = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']] do
+									GetObjectArea(aQuestID, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']][z])
+								end
+							end
+						end
+					end
+				end
+			end
+
+			--objectives
+			local objectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
+			if objectives then
+				--['creatureObjective'] = 1, -- table {{creature(int), text(string)},...}, If text is nil the default "<Name> slain x/y" is used
+				if objectives[1] then
+					for i, v in pairs(objectives[1]) do
+						GetCreatureArea(aQuestID, v[1])
+					end
+				end
+				--['objectObjective'] = 2, -- table {{object(int), text(string)},...}
+				if objectives[2] then
+					for i, v in pairs(objectives[2]) do
+						GetCreatureArea(aQuestID, v[1])
+					end
+				end
+				--['itemObjective'] = 3, -- table {{item(int), text(string)},...}
+				if objectives[3] then
+					--print("  objectives itemObjective")
+					for i, v in pairs(objectives[3]) do
+						local tItemId = v[1]
+						if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']] then
+							for z = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']] do
+								GetCreatureArea(aQuestID, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']][z])
+							end
+						end
+						if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']] then
+							for z = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']] do
+								GetObjectArea(aQuestID, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']][z])
+							end
+						end
+						if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['itemDrops']] then
+							for z = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['itemDrops']] do
+								local tItemId = SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['itemDrops']][z]
+								if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']] then
+									for z = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']] do
+										GetCreatureArea(aQuestID, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']][z])
+									end
+								end
+								if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']] then
+									for z = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']] do
+										GetObjectArea(aQuestID, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['objectDrops']][z])
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+
+			--finishs
+			local finishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
+			if finishedBy[1] then
+				--creature
+				for i, v in pairs(finishedBy[1]) do
+					GetCreatureArea(aQuestID, v)
+				end
+			end
+			if finishedBy[2] then
+				--object
+				for i, id in pairs(finishedBy[2]) do
+					GetObjectArea(aQuestID, id)
+				end
+			end
 		end
 	end
 end

@@ -741,6 +741,16 @@ function SkuNav:SkuNavMMOpen()
 				for i, child in ipairs(children) do
 					child.selected = child.selectedDefault
 				end
+				SkuQuest.QuestWpCache = {}
+				if not SkuQuest.QuestZoneCache then
+					SkuQuest:BuildQuestZoneCache()
+				end
+				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+				for i, _ in pairs(SkuDB.questDataTBC) do
+					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
+						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
+					end
+				end					
 			end)			
 			MainFrameObj:SetBackdrop({bgFile="Interface\\Tooltips\\UI-Tooltip-Background", edgeFile="", tile = false, tileSize = 0, edgeSize = 0, insets = { left = 0, right = 0, top = 0, bottom = 0 }})
 			MainFrameObj:SetBackdropColor(1, 1, 1, 1)
@@ -957,7 +967,7 @@ function SkuNav:SkuNavMMOpen()
 				SkuQuest.QuestWpCache = {}
 				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
 				for i, _ in pairs(SkuDB.questDataTBC) do
-					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
 						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
 					end
 				end
@@ -970,7 +980,7 @@ function SkuNav:SkuNavMMOpen()
 				SkuQuest.QuestWpCache = {}
 				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
 				for i, _ in pairs(SkuDB.questDataTBC) do
-					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
 						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
 					end
 				end
@@ -983,7 +993,7 @@ function SkuNav:SkuNavMMOpen()
 				SkuQuest.QuestWpCache = {}
 				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
 				for i, _ in pairs(SkuDB.questDataTBC) do
-					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
 						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
 					end
 				end				
@@ -996,7 +1006,7 @@ function SkuNav:SkuNavMMOpen()
 				SkuQuest.QuestWpCache = {}
 				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
 				for i, _ in pairs(SkuDB.questDataTBC) do
-					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
 						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
 					end
 				end				
@@ -1009,7 +1019,7 @@ function SkuNav:SkuNavMMOpen()
 				SkuQuest.QuestWpCache = {}
 				local tPlayerAreaId = SkuNav:GetCurrentAreaId()
 				for i, _ in pairs(SkuDB.questDataTBC) do
-					if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+					if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
 						SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
 					end
 				end				
@@ -1025,10 +1035,10 @@ function SkuNav:SkuNavMMOpen()
 			SkuQuest.QuestWpCache = {}
 			local tPlayerAreaId = SkuNav:GetCurrentAreaId()
 			for i, _ in pairs(SkuDB.questDataTBC) do
-				if tPlayerAreaId == SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or not SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]] or type(SkuDB.questDataTBC[i][SkuDB.questKeys["zoneOrSort"]]) == "table" then
+				if SkuQuest.QuestZoneCache[i][tPlayerAreaId] then
 					SkuQuest:GetAllQuestWps(i, _G["SkuNavMMMainFrameShowQuestStartWps"].selected, _G["SkuNavMMMainFrameShowQuestObjectiveWps"].selected, _G["SkuNavMMMainFrameShowQuestFinishWps"].selected, _G["SkuNavMMMainFrameShowLimitWps"].selected)
 				end
-			end				
+			end			
 
 			-- EditBox
 			local f = CreateFrame("Frame", "SkuNavMMMainFrameEditBox", tOptionsParent, BackdropTemplateMixin and "BackdropTemplate" or nil)--, "DialogBoxFrame")

@@ -4,6 +4,14 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.2
+
+	SkuNav
+		Fehlerkorrekturen
+			Im Ausklappmenü der Sku-Minimap wurden die Filteroptionen bearbeitet. Sie filtern jetzt korrekt.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.1
 
 	SkuOptions
@@ -25,6 +33,7 @@
 			- Limit (Standard inaktiv):
 			  Begrenzt die angezeigten Wegpunkte bei _aktiviertem_ Filter auf drei ersten pro Typ (z. B. "Verstörter Hölleneber 1-3").
 			  Die ersten drei sind wie bisher die, die in rosa angezeigt werden.
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21

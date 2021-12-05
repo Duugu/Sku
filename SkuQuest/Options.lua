@@ -269,7 +269,7 @@ end
 function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3)
 	--print("GetResultingWps", aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3)
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
-
+	local tCurrentAreaId = SkuNav:GetCurrentAreaId()
 	if aSubType == "item" then
 		for i, tItemId in pairs(aSubIDTable) do
 			--print("  i, tItemId", i, tItemId)
@@ -285,7 +285,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 							for is, vs in pairs(tObjectSpawns) do
 								local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
 								if isUiMap then
-									if is == SkuNav:GetCurrentAreaId() then
+									if is == tCurrentAreaId then
 										local tData = SkuDB.InternalAreaTable[is]
 										if tData then
 											if tData.ContinentID == tPlayerContinentID then
