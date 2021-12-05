@@ -3,12 +3,12 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.2](https://github.com/Duugu/Sku/releases/download/r21.2/Sku-r21.2-bcc.zip) <br>
+[Sku 21.3](https://github.com/Duugu/Sku/releases/download/r21.3/Sku-r21.3-bcc.zip) <br>
+[SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
-[SkuFluegel 5.3](https://github.com/Duugu/SkuFluegel/releases/download/r5.3/SkuFluegel-r5.3-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
 # Bug- und Todo-Liste
@@ -16,6 +16,25 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in SkuFluegel Version 5.4
+*Neuerungen*
+- Mit STRG + SHIFT + F kannst du jetzt alle festgelegten blinden Flügel dir folgen lassen.
+
+## Änderungen in Sku Version 21.3
+
+### SkuNav
+*Fehlerkorrekturen*
+- Fehler beim Einloggen mit geöffneter Sku-Minimap behoben.
+- Der Kartenfehler vor Onys Hort wurde behoben.
+
+### SkuCore
+*Neuerungen*
+- Wer das SkuFluegel-Addon 5.4 hat, kann dich jetzt von sich aus mit einem Tastendruck auf Folgen setzen. Du kannst also AFK gehen. ;P
+
+*Fehlerkorrekturen*
+- Das Problem mit der unfreiwilligen Dauer-Drehung beim Öffnen des Menüs (z. B. beim Questlog, am Briefkasten etc.) wurde beseitigt.
+
 
 ## Änderungen in Version 21.2
 
