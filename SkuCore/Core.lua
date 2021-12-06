@@ -298,6 +298,9 @@ function SkuCore:PanicModeCollectData()
 		end
 		
 		local _, _, tDegreesFinal = SkuNav:GetDirectionTo(x, y, 30000, y)
+		if not tDegreesFinal then
+			return
+		end
 		if not ttimeDegreesChangeInitial then
 			ttimeDegreesChangeInitial = tDegreesFinal
 		end

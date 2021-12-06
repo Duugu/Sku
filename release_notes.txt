@@ -4,6 +4,25 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.4
+
+	SkuNav
+		Neuerungen
+			- Im Hinterland wurden Fraktionszonen (Städte von Allianz und Horde) definiert, die beim Betreten angesagt werden.
+			- Es gibt jetzt eine Funktion, um die laufende Route oder die zuletzt beendete Route umzukehren und diese zum Ausgangspunkt zurückzulaufen.
+			  Du aktivierst die Rück-Folgen Funktion mit STRG + SHIFT + Z.
+			- Bei der Wegpunktauswahl unter "SkuNav > Wegpunkt > Auswählen > Aktuelle Karte Entfernung" gibt es jetzt zusätzlich die Möglichkeit "Nahe Routen" zu einem Wegpunkt auszuwählen.
+			  Daher wählst du jetzt nicht mehr einfach den Namen des Wegpunktes aus. Stattdessen gibt es unter jedem Wegpunkt ein weiteres Untermenü mit zwei Elementen:
+				- Auswählen: Damit wählst du wie bisher einfach nur den Wegpunkt aus.
+				- Nahe Routen: Damit landest du in einem weiteren Untermenü mit nahen Routen zum Wegpunkt. Dieses funktioniert genauso wie die schon bestehenden "Nahe Routen"-Menüs (z. B. bei den Quests).
+			  Damit auch Schnellwegpunkte über Nahe Routen erreicht werden können (z. B. die Leiche), wurden die Schnellwegpunkte wieder mit in die Liste "Aktuelle Karte Entfernung" aufgenommen.
+
+	SkuCore
+		Fehlerkorrekturen
+			- Es wurde ein Lua-Fehler behoben, der manchmal bei Ruhestein oder Portalen auftrat.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.3
 
 	SkuNav

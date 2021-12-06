@@ -724,7 +724,7 @@ function SkuNav:EndRouteRecording(aWpBName, aTMPSizeB)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function CheckPolyZones(x, y)
+local function CheckPolygons(x, y)
 	local rPolyIndex = {}
 	local fPlayerPosX, fPlayerPosY = UnitPosition("player")
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
@@ -764,6 +764,654 @@ SkuNav.MoveToWp = 0
 local tCurrentDragWpName
 
 --------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:ProcessPolyZones()
+	local tPolyZones = CheckPolygons(UnitPosition("player"))
+	local tNewPolyZones = {
+		[1] = {[1] = 0,},
+		[2] = {[1] = 0,},
+		[3] = {[1] = 0, [2] = 0, [3] = 0, [4] = 0,},
+		[4] = {[1] = 0,},
+	}
+	for p = 1, #tPolyZones do
+		tNewPolyZones[SkuDB.Polygons.data[tPolyZones[p]].type][SkuDB.Polygons.data[tPolyZones[p]].subtype] = tNewPolyZones[SkuDB.Polygons.data[tPolyZones[p]].type][SkuDB.Polygons.data[tPolyZones[p]].subtype] + 1
+	end
+	--setmetatable(tNewPolyZones, SkuPrintMT)					
+	--print(tNewPolyZones)
+	--world
+	if tOldPolyZones[1][1] ~= tNewPolyZones[1][1] then
+		if tNewPolyZones[1][1] == 0 then
+			--print("world left")
+			SkuOptions.Voice:OutputString(L["World boundary left"], false, true, nil, true) --aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine
+		elseif tOldPolyZones[1][1] == 0 then
+			--print("world entered")
+			SkuOptions.Voice:OutputString(L["World boundary entered"], false, true, nil, true)
+		end
+		tOldPolyZones[1][1] = tNewPolyZones[1][1] 
+	end
+	--fly
+	if tOldPolyZones[2][1] ~= tNewPolyZones[2][1] then
+		if tNewPolyZones[2][1] == 0 then
+			--print("fly left")
+			SkuOptions.Voice:OutputString(L["Flight zone left"], false, true, nil, true)
+		elseif tOldPolyZones[2][1] == 0 then
+			--print("fly entered")
+			SkuOptions.Voice:OutputString(L["Flight zone entered"], false, true, nil, true)
+		end
+		tOldPolyZones[2][1] = tNewPolyZones[2][1] 
+	end
+	--faction
+	if tOldPolyZones[3][1] ~= tNewPolyZones[3][1] then
+		if tNewPolyZones[3][1] == 0 then
+			--print("alliance left")
+			SkuOptions.Voice:OutputString(L["Alliance zone left"], false, true, nil, true)
+		elseif tOldPolyZones[3][1] == 0 then
+			--print("alliance entered")
+			SkuOptions.Voice:OutputString(L["Alliance zone entered"], false, true, nil, true)
+		end
+		tOldPolyZones[3][1] = tNewPolyZones[3][1] 
+	end
+	if tOldPolyZones[3][2] ~= tNewPolyZones[3][2] then
+		if tNewPolyZones[3][2] == 0 then
+			print("horde left")
+			SkuOptions.Voice:OutputString(L["Horde zone left"], false, true, nil, true)
+		elseif tOldPolyZones[3][2] == 0 then
+			print("horde entered")
+			SkuOptions.Voice:OutputString(L["Horde zone entered"], false, true, nil, true)
+		end
+		tOldPolyZones[3][2] = tNewPolyZones[3][2] 
+	end
+	if tOldPolyZones[3][3] ~= tNewPolyZones[3][3] then
+		if tNewPolyZones[3][3] == 0 then
+			--print("horde left")
+			SkuOptions.Voice:OutputString(L["Aldor zone left"], false, true, nil, true)
+		elseif tOldPolyZones[3][3] == 0 then
+			--print("horde entered")
+			SkuOptions.Voice:OutputString(L["Aldor zone entered"], false, true, nil, true)
+		end
+		tOldPolyZones[3][3] = tNewPolyZones[3][3] 
+	end
+	if tOldPolyZones[3][4] ~= tNewPolyZones[3][4] then
+		if tNewPolyZones[3][4] == 0 then
+			--print("horde left")
+			SkuOptions.Voice:OutputString(L["Scyer zone left"], false, true, nil, true)
+		elseif tOldPolyZones[3][4] == 0 then
+			--print("horde entered")
+			SkuOptions.Voice:OutputString(L["Scyer zone entered"], false, true, nil, true)
+		end
+		tOldPolyZones[3][4] = tNewPolyZones[3][4] 
+	end
+
+	--other
+	if tOldPolyZones[4][1] ~= tNewPolyZones[4][1] then
+		if tNewPolyZones[4][1] == 0 then
+			--print("other left")
+			SkuOptions.Voice:OutputString("Wer das hört ist doof verlassen", false, true, nil, true)
+		elseif tOldPolyZones[4][1] == 0 then
+			--print("other entered")
+			SkuOptions.Voice:OutputString("Wer das hört ist doof betreten", false, true, nil, true)
+		end
+		tOldPolyZones[4][1] = tNewPolyZones[4][1] 
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:ProcessPlayerDead()
+	if UnitIsGhost("player") then
+		if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == "" then
+			local tUiMap = SkuNav:GetBestMapForUnit("player")
+			if tUiMap then
+				local tCorpse = C_DeathInfo.GetCorpseMapPosition(tUiMap)
+				if tCorpse then
+					local cX, cY = tCorpse:GetXY()
+					local tmapPos = CreateVector2D(cX, cY)
+					local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetBestMapForUnit("player"), tmapPos)
+					local tX, tY = worldPosition:GetXY()
+
+					local tPlayerx, tPlayery = UnitPosition("player")
+					local distance = SkuNav:Distance(tPlayerx, tPlayery, tX, tY)
+
+					if distance > 10 then
+						if SkuNav:GetWaypoint(L["Quick waypoint"]..";4") then
+							SkuNav:GetWaypoint(L["Quick waypoint"]..";4").worldX = tX
+							SkuNav:GetWaypoint(L["Quick waypoint"]..";4").worldY = tY								
+							local tAreaId = SkuNav:GetCurrentAreaId()
+							SkuNav:GetWaypoint(L["Quick waypoint"]..";4").areaId = tAreaId
+							SkuNav:SelectWP(L["Quick waypoint"]..";4", true)
+
+							SkuOptions.Voice:OutputString(L["Quick waypoint 4 set to corpse"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:ProcessGlobalDirection(ttimeDistanceOutput)
+	local tText = UnitPosition("player")
+	if tText then
+		if (IsShiftKeyDown() and IsAltKeyDown())then
+			if GetServerTime() - ttimeDistanceOutput > 0.5 then
+				local x, y = UnitPosition("player")
+				ttimeDistanceOutput = GetServerTime()
+				local tDirection = SkuNav:GetDirectionTo(x, y, 30000, y)
+				tDirection = 12 - tDirection if tDirection == 0 then tDirection = 12 end
+				--SkuOptions.Voice:Output("nod-"..string.format("%02d", tDirection)..".mp3", true, true, 0.3)
+
+				local _, _, afinal = SkuNav:GetDirectionTo(x, y, 30000, y)
+				local tDeg = {
+					[1] = {deg = 181, file = "male-Süd"},
+					[2] = {deg = 157.5, file = "male-Südwest"},
+					[3] = {deg = 112.5, file = "male-West"},
+					[4] = {deg = 67.5, file = "male-Nordwest"},
+					[5] = {deg = 22.5, file = "male-Nord"},
+					[6] = {deg = -22.5, file = "male-Nordost"},
+					[7] = {deg = -67.5, file = "male-Ost"},
+					[8] = {deg = -112.5, file = "male-Südost"},
+					[9] = {deg = -157.5, file = "male-Süd"},
+					[10] = {deg = -181, file = "male-Süd"},
+				}
+				for x = 1, #tDeg do
+					if afinal < tDeg[x].deg and afinal > tDeg[x + 1].deg then
+						SkuOptions.Voice:OutputString(tDeg[x].file, false, true, 0.2)
+					end
+				end
+			end
+		end
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:ProcessDirAndDistWithWpSelected(ttimeDistanceOutput)
+	--output direction and distance to wp if wp selected
+	if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+		if SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+			local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+			if distance then
+				if IsControlKeyDown() and IsAltKeyDown() then
+					if GetServerTime() - ttimeDistanceOutput > 0.2 then
+						ttimeDistanceOutput = GetServerTime()
+						local tDirection = SkuNav:GetDirectionToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+						if SkuOptions.db.profile[MODULE_NAME].vocalizeFullDirectionDistance == true then
+							SkuOptions.Voice:OutputString(string.format("%02d", tDirection)..";"..L["Clock"], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+							SkuOptions.Voice:OutputString(distance..";"..L["Meter"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+						else
+							SkuOptions.Voice:OutputString(string.format("%02d", tDirection), true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+							SkuOptions.Voice:OutputString(distance, false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:StartReverseRtFollow()
+	--print("StartReverseRtFollow")
+	if SkuNav.ReverseRt.meta.metapathFollowingStart then
+
+		if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
+			SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
+			SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
+			return
+		end
+
+		if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+			SkuNav:EndFollowingWpOrRt()
+		end
+
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = SkuNav.ReverseRt.meta.metapathFollowingStart
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = SkuNav.ReverseRt.meta.metapathFollowingTarget
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = {}
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[#SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths+1] = SkuNav.ReverseRt.meta.metapathFollowingTarget
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuNav.ReverseRt.meta.metapathFollowingTarget] = SkuNav.ReverseRt.meta.metapathFollowingMetapaths
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = 1
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowing = true
+
+		SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, true)
+		SkuOptions.Voice:OutputString("Zurück Metaroute folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+
+		if _G["OnSkuOptionsMain"]:IsVisible() == true then
+			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
+		end
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+SkuNav.ReverseRt = {
+	meta = {},
+	single = {},
+}
+function SkuNav:UpdateReverseRtData()
+	--print("UpdateReverseRtData")
+	if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true then
+		SkuNav.ReverseRt.meta = {
+			metapathFollowingStart = SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp],
+			metapathFollowingTarget = SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart,
+			metapathFollowingMetapaths = {
+				pathWps = {},
+				distance = 0,
+			},
+			metapathFollowingCurrentWp = 1,
+		}
+
+		for x = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp, 1, -1 do
+			print(x, SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[x])
+			table.insert(SkuNav.ReverseRt.meta.metapathFollowingMetapaths.pathWps, SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[x])
+		end
+
+		local tDistance = 0
+		local tDistanceToStartWp = 0
+		for z = 2, #SkuNav.ReverseRt.meta.metapathFollowingMetapaths.pathWps do
+			local tWpA = SkuNav:GetWaypoint(SkuNav.ReverseRt.meta.metapathFollowingMetapaths.pathWps[z - 1])
+			local tWpB = SkuNav:GetWaypoint(SkuNav.ReverseRt.meta.metapathFollowingMetapaths.pathWps[z])
+			tDistance = tDistance + SkuNav:Distance(tWpA.worldX, tWpA.worldY, tWpB.worldX, tWpB.worldY)
+			if tDistanceToStartWp == 0 then
+				tDistanceToStartWp = tDistance
+			end
+		end
+		SkuNav.ReverseRt.meta.metapathFollowingMetapaths.distance = tDistance
+		SkuNav.ReverseRt.meta.metapathFollowingMetapaths.distanceToStartWp = tDistanceToStartWp
+
+		--setmetatable(SkuNav.ReverseRt.meta, SkuPrintMT)
+		--print(SkuNav.ReverseRt.meta)
+
+	elseif SkuOptions.db.profile[MODULE_NAME].routeFollowing == true then
+
+	end
+
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:ProcessCheckReachingWp()
+	--check for reaching wps
+	if SkuOptions.db.profile[MODULE_NAME].routeRecording ~= true and SkuOptions.db.profile[MODULE_NAME].routeFollowing ~= true  and SkuOptions.db.profile[MODULE_NAME].metapathFollowing ~= true then
+		--we're not recording or following a rt; just a single wp
+		if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+			local tWpObject = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+			if tWpObject then
+				--not rt recording/following, just a single wp
+				local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+				if distance then
+					if distance < SkuNavWpSize[tWpObject.size] and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+						SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+						SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+						SkuOptions:VocalizeMultipartString(L["Arrived;at;waypoint"], false, true, 0.3, true)
+							
+						if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+						end
+						SkuNav:SelectWP("", true)
+					end
+				end
+			end
+		end
+	else
+		--we're recording or following a rt
+		--if UnitIsGhost("player") == false then
+
+		--we are recording a rt
+		if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
+			if SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA or SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB then
+				if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA then
+					--we're on the way to a
+					local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+					if distance then
+						if distance < 2 then
+							--a reached; start actual recording
+							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+							SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							SkuOptions:VocalizeMultipartString(L["Arrived at Point A"], false, true, 0.3, true)
+							SkuOptions:VocalizeMultipartString(L["recording;starts"], false, true, 0.3, true)
+							if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							end
+							--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
+							SkuNav:SelectWP("", true)
+							SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA = nil
+							--way to b available?
+							if SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB then
+								SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB, false)
+							end
+						end
+					end
+				elseif SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB then
+					--we're on the way to b
+					local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+					if distance then
+						if distance < 2 then
+							--b reached; complete rt, clean-up, stop recording
+							SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB)
+
+							--check rt if valid
+							if SkuNav:CheckRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute) ~= true then
+								SkuNav:DeleteRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute)
+								SkuOptions.Voice:OutputString(L["failure"], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+								SkuOptions.Voice:OutputString(L["Arrived at Point B"], false, true, 0.3, true)
+								SkuOptions.Voice:OutputString(L["record;corrupted;route;deleted"], false, true, 0.3, true)
+							else
+								SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+								SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+								if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+								end
+								SkuOptions.Voice:OutputString(L["Arrived at Point B"], false, true, 0.3, true)
+								SkuOptions.Voice:OutputString(L["recording;completed;route;created"], false, true, 0.3, true)
+							end
+
+							--complete
+							SkuOptions.db.profile[MODULE_NAME].routeRecording = false
+							SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute = nil
+							SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA = nil
+							SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB = nil
+							SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod = nil
+							--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
+							SkuNav:SelectWP("", true)
+						end
+					end
+				end
+			end
+			if SkuOptions.db.profile[MODULE_NAME].routeRecording == true and not SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA then
+				if SkuOptions.db.profile["SkuNav"].routeRecordingIntWPMethod ~= L["Manually"] then
+					local tNearbyWpReplaceMinRange = SkuNav.routeRecordingIntWpMethods.values[SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod].dist / 3
+					--check if wp of other routes nearby
+					local tLastWP = SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs[#SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs]
+					local tPrevWPx = SkuNav:GetWaypoint(tLastWP).worldX
+					local tPrevWPy = SkuNav:GetWaypoint(tLastWP).worldY
+					local x, y = UnitPosition("player")
+					local tDist = SkuNav:Distance(tPrevWPx, tPrevWPy, x, y)
+
+					local tReplacementWp, tReplacementWpRange = SkuNav:GetNearestWpToPlayer()
+					local tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY = SkuNav:GetCurrentRouteSectionIntersection(tPrevWPx, tPrevWPy, x, y)
+
+					if (tReplacementWp and tReplacementWpRange <= tNearbyWpReplaceMinRange and tLastWP ~= tReplacementWp) and IsLeftAltKeyDown() == true then
+						--print("wp nearby", tReplacementWp)
+						-- wp is nearby > use nearby wp
+						SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
+						SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
+					elseif (tIntersectWithRt and SkuNav:Distance(tPrevWPx, tPrevWPy, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY) > 2)  and IsLeftAltKeyDown() == true then
+						-- there's an intersection > add new wp and update current and intersecting rt
+						local tReplacementWp, tReplacementWpRange = SkuNav:GetNearestWpToCoords(tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
+						if tReplacementWp and tReplacementWpRange and tReplacementWpRange < tNearbyWpReplaceMinRange then
+							SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
+						else
+							--update for current route
+							local tIntWP = SkuNav:CreateWaypoint(nil, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
+							SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
+
+							--update other rt
+							for x = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs do
+								if SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs[x] == tIntersectWithRtWp1 then
+									--print(" INSERT")
+									SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs, tIntWP, x+1)
+									break
+								end
+							end
+						end
+						SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
+
+					else
+						--nothing nearby, no intersection
+						--check/create next auto int wp
+						local tCurrentRouteName = SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute
+						local tMaxDiff = SkuNav.routeRecordingIntWpMethods.values[SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod].rot
+						local tMinDist = SkuNav.routeRecordingIntWpMethods.values[SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod].dist
+
+						local x, y = UnitPosition("player")
+						local _, _, tDegreesFinal = SkuNav:GetDirectionTo(x, y, 30000, y)
+						if not ttimeDegreesChangeInitial then
+							ttimeDegreesChangeInitial = tDegreesFinal
+						end
+						local tDiff = ttimeDegreesChangeInitial - tDegreesFinal
+						if tDiff < -180 then
+							tDiff = 360 + tDiff
+						elseif tDiff > 180 then
+							tDiff = (360 - tDiff) * -1
+						end
+						local tLastWP = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[#SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs]
+						local tPrevWPx = SkuNav:GetWaypoint(tLastWP).worldX
+						local tPrevWPy = SkuNav:GetWaypoint(tLastWP).worldY
+						local tDist = SkuNav:Distance(tPrevWPx, tPrevWPy, x, y)
+
+						local tDynDist = 0
+						if tDiff < 0 then
+							tDynDist = ((tDiff * -1) + tDist) / 2
+						else
+							tDynDist = ((tDiff) + tDist) / 2
+						end
+
+						if tdiold ~= tDiff or tdisold ~= tDist then
+							--print("°:", tDiff, "d:", tDist, "dd:", tDynDist)
+							tdiold = tDiff
+							tdisold = tDist
+						end
+
+						--if (tDiff > tMaxDiff or tDiff < (-tMaxDiff)) and (tDist > tMinDist) then
+						if tDynDist > tMinDist and tDist > (tMinDist / 3) then
+							--print("next auto")
+							ttimeDegreesChangeInitial = tDegreesFinal
+							local tIntWP = SkuNav:CreateWaypoint()
+							SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
+							SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
+						end
+					end
+				end
+			end
+
+		--we are following a rt
+		elseif SkuOptions.db.profile[MODULE_NAME].selectedWaypoint and SkuOptions.db.profile[MODULE_NAME].routeFollowing == true then
+			--following a single rt
+			if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+				local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) or 0
+				if distance then
+					local tDistanceMod = 0
+					if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
+						tDistanceMod = 3
+					end
+					if ((distance < SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size] + tDistanceMod) or SkuNav.MoveToWp ~= 0)  and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+						local tNextWPNr
+						if SkuNav.MoveToWp ~= 0 then
+							tNextWPNr = SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP + SkuNav.MoveToWp
+							if tNextWPNr > #SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs then
+								tNextWPNr = #SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs
+							end
+							if tNextWPNr < 1  then
+								tNextWPNr = 1
+							end
+						else
+							tNextWPNr = SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP + SkuOptions.db.profile[MODULE_NAME].routeFollowingUpDown
+						end
+						if SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs[tNextWPNr] then
+							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
+							SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							end
+							SkuOptions.Voice:OutputString(L["still"]";"..(#SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs - tNextWPNr + 1), true, true, 0, true)
+
+							SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs[tNextWPNr], true)
+							SkuNav:UpdateReverseRtData()
+							SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP = tNextWPNr
+						else
+							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
+							SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							end
+							--SkuOptions:VocalizeMultipartString("Ziel erreicht;"..SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, false, true, 0.3, true)
+							SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
+							SkuOptions.db.profile[MODULE_NAME].routeFollowing = false
+							SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute = nil
+							SkuOptions.db.profile[MODULE_NAME].routeFollowingStartWP = nil
+							SkuOptions.db.profile[MODULE_NAME].routeFollowingUpDown = nil
+							SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP = nil
+							--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
+							SkuNav:UpdateReverseRtData()
+							SkuNav:SelectWP("", true)
+						end
+					end
+				end
+			end
+
+		--we're following a meta rt
+		elseif SkuOptions.db.profile[MODULE_NAME].selectedWaypoint and SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true then
+			if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+				local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) or 0
+				if distance then
+					--print("size:", SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
+					--print(SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size])
+					local tDistanceMod = 0
+					if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
+						tDistanceMod = 3
+					end
+					if ((distance < SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size] + tDistanceMod) or SkuNav.MoveToWp ~= 0) and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+						local tNextWPNr
+						if SkuNav.MoveToWp ~= 0 then
+							tNextWPNr = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp + SkuNav.MoveToWp
+							if tNextWPNr > #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps then
+								tNextWPNr = #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps
+							end
+							if tNextWPNr < 1  then
+								tNextWPNr = 1
+							end
+						else
+							tNextWPNr = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp + 1
+						end
+						if not SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget] then
+							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							SkuOptions:VocalizeMultipartString(L["Error in route;follow stopped"]..SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, false, true, 0.3, true)
+						end
+						if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr] then
+							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
+							SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							end
+							SkuOptions.Voice:OutputString(L["still"]..";"..(#SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps - tNextWPNr + 1), true, true, 0, true)
+
+							SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr], true)
+							SkuNav:UpdateReverseRtData()
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = tNextWPNr
+						else
+							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
+							SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+							end
+							--SkuOptions:VocalizeMultipartString("Ziel erreicht;"..SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, false, true, 0.3, true)
+							SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
+
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = nil
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = nil
+							--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
+							SkuNav:UpdateReverseRtData()
+							SkuNav:SelectWP("", true)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:ProcessRecordingMousClickStuff()
+	--rt recording per mouse click stuff
+	if IsControlKeyDown() == true then
+		_G["SkuNavWpDragClickTrap"]:Show()
+
+		if mouse5Down == false then
+			if IsMouseButtonDown("Button5") == true then
+				mouse5Up = false
+				mouse5Down = true
+				SkuNav:OnMouse4Down()
+			end
+		elseif mouse5Down == true then
+			SkuNav:OnMouse5Hold()
+			if IsMouseButtonDown("Button5") ~= true then
+				mouse5Down = false
+				mouse5Up = true
+				SkuNav:OnMouse5Up()
+			end
+		end
+
+		if mouse4Down == false then
+			if IsMouseButtonDown("Button4") == true then
+				mouse4Up = false
+				mouse4Down = true
+				SkuNav:OnMouse4Down()
+			end
+		elseif mouse4Down == true then
+			SkuNav:OnMouse4Hold()
+			if IsMouseButtonDown("Button4") ~= true then
+				mouse4Down = false
+				mouse4Up = true
+				SkuNav:OnMouse4Up()
+			end
+		end
+
+		if mouseMiddleDown == false then
+			if IsMouseButtonDown("MiddleButton") == true then
+				mouseMiddleUp = false
+				mouseMiddleDown = true
+				SkuNav:OnMouseMiddleDown()
+			end
+		elseif mouseMiddleDown == true then
+			SkuNav:OnMouseMiddleHold()
+			if IsMouseButtonDown("MiddleButton") ~= true then
+				mouseMiddleDown = false
+				mouseMiddleUp = true
+				SkuNav:OnMouseMiddleUp()
+			end
+		end
+
+		if mouseLeftDown == false then
+			if IsMouseButtonDown("LeftButton") == true then
+				mouseLeftUp = false
+				mouseLeftDown = true
+				SkuNav:OnMouseLeftDown()
+			end
+		elseif mouseLeftDown == true then
+			SkuNav:OnMouseLeftHold()
+			if IsMouseButtonDown("LeftButton") ~= true then
+				mouseLeftDown = false
+				mouseLeftUp = true
+				SkuNav:OnMouseLeftUp()
+			end
+		end
+
+		if mouseRightDown == false then
+			if IsMouseButtonDown("RightButton") == true then
+				mouseRightUp = false
+				mouseRightDown = true
+				SkuNav:OnMouseRightDown()
+			end
+		elseif mouseRightDown == true then
+			SkuNav:OnMouseRightHold()
+			if IsMouseButtonDown("RightButton") ~= true then
+				mouseRightDown = false
+				mouseRightUp = true
+				SkuNav:OnMouseRightUp()
+			end
+
+		end
+	else
+		mouseMiddleDown = false
+		mouseMiddleUp = false
+		mouseLeftDown = false
+		mouseLeftUp = false
+		mouseRightDown = false
+		mouseRightUp = false
+		_G["SkuNavWpDragClickTrap"]:Hide()
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:CreateSkuNavControl()
 	local ttimeDegreesChangeInitial = nil
 	local ttimeDistanceOutput = 0
@@ -786,102 +1434,7 @@ function SkuNav:CreateSkuNavControl()
  			ttime = ttime + time
 			ttimeDraw = ttimeDraw + time
 
-			--rt recording per mouse click stuff
-			--[[
-			local tMouseOverWpWidget = nil
-			for i, v in SkuWaypointWidgetRepo:EnumerateActive() do
-				if i:IsMouseOver() then
-					tMouseOverWpWidget = i
-				end
-			end
-			]]
-			if IsControlKeyDown() == true then
-				_G["SkuNavWpDragClickTrap"]:Show()
-
-				if mouse5Down == false then
-					if IsMouseButtonDown("Button5") == true then
-						mouse5Up = false
-						mouse5Down = true
-						SkuNav:OnMouse4Down()
-					end
-				elseif mouse5Down == true then
-					SkuNav:OnMouse5Hold()
-					if IsMouseButtonDown("Button5") ~= true then
-						mouse5Down = false
-						mouse5Up = true
-						SkuNav:OnMouse5Up()
-					end
-				end
-
-				if mouse4Down == false then
-					if IsMouseButtonDown("Button4") == true then
-						mouse4Up = false
-						mouse4Down = true
-						SkuNav:OnMouse4Down()
-					end
-				elseif mouse4Down == true then
-					SkuNav:OnMouse4Hold()
-					if IsMouseButtonDown("Button4") ~= true then
-						mouse4Down = false
-						mouse4Up = true
-						SkuNav:OnMouse4Up()
-					end
-				end
-
-				if mouseMiddleDown == false then
-					if IsMouseButtonDown("MiddleButton") == true then
-						mouseMiddleUp = false
-						mouseMiddleDown = true
-						SkuNav:OnMouseMiddleDown()
-					end
-				elseif mouseMiddleDown == true then
-					SkuNav:OnMouseMiddleHold()
-					if IsMouseButtonDown("MiddleButton") ~= true then
-						mouseMiddleDown = false
-						mouseMiddleUp = true
-						SkuNav:OnMouseMiddleUp()
-					end
-				end
-
-				if mouseLeftDown == false then
-					if IsMouseButtonDown("LeftButton") == true then
-						mouseLeftUp = false
-						mouseLeftDown = true
-						SkuNav:OnMouseLeftDown()
-					end
-				elseif mouseLeftDown == true then
-					SkuNav:OnMouseLeftHold()
-					if IsMouseButtonDown("LeftButton") ~= true then
-						mouseLeftDown = false
-						mouseLeftUp = true
-						SkuNav:OnMouseLeftUp()
-					end
-				end
-
-				if mouseRightDown == false then
-					if IsMouseButtonDown("RightButton") == true then
-						mouseRightUp = false
-						mouseRightDown = true
-						SkuNav:OnMouseRightDown()
-					end
-				elseif mouseRightDown == true then
-					SkuNav:OnMouseRightHold()
-					if IsMouseButtonDown("RightButton") ~= true then
-						mouseRightDown = false
-						mouseRightUp = true
-						SkuNav:OnMouseRightUp()
-					end
-
-				end
-			else
-				mouseMiddleDown = false
-				mouseMiddleUp = false
-				mouseLeftDown = false
-				mouseLeftUp = false
-				mouseRightDown = false
-				mouseRightUp = false
-				_G["SkuNavWpDragClickTrap"]:Hide()
-			end
+			SkuNav:ProcessRecordingMousClickStuff()
 
 			--tmp drawing rts on UIParent for debugging
 			if ttimeDraw > 0.2 then
@@ -951,479 +1504,19 @@ function SkuNav:CreateSkuNavControl()
 						end
 					end
 				end
-			end					
+			end
+
 			if GameTooltip:IsShown() and not SkuWaypointWidgetCurrent and GameTooltip.SkuWaypointWidgetCurrent then
 				GameTooltip.SkuWaypointWidgetCurrent = nil
 				GameTooltip:Hide()
 			end
 
 			if ttime > 0.1 then
-
-				local tPolyZones = CheckPolyZones(UnitPosition("player"))
-				if #tPolyZones > 0 then
-					local tNewPolyZones = {
-						[1] = {[1] = 0,},
-						[2] = {[1] = 0,},
-						[3] = {[1] = 0, [2] = 0, [3] = 0, [4] = 0,},
-						[4] = {[1] = 0,},
-					}
-					for p = 1, #tPolyZones do
-						tNewPolyZones[SkuDB.Polygons.data[tPolyZones[p]].type][SkuDB.Polygons.data[tPolyZones[p]].subtype] = tNewPolyZones[SkuDB.Polygons.data[tPolyZones[p]].type][SkuDB.Polygons.data[tPolyZones[p]].subtype] + 1
-					end
-
-					--world
-					if tOldPolyZones[1][1] ~= tNewPolyZones[1][1] then
-						if tNewPolyZones[1][1] == 0 then
-							--print("world left")
-							SkuOptions.Voice:OutputString(L["World boundary left"], false, true, nil, true) --aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine
-						elseif tOldPolyZones[1][1] == 0 then
-							--print("world entered")
-							SkuOptions.Voice:OutputString(L["World boundary entered"], false, true, nil, true)
-						end
-						tOldPolyZones[1][1] = tNewPolyZones[1][1] 
-					end
-					--fly
-					if tOldPolyZones[2][1] ~= tNewPolyZones[2][1] then
-						if tNewPolyZones[2][1] == 0 then
-							--print("fly left")
-							SkuOptions.Voice:OutputString(L["Flight zone left"], false, true, nil, true)
-						elseif tOldPolyZones[2][1] == 0 then
-							--print("fly entered")
-							SkuOptions.Voice:OutputString(L["Flight zone entered"], false, true, nil, true)
-						end
-						tOldPolyZones[2][1] = tNewPolyZones[2][1] 
-					end
-					--faction
-					if tOldPolyZones[3][1] ~= tNewPolyZones[3][1] then
-						if tNewPolyZones[3][1] == 0 then
-							--print("alliance left")
-							SkuOptions.Voice:OutputString(L["Alliance zone left"], false, true, nil, true)
-						elseif tOldPolyZones[3][1] == 0 then
-							--print("alliance entered")
-							SkuOptions.Voice:OutputString(L["Alliance zone entered"], false, true, nil, true)
-						end
-						tOldPolyZones[3][1] = tNewPolyZones[3][1] 
-					end
-					if tOldPolyZones[3][2] ~= tNewPolyZones[3][2] then
-						if tNewPolyZones[3][2] == 0 then
-							--print("horde left")
-							SkuOptions.Voice:OutputString(L["Horde zone left"], false, true, nil, true)
-						elseif tOldPolyZones[3][2] == 0 then
-							--print("horde entered")
-							SkuOptions.Voice:OutputString(L["Horde zone entered"], false, true, nil, true)
-						end
-						tOldPolyZones[3][2] = tNewPolyZones[3][2] 
-					end
-					if tOldPolyZones[3][3] ~= tNewPolyZones[3][3] then
-						if tNewPolyZones[3][3] == 0 then
-							--print("horde left")
-							SkuOptions.Voice:OutputString(L["Aldor zone left"], false, true, nil, true)
-						elseif tOldPolyZones[3][3] == 0 then
-							--print("horde entered")
-							SkuOptions.Voice:OutputString(L["Aldor zone entered"], false, true, nil, true)
-						end
-						tOldPolyZones[3][3] = tNewPolyZones[3][3] 
-					end
-					if tOldPolyZones[3][4] ~= tNewPolyZones[3][4] then
-						if tNewPolyZones[3][4] == 0 then
-							--print("horde left")
-							SkuOptions.Voice:OutputString(L["Scyer zone left"], false, true, nil, true)
-						elseif tOldPolyZones[3][4] == 0 then
-							--print("horde entered")
-							SkuOptions.Voice:OutputString(L["Scyer zone entered"], false, true, nil, true)
-						end
-						tOldPolyZones[3][4] = tNewPolyZones[3][4] 
-					end
-
-					--other
-					if tOldPolyZones[4][1] ~= tNewPolyZones[4][1] then
-						if tNewPolyZones[4][1] == 0 then
-							--print("other left")
-							SkuOptions.Voice:OutputString("Wer das hört ist doof verlassen", false, true, nil, true)
-						elseif tOldPolyZones[4][1] == 0 then
-							--print("other entered")
-							SkuOptions.Voice:OutputString("Wer das hört ist doof betreten", false, true, nil, true)
-						end
-						tOldPolyZones[4][1] = tNewPolyZones[4][1] 
-					end
-				end
-
-				--dead
-				if UnitIsGhost("player") then
-					if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == "" then
-						local tUiMap = SkuNav:GetBestMapForUnit("player")
-						if tUiMap then
-							local tCorpse = C_DeathInfo.GetCorpseMapPosition(tUiMap)
-							if tCorpse then
-								local cX, cY = tCorpse:GetXY()
-								local tmapPos = CreateVector2D(cX, cY)
-								local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetBestMapForUnit("player"), tmapPos)
-								local tX, tY = worldPosition:GetXY()
-
-								local tPlayerx, tPlayery = UnitPosition("player")
-								local distance = SkuNav:Distance(tPlayerx, tPlayery, tX, tY)
-
-								if distance > 10 then
-									if SkuNav:GetWaypoint(L["Quick waypoint"]..";4") then
-										SkuNav:GetWaypoint(L["Quick waypoint"]..";4").worldX = tX
-										SkuNav:GetWaypoint(L["Quick waypoint"]..";4").worldY = tY								
-										local tAreaId = SkuNav:GetCurrentAreaId()
-										SkuNav:GetWaypoint(L["Quick waypoint"]..";4").areaId = tAreaId
-										SkuNav:SelectWP(L["Quick waypoint"]..";4", true)
-
-										SkuOptions.Voice:OutputString(L["Quick waypoint 4 set to corpse"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-									end
-								end
-							end
-						end
-					end
-				end
-
-				--global direction
-				local tText = UnitPosition("player")
-				if tText then
-					if (IsShiftKeyDown() and IsAltKeyDown())then
-						if GetServerTime() - ttimeDistanceOutput > 0.5 then
-							local x, y = UnitPosition("player")
-							ttimeDistanceOutput = GetServerTime()
-							local tDirection = SkuNav:GetDirectionTo(x, y, 30000, y)
-							tDirection = 12 - tDirection if tDirection == 0 then tDirection = 12 end
-							--SkuOptions.Voice:Output("nod-"..string.format("%02d", tDirection)..".mp3", true, true, 0.3)
-
-							local _, _, afinal = SkuNav:GetDirectionTo(x, y, 30000, y)
-							local tDeg = {
-								[1] = {deg = 181, file = "male-Süd"},
-								[2] = {deg = 157.5, file = "male-Südwest"},
-								[3] = {deg = 112.5, file = "male-West"},
-								[4] = {deg = 67.5, file = "male-Nordwest"},
-								[5] = {deg = 22.5, file = "male-Nord"},
-								[6] = {deg = -22.5, file = "male-Nordost"},
-								[7] = {deg = -67.5, file = "male-Ost"},
-								[8] = {deg = -112.5, file = "male-Südost"},
-								[9] = {deg = -157.5, file = "male-Süd"},
-								[10] = {deg = -181, file = "male-Süd"},
-							}
-							for x = 1, #tDeg do
-								if afinal < tDeg[x].deg and afinal > tDeg[x + 1].deg then
-									SkuOptions.Voice:OutputString(tDeg[x].file, false, true, 0.2)
-								end
-							end
-
-						end
-					end
-				end
-
-				--output direction and distance to wp if wp selected
-				if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-					if SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-						local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-						if distance then
-							if IsControlKeyDown() and IsAltKeyDown() then
-								if GetServerTime() - ttimeDistanceOutput > 0.2 then
-									ttimeDistanceOutput = GetServerTime()
-									local tDirection = SkuNav:GetDirectionToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-									if SkuOptions.db.profile[MODULE_NAME].vocalizeFullDirectionDistance == true then
-										SkuOptions.Voice:OutputString(string.format("%02d", tDirection)..";"..L["Clock"], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
-										SkuOptions.Voice:OutputString(distance..";"..L["Meter"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-									else
-										SkuOptions.Voice:OutputString(string.format("%02d", tDirection), true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
-										SkuOptions.Voice:OutputString(distance, false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-									end
-								end
-							end
-						end
-					end
-				end
-
-				--check for reaching wps
-				if SkuOptions.db.profile[MODULE_NAME].routeRecording ~= true and SkuOptions.db.profile[MODULE_NAME].routeFollowing ~= true  and SkuOptions.db.profile[MODULE_NAME].metapathFollowing ~= true then
-					--we're not recording or following a rt; just a single wp
-					if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-						local tWpObject = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-						if tWpObject then
-							--not rt recording/following, just a single wp
-							local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-							if distance then
-								if distance < SkuNavWpSize[tWpObject.size] and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-									SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-									SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
-									SkuOptions:VocalizeMultipartString(L["Arrived;at;waypoint"], false, true, 0.3, true)
-										
-									if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-										SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-									end
-									SkuNav:SelectWP("", true)
-								end
-							end
-						end
-					end
-				else
-					--we're recording or following a rt
-					--if UnitIsGhost("player") == false then
-
-						--we are recording a rt
-						if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
-							if SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA or SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB then
-								if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA then
-									--we're on the way to a
-									local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-									if distance then
-										if distance < 2 then
-											--a reached; start actual recording
-											SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
-											SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											SkuOptions:VocalizeMultipartString(L["Arrived at Point A"], false, true, 0.3, true)
-											SkuOptions:VocalizeMultipartString(L["recording;starts"], false, true, 0.3, true)
-											if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-												SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											end
-											--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
-											SkuNav:SelectWP("", true)
-											SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA = nil
-											--way to b available?
-											if SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB then
-												SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB, false)
-											end
-										end
-									end
-								elseif SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB then
-									--we're on the way to b
-									local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-									if distance then
-										if distance < 2 then
-											--b reached; complete rt, clean-up, stop recording
-											SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB)
-
-											--check rt if valid
-											if SkuNav:CheckRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute) ~= true then
-												SkuNav:DeleteRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute)
-												SkuOptions.Voice:OutputString(L["failure"], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
-												SkuOptions.Voice:OutputString(L["Arrived at Point B"], false, true, 0.3, true)
-												SkuOptions.Voice:OutputString(L["record;corrupted;route;deleted"], false, true, 0.3, true)
-											else
-												SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-												SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
-												if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-													SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-												end
-												SkuOptions.Voice:OutputString(L["Arrived at Point B"], false, true, 0.3, true)
-												SkuOptions.Voice:OutputString(L["recording;completed;route;created"], false, true, 0.3, true)
-											end
-
-											--complete
-											SkuOptions.db.profile[MODULE_NAME].routeRecording = false
-											SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute = nil
-											SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA = nil
-											SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB = nil
-											SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod = nil
-											--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
-											SkuNav:SelectWP("", true)
-
-										end
-									end
-								end
-							end
-							if SkuOptions.db.profile[MODULE_NAME].routeRecording == true and not SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToA then
-								if SkuOptions.db.profile["SkuNav"].routeRecordingIntWPMethod ~= L["Manually"] then
-									local tNearbyWpReplaceMinRange = SkuNav.routeRecordingIntWpMethods.values[SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod].dist / 3
-									--check if wp of other routes nearby
-									local tLastWP = SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs[#SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs]
-									local tPrevWPx = SkuNav:GetWaypoint(tLastWP).worldX
-									local tPrevWPy = SkuNav:GetWaypoint(tLastWP).worldY
-									local x, y = UnitPosition("player")
-									local tDist = SkuNav:Distance(tPrevWPx, tPrevWPy, x, y)
-
-									local tReplacementWp, tReplacementWpRange = SkuNav:GetNearestWpToPlayer()
-									local tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY = SkuNav:GetCurrentRouteSectionIntersection(tPrevWPx, tPrevWPy, x, y)
-
-									if (tReplacementWp and tReplacementWpRange <= tNearbyWpReplaceMinRange and tLastWP ~= tReplacementWp) and IsLeftAltKeyDown() == true then
-										--print("wp nearby", tReplacementWp)
-										-- wp is nearby > use nearby wp
-										SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
-										SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
-									elseif (tIntersectWithRt and SkuNav:Distance(tPrevWPx, tPrevWPy, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY) > 2)  and IsLeftAltKeyDown() == true then
-										-- there's an intersection > add new wp and update current and intersecting rt
-										local tReplacementWp, tReplacementWpRange = SkuNav:GetNearestWpToCoords(tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
-										if tReplacementWp and tReplacementWpRange and tReplacementWpRange < tNearbyWpReplaceMinRange then
-											SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
-										else
-											--update for current route
-											local tIntWP = SkuNav:CreateWaypoint(nil, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
-											SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
-
-											--update other rt
-											for x = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs do
-												if SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs[x] == tIntersectWithRtWp1 then
-													--print(" INSERT")
-													SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs, tIntWP, x+1)
-													break
-												end
-											end
-										end
-										SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
-
-									else
-										--nothing nearby, no intersection
-										--check/create next auto int wp
-										local tCurrentRouteName = SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute
-										local tMaxDiff = SkuNav.routeRecordingIntWpMethods.values[SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod].rot
-										local tMinDist = SkuNav.routeRecordingIntWpMethods.values[SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod].dist
-
-										local x, y = UnitPosition("player")
-										local _, _, tDegreesFinal = SkuNav:GetDirectionTo(x, y, 30000, y)
-										if not ttimeDegreesChangeInitial then
-											ttimeDegreesChangeInitial = tDegreesFinal
-										end
-										local tDiff = ttimeDegreesChangeInitial - tDegreesFinal
-										if tDiff < -180 then
-											tDiff = 360 + tDiff
-										elseif tDiff > 180 then
-											tDiff = (360 - tDiff) * -1
-										end
-										local tLastWP = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[#SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs]
-										local tPrevWPx = SkuNav:GetWaypoint(tLastWP).worldX
-										local tPrevWPy = SkuNav:GetWaypoint(tLastWP).worldY
-										local tDist = SkuNav:Distance(tPrevWPx, tPrevWPy, x, y)
-
-										local tDynDist = 0
-										if tDiff < 0 then
-											tDynDist = ((tDiff * -1) + tDist) / 2
-										else
-											tDynDist = ((tDiff) + tDist) / 2
-										end
-
-										if tdiold ~= tDiff or tdisold ~= tDist then
-											--print("°:", tDiff, "d:", tDist, "dd:", tDynDist)
-											tdiold = tDiff
-											tdisold = tDist
-										end
-
-										--if (tDiff > tMaxDiff or tDiff < (-tMaxDiff)) and (tDist > tMinDist) then
-										if tDynDist > tMinDist and tDist > (tMinDist / 3) then
-											--print("next auto")
-											ttimeDegreesChangeInitial = tDegreesFinal
-											local tIntWP = SkuNav:CreateWaypoint()
-											SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
-											SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
-										end
-									end
-								end
-							end
-
-						--we are following a rt
-						elseif SkuOptions.db.profile[MODULE_NAME].selectedWaypoint and SkuOptions.db.profile[MODULE_NAME].routeFollowing == true then
-							--following a single rt
-							if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-								local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) or 0
-								if distance then
-									local tDistanceMod = 0
-									if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
-										tDistanceMod = 3
-									end
-									if ((distance < SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size] + tDistanceMod) or SkuNav.MoveToWp ~= 0)  and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-										local tNextWPNr
-										if SkuNav.MoveToWp ~= 0 then
-											tNextWPNr = SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP + SkuNav.MoveToWp
-											if tNextWPNr > #SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs then
-												tNextWPNr = #SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs
-											end
-											if tNextWPNr < 1  then
-												tNextWPNr = 1
-											end
-										else
-											tNextWPNr = SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP + SkuOptions.db.profile[MODULE_NAME].routeFollowingUpDown
-										end
-										if SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs[tNextWPNr] then
-											SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
-											SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-												SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											end
-											SkuOptions.Voice:OutputString(L["still"]";"..(#SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs - tNextWPNr + 1), true, true, 0, true)
-
-											SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs[tNextWPNr], true)
-											SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP = tNextWPNr
-										else
-											SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
-											SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-												SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											end
-											--SkuOptions:VocalizeMultipartString("Ziel erreicht;"..SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, false, true, 0.3, true)
-											SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
-											SkuOptions.db.profile[MODULE_NAME].routeFollowing = false
-											SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute = nil
-											SkuOptions.db.profile[MODULE_NAME].routeFollowingStartWP = nil
-											SkuOptions.db.profile[MODULE_NAME].routeFollowingUpDown = nil
-											SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP = nil
-											--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
-											SkuNav:SelectWP("", true)
-										end
-									end
-								end
-							end
-
-						--we're following a meta rt
-						elseif SkuOptions.db.profile[MODULE_NAME].selectedWaypoint and SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true then
-							if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-								local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) or 0
-								if distance then
-									--print("size:", SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
-									--print(SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size])
-									local tDistanceMod = 0
-									if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
-										tDistanceMod = 3
-									end
-									if ((distance < SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size] + tDistanceMod) or SkuNav.MoveToWp ~= 0) and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
-										local tNextWPNr
-										if SkuNav.MoveToWp ~= 0 then
-											tNextWPNr = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp + SkuNav.MoveToWp
-											if tNextWPNr > #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps then
-												tNextWPNr = #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps
-											end
-											if tNextWPNr < 1  then
-												tNextWPNr = 1
-											end
-										else
-											tNextWPNr = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp + 1
-										end
-										if not SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget] then
-											SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											SkuOptions:VocalizeMultipartString(L["Error in route;follow stopped"]..SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, false, true, 0.3, true)
-										end
-										if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr] then
-											SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
-											SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-												SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											end
-											SkuOptions.Voice:OutputString(L["still"]..";"..(#SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps - tNextWPNr + 1), true, true, 0, true)
-
-											SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr], true)
-											SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = tNextWPNr
-										else
-											SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
-											SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-												SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-											end
-											--SkuOptions:VocalizeMultipartString("Ziel erreicht;"..SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, false, true, 0.3, true)
-											SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
-
-											SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
-											SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
-											SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
-											SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = nil
-											SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = nil
-											--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
-											SkuNav:SelectWP("", true)
-										end
-									end
-								end
-							end
-						end
-					--end
-				end
+				SkuNav:ProcessPolyZones()
+				SkuNav:ProcessPlayerDead()
+				SkuNav:ProcessGlobalDirection(ttimeDistanceOutput)
+				SkuNav:ProcessDirAndDistWithWpSelected(ttimeDistanceOutput)
+				SkuNav:ProcessCheckReachingWp()
 
 				SkuNav.MoveToWp = 0
 				ttime = 0
@@ -1459,6 +1552,11 @@ function SkuNav:CreateSkuNavMain()
 			end
 		end
 
+
+		if a == "CTRL-SHIFT-Z" then
+			SkuNav:StartReverseRtFollow()
+		end
+		
 		--move to prev/next wp on following a rt
 		if a == "CTRL-SHIFT-W" then
 			SkuNav.MoveToWp = 1
@@ -1663,6 +1761,7 @@ function SkuNav:CreateSkuNavMain()
 	end)
 	tFrame:Hide()
 	
+	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Z", tFrame:GetName(), "CTRL-SHIFT-Z")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F", tFrame:GetName(), "CTRL-SHIFT-F")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-U", tFrame:GetName(), "CTRL-SHIFT-U")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-I", tFrame:GetName(), "CTRL-SHIFT-I")
@@ -1752,7 +1851,6 @@ function SkuNav:OnEnable()
 	end
 
 	SkuNeighbCache = {}
-
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1768,6 +1866,8 @@ do
 	f:EnableMouse(true)
 	f:Hide()
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseLeftDown()
 	--print("L down")
 	local tWpName = SkuWaypointWidgetCurrent--GetMouseFocus().aText or GetMouseFocus().WpName
