@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.3](https://github.com/Duugu/Sku/releases/download/r21.3/Sku-r21.3-bcc.zip) <br>
-[SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
+[Sku 21.4](https://github.com/Duugu/Sku/releases/download/r21.4/Sku-r21.4-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
+[SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 [SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
@@ -16,6 +16,25 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 21.4
+
+### SkuNav
+*Neuerungen*
+- Im Hinterland wurden Fraktionszonen (Städte von Allianz und Horde) definiert, die beim Betreten angesagt werden.
+- Es gibt jetzt eine Funktion, um die laufende Route oder die zuletzt beendete Route umzukehren und diese zum Ausgangspunkt zurückzulaufen.<br>
+Du aktivierst die Rück-Folgen Funktion mit STRG + SHIFT + Z.
+- Bei der Wegpunktauswahl unter "SkuNav > Wegpunkt > Auswählen > Aktuelle Karte Entfernung" gibt es jetzt zusätzlich die Möglichkeit "Nahe Routen" zu einem Wegpunkt auszuwählen.<br>
+Daher wählst du jetzt nicht mehr einfach den Namen des Wegpunktes aus. Stattdessen gibt es unter jedem Wegpunkt ein weiteres Untermenü mit zwei Elementen:
+
+    - **Auswählen**: Damit wählst du wie bisher einfach nur den Wegpunkt aus.
+    - **Nahe Routen**: Damit landest du in einem weiteren Untermenü mit nahen Routen zum Wegpunkt. Dieses funktioniert genauso wie die schon bestehenden "Nahe Routen"-Menüs (z. B. bei den Quests).
+    
+    Damit auch Schnellwegpunkte über Nahe Routen erreicht werden können (z. B. die Leiche), wurden die Schnellwegpunkte wieder mit in die Liste "Aktuelle Karte Entfernung" aufgenommen.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Es wurde ein Lua-Fehler behoben, der manchmal bei Ruhestein oder Portalen auftrat.
 
 ## Änderungen in SkuFluegel Version 5.4
 *Neuerungen*
