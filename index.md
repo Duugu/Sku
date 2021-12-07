@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.4](https://github.com/Duugu/Sku/releases/download/r21.4/Sku-r21.4-bcc.zip) <br>
+[Sku 21.5](https://github.com/Duugu/Sku/releases/download/r21.5/Sku-r21.5-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
@@ -17,6 +17,16 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
+## Änderungen in Version 21.5
+
+### SkuNav
+*Fehlerkorrekturen*
+- Vergessene Debug-Meldungen im Chat entfernt.
+
+### SkuAuras
+*Fehlerkorrekturen*
+- Vergessene Debug-Infos im Tooltip entfernt.
+            
 ## Änderungen in Version 21.4
 
 ### SkuNav
