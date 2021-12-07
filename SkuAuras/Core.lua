@@ -147,5 +147,5 @@ end
 
 if not GTT_CreatureInspectHooked then
 	GTT_CreatureInspectHooked = true;
-	GameTooltip:HookScript("OnTooltipSetUnit", function(...) return GTT_CreatureInspect(...); end);
+	--GameTooltip:HookScript("OnTooltipSetUnit", function(...) return GTT_CreatureInspect(...); end);
 end

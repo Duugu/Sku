@@ -812,10 +812,10 @@ function SkuNav:ProcessPolyZones()
 	end
 	if tOldPolyZones[3][2] ~= tNewPolyZones[3][2] then
 		if tNewPolyZones[3][2] == 0 then
-			print("horde left")
+			--print("horde left")
 			SkuOptions.Voice:OutputString(L["Horde zone left"], false, true, nil, true)
 		elseif tOldPolyZones[3][2] == 0 then
-			print("horde entered")
+			--print("horde entered")
 			SkuOptions.Voice:OutputString(L["Horde zone entered"], false, true, nil, true)
 		end
 		tOldPolyZones[3][2] = tNewPolyZones[3][2] 
@@ -998,7 +998,6 @@ function SkuNav:UpdateReverseRtData()
 		}
 
 		for x = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp, 1, -1 do
-			print(x, SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[x])
 			table.insert(SkuNav.ReverseRt.meta.metapathFollowingMetapaths.pathWps, SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[x])
 		end
 

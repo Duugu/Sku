@@ -4,6 +4,17 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.5
+
+	SkuNav
+		Fehlerkorrekturen
+			- Vergessene Debug-Meldungen im Chat entfernt.
+
+	SkuAuras
+		Fehlerkorrekturen
+			- Vergessene Debug-Infos im Tooltip entfernt.
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.4
 
 	SkuNav
