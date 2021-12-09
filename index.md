@@ -4,7 +4,7 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 *Aktualisiert:* <br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
-[Sku 21.6](https://github.com/Duugu/Sku/releases/download/r21.5/Sku-r21.5-bcc.zip) <br>
+[Sku 21.6](https://github.com/Duugu/Sku/releases/download/r21.6/Sku-r21.6-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
