@@ -3,8 +3,8 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
+[Sku 21.7](https://github.com/Duugu/Sku/releases/download/r21.7/Sku-r21.7-bcc.zip) <br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
-[Sku 21.6](https://github.com/Duugu/Sku/releases/download/r21.6/Sku-r21.6-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
@@ -16,6 +16,13 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+-------------------------------------------------------------------------------------------------------	
+## Änderungen in Version 21.7
+
+### SkuCore
+*Fehlerkorrekturen*
+- Ein Fehler mit installierten Addons und Tastenbelegungen wurde behoben.
 
 ## Änderungen in Version 21.6
 
