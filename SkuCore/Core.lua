@@ -2084,4 +2084,94 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 	end)
 end
 
+--DEFAULT_BINDINGS (0)
+--ACCOUNT_BINDINGS (1)
+--CHARACTER_BINDINGS (2)
+-------------------------------------------------------------------------------------------------
+function SkuCore:SaveBindings()
+	local aBindingSet = GetCurrentBindingSet()
+	SaveBindings(aBindingSet) 
+end
 
+-------------------------------------------------------------------------------------------------
+function SkuCore:GetBinding(aIndex)
+	local aBindingSet = GetCurrentBindingSet()
+	local tCommand, tCategory, tKey1, tKey2 = GetBinding(aIndex, aBindingSet)
+
+	return tCommand, tCategory, tKey1, tKey2
+end
+
+-------------------------------------------------------------------------------------------------
+function SkuCore:DeleteBinding(aCommand)
+	local aBindingSet = GetCurrentBindingSet()
+
+	local tNumKeyBindings = GetNumBindings()
+	for x = 1, tNumKeyBindings do
+		local tCommand, _, tKey1, tKey2, tKey3, tKey4 = GetBinding(x, aBindingSet)
+		if tCommand == aCommand then
+			if tKey4 then
+				SetBinding(tKey4)
+			end
+			if tKey3 then
+				SetBinding(tKey3)
+			end
+			if tKey2 then
+				SetBinding(tKey2)
+			end
+			if tKey1 then
+				SetBinding(tKey1)
+			end
+		end
+	end
+
+	SkuCore:SaveBindings()
+end
+
+-------------------------------------------------------------------------------------------------
+function SkuCore:SetBinding(aKey, aCommand)
+	local aBindingSet = GetCurrentBindingSet()
+	local tCommand, _, tKey1, tKey2, tKey3, tKey4
+
+	local tNumKeyBindings = GetNumBindings()
+	for x = 1, tNumKeyBindings do
+		tCommand, _, tKey1, tKey2, tKey3, tKey4 = GetBinding(x, aBindingSet)
+		if tCommand == aCommand then
+			break
+		end
+	end
+	
+	SkuCore:DeleteBinding(aCommand)
+
+	local tOk = SetBinding(aKey, aCommand, 1)
+	if tKey2 then
+		local tOk = SetBinding(tKey2, aCommand, 1)
+	end
+
+	SkuCore:SaveBindings()
+end
+
+-------------------------------------------------------------------------------------------------
+function SkuCore:LoadBindings()
+	local aBindingSet = GetCurrentBindingSet()
+	LoadBindings(aBindingSet) 
+end
+
+-------------------------------------------------------------------------------------------------
+function SkuCore:ResetBindings(aToWowDefaults)
+	LoadBindings(DEFAULT_BINDINGS)
+
+	if not aToWowDefaults then
+		for icat, vcat in pairs(SkuCore.Keys.SkuDefaultBindings) do
+			for icom, vcom in pairs(vcat) do
+				if vcom.key1 then
+					SetBinding(vcom.key1, icom, 1)
+				end
+				if vcom.key2 then
+					SetBinding(vcom.key2, icom, 1)
+				end
+			end
+		end
+	end
+	
+	SkuCore:SaveBindings()
+end

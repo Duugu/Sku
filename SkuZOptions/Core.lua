@@ -524,7 +524,7 @@ function SkuOptions:CreateMainFrame()
 			local tItem
 			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 			if SkuOptions.nextRollFrameNumber then
-				SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
+				SkuOptions.Voice:OutputString(L["Roll on"].." "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
 			end
 			return
 		end
@@ -1476,7 +1476,7 @@ function SkuOptions:START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
+		SkuOptions.Voice:OutputString(L["Roll on"].." "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
 	end
 end
 
@@ -1486,7 +1486,7 @@ function SkuOptions:CANCEL_LOOT_ROLL(rollID, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
+		SkuOptions.Voice:OutputString(L["Roll on"].." "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
 	end
 end
 
@@ -1496,7 +1496,7 @@ function SkuOptions:LOOT_SLOT_CHANGED(lootSlot, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"]..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
+		SkuOptions.Voice:OutputString(L["Roll on"].." "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
 	end
 end
 
@@ -2308,8 +2308,11 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 
 				--import rts
 				for i, v in ipairs(tRoutes) do
-					local tStartWP = tWaypoints[tRoutes[v].tStartWPName] or SkuNav:GetWaypoint(tRoutes[v].tStartWPName)
-					local tEndWP = tWaypoints[tRoutes[v].tEndWPName] or SkuNav:GetWaypoint(tRoutes[v].tEndWPName)
+					local tStartWP, tEndWP
+					if tRoutes[v] then
+						tStartWP = tWaypoints[tRoutes[v].tStartWPName] or SkuNav:GetWaypoint(tRoutes[v].tStartWPName)
+						tEndWP = tWaypoints[tRoutes[v].tEndWPName] or SkuNav:GetWaypoint(tRoutes[v].tEndWPName)
+					end
 					if not tStartWP or not tEndWP then
 						tIgnoredCounterRts = tIgnoredCounterRts + 1
 						SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", i, v, "Start/End fehlt:", tStartWP ~= false, tEndWP ~= false)
@@ -2391,7 +2394,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 									else
 										--same name same data, ignore
 										tIgnoredCounterRts = tIgnoredCounterRts + 1
-										SkuOptions:DebugToChat("RT ignoriert", i, v, "Identische RT vorhanden (inkl. Daten):", tExistingRtData)
+										--SkuOptions:DebugToChat("RT ignoriert", i, v, "Identische RT vorhanden (inkl. Daten):", tExistingRtData)
 
 									end
 								end

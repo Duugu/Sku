@@ -44,21 +44,13 @@ SkuNav.PrintMT = {
 --this is a temp hack for the weird transit zone between badlands and Searing Gorge. due to unknown reasons SkuNav:GetBestMapForUnit returns 1415 (eastern kingdoms) there.
 function SkuNav:GetBestMapForUnit(aUnitId)
 	local tPlayerUIMap = C_Map.GetBestMapForUnit(aUnitId)
-	if tPlayerUIMap == 1415 then
-		tPlayerUIMap = 1418
-		if GetMinimapZoneText() == L["Stonewrought-Pass"] then
-			tPlayerUIMap = 1432
-		end
-		if GetMinimapZoneText() == L["The Temple Of Atal'Hakkar"] then
-			tPlayerUIMap = 1435
-		end
-	end
-	if tPlayerUIMap == 1414 then
-		if GetMinimapZoneText() == L["Maraudon"] then
-			tPlayerUIMap = 1443
-		end
-		if GetMinimapZoneText() == L["Onyxias Lair"] then
-			tPlayerUIMap = 1445
+
+	if tPlayerUIMap == 1415 or tPlayerUIMap == 1414 then
+		local tMMZoneText = GetMinimapZoneText()
+		for i, v in pairs(SkuDB.InternalAreaTable) do
+			if v.AreaName_lang == tMMZoneText then
+				tPlayerUIMap = SkuNav:GetUiMapIdFromAreaId(v.ParentAreaID)
+			end
 		end
 	end
 	return tPlayerUIMap
@@ -675,6 +667,24 @@ function SkuNav:EndRouteRecording(aWpBName, aTMPSizeB)
 				--print("old rt removed:", SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute)
 			end
 		end
+
+		--check if route name exists and increment if
+		if SkuOptions.db.profile[MODULE_NAME].Routes[updatedRtName] then
+			print("EXIOSTS", updatedRtName)
+			local q = 1
+			while SkuOptions.db.profile[MODULE_NAME].Routes[updatedRtName..q] do
+				q = q + 1
+			end
+			updatedRtName = updatedRtName..";"..q
+			print("NEW", updatedRtName)
+		end
+
+
+
+
+
+
+
 		--add the new route data
 		SkuNav:InsertRoute(updatedRtName)
 		SkuOptions.db.profile[MODULE_NAME].Routes[updatedRtName] = updatedRtData
@@ -1228,7 +1238,7 @@ function SkuNav:ProcessCheckReachingWp()
 							if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 							end
-							SkuOptions.Voice:OutputString(L["still"]";"..(#SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs - tNextWPNr + 1), true, true, 0, true)
+							SkuOptions.Voice:OutputString(L["still"]..";"..(#SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs - tNextWPNr + 1), true, true, 0, true)
 
 							SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs[tNextWPNr], true)
 							SkuNav:UpdateReverseRtData()

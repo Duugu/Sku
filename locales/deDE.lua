@@ -9,6 +9,12 @@ Instructions for translators:
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
 
+L["Minus"] = "Minus" --this is the character name (-)
+L["Apostrophe"] = "Hochkomma" --this is the character name (')
+L["Accent"] = "Akzent" --this is the character name (´)
+L["Plus"] = "Plus" --this is the character name (+)
+L["Comma"] = "Komma" --this is the character name (,)
+L["channel"] = "Kanal" --this is the character name (#)
 L["The Temple Of Atal'Hakkar"] = "Der Tempel von Atal'Hakkar" -- do not translate freely, use the exact ingame name in you target lang
 L["Onyxias Lair"] = "Onyxias Hort" -- do not translate freely, use the exact ingame name in you target lang
 L["passive"] = "passiv" --unit reaction (will attack or just defend)
@@ -353,6 +359,7 @@ L["Trade skill"] = "Handwerk"
 L["Scroll up"] = "Hoch scrollen"  
 L["Scroll down"] = "Runter scrollen"  
 L["Maraudon"] = "Maraudon"  --the exact zone name. don't translate. take the ingame name instead.
+L["Dire Maul"] = "Düsterbruch"  --the exact zone name. don't translate. take the ingame name instead.
 
 --L[""] = ""  
 -- weiter bei skucore core.lua Voice:OutputString("nicht erstellt", false, true, 0.3, true)
