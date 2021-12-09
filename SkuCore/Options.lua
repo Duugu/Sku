@@ -1101,6 +1101,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 				local tCommand, tCategory, tKey1, tKey2 = GetBinding(x, aBindingSet)
 				if tCategory ~= tCurrentCategory then
 					tCurrentCategory = tCategory
+					if not tCurrentCategory then 
+						tCurrentCategory = "ADDONS" 
+					end
 					tBindings[tCurrentCategory] = {}
 				end
 				tBindings[tCurrentCategory][tCommand] = {key1 = tKey1, key2 = tKey2, index = x}
@@ -1109,7 +1112,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 			SkuOptions.db.profile[MODULE_NAME].tBindings = tBindings
 
 			for categoryConst, v in pairs(tBindings) do
-				local tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {_G[categoryConst]}, menuEntryTemplate_Menu)
+				local tNewMenuEntryCat 
+				if _G[categoryConst] then
+					tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {_G[categoryConst]}, menuEntryTemplate_Menu)
+				else
+					tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {categoryConst}, menuEntryTemplate_Menu)
+				end
 				tNewMenuEntryCat.dynamic = true
 				tNewMenuEntryCat.filterable = true
 
@@ -1125,6 +1133,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 						local tCommand, tCategory, tKey1, tKey2 = GetBinding(x, aBindingSet)
 						if tCategory ~= tCurrentCategory then
 							tCurrentCategory = tCategory
+							if not tCurrentCategory then 
+								tCurrentCategory = "ADDONS" 
+							end							
 							tBindings[tCurrentCategory] = {}
 						end
 						tBindings[tCurrentCategory][tCommand] = {key1 = tKey1, key2 = tKey2, index = x}
