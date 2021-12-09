@@ -3,11 +3,11 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.5](https://github.com/Duugu/Sku/releases/download/r21.5/Sku-r21.5-bcc.zip) <br>
+[SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
+[Sku 21.6](https://github.com/Duugu/Sku/releases/download/r21.5/Sku-r21.5-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
-[SkuAudioData 22](https://github.com/Duugu/SkuAudioData/releases/download/r22/SkuAudioData-r22-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
@@ -16,6 +16,36 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 21.6
+
+### SkuCore
+*Neuerungen*
+- Über "SkuCore > Spiel Tastenbelegung" kann man nun die Tastenbelegungen für alle Funktionen in WoW festlegen/ändern.<br>
+Die Nutzung ist quasi mit der Tastenbelegung für Aktionsleisten identisch.<br>
+Achtung: Die Funktion überprüft nicht, ob eine neue Tastenkombination bereits für andere Funktionen verwendet wird. Das musst du selbst überblicken.<br>
+Sollte die Tastenkombination bereits für andere Funktionen verwendet werden, so wird sie dort kommentarlos entfernt.<br>
+Es gibt außerdem unter "Spiel Tastenbelegung > Alles zurücksetzen" die Möglichkeit alle Tastenbelegungen auf die Standardtastenbelegungen zurückzusetzen. <br>
+Dabei handelt es sich um die von _uns_ genutzten Standardtastenbelegungen. _Nicht_ um die normalen WoW-Standardtastenbelegungen.
+
+Fehlerkorrekturen
+- Das kleine ö kann jetzt Aktionsleisten zugeweisen werden.
+- ENTER wurde bei den Aktionsleisten als Tastenbelegung blockiert.
+
+### SkuNav
+*Fehlerkorrekturen*
+- Es wurde ein Fehler bei identischen Routennamen behoben.<br>
+Einer neu erstellten Route wird ab sofort eine Nummer angehängt, sollte es den Namen schon geben.
+- Es wurde ein Fehler mit diversen Unterzonen vor Instanzen behoben (z. B. Düsterbruch draußen).
+- Das Rabenholdtanwesen hat eine gerichtliche Verfügung gegen die geplante Zuordnung zum Vorgebirge erwirkt. Es bleibt daher Teil des Alteracgebirges.
+- Beim Routenimport werden nun Routen, die bereits identisch (inkl. Zwischenwegpunkte) vorhanden sind, nicht mehr als Detailfehler ausgegeben.
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Ein fehlendes Leerzeichen bei der Audioausgabe hinter "Würfeln für" beim Würfeln wurde hinzugefügt.<br>
+Das Addon hat immer den Gegenstandsnamen direkt an das "für" angefügt. <br>
+Das so entstehene Wort "für..." ohne Leerzeichen zwischen "für" und dem Gegenstandsnamen war natürlich unbekannt. Daher gab es dafür immer nur einen Piepser.
+
 
 ## Änderungen in Version 21.5
 
