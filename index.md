@@ -9,7 +9,7 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
-[Sku-Maus Autohotkey-Skript 1](https://1drv.ms/u/s!Aqgp3J_s6MM7iJ8hL7v4XpX5VkdWyw?e=DYh3NT) <br>
+[Sku-Maus Autohotkey-Skript 2](https://1drv.ms/u/s!Aqgp3J_s6MM7iKQcVpcR3IBws7QRuQ?e=GMli2f) <br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 
 # Bug- und Todo-Liste
