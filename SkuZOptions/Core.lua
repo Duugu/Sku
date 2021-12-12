@@ -53,6 +53,20 @@ local defaults = {
 		}
 	}
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:CloseMenu()
+	if SkuOptions:IsMenuOpen() == true then
+		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:IsMenuOpen()
+	if _G["OnSkuOptionsMain"]:IsVisible() == true then
+		return true
+	end
+	return false
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param input string
@@ -90,7 +104,7 @@ function SkuOptions:SlashFunc(input)
 				SkuCore.openMenuAfterPath = input
 				return
 			end
-			if #SkuOptions.Menu == 0 or _G["OnSkuOptionsMain"]:IsVisible() == false then
+			if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
 				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
 			end
 
@@ -122,15 +136,11 @@ function SkuOptions:SlashFunc(input)
 						SkuOptions:VocalizeCurrentMenuName()
 					else
 						SkuOptions.currentMenuPosition:OnSelect()
-						if _G["OnSkuOptionsMain"]:IsVisible() == true then
-							_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-						end
+						SkuOptions:CloseMenu()
 					end
 				else
 					SkuOptions.currentMenuPosition:OnSelect()
-					if _G["OnSkuOptionsMain"]:IsVisible() == true then
-						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-					end
+					SkuOptions:CloseMenu()
 				end
 			end
 
@@ -2244,6 +2254,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 									) 
 									or SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId ~=  tWaypoints[v].areaId  
 									or SkuOptions.db.profile["SkuNav"].Waypoints[v].contintentId ~= tWaypoints[v].contintentId 
+									or SkuOptions.db.profile["SkuNav"].Waypoints[v].comments ~= tWaypoints[v].comments 
 								then
 									--print("wp name exists and data NOT same")
 									--update name of wp and update the wp name in all import routes and import
@@ -2256,6 +2267,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].worldY == tWaypoints[v].worldY 
 											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].areaId ==  tWaypoints[v].areaId 
 											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].contintentId == tWaypoints[v].contintentId 
+											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].comments == tWaypoints[v].comments 
 										then
 											tInsert = false
 											--print("renamed as", tNewWpName, "found")
@@ -2553,9 +2565,7 @@ function SkuOptions:ShowVisualMenu()
 		if not SkuOptions.SkuOptionsVisualMenuContainer then
 			SkuOptions.SkuOptionsVisualMenuContainer = AceGUI:Create("Frame")
 			SkuOptions.SkuOptionsVisualMenuContainer:SetCallback("OnClose",function(widget) 
-				if _G["OnSkuOptionsMain"]:IsVisible() == true then
-					_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-				end
+				SkuOptions:CloseMenu()
 			end)
 			SkuOptions.SkuOptionsVisualMenuContainer:SetTitle("Sku-Audiomenü")
 			--SkuOptions.SkuOptionsVisualMenuContainer:SetStatusText("Status Bar")

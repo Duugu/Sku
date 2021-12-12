@@ -64,74 +64,74 @@ SkuCoreMovement = {
 		["counter"] = 0,
 	}
 
-	SkuStatus = {
-		["indoor"] = 0,
-		["outdoor"] = 0,
-		["swimming"] = 0,
-		["submerged"] = 0,
-		["ghost"] = 0,
-		["dead"] = 0,
-		["running"] = 100000000,
-		["walking"] = 0,
-		["vehicle"] = 0,
-		["follow"] = 0,
-		["riding"] = 0,
-		["stealth"] = 0,
-		["flying"] = 0,
-		["falling"] = 0,
-		["rest"] = 0,
-		["drink"] = 0,
-		["afk"] = 0,
-		["interacting"] = 0,
-		["looting"] = 0,
-		["casting"] = 0,
-	}
+SkuStatus = {
+	["indoor"] = 0,
+	["outdoor"] = 0,
+	["swimming"] = 0,
+	["submerged"] = 0,
+	["ghost"] = 0,
+	["dead"] = 0,
+	["running"] = 100000000,
+	["walking"] = 0,
+	["vehicle"] = 0,
+	["follow"] = 0,
+	["riding"] = 0,
+	["stealth"] = 0,
+	["flying"] = 0,
+	["falling"] = 0,
+	["rest"] = 0,
+	["drink"] = 0,
+	["afk"] = 0,
+	["interacting"] = 0,
+	["looting"] = 0,
+	["casting"] = 0,
+}
 
-	SkuCore.interactFramesListHooked = {}
-	SkuCore.interactFramesList = {
-		"QuestFrame",--o
-		"TaxiFrame",--o
-		"GossipFrame",--o
-		"MerchantFrame",--o
-		"StaticPopup1",
-		"StaticPopup2",
-		"StaticPopup3",
-		"PetStableFrame",
-		"ContainerFrame1",
-		"ContainerFrame2",
-		"ContainerFrame3",
-		"ContainerFrame4",
-		"ContainerFrame5",
-		"ContainerFrame6",
-		"DropDownList1",
-		"TalentFrame",
-		"AuctionFrame",
-		"ClassTrainerFrame",
-		"CharacterFrame",
-		"ReputationFrame",
-		"SkillFrame",
-		"HonorFrame",
-		"PlayerTalentFrame",
-		"InspectFrame",
-		"BagnonInventoryFrame1",
-		"BagnonBankFrame1",
-		"GuildBankFrame",
-		"BankFrame",
-		"CraftFrame",
-		--"GroupLootContainer",
-		"TradeFrame",
-		"TradeSkillFrame",
-		--"DropDownList2",
-		--"FriendsFrame",
-		--"GameMenuFrame",
-		--"SpellBookFrame",
-		--"MultiBarLeft",
-		--"MultiBarRight",
-		--"MultiBarBottomLeft",
-		--"MultiBarBottomRight",
-		"BagnonGuildFrame1",
-		--"MainMenuBar",
-	}
+SkuCore.interactFramesListHooked = {}
+SkuCore.interactFramesList = {
+	"QuestFrame",--o
+	"TaxiFrame",--o
+	"GossipFrame",--o
+	"MerchantFrame",--o
+	"StaticPopup1",
+	"StaticPopup2",
+	"StaticPopup3",
+	"PetStableFrame",
+	"ContainerFrame1",
+	"ContainerFrame2",
+	"ContainerFrame3",
+	"ContainerFrame4",
+	"ContainerFrame5",
+	"ContainerFrame6",
+	"DropDownList1",
+	"TalentFrame",
+	"AuctionFrame",
+	"ClassTrainerFrame",
+	"CharacterFrame",
+	"ReputationFrame",
+	"SkillFrame",
+	"HonorFrame",
+	"PlayerTalentFrame",
+	"InspectFrame",
+	"BagnonInventoryFrame1",
+	"BagnonBankFrame1",
+	"GuildBankFrame",
+	"BankFrame",
+	"CraftFrame",
+	--"GroupLootContainer",
+	"TradeFrame",
+	"TradeSkillFrame",
+	--"DropDownList2",
+	--"FriendsFrame",
+	--"GameMenuFrame",
+	--"SpellBookFrame",
+	--"MultiBarLeft",
+	--"MultiBarRight",
+	--"MultiBarBottomLeft",
+	--"MultiBarBottomRight",
+	"BagnonGuildFrame1",
+	--"MainMenuBar",
+}
 
 local escapes = {
 	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
@@ -156,79 +156,35 @@ function SkuCore:OnInitialize()
 	SkuCore:RegisterEvent("VARIABLES_LOADED")
 	SkuCore:RegisterEvent("PLAYER_REGEN_DISABLED")
 	SkuCore:RegisterEvent("PLAYER_REGEN_ENABLED")
-
 	SkuCore:RegisterEvent("QUEST_LOG_UPDATE")
-
 	SkuCore:RegisterEvent("PLAYER_CONTROL_LOST")
 	SkuCore:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
 	SkuCore:RegisterEvent("PLAYER_CONTROL_GAINED")
-
-
 	SkuCore:RegisterEvent("PLAYER_DEAD")
 	SkuCore:RegisterEvent("AUTOFOLLOW_BEGIN")
 	SkuCore:RegisterEvent("AUTOFOLLOW_END")
 	SkuCore:RegisterEvent("PLAYER_UPDATE_RESTING")
 	SkuCore:RegisterEvent("UPDATE_STEALTH")
-	--SkuCore:RegisterEvent("CURSOR_UPDATE")
 	SkuCore:RegisterEvent("ITEM_UNLOCKED")
 	SkuCore:RegisterEvent("ITEM_LOCK_CHANGED")
 	SkuCore:RegisterEvent("BAG_UPDATE")
-
-
 	SkuCore:RegisterEvent("CURRENT_SPELL_CAST_CHANGED")
-
 	SkuCore:RegisterEvent("UNIT_POWER_UPDATE")
 	SkuCore:RegisterEvent("UNIT_HAPPINESS")
-
 	SkuCore:RegisterEvent("UNIT_SPELLCAST_START")
-
-	--SkuCore:RegisterEvent("QUEST_DETAIL")
-	--SkuCore:RegisterEvent("QUEST_FINISHED")
-	--SkuCore:RegisterEvent("GOSSIP_SHOW")
-	--SkuCore:RegisterEvent("GOSSIP_CLOSED")
-
-	--SkuCore:RegisterEvent("MERCHANT_CLOSED")
-	--SkuCore:RegisterEvent("MERCHANT_SHOW")
-
-	--SkuCore:RegisterEvent("PET_STABLE_SHOW")
-	--SkuCore:RegisterEvent("PET_STABLE_CLOSED")
-
-	--SkuCore:RegisterEvent("UNIT_NAME_UPDATE")
 	SkuCore:RegisterEvent("NAME_PLATE_CREATED")
 	SkuCore:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 	SkuCore:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+	--SkuCore:RegisterEvent("CURSOR_UPDATE")
+	--SkuCore:RegisterEvent("PET_STABLE_SHOW")
+	--SkuCore:RegisterEvent("PET_STABLE_CLOSED")
 
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
 end
 
-
-local function ExtendLine(A, B, length)
-	local lenAB = math.sqrt(math.pow(A.x - B.x, 2.0) + math.pow(A.y - B.y, 2.0));
-	local C = {x = 0, y = 0}
-	C.x = B.x + (B.x - A.x) / lenAB * length;
-	C.y = B.y + (B.y - A.y) / lenAB * length;
-
-	return C
-end
-
-local function LineLenght(sx, sy, dx, dy)
-	local a, b, c
-	if sx <= dx then
-		 a = dx - sx 
-	else
-		 a = sx - dx 
-	end
-	if sy <= dy then
-		 b = dy - sy 
-	else
-		 b = sy - dy 
-	end
-	c = math.sqrt(a^2 + b^2)
-	return math.floor(c)
-end
-
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PanicModeStartStopBackgroundSound(aStartStop)
 	if 1 == 1 then return end
 	if aStartStop == true then
@@ -264,7 +220,11 @@ function SkuCore:PanicModeStartStopBackgroundSound(aStartStop)
 			StopSound(SkuCore.currentBackgroundSoundHandle, 0)
 			SkuCore.currentBackgroundSoundHandle = nil
 		end
-	elseif aStartStop == false then
+		
+		return
+	end
+	
+	if aStartStop == false then
 		if SkuCore.currentBackgroundSoundHandle ~= nil then
 			StopSound(SkuCore.currentBackgroundSoundHandle, 0)
 			SkuCore.currentBackgroundSoundHandle = nil
@@ -273,6 +233,8 @@ function SkuCore:PanicModeStartStopBackgroundSound(aStartStop)
 			SkuCore.currentBackgroundSoundTimerHandle:Cancel()
 			SkuCore.currentBackgroundSoundTimerHandle = nil
 		end
+
+		return
 	end
 end
 
@@ -498,11 +460,11 @@ end
 function SkuCore:NAME_PLATE_UNIT_ADDED(aEvent, aPlateName)
 	--print("NAME_PLATE_UNIT_ADDED", aPlateName, UnitName(aPlateName))
 	local tName = UnitName(aPlateName)
-	if tName then
-		local tReaction = UnitReaction("player", aPlateName)
-		if tReaction > 3 then --https://wowpedia.fandom.com/wiki/API_UnitReaction
-			table.insert(tSkuCoreNamePlateRepo, {name = tName, plate = aPlateName})
-		end
+	if not tName then return end
+
+	local tReaction = UnitReaction("player", aPlateName)
+	if tReaction > 3 then --https://wowpedia.fandom.com/wiki/API_UnitReaction
+		table.insert(tSkuCoreNamePlateRepo, {name = tName, plate = aPlateName})
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -537,314 +499,311 @@ function SkuCore:OnEnable()
 	local tSkuCoreSecureTabButtonTime = 0
 	tFrame:SetScript("OnUpdate", function(self, time)
 		tSkuCoreSecureTabButtonTime = tSkuCoreSecureTabButtonTime + time
-		if tSkuCoreSecureTabButtonTime > 0.1 then
+		if tSkuCoreSecureTabButtonTime < 0.1 then return end
 
-			SkuCore:DoRangeCheck()
+		SkuCore:DoRangeCheck()
 
-			if SkuCore.inCombat ~= true then
-				if GetCVar("nameplateShowFriends") == "0" then
-					SetCVar("nameplateShowFriends", "1")
+		if SkuCore.inCombat ~= true then
+			if GetCVar("nameplateShowFriends") == "0" then
+				SetCVar("nameplateShowFriends", "1")
+			end
+
+			if #tSkuCoreNamePlateRepo > 0 then
+				if tLastPlayerTargetNr == 0 then
+					tLastPlayerTargetNr = 1
 				end
-
-				if #tSkuCoreNamePlateRepo > 0 then
-					if tLastPlayerTargetNr == 0 then
+				local tName = UnitName("target")
+				if tName then
+					if not tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
 						tLastPlayerTargetNr = 1
 					end
-					local tName = UnitName("target")
-					if tName then
-						if not tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
-							tLastPlayerTargetNr = 1
-						end
-						if tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
-							if tName == tSkuCoreNamePlateRepo[tLastPlayerTargetNr].name then
-								tLastPlayerTargetNr = tLastPlayerTargetNr + 1
-								if tLastPlayerTargetNr > #tSkuCoreNamePlateRepo then
-									tLastPlayerTargetNr = 1
-								end
+					if tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
+						if tName == tSkuCoreNamePlateRepo[tLastPlayerTargetNr].name then
+							tLastPlayerTargetNr = tLastPlayerTargetNr + 1
+							if tLastPlayerTargetNr > #tSkuCoreNamePlateRepo then
+								tLastPlayerTargetNr = 1
 							end
 						end
 					end
-					if tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
-						_G["SkuCoreSecureTabButton"]:SetAttribute("macrotext1", "/tar "..tSkuCoreNamePlateRepo[tLastPlayerTargetNr].name)	
-					end
-				else
-					_G["SkuCoreSecureTabButton"]:SetAttribute("macrotext1", "/cleartarget")	
 				end
+				if tSkuCoreNamePlateRepo[tLastPlayerTargetNr] then
+					_G["SkuCoreSecureTabButton"]:SetAttribute("macrotext1", "/tar "..tSkuCoreNamePlateRepo[tLastPlayerTargetNr].name)	
+				end
+			else
+				_G["SkuCoreSecureTabButton"]:SetAttribute("macrotext1", "/cleartarget")	
 			end
-			tSkuCoreSecureTabButtonTime = 0
 		end
+		tSkuCoreSecureTabButtonTime = 0
 	end)
 
 	local ttime = 0
 	local f = _G["SkuCoreControl"] or CreateFrame("Frame", "SkuCoreControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
-		if SkuOptions.db.profile[MODULE_NAME].enable == true then
+		if SkuOptions.db.profile[MODULE_NAME].enable ~= true then return end
 			
-			--hunter pet happiness
-			if select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"] then
-				if SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true then
-					SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
-					if SkuCoreOldPetHappinessCounter > 15 then
-						local happiness, damagePercentage, loyaltyRate = GetPetHappiness()
-						if happiness and happiness ~= 3 then
-							SkuOptions.Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-							SkuCoreOldPetHappinessCounter = 0
-						end
+		--hunter pet happiness
+		if select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"] then
+			if SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true then
+				SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
+				if SkuCoreOldPetHappinessCounter > 15 then
+					local happiness, damagePercentage, loyaltyRate = GetPetHappiness()
+					if happiness and happiness ~= 3 then
+						SkuOptions.Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+						SkuCoreOldPetHappinessCounter = 0
 					end
 				end
-			end
-
-			ttime = ttime + time
-			if ttime > 0.15 then
-				SkuCore:PanicModeCollectData()
-
-
-				for x = 1, #SkuCore.interactFramesList do
-					if SkuCore.interactFramesList[x] and not SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] then
-						if _G[SkuCore.interactFramesList[x]] then
-							hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
-							hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
-							SkuCore:GENERIC_OnOpen()
-							SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
-						end
-					end
-				end
-
-				local infoType, itemID, itemLink = GetCursorInfo()
-				local tResult
-				if infoType ~= oinfoType or itemID~= oitemID or itemLink ~= oitemLink then
-					if infoType then
-						if infoType == "merchant" then
-							tResult = _G["MerchantItem"..itemID.."Name"]:GetText()
-						elseif infoType == "item" then
-							tResult = string.sub(unescape(itemLink), 2, string.len(unescape(itemLink))-1)
-						else
-							tResult = infoType
-						end
-					else
-						tResult = L["Empty"]
-					end
-					oinfoType = infoType
-					oitemID = itemID
-					oitemLink = itemLink
-				end
-				if tResult then
-					SkuOptions.Voice:OutputString(L["Cursor"]..tResult, true, true, 0.2, true)
-				end
-
-				if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
-					SkuCore.isMoving = true
-				else
-					SkuCore.isMoving = false
-				end
-				if SkuCore.openMenuAfterCombat == true or SkuCore.openMenuAfterMoving == true then
-					if SkuCore.inCombat == false and SkuCore.isMoving == false then
-						if SkuCore.openMenuAfterPath ~= "" then
-							SkuOptions:SlashFunc(SkuCore.openMenuAfterPath)
-							SkuCore.openMenuAfterPath = ""
-						else
-							if #SkuOptions.Menu == 0 or _G["OnSkuOptionsMain"]:IsVisible() == false then
-								_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-							end
-						end
-					end
-				end
-	
-				if IsFalling() == true then
-					if SkuStatus.falling ~= -1 then
-						if SkuStatus.falling > 0 then
-							if GetTime() - SkuStatus.falling > 1.00 then
-								SkuOptions.Voice:OutputString("male-Fallen", true, true, 0.2)
-								SkuStatus.falling = -1
-							end
-						else
-							SkuStatus.falling = GetTime()
-						end
-					end
-				else
-					SkuStatus.falling = 0
-				end
-				if UnitIsAFK("player") == true then
-					if SkuStatus.afk == 0 then
-						SkuStatus.afk = GetTime()
-						SkuOptions.Voice:OutputString("male-Fallen", false, true, 0.2)
-					end
-				else
-					SkuStatus.afk = 0
-				end
-				if UnitIsDead("player") == true then
-					if SkuStatus.dead == 0 then
-						SkuStatus.dead = GetTime()
-						SkuOptions.Voice:OutputString("male-Tot", false, true, 0.2)
-					end
-				else
-					SkuStatus.dead = 0
-				end
-				if IsResting() == true then
-					if SkuStatus.rest == 0 then
-						SkuStatus.rest = GetTime()
-						SkuOptions.Voice:OutputString("male-Rasten", false, true, 0.2)
-					end
-				else
-					SkuStatus.rest = 0
-				end
-				if UnitIsGhost("player") == true then
-					if SkuStatus.ghost == 0 then
-						SkuStatus.ghost = GetTime()
-						SkuOptions.Voice:OutputString("male-Geist", false, true, 0.2)
-					end
-				else
-					SkuStatus.ghost = 0
-				end
-				if IsOutdoors() == true then
-					if SkuStatus.outdoor == 0 then
-						SkuStatus.outdoor = GetTime()
-						SkuOptions.Voice:OutputString("male-Draußen", false, true, 0.2)
-					end
-				else
-					SkuStatus.outdoor = 0
-				end
-				if IsIndoors() == true then
-					if SkuStatus.indoor == 0 then
-						SkuStatus.indoor = GetTime()
-						SkuOptions.Voice:OutputString("male-Drinnen", false, true, 0.2)
-					end
-				else
-					SkuStatus.indoor = 0
-				end
-				if IsSubmerged() == true and _G["MirrorTimer1"]:IsVisible() == true then
-					if SkuStatus.submerged == 0 then
-						SkuStatus.submerged = GetTime()
-						SkuStatus.swimming = 0
-						SkuOptions.Voice:OutputString("male-Tauchen", false, true, 0.2)
-					end
-				else
-					SkuStatus.submerged = 0
-				end
-				if IsSwimming() == true and SkuStatus.submerged == 0 then
-					if SkuStatus.swimming == 0 then
-						SkuStatus.swimming = GetTime()
-						SkuOptions.Voice:OutputString("male-Schwimmen", false, true, 0.2)
-					end
-				else
-					SkuStatus.swimming = 0
-				end
-				if IsMounted() == true then
-					if SkuStatus.riding == 0 then
-						SkuStatus.riding = GetTime()
-						SkuOptions.Voice:OutputString("male-Reiten", false, true, 0.2)
-					end
-				else
-					if SkuStatus.riding > 0 then
-						SkuStatus.riding = 0
-						SkuOptions.Voice:OutputString("male-Reiten beendet", false, true, 0.2)
-					end
-				end
-				if IsFlying() == true then
-					if SkuStatus.flying == 0 then
-						SkuStatus.flying = GetTime()
-						SkuOptions.Voice:OutputString("male-Fliegen", false, true, 0.2)
-					end
-				else
-					if SkuStatus.flying > 0 then
-						SkuStatus.flying = 0
-						SkuOptions.Voice:OutputString("Fliegen beendet", false, true, 0.2)
-					end
-				end
-
-				--close debug panel
-				if _G["SkuDebug"] then
-					if _G["SkuDebug"]:IsVisible() == true then
-						if (GetTime() - tStartDebugTimestamp) > 5 then
-							--_G["SkuDebug"]:Hide()
-						end
-					end
-				end
-
-				if SkuCoreMovement then
-					if UnitOnTaxi("player") ~= true then
-
-						local tTest = UnitPosition("player")
-						if tTest and WorldMapFrame:GetMapID() ~= 947 then
-							--due to unknown reasons with tbc WorldMapFrame:GetMapID does not return any value after taxi transfer before the world map was openend at least once
-							if C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player") == nil then
-								WorldMapFrame:Show()
-								WorldMapFrame:Hide()
-							end
-							--print(WorldMapFrame:GetMapID())
-							if C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player") then
-								local _, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player"))
-								local tNewX, tNewY = worldPosition:GetXY()
-
-								if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true then
-									local _, tDistance = SkuCore:Distance(tNewX, tNewY, SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y)
-									local currentSpeed, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed("player")
-									local tMod = currentSpeed / 7
-
-									if IsSwimming() then
-										tMod = (currentSpeed / swimSpeed) / runSpeed
-									end
-
-									local tSound = 0
-									if tDistance < 0.25 * tMod then
-										tSound = 1
-									elseif tDistance < 0.45 * tMod then
-										tSound = 2
-									elseif tDistance < 0.60 * tMod then
-										tSound = 3
-									elseif tDistance < 0.85 * tMod then
-										tSound = 4
-									elseif tDistance < 1.00 * tMod then
-										tSound = 5
-									end
-
-									if tSound ~= 0 then
-										SkuCoreMovement.counter = SkuCoreMovement.counter + 1
-										if SkuCoreMovement.counter > 5 and tSound > 0 then
-											SkuCoreMovement.counter = 0
-											--print(tSound, t * 10000)
-											SkuOptions.Voice:OutputString("sound-stuck"..tSound, true, false, 0.8)-- file: string, reset: bool, wait: bool, length: int
-										end
-									end
-
-
-									--collect terrain data test
-									--[[
-									local tExtMap = SkuNav:GetBestMapForUnit("player")
-									if not SkuCoreDB.TerrainData then
-										SkuCoreDB.TerrainData = {}
-									end
-									if not SkuCoreDB.TerrainData[tExtMap] then
-										SkuCoreDB.TerrainData[tExtMap] = {}
-									end
-									local function round(val, decimal)
-										if (decimal) then
-											return math.floor( (val * 10^decimal) + 0.5) / (10^decimal)
-										else
-											return math.floor(val+0.5)
-										end
-									end
-									local tIntX, tIntY = round(tNewX, 0), round(tNewY, 0)
-									if not SkuCoreDB.TerrainData[tExtMap][tIntX] then
-										SkuCoreDB.TerrainData[tExtMap][tIntX] = {}
-									end
-									if tSound ~= 0 then
-										SkuCoreDB.TerrainData[tExtMap][tIntX][tIntY] = true
-									else
-										SkuCoreDB.TerrainData[tExtMap][tIntX][tIntY] = false
-									end
-									]]
-
-
-								end
-								SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y = tNewX, tNewY
-							end
-						end
-					end
-				end
-				ttime = 0
 			end
 		end
+
+		ttime = ttime + time
+		if ttime < 0.15 then return end
+
+		SkuCore:PanicModeCollectData()
+
+		for x = 1, #SkuCore.interactFramesList do
+			if SkuCore.interactFramesList[x] and not SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] then
+				if _G[SkuCore.interactFramesList[x]] then
+					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
+					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
+					SkuCore:GENERIC_OnOpen()
+					SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
+				end
+			end
+		end
+
+		local infoType, itemID, itemLink = GetCursorInfo()
+		local tResult
+		if infoType ~= oinfoType or itemID~= oitemID or itemLink ~= oitemLink then
+			if infoType then
+				if infoType == "merchant" then
+					tResult = _G["MerchantItem"..itemID.."Name"]:GetText()
+				elseif infoType == "item" then
+					tResult = string.sub(unescape(itemLink), 2, string.len(unescape(itemLink))-1)
+				else
+					tResult = infoType
+				end
+			else
+				tResult = L["Empty"]
+			end
+			oinfoType = infoType
+			oitemID = itemID
+			oitemLink = itemLink
+		end
+		if tResult then
+			SkuOptions.Voice:OutputString(L["Cursor"]..tResult, true, true, 0.2, true)
+		end
+
+		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
+			SkuCore.isMoving = true
+		else
+			SkuCore.isMoving = false
+		end
+		if SkuCore.openMenuAfterCombat == true or SkuCore.openMenuAfterMoving == true then
+			if SkuCore.inCombat == false and SkuCore.isMoving == false then
+				if SkuCore.openMenuAfterPath ~= "" then
+					SkuOptions:SlashFunc(SkuCore.openMenuAfterPath)
+					SkuCore.openMenuAfterPath = ""
+				else
+					if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
+						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
+					end
+				end
+			end
+		end
+
+		if IsFalling() == true then
+			if SkuStatus.falling ~= -1 then
+				if SkuStatus.falling > 0 then
+					if GetTime() - SkuStatus.falling > 1.00 then
+						SkuOptions.Voice:OutputString("male-Fallen", true, true, 0.2)
+						SkuStatus.falling = -1
+					end
+				else
+					SkuStatus.falling = GetTime()
+				end
+			end
+		else
+			SkuStatus.falling = 0
+		end
+		if UnitIsAFK("player") == true then
+			if SkuStatus.afk == 0 then
+				SkuStatus.afk = GetTime()
+				SkuOptions.Voice:OutputString("male-Fallen", false, true, 0.2)
+			end
+		else
+			SkuStatus.afk = 0
+		end
+		if UnitIsDead("player") == true then
+			if SkuStatus.dead == 0 then
+				SkuStatus.dead = GetTime()
+				SkuOptions.Voice:OutputString("male-Tot", false, true, 0.2)
+			end
+		else
+			SkuStatus.dead = 0
+		end
+		if IsResting() == true then
+			if SkuStatus.rest == 0 then
+				SkuStatus.rest = GetTime()
+				SkuOptions.Voice:OutputString("male-Rasten", false, true, 0.2)
+			end
+		else
+			SkuStatus.rest = 0
+		end
+		if UnitIsGhost("player") == true then
+			if SkuStatus.ghost == 0 then
+				SkuStatus.ghost = GetTime()
+				SkuOptions.Voice:OutputString("male-Geist", false, true, 0.2)
+			end
+		else
+			SkuStatus.ghost = 0
+		end
+		if IsOutdoors() == true then
+			if SkuStatus.outdoor == 0 then
+				SkuStatus.outdoor = GetTime()
+				SkuOptions.Voice:OutputString("male-Draußen", false, true, 0.2)
+			end
+		else
+			SkuStatus.outdoor = 0
+		end
+		if IsIndoors() == true then
+			if SkuStatus.indoor == 0 then
+				SkuStatus.indoor = GetTime()
+				SkuOptions.Voice:OutputString("male-Drinnen", false, true, 0.2)
+			end
+		else
+			SkuStatus.indoor = 0
+		end
+		if IsSubmerged() == true and _G["MirrorTimer1"]:IsVisible() == true then
+			if SkuStatus.submerged == 0 then
+				SkuStatus.submerged = GetTime()
+				SkuStatus.swimming = 0
+				SkuOptions.Voice:OutputString("male-Tauchen", false, true, 0.2)
+			end
+		else
+			SkuStatus.submerged = 0
+		end
+		if IsSwimming() == true and SkuStatus.submerged == 0 then
+			if SkuStatus.swimming == 0 then
+				SkuStatus.swimming = GetTime()
+				SkuOptions.Voice:OutputString("male-Schwimmen", false, true, 0.2)
+			end
+		else
+			SkuStatus.swimming = 0
+		end
+		if IsMounted() == true then
+			if SkuStatus.riding == 0 then
+				SkuStatus.riding = GetTime()
+				SkuOptions.Voice:OutputString("male-Reiten", false, true, 0.2)
+			end
+		else
+			if SkuStatus.riding > 0 then
+				SkuStatus.riding = 0
+				SkuOptions.Voice:OutputString("male-Reiten beendet", false, true, 0.2)
+			end
+		end
+		if IsFlying() == true then
+			if SkuStatus.flying == 0 then
+				SkuStatus.flying = GetTime()
+				SkuOptions.Voice:OutputString("male-Fliegen", false, true, 0.2)
+			end
+		else
+			if SkuStatus.flying > 0 then
+				SkuStatus.flying = 0
+				SkuOptions.Voice:OutputString("Fliegen beendet", false, true, 0.2)
+			end
+		end
+
+		--close debug panel
+		if _G["SkuDebug"] then
+			if _G["SkuDebug"]:IsVisible() == true then
+				if (GetTime() - tStartDebugTimestamp) > 5 then
+					--_G["SkuDebug"]:Hide()
+				end
+			end
+		end
+
+		if SkuCoreMovement then
+			if UnitOnTaxi("player") ~= true then
+
+				local tTest = UnitPosition("player")
+				if tTest and WorldMapFrame:GetMapID() ~= 947 then
+					--due to unknown reasons with tbc WorldMapFrame:GetMapID does not return any value after taxi transfer before the world map was openend at least once
+					if C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player") == nil then
+						WorldMapFrame:Show()
+						WorldMapFrame:Hide()
+					end
+					--print(WorldMapFrame:GetMapID())
+					if C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player") then
+						local _, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player"))
+						local tNewX, tNewY = worldPosition:GetXY()
+
+						if SkuCoreMovement.Flags.MoveForward == true or SkuCoreMovement.Flags.StrafeLeft == true or SkuCoreMovement.Flags.StrafeRight == true or SkuCoreMovement.Flags.MoveBackward == true then
+							local _, tDistance = SkuCore:Distance(tNewX, tNewY, SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y)
+							local currentSpeed, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed("player")
+							local tMod = currentSpeed / 7
+
+							if IsSwimming() then
+								tMod = (currentSpeed / swimSpeed) / runSpeed
+							end
+
+							local tSound = 0
+							if tDistance < 0.25 * tMod then
+								tSound = 1
+							elseif tDistance < 0.45 * tMod then
+								tSound = 2
+							elseif tDistance < 0.60 * tMod then
+								tSound = 3
+							elseif tDistance < 0.85 * tMod then
+								tSound = 4
+							elseif tDistance < 1.00 * tMod then
+								tSound = 5
+							end
+
+							if tSound ~= 0 then
+								SkuCoreMovement.counter = SkuCoreMovement.counter + 1
+								if SkuCoreMovement.counter > 5 and tSound > 0 then
+									SkuCoreMovement.counter = 0
+									--print(tSound, t * 10000)
+									SkuOptions.Voice:OutputString("sound-stuck"..tSound, true, false, 0.8)-- file: string, reset: bool, wait: bool, length: int
+								end
+							end
+
+
+							--collect terrain data test
+							--[[
+							local tExtMap = SkuNav:GetBestMapForUnit("player")
+							if not SkuCoreDB.TerrainData then
+								SkuCoreDB.TerrainData = {}
+							end
+							if not SkuCoreDB.TerrainData[tExtMap] then
+								SkuCoreDB.TerrainData[tExtMap] = {}
+							end
+							local function round(val, decimal)
+								if (decimal) then
+									return math.floor( (val * 10^decimal) + 0.5) / (10^decimal)
+								else
+									return math.floor(val+0.5)
+								end
+							end
+							local tIntX, tIntY = round(tNewX, 0), round(tNewY, 0)
+							if not SkuCoreDB.TerrainData[tExtMap][tIntX] then
+								SkuCoreDB.TerrainData[tExtMap][tIntX] = {}
+							end
+							if tSound ~= 0 then
+								SkuCoreDB.TerrainData[tExtMap][tIntX][tIntY] = true
+							else
+								SkuCoreDB.TerrainData[tExtMap][tIntX][tIntY] = false
+							end
+							]]
+
+
+						end
+						SkuCoreMovement.LastPosition.x, SkuCoreMovement.LastPosition.y = tNewX, tNewY
+					end
+				end
+			end
+		end
+		ttime = 0
 	end)
 
 	local tFrame = _G["SkuCoreControlOption1"] or  CreateFrame("Button", "SkuCoreControlOption1", _G["SkuCoreControl"], "UIPanelButtonTemplate")
@@ -1042,7 +1001,6 @@ local PLAYER_MOUNT_DISPLAY_CHANGED_flag = 0
 local PLAYER_CONTROL_GAINED_flag = 0
 function SkuCore:PLAYER_CONTROL_LOST(...)--taxi
 	--print("PLAYER_CONTROL_LOST", ...)
-
 	PLAYER_CONTROL_LOST_flag = 1
 	PLAYER_CONTROL_GAINED_flag = 0
 end
@@ -1087,6 +1045,7 @@ function SkuCore:TaxiFrame_OnShow(self)
 	--print("SkuCore:TaxiFrame_OnShow", self)
 	SkuCore:CheckFrames()
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TaxiFrame_OnHide(self)
 	--print("SkuCore:TaxiFrame_OnHide", self)
@@ -1192,13 +1151,15 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_POWER_UPDATE(eventName, unitType)
+
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_HAPPINESS(unitTarget)
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-
 function SkuCore:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
 	--print("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
@@ -1258,9 +1219,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_REGEN_DISABLED(...)
-	if _G["OnSkuOptionsMain"]:IsVisible() == true then
-		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-	end
+	SkuOptions:CloseMenu()
 	_G["SkuCoreControlOption1"]:Hide()
 	SkuCore.inCombat = true
 	SkuOptions.Voice:OutputString(L["Combat start"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
@@ -1289,6 +1248,7 @@ function SkuCore:QuestFrameGreetingPanel_OnHide(...)
 	--print("QuestFrameGreetingPanel_OnHide", self, event, ...)
 	SkuCore:CheckFrames()
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GOSSIP_SHOW(self, event, ...)
 	--print("GOSSIP_SHOW", self, event, ...)
@@ -1307,11 +1267,12 @@ function SkuCore:GossipFrameAvailableQuestsUpdate(...)
 		SkuCore.GossipFramebuttonIndex = SkuCore.GossipFramebuttonIndex + 1;
 		titleIndex = titleIndex + 1;
 	end
+
 	if ( SkuCore.GossipFramebuttonIndex > 1 ) then
 		SkuCore.GossipFramebuttonIndex = SkuCore.GossipFramebuttonIndex + 1;
 	end
-
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GossipFrameActiveQuestsUpdate(...)
 	local titleButton;
@@ -1326,22 +1287,24 @@ function SkuCore:GossipFrameActiveQuestsUpdate(...)
 		SkuCore.GossipFramebuttonIndex = SkuCore.GossipFramebuttonIndex + 1;
 		titleIndex = titleIndex + 1;
 	end
+
 	if ( titleIndex > 1 ) then
 		titleButton = _G["GossipTitleButton" .. GossipFrame.buttonIndex];
 		SkuCore.GossipFramebuttonIndex = SkuCore.GossipFramebuttonIndex + 1;
 	end
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GossipFrameOptionsUpdate(...)
-	local titleButton;
-	local titleIndex = 1;
-	local titleButtonIcon;
-	for i=1, select("#", ...), 2 do
-		titleButton = _G["GossipTitleButton" .. SkuCore.GossipFramebuttonIndex];
+	local titleButton
+	local titleIndex = 1
+	local titleButtonIcon
+	for i = 1, select("#", ...), 2 do
+		titleButton = _G["GossipTitleButton" .. SkuCore.GossipFramebuttonIndex]
 		SkuCore.tGossipList[SkuCore.GossipFramebuttonIndex] = L["Option"]..";"..splitString(select(i, ...))
 		SkuCore.GossipFramebuttonIndex = SkuCore.GossipFramebuttonIndex + 1;
-		titleIndex = titleIndex + 1;
-		titleButton:Show();
+		titleIndex = titleIndex + 1
+		titleButton:Show()
 	end
 end
 
@@ -1355,7 +1318,6 @@ end
 function SkuCore:QUEST_DETAIL(...)
 	--print("QUEST_DETAIL")
 	SkuCore:CheckFrames()
-
 	SkuOptions:StopSounds(5)
 end
 
@@ -1363,7 +1325,6 @@ end
 function SkuCore:QUEST_FINISHED(...)
 	--print("QUEST_FINISHED")
 	SkuCore:CheckFrames()
-
 	SkuOptions:StopSounds(5)
 end
 
@@ -1371,7 +1332,6 @@ end
 function SkuCore:MERCHANT_SHOW(...)
 	--print("MERCHANT_SHOW")
 	SkuCore:CheckFrames()
-
 	SkuOptions:StopSounds(5)
 end
 
@@ -1379,7 +1339,6 @@ end
 function SkuCore:MERCHANT_CLOSED(...)
 	--print("MERCHANT_CLOSED")
 	SkuCore:CheckFrames()
-
 	SkuOptions:StopSounds(5)
 end
 
@@ -1387,7 +1346,6 @@ end
 function SkuCore:PET_STABLE_SHOW(...)
 	--print("PET_STABLE_SHOW")
 	SkuCore:CheckFrames()
-
 	SkuOptions:StopSounds(5)
 end
 
@@ -1395,7 +1353,6 @@ end
 function SkuCore:PET_STABLE_CLOSED(...)
 	--print("PET_STABLE_CLOSED")
 	SkuCore:CheckFrames()
-
 	SkuOptions:StopSounds(5)
 end
 
@@ -1407,15 +1364,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local GENERIC_OnOpenFlag = false
 function SkuCore:GENERIC_OnOpen(self)
-	if GENERIC_OnOpenFlag == false then
-		GENERIC_OnOpenFlag = true
-		C_Timer.After(0.1, function() 
-			SkuCore:CheckFrames()
-			SkuOptions:StopSounds(5)
-			SkuOptions:SendTrackingStatusUpdates()
-			GENERIC_OnOpenFlag = false
-		end)
-	end
+	if GENERIC_OnOpenFlag ~= false then return end
+
+	GENERIC_OnOpenFlag = true
+	C_Timer.After(0.1, function() 
+		SkuCore:CheckFrames()
+		SkuOptions:StopSounds(5)
+		SkuOptions:SendTrackingStatusUpdates()
+		GENERIC_OnOpenFlag = false
+	end)
 end
 --[[
 function SkuCore:GENERIC_OnOpen(self)
@@ -1428,8 +1385,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GENERIC_OnClose(self)
 	SkuCore:CheckFrames()
-	--SkuOptions:StopSounds(5)
-	--SkuStatus.interacting = 0
 	SkuOptions:SendTrackingStatusUpdates()
 end
 
@@ -1439,6 +1394,7 @@ function SkuCore:TALENTFRAME_OnOpen(self)
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TALENTFRAME_OnClose(self)
 	SkuCore:CheckFrames()
@@ -1498,8 +1454,7 @@ function SkuCore:Debug(text, clear)
 	tStartDebugTimestamp = GetTime()
 end
 
-
-
+---------------------------------------------------------------------------------------------------------------------------------------
 local tButtonsWoFontstrings = {
 	PrevPage = L["Previous"],
 	NextPage = L["Next"],
@@ -1600,11 +1555,13 @@ local friendlyFrameNamesParts = {
 	["ProgressPanel"] = L["Progress"],
 }
 
+---------------------------------------------------------------------------------------------------------------------------------------
 local function GetTableID(aTable)
 	--print(aTable:GetName(), aTable.name, tostring(aTable):gsub("table: ", "", 1))
 	return aTable:GetName() or aTable.name or tostring(aTable):gsub("table: ", "", 1)
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
 local maxItemNameLength = 40
 local function ItemName_helper(aText)
 	aText = unescape(aText)
@@ -1634,6 +1591,8 @@ local function ItemName_helper(aText)
 
 	return string.gsub(tShort, "\r\n", " "), tLong
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function TooltipLines_helper(...)
 	local rText = ""
    for i = 1, select("#", ...) do
@@ -1648,6 +1607,7 @@ local function TooltipLines_helper(...)
 	return rText
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
 local function IterateChildren(t, tab)
 	local tResults = {}
 
@@ -1913,6 +1873,7 @@ local function IterateChildren(t, tab)
 	return tResults
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
 local function CleanUpGossipList(aTable)
 	for x = 1, #aTable do
 		local value = aTable[aTable[x]]
@@ -2075,10 +2036,10 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 		else
 			SkuCore.openMenuAfterMoving = false
 			SkuCore.openMenuAfterCombat = false
-			if _G["OnSkuOptionsMain"]:IsVisible() == true then
+			if SkuOptions:IsMenuOpen() == true then
 				SkuCore.GossipList = {}
 				--SkuOptions:SlashFunc("short,lokal")
-				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
+				SkuOptions:CloseMenu()
 			end			
 		end
 	end)
@@ -2171,6 +2132,8 @@ function SkuCore:ResetBindings(aToWowDefaults)
 				end
 			end
 		end
+	else
+		print("ResetBindings with aToWowDefaults parameter - this should not happen atm")
 	end
 	
 	SkuCore:SaveBindings()

@@ -252,10 +252,7 @@ function SkuQuest:OnSkuQuestAbandon()
 	HideUIPanel(QuestLogFrame)
 	--SkuOptions.TTS:Output("", -1)
 	SkuOptions.Voice:OutputString("quest;abgebrochen", true, true, 0.2, true)
-	if _G["OnSkuOptionsMain"]:IsVisible() == true then
-		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-	end
-
+	SkuOptions:CloseMenu()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -952,9 +949,7 @@ function SkuQuest:ToggleQuestLogHook(...)
 		SkuQuest.SelectedQuest = SkuQuest.SelectedQuest + 1 or 1
 		SkuQuest:OnSkuQuestUP()
 	else
-		if _G["OnSkuOptionsMain"]:IsVisible() == true then
-			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-		end
+		SkuOptions:CloseMenu()
 		--[[
 		if _G["SkuQuestMainOption1"] then
 			_G["SkuQuestMainOption1"]:Hide()

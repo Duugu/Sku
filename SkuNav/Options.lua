@@ -7,6 +7,11 @@ SkuNav.ClickClackSoundsets = {
 	["beep"] = "Ping",
 }
 
+SkuNav.StandardWpReachedRanges = {
+   [1] = "1 Meter",
+   [2] = "3 Meter",
+   [3] = "Auto",
+}
 
 SkuNav.options = {
 	name = MODULE_NAME,
@@ -159,9 +164,10 @@ SkuNav.options = {
 		},
 		standardWpReachedRange = {
 			order = 4,
-			name = L["reach intermediate waypoint at 3 meters"],
+			name = L["Waypoint reached at"],
 			desc = "",
-			type = "toggle",
+			type = "select",
+			values = SkuNav.StandardWpReachedRanges,
 			set = function(info,val)
 				SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = val
 			end,
@@ -224,7 +230,7 @@ SkuNav.defaults = {
 	showSkuMM = false,
 	nearbyWpRange = 30,
 	tomtomWp = false,
-	standardWpReachedRange = true,
+	standardWpReachedRange = 3,
 	clickClackEnabled = true,
 	clickClackRange = 5,
 	clickClackSoundset = "click",
@@ -908,9 +914,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
 						SkuOptions.Voice:OutputString("Metaroute folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-						if _G["OnSkuOptionsMain"]:IsVisible() == true then
-							_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-						end
+						SkuOptions:CloseMenu()
 					end
 				end
 
@@ -938,9 +942,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					--print("auswahl", aName)
 					--lastDirection = SkuNav:GetDirectionTo(worldx, worldy, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY)
 					--PlaySound(835)
-					if _G["OnSkuOptionsMain"]:IsVisible() == true then
-						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-					end
+					SkuOptions:CloseMenu()
 				else
 					SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
 					SkuOptions.Voice:OutputString("Wegpunkt nicht ausgewählt", false, true, 0.3, true)
@@ -1540,9 +1542,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 								if tSuccess == true then
 									--C_Timer.NewTimer(0.1, function() SkuOptions:SlashFunc("short,SkuNav,Wegpunkt,Verwalten,Umbenennen") end)
 									SkuOptions.Voice:OutputString("Wegpunkt umbenannt", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-									if _G["OnSkuOptionsMain"]:IsVisible() == true then
-										_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-									end
+									SkuOptions:CloseMenu()
 									SkuNeighbCache = {}
 									if tCacheNbWpsTimer then
 										tCacheNbWpsTimer:Cancel()
@@ -1716,9 +1716,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.tmpNpcWayPointNameBuilder_Zone = ""
 				SkuOptions.tmpNpcWayPointNameBuilder_Coords = ""
 
-				if _G["OnSkuOptionsMain"]:IsVisible() == true then
-					_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-				end
+				SkuOptions:CloseMenu()
 
 			end
 		end
@@ -1834,9 +1832,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB = nil
 			SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod = nil
 
-			if _G["OnSkuOptionsMain"]:IsVisible() == true then
-				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-			end
+			SkuOptions:CloseMenu()
 		end
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Aufzeichnung abbrechen"}, menuEntryTemplate_Menu)
@@ -1868,9 +1864,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB = nil
 			SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod = nil
 
-			--if _G["OnSkuOptionsMain"]:IsVisible() == true then
-				--_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-			--end
+			--SkuOptions:CloseMenu()
 		end
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Route folgen"}, menuEntryTemplate_Menu)
@@ -1902,9 +1896,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, true)
 					SkuOptions.Voice:OutputString("Metaroute folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 
-					if _G["OnSkuOptionsMain"]:IsVisible() == true then
-						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-					end
+					SkuOptions:CloseMenu()
 				end
 			else
 				if SkuNav:CheckRoute(SkuOptions.db.profile["SkuNav"].routeFollowingRoute) ~= true then
@@ -1932,9 +1924,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute].WPs[SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP], true)
 				SkuOptions.Voice:OutputString("Route folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 
-				if _G["OnSkuOptionsMain"]:IsVisible() == true then
-					_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-				end
+				SkuOptions:CloseMenu()
 			end
 		end
 		tNewMenuEntry.BuildChildren = function(self)

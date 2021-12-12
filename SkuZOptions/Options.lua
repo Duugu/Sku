@@ -344,8 +344,6 @@ function SkuOptions:MenuBuilder(aParentEntry)
 			Hostile = {},
 			Misc = {},
 		}
-		
-	
 	end
 
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {"Fehlende Audio Wörter kopieren"}, menuEntryTemplate_Menu)

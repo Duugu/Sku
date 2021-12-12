@@ -403,9 +403,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
 						SkuOptions.Voice:OutputString(L["Following metaroute"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-						if _G["OnSkuOptionsMain"]:IsVisible() == true then
-							_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-						end
+						SkuOptions:CloseMenu()
 					end
 				end
 			end
@@ -531,9 +529,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
 						SkuOptions.Voice:OutputString("Metaroute folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-						if _G["OnSkuOptionsMain"]:IsVisible() == true then
-							_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-						end
+						SkuOptions:CloseMenu()
 					end
 				end
 			end
@@ -644,9 +640,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 
 				if SkuNav:GetWaypoint(SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint) then
 					SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint)
-					if _G["OnSkuOptionsMain"]:IsVisible() == true then
-						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-					end
+					SkuOptions:CloseMenu()
 				else
 					SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
 					SkuOptions.Voice:OutputString("Wegpunkt nicht ausgewählt", false, true, 0.3, true)

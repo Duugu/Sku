@@ -32,36 +32,31 @@ function SkuChat:OnEnable()
 		if a == "LeftButton" or a == "ESCAPE" then
 			C_VoiceChat.StopSpeakingText()
 			SkuChat.OnSkuChatToggle()
+			return
 		end
 		--print(SkuOptions.ChatCurrentLine)
-		if SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then
-			if SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body then
+		if not SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then return end
+		if not SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body then return end
 
-				if a == "Down" then
-					if SkuOptions.ChatOpen == true then
-						SkuOptions.ChatCurrentLine = SkuOptions.ChatCurrentLine - 1
-						if SkuOptions.ChatCurrentLine < 1 then
-							SkuOptions.ChatCurrentLine = 1
-						end
-						C_VoiceChat.StopSpeakingText()
-						C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
-					end
-				end
-				if a == "Up" then
-					if SkuOptions.ChatOpen == true then
-						SkuOptions.ChatCurrentLine = SkuOptions.ChatCurrentLine + 1
-						if SkuOptions.ChatCurrentLine > table.getn(SkuChatChatBuffer) then
-							SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
-						end
-						C_VoiceChat.StopSpeakingText()
-						C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
-					end
-				end
+		if SkuOptions.ChatOpen ~= true then return end
+
+		if a == "Down" then
+			SkuOptions.ChatCurrentLine = SkuOptions.ChatCurrentLine - 1
+			if SkuOptions.ChatCurrentLine < 1 then
+				SkuOptions.ChatCurrentLine = 1
+			end
+		elseif a == "Up" then
+			SkuOptions.ChatCurrentLine = SkuOptions.ChatCurrentLine + 1
+			if SkuOptions.ChatCurrentLine > table.getn(SkuChatChatBuffer) then
+				SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
 			end
 		end
+
+		C_VoiceChat.StopSpeakingText()
+		C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
 	end)
 	b:Hide()
--- combatlockdown!!!	 InCombatLockdown()
+
 	b:SetScript("OnShow", function(self)
 		--SetOverrideBindingClick(self, true, "ESCAPE", "OnSkuChatToggle", "ESCAPE")
 	end)

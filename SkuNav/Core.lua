@@ -41,6 +41,27 @@ SkuNav.PrintMT = {
 	}
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+SkuNav.CurrentStandardWpReachedRange = 0
+function SkuNav:UpdateStandardWpReachedRange(aDistanceToNextWp)
+	--print("UpdateStandardWpReachedRange", aDistanceToNextWp)
+	if SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 1 then
+		SkuNav.CurrentStandardWpReachedRange = 0
+	elseif SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 2 then
+		SkuNav.CurrentStandardWpReachedRange = 3
+	else
+		if not aDistanceToNextWp then 
+			SkuNav.CurrentStandardWpReachedRange = 0
+			return
+		end
+		if aDistanceToNextWp <= 9 then
+			SkuNav.CurrentStandardWpReachedRange = 0
+		elseif aDistanceToNextWp > 14 then
+			SkuNav.CurrentStandardWpReachedRange = 3
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 --this is a temp hack for the weird transit zone between badlands and Searing Gorge. due to unknown reasons SkuNav:GetBestMapForUnit returns 1415 (eastern kingdoms) there.
 function SkuNav:GetBestMapForUnit(aUnitId)
 	local tPlayerUIMap = C_Map.GetBestMapForUnit(aUnitId)
@@ -74,33 +95,38 @@ function SkuNav:PlayWpComments(aWpName)
 		end
 	end
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:UpdateRtContinentAndAreaIds(aRoutename)
 	local tUiMapIds = {}
-	if aRoutename and aRoutename ~= "" then
-		if SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName then
-			local tTempWpObj = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName)
-			if tTempWpObj then
-				SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tContinentId = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName).contintentId
-				for i, v in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].WPs) do
-					--print("UpdateRtContinentAndAreaIds", aRoutename, i, v)
-					local tWpObj = SkuNav:GetWaypoint(v)
-					if tWpObj then
-						if tWpObj.areaId then
-							local tUiMapId = SkuNav:GetUiMapIdFromAreaId(tWpObj.areaId)
-							if tUiMapId then
-								--print("   ++++++++", tUiMapId)
-								tUiMapIds[SkuNav:GetUiMapIdFromAreaId(tWpObj.areaId)] = true
-							end
-						end
-					end
+	if not aRoutename or aRoutename == "" then
+		return
+	end
+
+	if not SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName then
+		return
+	end
+
+	local tTempWpObj = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName)
+	if not tTempWpObj then
+		--print("FAIL", SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName)
+		return
+	end
+
+	SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tContinentId = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName).contintentId
+	for i, v in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].WPs) do
+		local tWpObj = SkuNav:GetWaypoint(v)
+		if tWpObj then
+			if tWpObj.areaId then
+				local tUiMapId = SkuNav:GetUiMapIdFromAreaId(tWpObj.areaId)
+				if tUiMapId then
+					tUiMapIds[SkuNav:GetUiMapIdFromAreaId(tWpObj.areaId)] = true
 				end
-				SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tUiMapIds = tUiMapIds
-			else
-				--print("FAIL", SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName)
 			end
 		end
 	end
+
+	SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tUiMapIds = tUiMapIds
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -435,26 +461,25 @@ function SkuNav:CheckRoute(aRouteName)
 		return false
 	end
 
-	if #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs > 1 then
-		for q = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs do
-			if sfind(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], L["quick waypoint"]) or sfind(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], L["Quick waypoint"]) then
-				return false
-			end
+	if #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs < 2 then
+		return false
+	end
 
-			local tWP = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q])
-			if not tWP then
-				--print("Check FAIL:", aRouteName, "wegpunkt", SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], "ist nil")
+	for q = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs do
+		if sfind(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], L["quick waypoint"]) or sfind(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], L["Quick waypoint"]) then
+			return false
+		end
+
+		local tWP = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q])
+		if not tWP then
+			--print("Check FAIL:", aRouteName, "wegpunkt", SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], "ist nil")
+			return false
+		else
+			if not tWP.worldX or not tWP.worldY then
 				return false
-			else
-				if not tWP.worldX or not tWP.worldY then
-					return false
-					--print("Check FAIL:", aRouteName, "x y fehlt", tWP.worldX, tWP.worldY, "bei", SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q])
-				end
+				--print("Check FAIL:", aRouteName, "x y fehlt", tWP.worldX, tWP.worldY, "bei", SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q])
 			end
 		end
-	else
-		return false
-		--print("Check FAIL:", aRouteName, "valid = false")
 	end
 
 	if SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].tEndWPName == SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].tStartWPName and #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs == 2 then
@@ -618,9 +643,7 @@ function SkuNav:StartRouteRecording(aWPAName, aWPBName, aIntWP, aSize)
 		SkuOptions.tmpNpcWayPointNameBuilder_Zone = ""
 		SkuOptions.tmpNpcWayPointNameBuilder_Coords = ""
 
-		if _G["OnSkuOptionsMain"]:IsVisible() == true then
-			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-		end
+		SkuOptions:CloseMenu()
 
 		-- set A to reached
 		SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
@@ -670,20 +693,14 @@ function SkuNav:EndRouteRecording(aWpBName, aTMPSizeB)
 
 		--check if route name exists and increment if
 		if SkuOptions.db.profile[MODULE_NAME].Routes[updatedRtName] then
-			print("EXIOSTS", updatedRtName)
+			--print("EXISTS", updatedRtName)
 			local q = 1
 			while SkuOptions.db.profile[MODULE_NAME].Routes[updatedRtName..q] do
 				q = q + 1
 			end
 			updatedRtName = updatedRtName..";"..q
-			print("NEW", updatedRtName)
+			--print("NEW", updatedRtName)
 		end
-
-
-
-
-
-
 
 		--add the new route data
 		SkuNav:InsertRoute(updatedRtName)
@@ -726,10 +743,7 @@ function SkuNav:EndRouteRecording(aWpBName, aTMPSizeB)
 	SkuOptions.db.profile[MODULE_NAME].routeRecordingNavToB = nil
 	SkuOptions.db.profile[MODULE_NAME].routeRecordingIntWPMethod = nil
 
-	if _G["OnSkuOptionsMain"]:IsVisible() == true then
-		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-	end
-	
+	SkuOptions:CloseMenu()	
 	return tReturnValue
 end
 
@@ -983,9 +997,7 @@ function SkuNav:StartReverseRtFollow()
 		SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, true)
 		SkuOptions.Voice:OutputString("Zurück Metaroute folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 
-		if _G["OnSkuOptionsMain"]:IsVisible() == true then
-			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
-		end
+		SkuOptions:CloseMenu()
 	end
 end
 
@@ -1215,10 +1227,10 @@ function SkuNav:ProcessCheckReachingWp()
 			if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 				local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) or 0
 				if distance then
-					local tDistanceMod = 0
-					if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
-						tDistanceMod = 3
-					end
+					local tDistanceMod = SkuNav.CurrentStandardWpReachedRange--0
+					--if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
+						--tDistanceMod = 3
+					--end
 					if ((distance < SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size] + tDistanceMod) or SkuNav.MoveToWp ~= 0)  and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 						local tNextWPNr
 						if SkuNav.MoveToWp ~= 0 then
@@ -1271,10 +1283,10 @@ function SkuNav:ProcessCheckReachingWp()
 				if distance then
 					--print("size:", SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
 					--print(SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size])
-					local tDistanceMod = 0
-					if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
-						tDistanceMod = 3
-					end
+					local tDistanceMod = SkuNav.CurrentStandardWpReachedRange --0
+					--if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
+						--tDistanceMod = 3
+					--end
 					if ((distance < SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size] + tDistanceMod) or SkuNav.MoveToWp ~= 0) and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 						local tNextWPNr
 						if SkuNav.MoveToWp ~= 0 then
@@ -1552,13 +1564,12 @@ function SkuNav:CreateSkuNavMain()
 		end
 
 		if a == "CTRL-SHIFT-Q" then
-			if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == false then
-				SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = true
-				SkuOptions:VocalizeMultipartString(L["Accuracy three meters"], true, true, 0.3, true)
-			else
-				SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = false
-				SkuOptions:VocalizeMultipartString(L["Accuracy one meter"], true, true, 0.3, true)
+			SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange + 1
+			if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange > #SkuNav.StandardWpReachedRanges then
+				SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = 1
 			end
+			SkuNav:UpdateStandardWpReachedRange(0)
+			SkuOptions:VocalizeMultipartString(SkuNav.StandardWpReachedRanges[SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange], true, true, 0.3, true)
 		end
 
 
@@ -2554,6 +2565,10 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 		end
 	end
 
+	local tDistanceToNewWp = SkuNav:GetDistanceToWp(aWpName)
+	SkuNav:UpdateStandardWpReachedRange(tDistanceToNewWp)
+
+
 	SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = aWpName
 
 	local tBeaconType = "probe_deep_1"
@@ -2744,6 +2759,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_ENTERING_WORLD(...)
 	--print("PLAYER_ENTERING_WORLD")
+	SkuNav:UpdateStandardWpReachedRange()
+
 	C_Timer.NewTimer(25, function() SkuDrawFlag = true end)
 	C_Timer.NewTimer(15, function() SkuCacheFlag = true end)
 	SkuOptions.db.profile[MODULE_NAME].routeFollowing = false
@@ -2755,6 +2772,12 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowing = false
 	SkuOptions.db.profile[MODULE_NAME].routeFollowing = false
 	SkuOptions.db.profile[MODULE_NAME].routeRecording = false
+
+	--this is to update pre 21.8 profiles, where standardWpReachedRange was a boolean
+	if type(SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange) == "boolean" then
+		SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = 3
+	end
+
 	--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
 	SkuNav:SelectWP("", true)
 

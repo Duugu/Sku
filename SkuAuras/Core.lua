@@ -1,5 +1,4 @@
 ﻿---@diagnostic disable: undefined-doc-name
-
 local MODULE_NAME = "SkuAuras"
 local _G = _G
 local L = Sku.L
@@ -20,10 +19,10 @@ function SkuAuras:OnEnable()
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
 		ttime = ttime + time
-		if ttime > 0.15 then
-			--GetElTime()
-			ttime = 0
-		end
+		if ttime < 0.15 then return end
+
+		--GetElTime()
+		ttime = 0
 	end)
 	f:Show()
 
@@ -33,11 +32,11 @@ function SkuAuras:OnEnable()
 	tFrame:SetPoint("TOP", _G["SkuAurasControl"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		if aKey == "CTRL-SHIFT-G" then
-			print(aKey)
+			--print(aKey)
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self) 
-		SetOverrideBindingClick(self, true, "CTRL-SHIFT-G", "SkuAurasControlOption1", "CTRL-SHIFT-G")
+		--SetOverrideBindingClick(self, true, "CTRL-SHIFT-G", "SkuAurasControlOption1", "CTRL-SHIFT-G")
 	end)
 	tFrame:SetScript("OnHide", function(self) 
 		ClearOverrideBindings(self)
@@ -61,6 +60,9 @@ end
 
 
 
+---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+--elevator timer test
 function GetElTime()
 	local guid    = UnitGUID("target")
 	--local guid    = "Creature-0-4468-530-15-18922-0004A6D8E1"

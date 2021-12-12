@@ -3,6 +3,47 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.8
+
+	SkuCore
+		Fehlerkorrekturen
+			- Einen Fehler im Menü "SkuCore > Entfernung" behoben. 
+			  Solange die möglichen Entferungen nach dem Einloggen/Reload noch ermittelt werden (dauert bis zu 2 Minuten), wird jetzt unter "Freundlich", "Feindlich" und "Unbekannt" im Untermenü "leer" angezeigt.
+			  Erst, wenn Entfernungen verfügbar sind (das Addon sagt "Neue Entfernungen verfügbar"), tauchen in dem Menü Einträge auf.
+			- Beim Einstellen der Spiel-Tastenbelegungen auf die Sku-Standardeinstellungen ("SkuCore > Spiel Tastenbelegungen > Alles zurücksetzen") werden jetzt folgende Tastenkombinationen neu zugewiesen:
+			  Kameraperspektiven:
+			  	- STRG + NUMMERNBLOCK 7: Kamerperspektive 2 (nah, Ansicht geradeaus)
+			   - STRG + NUMMERNBLOCK 8: Kamerperspektive 4 (weit entfernt, Ansicht von schräg oben)
+			   - STRG + NUMMERNBLOCK 9: Kamerperspektive 5 (weit entfernt, Ansicht geradeaus)
+			  Zielmarkierungen:
+			  	- STRG + NUMMERNBLOCK 1: Totenkopf
+			  	- STRG + NUMMERNBLOCK 2: X
+			  	- STRG + NUMMERNBLOCK 3: Grünes Dreieck
+			  	- STRG + NUMMERNBLOCK 4: Blaues Quadrat
+			  	- STRG + NUMMERNBLOCK 5: Mond
+			  	- STRG + NUMMERNBLOCK 0: Keine Markierung
+			- Auf der Addon-Downloadseite steht ein Autohotkey-Skript zur Positionierung des Mauszeigers für diese Kameraperspektiven zur Verfügung. 
+			  (sku_maus.zip)
+			  Falls du nicht weißt, wie das mit den Autohotkey-Skripten geht, frag bitte jemanden.
+			  Das Skript belegt die Tasten NUMMERNBLOCK 7-9.
+			  Es sendet jeweils die Tastenkombination STRG + NUMMERNBLOCK 7-9 an das Spiel (und ruft so die passende Kameraperspektive auf, siehe oben). Dann positioniert es die Maus passend. Und dann klickt es.
+			  Mit dem Autohotkey-Skript kannst du also künftig mit einem Tastendruck auf NUMMERNBLOCK 7-9 in drei verschiedenen Kameraperspektiven automatisch looten, Objekte einsammeln etc.
+
+	SkuNav
+		Neuerungen
+			- Es gibt jetzt drei Einstellungen für die Reichweite in der ein Wegpunkt als erreicht gilt: 1, 3 und Auto.
+			  Du kannst weiterhin mit STRG + SHIFT + Q zwischen "1 Meter" und "3 Meter" umschalten. Jetzt kommt nach 3 jedoch nicht wieder 1, sondern erst "Auto".
+			  Bei der Einstellung "Auto" entscheidet das Addon anhand der Entferung zum nächsten Wegpunkt selbst, welche Entfernung für das Erreichen des Wegpunktes verwendet wird.
+			  - Ist der nächste Wegpunkt 9 oder weniger Meter entfernt, so verwendet es "Erreichen bei 1 Meter".
+			  - Ist der nächste Wegpunkt 14 oder mehr Meter entfernt, so verwendet es "Erreichen bei 3 Meter".
+
+		Fehlerkorrekturen
+			- Es sollten beim Import Wegpunkte berücksichtigt werden, die aktualisierte Kommentare haben.
+			  Wenn du also über einen bestehenden Wegpunkt den identischen erneut importierst, und diese einen Kommentar bekommen hat, so sollte diese neue Kommentar importiert werden.
+			  Diese Funktion muss gründlich getestet werden.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.7
 
 	SkuCore

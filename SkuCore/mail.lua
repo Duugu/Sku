@@ -42,7 +42,7 @@ end
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_CLOSED(...)
    --print("MAIL_CLOSED", ...)
-   if #SkuOptions.Menu == 0 or _G["OnSkuOptionsMain"]:IsVisible() == false then
+   if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
       _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
    end
 end

@@ -643,6 +643,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function RangecheckMenuBuilder(aParent, aType)
+	local tEntriesFound = false
 	for i = 1, 100 do 
 		if SkuCore.RangeCheckValues.Ranges[aType][i] then 
 			local tIsConfiguredWith = ";"..L["silent"]
@@ -654,6 +655,7 @@ local function RangecheckMenuBuilder(aParent, aType)
 				end
 			end
 			local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {i..tIsConfiguredWith}, menuEntryTemplate_Menu)
+			tEntriesFound = true
 			tNewSubMenuEntry.dynamic = true
 			tNewSubMenuEntry.isSelect = true
 			tNewSubMenuEntry.OnAction = function(self, aValue, aName, aParentMenuName)
@@ -678,6 +680,10 @@ local function RangecheckMenuBuilder(aParent, aType)
 			end
 		end
 	end
+	if tEntriesFound == false then
+		local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {"leer"}, menuEntryTemplate_Menu)
+	end
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MenuBuilder(aParentEntry)

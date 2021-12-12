@@ -88,12 +88,8 @@ SkuChat.defaults = {
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:MenuBuilder(aParentEntry)
 	--print("SkuChat:MenuBuilderTest", aParentEntry)
-
-	--optionen
-	--to add: ace slider, dropdown widgets
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)
 	SkuOptions:IterateOptionsArgs(SkuChat.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
-
 end
 
 

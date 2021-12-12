@@ -4,6 +4,42 @@ local L = Sku.L
 
 SkuCore.Keys = {}
 SkuCore.Keys.SkuDefaultBindings = {
+	["BINDING_HEADER_RAID_TARGET"] = {
+		["RAIDTARGET1"] = {
+			["index"] = 236,
+		},
+		["RAIDTARGET6"] = {
+			["key1"] = "CTRL-NUMPAD4",
+			["index"] = 231,
+		},
+		["RAIDTARGET3"] = {
+			["index"] = 234,
+		},
+		["RAIDTARGET2"] = {
+			["index"] = 235,
+		},
+		["RAIDTARGET8"] = {
+			["key1"] = "CTRL-NUMPAD1",
+			["index"] = 229,
+		},
+		["RAIDTARGET4"] = {
+			["key1"] = "CTRL-NUMPAD3",
+			["index"] = 233,
+		},
+		["RAIDTARGET5"] = {
+			["key1"] = "CTRL-NUMPAD5",
+			["index"] = 232,
+		},
+		["RAIDTARGET7"] = {
+			["key1"] = "CTRL-NUMPAD2",
+			["index"] = 230,
+		},
+		["RAIDTARGETNONE"] = {
+			["key1"] = "CTRL-NUMPAD0",
+			["index"] = 237,
+		},
+	},
+
 	["BINDING_HEADER_CAMERA"] = {
 		["SAVEVIEW5"] = {
 			["index"] = 222,
@@ -12,11 +48,11 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 226,
 		},
 		["SETVIEW5"] = {
-			["key1"] = "CTRL-NUMPAD4",
+			["key1"] = "CTRL-NUMPAD9",
 			["index"] = 217,
 		},
 		["SETVIEW2"] = {
-			["key1"] = "CTRL-NUMPAD1",
+			["key1"] = "CTRL-NUMPAD7",
 			["index"] = 214,
 		},
 		["RESETVIEW1"] = {
@@ -26,11 +62,10 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 218,
 		},
 		["SETVIEW3"] = {
-			["key1"] = "CTRL-NUMPAD2",
 			["index"] = 215,
 		},
 		["SETVIEW4"] = {
-			["key1"] = "CTRL-NUMPAD3",
+			["key1"] = "CTRL-NUMPAD8",
 			["index"] = 216,
 		},
 		["PREVVIEW"] = {
