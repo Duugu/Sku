@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.7](https://github.com/Duugu/Sku/releases/download/r21.7/Sku-r21.7-bcc.zip) <br>
+[Sku 21.8](https://github.com/Duugu/Sku/releases/download/r21.8/Sku-r21.8-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
@@ -18,7 +18,45 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
--------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------
+## Änderungen in Version 21.8
+
+### SkuCore
+*Fehlerkorrekturen*
+- Es wurd ein Fehler im Menü "SkuCore > Entfernung" behoben. <br>
+  Solange die möglichen Entferungen nach dem Einloggen/Reload noch ermittelt werden (dauert bis zu 2 Minuten), wird jetzt unter "Freundlich", "Feindlich" und "Unbekannt" im Untermenü "leer" angezeigt.<br>
+  Erst, wenn Entfernungen verfügbar sind (das Addon sagt "Neue Entfernungen verfügbar"), tauchen in dem Menü Einträge auf.
+- Beim Einstellen der Spiel-Tastenbelegungen auf die Sku-Standardeinstellungen ("SkuCore > Spiel Tastenbelegungen > Alles zurücksetzen") werden jetzt folgende Tastenkombinationen neu zugewiesen:<br>
+  **Kameraperspektiven**:<br>
+            - STRG + NUMMERNBLOCK 7: Kamerperspektive 2 (nah, Ansicht geradeaus)<br>
+            - STRG + NUMMERNBLOCK 8: Kamerperspektive 4 (weit entfernt, Ansicht von schräg oben)<br>
+            - STRG + NUMMERNBLOCK 9: Kamerperspektive 5 (weit entfernt, Ansicht geradeaus)<br>
+  **Zielmarkierungen**:<br>
+            - STRG + NUMMERNBLOCK 1: Totenkopf<br>
+            - STRG + NUMMERNBLOCK 2: X<br>
+            - STRG + NUMMERNBLOCK 3: Grünes Dreieck<br>
+            - STRG + NUMMERNBLOCK 4: Blaues Quadrat<br>
+            - STRG + NUMMERNBLOCK 5: Mond<br>
+            - STRG + NUMMERNBLOCK 0: Keine Markierung<br>
+- Auf der Addon-Downloadseite steht ein Autohotkey-Skript zur Positionierung des Mauszeigers für diese Kameraperspektiven zur Verfügung. (sku_maus.zip)<br>
+  Falls du nicht weißt, wie das mit den Autohotkey-Skripten geht, frag bitte jemanden.<br>
+  Das Skript belegt die Tasten NUMMERNBLOCK 7-9.<br>
+  Es sendet jeweils die Tastenkombination STRG + NUMMERNBLOCK 7-9 an das Spiel (und ruft so die passende Kameraperspektive auf, siehe oben). Dann positioniert es die Maus passend. Und dann klickt es.<br>
+  Mit dem Autohotkey-Skript kannst du also künftig mit einem Tastendruck auf NUMMERNBLOCK 7-9 in drei verschiedenen Kameraperspektiven automatisch looten, Objekte einsammeln etc.
+
+### SkuNav
+*Neuerungen*
+- Es gibt jetzt drei Einstellungen für die Reichweite in der ein Wegpunkt als erreicht gilt: 1, 3 und Auto.<br>
+  Du kannst weiterhin mit STRG + SHIFT + Q zwischen "1 Meter" und "3 Meter" umschalten. Jetzt kommt nach 3 jedoch nicht wieder 1, sondern erst "Auto".<br>
+  Bei der Einstellung "Auto" entscheidet das Addon anhand der Entferung zum nächsten Wegpunkt selbst, welche Entfernung für das Erreichen des Wegpunktes verwendet wird.<br>
+            - Ist der nächste Wegpunkt 9 oder weniger Meter entfernt, so verwendet es "Erreichen bei 1 Meter".<br>
+            - Ist der nächste Wegpunkt 14 oder mehr Meter entfernt, so verwendet es "Erreichen bei 3 Meter".
+
+*Fehlerkorrekturen*
+- Es sollten beim Import jetzt auch Wegpunkte berücksichtigt werden, die aktualisierte Kommentare haben.<br>
+Wenn du also über einen bestehenden Wegpunkt den identischen erneut importierst, und diese einen Kommentar bekommen hat, so sollte diese neue Kommentar importiert werden.<br>
+Diese Funktion muss gründlich getestet werden.
+
 ## Änderungen in Version 21.7
 
 ### SkuCore
