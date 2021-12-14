@@ -286,7 +286,7 @@ SkuOptions.defaults = {
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilder(aParentEntry)
-	--print("SkuOptions:MenuBuilder", aParentEntry)
+	--dprint("SkuOptions:MenuBuilder", aParentEntry)
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 
@@ -337,7 +337,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Zurücksetzen"}, menuEntryTemplate_Menu)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-		print("db", SkuOptions.db:ResetProfile())
+		--dprint("db", SkuOptions.db:ResetProfile())
 		SkuOptions.db.char["SkuCore"] = {}
 		SkuOptions.db.char["SkuCore"].RangeChecks = {
 			Friendly = {},

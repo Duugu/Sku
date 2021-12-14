@@ -23,14 +23,14 @@ SkuNav.PrintMT = {
 				if k ~= "parent" and v ~= "parent" and k ~= "prev" and v ~= "prev" and k ~= "next" and v ~= "next"  then
 					if type(v) ~= "userdata" and k ~= "frame" and k ~= 0  then
 						if type(v) == 'table' then
-							print(tTab..k..":")
+							dprint(tTab..k..":")
 							tf(v, tTab.."  ")
 						elseif type(v) == "function" then
-							--print(tTab..k..": function")
+							dprint(tTab..k..": function")
 						elseif type(v) == "boolean" then
-							print(tTab..k..": "..tostring(v))
+							dprint(tTab..k..": "..tostring(v))
 						else
-							print(tTab..k..": "..v)
+							dprint(tTab..k..": "..v)
 						end
 					end
 				end
@@ -43,34 +43,48 @@ SkuNav.PrintMT = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuNav.CurrentStandardWpReachedRange = 0
 function SkuNav:UpdateStandardWpReachedRange(aDistanceToNextWp)
-	--print("UpdateStandardWpReachedRange", aDistanceToNextWp)
+	--dprint("UpdateStandardWpReachedRange", aDistanceToNextWp)
 	if SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 1 then
 		SkuNav.CurrentStandardWpReachedRange = 0
 	elseif SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 2 then
 		SkuNav.CurrentStandardWpReachedRange = 3
 	else
 		if not aDistanceToNextWp then 
+			if SkuNav.CurrentStandardWpReachedRange ~= 0 and SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 3 then
+				SkuOptions.Voice:OutputString("nah", false, true, 0.3, true)
+			end
 			SkuNav.CurrentStandardWpReachedRange = 0
 			return
 		end
 		if aDistanceToNextWp <= 9 then
+			if SkuNav.CurrentStandardWpReachedRange ~= 0 and SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 3 then
+				SkuOptions.Voice:OutputString("nah", false, true, 0.3, true)
+			end
 			SkuNav.CurrentStandardWpReachedRange = 0
 		elseif aDistanceToNextWp > 14 then
+			if SkuNav.CurrentStandardWpReachedRange ~= 3 and SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 3 then
+				SkuOptions.Voice:OutputString("weit", false, true, 0.3, true)
+			end
 			SkuNav.CurrentStandardWpReachedRange = 3
 		end
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
---this is a temp hack for the weird transit zone between badlands and Searing Gorge. due to unknown reasons SkuNav:GetBestMapForUnit returns 1415 (eastern kingdoms) there.
 function SkuNav:GetBestMapForUnit(aUnitId)
 	local tPlayerUIMap = C_Map.GetBestMapForUnit(aUnitId)
 
 	if tPlayerUIMap == 1415 or tPlayerUIMap == 1414 then
 		local tMMZoneText = GetMinimapZoneText()
-		for i, v in pairs(SkuDB.InternalAreaTable) do
-			if v.AreaName_lang == tMMZoneText then
-				tPlayerUIMap = SkuNav:GetUiMapIdFromAreaId(v.ParentAreaID)
+
+		if tMMZoneText == L["Timbermaw Hold"] then
+			--this is because there are two "timbermaw hold" zones with contintent as parent; we explicid need this one, as the other hasn't continent parent at all
+			tPlayerUIMap = 1448
+		else
+			for i, v in pairs(SkuDB.InternalAreaTable) do
+				if v.AreaName_lang == tMMZoneText then
+					tPlayerUIMap = SkuNav:GetUiMapIdFromAreaId(v.ParentAreaID)
+				end
 			end
 		end
 	end
@@ -109,7 +123,7 @@ function SkuNav:UpdateRtContinentAndAreaIds(aRoutename)
 
 	local tTempWpObj = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName)
 	if not tTempWpObj then
-		--print("FAIL", SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName)
+		--dprint("FAIL", SkuOptions.db.profile[MODULE_NAME].Routes[aRoutename].tStartWPName)
 		return
 	end
 
@@ -132,12 +146,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tCacheNbWpsTimerCounter = 0
 local tCacheNbWpsTimerCounterProgress = 0
-local tCacheNbWpsTimerCounterProgressShow = false
-local tCacheNbWpsTimerRate = 10
+local tCacheNbWpsTimerCounterProgressShow = true
+local tCacheNbWpsTimerRate = 2
 local tCacheNbWpsTimer = nil
 local SkuNeighbCache = {}
+local tFoundThisRound = false
+local tOldFps = 0
 function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
-	tCacheNbWpsTimerRate = 10 --aRate or 10
+	dprint("CacheNbWps")
+	tCacheNbWpsTimerRate = 2--aRate or 10
 	if _G["SkuNavMMMainFrame"] then
 		if _G["SkuNavMMMainFrame"]:IsShown() == true then
 			return
@@ -149,6 +166,10 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 	--end
 	local tCacheNbWpsTimerWpList = {}
 	if aListOfRouteNamesToReCache then
+		if tCacheNbWpsTimerCounterProgressShow == true then
+			dprint("SkuNav: "..#aListOfRouteNamesToReCache.." RTs to re-cache")
+		end
+
 		for i, tRouteName in ipairs(aListOfRouteNamesToReCache) do
 			if SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName] then
 				if SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs then
@@ -159,10 +180,16 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 			end
 		end
 	elseif aListOfWpNamesToReCache then
+		if tCacheNbWpsTimerCounterProgressShow == true then
+			dprint("SkuNav: "..#aListOfWpNamesToReCache.." WPs to re-cache")
+		end
 		for x, tWpName in ipairs(aListOfWpNamesToReCache) do
 			tCacheNbWpsTimerWpList[#tCacheNbWpsTimerWpList + 1] = tWpName
 		end
 	else
+		if tCacheNbWpsTimerCounterProgressShow == true then
+			dprint("SkuNav: WPs and RTs cache req")
+		end
 		for i, tRouteName in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes) do
 			if SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName] then
 				if SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs then
@@ -172,6 +199,9 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 				end
 			end
 		end
+		if tCacheNbWpsTimerCounterProgressShow == true then
+			dprint("SkuNav: "..#tCacheNbWpsTimerWpList.." WPs to cache")
+		end
 	end
 
 	if #tCacheNbWpsTimerWpList > 0 then
@@ -179,11 +209,12 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 			tCacheNbWpsTimer:Cancel()
 			tCacheNbWpsTimer = nil
 			if tCacheNbWpsTimerCounterProgressShow == true then
-				print("SkuNav: Caching restarted...")
+				dprint("SkuNav: Caching restarted...")
 			end
 		else
 			if tCacheNbWpsTimerCounterProgressShow == true then
-				print("SkuNav: Caching started...")
+				dprint("SkuNav: Caching started...")
+				tFoundThisRound = false
 			end
 		end
 
@@ -197,20 +228,42 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 						tCacheNbWpsTimer:Cancel()
 						tCacheNbWpsTimer = nil
 						if tCacheNbWpsTimerCounterProgressShow == true then
-							print("SkuNav: Caching completed")
+							dprint("SkuNav: Caching completed")
+							if tFoundThisRound == true then
+								SkuOptions.Voice:OutputString("Routen aktualisierung abgeschlossen", false, true, 0.3, true)
+							end
+							tFoundThisRound = false
+
 						end
 					end
 				end
 				if tCacheNbWpsTimerWpList[tCacheNbWpsTimerCounter] then
-					GetNeighbToWp(tCacheNbWpsTimerWpList[tCacheNbWpsTimerCounter], true)
+					local tWaste, tFound = GetNeighbToWp(tCacheNbWpsTimerWpList[tCacheNbWpsTimerCounter], true)
+					if tFound == true then
+						tFoundThisRound = tFound
+					end
 				end
 			end
 			if tCacheNbWpsTimerCounterProgressShow == true then
 				if math.floor(tCacheNbWpsTimerCounterProgress / 1000) ~= math.floor(tCacheNbWpsTimerCounter / 1000) then
 					tCacheNbWpsTimerCounterProgress = tCacheNbWpsTimerCounter
-					print("SkuNav: Caching progress "..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000))
+					dprint("SkuNav: Caching progress "..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000))
 				end
 			end
+
+			local tFps = GetFramerate()
+			local tDiff = tOldFps / tFps
+			if tDiff * tFps < 35 then
+				tCacheNbWpsTimerRate = tCacheNbWpsTimerRate - 0.01
+				if tCacheNbWpsTimerRate < 1 then
+					tCacheNbWpsTimerRate = 1
+				end
+				--dprint("   D: new tCacheNbWpsTimerRate", tCacheNbWpsTimerRate)
+			elseif tDiff * tFps > 40 then
+				tCacheNbWpsTimerRate = tCacheNbWpsTimerRate + 0.01
+				--dprint("   U: new tCacheNbWpsTimerRate", tCacheNbWpsTimerRate)
+			end
+			tOldFps = tFps
 		end)
 	end
 end
@@ -220,8 +273,12 @@ function SkuNav:InsertRoute(aRouteName)
 	table.insert(SkuOptions.db.profile[MODULE_NAME].Routes, aRouteName)
 	--SkuNeighbCache = {}
 	if tCacheNbWpsTimer then
+		if tCacheNbWpsTimerCounterProgressShow == true then
+			--dprint("SkuNav: Caching stopped")
+		end
 		tCacheNbWpsTimer:Cancel()
 	end
+	--dprint("InsertRoute")
 	CacheNbWps(nil, {aRouteName})
 end
 
@@ -234,13 +291,17 @@ function SkuNav:InsertRouteWp(aWpTable, aWpName, aPos)
 	end
 	--SkuNeighbCache = {}
 	if tCacheNbWpsTimer then
+		if tCacheNbWpsTimerCounterProgressShow == true then
+			--dprint("SkuNav: Caching stopped")
+		end
 		tCacheNbWpsTimer:Cancel()
 	end
+	--dprint("InsertRouteWp")
 	CacheNbWps(nil, nil, aWpTable)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnInitialize()
-	--print("SkuNav OnInitialize")
+	--dprint("SkuNav OnInitialize")
 	SkuNav:RegisterEvent("PLAYER_LOGIN")
 	SkuNav:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuNav:RegisterEvent("PLAYER_LEAVING_WORLD")
@@ -328,7 +389,7 @@ function SkuNav:GetUiMapIdFromAreaId(aAreaId)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetAreaIdFromUiMapId(aUiMapId)
-	--print("GetAreaIdFromUiMapId", aUiMapId)
+	--dprint("GetAreaIdFromUiMapId", aUiMapId)
 	local rAreaId
 	--[[
 	local tName = SkuDB.ExternalMapID[aUiMapId].Name_lang
@@ -350,7 +411,7 @@ function SkuNav:GetAreaIdFromUiMapId(aUiMapId)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetAreaIdFromAreaName(aAreaName)
-	--print("GetAreaIdFromAreaName", aAreaName)
+	--dprint("GetAreaIdFromAreaName", aAreaName)
 	local rAreaId
 	local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
 	for i, v in pairs(SkuDB.InternalAreaTable) do
@@ -358,12 +419,12 @@ function SkuNav:GetAreaIdFromAreaName(aAreaName)
 			rAreaId = i
 		end
 	end
-	--print("  ", tonumber(rAreaId))
+	--dprint("  ", tonumber(rAreaId))
 	return rAreaId
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetAreaData(aAreaId)
-	--print("GetAreaData", aAreaId)
+	--dprint("GetAreaData", aAreaId)
 	if not SkuDB.InternalAreaTable[aAreaId] then 
 		return
 	end
@@ -372,7 +433,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetSubAreaIds(aAreaId)
-	--print("GetSubAreaIds", aAreaId)
+	--dprint("GetSubAreaIds", aAreaId)
 	local tAreas = {}
 	for i, v in pairs(SkuDB.InternalAreaTable) do
 		if v.ParentAreaID == tonumber(aAreaId) then
@@ -384,16 +445,16 @@ function SkuNav:GetSubAreaIds(aAreaId)
 			end
 		end
 	end
-	--print("  ", tAreas)
+	--dprint("  ", tAreas)
 	for i, v in pairs(tAreas) do
-		--print("  ", i, v)
+		--dprint("  ", i, v)
 	end
 	return tAreas
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetCurrentAreaId()
-	--print("GetCurrentAreaId")
+	--dprint("GetCurrentAreaId")
 	local tMinimapZoneText = GetMinimapZoneText()
 	--if tMinimapZoneText == "Die Tiefenbahn" then
 		--return 2257
@@ -416,7 +477,7 @@ function SkuNav:GetCurrentAreaId()
 			end
 		end
 	end
-	--print("  ", tAreaId)
+	--dprint("  ", tAreaId)
 	return tAreaId
 end
 
@@ -451,47 +512,53 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:CheckRoute(aRouteName)
-	--print("CheckRoute", aRouteName)
 	if not SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName] then
-		--print(aRouteName, "nicht vorhanden")
+		--dprint(aRouteName, "aRouteName nicht vorhanden")
 		return false
 	end
 
 	if sfind(aRouteName, L["quick waypoint"]) or sfind(aRouteName, L["Quick waypoint"]) then
+		--dprint(aRouteName, "quick waypoint")
 		return false
 	end
 
 	if #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs < 2 then
+		--dprint(aRouteName, "Routes[aRouteName].WPs < 2")
 		return false
 	end
 
 	for q = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs do
 		if sfind(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], L["quick waypoint"]) or sfind(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], L["Quick waypoint"]) then
+			--dprint(aRouteName, "quick waypoint")
 			return false
 		end
 
 		local tWP = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q])
 		if not tWP then
-			--print("Check FAIL:", aRouteName, "wegpunkt", SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], "ist nil")
+			--dprint("Check FAIL:", aRouteName, "wegpunkt", q, SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q], "ist nil")
+			--dprint(aRouteName, "not tWP")
 			return false
 		else
 			if not tWP.worldX or not tWP.worldY then
+				--dprint(aRouteName, "not tWP.worldX or not tWP.worldY")
 				return false
-				--print("Check FAIL:", aRouteName, "x y fehlt", tWP.worldX, tWP.worldY, "bei", SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q])
+				--dprint("Check FAIL:", aRouteName, "x y fehlt", tWP.worldX, tWP.worldY, "bei", SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs[q])
 			end
 		end
 	end
 
 	if SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].tEndWPName == SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].tStartWPName and #SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName].WPs == 2 then
+		--dprint(aRouteName, "tEndWPName = tStartWPName")
 		return false
 	end
+	--dprint("CheckRoute true", aRouteName)
 
 	return true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:DeleteRoute(aRouteName, aDeleteWPsTo)
-	--print("SkuNav:DeleteRoute", aRouteName, SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName])
+	--dprint("SkuNav:DeleteRoute", aRouteName, SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName])
 	if not SkuOptions.db.profile[MODULE_NAME].Routes[aRouteName] then
 		return nil
 	end
@@ -521,7 +588,7 @@ function SkuNav:DeleteRoute(aRouteName, aDeleteWPsTo)
 							for q = 1, #SkuOptions.db.profile[MODULE_NAME].Waypoints do
 								if SkuOptions.db.profile[MODULE_NAME].Waypoints[q] == vWp then
 									SkuOptions.db.profile[MODULE_NAME].Waypoints[SkuOptions.db.profile[MODULE_NAME].Waypoints[q]] = nil
-									--print("delete: wp", q, SkuOptions.db.profile[MODULE_NAME].Waypoints[q])
+									--dprint("delete: wp", q, SkuOptions.db.profile[MODULE_NAME].Waypoints[q])
 									table.remove(SkuOptions.db.profile[MODULE_NAME].Waypoints, q)
 								end
 							end
@@ -531,8 +598,9 @@ function SkuNav:DeleteRoute(aRouteName, aDeleteWPsTo)
 			end
 			--delete route
 			SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].Routes[x]] = nil
-			--print("delete rt: ", x, SkuOptions.db.profile[MODULE_NAME].Routes[x])
+			--dprint("delete rt: ", x, SkuOptions.db.profile[MODULE_NAME].Routes[x])
 			table.remove(SkuOptions.db.profile[MODULE_NAME].Routes, x)
+dprint("DeleteRoute; SkuNeighbCache = {}")			
 			SkuNeighbCache = {}
 			tDeleted = true
 		end
@@ -583,7 +651,7 @@ function SkuNav:StartRouteRecording(aWPAName, aWPBName, aIntWP, aSize)
 			SkuNav:SelectWP(tWpNameA, false)
 		else
 			--if not add it
-			--print("NEW A!!!!")
+			--dprint("NEW A!!!!")
 			SkuNav:CreateWaypoint(tWpNameA, nil, nil, self.tmpWPASize)
 		end
 
@@ -595,10 +663,10 @@ function SkuNav:StartRouteRecording(aWPAName, aWPBName, aIntWP, aSize)
 			end
 		else
 			--if not add it
-			--print("NEW B!!!!")
+			--dprint("NEW B!!!!")
 			--tWpNameB = "R;"..tWpNameB
 			--SkuNav:CreateWaypoint(tWpNameB)
-			--print("B neu erstellt", tWpNameB)
+			--dprint("B neu erstellt", tWpNameB)
 		end
 
 		local tRouteName = tWpNameA..";"..L["to"]..";"..tWpNameB
@@ -674,11 +742,11 @@ function SkuNav:EndRouteRecording(aWpBName, aTMPSizeB)
 
 	--do we need to update the rt as b was set on completing the recording?
 	if string.find(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute, L["Set on completion"]) then
-		--print("ist Bei Beenden festlegen")
+		--dprint("ist Bei Beenden festlegen")
 		-- yes > update b wp name and update the route name
 		-- aName is the new b name
 		local updatedRtName = SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute:gsub(L["Set on completion"], aWpBName)
-		--print("neue b name", updatedRtName)
+		--dprint("neue b name", updatedRtName)
 		local updatedRtData = SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute]
 		updatedRtData.tEndWPName = aWpBName
 		
@@ -687,19 +755,19 @@ function SkuNav:EndRouteRecording(aWpBName, aTMPSizeB)
 			if SkuOptions.db.profile[MODULE_NAME].Routes[x] == SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute then
 				SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].Routes[x]] = nil
 				table.remove(SkuOptions.db.profile[MODULE_NAME].Routes, x)
-				--print("old rt removed:", SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute)
+				--dprint("old rt removed:", SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute)
 			end
 		end
 
 		--check if route name exists and increment if
 		if SkuOptions.db.profile[MODULE_NAME].Routes[updatedRtName] then
-			--print("EXISTS", updatedRtName)
+			--dprint("EXISTS", updatedRtName)
 			local q = 1
 			while SkuOptions.db.profile[MODULE_NAME].Routes[updatedRtName..q] do
 				q = q + 1
 			end
 			updatedRtName = updatedRtName..";"..q
-			--print("NEW", updatedRtName)
+			--dprint("NEW", updatedRtName)
 		end
 
 		--add the new route data
@@ -707,7 +775,7 @@ function SkuNav:EndRouteRecording(aWpBName, aTMPSizeB)
 		SkuOptions.db.profile[MODULE_NAME].Routes[updatedRtName] = updatedRtData
 		--update the route we're recording for
 		SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute = updatedRtName
-		--print("new rt:", SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute)
+		--dprint("new rt:", SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute)
 		SkuOptions.db.profile[MODULE_NAME].routeRecordingSizeOfB = aTMPSizeB or 1
 	end
 	
@@ -719,6 +787,7 @@ function SkuNav:EndRouteRecording(aWpBName, aTMPSizeB)
 
 	--check rt if all wps are valid
 	if SkuNav:CheckRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute) ~= true then
+		--dprint("EndRouteRecording DeleteRoute")
 		SkuNav:DeleteRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute, true)
 		SkuOptions.Voice:OutputString("failure", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 		SkuOptions.Voice:OutputString(L["record;corrupted;route;deleted"], false, true, 0.3, true)
@@ -800,14 +869,14 @@ function SkuNav:ProcessPolyZones()
 		tNewPolyZones[SkuDB.Polygons.data[tPolyZones[p]].type][SkuDB.Polygons.data[tPolyZones[p]].subtype] = tNewPolyZones[SkuDB.Polygons.data[tPolyZones[p]].type][SkuDB.Polygons.data[tPolyZones[p]].subtype] + 1
 	end
 	--setmetatable(tNewPolyZones, SkuPrintMT)					
-	--print(tNewPolyZones)
+	--dprint(tNewPolyZones)
 	--world
 	if tOldPolyZones[1][1] ~= tNewPolyZones[1][1] then
 		if tNewPolyZones[1][1] == 0 then
-			--print("world left")
+			--dprint("world left")
 			SkuOptions.Voice:OutputString(L["World boundary left"], false, true, nil, true) --aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine
 		elseif tOldPolyZones[1][1] == 0 then
-			--print("world entered")
+			--dprint("world entered")
 			SkuOptions.Voice:OutputString(L["World boundary entered"], false, true, nil, true)
 		end
 		tOldPolyZones[1][1] = tNewPolyZones[1][1] 
@@ -815,10 +884,10 @@ function SkuNav:ProcessPolyZones()
 	--fly
 	if tOldPolyZones[2][1] ~= tNewPolyZones[2][1] then
 		if tNewPolyZones[2][1] == 0 then
-			--print("fly left")
+			--dprint("fly left")
 			SkuOptions.Voice:OutputString(L["Flight zone left"], false, true, nil, true)
 		elseif tOldPolyZones[2][1] == 0 then
-			--print("fly entered")
+			--dprint("fly entered")
 			SkuOptions.Voice:OutputString(L["Flight zone entered"], false, true, nil, true)
 		end
 		tOldPolyZones[2][1] = tNewPolyZones[2][1] 
@@ -826,40 +895,40 @@ function SkuNav:ProcessPolyZones()
 	--faction
 	if tOldPolyZones[3][1] ~= tNewPolyZones[3][1] then
 		if tNewPolyZones[3][1] == 0 then
-			--print("alliance left")
+			--dprint("alliance left")
 			SkuOptions.Voice:OutputString(L["Alliance zone left"], false, true, nil, true)
 		elseif tOldPolyZones[3][1] == 0 then
-			--print("alliance entered")
+			--dprint("alliance entered")
 			SkuOptions.Voice:OutputString(L["Alliance zone entered"], false, true, nil, true)
 		end
 		tOldPolyZones[3][1] = tNewPolyZones[3][1] 
 	end
 	if tOldPolyZones[3][2] ~= tNewPolyZones[3][2] then
 		if tNewPolyZones[3][2] == 0 then
-			--print("horde left")
+			--dprint("horde left")
 			SkuOptions.Voice:OutputString(L["Horde zone left"], false, true, nil, true)
 		elseif tOldPolyZones[3][2] == 0 then
-			--print("horde entered")
+			--dprint("horde entered")
 			SkuOptions.Voice:OutputString(L["Horde zone entered"], false, true, nil, true)
 		end
 		tOldPolyZones[3][2] = tNewPolyZones[3][2] 
 	end
 	if tOldPolyZones[3][3] ~= tNewPolyZones[3][3] then
 		if tNewPolyZones[3][3] == 0 then
-			--print("horde left")
+			--dprint("horde left")
 			SkuOptions.Voice:OutputString(L["Aldor zone left"], false, true, nil, true)
 		elseif tOldPolyZones[3][3] == 0 then
-			--print("horde entered")
+			--dprint("horde entered")
 			SkuOptions.Voice:OutputString(L["Aldor zone entered"], false, true, nil, true)
 		end
 		tOldPolyZones[3][3] = tNewPolyZones[3][3] 
 	end
 	if tOldPolyZones[3][4] ~= tNewPolyZones[3][4] then
 		if tNewPolyZones[3][4] == 0 then
-			--print("horde left")
+			--dprint("horde left")
 			SkuOptions.Voice:OutputString(L["Scyer zone left"], false, true, nil, true)
 		elseif tOldPolyZones[3][4] == 0 then
-			--print("horde entered")
+			--dprint("horde entered")
 			SkuOptions.Voice:OutputString(L["Scyer zone entered"], false, true, nil, true)
 		end
 		tOldPolyZones[3][4] = tNewPolyZones[3][4] 
@@ -868,10 +937,10 @@ function SkuNav:ProcessPolyZones()
 	--other
 	if tOldPolyZones[4][1] ~= tNewPolyZones[4][1] then
 		if tNewPolyZones[4][1] == 0 then
-			--print("other left")
+			--dprint("other left")
 			SkuOptions.Voice:OutputString("Wer das hört ist doof verlassen", false, true, nil, true)
 		elseif tOldPolyZones[4][1] == 0 then
-			--print("other entered")
+			--dprint("other entered")
 			SkuOptions.Voice:OutputString("Wer das hört ist doof betreten", false, true, nil, true)
 		end
 		tOldPolyZones[4][1] = tNewPolyZones[4][1] 
@@ -973,7 +1042,7 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:StartReverseRtFollow()
-	--print("StartReverseRtFollow")
+	--dprint("StartReverseRtFollow")
 	if SkuNav.ReverseRt.meta.metapathFollowingStart then
 
 		if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
@@ -1007,7 +1076,7 @@ SkuNav.ReverseRt = {
 	single = {},
 }
 function SkuNav:UpdateReverseRtData()
-	--print("UpdateReverseRtData")
+	--dprint("UpdateReverseRtData")
 	if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true then
 		SkuNav.ReverseRt.meta = {
 			metapathFollowingStart = SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp],
@@ -1037,7 +1106,7 @@ function SkuNav:UpdateReverseRtData()
 		SkuNav.ReverseRt.meta.metapathFollowingMetapaths.distanceToStartWp = tDistanceToStartWp
 
 		--setmetatable(SkuNav.ReverseRt.meta, SkuPrintMT)
-		--print(SkuNav.ReverseRt.meta)
+		--dprint(SkuNav.ReverseRt.meta)
 
 	elseif SkuOptions.db.profile[MODULE_NAME].routeFollowing == true then
 
@@ -1108,6 +1177,7 @@ function SkuNav:ProcessCheckReachingWp()
 
 							--check rt if valid
 							if SkuNav:CheckRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute) ~= true then
+								--dprint("ProcessCheckReachingWp DeleteRoute")
 								SkuNav:DeleteRoute(SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute)
 								SkuOptions.Voice:OutputString(L["failure"], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
 								SkuOptions.Voice:OutputString(L["Arrived at Point B"], false, true, 0.3, true)
@@ -1148,7 +1218,7 @@ function SkuNav:ProcessCheckReachingWp()
 					local tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY = SkuNav:GetCurrentRouteSectionIntersection(tPrevWPx, tPrevWPy, x, y)
 
 					if (tReplacementWp and tReplacementWpRange <= tNearbyWpReplaceMinRange and tLastWP ~= tReplacementWp) and IsLeftAltKeyDown() == true then
-						--print("wp nearby", tReplacementWp)
+						--dprint("wp nearby", tReplacementWp)
 						-- wp is nearby > use nearby wp
 						SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
 						SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
@@ -1165,7 +1235,7 @@ function SkuNav:ProcessCheckReachingWp()
 							--update other rt
 							for x = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs do
 								if SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs[x] == tIntersectWithRtWp1 then
-									--print(" INSERT")
+									--dprint(" INSERT")
 									SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs, tIntWP, x+1)
 									break
 								end
@@ -1204,14 +1274,14 @@ function SkuNav:ProcessCheckReachingWp()
 						end
 
 						if tdiold ~= tDiff or tdisold ~= tDist then
-							--print("°:", tDiff, "d:", tDist, "dd:", tDynDist)
+							--dprint("°:", tDiff, "d:", tDist, "dd:", tDynDist)
 							tdiold = tDiff
 							tdisold = tDist
 						end
 
 						--if (tDiff > tMaxDiff or tDiff < (-tMaxDiff)) and (tDist > tMinDist) then
 						if tDynDist > tMinDist and tDist > (tMinDist / 3) then
-							--print("next auto")
+							--dprint("next auto")
 							ttimeDegreesChangeInitial = tDegreesFinal
 							local tIntWP = SkuNav:CreateWaypoint()
 							SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
@@ -1281,8 +1351,8 @@ function SkuNav:ProcessCheckReachingWp()
 			if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 				local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) or 0
 				if distance then
-					--print("size:", SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
-					--print(SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size])
+					--dprint("size:", SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
+					--dprint(SkuNavWpSize[SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size])
 					local tDistanceMod = SkuNav.CurrentStandardWpReachedRange --0
 					--if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange == true then
 						--tDistanceMod = 3
@@ -1692,7 +1762,7 @@ function SkuNav:CreateSkuNavMain()
 					if a == "CTRL-SHIFT-O" then
 						tWpSize = 5
 					end
-					--print("inser intWP")
+					--dprint("inser intWP")
 					local tNearbyWpReplaceMinRange = 3
 					--check if wp of other routes nearby
 					local tLastWP = SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs[#SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs]
@@ -1705,11 +1775,11 @@ function SkuNav:CreateSkuNavMain()
 					local tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY = SkuNav:GetCurrentRouteSectionIntersection(tPrevWPx, tPrevWPy, x, y)
 
 					if (tReplacementWp and tReplacementWpRange <= tNearbyWpReplaceMinRange and tLastWP ~= tReplacementWp) and IsLeftAltKeyDown() == true then
-						--print("wp nearby", tReplacementWp)
+						--dprint("wp nearby", tReplacementWp)
 						SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
 						SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
 					elseif (tIntersectWithRt and SkuNav:Distance(tPrevWPx, tPrevWPy, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY) > 2) and IsLeftAltKeyDown() == true then
-						--print("IS", tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
+						--dprint("IS", tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
 						local tReplacementWp, tReplacementWpRange = SkuNav:GetNearestWpToCoords(tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
 						if tReplacementWp and tReplacementWpRange and tReplacementWpRange < tNearbyWpReplaceMinRange then
 							SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
@@ -1730,7 +1800,7 @@ function SkuNav:CreateSkuNavMain()
 						SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
 						SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
 					else
-						--print("nothing")
+						--dprint("nothing")
 						local tIntWP = SkuNav:CreateWaypoint(nil, nil, nil, tWpSize)
 						SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
 						SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
@@ -1804,7 +1874,7 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnEnable()
-	--print("SkuNav OnEnable")
+	--dprint("SkuNav OnEnable")
 	if not SkuOptions.db.profile[MODULE_NAME].Waypoints then
 		SkuOptions.db.profile[MODULE_NAME].Waypoints = {}
 		for x = 1, 4 do
@@ -1869,7 +1939,7 @@ function SkuNav:OnEnable()
 	if SkuCore.inCombat == false then
 		SkuNav:CreateSkuNavMain()		
 	end
-
+dprint("OnEnable SkuNeighbCache = {}")
 	SkuNeighbCache = {}
 end
 
@@ -1889,7 +1959,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseLeftDown()
-	--print("L down")
+	--dprint("L down")
 	local tWpName = SkuWaypointWidgetCurrent--GetMouseFocus().aText or GetMouseFocus().WpName
 	if tWpName then
 		local wpObj = SkuNav:GetWaypoint(tWpName)
@@ -1929,7 +1999,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseLeftUp()
-	--print("L up")
+	--dprint("L up")
 	if tCurrentDragWpName then
 		local wpObj = SkuNav:GetWaypoint(tCurrentDragWpName)
 		if wpObj then
@@ -1939,8 +2009,12 @@ function SkuNav:OnMouseLeftUp()
 
 					--SkuNeighbCache = {}
 					if tCacheNbWpsTimer then
+						if tCacheNbWpsTimerCounterProgressShow == true then
+							--dprint("SkuNav: Caching stopped")
+						end
 						tCacheNbWpsTimer:Cancel()
 					end
+					--dprint("OnMouseLeftUp")
 					CacheNbWps(nil, nil, {tCurrentDragWpName})					
 				end
 			end
@@ -1955,19 +2029,19 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseRightDown()
-	--print("R up")
+	--dprint("R up")
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseRightHold()
-	--print("R hold")
+	--dprint("R hold")
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseRightUp()
-	--print("R up")
+	--dprint("R up")
 	if SkuNavRecordingPoly > 0 and SkuNavRecordingPolyFor then
 		local tWorldY, tWorldX = SkuNavMMContentToWorld(SkuNavMMGetCursorPositionContent2())
 		SkuDB.Polygons.data[SkuNavRecordingPolyFor].nodes[#SkuDB.Polygons.data[SkuNavRecordingPolyFor].nodes + 1] = {x = tWorldX, y = tWorldY,}
@@ -1976,13 +2050,13 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouse4Down()
-	--print("M down")
+	--dprint("M down")
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouse4Hold()
-	--print("M hold")
+	--dprint("M hold")
 
 end
 
@@ -2005,11 +2079,11 @@ function SkuNav:OnMouse4Up(aUseTarget)
 			local tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY = SkuNav:GetCurrentRouteSectionIntersection(tPrevWPx, tPrevWPy,tWy, tWx)
 
 			if (tReplacementWp and tReplacementWpRange <= tNearbyWpReplaceMinRange and tLastWP ~= tReplacementWp) and IsLeftAltKeyDown() == true then
-				--print("wp nearby", tReplacementWp)
+				--dprint("wp nearby", tReplacementWp)
 				SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
 				SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
 			elseif (tIntersectWithRt and SkuNav:Distance(tPrevWPx, tPrevWPy, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY) > 2) and IsLeftAltKeyDown() == true then
-				--print("IS", tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
+				--dprint("IS", tIntersectWithRt, tIntersectWithRtWp1, tIntersectWithRtWp2, tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
 				local tReplacementWp, tReplacementWpRange = SkuNav:GetNearestWpToCoords(tIntersectWithRtIntersectionX, tIntersectWithRtIntersectionY)
 				if tReplacementWp and tReplacementWpRange and tReplacementWpRange < tNearbyWpReplaceMinRange then
 					SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tReplacementWp)
@@ -2021,7 +2095,7 @@ function SkuNav:OnMouse4Up(aUseTarget)
 					--update other rt
 					for x = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs do
 						if SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs[x] == tIntersectWithRtWp1 then
-							--print(" INSERT")
+							--dprint(" INSERT")
 							SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[tIntersectWithRt].WPs, tIntWP, x+1)
 							break
 						end
@@ -2031,7 +2105,7 @@ function SkuNav:OnMouse4Up(aUseTarget)
 				SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
 				SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
 			else
-				--print("nothing")
+				--dprint("nothing")
 				local tIntWP = SkuNav:CreateWaypoint(nil, tWx, tWy, tWpSize)
 				SkuNav:InsertRouteWp(SkuOptions.db.profile[MODULE_NAME].Routes[SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute].WPs, tIntWP)
 				SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
@@ -2044,19 +2118,19 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseMiddleDown()
-	--print("M down")
+	--dprint("M down")
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseMiddleHold()
-	--print("M hold")
+	--dprint("M hold")
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouseMiddleUp(aUseTarget)
-	--print("M up", aUseTarget)
+	--dprint("M up", aUseTarget)
 
 	if IsShiftKeyDown() then
 		local tWpName = SkuWaypointWidgetCurrent
@@ -2217,19 +2291,19 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouse5Down()
-	--print("M down")
+	--dprint("M down")
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouse5Hold()
-	--print("M hold")
+	--dprint("M hold")
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnMouse5Up()
-	--print("R up")
+	--dprint("R up")
 	if SkuWaypointWidgetCurrent then
 		local wpObj = SkuNav:GetWaypoint(SkuWaypointWidgetCurrent)
 		if wpObj then
@@ -2340,7 +2414,7 @@ end
 ---@param aY number
 ---@param aRange number
 function SkuNav:GetAllRoutesInRangeToCoords(aX, aY, aRange)
-	--print("GetAllRoutesInRangeToCoords")
+	--dprint("GetAllRoutesInRangeToCoords")
 
 	local tNearbyWpReplaceMinRange = 2
 	local tFoundWps = {}
@@ -2388,9 +2462,11 @@ end
 function GetNeighbToWp(aWpName, aTicker)
 	if not aTicker then
 		if tCacheNbWpsTimer then
+			if tCacheNbWpsTimerCounterProgressShow == true then
+				--dprint("SkuNav: Caching stopped")
+			end
 			tCacheNbWpsTimer:Cancel()
 			tCacheNbWpsTimer = nil
-			--print("SkuNav: Caching stopped")
 		end
 	end
 
@@ -2416,7 +2492,7 @@ function GetNeighbToWp(aWpName, aTicker)
 	end
 	SkuNeighbCache[aWpName] = tFoundNeighb
 
-	return tFoundNeighb
+	return tFoundNeighb, true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2508,6 +2584,8 @@ function SkuNav:GetAllMetaTargetsFromWp2(aWpName)
 		end
 	end
 
+	CacheNbWps()
+
 	return rMetapathData
 end
 
@@ -2541,7 +2619,7 @@ end
 ---@param aWpName number
 ---@param aNoVoice bool if the selection should be vocalized
 function SkuNav:SelectWP(aWpName, aNoVoice)
-	--print("SkuNav:SelectWP(aWpName, aNoVoice", aWpName, aNoVoice)
+	--dprint("SkuNav:SelectWP(aWpName, aNoVoice", aWpName, aNoVoice)
 	if not aWpName then
 		return
 	end
@@ -2667,6 +2745,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_LOGIN(...)
+	--dprint("PLAYER_LOGIN", ...)
 	SkuNav.MinimapFull = false
 
 	-- quick wps F5-7
@@ -2707,24 +2786,30 @@ function SkuNav:PLAYER_LOGIN(...)
 		end
 	end
 
-	--check all rts; remove invalid rts and their unused wps
-	--cleanup broken rts
-	local tRtsToDelete = {}
-	if SkuOptions.db.profile["SkuNav"].Routes then
-		for x = 1, #SkuOptions.db.profile["SkuNav"].Routes do
-			if SkuNav:CheckRoute(SkuOptions.db.profile["SkuNav"].Routes[x]) == false then
-				tRtsToDelete[#tRtsToDelete + 1] = SkuOptions.db.profile["SkuNav"].Routes[x]
+	--apparently we need to wait for all wp and rt data to load. 
+	--sounds weird, but some entries from SkuOptions.db.profile["SkuNav"].Waypoints are definitly not there directly after login was triggered :/
+	C_Timer.After(10, function()
+		--dprint("check all rts")
+		--check all rts; remove invalid rts and their unused wps
+		--cleanup broken rts
+		local tRtsToDelete = {}
+		if SkuOptions.db.profile["SkuNav"].Routes then
+			for x = 1, #SkuOptions.db.profile["SkuNav"].Routes do
+				if SkuNav:CheckRoute(SkuOptions.db.profile["SkuNav"].Routes[x]) == false then
+					tRtsToDelete[#tRtsToDelete + 1] = SkuOptions.db.profile["SkuNav"].Routes[x]
+				end
 			end
 		end
-	end
-	if #tRtsToDelete > 0 then
-		for x = 1, #tRtsToDelete do
-			SkuNav:DeleteRoute(tRtsToDelete[x], true)
-			--print(tRtsToDelete[x])
+		if #tRtsToDelete > 0 then
+			for x = 1, #tRtsToDelete do
+				--dprint("PLAYER_LOGIN DeleteRoute")
+				SkuNav:DeleteRoute(tRtsToDelete[x], true)
+				--dprint(tRtsToDelete[x])
+			end
+			print(L["Warning"]..": "..#tRtsToDelete.." "..L["invalid routes including their waypoints were deleted"])
+			SkuOptions.Voice:OutputString(L["Warning"]..": "..#tRtsToDelete.." "..L["invalid routes including their waypoints were deleted"], true, true, 0.2)
 		end
-		print(L["Warning"]..": "..#tRtsToDelete.." "..L["invalid routes including their waypoints were deleted"])
-		SkuOptions.Voice:OutputString(L["Warning"]..": "..#tRtsToDelete.." "..L["invalid routes including their waypoints were deleted"], true, true, 0.2)
-	end
+	end)
 
 	--tomtom integration for adding beacons to the arrow
 	if TomTom then
@@ -2743,13 +2828,13 @@ function SkuNav:PLAYER_LOGIN(...)
 				end
 			end)
 			hooksecurefunc(TomTom, "AddWaypointToCurrentZone", function(self, x, y, desc)
-				--print("AddWaypointToCurrentZone", x, y, desc)
+				--dprint("AddWaypointToCurrentZone", x, y, desc)
 			end)
 			hooksecurefunc(TomTom, "HideWaypoint", function(self, uid, minimap, worldmap)
-				--print("HideWaypoint", uid, minimap, worldmap)
+				--dprint("HideWaypoint", uid, minimap, worldmap)
 			end)
 			hooksecurefunc(TomTom, "ShowWaypoint", function(self, uid)
-				--print("ShowWaypoint", uid)
+				--dprint("ShowWaypoint", uid)
 			end)
 		end)
 	end
@@ -2758,7 +2843,7 @@ function SkuNav:PLAYER_LOGIN(...)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_ENTERING_WORLD(...)
-	--print("PLAYER_ENTERING_WORLD")
+	--dprint("PLAYER_ENTERING_WORLD", ...)
 	SkuNav:UpdateStandardWpReachedRange()
 
 	C_Timer.NewTimer(25, function() SkuDrawFlag = true end)
@@ -2783,10 +2868,14 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 
 	--cache meta rt stuff
 	if tCacheNbWpsTimer then
+		if tCacheNbWpsTimerCounterProgressShow == true then
+			--dprint("SkuNav: Caching stopped")
+		end
 		tCacheNbWpsTimer:Cancel()
 	end
 	C_Timer.After(10, function()
-		CacheNbWps(20)
+		--dprint("PLAYER_ENTERING_WORLD")
+		CacheNbWps()
 	end)	
 end
 
@@ -2890,7 +2979,7 @@ function SkuNav:RenameWaypoint(aOldName, aNewName)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:CreateWaypoint(aName, aX, aY, aSize, aForcename)
-	--print("CreateWaypoint", aName, aX, aY, aSize)
+	--dprint("CreateWaypoint", aName, aX, aY, aSize)
 	aSize = aSize or 1
 	local tPName = UnitName("player")
 
@@ -2972,7 +3061,7 @@ local SkuNavObjWaypointCache = {}
 ---@param aName string
 ---@return table tReturnValue contintentId, areaId, worldX, worldY, createdAt, createdBy
 function SkuNav:GetWaypoint(aName)
-	--print("GetWaypoint", aName, SkuOptions.db.profile["SkuNav"].Waypoints[aName])
+	--dprint("GetWaypoint", aName, SkuOptions.db.profile["SkuNav"].Waypoints[aName])
 	if not SkuOptions.db.profile["SkuNav"].Waypoints then
 		return
 	end
@@ -3066,7 +3155,7 @@ function SkuNav:GetWaypoint(aName)
 													["spawnNr"] = sp,
 												}
 
-												--print(aName, "from db")
+												--dprint(aName, "from db")
 												return {
 													["contintentId"] = tContintentId,
 													["areaId"] = is,
@@ -3092,11 +3181,11 @@ function SkuNav:GetWaypoint(aName)
 	if tWpParts[1] and tWpParts[2] and tWpParts[3] and tWpParts[4] and tWpParts[5] and tWpParts[6] and tWpParts[7] then
 		if tWpParts[1] == L["OBJECT"] then
 			if SkuNavObjWaypointCache[aName] then
-				--print("GET OBJEKT C", aName)
+				--dprint("GET OBJEKT C", aName)
 				return SkuNavObjWaypointCache[aName]
 			else
 				local i = tWpParts[2]
-				--print("OBJEKT QUERY", " - ", i, " - ", aName, " - ", tWpParts[1] , " - ", tWpParts[2] , " - ", tWpParts[3] , " - ", tWpParts[4] , " - ", tWpParts[5], " - ", tWpParts[6], " - ", tWpParts[7])
+				--dprint("OBJEKT QUERY", " - ", i, " - ", aName, " - ", tWpParts[1] , " - ", tWpParts[2] , " - ", tWpParts[3] , " - ", tWpParts[4] , " - ", tWpParts[5], " - ", tWpParts[6], " - ", tWpParts[7])
 				if i then
 					if SkuDB.objectDataTBC[i][SkuDB.objectKeys["spawns"]] then
 						for is, vs in pairs(SkuDB.objectDataTBC[i][SkuDB.objectKeys["spawns"]]) do
@@ -3108,7 +3197,7 @@ function SkuNav:GetWaypoint(aName)
 										for sp = 1, #vs do
 											if tWpParts[#tWpParts-2] == sp then
 												if vs[sp][1]..";"..vs[sp][2] == tWpParts[#tWpParts-1]..";"..tWpParts[#tWpParts] then
-													--print("GET OBJEKT", aName)
+													--dprint("GET OBJEKT", aName)
 													local tContintentId = select(3, SkuNav:GetAreaData(is))
 													local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(tWpParts[#tWpParts-1] / 100, tWpParts[#tWpParts] / 100))
 													local tX, tY = worldPosition:GetXY()
@@ -3124,7 +3213,7 @@ function SkuNav:GetWaypoint(aName)
 														["size"] = 1,
 													}
 
-													--print(aName, "from db")
+													--dprint(aName, "from db")
 													return {
 														["contintentId"] = tContintentId,
 														["areaId"] = is,
@@ -3168,7 +3257,7 @@ function SkuNav:GetNpcRoles(aNpcName, aNpcId)
 	local rRoles = {}
 	for i, v in pairs(SkuNav.NPCRolesToRecognize) do
 		if bit.band(i, SkuDB.NpcData.Data[aNpcId][SkuDB.NpcData.Keys["npcFlags"]]) > 0 then
-			--print(aNpcName, aNpcId, i, v)
+			--dprint(aNpcName, aNpcId, i, v)
 			rRoles[#rRoles+1] = v
 		end
 	end
@@ -3182,7 +3271,7 @@ function SkuNav:InsertWpNamesFromCreatureIds(aCreatureIds, aTargetTable)
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 
 	for i, tNpcID in pairs(aCreatureIds) do
-		--print("CreateRtWpSubmenu", i, tNpcID)		
+		--dprint("CreateRtWpSubmenu", i, tNpcID)		
 		local i = tNpcID
 		if SkuDB.NpcData.Data[i] then
 			local tSpawns = SkuDB.NpcData.Data[i][7]
@@ -3235,7 +3324,7 @@ local ListWaypointsNpcCache = {}
 local ListWaypointsObjectCache = {}
 
 function SkuNav:ListWaypoints(aSort, aFilter, aAreaId, aContinentId, aExcludeRoute, aRetAsTable, aIgnoreAuto)
-	--print("ListWaypoints-----------------", aSort, aFilter, aAreaId, aContinentId, aExcludeRoute)
+	--dprint("ListWaypoints-----------------", aSort, aFilter, aAreaId, aContinentId, aExcludeRoute)
 	aSort = aSort or false
 	aFilter = aFilter or "custom;zonemap;inkeeper;taxi;postbox;npc;object"--resource
 
@@ -3353,7 +3442,7 @@ function SkuNav:ListWaypoints(aSort, aFilter, aAreaId, aContinentId, aExcludeRou
 			end
 		end
 		if tInFlag == true then
-			--print("db")
+			--dprint("db")
 			local tNpcTmpTable = {}
 			for i, v in pairs(SkuDB.NpcData.NamesDE) do
 				if SkuDB.NpcData.Data[i] then
@@ -3370,7 +3459,7 @@ function SkuNav:ListWaypoints(aSort, aFilter, aAreaId, aContinentId, aExcludeRou
 											local tNumberOfSpawns = #vs
 											if tNumberOfSpawns > 3 then
 												--tNumberOfSpawns = 3
-												--print(v[1], tNumberOfSpawns)
+												--dprint(v[1], tNumberOfSpawns)
 											end
 											local tSubname = SkuDB.NpcData.NamesDE[i][2]
 											local tRolesString = ""
@@ -3414,7 +3503,7 @@ function SkuNav:ListWaypoints(aSort, aFilter, aAreaId, aContinentId, aExcludeRou
 			end
 		end
 		if tInFlag == true then
-			--print("from db")
+			--dprint("from db")
 			local tObjectTmpTable = {}
 			for i, v in pairs(SkuDB.objectLookup) do
 				if (not SkuDB.objectResourceNames[v]) or (string.find(aFilter, "resource")) then
@@ -3528,7 +3617,8 @@ function SkuNav:DeleteWaypoint(aWpName, aDeleteRtsWith2WpsRemaining)
 
 		if aDeleteRtsWith2WpsRemaining == true then
 			for x = 1, #tRtsToDelete do
-				--print("route wird gelöscht wegen 2wp", tRtsToDelete[x])
+				--dprint("route wird gelöscht wegen 2wp", tRtsToDelete[x])
+				--dprint("DeleteWaypoint DeleteRoute")
 				SkuNav:DeleteRoute(tRtsToDelete[x], true)
 			end
 		end

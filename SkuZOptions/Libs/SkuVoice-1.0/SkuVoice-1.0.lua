@@ -92,7 +92,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SplitString(aString)
-	--print("split:", aString, SkuAudioFileIndex[aString])
+	--dprint("split:", aString, SkuAudioFileIndex[aString])
 	if SkuAudioFileIndex[aString] then
 		return aString
 	end
@@ -164,7 +164,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell) -- for strings with lookup in string index
-	--print(aString)
 	local tString = ""
 	if aSpell == true then
 		aString = string.lower(aString)
@@ -193,7 +192,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 	end
 
 	if engine then
-		--print("engine", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine)
+		--dprint("engine", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine)
 		local tIt = true
 		while tIt == true do
 			tIt = false
@@ -240,6 +239,13 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 					end
 				end
 			end
+		end
+
+		while string.find(aString, "|n") do
+			aString = string.gsub(aString, "|n", ";")
+		end
+		while string.find(aString, "|") do
+			aString = string.gsub(aString, "|", " ")
 		end
 
 		aString = Unescape(aString)
@@ -373,7 +379,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:CollectString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel) -- for strings with lookup in string index
-	--print(aString)
+	--dprint(aString)
 	if not aString then
 		return
 	end
@@ -505,7 +511,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:Output(file, overwrite, wait, length, doNotOverwrite, isMulti, soundChannel) -- for audio file names
-	--print("SV OUTPUT")
+	--dprint("SV OUTPUT")
 	soundChannel = soundChannel or SkuOptions.db.profiles["SkuOptions"].soundChannels.SkuChannel or "Talking Head"
 	
 	isMulti = isMulti or false

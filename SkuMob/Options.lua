@@ -36,7 +36,7 @@ SkuMob.defaults = {
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:MenuBuilder(aParentEntry)
-	--print("SkuMob:MenuBuilder", aParentEntry)
+	--dprint("SkuMob:MenuBuilder", aParentEntry)
 	local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Target menu"]}, menuEntryTemplate_Menu)
 	if _G["TargetFrame"] then
 		tNewSubMenuEntry.macrotext = "/click TargetFrame RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.8, function() _G[\"DropDownList1\"]:GetScript(\"OnEnter\")(_G[\"DropDownList1\"]) end)"

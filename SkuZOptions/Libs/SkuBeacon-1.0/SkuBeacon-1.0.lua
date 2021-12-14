@@ -306,7 +306,7 @@ function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY
 		posX = aPosX,
 		posY = aPosY,
 		rate = aRate,
-		lastPing = GetTime(),
+		lastPing = GetTime() - 1000,
 		silenceRange = aSilenceRange,
 		volume = aVolume or 100,
 		clickSoundRange = aClickSoundRange,

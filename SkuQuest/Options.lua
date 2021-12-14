@@ -123,7 +123,7 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 	end
 	if not tFlagA and not tFlagH then
 		for i, v in pairs(rRaces) do
-			--print(i, v)
+			--dprint(i, v)
 			tRaceText = tRaceText..SkuQuest.racesFriendly[v]..";"
 		end
 	end
@@ -139,7 +139,7 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 	end
 	local tClassText = ""
 	for i, v in pairs(tClasses) do
-		--print(i, v)
+		--dprint(i, v)
 		tClassText = tClassText..SkuQuest.classesFriendly[v]..";"
 	end
 	table.insert(tSections, L["Classes"]..": "..tClassText)
@@ -187,7 +187,7 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 	local tFlags = {}
 	for iR, vR in pairs(SkuDB.QuestFlags) do
 		if SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]] then
-			--print(iR, vR, SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]])
+			--dprint(iR, vR, SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]])
 			if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]]) > 0 then
 				table.insert(tFlags, iR)
 			end
@@ -218,7 +218,7 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 
 	for i, tNpcID in pairs(aCreatureIds) do
-		--print("CreateRtWpSubmenu", i, tNpcID)		
+		--dprint("CreateRtWpSubmenu", i, tNpcID)		
 		local i = tNpcID
 		if SkuDB.NpcData.Data[i] then
 			local tSpawns = SkuDB.NpcData.Data[i][7]
@@ -267,15 +267,15 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3)
-	--print("GetResultingWps", aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3)
+	--dprint("GetResultingWps", aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3)
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 	local tCurrentAreaId = SkuNav:GetCurrentAreaId()
 	if aSubType == "item" then
 		for i, tItemId in pairs(aSubIDTable) do
-			--print("  i, tItemId", i, tItemId)
+			--dprint("  i, tItemId", i, tItemId)
 			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]] then
 				for x = 1, #SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]] do
-					--print("     item drops from object", x, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]][x])
+					--dprint("     item drops from object", x, SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]][x])
 					local tObjectId = SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["objectDrops"]][x]
 					local tObjectData = SkuDB.objectDataTBC[tObjectId]
 					if tObjectData then					
@@ -312,7 +312,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]], tResultWPs, aOnly3)
 			end
 			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["itemDrops"]] then
-				--print("item drop from item")
+				--dprint("item drop from item")
 
 			end
 			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]] then
@@ -360,7 +360,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
-	--print("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
+	--dprint("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
 	local tResultWPs = {}
 
 	SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs)
@@ -370,7 +370,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 	
 	local tHasContent = false
 	for unitGeneralName, wpTable in pairs(tResultWPs) do
-		--print(unitGeneralName, wpTable)
+		--dprint(unitGeneralName, wpTable)
 		tHasContent = true
 		local tNewMenuGeneralName = SkuOptions:InjectMenuItems(aParent, {unitGeneralName}, menuEntryTemplate_Menu)
 		tNewMenuGeneralName.dynamic = true
@@ -504,7 +504,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 			tNewMenuSubEntry1.dynamic = true
 			tNewMenuSubEntry1.isSelect = true
 			tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
-				--print("OnAction", self.name, aValue, aName)
+				--dprint("OnAction", self.name, aValue, aName)
 				if SkuOptions.db.profile["SkuNav"].routeRecording == true then
 					SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
 					SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
@@ -627,7 +627,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 			tNewMenuSubEntry1.dynamic = true
 			tNewMenuSubEntry1.isSelect = true
 			tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
-				--print("OnAction Wegpunkt auswählen", self.name, aValue, aName)
+				--dprint("OnAction Wegpunkt auswählen", self.name, aValue, aName)
 				if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
 					SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
 					SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
@@ -988,7 +988,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				for questLogID = 1, numEntries do
 					local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
 					tCurrentQuestLogQuestsTable[questID] = true
-					--print(title, questID)
+					--dprint(title, questID)
 				end
 			end
 
@@ -1090,7 +1090,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 									end
 									if tAllCompletedFlag == true then
 										local tIsOk = true
-										--print(i, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]])
+										--dprint(i, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]])
 										if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]] then
 											local tFaction = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]][1]
 											if tFaction then
@@ -1158,7 +1158,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				local tIdTable = {}
 				local tPlayerTopAreaId = SkuNav:GetAreaIdFromUiMapId(tUiMap)
 				for i, v in pairs(tShowQuestsTable) do
-				--print(i, v)
+				--dprint(i, v)
 					local tDistanceToQuestGiver = 0
 					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then
 						local tQuestGiverID = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]

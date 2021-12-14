@@ -149,7 +149,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
-	--print("SkuCore OnInitialize")
+	--dprint("SkuCore OnInitialize")
 
 	SkuCore:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuCore:RegisterEvent("PLAYER_LOGIN")
@@ -454,11 +454,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tSkuCoreNamePlateRepo = {}
 function SkuCore:NAME_PLATE_CREATED(...)
-	--print("NAME_PLATE_CREATED", ...)
+	--dprint("NAME_PLATE_CREATED", ...)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:NAME_PLATE_UNIT_ADDED(aEvent, aPlateName)
-	--print("NAME_PLATE_UNIT_ADDED", aPlateName, UnitName(aPlateName))
+	--dprint("NAME_PLATE_UNIT_ADDED", aPlateName, UnitName(aPlateName))
 	local tName = UnitName(aPlateName)
 	if not tName then return end
 
@@ -469,7 +469,7 @@ function SkuCore:NAME_PLATE_UNIT_ADDED(aEvent, aPlateName)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:NAME_PLATE_UNIT_REMOVED(aEvent, aPlateName)
-	--print("NAME_PLATE_UNIT_REMOVED", aPlateName)
+	--dprint("NAME_PLATE_UNIT_REMOVED", aPlateName)
 	tSkuCoreNamePlateRepo[aPlateName] = nil
 	for x = 1, #tSkuCoreNamePlateRepo do
 		if tSkuCoreNamePlateRepo[x].plate ==aPlateName then
@@ -483,7 +483,7 @@ local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
 local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 function SkuCore:OnEnable()
-	--print("SkuCore OnEnable")
+	--dprint("SkuCore OnEnable")
 	SkuCore:RangeCheckOnEnable()
 
 	--fake ctrl shift tab for untargetable units in starting areas	
@@ -732,7 +732,7 @@ function SkuCore:OnEnable()
 						WorldMapFrame:Show()
 						WorldMapFrame:Hide()
 					end
-					--print(WorldMapFrame:GetMapID())
+					--dprint(WorldMapFrame:GetMapID())
 					if C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player") then
 						local _, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player"))
 						local tNewX, tNewY = worldPosition:GetXY()
@@ -763,7 +763,7 @@ function SkuCore:OnEnable()
 								SkuCoreMovement.counter = SkuCoreMovement.counter + 1
 								if SkuCoreMovement.counter > 5 and tSound > 0 then
 									SkuCoreMovement.counter = 0
-									--print(tSound, t * 10000)
+									--dprint(tSound, t * 10000)
 									SkuOptions.Voice:OutputString("sound-stuck"..tSound, true, false, 0.8)-- file: string, reset: bool, wait: bool, length: int
 								end
 							end
@@ -811,7 +811,7 @@ function SkuCore:OnEnable()
 	tFrame:SetText("SkuCoreControlOption1")
 	tFrame:SetPoint("TOP", _G["SkuCoreControl"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
-		--print("SkuCoreControlOption1", self, aKey, aB)
+		--dprint("SkuCoreControlOption1", self, aKey, aB)
 		
 		if aKey == "CTRL-SHIFT-Y" then
 			SkuCore:PanicModeStart()
@@ -840,7 +840,7 @@ function SkuCore:OnEnable()
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self) 
-		--print("SkuCoreControlOption1 OnShow")
+		--dprint("SkuCoreControlOption1 OnShow")
 		if SkuCore.inCombat == true then
 			SkuCore.openMenuAfterCombat = true
 			return
@@ -857,7 +857,7 @@ function SkuCore:OnEnable()
 	end)
 	--SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-X", "SkuCoreControlOption1", "CTRL-SHIFT-X")
 	tFrame:SetScript("OnHide", function(self) 
-		--print("SkuCoreControlOption1 OnHide")
+		--dprint("SkuCoreControlOption1 OnHide")
 		if SkuCore.inCombat == true then
 			return
 		end
@@ -890,12 +890,12 @@ function SkuCore:OnEnable()
 	hooksecurefunc("StrafeLeftStop", function() SkuCoreMovement.Flags.StrafeLeft = false end)
 	hooksecurefunc("StrafeRightStart", function() SkuCoreMovement.Flags.StrafeRight = true end)
 	hooksecurefunc("StrafeRightStop", function() SkuCoreMovement.Flags.StrafeRight = false end)
-	--hooksecurefunc("TurnLeftStart", function() print("TurnLeftStartf") end)
-	--hooksecurefunc("TurnLeftStop", function() print("TurnLeftStopf") end)
-	--hooksecurefunc("TurnRightStart", function() print("TurnRightStartf") end)
-	--hooksecurefunc("TurnRightStop", function() print("TurnRightStopf") end)
+	--hooksecurefunc("TurnLeftStart", function() dprint("TurnLeftStartf") end)
+	--hooksecurefunc("TurnLeftStop", function() dprint("TurnLeftStopf") end)
+	--hooksecurefunc("TurnRightStart", function() dprint("TurnRightStartf") end)
+	--hooksecurefunc("TurnRightStop", function() dprint("TurnRightStopf") end)
 	hooksecurefunc("ToggleRun", function()
-		--print("ToggleRun")
+		--dprint("ToggleRun")
 		if SkuStatus.running > 0 then
 			SkuStatus.running = 0
 			SkuStatus.walking = GetTime()
@@ -910,11 +910,11 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_DEAD(...)
-	--print("PLAYER_DEAD", ...)
-	--print("UnitIsDead", UnitIsDead("player"))
+	--dprint("PLAYER_DEAD", ...)
+	--dprint("UnitIsDead", UnitIsDead("player"))
 end
 function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
-	--print("AUTOFOLLOW_BEGIN", event, target, ...)
+	--dprint("AUTOFOLLOW_BEGIN", event, target, ...)
 	SkuStatus.followEndFlag = false
 	SkuStatus.followUnitName = target or UnitName("TARGET")
 	if SkuStatus.follow == 0 then
@@ -944,7 +944,7 @@ function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
 	end
 end
 function SkuCore:AUTOFOLLOW_END(event, ...)
-	--print("AUTOFOLLOW_END")
+	--dprint("AUTOFOLLOW_END")
 	SkuStatus.followEndFlag = true
 	C_Timer.After(0.1, function()
 		if SkuStatus.followEndFlag == true then
@@ -968,10 +968,10 @@ function SkuCore:AUTOFOLLOW_END(event, ...)
 	end)
 end
 function SkuCore:PLAYER_UPDATE_RESTING(...)
-	--print("PLAYER_UPDATE_RESTING", ...)
+	--dprint("PLAYER_UPDATE_RESTING", ...)
 end
 function SkuCore:UPDATE_STEALTH(eventName, ...)--ok
-	--print("UPDATE_STEALTH", eventName, ...)
+	--dprint("UPDATE_STEALTH", eventName, ...)
 	if IsStealthed() == true then
 		SkuStatus.stealth = GetTime()
 		SkuOptions.Voice:OutputString("male-Verstohlenheit", false, true, 0.2)
@@ -983,16 +983,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:BAG_UPDATE(...)
-	--print("BAG_UPDATE", ...)
+	--dprint("BAG_UPDATE", ...)
 end
 function SkuCore:ITEM_LOCK_CHANGED(...)
-	--print("ITEM_LOCK_CHANGED", ...)
+	--dprint("ITEM_LOCK_CHANGED", ...)
 end
 function SkuCore:ITEM_UNLOCKED(...)
-	--print("ITEM_UNLOCKED", ...)
+	--dprint("ITEM_UNLOCKED", ...)
 end
 function SkuCore:CURSOR_UPDATE(...)
-	--print("CURSOR_UPDATE", ...)
+	--dprint("CURSOR_UPDATE", ...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1000,13 +1000,13 @@ local PLAYER_CONTROL_LOST_flag = 0
 local PLAYER_MOUNT_DISPLAY_CHANGED_flag = 0
 local PLAYER_CONTROL_GAINED_flag = 0
 function SkuCore:PLAYER_CONTROL_LOST(...)--taxi
-	--print("PLAYER_CONTROL_LOST", ...)
+	--dprint("PLAYER_CONTROL_LOST", ...)
 	PLAYER_CONTROL_LOST_flag = 1
 	PLAYER_CONTROL_GAINED_flag = 0
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_MOUNT_DISPLAY_CHANGED(...)--taxi
-	--print("PLAYER_MOUNT_DISPLAY_CHANGED", ...)
+	--dprint("PLAYER_MOUNT_DISPLAY_CHANGED", ...)
 	if PLAYER_CONTROL_LOST_flag == 1 then
 		PLAYER_CONTROL_LOST_flag = 0
 		SkuOptions.Voice:OutputString(L["taxi;started"], true, true, nil, true)
@@ -1018,7 +1018,7 @@ function SkuCore:PLAYER_MOUNT_DISPLAY_CHANGED(...)--taxi
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_CONTROL_GAINED(...)--taxi
-	--print("PLAYER_CONTROL_GAINED", ...)
+	--dprint("PLAYER_CONTROL_GAINED", ...)
 	PLAYER_CONTROL_GAINED_flag = 1
 	PLAYER_CONTROL_LOST_flag = 0
 end
@@ -1037,24 +1037,24 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:VARIABLES_LOADED(...)
     -- process the event
-	--print(...)
+	--dprint(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TaxiFrame_OnShow(self)
-	--print("SkuCore:TaxiFrame_OnShow", self)
+	--dprint("SkuCore:TaxiFrame_OnShow", self)
 	SkuCore:CheckFrames()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TaxiFrame_OnHide(self)
-	--print("SkuCore:TaxiFrame_OnHide", self)
+	--dprint("SkuCore:TaxiFrame_OnHide", self)
 	SkuCore:CheckFrames()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function splitString(aString)
-	--print("split:", aString, SkuAudioFileIndex[aString])
+	--dprint("split:", aString, SkuAudioFileIndex[aString])
 	if SkuAudioFileIndex[aString] then
 		return aString
 	end
@@ -1091,37 +1091,37 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:StaticPopup_Hide(which, text_arg1, text_arg2, data, insertedFrame)
-	--print("StaticPopup_Hide", which, text_arg1, text_arg2, data, insertedFrame)
+	--dprint("StaticPopup_Hide", which, text_arg1, text_arg2, data, insertedFrame)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
-	--print("StaticPopup_Show", which, text_arg1, text_arg2, data, insertedFrame)
+	--dprint("StaticPopup_Show", which, text_arg1, text_arg2, data, insertedFrame)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameProgressPanel_OnShow(...)
-	--print("QuestFrameProgressPanel_OnShow", ...)
+	--dprint("QuestFrameProgressPanel_OnShow", ...)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameProgressPanel_OnHide(...)
-	--print("QuestFrameProgressPanel_OnHide", ...)
+	--dprint("QuestFrameProgressPanel_OnHide", ...)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameDetailPanel_OnShow(...)
-	--print("QuestFrameDetailsPanel_OnShow", ...)
+	--dprint("QuestFrameDetailsPanel_OnShow", ...)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameDetailPanel_OnHide(...)
-	--print("QuestFrameDetailsPanel_OnHide", ...)
+	--dprint("QuestFrameDetailsPanel_OnHide", ...)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_LOGIN(...)
-	--print("PLAYER_LOGIN", ...)
+	--dprint("PLAYER_LOGIN", ...)
 	SkuCore.TalentTempFlag = true
 
 	local f = CreateFrame("GameTooltip", "SkuScanningTooltip"); -- Tooltip name cannot be nil
@@ -1162,7 +1162,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
-	--print("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
+	--dprint("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
 
 	if isInitialLogin == true or isReloadingUi == true then
 		WorldMapFrame:Show()
@@ -1240,18 +1240,18 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameGreetingPanel_OnShow(...)
-	--print("QuestFrameGreetingPanel_OnShow", self, event, ...)
+	--dprint("QuestFrameGreetingPanel_OnShow", self, event, ...)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestFrameGreetingPanel_OnHide(...)
-	--print("QuestFrameGreetingPanel_OnHide", self, event, ...)
+	--dprint("QuestFrameGreetingPanel_OnHide", self, event, ...)
 	SkuCore:CheckFrames()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GOSSIP_SHOW(self, event, ...)
-	--print("GOSSIP_SHOW", self, event, ...)
+	--dprint("GOSSIP_SHOW", self, event, ...)
 	SkuOptions:StopSounds(5)
 	SkuCore:CheckFrames()
 end
@@ -1310,55 +1310,55 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GOSSIP_CLOSED(self, event, ...)
-	--print("GOSSIP_CLOSED")
+	--dprint("GOSSIP_CLOSED")
 	SkuCore:CheckFrames()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QUEST_DETAIL(...)
-	--print("QUEST_DETAIL")
+	--dprint("QUEST_DETAIL")
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QUEST_FINISHED(...)
-	--print("QUEST_FINISHED")
+	--dprint("QUEST_FINISHED")
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MERCHANT_SHOW(...)
-	--print("MERCHANT_SHOW")
+	--dprint("MERCHANT_SHOW")
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MERCHANT_CLOSED(...)
-	--print("MERCHANT_CLOSED")
+	--dprint("MERCHANT_CLOSED")
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PET_STABLE_SHOW(...)
-	--print("PET_STABLE_SHOW")
+	--dprint("PET_STABLE_SHOW")
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PET_STABLE_CLOSED(...)
-	--print("PET_STABLE_CLOSED")
+	--dprint("PET_STABLE_CLOSED")
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QUEST_LOG_UPDATE(self, event, ...)
-	--print("QUEST_LOG_UPDATE", self, event, ...)
+	--dprint("QUEST_LOG_UPDATE", self, event, ...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1390,7 +1390,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:TALENTFRAME_OnOpen(self)
-	--print("TALENTFRAME_OnOpen", self)
+	--dprint("TALENTFRAME_OnOpen", self)
 	SkuCore:CheckFrames()
 	SkuOptions:StopSounds(5)
 end
@@ -1557,7 +1557,7 @@ local friendlyFrameNamesParts = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function GetTableID(aTable)
-	--print(aTable:GetName(), aTable.name, tostring(aTable):gsub("table: ", "", 1))
+	--dprint(aTable:GetName(), aTable.name, tostring(aTable):gsub("table: ", "", 1))
 	return aTable:GetName() or aTable.name or tostring(aTable):gsub("table: ", "", 1)
 end
 
@@ -1611,14 +1611,14 @@ end
 local function IterateChildren(t, tab)
 	local tResults = {}
 
-	--print(tab, "Regions of", GetTableID(t), t:GetName())
+	--dprint(tab, "Regions of", GetTableID(t), t:GetName())
 	if t.GetRegions then
 		local dtc = { t:GetRegions() }
 		for x = 1, #dtc do
 			if validTypes[dtc[x]:GetObjectType()] then
 				if dtc[x]:IsVisible() == true then
 					local fName = GetTableID(dtc[x])
-					--print(tab, fName, dtc[x]:GetObjectType())
+					--dprint(tab, fName, dtc[x]:GetObjectType())
 					table.insert(tResults, fName)
 					tResults[fName] = {
 						frameName = fName,
@@ -1663,24 +1663,24 @@ local function IterateChildren(t, tab)
 		end
 	end
 
-	--print(tab, "Children of", GetTableID(t), t:GetName())
+	--dprint(tab, "Children of", GetTableID(t), t:GetName())
 	if t.GetChildren then
 		local dtc = { t:GetChildren() }
 
 		if t:GetName() == "GroupLootFrame1" then
-			--print(tab.."   ", t:GetName(), t.NeedButton, t.NeedButton:GetObjectType())
+			--dprint(tab.."   ", t:GetName(), t.NeedButton, t.NeedButton:GetObjectType())
 			dtc = { t.IconFrame, t.NeedButton, t.GreedButton, t.PassButton }
 		end
 		local tEmptyCounter = 1
 		for x = 1, #dtc do
-			--print(tab, x, dtc[x])
+			--dprint(tab, x, dtc[x])
 			if validTypes[dtc[x]:GetObjectType()] then
 				if dtc[x]:IsVisible() == true then
 					local tEnabled = true
 					if dtc[x].IsEnabled then tEnabled = dtc[x]:IsEnabled() end
 					if tEnabled == true then
 						local fName = GetTableID(dtc[x])
-						--print(tab.."   ", fName, dtc[x]:GetObjectType())
+						--dprint(tab.."   ", fName, dtc[x]:GetObjectType())
 						table.insert(tResults, fName)
 						tResults[fName] = {
 							frameName = fName,
@@ -1767,11 +1767,13 @@ local function IterateChildren(t, tab)
 						if dtc[x] then
 							if (dtc[x]:GetNumRegions() + dtc[x]:GetNumChildren()) > 0 then
 								local tChildsResult = IterateChildren(dtc[x], tab.."-")
-								--if there is only one child, set its content directly to this item
-								if #tChildsResult == 1 then
+								--if there is only one child, set its content directly to this item; except it's a money frame, then there may just one item
+								if #tChildsResult == 1 and not string.find(fName, "Money") then
+									--dprint("+++++ #tChildsResult == 1")
 									tResults[fName].childs = tChildsResult[tChildsResult[1]].childs
 								--otherwise add them to childs
-								elseif #tChildsResult > 1 then
+								elseif #tChildsResult > 1 or string.find(fName, "Money") then
+									--dprint("+++++ #tChildsResult > 1")
 									tResults[fName].childs = tChildsResult
 								end
 							end
@@ -1880,11 +1882,11 @@ local function CleanUpGossipList(aTable)
 
 		local tGold, tSilver, tCopper = 0, 0, 0
 		if value.textFirstLine == L["Money"] then
-			--print("GELD", #value.childs)
+			--dprint("currency", #value.childs)
 			for q = 1, #value.childs do
-				--print("  q", q, value.childs[q])
+				--dprint("  q", q, value.childs[q])
 				for w = 1, #value.childs do
-					--print("    w", w, value.childs[w], value.childs[value.childs[w]].textFirstLine)
+					--dprint("    w", w, value.childs[w], value.childs[value.childs[w]].textFirstLine)
 					if string.find(value.childs[w], "GoldButton") and value.childs[value.childs[w]].textFirstLine ~= "" then
 						tGold = tonumber(value.childs[value.childs[w]].textFirstLine)
 					end
@@ -1898,7 +1900,7 @@ local function CleanUpGossipList(aTable)
 			end
 
 			if tGold ~= nil and tSilver ~= nil and  tCopper ~= nil then
-				--print(tGold, tSilver, tCopper)
+				--dprint(tGold, tSilver, tCopper)
 				value.textFirstLine = tGold.." "..L["Gold"].." "..tSilver.." "..L["Silver"].." "..tCopper.." "..L["Copper"]
 				value.childs = {}
 			end
@@ -1942,7 +1944,7 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 
 	SkuCore.GossipList = {}
 	C_Timer.After(0.65, function() --This is because the content of some frames is not instantly available on show. We do need to wait a few milliseconds on it.
-		--print("CheckFrames", aForceLocalRoot)
+		--dprint("CheckFrames", aForceLocalRoot)
 		SkuCore.GossipList = {}
 		local tOpenFrames = {}
 
@@ -1958,7 +1960,7 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 			local tGossipList = {}
 
 			for x = 1, #tOpenFrames do
-				--print(x, tOpenFrames[x])
+				--dprint(x, tOpenFrames[x])
 				table.insert(tGossipList, tOpenFrames[x])
 				tGossipList[tOpenFrames[x]] = {
 					frameName = tOpenFrames[x],
@@ -1992,10 +1994,10 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 						tBread = tTable.name..","..tBread
 					end
 				end
-				--print("tBread", tBread)
-				--print("tFirstFrame", tFirstFrame)
+				--dprint("tBread", tBread)
+				--dprint("tFirstFrame", tFirstFrame)
 			end
-			--print("aForceLocalRoot", aForceLocalRoot)
+			--dprint("aForceLocalRoot", aForceLocalRoot)
 			SkuOptions:SlashFunc(L["short"]..","..L["Local"])
 
 			local tFlag = false

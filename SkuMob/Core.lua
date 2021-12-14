@@ -53,7 +53,7 @@ local SkuMobRaidTargetStrings = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnInitialize()
-	--print("SkuMob OnInitialize")
+	--dprint("SkuMob OnInitialize")
 	SkuMob:RegisterEvent("VARIABLES_LOADED")
 	SkuMob:RegisterEvent("PLAYER_TARGET_CHANGED")
 	SkuMob:RegisterEvent("QUEST_TURNED_IN")
@@ -63,7 +63,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnEnable()
-	--print("SkuMob OnEnable")
+	--dprint("SkuMob OnEnable")
 	-- Called when the addon is enabled
 	local ttime = 0
 	local f = _G["SkuMobControl"] or CreateFrame("Frame", "SkuMobControl", UIParent)
@@ -126,7 +126,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:VARIABLES_LOADED(...)
 	-- process the event
-  --print(...)
+  --dprint(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -173,11 +173,11 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 
 	--threat meter
 	local status = UnitThreatSituation("player", "target")
-	--print(tUnitLevel, tUnitIsEnemy, tUnitIsFriend, tCreatureType, tCreatureFamily, tClassification, tInteractDistance, tUnitReaction, status, isTanking, status, threatpct, rawthreatpct, threatvalue)
+	--dprint(tUnitLevel, tUnitIsEnemy, tUnitIsFriend, tCreatureType, tCreatureFamily, tClassification, tInteractDistance, tUnitReaction, status, isTanking, status, threatpct, rawthreatpct, threatvalue)
 	if status then
 		local isTanking, status, threatpct, rawthreatpct, threatvalue = UnitDetailedThreatSituation("player", "target") --https://wowwiki-archive.fandom.com/wiki/API_UnitDetailedThreatSituation
 		--local statustxts = { "low on threat",  "overnuking", "losing threat", "tanking securely" }
-		--print("You are " .. statustxts[status + 1] .. ".")
+		--dprint("You are " .. statustxts[status + 1] .. ".")
 	end
 
 	--target in combat indicator

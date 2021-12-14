@@ -427,7 +427,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarName, aButtonId)
-	--print(aActionType, aId, aSubType, aActionBarName, aButtonId)
+	--dprint(aActionType, aId, aSubType, aActionBarName, aButtonId)
 	local rName = L["Empty"]
 
 	if aActionType then
@@ -497,7 +497,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				end
 			end
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
-				--print("OnAction", "aValue", aValue, "aName", aName)
+				--dprint("OnAction", "aValue", aValue, "aName", aName)
 				if aName == L["Assign nothing"] then
 					PickupAction(self.buttonObj.action)
 					ClearCursor()
@@ -531,7 +531,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 					f:SetPoint("CENTER")
 					f:SetScript("OnClick", function(self, aKey, aB)
-						--print(aKey, aB)
+						--dprint(aKey, aB)
 						local tBlockedKeys = {
 							["ENTER"] = true,
 							["RIGHT"] = true,
@@ -592,7 +592,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					for i, v in pairs(_G) do 
 						if string.find(i, "KEY_") == 1 then 
 							if not string.find(i, "ESC") then
-								--print(i, v, string.find(i, "KEY_"), string.sub(i, 5))
+								--dprint(i, v, string.find(i, "KEY_"), string.sub(i, 5))
 								for x = 1, #tModifierKeys do
 									SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
 								end
@@ -626,10 +626,10 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {"Tastenbelegung"}, menuEntryTemplate_Menu)
 				tNewMenuSubEntry.dynamic = true
 				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-					print(self, aValue, aName)
-					print(self.parent.name)
-					print(self.parent.buttonObj)
-					print(self.parent.buttonObj:GetName())
+					--dprint(self, aValue, aName)
+					--dprint(self.parent.name)
+					--dprint(self.parent.buttonObj)
+					--dprint(self.parent.buttonObj:GetName())
 				end
 				]]
 				SpellBookMenuBuilder(self, aBooktype)
@@ -687,7 +687,7 @@ local function RangecheckMenuBuilder(aParent, aType)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MenuBuilder(aParentEntry)
-	--print("SkuCore:MenuBuilder", aParentEntry)
+	--dprint("SkuCore:MenuBuilder", aParentEntry)
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Mail"]}, menuEntryTemplate_Menu)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
@@ -699,7 +699,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.isSelect = true
 		--tNewMenuEntry.ttsEngine = 2
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			--print(aName)
+			--dprint(aName)
 			--open the specific edit box for aname and write result to current mi.tmpx
 			if aName == L["Recepient"] then
 				SkuCore:MailEditor("TmpTo")
@@ -777,7 +777,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 							local itemLink = GetContainerItemLink(bag, slot)
 							local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
 							if itemLink then
-								--print(bag, slot, itemLink)
+								--dprint(bag, slot, itemLink)
 								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, menuEntryTemplate_Menu)
 							end
 						end
@@ -827,10 +827,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 				tNewMenuEntry.ttsEngine = 2
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
-					--print("onaction mailitem", self, aValue, aName)
-					--print(aName, self.TmpMailItemIndex, self.TmpMailItemIndexAttachmentIndex)
+					--dprint("onaction mailitem", self, aValue, aName)
+					--dprint(aName, self.TmpMailItemIndex, self.TmpMailItemIndexAttachmentIndex)
 					if aName == L["Reply"] then
-						--print(self.name, "beantworten")
+						--dprint(self.name, "beantworten")
 
 					elseif aName == L["Take gold"] then
 						if self.TmpMailItemIndex then
@@ -884,7 +884,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					tNewMenuParentEntrySub.isSelect = true
 					--tNewMenuParentEntrySub.ttsEngine = 2
 					tNewMenuParentEntrySub.OnAction = function(self, aValue, aName)
-						--print(aName)
+						--dprint(aName)
 						--open the specific edit box for aname and write result to current mi.tmpx
 						if aName ==L["Recepient"] then
 							SkuCore:MailEditor("TmpTo")
@@ -953,7 +953,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 										local itemLink = GetContainerItemLink(bag, slot)
 										local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
 										if itemLink then
-											--print(bag, slot, itemLink)
+											--dprint(bag, slot, itemLink)
 											local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, menuEntryTemplate_Menu)
 										end
 									end
@@ -1096,7 +1096,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
-			--print("Taste zuweisen 2 BuildChildren")
+			--dprint("Taste zuweisen 2 BuildChildren")
 			local tBindings = {}
 
 			local aBindingSet = GetCurrentBindingSet()
@@ -1128,7 +1128,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 				tNewMenuEntryCat.filterable = true
 
 				tNewMenuEntryCat.BuildChildren = function(self)
-					--print("categoryConst BuildChildren")
+					--dprint("categoryConst BuildChildren")
 					local tBindings = {}
 
 					local aBindingSet = GetCurrentBindingSet()
@@ -1172,7 +1172,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 									tNewMenuEntryKey.isSelect = true
 									tNewMenuEntryKey.dynamic = true
 									tNewMenuEntryKey.OnAction = function(self, aValue, aName)
-										--print("cat OnAction 2", aValue, aName, self.name)
+										--dprint("cat OnAction 2", aValue, aName, self.name)
 										if aName == "Neu belegen" then
 											SkuOptions.Voice:OutputString(L["Press new key or Escape to cancel"].." ".."Oder Rückschritt zum löschen", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int						
 
@@ -1187,7 +1187,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 											f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 											f:SetPoint("CENTER")
 											f:SetScript("OnClick", function(self, aKey, aB)
-												--print(aKey, aB)
+												--dprint(aKey, aB)
 												local tBlockedKeys = {
 													--["BACKSPACE"] = true,
 												}
@@ -1214,8 +1214,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 						
 												if aKey ~= "ESCAPE" then
 													if not self.command or not self.category or not self.menuTarget or not self.index then return end
-													--print("OnClick new bind", aKey)
-													--print(self.command, self.category, self.menuTarget, self.menuTarget.name, self.index)
+													--dprint("OnClick new bind", aKey)
+													--dprint(self.command, self.category, self.menuTarget, self.menuTarget.name, self.index)
 						
 													SkuCore:SetBinding(aKey, self.command)
 													

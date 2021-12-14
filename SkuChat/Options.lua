@@ -87,7 +87,7 @@ SkuChat.defaults = {
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:MenuBuilder(aParentEntry)
-	--print("SkuChat:MenuBuilderTest", aParentEntry)
+	--dprint("SkuChat:MenuBuilderTest", aParentEntry)
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)
 	SkuOptions:IterateOptionsArgs(SkuChat.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end

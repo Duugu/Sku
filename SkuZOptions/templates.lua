@@ -43,7 +43,7 @@ SkuOptions.MenuMT = {
 							print(tTab..k..": tab")
 							tf(v, tTab.."  ")
 						elseif type(v) == "function" then
-							--print(tTab..k..": function")
+							--dprint(tTab..k..": function")
 						elseif type(v) == "boolean" then
 							print(tTab..k..": "..tostring(v))
 						else
@@ -71,7 +71,7 @@ menuEntryTemplate_Menu = {
 	dynamic = false,
 	filterable = false,
 	OnKey = function(self, aKey)
-		--print("OnKey", aKey)
+		--dprint("OnKey", aKey)
 		local tNewMenuItem = nil
 		local tMenuItems = nil
 		if self.parent.name then
@@ -102,24 +102,24 @@ menuEntryTemplate_Menu = {
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
 	BuildChildren = function(self)
-		--print("BuildChildren generic", self.name)
+		--dprint("BuildChildren generic", self.name)
 	end,
 	OnPrev = function(self)
-		--print("OnPrev generic", self.name)
+		--dprint("OnPrev generic", self.name)
 		if self.prev then
 			SkuOptions.currentMenuPosition = self.prev
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
 	OnNext = function(self)
-		--print("OnNext generic", self.name)
+		--dprint("OnNext generic", self.name)
 		if self.next then
 			SkuOptions.currentMenuPosition = self.next
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
 	OnFirst = function(self)
-		--print("OnFirst generic", self.name)
+		--dprint("OnFirst generic", self.name)
 		if self.parent then
 			if self.parent.children then
 				SkuOptions.currentMenuPosition = self.parent.children[1]
@@ -130,23 +130,23 @@ menuEntryTemplate_Menu = {
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
 	OnBack = function(self)
-		--print("OnBack generic", self.name, self.parent.name)
+		--dprint("OnBack generic", self.name, self.parent.name)
 		if self.parent.name then
 			SkuOptions.currentMenuPosition = self.parent
 		else
-			--print("main level > leave nav")
+			--dprint("main level > leave nav")
 			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"])
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
 	OnAction = function(self, value, aValue)
-		--print("OnAction generic", self.name, value.name, value, aValue)
+		--dprint("OnAction generic", self.name, value.name, value, aValue)
 	end,
 	OnLeave = function(self, value, aValue)
 
 	end,
 	OnEnter = function(self, value, aValue)
-		--print("OnEnter generic", self.name, value, aValue)
+		--dprint("OnEnter generic", self.name, value, aValue)
 		if string.find(self.name, L["error;sound"].."#") then
 			for i, v in pairs(SkuCore.Errors.Sounds) do
 				if self.name == v then
@@ -178,7 +178,7 @@ menuEntryTemplate_Menu = {
 		end
 
 		if self.macrotext then
-			--print("macrotext", self.macrotext)
+			--dprint("macrotext", self.macrotext)
 			if _G["SecureOnSkuOptionsMainOption1"] then
 				_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
 				_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", self.macrotext)
@@ -191,7 +191,7 @@ menuEntryTemplate_Menu = {
 		end
 	end,
 	OnSelect = function(self)
-		--print("OnSelect generic", self.name, self.isSelect, self.isMultiselect, self.dynamic)
+		--dprint("OnSelect generic", self.name, self.isSelect, self.isMultiselect, self.dynamic)
 		local spellID
 		local itemID
 		local macroID
@@ -205,7 +205,7 @@ menuEntryTemplate_Menu = {
 		SkuOptions:ApplyFilter(SkuOptions.Filterstring)
 
 		if self.selectTarget then
-			--print("   ", self.selectTarget.name)
+			--dprint("   ", self.selectTarget.name)
 			self.selectTarget.spellID = spellID
 			self.selectTarget.itemID = itemID
 			self.selectTarget.macroID = macroID
@@ -222,7 +222,7 @@ menuEntryTemplate_Menu = {
 		self:OnPostSelect(self)
 	end,
 	OnPostSelect = function(self)
-		--print("OnPostSelect generic", self.name, self.isSelect, self.isMultiselect, self.dynamic)
+		--dprint("OnPostSelect generic", self.name, self.isSelect, self.isMultiselect, self.dynamic)
 		if self.dynamic == true then
 			self.children = {}
 			if self.isMultiselect == true then
@@ -360,13 +360,13 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Small"]}, menuEntryTemplate_Menu)
 			tNewMenuEntry.OnEnter = function(self, aValue, aName)
-				--print("OnEnter Klein", self.name, value, aValue, self.selectTarget.name)
+				--dprint("OnEnter Klein", self.name, value, aValue, self.selectTarget.name)
 				self.selectTarget.TMPSize = 1
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Large"]}, menuEntryTemplate_Menu)
 			tNewMenuEntry.OnEnter = function(self, aValue, aName)
-				--print("OnEnter Groß", self.name, value, aValue, self.selectTarget.name)
+				--dprint("OnEnter Groß", self.name, value, aValue, self.selectTarget.name)
 				self.selectTarget.TMPSize = 5
 			end
 		end
@@ -428,7 +428,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 				end
 				if #tSortedWaypointList > 0 then
 					for z = 1, #tSortedWaypointList do
-						--print(z, tSortedWaypointList[z])
+						--dprint(z, tSortedWaypointList[z])
 						local tMenuName = tSortedWaypointList[z]
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tMenuName}, menuEntryTemplate_Menu)
 					end

@@ -15,6 +15,7 @@ L["Accent"] = "Akzent" --this is the character name (´)
 L["Plus"] = "Plus" --this is the character name (+)
 L["Comma"] = "Komma" --this is the character name (,)
 L["channel"] = "Kanal" --this is the character name (#)
+L["Timbermaw Hold"] = "Holzschlundfeste" -- do not translate freely, use the exact ingame name in you target lang
 L["The Temple Of Atal'Hakkar"] = "Der Tempel von Atal'Hakkar" -- do not translate freely, use the exact ingame name in you target lang
 L["Onyxias Lair"] = "Onyxias Hort" -- do not translate freely, use the exact ingame name in you target lang
 L["passive"] = "passiv" --unit reaction (will attack or just defend)

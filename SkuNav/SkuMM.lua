@@ -70,7 +70,7 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNavMMGetCursorPositionContent2()
 	local x, y = GetCursorPosition()
-	--print(x, UIParent:GetScale(), _G["SkuNavMMMainFrameScrollFrameMapMain"]:GetLeft(),_G["SkuNavMMMainFrame"]:GetScale() )
+	--dprint(x, UIParent:GetScale(), _G["SkuNavMMMainFrameScrollFrameMapMain"]:GetLeft(),_G["SkuNavMMMainFrame"]:GetScale() )
 	local txPos = ((x / UIParent:GetScale()) - ( _G["SkuNavMMMainFrameScrollFrameContent"]:GetLeft()   * _G["SkuNavMMMainFrame"]:GetScale() ) - ((_G["SkuNavMMMainFrameScrollFrameContent"]:GetWidth()  / 2) * _G["SkuNavMMMainFrame"]:GetScale()) ) * (1 / _G["SkuNavMMMainFrame"]:GetScale())
 	local tyPos = ((y / UIParent:GetScale()) - ( _G["SkuNavMMMainFrameScrollFrameContent"]:GetBottom() * _G["SkuNavMMMainFrame"]:GetScale() ) - ((_G["SkuNavMMMainFrameScrollFrameContent"]:GetHeight() / 2) * _G["SkuNavMMMainFrame"]:GetScale()) ) * (1 / _G["SkuNavMMMainFrame"]:GetScale())
 	return txPos, tyPos
@@ -164,7 +164,7 @@ end
 
 -----------------------------------------------------------------------------------------------------------------------
 local function DrawWaypoints(aFrame)
-	--print("DrawWaypoints")
+	--dprint("DrawWaypoints")
 	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true then
 		return
 	end
@@ -266,7 +266,7 @@ local function DrawWaypoints(aFrame)
 
 					local point, relativeTo, relativePoint, xOfs, yOfs = tWidgetTexture:GetPoint(1)
 					if relativeTo then
-						--print(v, q, point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
+						--dprint(v, q, point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 						local tPrevWpName = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[q-1]
 						if tPrevWpName  then
 							local tPrevPinFrame, tPrevInUse = tWpFrames[tPrevWpName], true
@@ -476,7 +476,7 @@ local function DrawPolyZonesMM(aFrame)
 					end
 				end
 			else
-				--print("error - broken polygon:", x)
+				--dprint("error - broken polygon:", x)
 			end
 		end
 	end
@@ -485,7 +485,7 @@ end
 local SkuNavMMShowCustomWo = false
 local SkuNavMMShowDefaultWo = false
 function SkuNavDrawWaypointsMM(aFrame)
-	--print("SkuNavDrawWaypointsMM")
+	--dprint("SkuNavDrawWaypointsMM")
 	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true then
 		--return
 	end
@@ -590,7 +590,7 @@ function SkuNavDrawWaypointsMM(aFrame)
 
 							local point, relativeTo, relativePoint, xOfs, yOfs = tWidgetTexture:GetPoint(1)
 							if relativeTo then
-								--print(v, q, point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
+								--dprint(v, q, point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
 								local tPrevWpName = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[q-1]
 								if tPrevWpName  then
 									local tPrevPinFrame, tPrevInUse = tWpFrames[tPrevWpName], true
@@ -614,7 +614,7 @@ function SkuNavDrawWaypointsMM(aFrame)
 	end
 
 	for i, v in pairs(tWpFrames) do
-		--print(i, v)
+		--dprint(i, v)
 		local tShow = false
 		if _G["SkuNavMMMainFrameShowFilter"].selected == true then
 			if SkuQuest.QuestWpCache[i] or SkuOptions.db.profile["SkuNav"].Waypoints[i] then
@@ -628,7 +628,7 @@ function SkuNavDrawWaypointsMM(aFrame)
 		end
 
 		if tShow == false then
-			--print(i)
+			--dprint(i)
 			v:Hide()	
 		end
 	end
@@ -716,7 +716,7 @@ function SkuNav:SkuNavMMOpen()
 		if tCacheNbWpsTimer then
 			tCacheNbWpsTimer:Cancel()
 			tCacheNbWpsTimer = nil
-			--print("SkuNav: Caching stopped")
+			--dprint("SkuNav: Caching stopped")
 		end
 
 		if not _G["SkuNavMMMainFrame"] then
@@ -762,6 +762,8 @@ function SkuNav:SkuNavMMOpen()
 			-- Resizable
 			MainFrameObj:SetResizable(true)
 			MainFrameObj:SetMinResize(200, 200)
+			local tW, tH = _G["UIParent"]:GetSize()
+			MainFrameObj:SetMaxResize(tW - 100, tH - 100)
 			local rb = CreateFrame("Button", "SkuNavMMMainFrameResizeButton", _G["SkuNavMMMainFrame"])
 			rb:SetPoint("BOTTOMRIGHT", 0, 0)
 			rb:SetSize(16, 16)
@@ -1104,13 +1106,13 @@ function SkuNav:SkuNavMMOpen()
 				end
 				--[[
 				local x, y = UnitPosition("player")
-				print("player", x, y)
+				--dprint("player", x, y)
 				local tEndX, tEndY = SkuNavMMGetCursorPositionContent2()
-				print("cursor", tEndX, tEndY)
+				--dprint("cursor", tEndX, tEndY)
 				local twy, twx = SkuNavMMContentToWorld(tEndX, tEndY)
-				print("world", twx, twy)
+				--dprint("world", twx, twy)
 				local tmx, tmy = SkuNavMMWorldToContent(twx, twy)
-				print("map", tmx, tmy)
+				--dprint("map", tmx, tmy)
 				]]
 			end)
 			contentObj:SetScript("OnMouseWheel", function(self, dir)
@@ -1124,7 +1126,7 @@ function SkuNav:SkuNavMMOpen()
 				SkuNavMMUpdateContent()
 			end)
 			contentObj:SetScript("OnMouseDown", function(self, button)
-				--print(button)
+				--dprint(button)
 				if button == "LeftButton" then
 					self.tStartMoveX, self.tStartMoveY = SkuNavMMGetCursorPositionContent2()
 					SkuNavMMMainFrameScrollFrameContentDraging = true
@@ -1135,7 +1137,7 @@ function SkuNav:SkuNavMMOpen()
 				end
 			end)
 			contentObj:SetScript("OnMouseUp", function(self, button)
-				--print(button)
+				--dprint(button)
 				if button == "LeftButton" then
 					local tEndX, tEndY = SkuNavMMGetCursorPositionContent2()
 					tSkuNavMMPosX = tSkuNavMMPosX + ((tEndX - self.tStartMoveX) / tSkuNavMMZoom)
@@ -1325,6 +1327,7 @@ function SkuNav:SkuNavMMOpen()
 	else
 		if _G["SkuNavMMMainFrame"] then
 			_G["SkuNavMMMainFrame"]:Hide()
+dprint("SkuNavMMOpen SkuNeighbCache = {}")			
 			SkuNeighbCache = {}
 			if tCacheNbWpsTimer then
 				tCacheNbWpsTimer:Cancel()

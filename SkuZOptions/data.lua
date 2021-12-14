@@ -9,7 +9,6 @@ SkuOptions.BindTypeStrings = {
 	[2] = "BOE",
 	[3] = "BOU",
 	[4] = "BOQ",
-
 }
 
 SkuOptions.Glossary1 = {
@@ -20,6 +19,7 @@ SkuOptions.Glossary1 = {
 		"Zielgebiet",
 		"Questgeber",
 		"Questziel",
+		"Punkt",
 	},
 	["Orte"] = {
 		"Anleger",
@@ -227,6 +227,8 @@ SkuOptions.Glossary1 = {
 		"Versuch",
 		"vorsichtig",
 		"Wichtig",
+		"Rettung",
+		"Hilfe",
 	},
 	["Maßeinheiten"] = {
 		"Meter",

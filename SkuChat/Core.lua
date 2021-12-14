@@ -28,13 +28,13 @@ function SkuChat:OnEnable()
 	b:SetPoint("CENTER")
 	--b:SetScript("OnClick", SkuChat.OnSkuChatToggle)
 	b:SetScript("OnClick", function(self, a, b)
-		--print(a)
+		--dprint(a)
 		if a == "LeftButton" or a == "ESCAPE" then
 			C_VoiceChat.StopSpeakingText()
 			SkuChat.OnSkuChatToggle()
 			return
 		end
-		--print(SkuOptions.ChatCurrentLine)
+		--dprint(SkuOptions.ChatCurrentLine)
 		if not SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then return end
 		if not SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body then return end
 

@@ -2,6 +2,38 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.9
+
+	SkuNav
+		Neuerungen
+			- Wenn die Erreichen-Reichweite für Wegpunkte auf "Auto" steht, sagt das Addon jetzt bei jedem Wechsel auf 1 bzw 3 Meter die Worte "Nah" und "Weit".
+
+		Fehlerkorrekturen
+			- Die Holzschlundfeste gehört jetzt komplett zum Teufelswald.
+			- Bei einem neuen Wegpunkt starten Beacons jetzt direkt mit einem Sound, statt wie bisher mit einer Pause.
+			- Aber sofort sagt das Addon "Routen aktualisierung abgeschlossen", sobald das anfängliche Cachen der Routen beendet ist.
+			- Das anfängliche Cachen von Routen wird jetzt korrekt fortgeführt bis der Cache erstellt ist.
+			  Bisher wurde es ungewollte beim Folgen einer Route abgebrochen und nicht wieder neu gestartet.
+			- Das Cachen wird nun dynamisch gesteuert und versucht möglichst schnell zu rechnen, die Frame-Rate des Spiels dabei aber nicht unter 35 sinken zu lassen. 
+			  Sinkt die Frame-Rate durch den Cache-Vorgang unter 35, so wird der Cache-Prozess gedrosselt.
+			  Er kann daher schwanken und, je nach Computer und Routenmenge, deutlich schneller oder langsamer als bisher sein. (Zwischen 30 Sekunden und 15 Minuten oder mehr.)
+
+	SkuOptions
+		Neuerungen
+			- Der Wortliste für Wegpunktnamen wurden die Wörter "Rettung", "Hilfe" und "Punkt" hinzugefügt.
+			- Es gibt einen neuen Slash-Befehl: /sku mmreset
+			  Dieser setzt die Sku-Minimap auf ihre Ursprungsgröße zurück.
+
+		Fehlerkorrekturen
+			- Es wurde ein Fehler behoben, der für viele eigenartige Piepser in der Sprachausgabe bei eigentlich bekannten Worten verantwortlich war.
+
+	SkuCore
+		Fehlerkorrekturen
+			- Es wurde ein unfassbar vertrackter Fehler behoben, der dafür verantwortlich war, dass bei Händlern unter Gegenständen mit einstelligen Preisen keine Preisangaben zu sehen waren. (Für diese Zeile waren 5 Stunden Arbeit erforderlich *knurr*)
+
+
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.8
 

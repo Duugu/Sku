@@ -14,7 +14,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:OnEnable()
-	--print("SkuAuras OnEnable")
+	--dprint("SkuAuras OnEnable")
 	local ttime = 0
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
@@ -32,7 +32,7 @@ function SkuAuras:OnEnable()
 	tFrame:SetPoint("TOP", _G["SkuAurasControl"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		if aKey == "CTRL-SHIFT-G" then
-			--print(aKey)
+			--dprint(aKey)
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self) 

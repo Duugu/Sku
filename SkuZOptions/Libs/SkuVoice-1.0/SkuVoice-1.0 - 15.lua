@@ -61,7 +61,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SplitString(aString)
-	--print("split:", aString, SkuAudioFileIndex[aString])
+	--dprint("split:", aString, SkuAudioFileIndex[aString])
 	if SkuAudioFileIndex[aString] then
 		return aString
 	end
@@ -324,7 +324,7 @@ end
 ---------------------------------------------------------------------------------------------------------
 --[[
 function SkuVoice:Output(file, overwrite, wait, length, doNotOverwrite, isMulti, soundChannel) -- for audio file names
-	--print("SV OUTPUT")
+	--dprint("SV OUTPUT")
 	soundChannel = soundChannel or SkuOptions.db.profiles["SkuOptions"].soundChannels.SkuChannel or "Talking Head"
 	
 	isMulti = isMulti or false

@@ -22,7 +22,6 @@ SkuOptions.MenuAccessKeysNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9",
 local ssplit = string.split
 
 ---------------------------------------------------------------------------------------------------------------------------------------
---
 SkuOptions.DebugToChatFlag = true
 function SkuOptions:DebugToChat(...)
 	local args = {...}
@@ -76,7 +75,7 @@ function SkuOptions:SlashFunc(input)
 	input = input:gsub( " ,", ",")
 
 	input = string.lower(input)
-	--print(input)
+	--dprint(input)
 	local sep, fields = ",", {}
 	local pattern = string.format("([^%s]+)", sep)
 	input:gsub(pattern, function(c) fields[#fields+1] = c end)
@@ -85,12 +84,12 @@ function SkuOptions:SlashFunc(input)
 		--[[
 		if fields[1] == "on" then
 			SkuOptions.db.profile[MODULE_NAME].enable = true
-			print("SkuOptions on")
+			--dprint("SkuOptions on")
 		end
 
 		if fields[1] == "off" then
 			SkuOptions.db.profile[MODULE_NAME].enable = false
-			print("SkuOptions off")
+			--dprint("SkuOptions off")
 		end
 		]]
 		if fields[1] == L["short"] then
@@ -143,8 +142,10 @@ function SkuOptions:SlashFunc(input)
 					SkuOptions:CloseMenu()
 				end
 			end
-
-
+		elseif fields[1] == "mmreset" then
+			SkuNavMMMainFrame:SetSize(200, 200) 
+			SkuNavMMMainFrameResizeButton:GetScript("OnMouseDown")(_G["SkuNavMMMainFrameResizeButton"], "LeftButton") 
+			SkuNavMMMainFrameResizeButton:GetScript("OnMouseUp")(_G["SkuNavMMMainFrameResizeButton"], "LeftButton")
 		end
 	end
 
@@ -152,7 +153,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:RefreshConfig()
-	--print("SkuOptions:RefreshConfig")
+	--dprint("SkuOptions:RefreshConfig")
 	SkuOptions.db.profile["SkuNav"].firstLoadOfVersion15 = false
 
   	if SkuCore then
@@ -480,13 +481,19 @@ function SkuOptions:CreateMainFrame()
 
 	SkuOptions.TooltipReaderText = ""
 	tFrame:SetScript("OnClick", function(self, a, b)
-		--print("OnSkuOptionsMain OnClick ", a, b)
+		--dprint("OnSkuOptionsMain OnClick ", a, b)
 
 		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
 			SkuCore.openMenuAfterMoving = true
 			return
 		end
 
+		if a == "CTRL-SHIFT-F3" then
+			tCacheNbWpsTimerCounterProgressShow = tCacheNbWpsTimerCounterProgressShow == false
+			Sku.debug = Sku.debug == false
+			print("Debug:", Sku.debug)
+		end
+	
 		if a == "CTRL-SHIFT-B" then
 			if SkuOptions.nextRollFrameNumber then
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
@@ -639,13 +646,13 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 		if SkuCore.isMoving == true then
-			--print("SkuCore.isMoving", SkuCore.isMoving)
+			--dprint("SkuCore.isMoving", SkuCore.isMoving)
 			SkuCore.openMenuAfterMoving = true
 			return
 		end
 		SkuCore.openMenuAfterCombat = false
 		SkuCore.openMenuAfterMoving = false
-		--print("SkuCore.isMoving1", SkuCore.isMoving)
+		--dprint("SkuCore.isMoving1", SkuCore.isMoving)
 		if a == "SHIFT-F1" or a == nil then
 			if #SkuOptions.Menu == 0 then
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuNav"}, menuEntryTemplate_Menu)
@@ -692,7 +699,7 @@ function SkuOptions:CreateMainFrame()
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuOptions:MenuBuilderLocal(tNewMenuEntry, {L["Empty"]}, function(a, b, c, d) 
-						--print(a, b, c, d) 
+						--dprint(a, b, c, d) 
 					end)
 				end
 			end
@@ -727,7 +734,7 @@ function SkuOptions:CreateMainFrame()
 					if not tExclude[v] then
 						if _G[v] then
 							if _G[v]:IsVisible() == true then
-								--print("hide", v)
+								--dprint("hide", v)
 								_G[v]:Hide()
 							end
 						end
@@ -735,10 +742,10 @@ function SkuOptions:CreateMainFrame()
 						if _G[v] then
 							if _G[v]:IsVisible() == true then
 								if v == "DropDownList1" then
-									--print("leave", v)
+									--dprint("leave", v)
 									_G["DropDownList1"]:GetScript("OnLeave")(_G["DropDownList1"])
 								else
-									--print("click", v)
+									--dprint("click", v)
 									_G[tExclude[v]]:Click()
 								end
 							end
@@ -822,10 +829,12 @@ function SkuOptions:CreateMainFrame()
 	end)
 	tFrame:Hide()
 	tFrame:SetScript("OnHide", function(self, a, b)
-		--print("OnSkuOptionsMain OnHide")
+		--dprint("OnSkuOptionsMain OnHide")
 		--ClearOverrideBindings(self)
 		SkuOptions:HideVisualMenu()
 	end)
+
+	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F3", tFrame:GetName(), "CTRL-SHIFT-F3")
 
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-T", tFrame:GetName(), "CTRL-SHIFT-T")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-UP", tFrame:GetName(), "SHIFT-UP")
@@ -862,7 +871,7 @@ function SkuOptions:CreateMenuFrame()
 
 	local OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
-		--print("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
+		--dprint("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
 
 		if aKey == "PAGEDOWN" then
 			if SkuOptions.currentMenuPosition then
@@ -1114,7 +1123,7 @@ function SkuOptions:CreateMenuFrame()
 	end)
 
 	tFrame:SetScript("OnShow", function(self)
-		--print("OnSkuOptionsMainOption1 OnShow")
+		--dprint("OnSkuOptionsMainOption1 OnShow")
 		if SkuCore.inCombat == true then
 			SkuCore.openMenuAfterCombat = true
 			return
@@ -1171,7 +1180,7 @@ function SkuOptions:CreateMenuFrame()
 	end)
 
 	tFrame:SetScript("OnHide", function(self)
-		--print("OnSkuOptionsMainOption1 OnHide")
+		--dprint("OnSkuOptionsMainOption1 OnHide")
 		if SkuCore.inCombat == true then
 			return
 		end
@@ -1239,7 +1248,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnInitialize()
-	--print("SkuOptions OnInitialize")
+	--dprint("SkuOptions OnInitialize")
 
 	if SkuOptions then
 		options.args["SkuOptions"] = SkuOptions.options
@@ -1305,7 +1314,7 @@ function SkuOptions:ClearFilter()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ApplyFilter(aFilterstring)
-	--print("aFilterstring", aFilterstring, SkuOptions.currentMenuPosition.parent.filterable)
+	--dprint("aFilterstring", aFilterstring, SkuOptions.currentMenuPosition.parent.filterable)
 
 	aFilterstring = string.lower(aFilterstring)
 
@@ -1402,7 +1411,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnEnable()
-	--print("SkuOptions OnEnable")
+	--dprint("SkuOptions OnEnable")
 	if SkuCore.inCombat == true then
 		return
 	end
@@ -1482,7 +1491,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuOptions.nextRollFrameNumber = 0
 function SkuOptions:START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b)
-	--print("START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b", rollID, rollTime, lootHandle, a, b)
+	--dprint("START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b", rollID, rollTime, lootHandle, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
@@ -1492,7 +1501,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:CANCEL_LOOT_ROLL(rollID, a, b)
-	--print("CANCEL_LOOT_ROLL(rollID, a, b", rollID, a, b)
+	--dprint("CANCEL_LOOT_ROLL(rollID, a, b", rollID, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
@@ -1502,7 +1511,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:LOOT_SLOT_CHANGED(lootSlot, a, b)
-	--print("OT_CHANGED(lootSlot, a, b", lootSlot, a, b)
+	--dprint("OT_CHANGED(lootSlot, a, b", lootSlot, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
@@ -1533,7 +1542,7 @@ end
 ---@param aDuration number duration of the audio
 ---@param aDoNotOverride bool if this audio could be reseted by others
 function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine)
-	--print("VocalizeMultipartString", aStr)
+	--dprint("VocalizeMultipartString", aStr)
 	-- don't vocalize object numbers
 	local tTempHayStack = string.gsub(aStr, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
 	aStr = tTempHayStack
@@ -1568,9 +1577,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aReset bool reset queue
 function SkuOptions:VocalizeCurrentMenuName(aReset)
---print(aReset)
+--dprint(aReset)
 	if aReset == nil then aReset = true end
---print(aReset)
+--dprint(aReset)
 	local tTable = SkuOptions.currentMenuPosition
 
 	--get menu pos
@@ -1641,7 +1650,7 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 		end
 	end
 
-	--print("VocalizeMultipartString", tFinalString, aReset, true, SkuOptions.currentMenuPosition.name, SkuOptions.currentMenuPosition.ttsEngine)
+	--dprint("VocalizeMultipartString", tFinalString, aReset, true, SkuOptions.currentMenuPosition.name, SkuOptions.currentMenuPosition.ttsEngine)
 	SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, SkuOptions.currentMenuPosition.ttsEngine)
 
 	--debug as text
@@ -1706,7 +1715,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 		local index = aGossipListTable[x]
 
 		if #aGossipListTable[index].childs == 0 then
-			--print(aTab, x, "ENTRIY: "..aGossipListTable[index].textFirstLine)
+			--dprint(aTab, x, "ENTRIY: "..aGossipListTable[index].textFirstLine)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenuTable, {aGossipListTable[index].textFirstLine}, menuEntryTemplate_Menu)
 			tNewMenuEntry.filterable = true
 			if aGossipListTable[index].textFull then
@@ -1735,10 +1744,10 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						end
 					else
 						tNewSubMenuEntry.OnAction = function()
-							--print("links func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
+							--dprint("links func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
 							aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
-							--print("2L")
-							--print(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
+							--dprint("2L")
+							--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
 							if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
 								SkuCore:CheckFrames(true)
 							else
@@ -1749,13 +1758,13 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Right click"]}, menuEntryTemplate_Menu)
 					if aGossipListTable[index].containerFrameName then
 						tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
-						--print("rechts mac", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
+						--dprint("rechts mac", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
 					else
 						tNewSubMenuEntry.OnAction = function()
 							aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
-							--print("rechts func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
-							--print("2R")
-							--print(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
+							--dprint("rechts func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
+							--dprint("2R")
+							--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
 							if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
 								SkuCore:CheckFrames(true)
 							else
@@ -1766,7 +1775,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 				end
 			end
 		else
-			--print(aTab, x, "SUB: "..aGossipListTable[index].textFirstLine)
+			--dprint(aTab, x, "SUB: "..aGossipListTable[index].textFirstLine)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenuTable, {aGossipListTable[index].textFirstLine}, menuEntryTemplate_Menu)
 			tNewMenuEntry.filterable = true
 			if aGossipListTable[index].textFull then
@@ -1782,7 +1791,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFunc)
-	--print("SkuOptions:MenuBuilderLocal", aParentEntry, aEntryDataTable, aOnActionFunc)
+	--dprint("SkuOptions:MenuBuilderLocal", aParentEntry, aEntryDataTable, aOnActionFunc)
 
 	SkuCore.GossipList = SkuCore.GossipList or {}
 	if #SkuCore.GossipList < 1 then
@@ -1799,9 +1808,9 @@ function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFun
 	end
 
 	if SkuCore.GossipList and #SkuCore.GossipList > 0 then
-		--print("===========SkuIterateGossipList Start ==============")
+		--dprint("===========SkuIterateGossipList Start ==============")
 		SkuIterateGossipList(SkuCore.GossipList, aParentEntry, "  ")
-		--print("===========SkuIterateGossipList End ==============")
+		--dprint("===========SkuIterateGossipList End ==============")
 	end
 end
 
@@ -1851,7 +1860,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
-					--print("type select OnAction", self, aValue, aName)
+					--dprint("type select OnAction", self, aValue, aName)
 					for ia, va in pairs(v.values) do
 						if va == aName then
 							self.profilePath[self.profileIndex] = ia
@@ -1868,7 +1877,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				end
 				tNewMenuEntry.BuildChildren = function(self)
 					for ia, va in pairs(v.values) do
-						--print(ia, va)
+						--dprint(ia, va)
 						SkuOptions:InjectMenuItems(self, {va}, menuEntryTemplate_Menu)
 					end
 				end
@@ -1940,7 +1949,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnCommReceived(aPrefix, aData, aChannel, aSender, ...)
-	--print("SkuOptions:OnCommReceived(", aPrefix, aData, aChannel, aSender, ...)
+	--dprint("SkuOptions:OnCommReceived(", aPrefix, aData, aChannel, aSender, ...)
 	if aPrefix == "Sku" and aData then
 		SkuOptions:ProcessComm(aSender, string.split("-", aData))
 	end
@@ -1948,7 +1957,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ProcessComm(aSender, aIndex, aValue)
-	--print("SkuOptions:ProcessComm", aSender, aIndex, aValue)
+	--dprint("SkuOptions:ProcessComm", aSender, aIndex, aValue)
 
 	if aIndex == "ping" then
 		SkuOptions.TrackingTargets = SkuOptions.TrackingTargets or {}
@@ -1971,7 +1980,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SendTrackingStatusUpdates(aStatusUpdate)
-	--print("SendTrackingStatusUpdates")
+	--dprint("SendTrackingStatusUpdates")
 	local tUpdateList = {}
 
 	if not aStatusUpdate then
@@ -2191,7 +2200,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)
-
+print("ImportWpAndRouteData SkuNeighbCache = {}")
 		SkuNeighbCache = {}
 		if tCacheNbWpsTimer then
 			tCacheNbWpsTimer:Cancel()
@@ -2240,23 +2249,22 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 
 						if (aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) or not aAreaId or tImprableRouteWps[v] then
 							if not SkuOptions.db.profile["SkuNav"].Waypoints[v] then
-								--print("wp exists NOT: ", v)
+								--dprint("wp exists NOT: ", v)
 								--new wp name > import
 								table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, v)
 								SkuOptions.db.profile["SkuNav"].Waypoints[v] = tWaypoints[v]
 								tImportCounterWps = tImportCounterWps + 1
 							else
 								--wp name exists
-								--print("wp exists: ", v)
+								--dprint("wp exists: ", v)
 								if (
 										SkuOptions.db.profile["SkuNav"].Waypoints[v].worldX ~= tWaypoints[v].worldX 
 										or SkuOptions.db.profile["SkuNav"].Waypoints[v].worldY ~= tWaypoints[v].worldY
 									) 
 									or SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId ~=  tWaypoints[v].areaId  
 									or SkuOptions.db.profile["SkuNav"].Waypoints[v].contintentId ~= tWaypoints[v].contintentId 
-									or SkuOptions.db.profile["SkuNav"].Waypoints[v].comments ~= tWaypoints[v].comments 
 								then
-									--print("wp name exists and data NOT same")
+									--dprint("wp name exists and data NOT same")
 									--update name of wp and update the wp name in all import routes and import
 									local tNewWpName = v
 									local tCounter = 1
@@ -2270,7 +2278,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].comments == tWaypoints[v].comments 
 										then
 											tInsert = false
-											--print("renamed as", tNewWpName, "found")
+											--dprint("renamed as", tNewWpName, "found")
 											tIgnoredCounterWps = tIgnoredCounterWps + 1
 											SkuOptions:DebugToChat("\124cffffff00WP ignoriert(*)\124r", i, v, "Schon identisch vorhanden:", v..";"..tCounter)
 											break
@@ -2295,16 +2303,21 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 										end
 									end
 									if tInsert == true then
-										--print("no renamed as", tNewWpName, "found and inserted")
+										--dprint("no renamed as", tNewWpName, "found and inserted")
 										table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, tNewWpName)
 										SkuOptions.db.profile["SkuNav"].Waypoints[tNewWpName] = tWaypoints[v]
 										tRenameCounterWps = tRenameCounterWps + 1
 										tImportCounterWps = tImportCounterWps + 1
 									end
 								else
-									--same name, same data, just ignore
-									tIgnoredCounterWps = tIgnoredCounterWps + 1
-									SkuOptions:DebugToChat("\124cffffff00WP ignoriert\124r", i, v, "Schon identisch vorhanden")
+									if SkuOptions.db.profile["SkuNav"].Waypoints[v].comments ~= tWaypoints[v].comments then
+										--same name, same data, but different comments > update comments
+										SkuOptions.db.profile["SkuNav"].Waypoints[v].comments = tWaypoints[v].comments
+									else
+										--same name, same data > ignore
+										tIgnoredCounterWps = tIgnoredCounterWps + 1
+										SkuOptions:DebugToChat("\124cffffff00WP ignoriert\124r", i, v, "Schon identisch vorhanden")
+									end
 								end
 							end
 						else
@@ -2429,6 +2442,7 @@ function SkuOptions:ImportWpAndRouteData(aAreaId)
 				end
 				if #tRtsToDelete > 0 then
 					for x = 1, #tRtsToDelete do
+						--dprint("ImportWpAndRouteData DeleteRoute")
 						SkuNav:DeleteRoute(tRtsToDelete[x], true)
 					end
 					tImportDeleteCounterRts = #tRtsToDelete
@@ -2575,7 +2589,7 @@ function SkuOptions:ShowVisualMenu()
 			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetWidth(600)
 			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetLayout("Fill")
 			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetCallback("OnClick", function(self, event, value, unknownbool, skuFFunction, b) 
-				--print(self, event, value, unknownbool, skuFFunction, b)
+				--dprint(self, event, value, unknownbool, skuFFunction, b)
 				skuFFunction()
 				SkuOptions:ShowVisualMenu()
 				local tTable = SkuOptions.currentMenuPosition
@@ -2592,10 +2606,10 @@ function SkuOptions:ShowVisualMenu()
 				end)			
 			end)
 			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetCallback("OnGroupSelected", function(self, event, path, a, b, c) 
-				--print("OnGroupSelected",self, event, path, a, b, c) 
+				--dprint("OnGroupSelected",self, event, path, a, b, c) 
 			end)
 			SkuOptions.SkuOptionsVisualMenuContainer.tree:SetCallback("OnButtonEnter", function(a, b, c, d) 
-				--print("OnButtonEnter", a, b, c, d) 
+				--dprint("OnButtonEnter", a, b, c, d) 
 			end)
 			SkuOptions.SkuOptionsVisualMenuContainer:AddChild(SkuOptions.SkuOptionsVisualMenuContainer.tree)
 		end
@@ -2610,14 +2624,14 @@ function SkuOptions:ShowVisualMenu()
 
 		local function AddItem(aTable, aResult, aPad)
 			for i, v in pairs(aTable) do
-				--print(i, v)
+				--dprint(i, v)
 				--if i < 20 then
 					if NumberOfChildren(v.children) > 0 then
 						local tChilds = {}
 						AddItem(v.children, tChilds, aPad.."  ")
 						table.insert(aResult, {
 							skuFunction = function()
-								--print("vname", v.name)
+								--dprint("vname", v.name)
 								v:BuildChildren()
 								SkuOptions.currentMenuPosition = v
 								SkuOptions.currentMenuPosition:OnSelect()
@@ -2630,7 +2644,7 @@ function SkuOptions:ShowVisualMenu()
 					else
 						table.insert(aResult, {
 							skuFunction = function()
-								--print("vname", v.name)
+								--dprint("vname", v.name)
 								v:BuildChildren()
 								SkuOptions.currentMenuPosition = v
 								SkuOptions.currentMenuPosition:OnSelect()
@@ -2657,7 +2671,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ShowVisualMenuSelectByPath(...)
 	if SkuOptions.db.profile["SkuOptions"].visualAudioMenu == true then
-		--print("SelectByPath", ...)
+		--dprint("SelectByPath", ...)
 		SkuOptions.SkuOptionsVisualMenuContainer.tree:SetStatusTable({
 			groups = {},
 			fullwidth = 600,

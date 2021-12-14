@@ -63,7 +63,7 @@ SkuDB.QuestFlagsFriendly = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:OnInitialize()
-	--print("SkuQuest OnInitialize")
+	--dprint("SkuQuest OnInitialize")
 	
 	--SkuQuest:RegisterChatCommand("skuquest", "SlashFunc")
 
@@ -98,7 +98,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:OnEnable()
-	--print("SkuQuest OnEnable")
+	--dprint("SkuQuest OnEnable")
 
 	if SkuCore.inCombat == true then
 		return
@@ -110,7 +110,7 @@ function SkuQuest:OnEnable()
 	tFrame:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 	tFrame:SetPoint("CENTER")
 	tFrame:SetScript("OnClick", function(self, a, b) 
-		--print("SkuQuestMain OnClick", a, b)
+		--dprint("SkuQuestMain OnClick", a, b)
 		if _G["SkuQuestMainOption1"]:IsVisible() then
 			HideUIPanel(QuestLogFrame)
 			--_G["SkuQuestMainOption1"]:Hide()
@@ -122,7 +122,7 @@ function SkuQuest:OnEnable()
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self)
-		--print("SkuQuestMain OnShow")
+		--dprint("SkuQuestMain OnShow")
 		SetOverrideBindingClick(self, true, "CTRL-Q", "SkuQuestMain", "CTRL-Q")
 	end)
 	tFrame:Show()
@@ -134,7 +134,7 @@ function SkuQuest:OnEnable()
 	tFrame:SetText("SkuQuestMainOption1")
 	tFrame:SetPoint("TOP", _G["SkuQuestMain"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
-		--print("SkuQuestMainOption1 OnClick", aKey, aB)
+		--dprint("SkuQuestMainOption1 OnClick", aKey, aB)
 		if SkuCore.inCombat == true then
 			return
 		end
@@ -187,7 +187,7 @@ function SkuQuest:OnEnable()
 		end
 	end)
 	tFrame:SetScript("OnShow", function(self)
-		--print("SkuQuestMainOption1 OnShow")
+		--dprint("SkuQuestMainOption1 OnShow")
 		if SkuCore.inCombat == true then
 			return
 		end
@@ -212,7 +212,7 @@ function SkuQuest:OnEnable()
 		end
 	end)
 	tFrame:SetScript("OnHide", function(self)
-		--print("SkuQuestMainOption1 OnHide")
+		--dprint("SkuQuestMainOption1 OnHide")
 		if SkuCore.inCombat == true then
 			return
 		end
@@ -264,7 +264,7 @@ function SkuQuest:OnSkuQuestUP()
 	--local tFirstSelectableQuest = QuestLog_GetFirstSelectableQuest()
 	SkuQuest.SelectedQuest = SkuQuest.SelectedQuest or 1
 
-	--print("q up")
+	--dprint("q up")
 	if ( not QuestLogFrame:IsVisible() ) then
 		ShowUIPanel(QuestLogFrame)
 		ExpandQuestHeader(0)
@@ -288,7 +288,7 @@ function SkuQuest:OnSkuQuestDOWN()
 	end
 
 	SkuQuest.SelectedQuest = SkuQuest.SelectedQuest or 0
-	--print("q down")
+	--dprint("q down")
 	if ( not QuestLogFrame:IsVisible() ) then
 		ShowUIPanel(QuestLogFrame)
 		ExpandQuestHeader(0)
@@ -315,7 +315,7 @@ function SkuQuest:GetQuestTitlesList()
 
 	for questLogID = 1, numEntries do
 		local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
-		--print(questLogID, title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory)
+		--dprint(questLogID, title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory)
 		table.insert(questList, title)
 	end
 
@@ -323,7 +323,7 @@ function SkuQuest:GetQuestTitlesList()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:CheckQuestProgress(aSilent)
-	--print("CheckQuestProgress(aSilent)", aSilent, SkuOptions.db.profile[MODULE_NAME].CheckQuestProgressList)
+	--dprint("CheckQuestProgress(aSilent)", aSilent, SkuOptions.db.profile[MODULE_NAME].CheckQuestProgressList)
 	--if not SkuOptions.db.profile[MODULE_NAME].CheckQuestProgressList then
 		--SkuOptions.db.profile["SkuQuest"].CheckQuestProgressList  = {}
 	--end
@@ -345,7 +345,7 @@ function SkuQuest:CheckQuestProgress(aSilent)
 		if not isHeader then
 
 			if not SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID] then
-			--print(questID, "new objective in db")
+			--dprint(questID, "new objective in db")
 				table.insert(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList, questID)
 				SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID] = {
 					["objectives"] = {},
@@ -360,19 +360,19 @@ function SkuQuest:CheckQuestProgress(aSilent)
 
 					local text, ttype, finished = GetQuestLogLeaderBoard(j, questLogID)
 					if not aSilent then
-						--print("text, ttype, finished", text, ttype, finished)
+						--dprint("text, ttype, finished", text, ttype, finished)
 						if type(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID]) == "table" then
 							if not SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] then
 								-- new objective
-								--print("new objective", j)
+								--dprint("new objective", j)
 								table.insert(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives, j)
 								SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] = text
 							else
 								-- updated objective
-								--print("updated objective", j, SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j], "-", text)
+								--dprint("updated objective", j, SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j], "-", text)
 								if SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] ~= text then
 									objectivesChanged = true
-									--print("success 1")
+									--dprint("success 1")
 									if not aSilent then
 										SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
 									end
@@ -403,7 +403,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:GetTTSText(aQuestID)
 
---print("============================")
+--dprint("============================")
 	--if 1 == 1 then return end
 
 
@@ -413,7 +413,7 @@ function SkuQuest:GetTTSText(aQuestID)
 	SelectQuestLogEntry(questID)
 
 	local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isBounty, isStory, isHidden, isScaling = GetQuestLogTitle(questID)
-	--print("questLogTitleText", questLogTitleText, questID, aQuestID)	
+	--dprint("questLogTitleText", questLogTitleText, questID, aQuestID)	
 	if not questLogTitleText then
 		return
 	end
@@ -534,8 +534,8 @@ function SkuQuest:GetTTSText(aQuestID)
 					GameTooltip:Show()
 					GameTooltip:SetHyperlink(link)
 
-					--print("Rew ---- "..i)
-					--print(link)
+					--dprint("Rew ---- "..i)
+					--dprint(link)
 					local function EnumerateTooltipLines_helper(...)
 						for x = 1, select("#", ...) do
 							local region = select(x, ...)
@@ -578,8 +578,8 @@ function SkuQuest:GetTTSText(aQuestID)
 					GameTooltip:Show()
 					GameTooltip:SetHyperlink(link)
 
-					--print("Rew ---- "..i)
-					--print(link)
+					--dprint("Rew ---- "..i)
+					--dprint(link)
 					local function EnumerateTooltipLines_helper(...)
 						for x = 1, select("#", ...) do
 							local region = select(x, ...)
@@ -628,7 +628,7 @@ function SkuQuest:GetTTSText(aQuestID)
 			for y = 1, table.getn(tRewardsText) do
 				tText = tText..y..". "..tRewardsText[y].."\r\n"
 				tmpText = tmpText..y..". "..tRewardsText[y].."\r\n"
-				--print(y, tRewardsText[y])
+				--dprint(y, tRewardsText[y])
 			end
 			table.insert(tSections, tmpText)
 		end
@@ -653,7 +653,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:ShowForTTS(aQuestID)
---print("============================")
+--dprint("============================")
 	--if 1 == 1 then return end
 
 
@@ -663,7 +663,7 @@ function SkuQuest:ShowForTTS(aQuestID)
 	SelectQuestLogEntry(questID)
 
 	local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isBounty, isStory, isHidden, isScaling = GetQuestLogTitle(questID)
---print("questLogTitleText", questLogTitleText)	
+--dprint("questLogTitleText", questLogTitleText)	
 	if not questLogTitleText then
 		return
 	end
@@ -781,8 +781,8 @@ function SkuQuest:ShowForTTS(aQuestID)
 					GameTooltip:Show()
 					GameTooltip:SetHyperlink(link)
 
-					--print("Rew ---- "..i)
-					--print(link)
+					--dprint("Rew ---- "..i)
+					--dprint(link)
 					local function EnumerateTooltipLines_helper(...)
 						for x = 1, select("#", ...) do
 							local region = select(x, ...)
@@ -825,8 +825,8 @@ function SkuQuest:ShowForTTS(aQuestID)
 					GameTooltip:Show()
 					GameTooltip:SetHyperlink(link)
 
-					--print("Rew ---- "..i)
-					--print(link)
+					--dprint("Rew ---- "..i)
+					--dprint(link)
 					local function EnumerateTooltipLines_helper(...)
 						for x = 1, select("#", ...) do
 							local region = select(x, ...)
@@ -875,7 +875,7 @@ function SkuQuest:ShowForTTS(aQuestID)
 			for y = 1, table.getn(tRewardsText) do
 				tText = tText..y..". "..tRewardsText[y].."\r\n"
 				tmpText = tmpText..y..". "..tRewardsText[y].."\r\n"
-				--print(y, tRewardsText[y])
+				--dprint(y, tRewardsText[y])
 			end
 			table.insert(tSections, tmpText)
 		end
@@ -924,7 +924,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:ToggleQuestLogHook(...)
-	--print("ToggleQuestLogHook", ...)
+	--dprint("ToggleQuestLogHook", ...)
 	if ( QuestLogFrame:IsVisible() ) then
 		ExpandQuestHeader(0)
 	end
@@ -966,19 +966,19 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:QUEST_LOG_UPDATE(...)
-	--print("QUEST_LOG_UPDATE", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
+	--dprint("QUEST_LOG_UPDATE", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UPDATE_FACTION(...)
-	--print("UPDATE_FACTION", SkuOptions.db.char[MODULE_NAME].)
+	--dprint("UPDATE_FACTION", SkuOptions.db.char[MODULE_NAME].)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UNIT_QUEST_LOG_CHANGED(...)
-	--print("UNIT_QUEST_LOG_CHANGED", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
+	--dprint("UNIT_QUEST_LOG_CHANGED", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 end
 
@@ -999,7 +999,7 @@ function SkuQuest:PLAYER_LOGIN(...)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:PLAYER_ENTERING_WORLD(...)
-	--print("PLAYER_ENTERING_WORLD", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
+	--dprint("PLAYER_ENTERING_WORLD", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
 
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
@@ -1014,7 +1014,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:VARIABLES_LOADED(...)
-	--print(...)
+	--dprint(...)
 	HideUIPanel(QuestLogFrame)
 	--hooksecurefunc("QuestLog_Update", SkuQuest.OnQuestLog_OnEvent)
 	hooksecurefunc("ToggleQuestLog", SkuQuest.ToggleQuestLogHook)
@@ -1024,7 +1024,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuQuest.QuestWpCache = {}
 function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
-	--print("GetAllQuestWps", aQuestID, aStart, aObjective, aFinish, aOnly3)
+	--dprint("GetAllQuestWps", aQuestID, aStart, aObjective, aFinish, aOnly3)
 
 	if aStart == true then
 		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
@@ -1132,7 +1132,7 @@ function SkuQuest:BuildQuestZoneCache()
 			if tstartedBy[3] then
 				--itemStart
 				for i, v in pairs(tstartedBy[3]) do
-					--print("  itemStart", i, v)
+					--dprint("  itemStart", i, v)
 					if SkuDB.itemDataTBC[v][SkuDB.itemKeys['npcDrops']] then
 						for z = 1, #SkuDB.itemDataTBC[v][SkuDB.itemKeys['npcDrops']] do
 							GetCreatureArea(aQuestID, SkuDB.itemDataTBC[v][SkuDB.itemKeys['npcDrops']][z])
@@ -1178,7 +1178,7 @@ function SkuQuest:BuildQuestZoneCache()
 				end
 				--['itemObjective'] = 3, -- table {{item(int), text(string)},...}
 				if objectives[3] then
-					--print("  objectives itemObjective")
+					--dprint("  objectives itemObjective")
 					for i, v in pairs(objectives[3]) do
 						local tItemId = v[1]
 						if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys['npcDrops']] then

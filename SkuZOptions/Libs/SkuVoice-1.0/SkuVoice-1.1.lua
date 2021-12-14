@@ -14,7 +14,7 @@ local printMT = {
 							print(tTab..k..": tab")
 							tf(v, tTab.."  ")
 						elseif type(v) == "function" then
-							--print(tTab..k..": function")
+							--dprint(tTab..k..": function")
 						elseif type(v) == "boolean" then
 							print(tTab..k..": "..tostring(v))
 						else
@@ -55,11 +55,11 @@ function SkuVoice:Create()
                table.remove(mSkuVoiceQueue, i)
             end
          end
-         --print("TTS_PLAYBACK_FAILED", status, utteranceID, destination)
+         --dprint("TTS_PLAYBACK_FAILED", status, utteranceID, destination)
 
       elseif (event == "VOICE_CHAT_TTS_PLAYBACK_FINISHED") then
          local numConsumers, utteranceID, destination = ...
-         --print("TTS_PLAYBACK_FINISHED", numConsumers, utteranceID, destination)
+         --dprint("TTS_PLAYBACK_FINISHED", numConsumers, utteranceID, destination)
 
       elseif (event == "VOICE_CHAT_TTS_PLAYBACK_STARTED") then
          local numConsumers, utteranceID, durationMS, destination = ...
@@ -71,7 +71,7 @@ function SkuVoice:Create()
                table.remove(mSkuVoiceQueue, i)
             end
          end
-         --print("TTS_PLAYBACK_STARTED", numConsumers, utteranceID, durationMS, destination)
+         --dprint("TTS_PLAYBACK_STARTED", numConsumers, utteranceID, durationMS, destination)
 
       end
    end)
@@ -89,7 +89,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SplitString(aString)
-	--print("split:", aString, SkuAudioFileIndex[aString])
+	--dprint("split:", aString, SkuAudioFileIndex[aString])
 	if SkuAudioFileIndex[aString] then
 		return aString
 	end
@@ -160,7 +160,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell) -- for strings with lookup in string index
-	--print(aString)
+	--dprint(aString)
 	local tString = ""
 	if aSpell == true then
 		aString = string.lower(aString)
@@ -301,8 +301,8 @@ function SkuVoice:UpdateQueue(aFinalString, aOverwrite)
       }
    end
 
-   --print("++++++++++++++++++++++++++++++++++++++++++++++++")
-   --print(mSkuVoiceQueue)
+   --dprint("++++++++++++++++++++++++++++++++++++++++++++++++")
+   --dprint(mSkuVoiceQueue)
 
 end
 
@@ -315,7 +315,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:Output(file, overwrite, wait, length, doNotOverwrite, isMulti, soundChannel) -- for audio file names
-	--print("SV OUTPUT")
+	--dprint("SV OUTPUT")
    if 1 == 1 then return end
 	soundChannel = soundChannel or SkuOptions.db.profiles["SkuOptions"].soundChannels.SkuChannel or "Talking Head"
 	

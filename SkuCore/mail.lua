@@ -26,13 +26,13 @@ end
 ------------------------------------------------------------------------------------------------------------
 local MailboxOpenFlag = false
 function SkuCore:MAIL_SHOW(...)
-   --print("MAIL_SHOW", ...)
+   --dprint("MAIL_SHOW", ...)
    MailboxOpenFlag = true
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_INBOX_UPDATE(...)
-   --print("MAIL_INBOX_UPDATE", ...)
+   --dprint("MAIL_INBOX_UPDATE", ...)
    if MailboxOpenFlag == true then
       SkuOptions:SlashFunc(L["short"]..",SkuCore,"..L["Mail"])
       --MailboxOpenFlag = false
@@ -41,7 +41,7 @@ end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_CLOSED(...)
-   --print("MAIL_CLOSED", ...)
+   --dprint("MAIL_CLOSED", ...)
    if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
       _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
    end
@@ -49,43 +49,43 @@ end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_SEND_INFO_UPDATE(...)
-   --print("MAIL_SEND_INFO_UPDATE", ...)
+   --dprint("MAIL_SEND_INFO_UPDATE", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_SEND_SUCCESS(...)
-   --print("MAIL_SEND_SUCCESS", ...)
+   --dprint("MAIL_SEND_SUCCESS", ...)
    SkuOptions.Voice:OutputString(L["Sent"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_SUCCESS(...)
-   --print("MAIL_SUCCESS", ...)
+   --dprint("MAIL_SUCCESS", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:CLOSE_INBOX_ITEM(...)
-   --print("CLOSE_INBOX_ITEM", ...)
+   --dprint("CLOSE_INBOX_ITEM", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_LOCK_SEND_ITEMS(...)
-   --print("MAIL_LOCK_SEND_ITEMS", ...)
+   --dprint("MAIL_LOCK_SEND_ITEMS", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_UNLOCK_SEND_ITEMS(...)
-   --print("MAIL_UNLOCK_SEND_ITEMS", ...)
+   --dprint("MAIL_UNLOCK_SEND_ITEMS", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_UNLOCK_SEND_ITEMS(...)
-   --print("MAIL_UNLOCK_SEND_ITEMS", ...)
+   --dprint("MAIL_UNLOCK_SEND_ITEMS", ...)
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_FAILED(...)
-   --print("MAIL_FAILED", ...)
+   --dprint("MAIL_FAILED", ...)
    SkuOptions.Voice:OutputString(L["Send failed"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
    SkuOptions.Voice:OutputString(gLastError, false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
 end
