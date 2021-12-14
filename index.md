@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.8](https://github.com/Duugu/Sku/releases/download/r21.8/Sku-r21.8-bcc.zip) <br>
+[Sku 21.9](https://github.com/Duugu/Sku/releases/download/r21.9/Sku-r21.9-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
@@ -19,6 +19,36 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 # Versionshinweise
 
 -------------------------------------------------------------------------------------------------------
+
+## Änderungen in Version 21.9
+
+### SkuNav
+*Neuerungen*
+- Wenn die Erreichen-Reichweite für Wegpunkte auf "Auto" steht, sagt das Addon jetzt bei jedem Wechsel auf 1 bzw 3 Meter die Worte "Nah" und "Weit".
+
+*Fehlerkorrekturen*
+- Die Holzschlundfeste gehört jetzt komplett zum Teufelswald.
+- Bei einem neuen Wegpunkt starten Beacons jetzt direkt mit einem Sound, statt wie bisher mit einer Pause.
+- Aber sofort sagt das Addon "Routen aktualisierung abgeschlossen", sobald das anfängliche Cachen der Routen beendet ist.
+- Das anfängliche Cachen von Routen wird jetzt korrekt fortgeführt bis der Cache erstellt ist.
+  Bisher wurde es ungewollte beim Folgen einer Route abgebrochen und nicht wieder neu gestartet.
+- Das Cachen wird nun dynamisch gesteuert und versucht möglichst schnell zu rechnen, die Frame-Rate des Spiels dabei aber nicht unter 35 sinken zu lassen. <br>
+  Sinkt die Frame-Rate durch den Cache-Vorgang unter 35, so wird der Cache-Prozess gedrosselt.<br>
+  Er kann daher schwanken und, je nach Computer und Routenmenge, deutlich schneller oder langsamer als bisher sein. (Zwischen 30 Sekunden und 15 Minuten oder mehr.)
+
+### SkuOptions
+*Neuerungen*
+- Der Wortliste für Wegpunktnamen wurden die Wörter "Rettung", "Hilfe" und "Punkt" hinzugefügt.
+- Es gibt einen neuen Slash-Befehl: /sku mmreset<br>
+  Dieser setzt die Sku-Minimap auf ihre Ursprungsgröße zurück.
+
+*Fehlerkorrekturen*
+- Es wurde ein Fehler behoben, der für viele eigenartige Piepser in der Sprachausgabe bei eigentlich bekannten Worten verantwortlich war.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Es wurde ein unfassbar vertrackter Fehler behoben, der dafür verantwortlich war, dass bei Händlern unter Gegenständen mit einstelligen Preisen keine Preisangaben zu sehen waren. (Für diese Zeile waren 5 Stunden Arbeit erforderlich * knurr *.)
+
 ## Änderungen in Version 21.8
 
 ### SkuCore
