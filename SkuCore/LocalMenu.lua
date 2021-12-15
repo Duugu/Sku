@@ -15,6 +15,7 @@ local escapes = {
 	["{.-}"] = "", -- raid target icons
 }
 local function unescape(str)
+   if not str then return end
 	for k, v in pairs(escapes) do
 		str = string.gsub(str, k, v)
 	end
@@ -157,7 +158,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
             if r < 0.51 and g < 0.51 and b < 0.51 then
                tKnown = "bekannt"
             end
-            local tFriendlyName = _G[tFrameName.."Text"]:GetText().." ".. (_G[tFrameName.."SubText"]:GetText() or "").." ".. (_G[tFrameName.."Cost"]:GetText() or "").." "..tKnown
+            local tFriendlyName = unescape(_G[tFrameName.."Text"]:GetText()).." ".. (unescape(_G[tFrameName.."SubText"]:GetText()) or "").." ".. (unescape(_G[tFrameName.."Cost"]:GetText()) or "").." "..tKnown
             local tText, tFullText = "", ""
             if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
                table.insert(aParentChilds, tFriendlyName)
@@ -201,19 +202,19 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 
    local tName = ""
    if _G["CraftName"] then
-      tName = _G["CraftName"]:GetText() or ""
+      tName = unescape(_G["CraftName"]:GetText()) or ""
    end
    local tRequirements = ""
    if _G["CraftRequirements"] then
-      tRequirements = _G["CraftRequirements"]:GetText() or ""
+      tRequirements = unescape(_G["CraftRequirements"]:GetText()) or ""
    end
    local tCost = ""
    if _G["CraftCost"] then
-      tCost = _G["CraftCost"]:GetText() or ""
+      tCost = unescape(_G["CraftCost"]:GetText()) or ""
    end
    local tDescription = ""
    if _G["CraftDescription"] then
-      tDescription = _G["CraftDescription"]:GetText() or ""
+      tDescription = unescape(_G["CraftDescription"]:GetText()) or ""
    end
 
    local tFrameName = "CraftDetailScrollChildFrame"
@@ -235,7 +236,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
    if _G[tFrameName] then
       if tFrame:IsEnabled() == true then --IsMouseClickEnabled()
          if _G[tFrameName]:GetText() then
-            local tFriendlyName = _G[tFrameName]:GetText()
+            local tFriendlyName = unescape(_G[tFrameName]:GetText())
             table.insert(aParentChilds, tFriendlyName)
             aParentChilds[tFriendlyName] = {
                frameName = tFrameName,
