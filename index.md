@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.10](https://github.com/Duugu/Sku/releases/download/r21.10/Sku-r21.10-bcc.zip) <br>
+[Sku 21.11](https://github.com/Duugu/Sku/releases/download/r21.11/Sku-r21.11-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
@@ -19,6 +19,17 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 # Versionshinweise
 
 -------------------------------------------------------------------------------------------------------
+
+## Änderungen in Version 21.11
+
+### SkuCore
+*Neuerungen*
+- Das Jäger-Tierausbildungsfenster kann jetzt im Lokal-Menü verwendet werden.
+
+### SkuOptions
+*Neuerungen*
+- Das Wort "Käfig" wurde zur Wortliste für Wegpunktnamen hinzugefügt.
+      
 ## Änderungen in Version 21.10
 
 ### SkuNav
