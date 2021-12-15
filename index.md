@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.9](https://github.com/Duugu/Sku/releases/download/r21.9/Sku-r21.9-bcc.zip) <br>
+[Sku 21.10](https://github.com/Duugu/Sku/releases/download/r21.10/Sku-r21.10-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
@@ -19,6 +19,15 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 # Versionshinweise
 
 -------------------------------------------------------------------------------------------------------
+## Änderungen in Version 21.10
+
+### SkuNav
+*Fehlerkorrekturen*
+- STRG + SHIFT + I und STRG + SHIFT + U zur Routenerstellung wurden entfernt.
+
+### SkuCore
+*Neuerungen*
+- Der Stallmeister für Jäger-Tiere kann jetzt über das Lokal-Menü benutzt werden.
 
 ## Änderungen in Version 21.9
 
