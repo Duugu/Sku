@@ -88,6 +88,11 @@ SkuStatus = {
 }
 
 SkuCore.interactFramesListHooked = {}
+SkuCore.interactFramesListManual = {
+	--["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
+	["PetStableFrame"] = function(...) SkuCore:Build_PetStableFrame(...) end,
+}
+
 SkuCore.interactFramesList = {
 	"QuestFrame",--o
 	"TaxiFrame",--o
@@ -1971,7 +1976,11 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 					textFull = "",
 					childs = {},
 					}
-				tGossipList[tOpenFrames[x]].childs = IterateChildren(tGossipList[tOpenFrames[x]].obj, "")
+				if not SkuCore.interactFramesListManual[tOpenFrames[x]] then
+					tGossipList[tOpenFrames[x]].childs = IterateChildren(tGossipList[tOpenFrames[x]].obj, "")
+				else
+					SkuCore.interactFramesListManual[tOpenFrames[x]](tGossipList[tOpenFrames[x]].childs)
+				end
 			end
 
 			CleanUpGossipList(tGossipList)

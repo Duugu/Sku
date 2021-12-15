@@ -103,6 +103,8 @@ local function SplitString(aString)
 	if aString == "" then
 		return aString
 	end
+	aString = string.gsub(aString, "\\r\\n", ";")
+	aString = string.gsub(aString, "\\r", ";")
 	aString = string.gsub(aString, "\\n", ";")
 	aString = string.gsub(aString, "\"", ";backslash;")
 	aString = string.gsub(aString, "'", ";")
@@ -142,6 +144,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function Unescape(aString)
 	local tResult = tostring(aString)
+	tResult = gsub(tResult, "|n", ";") -- Remove color start.
 	tResult = gsub(tResult, "|c........", "") -- Remove color start.
 	tResult = gsub(tResult, "|r", "") -- Remove color end.
 	tResult = gsub(tResult, "|H.-|h(.-)|h", "%1") -- Remove links.

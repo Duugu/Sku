@@ -2,6 +2,17 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.10
+
+	SkuNav
+		Fehlerkorrekturen
+			- STRG + SHIFT + I und STRG + SHIFT + U zur Routenerstellung wurden entfernt.
+
+	SkuCore
+		Neuerungen
+			- Der Stallmeister für Jäger-Tiere kann jetzt über das Lokal-Menü benutzt werden.
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.9

@@ -1525,8 +1525,6 @@ function SkuNav:CreateSkuNavControl()
  			ttime = ttime + time
 			ttimeDraw = ttimeDraw + time
 
-			SkuNav:ProcessRecordingMousClickStuff()
-
 			--tmp drawing rts on UIParent for debugging
 			if ttimeDraw > 0.2 then
 				--SkuNav:DrawRoutes(_G["Minimap"])
@@ -1602,6 +1600,8 @@ function SkuNav:CreateSkuNavControl()
 				GameTooltip:Hide()
 			end
 
+			SkuNav:ProcessRecordingMousClickStuff()
+
 			if ttime > 0.1 then
 				SkuNav:ProcessPolyZones()
 				SkuNav:ProcessPlayerDead()
@@ -1654,7 +1654,7 @@ function SkuNav:CreateSkuNavMain()
 		if a == "CTRL-SHIFT-S" then
 			SkuNav.MoveToWp = -1
 		end
-
+		--[[
 		if a == "CTRL-SHIFT-U" then
 			local tWpName
 			local tTargetName = UnitName("target")
@@ -1741,7 +1741,6 @@ function SkuNav:CreateSkuNavMain()
 				end
 			end
 		end
-
 		if a == "CTRL-SHIFT-I" then
 			if mouseMiddleDown == false then
 				mouseMiddleUp = false
@@ -1753,6 +1752,7 @@ function SkuNav:CreateSkuNavMain()
 				SkuNav:OnMouseMiddleUp(true)
 			end
 		end
+		]]
 
 		--add manual int wp on rt recording
 		if a == "CTRL-SHIFT-P" or a == "CTRL-SHIFT-O" then
@@ -1853,8 +1853,8 @@ function SkuNav:CreateSkuNavMain()
 	
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Z", tFrame:GetName(), "CTRL-SHIFT-Z")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F", tFrame:GetName(), "CTRL-SHIFT-F")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-U", tFrame:GetName(), "CTRL-SHIFT-U")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-I", tFrame:GetName(), "CTRL-SHIFT-I")
+	--SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-U", tFrame:GetName(), "CTRL-SHIFT-U")
+	--SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-I", tFrame:GetName(), "CTRL-SHIFT-I")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Q", tFrame:GetName(), "CTRL-SHIFT-Q")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-W", tFrame:GetName(), "CTRL-SHIFT-W")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-S", tFrame:GetName(), "CTRL-SHIFT-S")
@@ -2232,6 +2232,8 @@ function SkuNav:OnMouseMiddleUp(aUseTarget)
 				print("End:", SkuNav:EndRouteRecording(tWpName, 1))
 			end
 		end
+	end
+	--[[
 	else
 		--no selected wp -> use the nearest one
 		local x, y = UnitPosition("player")
@@ -2287,6 +2289,7 @@ function SkuNav:OnMouseMiddleUp(aUseTarget)
 			end
 		end
 	end
+	]]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
