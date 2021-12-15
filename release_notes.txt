@@ -2,6 +2,18 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.11
+
+	SkuCore
+		Neuerungen
+			- Das Jäger-Tierausbildungsfenster kann jetzt im Lokal-Menü verwendet werden.
+
+	SkuOptions
+		Neuerungen
+			- Das Wort "Käfig" wurde zur Wortliste für Wegpunktnamen hinzugefügt.
+
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.10
 

@@ -108,6 +108,7 @@ SkuOptions.Glossary1 = {
 		"Blutmythosinsel",
 		"Immersangwald",
 		"Geisterlande",
+		"Käfig",
 	},
 	["Bindewörter"] = {
 		"auf",

@@ -89,7 +89,7 @@ SkuStatus = {
 
 SkuCore.interactFramesListHooked = {}
 SkuCore.interactFramesListManual = {
-	--["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
+	["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
 	["PetStableFrame"] = function(...) SkuCore:Build_PetStableFrame(...) end,
 }
 
@@ -1133,6 +1133,11 @@ function SkuCore:PLAYER_LOGIN(...)
 	SkuScanningTooltip = f
 	f:SetOwner(WorldFrame, "ANCHOR_NONE");
 	f:AddFontStrings(f:CreateFontString( "$parentTextLeft1", nil, "GameTooltipText" ), f:CreateFontString( "$parentTextRight1", nil, "GameTooltipText" ))
+
+	--we need to do that to have all craftframe elementes available on first use; otherwise it won't be complete on first open, as the data from the server take a few ms
+	UIParentLoadAddOn("Blizzard_CraftUI")
+	CraftFrame:Show()
+	CraftFrame:Hide()
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
