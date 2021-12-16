@@ -4189,12 +4189,39 @@ local SkuQuestFixesSKU = {
     [1204] = {
         [questKeys.preQuestSingle] = {},
     },
+    [2866] = {
+        [questKeys.objectives] = {nil,{{142179,nil}}, nil, nil}
+    },
+    [2879] = {
+        [questKeys.objectives] = {nil,{{142186,nil},{142188,nil},{142185,nil},{142187,nil},{144063,nil},},{{9306,nil},},nil,}
+    },
+    [3791] = {
+        [questKeys.preQuestSingle] = {3787}
+    },
 }
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 function SkuDB:FixQuestDB()
     for i, v in pairs(SkuQuestFixes) do
+        for k, val in pairs(v) do
+            if SkuDB.questDataTBC[i] then
+                SkuDB.questDataTBC[i][k] = val
+            else
+                SkuDB.questDataTBC[i] = v         
+            end
+        end
+    end
+    for i, v in pairs(SkuQuestFixesHorde) do
+        for k, val in pairs(v) do
+            if SkuDB.questDataTBC[i] then
+                SkuDB.questDataTBC[i][k] = val
+            else
+                SkuDB.questDataTBC[i] = v         
+            end
+        end
+    end
+    for i, v in pairs(SkuQuestFixesAlliance) do
         for k, val in pairs(v) do
             if SkuDB.questDataTBC[i] then
                 SkuDB.questDataTBC[i][k] = val

@@ -103,10 +103,11 @@ local function SplitString(aString)
 	if aString == "" then
 		return aString
 	end
-	aString = string.gsub(aString, "\\r\\n", ";")
-	aString = string.gsub(aString, "\\r", ";")
-	aString = string.gsub(aString, "\\n", ";")
-	aString = string.gsub(aString, "\"", ";backslash;")
+	aString = string.gsub(aString, "\r\n", ";")
+	aString = string.gsub(aString, "\r", ";")
+	aString = string.gsub(aString, "\n", ";")
+	aString = string.gsub(aString, "\"", ";")
+	--aString = string.gsub(aString, "\"", ";backslash;")
 	aString = string.gsub(aString, "'", ";")
 	aString = string.gsub(aString, "%.", ";punkt;")
 	aString = string.gsub(aString, ",", ";")

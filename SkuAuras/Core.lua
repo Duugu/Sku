@@ -91,7 +91,7 @@ function GetElTime()
 		 --local guidSpawnDate = date("%Y-%m-%d %H:%M:%S", guidSpawnTime)
 		 local timeSinceServerStart = GetServerTime() - guidSpawnTime
 
-		 print("noch", timeSinceServerStart - (math.floor(timeSinceServerStart / 36.667) * 36.667) - 10)
+		 print("noch", timeSinceServerStart - (math.floor(timeSinceServerStart / 36.667) * 36.667))
 		 
 	end
 end

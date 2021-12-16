@@ -1,5 +1,11 @@
 local VANILLA = string.byte(GetBuildInfo(), 1) == 49
 
+SkuDB.ContinentIds = {
+    [0] = {Name_lang = "Östliche Königreiche"},
+    [1] = {Name_lang = "Kalimdor"},
+    [530] = {Name_lang = "Scherbenwelt"},
+}
+
 SkuDB.ExternalMapID = { --https://wow.tools/dbc/?dbc=uimap&build=1.13.7.38386&locale=deDE#page=1
 [946] = {Name_lang = "Kosmisch", ParentExternalMapID = "0", Type = "0", AreaId = -1,},
 [947] = {Name_lang = "Azeroth", ParentExternalMapID = "946", Type = "1", AreaId = -1,},

@@ -7,6 +7,7 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- helpers
+---------------------------------------------------------------------------------------------------------------------------------------
 local escapes = {
 	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
 	["|r"] = "", -- color end
@@ -91,8 +92,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- menu items
-
 ---------------------------------------------------------------------------------------------------------------------------------------
+
 function SkuCore:Build_CraftFrame(aParentChilds)
 
    local tFrameName = "CraftFrame"
@@ -108,10 +109,10 @@ function SkuCore:Build_CraftFrame(aParentChilds)
       childs = {},
    }
 
-   if _["CraftPointsText"] then
-      local tFrameName = "CraftPointsLabel"
+   if _G["CraftFramePointsText"] then
+      local tFrameName = "CraftFramePointsText"
       local tFriendlyName = "Verfügbare punkte: "
-      tFriendlyName = tFriendlyName..(_["CraftPointsText"]:GetText() or "")
+      tFriendlyName = tFriendlyName..(_G["CraftFramePointsText"]:GetText() or "")
       table.insert(aParentChilds, tFriendlyName)
       aParentChilds[tFriendlyName] = {
          frameName = tFrameName,
@@ -145,7 +146,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
          }   
       end
    end
-   
+
    for x = 1, 8 do
       local tFrameName = "Craft"..x
       if _G[tFrameName] then
@@ -177,7 +178,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
          end
       end
    end
-   
+
    local tFrameName = "CraftListScrollFrameScrollBarScrollDownButton"
    if _G[tFrameName] then
       if tFrame:IsVisible() == true then --IsMouseClickEnabled()

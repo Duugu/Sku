@@ -2,6 +2,27 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.12
+
+	SkuQuest
+		Neuerungen
+			- Wenn bei Quests Wegpunkte unter "Annahme", "Ziel" und "Abgabe" auf einem anderen Kontinent liegen, wird ab sofort nicht mehr nur "leer" angezeigt.
+			  Stattdessen werden wie gewohnt die Wegpunkte als Untermenü angezeigt. 
+			  Unter den Wegpunkten findest du dann aber nicht "Route", "Nahe Route" und "Wegpunkt" (das ist nicht möglich, denn das Ziel ist ja auf einem anderen Kontinent).
+			  Stattdessen gibt es darunter nur einen Menüeintrag ohne Funktion, der dir sagt auf welchem Kontinent und in welcher Zone das Ziel liegt. Beispiel: "Anderer Kontinent Schwerbenwelt Höllenfeuerhalbinsel".
+
+		Fehlerkorrekturen
+			- Der "Solarsal Pavilion" in Feralas wurde für Quest "Die Ruinen von Solarsal" als Ziel eintragen.
+			- Die vier Flammen und der Monolith in Feralas wurden als Ziele für die Quest "Der Stock von Equinex" eingetragen.
+			- Stalvan Dunstmantel ist jetzt ein Questziel.
+			- Die Quest "Das Geheimnis des Morgenkorns" in Feralas hat jetzt die Quest "Lebenshands Bitte" als Pre-Quest eingetragen.
+
+	SkuNav
+		Fehlerkorrekturen
+			- Solange die Sku-Minimap offen ist, wird jetzt nicht mehr gecached. Das sollte die Performance der Sku-Minimap deutlich verbessern.
+			- Weil Stalvan eine olle Petze ist, wurde gleich noch ein Problem mit vielen NPCs in Southshore in Hillsbrad behoben, die jetzt alle angezeigt werden.
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.11
@@ -13,6 +34,7 @@
 	SkuOptions
 		Neuerungen
 			- Das Wort "Käfig" wurde zur Wortliste für Wegpunktnamen hinzugefügt.
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.10

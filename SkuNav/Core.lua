@@ -151,7 +151,6 @@ local tCacheNbWpsTimerRate = 2
 local tCacheNbWpsTimer = nil
 local SkuNeighbCache = {}
 local tFoundThisRound = false
-local tOldFps = 0
 function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 	dprint("CacheNbWps")
 	tCacheNbWpsTimerRate = 2--aRate or 10
@@ -221,6 +220,15 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 		tCacheNbWpsTimerCounter = 0
 		tCacheNbWpsTimerCounterProgress = 0
 		tCacheNbWpsTimer = C_Timer.NewTicker(0, function()
+			if _G["SkuNavMMMainFrame"] then
+				if _G["SkuNavMMMainFrame"]:IsVisible() then
+					return
+				end
+			end
+			local tOldFps = 0
+			local tFps = 0
+			--print("new ticker", tCacheNbWpsTimer)
+			local tFoundCount = 0
 			for x = 1, tCacheNbWpsTimerRate do
 				tCacheNbWpsTimerCounter = tCacheNbWpsTimerCounter + 1
 				if tCacheNbWpsTimerCounter >= #tCacheNbWpsTimerWpList == true then
@@ -241,6 +249,7 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 					local tWaste, tFound = GetNeighbToWp(tCacheNbWpsTimerWpList[tCacheNbWpsTimerCounter], true)
 					if tFound == true then
 						tFoundThisRound = tFound
+						tFoundCount = tFoundCount + 1
 					end
 				end
 			end
@@ -250,20 +259,18 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 					dprint("SkuNav: Caching progress "..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000))
 				end
 			end
-
-			local tFps = GetFramerate()
-			local tDiff = tOldFps / tFps
-			if tDiff * tFps < 35 then
-				tCacheNbWpsTimerRate = tCacheNbWpsTimerRate - 0.01
-				if tCacheNbWpsTimerRate < 1 then
-					tCacheNbWpsTimerRate = 1
+			if tFoundCount > 0 then
+				tFps = GetFramerate()
+				if tFps < 35 then
+					tCacheNbWpsTimerRate = tCacheNbWpsTimerRate - 0.01
+					if tCacheNbWpsTimerRate < 1 then
+						tCacheNbWpsTimerRate = 1
+					end
+				elseif tFps > 35 then
+					tCacheNbWpsTimerRate = tCacheNbWpsTimerRate + 0.01
 				end
-				--dprint("   D: new tCacheNbWpsTimerRate", tCacheNbWpsTimerRate)
-			elseif tDiff * tFps > 40 then
-				tCacheNbWpsTimerRate = tCacheNbWpsTimerRate + 0.01
-				--dprint("   U: new tCacheNbWpsTimerRate", tCacheNbWpsTimerRate)
+				tOldFps = tFps
 			end
-			tOldFps = tFps
 		end)
 	end
 end
@@ -361,6 +368,14 @@ function SkuNav:Distance(sx, sy, dx, dy)
 	if sx and sy and dx and dy then
     	return floor(sqrt((sx - dx) ^ 2 + (sy - dy) ^ 2)), sqrt((sx - dx) ^ 2 + (sy - dy) ^ 2)
 	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:GetContinentNameFromContinentId(aContinentId)
+	if not SkuDB.ContinentIds[aContinentId] then
+		return
+	end
+	return SkuDB.ContinentIds[aContinentId].Name_lang
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3129,7 +3144,7 @@ function SkuNav:GetWaypoint(aName)
 			return SkuNavNpcWaypointCache[aName]
 		else
 			local i = SkuDB.NpcData.NamesDERev[slower(tWpParts[1])]
-			if i then
+			if i and SkuDB.NpcData.Data[i] then
 				if SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]] then
 					for is, vs in pairs(SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]) do
 						local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
@@ -3189,7 +3204,7 @@ function SkuNav:GetWaypoint(aName)
 			else
 				local i = tWpParts[2]
 				--dprint("OBJEKT QUERY", " - ", i, " - ", aName, " - ", tWpParts[1] , " - ", tWpParts[2] , " - ", tWpParts[3] , " - ", tWpParts[4] , " - ", tWpParts[5], " - ", tWpParts[6], " - ", tWpParts[7])
-				if i then
+				if i and SkuDB.objectDataTBC[i] then
 					if SkuDB.objectDataTBC[i][SkuDB.objectKeys["spawns"]] then
 						for is, vs in pairs(SkuDB.objectDataTBC[i][SkuDB.objectKeys["spawns"]]) do
 							local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
