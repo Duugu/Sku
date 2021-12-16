@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.11](https://github.com/Duugu/Sku/releases/download/r21.11/Sku-r21.11-bcc.zip) <br>
+[Sku 21.12](https://github.com/Duugu/Sku/releases/download/r21.12/Sku-r21.12-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
@@ -19,6 +19,27 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 # Versionshinweise
 
 -------------------------------------------------------------------------------------------------------
+
+## Änderungen in Version 21.12
+
+## SkuQuest
+*Neuerungen*
+- Wenn bei Quests Wegpunkte unter "Annahme", "Ziel" und "Abgabe" auf einem anderen Kontinent liegen, wird ab sofort nicht mehr nur "leer" angezeigt.<br>
+  Stattdessen werden wie gewohnt die Wegpunkte als Untermenü angezeigt. <br>
+  Unter den Wegpunkten findest du dann aber nicht "Route", "Nahe Route" und "Wegpunkt" (das ist nicht möglich, denn das Ziel ist ja auf einem anderen Kontinent).<br>
+  Stattdessen gibt es darunter nur einen Menüeintrag ohne Funktion, der dir sagt auf welchem Kontinent und in welcher Zone das Ziel liegt. Beispiel: "Anderer Kontinent Schwerbenwelt Höllenfeuerhalbinsel".
+
+*Fehlerkorrekturen*
+- Der "Solarsal Pavilion" in Feralas wurde für Quest "Die Ruinen von Solarsal" als Ziel eintragen.
+- Die vier Flammen und der Monolith in Feralas wurden als Ziele für die Quest "Der Stock von Equinex" eingetragen.
+- Stalvan Dunstmantel ist jetzt ein Questziel.
+- Die Quest "Das Geheimnis des Morgenkorns" in Feralas hat jetzt die Quest "Lebenshands Bitte" als Pre-Quest eingetragen.
+
+## SkuNav
+*Fehlerkorrekturen*
+- Solange die Sku-Minimap offen ist, wird jetzt nicht mehr gecached. Das sollte die Performance der Sku-Minimap deutlich verbessern.
+- Weil Stalvan eine olle Petze ist, wurde gleich noch ein Problem mit vielen NPCs in Southshore in Hillsbrad behoben, die jetzt alle angezeigt werden.
+
 
 ## Änderungen in Version 21.11
 
