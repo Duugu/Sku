@@ -1561,12 +1561,14 @@ function SkuNav:CreateSkuNavControl()
 						GameTooltip:AddLine(i.aText, 1, 1, 1)
 						GameTooltip:Show()
 						i:SetSize(3, 3)
-						i.oldColor = i:GetVertexColor()
+						local r, g, b, t = i:GetVertexColor()
+						i.oldColor = {r = r, g = g, b = b, t = t}
 						i:SetColorTexture(0, 1, 1)
 					else
 						i:SetSize(2, 2)
 						if i.oldColor then
-							i:SetColorTexture(i.oldColor)
+							i:SetColorTexture(i.oldColor.r, i.oldColor.g, i.oldColor.b, i.oldColor.a)
+							--i:SetColorTexture(i.oldColor)
 						end
 					end
 				end
@@ -1595,12 +1597,14 @@ function SkuNav:CreateSkuNavControl()
 											end
 										end
 										GameTooltip:Show()
-										i.oldColor = i:GetVertexColor()
+										local r, g, b, a = i:GetVertexColor()
+										i.oldColor = {r = r, g = g, b = b, a = a}
+										--i.oldColor = i:GetVertexColor()
 										i:SetColorTexture(0, 1, 1)
 									else
 										--i:SetSize(2, 2)
 										if i.oldColor then
-											i:SetColorTexture(i.oldColor)
+											i:SetColorTexture(i.oldColor.r, i.oldColor.g, i.oldColor.b, i.oldColor.a)
 										end
 									end
 								end
@@ -1623,6 +1627,10 @@ function SkuNav:CreateSkuNavControl()
 				SkuNav:ProcessGlobalDirection(ttimeDistanceOutput)
 				SkuNav:ProcessDirAndDistWithWpSelected(ttimeDistanceOutput)
 				SkuNav:ProcessCheckReachingWp()
+
+				if SkuOptions.db.profile[MODULE_NAME].metapathFollowing ~= true then
+					SkuNav:ClearWaypointsTemporary()
+				end
 
 				SkuNav.MoveToWp = 0
 				ttime = 0
@@ -2743,6 +2751,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_LEAVING_WORLD(...)
+	SkuNav:ClearWaypointsTemporary()
+
 	if SkuOptions.currentBackgroundSoundHandle then
 		StopSound(SkuOptions.currentBackgroundSoundHandle, 0)
 	end
@@ -2894,7 +2904,9 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	C_Timer.After(10, function()
 		--dprint("PLAYER_ENTERING_WORLD")
 		CacheNbWps()
-	end)	
+	end)
+
+	SkuNav:ClearWaypointsTemporary(true)
 end
 
 local old_ZONE_CHANGED_X = ""
@@ -3576,6 +3588,36 @@ function SkuNav:ListWaypoints(aSort, aFilter, aAreaId, aContinentId, aExcludeRou
 		return tWpList
 	else
 		return ipairs(tWpList)
+	end
+end
+
+------------------------------------------------------------------------------------------------------------------------
+function SkuNav:ClearWaypointsTemporary(aFull)
+	--dprint("ClearWaypointsTemporary")
+	if not SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary then
+		SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary = {}
+	end
+
+	if SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary then
+		if #SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary > 0 then
+			for x = 1, #SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary do
+				if SkuNav:DeleteWaypoint(SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary[x]) ~= true then
+					dprint("THIS SHOULD NOT HAPPEN: tmp WP could not be deleted on clear:", SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary[x])
+				end
+			end
+			SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary = {}
+		end
+	end
+
+	if aFull then
+		local tIndex = 1
+		while SkuOptions.db.profile[MODULE_NAME].Waypoints["Einheiten;Route;"..tIndex] do
+			if SkuNav:DeleteWaypoint("Einheiten;Route;"..tIndex) ~= true then
+				dprint("THIS SHOULD NOT HAPPEN: tmp WP could not be deleted on clear:", "Einheiten;Route;"..tIndex)
+			end
+			tIndex = tIndex + 1
+		end
+		SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary = {}
 	end
 end
 

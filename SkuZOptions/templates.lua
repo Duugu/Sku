@@ -393,15 +393,17 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 			local tWaypointList = {}
 			for i, v in pairs(SkuDB.NpcData.NamesDE) do
 				local tHasValidSpawns = false
-				if not string.find((SkuDB.NpcData.Data[i][1]), "UNUSED") then				
-					if SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]] then
-						for is, vs in pairs(SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]) do
-							if tHasValidSpawns == false then
-								if SkuDB.InternalAreaTable[is] then
-									local tCID = SkuDB.InternalAreaTable[is].ContinentID
-									local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
-									if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
-										tHasValidSpawns = true
+				if SkuDB.NpcData.Data[i] then
+					if not string.find((SkuDB.NpcData.Data[i][1]), "UNUSED") then				
+						if SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]] then
+							for is, vs in pairs(SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]) do
+								if tHasValidSpawns == false then
+									if SkuDB.InternalAreaTable[is] then
+										local tCID = SkuDB.InternalAreaTable[is].ContinentID
+										local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
+										if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
+											tHasValidSpawns = true
+										end
 									end
 								end
 							end

@@ -3,6 +3,25 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 21.13
+
+	SkuOptions
+		Fehlerkorrekturen
+			- Ein Fehler im Menü zur Wegpunktbenennung wurde behoben.
+
+	SkuNav
+		Neuerungen
+			- Es gibt jetzt eine Funktion, um bei sich bewegenden NPCs deren Laufweg als Route abzulaufen und so nach ihnen zu suchen.
+			  Du findest diese unter "SkuNav > Route > Route folgen > Einheiten Route".
+			  In diesem Menü ist eine Liste aller NPCs aus der aktuellen Zone mit Laufwegen enthalten. Sortiert nach deiner Entfernung zum NPC.
+			  Wenn du einen der NPCs auswählst, startet das Folgen einer normalen Metaroute über den Laufweg des ausgewählten NPCs.
+			  Das Folgen der Route funktioniert wie bei allen anderen Routen auch.
+
+		Fehlerkorrekturen
+			- Ein Fehler bei verschobenen Standard-Wegpunkten auf der Sku-MM wurde behoben.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.12
 
 	SkuQuest

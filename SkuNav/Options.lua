@@ -524,16 +524,18 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 		local tWaypointList = {}
 		for i, v in pairs(SkuDB.NpcData.NamesDE) do
 			local tHasValidSpawns = false
-			if not sfind((SkuDB.NpcData.Data[i][1]), "UNUSED") then
-				local tSpawns = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]
-				if tSpawns then
-					for is, vs in pairs(tSpawns) do
-						if tHasValidSpawns == false then
-							if SkuDB.InternalAreaTable[is] then
-								local tCID = SkuDB.InternalAreaTable[is].ContinentID
-								local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
-								if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
-									tHasValidSpawns = true
+			if SkuDB.NpcData.Data[i] then
+				if not sfind((SkuDB.NpcData.Data[i][1]), "UNUSED") then
+					local tSpawns = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]
+					if tSpawns then
+						for is, vs in pairs(tSpawns) do
+							if tHasValidSpawns == false then
+								if SkuDB.InternalAreaTable[is] then
+									local tCID = SkuDB.InternalAreaTable[is].ContinentID
+									local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
+									if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
+										tHasValidSpawns = true
+									end
 								end
 							end
 						end
@@ -619,17 +621,19 @@ local SkuNav_MenuBuilder_PointX_BuildChildren = function(self)
 		local tWaypointList = {}
 		for i, v in pairs(SkuDB.NpcData.NamesDE) do
 			local tHasValidSpawns = false
-			if not sfind((SkuDB.NpcData.Data[i][1]), "UNUSED") then
-				local tSpawns = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]
-				if tSpawns then
-					for is, vs in pairs(tSpawns) do
-						if tHasValidSpawns == false then
-							if SkuDB.InternalAreaTable[is] then
-								local tCID = SkuDB.InternalAreaTable[is].ContinentID
-								local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
-								if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
-									if tPlayerAreaId == SkuNav:GetUiMapIdFromAreaId(is) then
-										tHasValidSpawns = true
+			if SkuDB.NpcData.Data[i] then
+				if not sfind((SkuDB.NpcData.Data[i][1]), "UNUSED") then
+					local tSpawns = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys["spawns"]]
+					if tSpawns then
+						for is, vs in pairs(tSpawns) do
+							if tHasValidSpawns == false then
+								if SkuDB.InternalAreaTable[is] then
+									local tCID = SkuDB.InternalAreaTable[is].ContinentID
+									local tPID = SkuDB.InternalAreaTable[is].ParentAreaID
+									if (tCID == 0 or tCID == 1 or tCID == 530) and (tPID == 0 or tPID == 1 or tPID == 530) and (#vs > 0 ) and (tPlayerContintentId == tCID) then
+										if tPlayerAreaId == SkuNav:GetUiMapIdFromAreaId(is) then
+											tHasValidSpawns = true
+										end
 									end
 								end
 							end
@@ -1886,6 +1890,9 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--dprint("OnAction", self.name, aValue, aName)
+
+			SkuNav:ClearWaypointsTemporary()
+
 			if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
 				SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
 				SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
@@ -1897,7 +1904,58 @@ function SkuNav:MenuBuilder(aParentEntry)
 			end
 
 			SkuOptions.db.profile[MODULE_NAME].metapathFollowing = false
-			if SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart then
+
+			if SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint == true and SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData then
+				if #SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData < 2 then
+					return
+				end
+
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = "Einheiten;Route;1"
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = "Einheiten;Route;"..#SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = {}
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[1] = SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget] = {
+					pathWps = {},
+					distance = 0,
+				}
+				 
+				--build metaroute table
+				for x = 1, #SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData do
+					--create tmp wps
+					local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+					local isUiMap = SkuNav:GetUiMapIdFromAreaId(tCurrentAreaId)
+					local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData[x][1] / 100, SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData[x][2] / 100))
+					local tX, tY = worldPosition:GetXY()
+					local tNameOfNewWp = SkuNav:CreateWaypoint("Einheiten;Route;"..x, tX, tY, 1, true)
+					if tNameOfNewWp then
+						--add to mt rt
+						SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary[#SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary + 1] = tNameOfNewWp
+						table.insert(SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps, tNameOfNewWp)
+					end
+				end
+
+				local tDistance = 0
+				local tDistanceToStartWp = 0
+				for z = 2, #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps do
+					local tWpA = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[z - 1])
+					local tWpB = SkuNav:GetWaypoint(SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[z])
+					tDistance = tDistance + SkuNav:Distance(tWpA.worldX, tWpA.worldY, tWpB.worldX, tWpB.worldY)
+					if tDistanceToStartWp == 0 then
+						tDistanceToStartWp = tDistance
+					end
+				end
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].distance = tDistance
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].distanceToStartWp = tDistanceToStartWp
+	
+				--start follow
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = 1
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowing = true
+
+				SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, true)
+				SkuOptions.Voice:OutputString("Einheiten Route folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+				SkuOptions:CloseMenu()
+				return
+			elseif SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart then
 				if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths then
 					if sfind(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, L["Meter"].."#") then
 						SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = string.sub(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, sfind(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, L["Meter"].."#") + string.len(L["Meter"].."#"))
@@ -1950,11 +2008,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
 
 				local tPlayX, tPlayY = UnitPosition("player")
-				--dprint(tPlayX, tPlayY)
 				local tRoutesInRange = SkuNav:GetAllRoutesInRangeToCoords(tPlayX, tPlayY, 1000)--SkuOptions.db.profile[MODULE_NAME].nearbyWpRange)
-				for i, v in pairs(tRoutesInRange) do
-					--dprint("results", i, v, v.nearestWP, v.nearestWpRange)
-				end
 
 				local tSortedWaypointList = {}
 				for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
@@ -2001,10 +2055,91 @@ function SkuNav:MenuBuilder(aParentEntry)
 								else
 									for tK, tV in ipairs(tSortedList) do
 										local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tMetapaths[tV].distance..";Meter#"..tV}, menuEntryTemplate_Menu)
+										tNewMenuEntry.OnEnter = function(self)
+											SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint = nil
+											SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData = nil
+										end
+				
 									end
 								end
 							end
 							tCount = tCount + 1
+						end
+					end
+				end
+			end
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Einheiten Route"}, menuEntryTemplate_Menu)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint = nil
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
+
+				local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+				tUnitDbWaypointData = {}
+
+				local tWaypointList = {}
+				for i, v in pairs(SkuDB.NpcData.NamesDE) do
+					if SkuDB.NpcData.Data[i] then
+						local tSpawns = SkuDB.NpcData.Data[i][7]
+						local tCreatureDbExtraWaypoints = SkuDB.NpcData.Data[i][8]
+						if tSpawns and tCreatureDbExtraWaypoints then
+							if tCreatureDbExtraWaypoints[tCurrentAreaId] then
+								for is, vs in pairs(tSpawns) do
+									if tCurrentAreaId == is then
+										local tData = SkuDB.InternalAreaTable[is]
+										if tData then
+											local tNumberOfSpawns = #vs
+											local tSubname = SkuDB.NpcData.NamesDE[i][2]
+											local tRolesString = ""
+											if not tSubname then
+												local tRoles = SkuNav:GetNpcRoles(v[1], i)
+												if #tRoles > 0 then
+													for i, v in pairs(tRoles) do
+														tRolesString = tRolesString..";"..v
+													end
+													tRolesString = tRolesString..""
+												end
+											else
+												tRolesString = tRolesString..";"..tSubname
+											end
+											for sp = 1, 1 do
+												local tWayP = SkuNav:GetWaypoint(v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
+												if tWayP then
+													local tWpX, tWpY = tWayP.worldX, tWayP.worldY
+													local tPlayX, tPlayY = UnitPosition("player")
+													local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
+													tWaypointList[v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tDistance
+													tUnitDbWaypointData[v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tCreatureDbExtraWaypoints[tCurrentAreaId][1]
+												end
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+
+				local tSortedWaypointList = {}
+				for k,v in SkuSpairs(tWaypointList, function(t,a,b) return t[b] > t[a] end) do --nach wert
+					table.insert(tSortedWaypointList, v..";Meter#"..k)
+				end
+				if #tSortedWaypointList == 0 then
+					local tNewMenuEntrySub = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
+				else
+					for i, v in pairs(tSortedWaypointList) do
+						local tNewMenuEntrySub = SkuOptions:InjectMenuItems(self, {v}, menuEntryTemplate_Menu)
+						tNewMenuEntrySub.OnEnter = function(self)
+							local tClearedName = self.name
+							if sfind(tClearedName, "#") then
+								tClearedName = string.sub(tClearedName, string.find(tClearedName, "#") + 1)
+							end
+							if tUnitDbWaypointData[tClearedName] then
+								SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint = true
+								SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData = tUnitDbWaypointData[tClearedName]
+							end
 						end
 					end
 				end
