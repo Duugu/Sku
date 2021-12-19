@@ -1,3 +1,1 @@
-# Sku
- 
-test
+https://duugu.github.io/Sku/
