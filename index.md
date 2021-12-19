@@ -18,8 +18,14 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
--------------------------------------------------------------------------------------------------------
+## Änderungen in Version 21.14
 
+### SkuNav
+*Fehlerkorrekturen*
+- Thrall ist wieder da. Er war nur Zigaretten holen, und hatte vergessen bescheid zu sagen.
+- Der Bereich (Südstrom) am Hinterausgang von Orgrimmar gehört jetzt zum Brachland.
+- Wegpunkte aus unterschiedlichen Zonen können jetzt verbunden werden ohne das was kaputt geht.
+      
 ## Änderungen in Version 21.13
 
 ### SkuOptions
