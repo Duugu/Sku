@@ -80,6 +80,9 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 		if tMMZoneText == L["Timbermaw Hold"] then
 			--this is because there are two "timbermaw hold" zones with contintent as parent; we explicid need this one, as the other hasn't continent parent at all
 			tPlayerUIMap = 1448
+		elseif tMMZoneText == "Der Südstrom" then
+			--this is because there are two "timbermaw hold" zones with contintent as parent; we explicid need this one, as the other hasn't continent parent at all
+			tPlayerUIMap = 1413
 		else
 			for i, v in pairs(SkuDB.InternalAreaTable) do
 				if v.AreaName_lang == tMMZoneText then
@@ -152,17 +155,22 @@ local tCacheNbWpsTimer = nil
 local SkuNeighbCache = {}
 local tFoundThisRound = false
 function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
-	dprint("CacheNbWps")
 	tCacheNbWpsTimerRate = 2--aRate or 10
+	if SkuOptions:IsMenuOpen() == true then
+		return
+	end
+
 	if _G["SkuNavMMMainFrame"] then
 		if _G["SkuNavMMMainFrame"]:IsShown() == true then
 			return
 		end
-	end
+	end	
 
 	--if SkuCacheFlag == false then
 		--return
 	--end
+	dprint("CacheNbWps")
+
 	local tCacheNbWpsTimerWpList = {}
 	if aListOfRouteNamesToReCache then
 		if tCacheNbWpsTimerCounterProgressShow == true then
@@ -220,11 +228,15 @@ function CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
 		tCacheNbWpsTimerCounter = 0
 		tCacheNbWpsTimerCounterProgress = 0
 		tCacheNbWpsTimer = C_Timer.NewTicker(0, function()
+			if SkuOptions:IsMenuOpen() == true then
+				return
+			end
 			if _G["SkuNavMMMainFrame"] then
 				if _G["SkuNavMMMainFrame"]:IsVisible() then
 					return
 				end
 			end
+			
 			local tOldFps = 0
 			local tFps = 0
 			--print("new ticker", tCacheNbWpsTimer)
@@ -2525,7 +2537,6 @@ end
 function SkuNav:GetAllMetaTargetsFromWp2(aWpName)
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 	local tPlayerUIMapId = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId())
-
 
 	local tF = sfind(aWpName, L["Meter"].."#")
 	if tF then	

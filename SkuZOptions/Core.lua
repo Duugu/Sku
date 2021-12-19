@@ -57,6 +57,7 @@ function SkuOptions:CloseMenu()
 	if SkuOptions:IsMenuOpen() == true then
 		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
 	end
+	CacheNbWps()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1038,7 +1039,7 @@ function SkuOptions:CreateMenuFrame()
 			SkuOptions:ClearFilter()
 		end
 		if aKey == "ESCAPE" then
-			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"])
+			SkuOptions:CloseMenu()
 			SkuOptions:ClearFilter()
 		end
 		if  SkuOptions.MenuAccessKeysChars[aKey] or (SkuOptions.MenuAccessKeysNumbers[aKey]) then
