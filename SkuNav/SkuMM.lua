@@ -189,97 +189,60 @@ local function DrawWaypoints(aFrame)
 	end
 	tOldMMScale = MinimapCluster:GetScale()
 
-	tWpFrames =  {}
-	tWpObjects =  {}
+	local tWpFrames =  {}
+	local tWpObjects =  {}
 	--lastXY, lastYY = UnitPosition("player")
 
 	local mapRadius = minimap_size[indoors][zoom] / 2
 	local minimapWidth = Minimap:GetWidth() / 2
 	local minimapHeight = Minimap:GetHeight() / 2
 
-	for i, v in SkuNav:ListWaypoints(false, nil, tAreaId, tPlayerContintentId, nil) do
-		local tWP = SkuNav:GetWaypoint(v)
+	for i, v in SkuNav:ListWaypoints2(false, nil, tAreaId, tPlayerContintentId, nil) do
+		--print(i, v)
+		tWP = SkuNav:GetWaypointData2(v)
 		if tWP then
-			local tFinalX, tFinalY = WorldPointToMinimapPoint(tWP.worldX, tWP.worldY)
-
-			if not sfind(v, L["OBJECT"]) or SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
-				if SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
-					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 0.8, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0)
+			if tWP.worldX and tWP.worldY then
+				local tFinalX, tFinalY = WorldPointToMinimapPoint(tWP.worldX, tWP.worldY)
+				if tWP.typeId == 1 or tWP.typeId == 4 then
+					--red
+					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments)
+					tWpFrames[v].hasLine = false
+				elseif tWP.typeId == 2 then
+					if tWP.spawnNr > 3 then
+						tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments)
+						tWpFrames[v].hasLine = false
+					else
+						tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
+						tWpFrames[v].hasLine = false
+					end
+				elseif tWP.typeId == 3 then
+					--green
+					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments)
+					tWpFrames[v].hasLine = false
 				else
-					if tWP.spawnNr then
-						if tWP.spawnNr > 3 then
-							tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7)
-						else
-							tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7)
-						end
-					else
-						tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7)
-					end
+					--white
+					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 1, 1, 1, tWP.comments)
+					tWpFrames[v].hasLine = false
 				end
-			else
-				tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY,  1,   1, 0.8, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0)
-			end
-			tWpObjects[v] = tWP
-		end
-	end
 
-	for i, v in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes) do
-		local tCurrentRouteName = v
+				if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == v then
+					tWpFrames[v]:SetSize(6, 6)
+					--tWidgetTexture:SetColorTexture(0, 1, 0)
+				else
+					tWpFrames[v]:SetSize(3, 3)
+					--tWidgetTexture:SetColorTexture(1, 0, 0)
+				end
 
-		local tIsCurrentContinent = false
-
-		local tWpName = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[1]
-		local tWP = tWpObjects[tWpName]
-		if tWP then
-			if tWP.contintentId == tPlayerContintentId then
-				tIsCurrentContinent = true
-			end
-		end
-
-		local tRouteColor = {r = 1, g = 1, b = 1, a = 1}
-		if SkuOptions.db.profile[MODULE_NAME].routeFollowing == true and SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute == v then
-			tRouteColor = {r = 1, g = 1, b = 0, a = 1}
-		end
-		if (SkuOptions.db.profile[MODULE_NAME].routeRecording == true and SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute == tCurrentRouteName) then
-			tRouteColor = {r = 1, g = 0, b = 1, a = 1}
-		end
-
-		if tIsCurrentContinent == true then
-			local tPrevWpObj
-			for q = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs do
-				local tWpName = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[q]
-				local tWP = tWpObjects[tWpName]
-				if tWP then
-					local tWpPosx, tWpPosy = tWP.worldX, tWP.worldY
-					local tWidgetTexture, tInUse = tWpFrames[tWpName], true
-					if
-						(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) == tWpName or 
-						(SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP] == tWpName and SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute == tCurrentRouteName)
-					then
-						tWidgetTexture:SetSize(3, 3)
-						--tWidgetTexture:SetColorTexture(0, 1, 0)
-
-					else
-						tWidgetTexture:SetSize(2, 2)
-						--tWidgetTexture:SetColorTexture(1, 0, 0)
-					end
-
-					local point, relativeTo, relativePoint, xOfs, yOfs = tWidgetTexture:GetPoint(1)
-					if relativeTo then
-						--dprint(v, q, point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
-						local tPrevWpName = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[q-1]
-						if tPrevWpName  then
-							local tPrevPinFrame, tPrevInUse = tWpFrames[tPrevWpName], true
-							if tPrevInUse == true and tPrevPinFrame then
-								local Prevpoint, PrevrelativeTo, PrevrelativePoint, PrevxOfs, PrevyOfs = tPrevPinFrame:GetPoint(1)
-
-								if PrevrelativeTo then
-									DrawLine(xOfs, yOfs, PrevxOfs, PrevyOfs, 0.8, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, tForce)
-								end
+				if (SkuNavMMShowCustomWo == true or SkuNavMMShowDefaultWo == true) == false then
+					if tWP.links.byName then
+						for tName, tDistance in pairs(tWP.links.byName) do
+							if tWpFrames[tName] then
+								local _, relativeTo, _, xOfs, yOfs = tWpFrames[v]:GetPoint(1)
+								local _, PrevrelativeTo, _, PrevxOfs, PrevyOfs = tWpFrames[tName]:GetPoint(1)
+								DrawLine(xOfs, yOfs, PrevxOfs, PrevyOfs, 1, tRouteColor.a, tRouteColor.r, tRouteColor.g, tRouteColor.b, aFrame, tForce) 
 							end
 						end
 					end
-					tPrevWpObj = tWP
 				end
 			end
 		end
@@ -295,6 +258,9 @@ function SkuNav:DrawAll(aFrame)
 		SkuLineRepo = CreateFramePool("Frame", aFrame)
 	end
 
+	if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
+		return
+	end
 	if SkuDrawFlag == true then
 		ClearWaypoints()
 		--SkuNav:DrawTerrainData(aFrame)
@@ -484,6 +450,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------
 local SkuNavMMShowCustomWo = false
 local SkuNavMMShowDefaultWo = false
+local tWpFrames = {}
 function SkuNavDrawWaypointsMM(aFrame)
 	--dprint("SkuNavDrawWaypointsMM")
 	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true then
@@ -497,139 +464,93 @@ function SkuNavDrawWaypointsMM(aFrame)
 	local tAreaId = SkuNav:GetCurrentAreaId()
 	--local mapRadius = minimap_size[indoors][zoom]
 	local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
+	if not tPlayerContintentId then
+		return
+	end
+	if not tAreaId then
+		return
+	end
 
 	tWpFrames = {}
-	tWpObjects = {}
+
+	local tSelectedZone = _G["SkuNavMMMainFrameZoneSelect"].value
+	if tSelectedZone then
+		if tSelectedZone == -2 then
+			tAreaId = nil
+		elseif tSelectedZone ~= -2 and tSelectedZone ~= -1 then
+			tAreaId = tSelectedZone 
+		end
+	end
 
 	--wp draw
-	for i, v in SkuNav:ListWaypoints(false, nil, tAreaId, tPlayerContintentId, nil) do
-		local tWP = SkuNav:GetWaypoint(v)
+	local tWP = nil
+
+	for i, v in SkuNav:ListWaypoints2(false, nil, tAreaId, tPlayerContintentId, nil) do
+		--print(i, v)
+		tWP = SkuNav:GetWaypointData2(v)
 		if tWP then
-			if tWP.worldX and tWP.worldY then
-				local tFinalX, tFinalY = SkuNavMMWorldToContent(tWP.worldX, tWP.worldY)
-				if tFinalX > -(tTileSize * 1.5) and tFinalX < (tTileSize * 1.5) and tFinalY > -(tTileSize * 1.5) and tFinalY < (tTileSize * 1.5) then
-					if (((SkuNavMMShowCustomWo == true and SkuOptions.db.profile["SkuNav"].Waypoints[v] and SkuNav:IsWpPartOfRt(v) == false) or (SkuNavMMShowDefaultWo == true and not SkuOptions.db.profile["SkuNav"].Waypoints[v] and SkuNav:IsWpPartOfRt(v) == false))) or (SkuNavMMShowCustomWo == false and SkuNavMMShowDefaultWo == false) then
-						if not sfind(v, L["OBJECT"]) or SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
-							if SkuOptions.db.profile[MODULE_NAME].Waypoints[v] then
-								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments)
-								tWpFrames[v].hasLine = false
-							else
-								if tWP.spawnNr then
-									if tWP.spawnNr > 3 then
-										tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments)
-										tWpFrames[v].hasLine = false
-									else
-										tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
-										tWpFrames[v].hasLine = false
-									end
-								else
-									tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
-									tWpFrames[v].hasLine = false
-								end
-							end
-						else
-							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments)
-							tWpFrames[v].hasLine = false
-						end
-					end
-					tWpObjects[v] = tWP
+			local tShow = false
+			if _G["SkuNavMMMainFrameShowFilter"].selected == true then
+				if SkuQuest.QuestWpCache[v] or tWP.typeId == 1 then
+					tShow = true
 				end
-			end
-		end
-	end
-
-
-	--skip rt draw if req
-	if SkuNavMMShowCustomWo == true or SkuNavMMShowDefaultWo == true then
-		return
-	end	
-
-	-- rt draw
-	for i, v in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes) do
-		local tCurrentRouteName = v
-
-		local tIsCurrentContinent = false
-
-		local tWpName = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[1]
-		local tWP = tWpObjects[tWpName]
-		if tWP then
-			if tWP.contintentId == tPlayerContintentId then
-				tIsCurrentContinent = true
-			end
-		end
-
-		local tRouteColor = {r = 1, g = 1, b = 1, a = 1}
-		if SkuOptions.db.profile[MODULE_NAME].routeFollowing == true and SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute == v then
-			tRouteColor = {r = 1, g = 1, b = 0, a = 1}
-		end
-		if (SkuOptions.db.profile[MODULE_NAME].routeRecording == true and SkuOptions.db.profile[MODULE_NAME].routeRecordingForRoute == tCurrentRouteName) then
-			tRouteColor = {r = 1, g = 0, b = 1, a = 1}
-		end
-
-		if tIsCurrentContinent == true then
-			local tPrevWpObj
-			for q = 1, #SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs do
-				local tWpName = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[q]
-				local tWP = tWpObjects[tWpName]
-				if tWP then
-					local tWpPosx, tWpPosy = tWP.worldX, tWP.worldY
-					local tWidgetTexture, tInUse = tWpFrames[tWpName], true
-					if tWidgetTexture then
-						if tWidgetTexture:IsVisible() then
-							if
-								(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) == tWpName or 
-								(SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[SkuOptions.db.profile[MODULE_NAME].routeFollowingCurrentWP] == tWpName and SkuOptions.db.profile[MODULE_NAME].routeFollowingRoute == tCurrentRouteName)
-							then
-								tWidgetTexture:SetSize(5 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), 5 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2  + (3 - tSkuNavMMZoom))
-								--tWidgetTexture:SetColorTexture(0, 1, 0)
-
-							else
-								tWidgetTexture:SetSize(4 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), 4 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom))
-								--tWidgetTexture:SetColorTexture(1, 0, 0)
-							end
-
-							local point, relativeTo, relativePoint, xOfs, yOfs = tWidgetTexture:GetPoint(1)
-							if relativeTo then
-								--dprint(v, q, point, relativeTo:GetName(), relativePoint, xOfs, yOfs)
-								local tPrevWpName = SkuOptions.db.profile[MODULE_NAME].Routes[tCurrentRouteName].WPs[q-1]
-								if tPrevWpName  then
-									local tPrevPinFrame, tPrevInUse = tWpFrames[tPrevWpName], true
-									if tPrevInUse == true and tPrevPinFrame then
-										local Prevpoint, PrevrelativeTo, PrevrelativePoint, PrevxOfs, PrevyOfs = tPrevPinFrame:GetPoint(1)
-
-										if PrevrelativeTo then
-											tWidgetTexture.hasLine = true
-											tPrevPinFrame.hasLine = true
-											SkuNavDrawLine(xOfs, yOfs, PrevxOfs, PrevyOfs, 3, tRouteColor.a, tRouteColor.r, tRouteColor.g, tRouteColor.b, aFrame, nil, relativeTo, PrevrelativeTo) 
-										end
-									end
-								end
-							end
-							tPrevWpObj = tWP
-						end
-					end
-				end
-			end
-		end
-	end
-
-	for i, v in pairs(tWpFrames) do
-		--dprint(i, v)
-		local tShow = false
-		if _G["SkuNavMMMainFrameShowFilter"].selected == true then
-			if SkuQuest.QuestWpCache[i] or SkuOptions.db.profile["SkuNav"].Waypoints[i] then
+			else
 				tShow = true
 			end
-		else
-			tShow = true
-		end
-		if v.hasLine == true then
-			tShow = true
-		end
+			if tWP.links.byId then
+				tShow = true
+			end
+			if tShow == true then
+				if tWP.worldX and tWP.worldY then
+					local tFinalX, tFinalY = SkuNavMMWorldToContent(tWP.worldX, tWP.worldY)
+					if tFinalX > -(tTileSize * 1.5) and tFinalX < (tTileSize * 1.5) and tFinalY > -(tTileSize * 1.5) and tFinalY < (tTileSize * 1.5) then
+						local tSize = 4
+						
+						if tWP.typeId == 1 or tWP.typeId == 4 then
+							--red
+							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments)
+							tWpFrames[v].hasLine = false
+						elseif tWP.typeId == 2 then
+							if tWP.spawnNr > 3 then
+								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments)
+								tWpFrames[v].hasLine = false
+							else
+								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
+								tWpFrames[v].hasLine = false
+							end
+						elseif tWP.typeId == 3 then
+							--green
+							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments)
+							tWpFrames[v].hasLine = false
+						else
+							--white
+							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 1, 1, 1, tWP.comments)
+							tWpFrames[v].hasLine = false
+						end
 
-		if tShow == false then
-			--dprint(i)
-			v:Hide()	
+						if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == v then
+							tWpFrames[v]:SetSize(5 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), (tSize + 2) * (tSkuNavMMZoom) - tSkuNavMMZoom * 2  + (3 - tSkuNavMMZoom))
+							--tWidgetTexture:SetColorTexture(0, 1, 0)
+						else
+							tWpFrames[v]:SetSize(4 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), tSize * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom))
+							--tWidgetTexture:SetColorTexture(1, 0, 0)
+						end
+
+						if (SkuNavMMShowCustomWo == true or SkuNavMMShowDefaultWo == true) == false then
+
+							if tWP.links.byName then
+								for tName, tDistance in pairs(tWP.links.byName) do
+									if tWpFrames[tName] then
+										local _, relativeTo, _, xOfs, yOfs = tWpFrames[v]:GetPoint(1)
+										local _, PrevrelativeTo, _, PrevxOfs, PrevyOfs = tWpFrames[tName]:GetPoint(1)
+										SkuNavDrawLine(xOfs, yOfs, PrevxOfs, PrevyOfs, 3, tRouteColor.a, tRouteColor.r, tRouteColor.g, tRouteColor.b, aFrame, nil, relativeTo, PrevrelativeTo) 
+									end
+								end
+							end
+						end
+					end
+				end
+			end
 		end
 	end
 end
@@ -672,7 +593,8 @@ local function CreateButtonFrameTemplate(aName, aParent, aText, aWidth, aHeight,
 	end)
 	fs = tWidget:CreateFontString(aName.."Text", "OVERLAY", "GameTooltipText")
 	fs:SetTextHeight(12)
-	fs:SetPoint("CENTER", tWidget, "CENTER")
+	fs:SetPoint("TOPLEFT", tWidget, "TOPLEFT", 3, 0)
+	fs:SetPoint("BOTTOMRIGHT", tWidget, "BOTTOMRIGHT", -3, 0)
 	fs:Show()
 	tWidget.Text = fs
 	tWidget.SetText = function(self, aText)
@@ -709,15 +631,15 @@ function SkuNav:SkuNavMMOpen()
 	SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY = SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY or UIParent:GetHeight() / 2
 
 	if SkuOptions.db.profile[MODULE_NAME].showSkuMM == true then
+		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
+			if _G["SkuNavMMMainFrame"] then
+				_G["SkuNavMMMainFrame"]:Hide()
+			end
+			SkuOptions.db.profile[MODULE_NAME].showSkuMM = false
+			return
+		end
 		SkuNavMMShowCustomWo = false
 		SkuNavMMShowDefaultWo = false
-
-		tCacheNbWpsTimerRate = 10
-		if tCacheNbWpsTimer then
-			tCacheNbWpsTimer:Cancel()
-			tCacheNbWpsTimer = nil
-			--dprint("SkuNav: Caching stopped")
-		end
 
 		if not _G["SkuNavMMMainFrame"] then
 			local MainFrameObj = CreateFrame("Frame", "SkuNavMMMainFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
@@ -930,39 +852,6 @@ function SkuNav:SkuNavMMOpen()
 				_G["SkuNavMMMainEditBoxEditBox"]:ClearFocus()
 			end)
 
-			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowCustomWo", tOptionsParent, "Custom w/o", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, -20)
-			tButtonObj:SetScript("OnMouseUp", function(self, button)
-				SkuNavMMShowCustomWo = SkuNavMMShowCustomWo ~= true
-
-				local tAreaId = SkuNav:GetCurrentAreaId()
-				local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
-
-				local tText = ""
-				for i, v in SkuNav:ListWaypoints(false, nil, tAreaId, tPlayerContintentId, nil) do
-					if SkuOptions.db.profile["SkuNav"].Waypoints[v] and SkuNav:IsWpPartOfRt(v) == false then
-						tText = tText..v.."\r\n"
-					end
-				end
-				_G["SkuNavMMMainEditBoxEditBox"]:SetText(tText)
-			end)
-
-			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowDefaultWo", tOptionsParent, "Default w/o", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameShowCustomWo"], "TOPLEFT", 95, 0)
-			tButtonObj:SetScript("OnMouseUp", function(self, button)
-				SkuNavMMShowDefaultWo = SkuNavMMShowDefaultWo ~= true
-				
-				local tAreaId = SkuNav:GetCurrentAreaId()
-				local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
-			
-				local tText = ""
-				for i, v in SkuNav:ListWaypoints(false, nil, tAreaId, tPlayerContintentId, nil) do
-					if not SkuOptions.db.profile["SkuNav"].Waypoints[v] and SkuNav:IsWpPartOfRt(v) == false then
-						tText = tText..v.."\r\n"
-					end
-				end				
-				_G["SkuNavMMMainEditBoxEditBox"]:SetText(tText)
-			end)
-
-
 			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowFilter", tOptionsParent, "Filter", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, -40)
 			tButtonObj:SetScript("OnMouseUp", function(self, button)
 				self.selected  = self.selected  ~= true
@@ -974,7 +863,7 @@ function SkuNav:SkuNavMMOpen()
 					end
 				end
 			end)
-			_G["SkuNavMMMainFrameShowFilter"].selectedDefault = true
+			_G["SkuNavMMMainFrameShowFilter"].selectedDefault = false
 
 			local tButtonObj = CreateButtonFrameTemplate("SkuNavMMMainFrameShowQuestStartWps", tOptionsParent, "Starts", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 100, -60)
 			tButtonObj:SetScript("OnMouseUp", function(self, button)
@@ -1027,6 +916,123 @@ function SkuNav:SkuNavMMOpen()
 				end				
 			end)
 			_G["SkuNavMMMainFrameShowLimitWps"].selectedDefault = false
+
+			local tDropdownFrame = CreateButtonFrameTemplate("SkuNavMMMainFrameZoneSelect", tOptionsParent, "Zone", 95, 20, "TOPLEFT", _G["SkuNavMMMainFrameFollow"], "TOPLEFT", 195, -40)
+			tDropdownFrame.MenuButtonsObjects = {}
+			tDropdownFrame.value = -1
+			tDropdownFrame:SetText("Current Zone") 
+			tDropdownFrame:SetScript("OnEnter", function(self)
+				GameTooltip:ClearLines()
+				GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+				GameTooltip:AddLine(self.Text:GetText(), 1, 1, 1)
+				GameTooltip:AddLine("zone id: "..(self.value or ""), 1, 1, 1)
+				GameTooltip:Show()
+			end)
+			tDropdownFrame:SetScript("OnLeave", function(self)
+				GameTooltip:Hide()
+			end)
+			tDropdownFrame.maxVisibleItems = 11
+			tDropdownFrame.maxCurrentItems = 0
+			tDropdownFrame.firstVisibleItem = 1
+			tDropdownFrame.UpdateList = function(self, a, b)
+				local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
+				local tMenuItems = {}
+				for i, v in pairs(SkuDB.InternalAreaTable) do
+					if v.ContinentID == tPlayerContintentId and v.ParentAreaID == 0 then
+						tMenuItems[#tMenuItems + 1] = {zoneId = i, buttonText = v.AreaName_lang,}
+					end
+				end
+				tMenuItems[#tMenuItems + 1] = {zoneId = -1, buttonText = "Current Zone",}
+				tMenuItems[#tMenuItems + 1] = {zoneId = -2, buttonText = "Current Contintent",}
+				
+				self.maxCurrentItems = #tMenuItems
+				for x = 1, self.maxVisibleItems do
+					self.MenuButtonsObjects[x]:SetText(tMenuItems[x + self.firstVisibleItem].buttonText)
+					self.MenuButtonsObjects[x].value = tMenuItems[x + self.firstVisibleItem].zoneId
+				end
+			end
+
+			tDropdownFrame:SetScript("OnMouseUp", function(self, button)
+				self.selected  = self.selected  ~= true
+				local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
+				local tMenuItems = {}
+				local tMenuItemsMaxLen = 0
+				for i, v in pairs(SkuDB.InternalAreaTable) do
+					if v.ContinentID == tPlayerContintentId and v.ParentAreaID == 0 then
+						tMenuItems[#tMenuItems + 1] = {zoneId = i, buttonText = v.AreaName_lang,}
+						if string.len(tMenuItems[#tMenuItems].buttonText) > tMenuItemsMaxLen then
+							tMenuItemsMaxLen = string.len(tMenuItems[#tMenuItems].buttonText)
+						end
+					end
+				end
+				tMenuItems[#tMenuItems + 1] = {zoneId = -1, buttonText = "Current Zone",}
+				if string.len(tMenuItems[#tMenuItems].buttonText) > tMenuItemsMaxLen then
+					tMenuItemsMaxLen = string.len(tMenuItems[#tMenuItems].buttonText)
+				end
+				tMenuItems[#tMenuItems + 1] = {zoneId = -2, buttonText = "Current Contintent",}
+				if string.len(tMenuItems[#tMenuItems].buttonText) > tMenuItemsMaxLen then
+					tMenuItemsMaxLen = string.len(tMenuItems[#tMenuItems].buttonText)
+				end
+				
+				--for x = 1, #tMenuItems do
+				self.maxCurrentItems = #tMenuItems
+				for x = 1, self.maxVisibleItems do
+					self.MenuButtonsObjects[x] = _G["SkuNavMMMainFrameZoneSelectEntry"..x] or CreateButtonFrameTemplate("SkuNavMMMainFrameZoneSelectEntry"..x, self, "button"..x, 95, 20, "TOPLEFT", self, "TOPLEFT", 25, -(x * 16))
+					self.MenuButtonsObjects[x]:SetScript("OnMouseDown", function(self, button)
+						self:GetParent().value = self.value
+						self:GetParent():SetText(tMenuItems[x + _G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem].buttonText) 
+						for z = 1, #self:GetParent().MenuButtonsObjects do
+							self:GetParent().MenuButtonsObjects[z]:Hide()
+						end
+					end)
+					self.MenuButtonsObjects[x]:SetFrameStrata("FULLSCREEN_DIALOG")						
+					self.MenuButtonsObjects[x]:SetWidth(tMenuItemsMaxLen * 8)						
+					self.MenuButtonsObjects[x]:SetText(tMenuItems[x + _G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem].buttonText)
+					self.MenuButtonsObjects[x].value = tMenuItems[x + _G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem].zoneId
+					if self.selected == true then
+						self.MenuButtonsObjects[x]:Show()
+					else
+						self.MenuButtonsObjects[x]:Hide()
+					end
+				end
+				for x = self.maxVisibleItems + 1, #self.MenuButtonsObjects do
+					self.MenuButtonsObjects[x]:Hide()
+				end
+				self.ItemsBackdropFrame = self.ItemsBackdropFrame or CreateFrame("Frame",nil, tOptionsParent, BackdropTemplateMixin and "BackdropTemplate" or nil)
+				self.ItemsBackdropFrame:SetFrameStrata("TOOLTIP")						
+				self.ItemsBackdropFrame:SetWidth(tMenuItemsMaxLen * 8 + 10)
+				--self.ItemsBackdropFrame:SetHeight(500)--20 * #tMenuItems + 10)
+				self.ItemsBackdropFrame:SetHeight(20 * self.maxVisibleItems + 10)
+				self.ItemsBackdropFrame:SetPoint("TOPLEFT", self.MenuButtonsObjects[1], "TOPLEFT", 0, 0)
+				--self.ItemsBackdropFrame:SetPoint("BOTTOMRIGHT", self.MenuButtonsObjects[#tMenuItems], "BOTTOMRIGHT", 0, 0)
+				self.ItemsBackdropFrame:SetPoint("BOTTOMRIGHT", self.MenuButtonsObjects[self.maxVisibleItems], "BOTTOMRIGHT", 0, 0)
+				self.ItemsBackdropFrame:EnableMouse(false)
+				self.ItemsBackdropFrame:SetScript("OnMouseWheel", function(self, aDelta)
+					if aDelta > 0 then
+						if _G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem > 1 then
+							_G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem = _G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem - 1
+						end
+					else
+						if _G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem < _G["SkuNavMMMainFrameZoneSelect"].maxCurrentItems - _G["SkuNavMMMainFrameZoneSelect"].maxVisibleItems then
+							_G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem = _G["SkuNavMMMainFrameZoneSelect"].firstVisibleItem + 1
+						end
+					end
+					_G["SkuNavMMMainFrameZoneSelect"]:UpdateList()
+				end)
+				self.ItemsBackdropFrame:SetScript("OnLeave", function(self)
+					if self:IsVisible() == true then
+						_G["SkuNavMMMainFrameZoneSelect"]:GetScript("OnMouseUp")(_G["SkuNavMMMainFrameZoneSelect"], "LeftButton")
+					end
+				end)
+				self.ItemsBackdropFrame:SetMouseClickEnabled(false)
+					if self.selected == true then
+					self.ItemsBackdropFrame:Show()
+				else
+					self.ItemsBackdropFrame:Hide()
+				end
+			end)
+			_G["SkuNavMMMainFrameZoneSelect"].selectedDefault = false
+
 	
 			--init
 			_G["SkuNavMMMainFrameShowFilter"].selected = _G["SkuNavMMMainFrameShowFilter"].selectedDefault
@@ -1327,12 +1333,6 @@ function SkuNav:SkuNavMMOpen()
 	else
 		if _G["SkuNavMMMainFrame"] then
 			_G["SkuNavMMMainFrame"]:Hide()
-dprint("SkuNavMMOpen SkuNeighbCache = {}")			
-			SkuNeighbCache = {}
-			if tCacheNbWpsTimer then
-				tCacheNbWpsTimer:Cancel()
-			end
-			CacheNbWps()			
 		end
 	end
 end

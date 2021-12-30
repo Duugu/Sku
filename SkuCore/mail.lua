@@ -55,7 +55,7 @@ end
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_SEND_SUCCESS(...)
    --dprint("MAIL_SEND_SUCCESS", ...)
-   SkuOptions.Voice:OutputString(L["Sent"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+   SkuOptions.Voice:OutputString(L["Sent"], false, true, 0.2)
 end
 
 ------------------------------------------------------------------------------------------------------------
@@ -86,14 +86,14 @@ end
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_FAILED(...)
    --dprint("MAIL_FAILED", ...)
-   SkuOptions.Voice:OutputString(L["Send failed"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-   SkuOptions.Voice:OutputString(gLastError, false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+   SkuOptions.Voice:OutputString(L["Send failed"], false, true, 0.2)
+   SkuOptions.Voice:OutputString(gLastError, false, true, 0.2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MailEditor(aTargetValue)
 	PlaySound(88)
-	SkuOptions.Voice:OutputString(L["Enter text and press ENTER key"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	SkuOptions.Voice:OutputString(L["Enter text and press ENTER key"], false, true, 0.2)
 
 	--SkuOptions:EditBoxPasteShow("", function(self)
    SkuOptions:EditBoxShow(" ", function(self)
@@ -101,10 +101,10 @@ function SkuCore:MailEditor(aTargetValue)
       local tText = SkuOptionsEditBoxEditBox:GetText()
       SkuOptions.currentMenuPosition[aTargetValue] = tText
       if not SkuOptions.currentMenuPosition.TmpTo then
-         SkuOptions.Voice:OutputString(L["No recepient"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+         SkuOptions.Voice:OutputString(L["No recepient"], false, true, 0.2)
       end
       if not SkuOptions.currentMenuPosition.TmpSubject then
-         SkuOptions.Voice:OutputString(L["Topic missing"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+         SkuOptions.Voice:OutputString(L["Topic missing"], false, true, 0.2)
       end
 
 	end)

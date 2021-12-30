@@ -3,12 +3,90 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 22
+
+		Allgemein
+			Das alte Routensystem wurde entfernt. Es gibt nun keine vordefinierten, langen Routen über mehrere Wegpunkte mehr.
+			Stattdessen gibt es jetzt nur noch sehr viele Einzelverbindungen (Links) zwischen jeweils zwei einzelnen Wegpunkten. Aus diesen werden alle Routen dynamisch berechnet (Metarouten).
+			Beim Verwenden von Routen ändert sich nicht viel, da ihr eh immer nur dynamisch erstellte Metarouten verwendet habt ("Route folgen").
+			Durch die Entferung dieser Altlast konnte ich jedoch die Performance des Addons erheblich optimieren.
+			Darum ist jetzt kein Cachen mehr notwendig. Lags in Menüs sollte nicht mehr vorkommen (bzw. nur in minimalem Umfang). Import und Export sind erheblich schneller.
+			Beim ersten Verwenden eines Profils mit Version 22 oder höher werden alle (nun veralten) Wegpunkte und Routen aus dem Profil gelöscht.
+			Du musst danach die aktuellen Routen und Wegpunkte mit der neuen einzelnen Routendatei von Mac neu importieren.
+
+		SkuNav
+			Neuerungen/Änderungen
+				- Der Import und Export von Wegpunkten/Routen wurde verändert.
+				  Es gibt nur noch eine Import- und eine Export-Funktion für die gesamte Welt. Es ist nicht mehr möglich Zonen oder Kontinente einzeln zu ex- oder importieren.
+				  Beim Import werden grundsätzliche alle vorhandenen Wegpunkt- und Routendaten gelöscht und durch die importierten Daten ersetzt. Es wird nicht mehr additiv importiert.
+				  Es werden beim Import nur noch Daten akzeptiert, die mit Version 22 oder höher erstellt wurden. Beim Import alter Routendaten meckert das Addon und ignoriert diese.
+				- Optionen wie "Route folgen", "Nahe Route" etc. zeigen ab sofort alle Wegpunkten bzw. über das Routennetz erreichbaren Ziele auf dem gesamten Kontinent an.
+				- Bei der Routenauswahl sagt das Addon nun bis zu einer Entfernung von 3000 Metern bzw. 200 abzulaufenden Routenpunkten zum Ziel die tatsächliche Entfernung an.
+				  Alles darüber wird nur noch mit "Weit" statt mit "x Meter" angesagt. 
+				  Wenn dir eine Route als "Weit" angesagt wird, kannst du sie aber natürlich trotzdem normal auswählen und ablaufen - wenn du wirklich einer so langen Route folgen willst. :)
+				- Da es keine Routen mehr gibt, sind alle Menüpunkte zur Routenerstellung und -verwaltung aus dem Audiomenü entfernt worden.
+				- "SkuNav > Route" wurde in "SkuNav > Route folgen" umbenannt. Darin landet ihr nun direkt bei "Ziele Entfernung" und "Einheiten Route".
+				- Die "Nahe Routen"-Funktion (bei Questzielen und dem Auswählen von Einzelwegpunkten) wurde dank der Umstellung deutlich optimiert und wählt nun erheblich bessere/nähere Routen aus.
+				- Unter "Wegpunkt > Auswählen" wurden die meisten Menüpunkte entfernt, da sie redundant waren.
+				  Es gibt dort jetzt nur noch "Letzte", "Aktuelle Karte Entfernung", "Alle aktueller Kontinent" und "Aktuelle Karte Entfernung mit Auto".
+				- Wenn du einer Einheiten-Route für sich bewegende NPCs folgst, sagt das Addon nun, wenn der Namensbalken des NPCs in deinem Sichtfeld erscheint bzw. dieses verlässt.
+				  Dein Sichtfeld beträgt dabei ca. 20 Meter. Wenn du "xyz sichbar" hörst, dann bedeutet das also nicht, dass der NPC vor dir steht. Nur, dass er irgendwo in bis zu 20 Meter Entfernung ins Bild gekommen ist.
+
+		SkuOptions
+			Neuerungen/Änderungen
+				- Es gibt einen neuen Slash-Befehl: /sku chatcover
+				  Damit kannst du den Chat beim Streamen mit einem schwarzen Rechteck verdecken kannst. Erneutes /sku chatcover schalte die Verdeckung wieder aus.
+
+
+		Versionshinweise nur für Mac/Routenersteller
+			Neuerungen/Änderungen 
+				- Der schwarze Textbalken für das Menü oben ist jetzt zweizeilig.
+				- Es ist ab sofort möglich und von Vorteil alle Zonen miteinander zu verbinden. Bitte keine Lücken mehr an den Übergängen lassen.
+				- Im Ausklappmenü der Sku-MM gibt es jetzt ein Dropdown-Feld, um die Zone(n) für die angezeigten Wegpunkte auszuwählen (Standard: "Aktuelle Zone").
+				- Der Filter im Ausklappmenü der Sku-MM ist jetzt standardmäßig aus.
+				- Die Belegung der Maustasten hat sich verändert. Die neue Belegung lautet folgendermaßen:
+					MAUS LINKS + STRG + SHIFT + HALTEN: WP verschieben
+					MAUS RECHTS + STRG: Polygon-Punkt setzen (sofern Polygon-Aufzeichnung läuft)
+					MAUS MITTEL + STRG: Routen-Aufzeichnung starten/beenden
+					MAUS MITTEL + STRG + SHIFT: Route löschen starten/beenden
+					MAUS MITTEL + STRG + ALT: Alle Kommentare vom Wegpunkt löschen
+					MAUS 4 + STRG: Kleinen Wegpunkt an Klickposition setzen
+					MAUS 4 + STRG + SHIFT: Großen Wegpunkt an Klickposition setzen
+					MAUS 5 + STRG: Wegpunkt löschen
+					STRG + SHIFT + P: Großen Wegpunkt an Char-Position setzen
+					STRG + SHIFT + O: Großen Wegpunkt an Char-Position setzen
+				- Die Routenaufzeichnung hat sich verändert. Wie gesagt gibt es ab sofort nur noch Einzelverbindungen (Links) zwischen je zwei Wegpunkten.
+					- Einen einzelnen Link erstellen:
+						Du klickst einen Wegpunkt mit MAUS MITTEL + STRG an, um den Wegpunkt A für einen neuen Link auszuwählen.
+						Dann klickst du einen weiteren Wegpunkt mit MAUS MITTEL + STRG an, um den Wegpunkt B für die neue Verbindung auszuwählen. Damit ist der Link erstellt.
+					- Viele Links über eine längere Strecke erstellen:
+						Solange du nur Punkt A für einen neuen Link angeklickt hast, bist du im "Aufzeichnungsmodus".
+						In diesem kannst du dann wie gewohnt laufen und STRG + SHIFT + P/O weitere Wegpunkte erstellen - statt direkt den Punkt B für einen einzelnen Link anzuklicken.
+						Solange du im Aufzeichnungsmodus bist, wird jeder neu erstellte Wegpunkt automatisch mit dem Vorherigen verlinkt.
+						Zum Schluss beendest du den Aufzeichnungsmodus, indem du mit der Maus auf einen bestehenden Wegpunkt für den letzten Link klickst.
+					- Einen einzelnen Link löschen:
+						Du kannst immer nur einen Link löschen, indem du mit MAUS MITTEL + STRG + SHIFT auf einen Punkt A und dann erneut mit MAUS MITTEL + STRG + SHIFT auf einen Punkt B klickst.
+						Gibt es einen Link zwischen den beiden Punkten, so wird dieser dann entfernt.
+						Solltest du im oben beschriebenen Aufzeichnungsmodus für Links sein, wird das Klicken zum Löschen ignoriert.
+
+			Fehlerkorrekturen
+				- Die Karte für "Höhle der Nebel" wurde repariert.
+				- Das Zonenauswahl-Dropdown in der Sku-MM wird zeigt jetzt nur noch 11 Elemente in der offenen Liste an, damit diese nicht mehr aus dem Bild ragt.
+				  Dafür kannst du in der offenen Auswahlliste nun mit dem Mausrad hoch und runter scollen, um die restlichen Elemente zu sehen und auszuwählen.
+				- Das Zonenauswahl-Dropdown in der Sku-MM wird jetzt nach einem Kontintentwechsel korrekt aktualisiert
+				- Das Menü "Kommentar zuweisen" zeigt jetzt alle Wegpunkte des aktuellen Kontinents an.
+				- Die Sku-MM geht jetzt nach dem Einloggen direkt mit dem ersten Drücken von STRG + SHIFT + F auf.
+				- Ruinen von Lordaeron wurden endlich abgerissen und durch einen schicken Plattenbau ersetzt.
+				- Höhlen des Wehklagens sowie Kral und Hügel der Klingenhauer wurden repariert.
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.14
 
 	SkuNav
 		Fehlerkorrekturen
 			- Thrall ist wieder da. Er war nur Zigaretten holen, und hatte vergessen bescheid zu sagen.
 			- Der Bereich (Südstrom) am Hinterausgang von Orgrimmar gehört jetzt zum Brachland.
+			- Wegpunkte aus unterschiedlichen Zonen können jetzt verbunden werden ohne das was kaputt geht.
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 21.13

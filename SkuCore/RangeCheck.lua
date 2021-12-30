@@ -48,7 +48,7 @@ function SkuCore:RangeCheckUpdateRanges()
    if tFirstRangeUpdateSilent then
       tFirstRangeUpdateSilent = nil
    else
-      SkuOptions.Voice:OutputString("Neue Reichweite verfügbar", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+      SkuOptions.Voice:OutputString("Neue Reichweite verfügbar", true, true, 0.2)
    end
 
    SkuCore.RangeCheckValues.Ranges.Friendly = {}

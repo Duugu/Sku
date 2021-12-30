@@ -358,7 +358,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 					end
 				end
 				PlaySound(88)
-				SkuOptions.Voice:OutputString("Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int										
+				SkuOptions.Voice:OutputString("Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken", true, true, 0.2)										
 				SkuOptions:EditBoxShow(tText, function(self) PlaySound(89) end)
 				SkuOptions.db.realm.missingAudio = {}
 			end

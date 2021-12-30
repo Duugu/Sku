@@ -193,7 +193,7 @@ function SkuQuest:OnEnable()
 		end
 		
 		PlaySound(88)
-		SkuOptions.Voice:OutputString("Quest;geöffnet", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+		SkuOptions.Voice:OutputString("Quest;geöffnet", true, true, 0.3)
 		--[[
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "SkuQuestMainOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "SkuQuestMainOption1", "CTRL-SHIFT-DOWN")
@@ -217,7 +217,7 @@ function SkuQuest:OnEnable()
 			return
 		end
 		
-		SkuOptions.Voice:OutputString("Quest;geschlossen", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+		SkuOptions.Voice:OutputString("Quest;geschlossen", true, true, 0.3)
 		--SkuOptions.TTS:Output("", -1)
 		ClearOverrideBindings(self)
 		PlaySound(89)
@@ -901,7 +901,7 @@ function SkuQuest:ShowForTTS(aQuestID)
 	else
 		if tTextFailedCompleted then
 			if tTextFailedCompleted == "Abgeschlossen" then
-				--SkuOptions.Voice:OutputString("abgeschlossen", false, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
+				--SkuOptions.Voice:OutputString("abgeschlossen", false, true, 0.8)
 			elseif tTextFailedCompleted == "Fehlgeschlagen" then
 				--SkuOptions.Voice:OutputString("fehlgeschlagen", false, true, 0.8)
 			end

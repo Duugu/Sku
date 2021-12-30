@@ -622,6 +622,31 @@ SkuDB.Polygons.data = {
   },
 }
 
+
+SkuPrintMTWo = {
+  __tostring = function(thisTable)
+     local tStr = ""
+     local function tf(ttable, tTab)
+        for k, v in pairs(ttable) do
+           if type(v) == "table" then
+              if tonumber(k) then
+                 print(tTab.."["..k.."] = {")
+              else
+                 print(tTab..""..k.." = {")
+              end
+              tf(v, tTab.."  ")
+              print(tTab.."},")
+           elseif type(v) == "boolean" then
+              print(tTab..k.." = "..tostring(v)..",")
+           else
+              print(tTab..k.." = "..v..",")
+           end
+        end
+     end
+     tf(thisTable, "")
+     return ""
+  end,
+}
 SkuPrintMT = {
    __tostring = function(thisTable)
       local tStr = ""

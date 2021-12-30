@@ -15,4 +15,7 @@
   <Include file="SkuZOptions\Libs\AceComm-3.0\AceComm-3.0.xml"/>
   <Include file="SkuZOptions\Libs\SkuBeacon-1.0\SkuBeacon-1.0.xml"/>
   <Include file="SkuZOptions\Libs\LibRangeCheck-2.0\LibRangeCheck-2.0.lua"/>
+  
+  <Include file="SkuZOptions\Libs\LibUIDropDownMenu\LibUIDropDownMenuTemplates.xml"/>
+  <Include file="SkuZOptions\Libs\LibUIDropDownMenu\LibUIDropDownMenu.xml"/>
 </Ui>

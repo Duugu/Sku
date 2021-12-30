@@ -253,13 +253,13 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 
 	local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
 	if hp == 0 then
-		SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
-		SkuOptions.Voice:OutputString(tUnitName, false, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
+		SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)
+		SkuOptions.Voice:OutputString(tUnitName, false, true, 0.8)
 	else
 		if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
-			SkuOptions.Voice:OutputString(tRaidTargetString, true, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
+			SkuOptions.Voice:OutputString(tRaidTargetString, true, true, 0.8)
 		else
-			SkuOptions.Voice:OutputString(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8)-- file: string, reset: bool, wait: bool, length: int
+			SkuOptions.Voice:OutputString(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8)
 		end
 	end
 	
@@ -278,11 +278,11 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 	if tRaidTargetString == "" or SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == false then
 		if tUnitLevel then
 			if tUnitLevel ~= -1 then
-				SkuOptions.Voice:OutputString(L["level"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-				SkuOptions.Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+				SkuOptions.Voice:OutputString(L["level"], false, true, 0.2)
+				SkuOptions.Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)
 			else
-				SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)-- file: string, reset: bool, wait: bool, length: int
-				SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+				SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)
+				SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
 			end
 		end
 		GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
@@ -294,7 +294,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 			if tLineTwoText then
 				if tLineTwoText ~= "" then
 					if not string.find(tLineTwoText, L["level"]) then
-						SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+						SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
 					end
 				end
 			end

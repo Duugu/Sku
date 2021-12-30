@@ -57,7 +57,6 @@ function SkuOptions:CloseMenu()
 	if SkuOptions:IsMenuOpen() == true then
 		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
 	end
-	CacheNbWps()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -147,15 +146,36 @@ function SkuOptions:SlashFunc(input)
 			SkuNavMMMainFrame:SetSize(200, 200) 
 			SkuNavMMMainFrameResizeButton:GetScript("OnMouseDown")(_G["SkuNavMMMainFrameResizeButton"], "LeftButton") 
 			SkuNavMMMainFrameResizeButton:GetScript("OnMouseUp")(_G["SkuNavMMMainFrameResizeButton"], "LeftButton")
+		elseif fields[1] == "chatcover" then
+			if _G["ChatFrame1"] then
+				local tWidget = _G["SkuChatCover"]
+				if not tWidget then
+					tWidget = CreateFrame("Frame", "SkuChatCover", _G["ChatFrame1"])
+					tWidget:SetWidth(_G["ChatFrame1"]:GetWidth())  
+					tWidget:SetHeight(_G["ChatFrame1"]:GetHeight()) 
+					tWidget:SetAllPoints()
+					local tex = tWidget:CreateTexture(nil, "OVERLAY")
+					tex:SetAllPoints()
+					tex:SetColorTexture(0, 0, 0, 1)
+					tWidget:Hide()
+				end
+				if tWidget:IsShown() then
+					tWidget:Hide()
+					SkuOptions.Voice:OutputString("Chat sichtbar", false, true, 0.2)
+				else
+					tWidget:Show()
+					SkuOptions.Voice:OutputString("Chat verdeckt", false, true, 0.2)
+				end
+			end
 		end
 	end
 
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:RefreshConfig()
-	--dprint("SkuOptions:RefreshConfig")
-	SkuOptions.db.profile["SkuNav"].firstLoadOfVersion15 = false
+function SkuOptions:OnProfileChanged()
+	dprint("SkuOptions:OnProfileChanged")
+	SkuNav:PLAYER_ENTERING_WORLD()
 
   	if SkuCore then
 		SkuCore:OnEnable()
@@ -178,6 +198,77 @@ function SkuOptions:RefreshConfig()
 	if SkuOptions then
 		SkuOptions:OnEnable()
 	end
+
+	SkuOptions.Voice:OutputString("Profil gewechselt", false, true, 0.2)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:OnProfileCopied()
+	dprint("SkuOptions:OnProfileCopied")
+	SkuNav:PLAYER_ENTERING_WORLD()
+
+  	if SkuCore then
+		SkuCore:OnEnable()
+	end
+	if SkuChat then
+		SkuChat:OnEnable()
+	end
+	if SkuMob then
+		SkuMob:OnEnable()
+	end
+	if SkuNav then
+		SkuNav:OnEnable()
+	end
+	if SkuQuest then
+		SkuQuest:OnEnable()
+	end
+	if SkuAuras then
+		SkuAuras:OnEnable()
+	end
+	if SkuOptions then
+		SkuOptions:OnEnable()
+	end
+
+	SkuOptions.Voice:OutputString("Profil kopiert", false, true, 0.2)
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:OnProfileReset()
+	dprint("SkuOptions:OnProfileReset")
+	local tVersion = GetAddOnMetadata("Sku", "Version") 
+	if tVersion then tVersion = tonumber(tVersion) end
+	SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
+	SkuOptions.db.profile["SkuNav"].Routes = nil
+	SkuOptions.db.profile["SkuNav"].Waypoints = {}
+	SkuOptions.db.profile["SkuNav"].Links = {}
+
+	SkuNav:PLAYER_ENTERING_WORLD()
+
+  	if SkuCore then
+		SkuCore:OnEnable()
+	end
+	if SkuChat then
+		SkuChat:OnEnable()
+	end
+	if SkuMob then
+		SkuMob:OnEnable()
+	end
+	if SkuNav then
+		SkuNav:OnEnable()
+	end
+	if SkuQuest then
+		SkuQuest:OnEnable()
+	end
+	if SkuAuras then
+		SkuAuras:OnEnable()
+	end
+	if SkuOptions then
+		SkuOptions:OnEnable()
+	end
+
+	SkuOptions.Voice:OutputString("Profil zurückgesetzt", false, true, 0.2)
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -483,6 +574,11 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.TooltipReaderText = ""
 	tFrame:SetScript("OnClick", function(self, a, b)
 		--dprint("OnSkuOptionsMain OnClick ", a, b)
+		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
+			print("Funktion erst nach Abschluss von Routen Umwandlung verfügbar")
+			SkuOptions.Voice:OutputString("Funktion erst nach Abschluss von Routen Umwandlung verfügbar", true, true, 0.3, true)
+			return
+		end
 
 		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
 			SkuCore.openMenuAfterMoving = true
@@ -490,7 +586,6 @@ function SkuOptions:CreateMainFrame()
 		end
 
 		if a == "CTRL-SHIFT-F3" then
-			tCacheNbWpsTimerCounterProgressShow = tCacheNbWpsTimerCounterProgressShow == false
 			Sku.debug = Sku.debug == false
 			print("Debug:", Sku.debug)
 		end
@@ -758,15 +853,15 @@ function SkuOptions:CreateMainFrame()
 					CloseMail();
 				end
 
-				SkuOptions.Voice:OutputString(L["Menu;closed"], false, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
+				SkuOptions.Voice:OutputString(L["Menu;closed"], false, true, 0.3, true)
 				SkuCore.Debug("", L["Menu;closed"], true)
 
 			else
 				self:Show()
 				SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
 				PlaySound(811)
-				SkuOptions.Voice:OutputString(L["Menu;open"], true, true, 0.3, true)-- file: string, reset: bool, wait: bool, length: int
-				SkuOptions.Voice:OutputString(SkuOptions.Menu[1].name, false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+				SkuOptions.Voice:OutputString(L["Menu;open"], true, true, 0.3, true)
+				SkuOptions.Voice:OutputString(SkuOptions.Menu[1].name, false, true, 0.3)
 				SkuCore.Debug("", SkuOptions.currentMenuPosition.name, true)
 			end
 		end
@@ -795,22 +890,22 @@ function SkuOptions:CreateMainFrame()
 
 				if a == "CTRL-SHIFT-F9" then
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1 = tBread
-					SkuOptions.Voice:OutputString(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+					SkuOptions.Voice:OutputString(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 				end
 				if a == "CTRL-SHIFT-F10" then
-					SkuOptions.Voice:OutputString(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+					SkuOptions.Voice:OutputString(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2 = tBread
 				end
 				if a == "CTRL-SHIFT-F11" then
-					SkuOptions.Voice:OutputString(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+					SkuOptions.Voice:OutputString(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3 = tBread
 				end
 				if a == "CTRL-SHIFT-F12" then
-					SkuOptions.Voice:OutputString(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+					SkuOptions.Voice:OutputString(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4 = tBread
 				end
 			else
-				SkuOptions.Voice:OutputString(L["Impossible. Menu is not open."], true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+				SkuOptions.Voice:OutputString(L["Impossible. Menu is not open."], true, true, 0.3)
 			end
 		end
 
@@ -1137,7 +1232,7 @@ function SkuOptions:CreateMenuFrame()
 		SkuCore.openMenuAfterCombat = false
 		SkuCore.openMenuAfterMoving = false	
 		PlaySound(88)
-		--SkuOptions.Voice:OutputString("Navi geöffnet", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+		--SkuOptions.Voice:OutputString("Navi geöffnet", true, true, 0.3)
 		SetOverrideBindingClick(self, true, "PAGEUP", "OnSkuOptionsMainOption1", "PAGEUP")
 		SetOverrideBindingClick(self, true, "PAGEDOWN", "OnSkuOptionsMainOption1", "PAGEDOWN")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-D", "SkuQuestMainOption1", "CTRL-SHIFT-D")
@@ -1185,7 +1280,7 @@ function SkuOptions:CreateMenuFrame()
 		if SkuCore.inCombat == true then
 			return
 		end
-		--SkuOptions.Voice:OutputString("Navi geschlossen", true, true, 0.3)-- file: string, reset: bool, wait: bool, length: int
+		--SkuOptions.Voice:OutputString("Navi geschlossen", true, true, 0.3)
 		ClearOverrideBindings(self)
 		PlaySound(89)
 
@@ -1287,9 +1382,9 @@ function SkuOptions:OnInitialize()
 	SkuOptions.AceConfigDialog:AddToBlizOptions("Sku")
 	SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults) -- TODO: fix default values for subgroups
 	options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(SkuOptions.db)
-	SkuOptions.db.RegisterCallback(self, "OnProfileChanged", "RefreshConfig")
-	SkuOptions.db.RegisterCallback(self, "OnProfileCopied", "RefreshConfig")
-	SkuOptions.db.RegisterCallback(self, "OnProfileReset", "RefreshConfig")
+	SkuOptions.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
+	SkuOptions.db.RegisterCallback(self, "OnProfileCopied", "OnProfileCopied")
+	SkuOptions.db.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
 
 	SkuOptions:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuOptions:RegisterEvent("START_LOOT_ROLL")
@@ -1723,7 +1818,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 				--[[if aGossipListTable[index].textFull ~= "" then
 					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {"Anzeigen"}, menuEntryTemplate_Menu)
 					tNewSubMenuEntry.OnAction = function()
-						print("anzeigen: ", aGossipListTable[index].textFull)
+						--print("anzeigen: ", aGossipListTable[index].textFull)
 					end
 				end]]
 				tNewMenuEntry.textFull = aGossipListTable[index].textFull
@@ -2195,370 +2290,6 @@ function SkuOptions:EditBoxShow(aText, aOkScript)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:ImportWpAndRouteData(aAreaId)
-	PlaySound(88)
-	SkuOptions.Voice:OutputString(L["Paste data to import now"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-
-	SkuOptions:EditBoxPasteShow("", function(self)
-		PlaySound(89)
-print("ImportWpAndRouteData SkuNeighbCache = {}")
-		SkuNeighbCache = {}
-		if tCacheNbWpsTimer then
-			tCacheNbWpsTimer:Cancel()
-		end
-			
-		local tSerializedData = strtrim(table.concat(_G["SkuOptionsEditBoxPaste"].SkuOptionsTextBuffer))
-
-		local tRenameCounterWps = 0
-		local tRenameCounterRts = 0
-		local tImportCounterWps = 0
-		local tImportCounterRts = 0
-		local tIgnoredCounterWps = 0
-		local tIgnoredCounterRts = 0
-
-		if tSerializedData ~= "" then
-			local tSuccess, tRoutes, tWaypoints = SkuOptions:Deserialize(tSerializedData)
-			--setmetatable(tRoutes, SkuNav.PrintMT)
-			--setmetatable(tWaypoints, SkuNav.PrintMT)
-
-			if tSuccess == true then
-
-				--collect wps in importable routes
-				local tImprableRouteWps = {}
-				if aAreaId then
-					for iR, vR in ipairs(tRoutes) do
-						for iWp, vWp in ipairs(tRoutes[vR].WPs) do
-							local tWayp = tWaypoints[vWp] or SkuNav:GetWaypoint(vWp)
-							if tWayp then
-								if (SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) ~= tonumber(aAreaId)) then
-									tImprableRouteWps[vWp] = true
-									SkuOptions:DebugToChat("\124cffff0000RT-WP ignoriert\124r", iR, vR, "Wegpunkt nicht in Zone:", iWp, vWp, tWayp.areaId, aAreaId)
-								end
-							else
-								tIgnoredCounterRts = tIgnoredCounterRts + 1
-								SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", iR, vR, "Unbekannter Wegpunkt:", iWp, vWp)
-							end
-						end
-					end
-				end
-
-				--import wps
-				for i, v in ipairs(tWaypoints) do
-					--in area?
-					if not string.find(v, L["Quick waypoint"]) then
-						local tWayp = tWaypoints[v] or SkuNav:GetWaypoint(v)
-
-						if (aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) or not aAreaId or tImprableRouteWps[v] then
-							if not SkuOptions.db.profile["SkuNav"].Waypoints[v] then
-								--dprint("wp exists NOT: ", v)
-								--new wp name > import
-								table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, v)
-								SkuOptions.db.profile["SkuNav"].Waypoints[v] = tWaypoints[v]
-								tImportCounterWps = tImportCounterWps + 1
-							else
-								--wp name exists
-								--dprint("wp exists: ", v)
-								if (
-										SkuOptions.db.profile["SkuNav"].Waypoints[v].worldX ~= tWaypoints[v].worldX 
-										or SkuOptions.db.profile["SkuNav"].Waypoints[v].worldY ~= tWaypoints[v].worldY
-									) 
-									or SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId ~=  tWaypoints[v].areaId  
-									or SkuOptions.db.profile["SkuNav"].Waypoints[v].contintentId ~= tWaypoints[v].contintentId 
-								then
-									--dprint("wp name exists and data NOT same")
-									--update name of wp and update the wp name in all import routes and import
-									local tNewWpName = v
-									local tCounter = 1
-									local tInsert = true
-									while SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter] do
-										if 
-											SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].worldX == tWaypoints[v].worldX 
-											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].worldY == tWaypoints[v].worldY 
-											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].areaId ==  tWaypoints[v].areaId 
-											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].contintentId == tWaypoints[v].contintentId 
-											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].comments == tWaypoints[v].comments 
-										then
-											tInsert = false
-											--dprint("renamed as", tNewWpName, "found")
-											tIgnoredCounterWps = tIgnoredCounterWps + 1
-											SkuOptions:DebugToChat("\124cffffff00WP ignoriert(*)\124r", i, v, "Schon identisch vorhanden:", v..";"..tCounter)
-											break
-										else
-											tCounter = tCounter + 1
-										end
-									end
-									tNewWpName = v..";"..tCounter
-									--update the importing rts wps
-									for iR, vR in ipairs(tRoutes) do
-										for iWp, vWp in ipairs(tRoutes[vR].WPs) do
-											if vWp == v then
-												tRoutes[vR].WPs[iWp] = tNewWpName
-											end
-										end
-										--Update rts start/endpoints
-										if tRoutes[vR].tStartWPName == v then
-											tRoutes[vR].tStartWPName = tNewWpName
-										end
-										if tRoutes[vR].tEndWPName == v then
-											tRoutes[vR].tEndWPName = tNewWpName
-										end
-									end
-									if tInsert == true then
-										--dprint("no renamed as", tNewWpName, "found and inserted")
-										table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, tNewWpName)
-										SkuOptions.db.profile["SkuNav"].Waypoints[tNewWpName] = tWaypoints[v]
-										tRenameCounterWps = tRenameCounterWps + 1
-										tImportCounterWps = tImportCounterWps + 1
-									end
-								else
-									if SkuOptions.db.profile["SkuNav"].Waypoints[v].comments ~= tWaypoints[v].comments then
-										--same name, same data, but different comments > update comments
-										SkuOptions.db.profile["SkuNav"].Waypoints[v].comments = tWaypoints[v].comments
-									else
-										--same name, same data > ignore
-										tIgnoredCounterWps = tIgnoredCounterWps + 1
-										SkuOptions:DebugToChat("\124cffffff00WP ignoriert\124r", i, v, "Schon identisch vorhanden")
-									end
-								end
-							end
-						else
-							tIgnoredCounterWps = tIgnoredCounterWps + 1
-							SkuOptions:DebugToChat("\124cffff0000WP ignoriert\124r", i, v, "Nicht in Zone:", aAreaId)
-						end
-					else
-						tIgnoredCounterWps = tIgnoredCounterWps + 1
-						SkuOptions:DebugToChat("WP ignoriert", i, v, "Ist Schnell-WP")
-					end
-				end
-
-
-				--import rts
-				for i, v in ipairs(tRoutes) do
-					local tStartWP, tEndWP
-					if tRoutes[v] then
-						tStartWP = tWaypoints[tRoutes[v].tStartWPName] or SkuNav:GetWaypoint(tRoutes[v].tStartWPName)
-						tEndWP = tWaypoints[tRoutes[v].tEndWPName] or SkuNav:GetWaypoint(tRoutes[v].tEndWPName)
-					end
-					if not tStartWP or not tEndWP then
-						tIgnoredCounterRts = tIgnoredCounterRts + 1
-						SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", i, v, "Start/End fehlt:", tStartWP ~= false, tEndWP ~= false)
-					else
-						if 
-							(((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tStartWP.areaId)) == aAreaId) == true or not aAreaId) 
-							or ((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tEndWP.areaId)) == aAreaId) == true or not aAreaId) ) == true
-						then
-							if (tRoutes[v].tStartWPName == tRoutes[v].tEndWPName) and #tRoutes[v].WPs <= 2 then
-								tIgnoredCounterRts = tIgnoredCounterRts + 1
-								SkuOptions:DebugToChat("RT ignoriert", i, v, "Start/End identisch, keine IM-WPs:", tRoutes[v].tStartWPName)
-							else
-								if not SkuOptions.db.profile["SkuNav"].Routes[v] then
-									-- new rt name
-									table.insert(SkuOptions.db.profile["SkuNav"].Routes, v)
-									SkuOptions.db.profile["SkuNav"].Routes[v] = tRoutes[v]
-									SkuNav:UpdateRtContinentAndAreaIds(v)
-									tImportCounterRts = tImportCounterRts + 1
-								else
-									--rt name exists
-									--is the same as existing?
-									local tExistingRtData = ""
-									tExistingRtData = tExistingRtData..v
-									tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tStartWPName or "nil")
-									tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tEndWPName or "nil")
-									for iWp, vWp in ipairs(SkuOptions.db.profile["SkuNav"].Routes[v].WPs) do
-										tExistingRtData =  tExistingRtData..vWp
-									end
-
-									local tImportRtData = ""
-									tImportRtData = tImportRtData..v
-									tImportRtData = tImportRtData..(tRoutes[v].tStartWPName or "nil")
-									tImportRtData = tImportRtData..(tRoutes[v].tEndWPName or "nil")
-									for iWp, vWp in ipairs(tRoutes[v].WPs) do
-										tImportRtData =  tImportRtData..vWp
-									end
-
-									if tExistingRtData ~= tImportRtData then
-										--not the same update import rts name
-										local tNewRtName = v
-										local tCounter = 1
-										local tInsert = true
-										while SkuOptions.db.profile["SkuNav"].Routes[v..";"..tCounter] do
-											local tExistingRtData = ""
-											tExistingRtData = tExistingRtData..v
-											tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tStartWPName or "nil")
-											tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tEndWPName or "nil")
-											for iWp, vWp in ipairs(SkuOptions.db.profile["SkuNav"].Routes[v].WPs) do
-												tExistingRtData =  tExistingRtData..vWp
-											end
-				
-											local tImportRtData = ""
-											tImportRtData = tImportRtData..v
-											tImportRtData = tImportRtData..(tRoutes[v].tStartWPName or "nil")
-											tImportRtData = tImportRtData..(tRoutes[v].tEndWPName or "nil")
-											for iWp, vWp in ipairs(tRoutes[v].WPs) do
-												tImportRtData =  tImportRtData..vWp
-											end
-
-											if tExistingRtData ~= tImportRtData then
-												tInsert = false
-												tIgnoredCounterRts = tIgnoredCounterRts + 1
-												SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", iR, vR, "Unbekannter Wegpunkt:", iWp, vWp)
-
-												break
-											else
-												tCounter = tCounter + 1
-											end
-										end
-										tNewRtName = v..";"..tCounter
-
-										if tInsert == true then
-											table.insert(SkuOptions.db.profile["SkuNav"].Routes, tNewRtName)
-											SkuOptions.db.profile["SkuNav"].Routes[tNewRtName] = tRoutes[v]
-											SkuNav:UpdateRtContinentAndAreaIds(tNewRtName)
-											tImportCounterRts = tImportCounterRts + 1
-											tRenameCounterRts = tRenameCounterRts + 1
-										end
-									else
-										--same name same data, ignore
-										tIgnoredCounterRts = tIgnoredCounterRts + 1
-										--SkuOptions:DebugToChat("RT ignoriert", i, v, "Identische RT vorhanden (inkl. Daten):", tExistingRtData)
-
-									end
-								end
-							end
-						else
-							tIgnoredCounterRts = tIgnoredCounterRts + 1
-							SkuOptions:DebugToChat("\124cffff00ffRT ignoriert\124r", i, v, "Start/End nicht in zone:", aAreaId)
-						end
-					end
-
-				end
-
-				local tRtsToDelete = {}
-				local tImportDeleteCounterRts = 0
-				for x = 1, #SkuOptions.db.profile["SkuNav"].Routes do
-					if SkuNav:CheckRoute(SkuOptions.db.profile["SkuNav"].Routes[x]) == false then
-						SkuOptions:DebugToChat("\124cffff0000RT CheckRoute failed (delete incl. WPs\124r)", x, SkuOptions.db.profile["SkuNav"].Routes[x])
-						tRtsToDelete[#tRtsToDelete + 1] = SkuOptions.db.profile["SkuNav"].Routes[x]
-					end
-				end
-				if #tRtsToDelete > 0 then
-					for x = 1, #tRtsToDelete do
-						--dprint("ImportWpAndRouteData DeleteRoute")
-						SkuNav:DeleteRoute(tRtsToDelete[x], true)
-					end
-					tImportDeleteCounterRts = #tRtsToDelete
-				end
-
-
-
-				SkuOptions.Voice:OutputString("Import erfolgreich", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int			
-				SkuOptions.Voice:OutputString(tImportCounterRts.." von "..#tRoutes.." Routen", false, true, 0.3, true)
-				SkuOptions.Voice:OutputString(tImportCounterWps.." von "..#tWaypoints.." Wegpunkt", false, true, 0.3, true)
-
-				print("Routen ("..#tRoutes..")")
-				print("  Importiert: ", tImportCounterRts)
-				print("  Umbenannt: ", tRenameCounterRts)
-				print("  Ignoriert: ", tIgnoredCounterRts)
-				print("  Gelöscht: ", tImportDeleteCounterRts)
-				print("Wegpunkte ("..(#tWaypoints)..")")
-				print("  Importiert: ", tImportCounterWps)
-				print("  Umbenannt: ", tRenameCounterWps)
-				print("  Ignoriert: ", tIgnoredCounterWps)
-
-				CacheNbWps()
-			else
-				SkuOptions.Voice:OutputString("Import fehlgeschlagen", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int										
-			end
-			--_G["SkuOptionsEditBoxPaste"]:Hide()
-		end
-	end)
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
----@param aZone int export just for area id
-function SkuOptions:ExportWpAndRouteData(aAreaId, aContinentId)
-	local tExportDataTable = {
-		routes = {},
-		waypoints = {},
-	}
-	--setmetatable(tExportDataTable, SkuNav.PrintMT)
-
-	if aAreaId or aContinentId then
-		for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Routes) do
-			local tRoute = v
-			local tInArea = false
-			for i1, v1 in ipairs(SkuOptions.db.profile["SkuNav"].Routes[tRoute].WPs) do
-				if SkuNav:GetWaypoint(v1) then
-					if SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuNav:GetWaypoint(v1).areaId)) == aAreaId
-						or SkuNav:GetWaypoint(v1).contintentId == aContinentId 
-					then
-						tInArea = true
-					end
-				end
-			end
-			if tInArea == true then
-				if not tExportDataTable.routes[tRoute] then
-					table.insert(tExportDataTable.routes, tRoute)
-					tExportDataTable.routes[tRoute] = SkuOptions.db.profile["SkuNav"].Routes[tRoute]
-				end
-			end
-		end
-
-		for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Waypoints) do
-			if not string.find(v, L["Quick waypoint"]) then
-				if SkuOptions.db.profile["SkuNav"].Waypoints[v] then
-					if SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId)) == aAreaId 
-						or SkuOptions.db.profile["SkuNav"].Waypoints[v].contintentId == aContinentId 
-					then
-						if not tExportDataTable.waypoints[v] then
-							table.insert(tExportDataTable.waypoints, v)
-							tExportDataTable.waypoints[v] = SkuOptions.db.profile["SkuNav"].Waypoints[v]
-						end
-					end
-				end
-			end
-		end
-		for i, v in ipairs(tExportDataTable.routes) do
-			local tRoute = v
-			for i1, v1 in ipairs(SkuOptions.db.profile["SkuNav"].Routes[tRoute].WPs) do
-				if not string.find(v1, L["Quick waypoint"]) then
-					if SkuOptions.db.profile["SkuNav"].Waypoints[v1] then
-						if not tExportDataTable.waypoints[v1] then
-							table.insert(tExportDataTable.waypoints, v1)
-							tExportDataTable.waypoints[v1] = SkuOptions.db.profile["SkuNav"].Waypoints[v1]
-						end
-					end
-				end
-			end
-		end
-	else
-		tExportDataTable.routes = SkuOptions.db.profile["SkuNav"].Routes
-		for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Waypoints) do
-			if not string.find(v, L["Quick waypoint"]) then
-				if SkuOptions.db.profile["SkuNav"].Waypoints[v] then
-					if not tExportDataTable.waypoints[v] then
-						table.insert(tExportDataTable.waypoints, v)
-						tExportDataTable.waypoints[v] = SkuOptions.db.profile["SkuNav"].Waypoints[v]
-					end
-				end
-			end
-		end
-	end
-
-	if #tExportDataTable.routes > 0 or #tExportDataTable.routes > 0 then
-		PlaySound(88)
-		SkuOptions.Voice:OutputString(#tExportDataTable.routes.." Routen", false, true, 0.3)
-		SkuOptions.Voice:OutputString(#tExportDataTable.waypoints.." Wegpunkt", false, true, 0.3)
-		SkuOptions.Voice:OutputString("exportiert", false, true, 0.3)
-
-		SkuOptions.Voice:OutputString("Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken", false, true, 0.3)-- file: string, reset: bool, wait: bool, length: int										
-		SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.routes, tExportDataTable.waypoints), function(self) PlaySound(89) end)
-	else
-		SkuOptions.Voice:OutputString("Keine Daten für export", true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int										
-	end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:HideVisualMenu()
 	if SkuOptions.SkuOptionsVisualMenuContainer then
 		SkuOptions.SkuOptionsVisualMenuContainer:Hide()
@@ -2777,3 +2508,378 @@ function SkuOptions:EditBoxPasteShow(aText, aOkScript)
 	_G["SkuOptionsEditBoxPaste"]:Show()
 	--return 
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:ImportWpAndLinkData()
+	PlaySound(88)
+	SkuOptions.Voice:OutputString(L["Paste data to import now"], false, true, 0.2)
+
+	SkuOptions:EditBoxPasteShow("", function(self)
+		PlaySound(89)
+		local tSerializedData = strtrim(table.concat(_G["SkuOptionsEditBoxPaste"].SkuOptionsTextBuffer))
+
+		local tImportCounterLinks = 0
+		local tImportCounterWps = 0
+		local tIgnoredCounterWps = 0
+
+		if tSerializedData ~= "" then
+			local tSuccess, tVersion, tLinks, tWaypoints = SkuOptions:Deserialize(tSerializedData)
+
+			if tVersion ~= 22 then
+				SkuOptions.Voice:OutputString("Import fehlgeschlagen. Falsche Version.", false, true, 0.2)										
+				return
+			end
+			if tSuccess ~= true then
+				SkuOptions.Voice:OutputString("Import fehlgeschlagen. Daten fehlerhaft.", false, true, 0.2)										
+				return
+			end
+
+			SkuOptions.Voice:OutputString("Import erfolgreich", true, true, 0.2, true)			
+
+			--do tWaypoints
+			local tFullCounterWps = 0
+			SkuOptions.db.profile["SkuNav"].Waypoints = {}
+			for tWpName, tWpData in pairs(tWaypoints) do
+				if not SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] then
+					--table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, tWpName)
+					--SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] = tWpData
+					SkuOptions.db.profile["SkuNav"].Waypoints[tFullCounterWps + 1] = tWpName
+					SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] = tWpData
+					tImportCounterWps = tImportCounterWps + 1
+				else
+					tIgnoredCounterWps = tIgnoredCounterWps + 1
+				end
+				tFullCounterWps = tFullCounterWps + 1
+			end
+
+			--do tLinks
+			for _ in pairs(tLinks) do
+				tImportCounterLinks = tImportCounterLinks + 1
+			end
+			SkuOptions.db.profile["SkuNav"].Links = tLinks or {}
+
+			--finally...
+			SkuNav:CreateWaypointCache()
+
+			print("Links importiert:", tImportCounterLinks)
+			print("Wegpunkte importiert:", tImportCounterWps)
+			print("Wegpunkte ignoriert:", tIgnoredCounterWps)
+		end
+	end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:ExportWpAndLinkData()
+	SkuNav:SaveLinkDataToProfile()
+
+	local tExportDataTable = {
+		version = 22,
+		links = {},
+		waypoints = {},
+	}
+
+	--build Links
+	tExportDataTable.links = SkuOptions.db.profile["SkuNav"].Links
+	tDataToExport = true
+	--build Waypoints without quick wps
+	for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Waypoints) do
+		if not string.find(v, L["Quick waypoint"]) then
+			if SkuOptions.db.profile["SkuNav"].Waypoints[v] then
+				local tWpData = SkuOptions.db.profile["SkuNav"].Waypoints[v]
+				if tWpData then
+					tExportDataTable.waypoints[v] = tWpData
+				end
+			end
+		end
+	end
+	
+	--complete export
+	PlaySound(88)
+	local tCount = 0
+	for _, _ in pairs(tExportDataTable.links) do
+		tCount = tCount + 1
+	end
+	print("Links exportiert:", tCount)
+	tCount = 0
+	for _, _ in pairs(tExportDataTable.waypoints) do
+		tCount = tCount + 1
+	end
+	print("Wegpunkte exportiert:", tCount)
+
+	SkuOptions.Voice:OutputString("Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken", false, true, 0.3)		
+
+	--setmetatable(tExportDataTable, SkuPrintMT)
+	--SkuOptions:EditBoxShow(tostring(tExportDataTable), function(self) PlaySound(89) end)
+	SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.version, tExportDataTable.links, tExportDataTable.waypoints), function(self) PlaySound(89) end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:ImportPre22WpAndRouteData()
+	PlaySound(88)
+	SkuOptions.Voice:OutputString(L["Paste data to import now"], false, true, 0.2)
+
+	SkuOptions:EditBoxPasteShow("", function(self)
+		PlaySound(89)
+		local tSerializedData = strtrim(table.concat(_G["SkuOptionsEditBoxPaste"].SkuOptionsTextBuffer))
+
+		local tRenameCounterWps = 0
+		local tRenameCounterRts = 0
+		local tImportCounterWps = 0
+		local tImportCounterRts = 0
+		local tIgnoredCounterWps = 0
+		local tIgnoredCounterRts = 0
+
+		if tSerializedData ~= "" then
+			local tSuccess, tRoutes, tWaypoints = SkuOptions:Deserialize(tSerializedData)
+			--setmetatable(tRoutes, SkuNav.PrintMT)
+			--setmetatable(tWaypoints, SkuNav.PrintMT)
+
+			if tSuccess == true then
+				SkuOptions.db.profile["SkuNav"].Routes = {}
+				SkuOptions.db.profile["SkuNav"].Waypoints = {}
+
+				--collect wps in importable routes
+				local tImprableRouteWps = {}
+				if aAreaId then
+					for iR, vR in ipairs(tRoutes) do
+						for iWp, vWp in ipairs(tRoutes[vR].WPs) do
+							local tWayp = tWaypoints[vWp] or SkuNav:GetWaypointData2(vWp)
+							if tWayp then
+								if (SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) ~= tonumber(aAreaId)) then
+									tImprableRouteWps[vWp] = true
+									SkuOptions:DebugToChat("\124cffff0000RT-WP ignoriert\124r", iR, vR, "Wegpunkt nicht in Zone:", iWp, vWp, tWayp.areaId, aAreaId)
+								end
+							else
+								tIgnoredCounterRts = tIgnoredCounterRts + 1
+								SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", iR, vR, "Unbekannter Wegpunkt:", iWp, vWp)
+							end
+						end
+					end
+				end
+
+				--import wps
+				for i, v in ipairs(tWaypoints) do
+					--in area?
+					if not string.find(v, L["Quick waypoint"]) then
+						local tWayp = tWaypoints[v] or SkuNav:GetWaypointData2(v)
+
+						if (aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) or not aAreaId or tImprableRouteWps[v] then
+							if not SkuOptions.db.profile["SkuNav"].Waypoints[v] then
+								--dprint("wp exists NOT: ", v)
+								--new wp name > import
+								table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, v)
+								SkuOptions.db.profile["SkuNav"].Waypoints[v] = tWaypoints[v]
+								tImportCounterWps = tImportCounterWps + 1
+							else
+								--wp name exists
+								--dprint("wp exists: ", v)
+								if (
+										SkuOptions.db.profile["SkuNav"].Waypoints[v].worldX ~= tWaypoints[v].worldX 
+										or SkuOptions.db.profile["SkuNav"].Waypoints[v].worldY ~= tWaypoints[v].worldY
+									) 
+									or SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId ~=  tWaypoints[v].areaId  
+									or SkuOptions.db.profile["SkuNav"].Waypoints[v].contintentId ~= tWaypoints[v].contintentId 
+								then
+									--dprint("wp name exists and data NOT same")
+									--update name of wp and update the wp name in all import routes and import
+									local tNewWpName = v
+									local tCounter = 1
+									local tInsert = true
+									while SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter] do
+										if 
+											SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].worldX == tWaypoints[v].worldX 
+											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].worldY == tWaypoints[v].worldY 
+											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].areaId ==  tWaypoints[v].areaId 
+											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].contintentId == tWaypoints[v].contintentId 
+											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].comments == tWaypoints[v].comments 
+										then
+											tInsert = false
+											--dprint("renamed as", tNewWpName, "found")
+											tIgnoredCounterWps = tIgnoredCounterWps + 1
+											SkuOptions:DebugToChat("\124cffffff00WP ignoriert(*)\124r", i, v, "Schon identisch vorhanden:", v..";"..tCounter)
+											break
+										else
+											tCounter = tCounter + 1
+										end
+									end
+									tNewWpName = v..";"..tCounter
+									--update the importing rts wps
+									for iR, vR in ipairs(tRoutes) do
+										for iWp, vWp in ipairs(tRoutes[vR].WPs) do
+											if vWp == v then
+												tRoutes[vR].WPs[iWp] = tNewWpName
+											end
+										end
+										--Update rts start/endpoints
+										if tRoutes[vR].tStartWPName == v then
+											tRoutes[vR].tStartWPName = tNewWpName
+										end
+										if tRoutes[vR].tEndWPName == v then
+											tRoutes[vR].tEndWPName = tNewWpName
+										end
+									end
+									if tInsert == true then
+										--dprint("no renamed as", tNewWpName, "found and inserted")
+										table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, tNewWpName)
+										SkuOptions.db.profile["SkuNav"].Waypoints[tNewWpName] = tWaypoints[v]
+										tRenameCounterWps = tRenameCounterWps + 1
+										tImportCounterWps = tImportCounterWps + 1
+									end
+								else
+									if SkuOptions.db.profile["SkuNav"].Waypoints[v].comments ~= tWaypoints[v].comments then
+										--same name, same data, but different comments > update comments
+										SkuOptions.db.profile["SkuNav"].Waypoints[v].comments = tWaypoints[v].comments
+									else
+										--same name, same data > ignore
+										tIgnoredCounterWps = tIgnoredCounterWps + 1
+										SkuOptions:DebugToChat("\124cffffff00WP ignoriert\124r", i, v, "Schon identisch vorhanden")
+									end
+								end
+							end
+						else
+							tIgnoredCounterWps = tIgnoredCounterWps + 1
+							SkuOptions:DebugToChat("\124cffff0000WP ignoriert\124r", i, v, "Nicht in Zone:", aAreaId)
+						end
+					else
+						tIgnoredCounterWps = tIgnoredCounterWps + 1
+						SkuOptions:DebugToChat("WP ignoriert", i, v, "Ist Schnell-WP")
+					end
+				end
+
+				SkuNav:CreateWaypointCache()
+
+				--import rts
+				for i, v in ipairs(tRoutes) do
+					local tStartWP, tEndWP
+					if tRoutes[v] then
+						tStartWP = tWaypoints[tRoutes[v].tStartWPName] or SkuNav:GetWaypointData2(tRoutes[v].tStartWPName)
+						tEndWP = tWaypoints[tRoutes[v].tEndWPName] or SkuNav:GetWaypointData2(tRoutes[v].tEndWPName)
+					end
+					if not tStartWP or not tEndWP then
+						tIgnoredCounterRts = tIgnoredCounterRts + 1
+						SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", i, v, "Start/End fehlt:", tStartWP ~= false, tEndWP ~= false)
+					else
+						if 
+							(((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tStartWP.areaId)) == aAreaId) == true or not aAreaId) 
+							or ((aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tEndWP.areaId)) == aAreaId) == true or not aAreaId) ) == true
+						then
+							if (tRoutes[v].tStartWPName == tRoutes[v].tEndWPName) and #tRoutes[v].WPs <= 2 then
+								tIgnoredCounterRts = tIgnoredCounterRts + 1
+								SkuOptions:DebugToChat("RT ignoriert", i, v, "Start/End identisch, keine IM-WPs:", tRoutes[v].tStartWPName)
+							else
+								if not SkuOptions.db.profile["SkuNav"].Routes[v] then
+									-- new rt name
+									table.insert(SkuOptions.db.profile["SkuNav"].Routes, v)
+									SkuOptions.db.profile["SkuNav"].Routes[v] = tRoutes[v]
+									tImportCounterRts = tImportCounterRts + 1
+								else
+									--rt name exists
+									--is the same as existing?
+									local tExistingRtData = ""
+									tExistingRtData = tExistingRtData..v
+									tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tStartWPName or "nil")
+									tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tEndWPName or "nil")
+									for iWp, vWp in ipairs(SkuOptions.db.profile["SkuNav"].Routes[v].WPs) do
+										tExistingRtData =  tExistingRtData..vWp
+									end
+
+									local tImportRtData = ""
+									tImportRtData = tImportRtData..v
+									tImportRtData = tImportRtData..(tRoutes[v].tStartWPName or "nil")
+									tImportRtData = tImportRtData..(tRoutes[v].tEndWPName or "nil")
+									for iWp, vWp in ipairs(tRoutes[v].WPs) do
+										tImportRtData =  tImportRtData..vWp
+									end
+
+									if tExistingRtData ~= tImportRtData then
+										--not the same update import rts name
+										local tNewRtName = v
+										local tCounter = 1
+										local tInsert = true
+										while SkuOptions.db.profile["SkuNav"].Routes[v..";"..tCounter] do
+											local tExistingRtData = ""
+											tExistingRtData = tExistingRtData..v
+											tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tStartWPName or "nil")
+											tExistingRtData = tExistingRtData..(SkuOptions.db.profile["SkuNav"].Routes[v].tEndWPName or "nil")
+											for iWp, vWp in ipairs(SkuOptions.db.profile["SkuNav"].Routes[v].WPs) do
+												tExistingRtData =  tExistingRtData..vWp
+											end
+				
+											local tImportRtData = ""
+											tImportRtData = tImportRtData..v
+											tImportRtData = tImportRtData..(tRoutes[v].tStartWPName or "nil")
+											tImportRtData = tImportRtData..(tRoutes[v].tEndWPName or "nil")
+											for iWp, vWp in ipairs(tRoutes[v].WPs) do
+												tImportRtData =  tImportRtData..vWp
+											end
+
+											if tExistingRtData ~= tImportRtData then
+												tInsert = false
+												tIgnoredCounterRts = tIgnoredCounterRts + 1
+												SkuOptions:DebugToChat("\124cffff0000RT ignoriert\124r", iR, vR, "Unbekannter Wegpunkt:", iWp, vWp)
+
+												break
+											else
+												tCounter = tCounter + 1
+											end
+										end
+										tNewRtName = v..";"..tCounter
+
+										if tInsert == true then
+											table.insert(SkuOptions.db.profile["SkuNav"].Routes, tNewRtName)
+											SkuOptions.db.profile["SkuNav"].Routes[tNewRtName] = tRoutes[v]
+											tImportCounterRts = tImportCounterRts + 1
+											tRenameCounterRts = tRenameCounterRts + 1
+										end
+									else
+										--same name same data, ignore
+										tIgnoredCounterRts = tIgnoredCounterRts + 1
+										--SkuOptions:DebugToChat("RT ignoriert", i, v, "Identische RT vorhanden (inkl. Daten):", tExistingRtData)
+
+									end
+								end
+							end
+						else
+							tIgnoredCounterRts = tIgnoredCounterRts + 1
+							SkuOptions:DebugToChat("\124cffff00ffRT ignoriert\124r", i, v, "Start/End nicht in zone:", aAreaId)
+						end
+					end
+
+				end
+
+				SkuOptions.Voice:OutputString("Import erfolgreich", true, true, 0.2)			
+				SkuOptions.Voice:OutputString(tImportCounterRts.." von "..#tRoutes.." Routen", false, true, 0.3, true)
+				SkuOptions.Voice:OutputString(tImportCounterWps.." von "..#tWaypoints.." Wegpunkt", false, true, 0.3, true)
+
+				print("Routen ("..#tRoutes..")")
+				print("  Importiert: ", tImportCounterRts)
+				print("  Umbenannt: ", tRenameCounterRts)
+				print("  Ignoriert: ", tIgnoredCounterRts)
+				print("  Gelöscht: ", tImportDeleteCounterRts)
+				print("Wegpunkte ("..(#tWaypoints)..")")
+				print("  Importiert: ", tImportCounterWps)
+				print("  Umbenannt: ", tRenameCounterWps)
+				print("  Ignoriert: ", tIgnoredCounterWps)
+
+
+
+
+
+				--start conversion
+				SkuOptions.db.profile["SkuNav"].RtAndWpVersion = nil
+				SkuNav:PLAYER_ENTERING_WORLD()
+
+
+
+
+
+
+
+			else
+				SkuOptions.Voice:OutputString("Import fehlgeschlagen", false, true, 0.2)										
+			end
+			--_G["SkuOptionsEditBoxPaste"]:Hide()
+		end
+	end)
+end
+

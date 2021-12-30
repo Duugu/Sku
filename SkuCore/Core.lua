@@ -484,6 +484,17 @@ function SkuCore:NAME_PLATE_UNIT_REMOVED(aEvent, aPlateName)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:IsNamePlateVisible(aCreatureName)
+	for x = 1, #tSkuCoreNamePlateRepo do
+		if tSkuCoreNamePlateRepo[x].name == aCreatureName then
+			return true
+		end
+	end
+	return false
+end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
 local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
@@ -553,7 +564,7 @@ function SkuCore:OnEnable()
 				if SkuCoreOldPetHappinessCounter > 15 then
 					local happiness, damagePercentage, loyaltyRate = GetPetHappiness()
 					if happiness and happiness ~= 3 then
-						SkuOptions.Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+						SkuOptions.Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)
 						SkuCoreOldPetHappinessCounter = 0
 					end
 				end
@@ -769,7 +780,7 @@ function SkuCore:OnEnable()
 								if SkuCoreMovement.counter > 5 and tSound > 0 then
 									SkuCoreMovement.counter = 0
 									--dprint(tSound, t * 10000)
-									SkuOptions.Voice:OutputString("sound-stuck"..tSound, true, false, 0.8)-- file: string, reset: bool, wait: bool, length: int
+									SkuOptions.Voice:OutputString("sound-stuck"..tSound, true, false, 0.8)
 								end
 							end
 
@@ -1143,7 +1154,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	if aUnitTarget == "player" and SkuCore.inCombat == false then
-		SkuOptions.Voice:OutputString(L["cast"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+		SkuOptions.Voice:OutputString(L["cast"], true, true, 0.2)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1232,13 +1243,13 @@ function SkuCore:PLAYER_REGEN_DISABLED(...)
 	SkuOptions:CloseMenu()
 	_G["SkuCoreControlOption1"]:Hide()
 	SkuCore.inCombat = true
-	SkuOptions.Voice:OutputString(L["Combat start"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	SkuOptions.Voice:OutputString(L["Combat start"], true, true, 0.2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PLAYER_REGEN_ENABLED(...)
 	SkuCore.inCombat = false
-	SkuOptions.Voice:OutputString(L["Combat end"], true, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+	SkuOptions.Voice:OutputString(L["Combat end"], true, true, 0.2)
 	if SkuOptions.db.profile[MODULE_NAME].autoFollow == true then
 		if SkuStatus.followUnitId then
 			if SkuStatus.followUnitId ~= "" then
@@ -1431,7 +1442,7 @@ function SkuCore:Debug(text, clear)
 		--f:RegisterForDrag("LeftButton")
 		f:SetFrameStrata("DIALOG")
 		f:SetFrameLevel(129)
-		f:SetSize(1000, 20)
+		f:SetSize(1000, 40)
 		f:SetPoint("TOP", UIParent, "TOP")
 		f:SetPoint("LEFT", UIParent, "LEFT")
 		f:SetPoint("RIGHT", UIParent, "RIGHT", -300, 0)

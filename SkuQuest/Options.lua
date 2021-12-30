@@ -381,13 +381,13 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
-	--dprint("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
+	dprint("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
 	local tResultWPs = {}
 
 	SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs)
 
 	local tPlayX, tPlayY = UnitPosition("player")
-	local tRoutesInRange = SkuNav:GetAllRoutesInRangeToCoords(tPlayX, tPlayY, 1000)--SkuOptions.db.profile["SkuNav"].nearbyWpRange)
+	local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, 1000)--SkuOptions.db.profile["SkuNav"].nearbyWpRange)
 	
 	local tHasContent = false
 	for unitGeneralName, wpTable in pairs(tResultWPs) do
@@ -396,7 +396,6 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 		local tNewMenuGeneralName = SkuOptions:InjectMenuItems(aParent, {unitGeneralName}, menuEntryTemplate_Menu)
 		tNewMenuGeneralName.dynamic = true
 		tNewMenuGeneralName.BuildChildren = function(self)
-
 			if string.find(wpTable[1], "Anderer Kontinent") then
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {wpTable[1]}, menuEntryTemplate_Menu)
 			else
@@ -406,32 +405,37 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.isSelect = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
+					--print("Route onaction", self, aValue, aName)
 					if SkuOptions.db.profile["SkuNav"].routeRecording == true then
 						SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
 						SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
 						return
 					end
-					if SkuOptions.db.profile["SkuNav"].metapathFollowing == true or SkuOptions.db.profile["SkuNav"].routeFollowing == true or SkuOptions.db.profile["SkuNav"].selectedWaypoint ~= "" then
+					if SkuOptions.db.profile["SkuNav"].metapathFollowing == true or SkuOptions.db.profile["SkuNav"].selectedWaypoint ~= "" then
 						SkuNav:EndFollowingWpOrRt()
 					end
 					SkuOptions.db.profile["SkuNav"].metapathFollowing = false
-					if SkuOptions.db.profile["SkuNav"].metapathFollowingStart then
-						if SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths then
-							if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, L["Meter"].."#") then
-								SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, L["Meter"].."#") + string.len(L["Meter"].."#"))
-							end
-							if not SkuOptions.db.profile["SkuNav"].metapathFollowingTarget then
-								SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = aName
-							end
-							SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
-							SkuOptions.db.profile["SkuNav"].metapathFollowing = true
-							SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
-							SkuOptions.Voice:OutputString(L["Following metaroute"], false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
-							SkuOptions:CloseMenu()
+
+					if SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths then
+						if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") then
+							SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") + 1)
 						end
+						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, aName)--
+						if not SkuOptions.db.profile["SkuNav"].metapathFollowingTarget then
+							SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = aName
+						end
+						SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
+						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
+		
+						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
+						SkuOptions.Voice:OutputString(L["Following metaroute"], false, true, 0.2)
+		
+						SkuOptions:CloseMenu()
 					end
+
 				end
 				tNewMenuSubEntry1.BuildChildren = function(self)
+					SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
 					local tSortedWaypointList = {}
 					for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
 						local tFnd = false
@@ -448,7 +452,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 					if #tSortedWaypointList == 0 then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 					else
-						local tMetapaths = SkuNav:GetAllMetaTargetsFromWp2(tSortedWaypointList[1])
+						local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs)--
 						SkuOptions.db.profile["SkuNav"].metapathFollowingStart = tSortedWaypointList[1]
 						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
 						SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = nil
@@ -458,13 +462,16 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						tNewMenuGeneralSort.filterable = true
 						tNewMenuGeneralSort.BuildChildren = function(self)
 							local tRoutesList = {}
-							for i, v in ipairs(tMetapaths) do
+
+							for v, i in pairs(tMetapaths) do
 								for wpIndex, wpName in pairs(wpTable) do
 									if string.find(v, wpName) then
+										--print("find:", v, wpName)
 										tRoutesList[v] = v
 									end
 								end
 							end
+
 							local tSortedWaypointList = {}
 							for k,v in SkuSpairs(tRoutesList) do
 								table.insert(tSortedWaypointList, k)
@@ -473,7 +480,11 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 							else
 								for tK, tV in ipairs(tSortedWaypointList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tMetapaths[tV].distance..";"..L["Meter"].."#"..tV}, menuEntryTemplate_Menu)
+									local tDistText = tMetapaths[tV].distance..";"..L["Meter"]
+									if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
+										tDistText = "weit"
+									end
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, menuEntryTemplate_Menu)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
 									end
@@ -489,10 +500,10 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						tNewMenuGeneralSort.filterable = true
 						tNewMenuGeneralSort.BuildChildren = function(self)
 							local tData = {}
-							for i, v in ipairs(tMetapaths) do
+							for i, v in pairs(tMetapaths) do
 								for wpIndex, wpName in pairs(wpTable) do
-									if string.find(v, wpName) then
-										tData[v] = tMetapaths[v].distance
+									if string.find(i, wpName) then
+										tData[i] = tMetapaths[i].distance
 									end
 								end
 							end
@@ -506,7 +517,11 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								for tK, tV in ipairs(tSortedList) do
 									for wpIndex, wpName in pairs(wpTable) do
 										if string.find(tV, wpName) then
-											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tMetapaths[tV].distance..";"..L["Meter"].."#"..tV}, menuEntryTemplate_Menu)
+											local tDistText = tMetapaths[tV].distance..";"..L["Meter"]
+											if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
+												tDistText = "weit"
+											end
+											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, menuEntryTemplate_Menu)
 											tNewMenuEntry.OnEnter = function(self, aValue, aName)
 												SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
 											end
@@ -517,12 +532,8 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								end
 							end
 						end
-
-
-
 					end
 				end
-			
 			
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {L["Closest route"]}, menuEntryTemplate_Menu)
 				tNewMenuSubEntry1.dynamic = true
@@ -534,25 +545,25 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						SkuOptions.Voice:OutputString(L["Recording in progress"], false, true, 0.3, true)
 						return
 					end
-					if SkuOptions.db.profile["SkuNav"].metapathFollowing == true or SkuOptions.db.profile["SkuNav"].routeFollowing == true or SkuOptions.db.profile["SkuNav"].selectedWaypoint ~= "" then
+					if SkuOptions.db.profile["SkuNav"].metapathFollowing == true or SkuOptions.db.profile["SkuNav"].selectedWaypoint ~= "" then
 						SkuNav:EndFollowingWpOrRt()
 					end
 					SkuOptions.db.profile["SkuNav"].metapathFollowing = false
 					if SkuOptions.db.profile["SkuNav"].metapathFollowingStart then
 						if SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths then
-							if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, L["Meter"].."#") then
-								SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, L["Meter"].."#") + string.len(L["Meter"].."#"))
+							if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") then
+								SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") + 1)
 							end
-
+							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
+							--setmetatable(SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths, SkuPrintMTWo)
 							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[#SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths+1] = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
 							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget] = SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingTarget]
 							table.insert(SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget].pathWps, SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget)
 							SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
-
 							SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
 							SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 							SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
-							SkuOptions.Voice:OutputString("Metaroute folgen gestartet", false, true, 0.2)-- file: string, reset: bool, wait: bool, length: int
+							SkuOptions.Voice:OutputString("Metaroute folgen gestartet", false, true, 0.2)
 							SkuOptions:CloseMenu()
 						end
 					end
@@ -574,26 +585,28 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 					if #tSortedWaypointList == 0 then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, menuEntryTemplate_Menu)
 					else
-						local tMetapaths = SkuNav:GetAllMetaTargetsFromWp2(tSortedWaypointList[1])
+						local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, nil, true)
 						SkuOptions.db.profile["SkuNav"].metapathFollowingStart = tSortedWaypointList[1]
 						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
 
 						local tResults = {}
-						for i, v in ipairs(tMetapaths) do
-							for wpIndex, wpName in pairs(wpTable) do
-								if not tCoveredWps[wpName] then
-									local tMetarouteEndWp = SkuNav:GetWaypoint(tMetapaths[v].pathWps[#tMetapaths[v].pathWps])
-									local tTargetWp = SkuNav:GetWaypoint(wpName)
-									local tDistanceTargetWp = SkuNav:Distance(tMetarouteEndWp.worldX, tMetarouteEndWp.worldY, tTargetWp.worldX, tTargetWp.worldY)
-									if tDistanceTargetWp < tMaxAllowedDistanceToTargetWp then
-										local tWeightedDistance = tMetapaths[v].distance + (tDistanceTargetWp * 3)
-										if not tResults[wpName] then
-											tResults[wpName] = {metarouteIndex = i, metarouteEndWp = v, targetWpName = wpName, metapathLength = tMetapaths[v].distance, distanceTargetWp = tDistanceTargetWp, weightedDistance = tWeightedDistance}
-										else
-											if tResults[wpName].weightedDistance > tWeightedDistance then
-												tResults[wpName] = {metarouteIndex = i, metarouteEndWp = v, targetWpName = wpName, metapathLength = tMetapaths[v].distance, distanceTargetWp = tDistanceTargetWp, weightedDistance = tWeightedDistance}
-											end
-										end
+						for wpIndex, wpName in pairs(wpTable) do
+							local tNearWps = SkuNav:GetNearestWpsWithLinksToWp(wpName, 10, tMaxAllowedDistanceToTargetWp)
+							local tBestRouteWeightedLength = 100000
+							for x = 1, #tNearWps do
+								if tMetapaths[tNearWps[x].wpName] then
+									local EndMetapathWpObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
+									local tEndTargetWpObj = SkuNav:GetWaypointData2(wpName)
+									local tDistToEndTargetWp = SkuNav:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+									if (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp < tBestRouteWeightedLength then
+										tBestRouteWeightedLength = (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp
+										tResults[wpName] = {
+											metarouteIndex = tNearWps[x].wpName, 
+											metapathLength = tMetapaths[tNearWps[x].wpName].distance, 
+											distanceTargetWp = tNearWps[x].distance,
+											targetWpName = wpName,
+											weightedDistance = tBestRouteWeightedLength,
+										}
 									end
 								end
 							end
@@ -613,7 +626,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								for tK, tV in ipairs(tSortedWaypointList) do
 									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";plus;"..tResults[tV].distanceTargetWp..";"..L["Meter"]}, menuEntryTemplate_Menu)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
-										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteEndWp
+										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
 									end
 									tCoveredWps[tV] = true
@@ -635,7 +648,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								for tK, tV in ipairs(tSortedList) do
 									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";plus;"..tResults[tV].distanceTargetWp..";Meter#"..tV}, menuEntryTemplate_Menu)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
-										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteEndWp
+										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
 									end
 									tCoveredWps[tV] = true
@@ -645,7 +658,6 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						end
 					end
 				end
-			
 			
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {"Wegpunkt"}, menuEntryTemplate_Menu)
 				tNewMenuSubEntry1.dynamic = true
@@ -658,11 +670,11 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						return
 					end
 
-					if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeFollowing == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+					if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 						SkuNav:EndFollowingWpOrRt()
 					end
 
-					if SkuNav:GetWaypoint(SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint) then
+					if SkuNav:GetWaypointData2(SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint) then
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint)
 						SkuOptions:CloseMenu()
 					else
@@ -676,11 +688,12 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 					tNewMenuGeneralSort.dynamic = true
 					tNewMenuGeneralSort.filterable = true
 					tNewMenuGeneralSort.BuildChildren = function(self)
+						SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
 						local tPlayX, tPlayY = UnitPosition("player")
 
 						local tResults = {}
 						for wpIndex, wpName in pairs(wpTable) do
-							local tWpObj = SkuNav:GetWaypoint(wpName)
+							local tWpObj = SkuNav:GetWaypointData2(wpName)
 							local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
 							tResults[wpName] = {wpName = wpName, distance = tDistanceTargetWp}
 						end
@@ -709,7 +722,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 
 						local tResults = {}
 						for wpIndex, wpName in pairs(wpTable) do
-							local tWpObj = SkuNav:GetWaypoint(wpName)
+							local tWpObj = SkuNav:GetWaypointData2(wpName)
 							local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
 							tResults[wpName] = {wpName = wpName, distance = tDistanceTargetWp}
 						end
