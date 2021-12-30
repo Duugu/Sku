@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 21.14](https://github.com/Duugu/Sku/releases/download/r21.14/Sku-r21.14-bcc.zip) <br>
+[Sku 22](https://github.com/Duugu/Sku/releases/download/r22/Sku-r22-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
@@ -17,6 +17,41 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+-------------------------------------------------------------------------------------------------------	
+## Änderungen in Version 22
+
+### Allgemein
+Das alte Routensystem wurde entfernt. Es gibt nun keine vordefinierten, langen Routen über mehrere Wegpunkte mehr.<br>
+Stattdessen gibt es jetzt nur noch sehr viele Einzelverbindungen (Links) zwischen jeweils zwei einzelnen Wegpunkten. Aus diesen werden alle Routen dynamisch berechnet (Metarouten).<br>
+Beim Verwenden von Routen ändert sich nicht viel, da ihr eh immer nur dynamisch erstellte Metarouten verwendet habt ("Route folgen").<br>
+Durch die Entferung dieser Altlast konnte ich jedoch die Performance des Addons erheblich optimieren.<br>
+Darum ist jetzt kein Cachen mehr notwendig. Lags in Menüs sollte nicht mehr vorkommen (bzw. nur in minimalem Umfang). Import und Export sind erheblich schneller.<br>
+Beim ersten Verwenden eines Profils mit Version 22 oder höher werden alle (nun veralten) Wegpunkte und Routen aus dem Profil gelöscht.<br>
+Du musst danach die aktuellen Routen und Wegpunkte mit der neuen einzelnen Routendatei von Mac neu importieren.
+
+### SkuNav
+*Neuerungen/Änderungen*
+- Der Import und Export von Wegpunkten/Routen wurde verändert.<br>
+  Es gibt nur noch eine Import- und eine Export-Funktion für die gesamte Welt. Es ist nicht mehr möglich Zonen oder Kontinente einzeln zu ex- oder importieren.<br>
+  Beim Import werden grundsätzliche alle vorhandenen Wegpunkt- und Routendaten gelöscht und durch die importierten Daten ersetzt. Es wird nicht mehr additiv importiert.<br>
+  Es werden beim Import nur noch Daten akzeptiert, die mit Version 22 oder höher erstellt wurden. Beim Import alter Routendaten meckert das Addon und ignoriert diese.
+- Optionen wie "Route folgen", "Nahe Route" etc. zeigen ab sofort alle Wegpunkten bzw. über das Routennetz erreichbaren Ziele auf dem gesamten Kontinent an.
+- Bei der Routenauswahl sagt das Addon nun bis zu einer Entfernung von 3000 Metern bzw. 200 abzulaufenden Routenpunkten zum Ziel die tatsächliche Entfernung an.<br>
+  Alles darüber wird nur noch mit "Weit" statt mit "x Meter" angesagt. <br>
+  Wenn dir eine Route als "Weit" angesagt wird, kannst du sie aber natürlich trotzdem normal auswählen und ablaufen - wenn du wirklich einer so langen Route folgen willst. :)
+- Da es keine Routen mehr gibt, sind alle Menüpunkte zur Routenerstellung und -verwaltung aus dem Audiomenü entfernt worden.
+- "SkuNav > Route" wurde in "SkuNav > Route folgen" umbenannt. Darin landet ihr nun direkt bei "Ziele Entfernung" und "Einheiten Route".
+- Die "Nahe Routen"-Funktion (bei Questzielen und dem Auswählen von Einzelwegpunkten) wurde dank der Umstellung deutlich optimiert und wählt nun erheblich bessere/nähere Routen aus.
+- Unter "Wegpunkt > Auswählen" wurden die meisten Menüpunkte entfernt, da sie redundant waren.<br>
+  Es gibt dort jetzt nur noch "Letzte", "Aktuelle Karte Entfernung", "Alle aktueller Kontinent" und "Aktuelle Karte Entfernung mit Auto".
+- Wenn du einer Einheiten-Route für sich bewegende NPCs folgst, sagt das Addon nun, wenn der Namensbalken des NPCs in deinem Sichtfeld erscheint bzw. dieses verlässt.<br>
+  Dein Sichtfeld beträgt dabei ca. 20 Meter. Wenn du "xyz sichbar" hörst, dann bedeutet das also nicht, dass der NPC vor dir steht. Nur, dass er irgendwo in bis zu 20 Meter Entfernung ins Bild gekommen ist.
+
+### SkuOptions
+*Neuerungen/Änderungen*
+- Es gibt einen neuen Slash-Befehl: /sku chatcover<br>
+  Damit kannst du den Chat beim Streamen mit einem schwarzen Rechteck verdecken. Erneutes /sku chatcover schalte die Verdeckung wieder aus.
 
 ## Änderungen in Version 21.14
 
