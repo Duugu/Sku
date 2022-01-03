@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 22.1](https://github.com/Duugu/Sku/releases/download/r22.1/Sku-r22.1-bcc.zip) <br>
+[Sku 22.2](https://github.com/Duugu/Sku/releases/download/r22.2/Sku-r22.2-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
@@ -17,6 +17,13 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+-------------------------------------------------------------------------------------------------------	
+## Änderungen in Version 22.2
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Die Eingabegeschwindigkeit im Menü wurde erheblich optimiert. Es hakt jetzt nicht mehr und verschluckt auch keine Buchstaben mehr (z. B. beim Filtern). Egal wie schnell man tippt.
 
 -------------------------------------------------------------------------------------------------------	
 ## Änderungen in Version 22.1
