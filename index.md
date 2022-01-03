@@ -28,38 +28,38 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 Das SkuAuras-Modul ist jetzt in einer ersten Testversion funktionsfähig.<br> 
 Es geht aber nur darum das grundlegende Konzept zu testen. Es ist nicht für den Einsatz geeignet oder gedacht.<br>
 Dieses Konzept sieht folgendermaßen aus:<br>
-- Unter "SkuAuras > Neu" kannst du beliebig viele "Auren" neu definieren. Auren sind quasi einzelne kleine Beobachtungselemente, die bei bestimmten Dingen aktiv werden.<br>
-Eine definierte "Aura" hat einen oder mehrere Auslöser, Bedingungen und Aktionen. (Wie bei WeakAuras.)<br>
-Tritt der definierte Auslöser einer Aura ein, und treffen die definierten Bedingungen der Aura zu, dann werden die Aktionen der Aura ausgeführt.<br>
+- Unter "SkuAuras > Neu" kannst du beliebig viele "SkuAuren" neu definieren. SkuAuren sind quasi einzelne kleine Beobachtungselemente, die bei bestimmten Dingen aktiv werden.<br>
+Eine definierte "SkuAura" hat einen oder mehrere Auslöser, Bedingungen und Aktionen. (Wie bei WeakAuras.)<br>
+Tritt der definierte Auslöser einer SkuAura ein, und treffen die definierten Bedingungen der SkuAura zu, dann werden die Aktionen der SkuAura ausgeführt.<br>
   - Auslöser: Das sind Ereignisse wie "Buff/Debuff erhalten", "Gegenstand benutzt", "Zauber-Cooldown startet" usw.
   - Bedingungen: Das können Dinge die "Zaubername", "Gegenstandsname", "Ziel" etc. sein.
   - Aktionen: Damit kannst du dir entweder einen Hinweis als Audio oder im Chat ausgeben lassen. Inklusive was gerade ausgelöst wurde usw.
 
 So funktioniert die Erstellung:
-- Zuerst wählst du unter "Neu" einen der vier Grundtypen für Auren aus: 
-  - Einheit: Das sind Auren, die sich auf Informationen von Spielern, NPCs und Mobs beziehen. Beispiel: "Ansagen wenn HP des Spielers unter 50 % fällt".
-  - Zauber: Das sind Auren, die sich auf Informationen zu Zaubern beziehen. Beispiel: "Ansagen wenn der Cooldown von Eisblock beendet ist".
-  - Gegenstand: Diese Auren beziehen sich auf Gegenstände. Beispiel: "Ansagen wenn der Cooldown von Insignie beendet ist".
-  - Aura: Das sind Auren, die sich auf Buffs und Debuffs (übergreifend als Auren bezeichnet) beziehen. Beispiel: "Ansagen, wenn Seelenstärke auf einem Gruppenmitglied der Spielers ausläuft".<br>
+- Zuerst wählst du unter "Neu" einen der vier Grundtypen für SkuAuren aus: 
+  - Einheit: Das sind SkuAuren, die sich auf Informationen von Spielern, NPCs und Mobs beziehen. Beispiel: "Ansagen wenn HP des Spielers unter 50 % fällt".
+  - Zauber: Das sind SkuAuren, die sich auf Informationen zu Zaubern beziehen. Beispiel: "Ansagen wenn der Cooldown von Eisblock beendet ist".
+  - Gegenstand: Diese SkuAuren beziehen sich auf Gegenstände. Beispiel: "Ansagen wenn der Cooldown von Insignie beendet ist".
+  - Aura: Das sind SkuAuren, die sich auf Buffs und Debuffs (übergreifend als "Auren" bezeichnet, nicht zu verwechseln mit den grundlegenden SkuAuren) beziehen. Beispiel: "Ansagen, wenn Seelenstärke auf einem Gruppenmitglied der Spielers ausläuft".<br>
 
   Wähle einfach den Typ aus der Liste und geh mit der PFEILTASTE nach rechts in das nächste Untermenü.<br>
   WICHTIG: In diesem Menü haben die Tasten ENTER und PFEIL RECHTS/LINKS unterschiedliche Funktionen. Bewege dich immer mit den Pfeilen. ENTER schließst die Erstellung ab.
-- Nach dem Aura-Typ gehst du im Menü nach rechts und legst du eine oder mehrere Bedingungen fest.<br>
+- Nach dem SkuAura-Typ gehst du im Menü nach rechts und legst du eine oder mehrere Bedingungen fest.<br>
   Eine Bedingung besteht immer aus drei Elementen:
-    - Attribut: Die Eigenschaft, auf die sich die Bedingung bezieht. Beispiele: Zaubername, Aura-Typ (Buff oder Debuff), Ereignistyp
+    - Attribut: Die Eigenschaft, auf die sich die Bedingung bezieht. Beispiele: Zaubername, Auraart (Buff oder Debuff), Ereignistyp
     - Operator: Der Vergleich, der für den aktuellen Attributtyp mit dem von dir definierten Wert vorgenommen wird. Beispiele "gleich", "ungleich", "größer", "kleiner"
     - Wert: Der Wert, der über den Operator mit dem aktuellen Wert des Attributs verglichen wird.
   Ein Beispiel für eine Bedingung aus diesen drei Elementen: "Attribut" ist "Zaubername", "Operator" ist "gleich" und "Wert" ist "Arkane Intelligenz". Das ergibt die fertige Bedingung "Wenn Zaubername gleich Arkane Intelligenz".<br>
   
   Du musst also zuerst ein Attribut auswählen. Dann gehst du nach rechts und wählst einen Operator aus. Dann gehst du nach rechts und wählst einen Wert aus. <br>
-  Damit ist die erste Bedingung erstellt. Wenn du wieder nach rechts gehst, kommen wieder die Attribute und du könntest eine weitere Bedingung (aus den drei Elementen) für die Aura festlegen.
+  Damit ist die erste Bedingung erstellt. Wenn du wieder nach rechts gehst, kommen wieder die Attribute und du könntest eine weitere Bedingung (aus den drei Elementen) für die SkuAura festlegen.
 - Wenn du keine weiteren Bedigungen festlegen möchtest, musst du nun noch die Aktion festlegen, die ausgeführt werden woll, wenn alle Bedigungen zutreffen.<br>
   Dazu wählst du in der Attributliste das Attribut "Aktion" aus und gehst erneut nach rechts.<br>
   Dann findest du alle Aktionen, die verfügbar sind (z. B. Audioausgabe, Chatausgabe).<br>
   Nach der Auswahl der Aktion gehst du erneut nach rechts. Im folgenden Untermenü findest du alle Attributwerte, die du zusätzlich ausgeben kannst. Beispiel: Bei einem Zauber "Zaubername", "Ziel" etc.<br>
   Wähle einen zusätzlich auszugebenenden Attributwert aus. Wenn du erneut nach rechts gehst, kommen wieder alle Attributwerte, und du kannst einen weiteren Attributwert für die Ausgabe auswählen.
-- Wenn du den Aura-Typ, mindestens eine Bedingung (Attribut, Operator, Wert) und eine Aktion festlegt hast, kannst du die Erstellung der neuen Aura jederzeit abschließen.<br>
-  Zum Abschließen der Erstellung der Aura drückst du einfach ENTER.
+- Wenn du den SkuAura-Typ, mindestens eine Bedingung (Attribut, Operator, Wert) und eine Aktion festlegt hast, kannst du die Erstellung der neuen Aura jederzeit abschließen.<br>
+  Zum Abschließen der Erstellung der SkuAura drückst du einfach ENTER.
 
 
 ### SkuNav
