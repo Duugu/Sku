@@ -3,6 +3,14 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 22.3
+
+	SkuOptions
+		Fehlerkorrekturen
+			- Die Eingabe im Menü ist immer noch schnell, aber alle dadurch entstandenen Fehler sollten behoben sein (Einfügen beim Import, Tasten zuweisen etc.).
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 22.1
 
 	SkuAuras

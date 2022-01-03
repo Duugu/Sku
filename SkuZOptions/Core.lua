@@ -975,8 +975,13 @@ function SkuOptions:CreateMenuFrame()
 	tFrame:SetPoint("TOP", _G["OnSkuOptionsMain"], "BOTTOM", 0, 0)
 
 	local OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
+
+	tFrame:SetScript("OnChar", function(self, aKey, aB)
+		dprint("OnSkuOptionsMainOption1 OnChar", aKey)
+		OnSkuOptionsMainOption1:GetScript("OnClick")(self, aKey)
+	end)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
-		--dprint("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
+		dprint("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
 
 		if aKey == "PAGEDOWN" then
 			if SkuOptions.currentMenuPosition then
@@ -1257,16 +1262,18 @@ function SkuOptions:CreateMenuFrame()
 		SetOverrideBindingClick(self, true, "DOWN", "OnSkuOptionsMainOption1", "DOWN")
 		SetOverrideBindingClick(self, true, "LEFT", "OnSkuOptionsMainOption1", "LEFT")
 		SetOverrideBindingClick(self, true, "RIGHT", "OnSkuOptionsMainOption1", "RIGHT")
-		--SetOverrideBindingClick(self, true, "ENTER", "OnSkuOptionsMainOption1", "ENTER")
 		SetOverrideBindingClick(self, true, "BACKSPACE", "OnSkuOptionsMainOption1", "BACKSPACE")
 		SetOverrideBindingClick(self, true, "ESCAPE", "OnSkuOptionsMainOption1", "ESCAPE")
 		for x = 1, #SkuOptions.MenuAccessKeysChars do
-			SetOverrideBindingClick(self, true, SkuOptions.MenuAccessKeysChars[x], "OnSkuOptionsMainOption1", SkuOptions.MenuAccessKeysChars[x])
+			--SetOverrideBindingClick(self, true, SkuOptions.MenuAccessKeysChars[x], "OnSkuOptionsMainOption1", SkuOptions.MenuAccessKeysChars[x])
+			SetOverrideBindingClick(UIParent, true, SkuOptions.MenuAccessKeysChars[x], "UIParent", SkuOptions.MenuAccessKeysChars[x])
 			SkuOptions.MenuAccessKeysChars[SkuOptions.MenuAccessKeysChars[x]] = SkuOptions.MenuAccessKeysChars[x]
 		end
-		SetOverrideBindingClick(self, true, "SPACE", "OnSkuOptionsMainOption1", "SPACE")
+		--SetOverrideBindingClick(self, true, "SPACE", "OnSkuOptionsMainOption1", "SPACE")
+		SetOverrideBindingClick(UIParent, true, "SPACE", "UIParent", "SPACE")
 		for x = 1, #SkuOptions.MenuAccessKeysNumbers do
-			SetOverrideBindingClick(self, true, SkuOptions.MenuAccessKeysNumbers[x], "OnSkuOptionsMainOption1", SkuOptions.MenuAccessKeysNumbers[x])
+			--SetOverrideBindingClick(self, true, SkuOptions.MenuAccessKeysNumbers[x], "OnSkuOptionsMainOption1", SkuOptions.MenuAccessKeysNumbers[x])
+			SetOverrideBindingClick(UIParent, true, SkuOptions.MenuAccessKeysNumbers[x], "UIParent", SkuOptions.MenuAccessKeysNumbers[x])
 			SkuOptions.MenuAccessKeysNumbers[SkuOptions.MenuAccessKeysNumbers[x]] = SkuOptions.MenuAccessKeysNumbers[x]
 		end
 		SkuOptions:StartStopBackgroundSound(true)
@@ -1291,6 +1298,7 @@ function SkuOptions:CreateMenuFrame()
 		end
 		--SkuOptions.Voice:OutputString("Navi geschlossen", true, true, 0.3)
 		ClearOverrideBindings(self)
+		ClearOverrideBindings(UIParent)
 		PlaySound(89)
 
 		if _G["CraftFrame"] then

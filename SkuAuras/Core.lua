@@ -459,11 +459,13 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 				local tNumberOfSlots = GetContainerNumSlots(bagId)
 				for slotId = 1, tNumberOfSlots do
 					local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
-					if itemID == tEvaluateData.itemId then
-						if not tEvaluateData.itemCount then
-							tEvaluateData.itemCount = itemCount - 1
-						else
-							tEvaluateData.itemCount = tEvaluateData.itemCount + itemCount
+					if itemCount then
+						if itemID == tEvaluateData.itemId then
+							if not tEvaluateData.itemCount then
+								tEvaluateData.itemCount = itemCount - 1
+							else
+								tEvaluateData.itemCount = tEvaluateData.itemCount + itemCount
+							end
 						end
 					end
 				end
