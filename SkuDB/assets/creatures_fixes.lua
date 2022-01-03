@@ -763,6 +763,13 @@ local SkuCreaturesFixes = {
         [npcKeys.friendlyToFaction] = "H",
     },
 
+    --sku fixes
+    [3475] = {
+        [npcKeys.spawns] = {[zoneIDs.THE_BARRENS] = {{55.8,17.2}}},
+        [npcKeys.zoneID] = zoneIDs.THE_BARRENS,
+    },
+
+
     -- Below are fake IDs to show specific quest starts/ends only at one specific location even though the
     -- corresponding real NPC has multiple spawns (e.g. "The Kessel Run" requires you to run to Azure Watch even
     -- though "Exarch Menelaous" also spawns at Bloodmyst Isle)

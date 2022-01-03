@@ -167,7 +167,7 @@ function SkuVoice:StopAllOutputs()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell) -- for strings with lookup in string index
+function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs) -- for strings with lookup in string index
 	local tString = ""
 	if aSpell == true then
 		aString = string.lower(aString)
@@ -219,11 +219,13 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 	else
 		-- don't vocalize numbers > 20000 or floats
 		-- that is for the unique auto wp ids and the coords; we don't want hear them, but we still need them in the wp names
-		local tNumberTest = tonumber(aString)
-		if tNumberTest then
-			local tFloat = math.floor(tNumberTest)
-			if (tNumberTest > 20000) or (tNumberTest - tFloat > 0) then
-				return
+		if not aVocalizeAsIs then
+			local tNumberTest = tonumber(aString)
+			if tNumberTest then
+				local tFloat = math.floor(tNumberTest)
+				if (tNumberTest > 20000) or (tNumberTest - tFloat > 0) then
+					return
+				end
 			end
 		end
 
@@ -272,39 +274,45 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 			for x = 1, #tSplittedString do
 				if tonumber(tSplittedString[x]) then
-					local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
-					if tonumber(tFloatNumber) < 1000000 then
-						if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
-							--float
-							local tIVal = string.format("%d", tFloatNumber)
-							local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
-							table.insert(tStrings, tIVal)
-							table.insert(tStrings, "Komma")
-							table.insert(tStrings, tFVal)
-						else
-							--int
-							local tNumber = math.floor(tonumber(tSplittedString[x]))
-							if tNumber == 0 then
-								table.insert(tStrings, 0)
+					if not aVocalizeAsIs then
+						local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
+						if tonumber(tFloatNumber) < 1000000 then
+							if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
+								--float
+								local tIVal = string.format("%d", tFloatNumber)
+								local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
+								table.insert(tStrings, tIVal)
+								table.insert(tStrings, "Komma")
+								table.insert(tStrings, tFVal)
 							else
-								local tRemaining = tNumber
-								if tNumber > 13000 then
-									--no audio available
-								end
-								if tNumber > 999 then
-									local tRound = SkuVoice:UtilRound(tRemaining, 10000)
-									table.insert(tStrings, tRound)
-									tRemaining = tRemaining - tRound
-								end
-								if tRemaining > 99 then
-									local tRound = SkuVoice:UtilRound(tRemaining, 1000)
-									table.insert(tStrings, tRound)
-									tRemaining = tRemaining - tRound
-								end
-								if tRemaining > 0 then
-									table.insert(tStrings, tRemaining)
+								--int
+								local tNumber = math.floor(tonumber(tSplittedString[x]))
+								if tNumber == 0 then
+									table.insert(tStrings, 0)
+								else
+									local tRemaining = tNumber
+									if tNumber > 13000 then
+										--no audio available
+									end
+									if tNumber > 999 then
+										local tRound = SkuVoice:UtilRound(tRemaining, 10000)
+										table.insert(tStrings, tRound)
+										tRemaining = tRemaining - tRound
+									end
+									if tRemaining > 99 then
+										local tRound = SkuVoice:UtilRound(tRemaining, 1000)
+										table.insert(tStrings, tRound)
+										tRemaining = tRemaining - tRound
+									end
+									if tRemaining > 0 then
+										table.insert(tStrings, tRemaining)
+									end
 								end
 							end
+						end
+					else
+						for z = 1, string.len(tSplittedString[x]) do
+							table.insert(tStrings, string.sub(tSplittedString[x], z, z))
 						end
 					end
 				else

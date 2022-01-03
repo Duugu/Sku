@@ -190,8 +190,8 @@ menuEntryTemplate_Menu = {
 			end
 		end
 	end,
-	OnSelect = function(self)
-		--dprint("OnSelect generic", self.name, self.isSelect, self.isMultiselect, self.dynamic)
+	OnSelect = function(self, aEnterFlag)
+		--dprint("OnSelect generic", self.name, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
 		local spellID
 		local itemID
 		local macroID
@@ -219,10 +219,10 @@ menuEntryTemplate_Menu = {
 			return
 		end
 
-		self:OnPostSelect(self)
+		self:OnPostSelect(aEnterFlag)
 	end,
-	OnPostSelect = function(self)
-		--dprint("OnPostSelect generic", self.name, self.isSelect, self.isMultiselect, self.dynamic)
+	OnPostSelect = function(self, aEnterFlag)
+		--dprint("OnPostSelect generic", self.name, self.actionOnEnter, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
 		if self.dynamic == true then
 			self.children = {}
 			if self.isMultiselect == true then
@@ -247,7 +247,7 @@ menuEntryTemplate_Menu = {
 				end
 			end		
 		end
-		if #self.children > 0 then
+		if #self.children > 0 and (self.actionOnEnter ~= true or aEnterFlag ~= true) then
 			SkuOptions.currentMenuPosition = self.children[1]
 			if self.GetCurrentValue then
 				local tGetCurrentValue = self:GetCurrentValue()

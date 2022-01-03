@@ -167,9 +167,15 @@ function SkuOptions:SlashFunc(input)
 					SkuOptions.Voice:OutputString("Chat verdeckt", false, true, 0.2)
 				end
 			end
+
+		elseif fields[1] == "rdatareset" then
+			dprint("/sku rdatareset")
+			SkuOptions.db.profile["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+			SkuNav:CreateWaypointCache()
+			SkuOptions.db.profile["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+			SkuNav:LoadLinkDataFromProfile()
 		end
 	end
-
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -240,8 +246,11 @@ function SkuOptions:OnProfileReset()
 	if tVersion then tVersion = tonumber(tVersion) end
 	SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
 	SkuOptions.db.profile["SkuNav"].Routes = nil
-	SkuOptions.db.profile["SkuNav"].Waypoints = {}
-	SkuOptions.db.profile["SkuNav"].Links = {}
+	SkuOptions.db.profile["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+	SkuNav:CreateWaypointCache()
+	SkuOptions.db.profile["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+	SkuNav:LoadLinkDataFromProfile()
+
 
 	SkuNav:PLAYER_ENTERING_WORLD()
 
@@ -1126,7 +1135,7 @@ function SkuOptions:CreateMenuFrame()
 		end
 		if aKey == "ENTER" then
 			tVocalizeReset = false
-			SkuOptions.currentMenuPosition:OnSelect()
+			SkuOptions.currentMenuPosition:OnSelect(true)
 			SkuOptions:ClearFilter()
 		end
 		if aKey == "BACKSPACE" then
@@ -1637,7 +1646,7 @@ end
 ---@param aWait bool if this should be queued
 ---@param aDuration number duration of the audio
 ---@param aDoNotOverride bool if this audio could be reseted by others
-function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine)
+function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs)
 	--dprint("VocalizeMultipartString", aStr)
 	-- don't vocalize object numbers
 	local tTempHayStack = string.gsub(aStr, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
@@ -1650,7 +1659,7 @@ function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoN
 		if fields then
 			--first part (with q reset)
 			--if SkuAudioFileIndex[tostring(fields[1])] or tonumber(fields[x]) then --element is in string index
-				SkuOptions.Voice:OutputString(fields[1], aReset, aWait, 0.2, aDoNotOverride)--, nil, true)
+				SkuOptions.Voice:OutputString(fields[1], aReset, aWait, 0.2, aDoNotOverride, nil, nil, nil, nil, aVocalizeAsIs)
 			--else
 				--SkuOptions.Voice:Output(fields[1]:lower()..".mp3", true, true, 0.2)
 				--SkuOptions.Voice:OutputString("Keine Audiodatei", true, true, 0.2)
@@ -1658,22 +1667,22 @@ function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoN
 			--remaining parts (w/o q reset)
 			for x = 2, #fields do
 				--if SkuAudioFileIndex[tostring(fields[x])] or tonumber(fields[x]) then --element is in string index
-					SkuOptions.Voice:OutputString(fields[x], false, aWait, 0.2, aDoNotOverride)--, nil, true)
-				--else
+					SkuOptions.Voice:OutputString(fields[x], false, aWait, 0.2, aDoNotOverride, nil, nil, nil, nil, aVocalizeAsIs)
+					--else
 					--SkuOptions.Voice:Output(fields[x]:lower()..".mp3", false, true, 0.2)
 				--	SkuOptions.Voice:OutputString("Keine Audiodatei", false, true, 0.2)
 				--end
 			end
 		end
 	else
-		SkuOptions.Voice:OutputString(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, engine)
+		SkuOptions.Voice:OutputString(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, engine, nil, aVocalizeAsIs)
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aReset bool reset queue
 function SkuOptions:VocalizeCurrentMenuName(aReset)
---dprint(aReset)
+	dprint("VocalizeCurrentMenuName", aReset)
 	if aReset == nil then aReset = true end
 --dprint(aReset)
 	local tTable = SkuOptions.currentMenuPosition
@@ -1746,8 +1755,7 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 		end
 	end
 
-	--dprint("VocalizeMultipartString", tFinalString, aReset, true, SkuOptions.currentMenuPosition.name, SkuOptions.currentMenuPosition.ttsEngine)
-	SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, SkuOptions.currentMenuPosition.ttsEngine)
+	SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, SkuOptions.currentMenuPosition.ttsEngine, SkuOptions.currentMenuPosition.vocalizeAsIs)
 
 	--debug as text
 	local tBread = SkuOptions.currentMenuPosition.name
@@ -2552,15 +2560,17 @@ function SkuOptions:ImportWpAndLinkData()
 				tFullCounterWps = tFullCounterWps + 1
 			end
 
+			SkuNav:CreateWaypointCache()
+
 			--do tLinks
 			for _ in pairs(tLinks) do
 				tImportCounterLinks = tImportCounterLinks + 1
 			end
 			SkuOptions.db.profile["SkuNav"].Links = tLinks or {}
 
-			--finally...
-			SkuNav:CreateWaypointCache()
+			SkuNav:LoadLinkDataFromProfile()
 
+			--done
 			print("Links importiert:", tImportCounterLinks)
 			print("Wegpunkte importiert:", tImportCounterWps)
 			print("Wegpunkte ignoriert:", tIgnoredCounterWps)

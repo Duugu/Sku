@@ -14,6 +14,8 @@ SkuCacheFlag = false
 local slower = string.lower
 local sfind = string.find
 local ssplit = string.split
+local ssub = string.sub
+local tinsert = table.insert
 
 SkuNav.PrintMT = {
 	__tostring = function(thisTable)
@@ -57,6 +59,8 @@ local WaypointCacheLookupAll = {}
 local WaypointCacheLookupPerContintent = {}
 function SkuNav:CreateWaypointCache()
 	dprint("CreateWaypointCache")
+	local beginTime = debugprofilestop()
+
 	WaypointCache = {}
 	WaypointCacheLookupAll = {}
 	WaypointCacheLookupPerContintent = {}
@@ -298,6 +302,9 @@ function SkuNav:CreateWaypointCache()
 	end
 
 	SkuNav:LoadLinkDataFromProfile()
+
+	dprint("End", debugprofilestop() - beginTime)
+
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -364,6 +371,8 @@ end
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:SaveLinkDataToProfile(aWpName)
 	dprint("SaveLinkDataToProfile", aWpName)
+	local beginTime = debugprofilestop()
+	
 	if aWpName then
 		SkuOptions.db.profile[MODULE_NAME].Links[aWpName] = WaypointCache[WaypointCacheLookupAll[aWpName]].links.byName
 	else
@@ -376,6 +385,8 @@ function SkuNav:SaveLinkDataToProfile(aWpName)
 			end
 		end
 	end
+
+	dprint("End SaveLinkDataToProfile", debugprofilestop() - beginTime)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -405,8 +416,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetCleanWpName(aWpName)
-	if string.find(aWpName, "#") then
-		return string.sub(aWpName, string.find(aWpName, "#") + 1)
+	if sfind(aWpName, "#") then
+		return ssub(aWpName, sfind(aWpName, "#") + 1)
 	end
 	return aWpName
 end
@@ -472,7 +483,7 @@ function SkuNav:GetAllMetaTargetsFromWp4(aStartWpName, aMaxDistance, aMaxWPs, aR
 
 	for tIndex, tName in pairs(tTargetWps) do
 		if tFoundNbList[tIndex] then
-			if tAuto == "" or string.sub(tName, 1, 4) ~= tAuto then
+			if tAuto == "" or ssub(tName, 1, 4) ~= tAuto then
 				if aStartWpName ~= tName then
 					rMetapathData[tName] = {
 						distance = aMaxDistance,
@@ -494,7 +505,7 @@ function SkuNav:GetAllMetaTargetsFromWp4(aStartWpName, aMaxDistance, aMaxWPs, aR
 								for tWpIndex, tWpDistance in pairs(WaypointCache[tCurrentFrom].links.byId) do
 									if tList[tWpIndex] then
 										if aReturnPathForWp then
-											table.insert(rMetapathData[tName].pathWps, 1, WaypointCache[tCurrentFrom].name)
+											tinsert(rMetapathData[tName].pathWps, 1, WaypointCache[tCurrentFrom].name)
 										end
 										tDistance = tDistance + tWpDistance
 										tCurrentFrom = tWpIndex
@@ -509,8 +520,8 @@ function SkuNav:GetAllMetaTargetsFromWp4(aStartWpName, aMaxDistance, aMaxWPs, aR
 							end
 						end
 						if aReturnPathForWp then
-							table.insert(rMetapathData[tName].pathWps, 1, WaypointCache[tCurrentFrom].name)
-							table.insert(rMetapathData[tName].pathWps, 1, aStartWpName)
+							tinsert(rMetapathData[tName].pathWps, 1, WaypointCache[tCurrentFrom].name)
+							tinsert(rMetapathData[tName].pathWps, 1, aStartWpName)
 						end
 						if tDistance ~= aMaxDistance then
 							if WaypointCache[tCurrentFrom].links.byId[WaypointCacheLookupAll[aStartWpName]] then
@@ -551,12 +562,12 @@ function SkuNav:GetNearestWpsWithLinksToWp(aWpName, aNumberOfWpsToReturn, aMaxDi
 				if #tFoundWpList > 0 then
 					for x = 1, #tFoundWpList do
 						if tFoundWpList[x].distance > tDistance then
-							table.insert(tFoundWpList, x, {wpIndex = tWpIndex, wpName = tWpName, distance = tDistance})
+							tinsert(tFoundWpList, x, {wpIndex = tWpIndex, wpName = tWpName, distance = tDistance})
 							break
 						end
 					end
 				else
-					table.insert(tFoundWpList, {wpIndex = tWpIndex, wpName = tWpName, distance = tDistance})
+					tinsert(tFoundWpList, {wpIndex = tWpIndex, wpName = tWpName, distance = tDistance})
 				end
 			end
 			if #tFoundWpList > aNumberOfWpsToReturn then
@@ -733,14 +744,12 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 	if tPlayerUIMap == 1415 or tPlayerUIMap == 1414 then
 		local tMMZoneText = GetMinimapZoneText()
 
-		if tMMZoneText == L["Timbermaw Hold"] then
-			--this is because there are two "timbermaw hold" zones with contintent as parent; we explicid need this one, as the other hasn't continent parent at all
+			--this is because of strange areas where C_Map.GetBestMapForUnit is returning continent IDs
+			if tMMZoneText == L["Timbermaw Hold"] then
 			tPlayerUIMap = 1448
 		elseif tMMZoneText == "Der Südstrom" then
-			--this is because there are two "timbermaw hold" zones with contintent as parent; we explicid need this one, as the other hasn't continent parent at all
 			tPlayerUIMap = 1413
 		elseif tMMZoneText == "Die Höhlen des Wehklagens" or tMMZoneText == "Höhle der Nebel"  then
-			--this is because there are two "timbermaw hold" zones with contintent as parent; we explicid need this one, as the other hasn't continent parent at all
 			tPlayerUIMap = 1413
 		else
 			for i, v in pairs(SkuDB.InternalAreaTable) do
@@ -873,14 +882,6 @@ end
 function SkuNav:GetAreaIdFromUiMapId(aUiMapId)
 	--dprint("GetAreaIdFromUiMapId", aUiMapId)
 	local rAreaId
-	--[[
-	local tName = SkuDB.ExternalMapID[aUiMapId].Name_lang
-	for i, v in pairs(SkuDB.InternalAreaTable) do
-		if v.AreaName_lang == tName then
-			rAreaId = i
-		end
-	end
-	]]
 	local tMinimapZoneText = GetMinimapZoneText()
  	if tMinimapZoneText == L["Deeprun Tram"] then --fix for strange DeeprunTram zone
 		rAreaId = 2257
@@ -927,10 +928,6 @@ function SkuNav:GetSubAreaIds(aAreaId)
 			end
 		end
 	end
-	--dprint("  ", tAreas)
-	for i, v in pairs(tAreas) do
-		--dprint("  ", i, v)
-	end
 	return tAreas
 end
 
@@ -938,9 +935,6 @@ end
 function SkuNav:GetCurrentAreaId()
 	--dprint("GetCurrentAreaId")
 	local tMinimapZoneText = GetMinimapZoneText()
-	--if tMinimapZoneText == "Die Tiefenbahn" then
-		--return 2257
-	--end
 	local tAreaId
 	for i, v in pairs(SkuDB.InternalAreaTable) do
 		if (v.AreaName_lang == tMinimapZoneText)  and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
@@ -1848,7 +1842,7 @@ function SkuNav:OnEnable()
 		SkuOptions.db.profile[MODULE_NAME].Waypoints = {}
 		for x = 1, 4 do
 			local tWaypointName = L["Quick waypoint"]..";"..x
-			SkuNav:UpdateQuickWP(tWaypointName)
+			SkuNav:UpdateQuickWP(tWaypointName, true)
 		end		
 	end
 
@@ -2216,13 +2210,14 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:UpdateQuickWP(aWpName)
+function SkuNav:UpdateQuickWP(aWpName, aSilent)
+	dprint("UpdateQuickWP", aWpName)
 	if not aWpName then
 		return
 	end
 
 	if not SkuNav:GetWaypointData2(aWpName) then
-		return
+		--return
 	end
 
 	local tAreaId = SkuNav:GetCurrentAreaId()
@@ -2245,7 +2240,9 @@ function SkuNav:UpdateQuickWP(aWpName)
 		["createdBy"] = tPName,
 		["size"] = 1,
 	})
-	SkuOptions:VocalizeMultipartString(aWpName..";"..L["updated"], true, true, 0.2)
+	if not aSilent then
+		SkuOptions:VocalizeMultipartString(aWpName..";"..L["updated"], true, true, 0.2)
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2287,7 +2284,7 @@ function SkuNav:PLAYER_LOGIN(...)
 	-- quick wps F5-7
 	for x = 1, 4 do
 		local tWaypointName = L["Quick waypoint"]..";"..x
-		SkuNav:UpdateQuickWP(tWaypointName)
+		SkuNav:UpdateQuickWP(tWaypointName, true)
 	end
 
 	--tomtom integration for adding beacons to the arrow
@@ -2325,11 +2322,32 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	dprint("PLAYER_ENTERING_WORLD", ...)
 	SkuNav:UpdateStandardWpReachedRange()
 
+	--load default data if there isn't any
+	local tLinksEmpty, tWpsEmpty = true, true
+	if SkuOptions.db.profile["SkuNav"].Waypoints then
+		for i, v in pairs(SkuOptions.db.profile["SkuNav"].Waypoints) do 
+			tWpsEmpty = false
+			break 
+		end
+	end
+	if tWpsEmpty == true then
+		SkuOptions.db.profile["SkuNav"].Waypoints = SkuDB.routedata["Waypoints"]
+	end
+
+	if SkuOptions.db.profile["SkuNav"].Links then
+		for i, v in pairs(SkuOptions.db.profile["SkuNav"].Links) do 
+			tLinksEmpty = false
+			break 
+		end
+	end
+	if tLinksEmpty == true then
+		SkuOptions.db.profile["SkuNav"].Links = SkuDB.routedata["Links"]
+	end
+
 	C_Timer.NewTimer(15, function() SkuDrawFlag = true end)
 	--C_Timer.NewTimer(15, function() SkuCacheFlag = true end)
 	SkuCacheFlag = true
 
-	
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowing = false
 	SkuOptions.db.profile[MODULE_NAME].routeRecording = false
 
@@ -2338,33 +2356,34 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 		SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = 3
 	end
 
-	--SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
 	SkuNav:SelectWP("", true)
 
 	SkuNav:ClearWaypointsTemporary(true)
-
 	
 	if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
-		SkuOptions.db.profile[MODULE_NAME].Routes = nil
-		SkuOptions.db.profile[MODULE_NAME].Waypoints = {}
+		--SkuOptions.db.profile[MODULE_NAME].Links = nil
+		--SkuOptions.db.profile[MODULE_NAME].Waypoints = {}
+		SkuOptions.db.profile["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+		SkuNav:CreateWaypointCache()
+		SkuOptions.db.profile["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+		SkuNav:LoadLinkDataFromProfile()
+
 		SkuOptions.Voice:OutputString("Achtung", true, true, 0.2)
 		SkuOptions.Voice:OutputString("Erste Verwendung von Profil ab Sku 22", false, true, 0.2)
 		SkuOptions.Voice:OutputString("Alle vorhandenen Routen und Wegpunkte wurden gelöscht", false, true, 0.2)
-		--if SkuOptions.db.profile[MODULE_NAME].Routes then
-			--SkuNav:CacheNbWps()
-		--else
 		local tVersion = GetAddOnMetadata("Sku", "Version") 
 		if tVersion then tVersion = tonumber(tVersion) end
 		SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
-		--end
 	end
 
 	SkuNav:CreateWaypointCache()
 
 	if _G["SkuNavMMMainFrameZoneSelect"] then
 		C_Timer.NewTimer(1, function()
-			_G["SkuNavMMMainFrameZoneSelect"].value = SkuNav:GetCurrentAreaId()
-			_G["SkuNavMMMainFrameZoneSelect"]:SetText(SkuDB.InternalAreaTable[SkuNav:GetCurrentAreaId()].AreaName_lang)	
+			if SkuNav:GetCurrentAreaId() then
+				_G["SkuNavMMMainFrameZoneSelect"].value = SkuNav:GetCurrentAreaId()
+				_G["SkuNavMMMainFrameZoneSelect"]:SetText(SkuDB.InternalAreaTable[SkuNav:GetCurrentAreaId()].AreaName_lang)	
+			end
 		end)
 	end
 end
@@ -2554,7 +2573,7 @@ end
 ---@param aName string
 ---@param aData table contintentId, areaId, worldX, worldY, createdAt, createdBy
 function SkuNav:SetWaypoint(aName, aData)
-	--dprint("SkuNav:SetWaypoint", aName)
+	dprint("SkuNav:SetWaypoint", aName)
 	--if aData then setmetatable(aData, SkuPrintMTWo) dprint(aData) end
 
 	local tWpIndex = #WaypointCache + 1

@@ -4198,6 +4198,12 @@ local SkuQuestFixesSKU = {
     [3791] = {
         [questKeys.preQuestSingle] = {3787}
     },
+    [1434] = {
+        [questKeys.preQuestSingle] = {1432}
+    },
+    [1106] = {
+        [questKeys.preQuestGroup] = {1104, 1105}
+    },
 }
 
 

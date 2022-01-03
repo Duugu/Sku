@@ -453,6 +453,8 @@ local SkuNavMMShowDefaultWo = false
 local tWpFrames = {}
 function SkuNavDrawWaypointsMM(aFrame)
 	--dprint("SkuNavDrawWaypointsMM")
+	local beginTime = debugprofilestop()
+
 	if SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true then
 		--return
 	end
@@ -553,6 +555,8 @@ function SkuNavDrawWaypointsMM(aFrame)
 			end
 		end
 	end
+
+	--dprint("End SkuNavDrawWaypointsMM", debugprofilestop() - beginTime)
 end
 
 

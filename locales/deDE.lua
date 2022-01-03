@@ -9,6 +9,9 @@ Instructions for translators:
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
 
+L["type"] = "typ"
+L["if"] = "wenn"
+L["then"] = "dann"
 L["Minus"] = "Minus" --this is the name of the character (-)
 L["Apostrophe"] = "Hochkomma" --this is the name of the character (')
 L["Accent"] = "Akzent" --this is the name of the character (´)
