@@ -49,6 +49,7 @@ So funktioniert die Erstellung:
     - Attribut: Die Eigenschaft, auf die sich die Bedingung bezieht. Beispiele: Zaubername, Auraart (Buff oder Debuff), Ereignistyp
     - Operator: Der Vergleich, der für den aktuellen Attributtyp mit dem von dir definierten Wert vorgenommen wird. Beispiele "gleich", "ungleich", "größer", "kleiner"
     - Wert: Der Wert, der über den Operator mit dem aktuellen Wert des Attributs verglichen wird.
+  
   Ein Beispiel für eine Bedingung aus diesen drei Elementen: "Attribut" ist "Zaubername", "Operator" ist "gleich" und "Wert" ist "Arkane Intelligenz". Das ergibt die fertige Bedingung "Wenn Zaubername gleich Arkane Intelligenz".<br>
   
   Du musst also zuerst ein Attribut auswählen. Dann gehst du nach rechts und wählst einen Operator aus. Dann gehst du nach rechts und wählst einen Wert aus. <br>
