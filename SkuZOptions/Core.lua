@@ -975,7 +975,7 @@ function SkuOptions:CreateMenuFrame()
 	tFrame:SetPoint("TOP", _G["OnSkuOptionsMain"], "BOTTOM", 0, 0)
 
 	local OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
-	tFrame:SetScript("OnKeyDown", function(self, aKey, aB)
+	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		--dprint("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
 
 		if aKey == "PAGEDOWN" then
@@ -1044,7 +1044,7 @@ function SkuOptions:CreateMenuFrame()
 		SkuCore.openMenuAfterMoving = false
 
 		if SkuOptions.currentMenuPosition.parent.filterable == true then
-			if SkuOptions.MenuAccessKeysChars[aKey] or SkuOptions.MenuAccessKeysNumbers[aKey] then
+			if  SkuOptions.MenuAccessKeysChars[aKey] or SkuOptions.MenuAccessKeysNumbers[aKey] then
 				if aKey == "shift-," then aKey = ";" end
 				if SkuOptions.Filterstring == "" then
 					--SkuCore:Debug("empty = rep")
@@ -1053,7 +1053,7 @@ function SkuOptions:CreateMenuFrame()
 					--SkuCore:Debug("1 and in time = add")
 					SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
 					aKey = ""
-				elseif string.len(SkuOptions.Filterstring) > 1  then
+				elseif  string.len(SkuOptions.Filterstring) > 1  then
 					--SkuCore:Debug("> 1 = add")
 					SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
 					aKey = ""
@@ -1069,7 +1069,7 @@ function SkuOptions:CreateMenuFrame()
 					aKey = ""
 				end
 			end
-			if string.len(SkuOptions.Filterstring) > 1  then
+			if  string.len(SkuOptions.Filterstring) > 1  then
 				if aKey == "BACKSPACE" then
 					SkuOptions.Filterstring = ""
 					SkuOptions:ApplyFilter(SkuOptions.Filterstring)
@@ -1242,31 +1242,31 @@ function SkuOptions:CreateMenuFrame()
 		SkuCore.openMenuAfterMoving = false	
 		PlaySound(88)
 		--SkuOptions.Voice:OutputString("Navi geöffnet", true, true, 0.3)
-		SetOverrideBinding(self, true, "PAGEUP")
-		SetOverrideBinding(self, true, "PAGEDOWN")
-		SetOverrideBinding(self, true, "CTRL-SHIFT-D")
-		SetOverrideBinding(self, true, "CTRL-SHIFT-T")
-		SetOverrideBinding(self, true, "CTRL-SHIFT-UP")
-		SetOverrideBinding(self, true, "CTRL-SHIFT-DOWN")
-		SetOverrideBinding(self, true, "SHIFT-UP")
-		SetOverrideBinding(self, true, "SHIFT-DOWN")
+		SetOverrideBindingClick(self, true, "PAGEUP", "OnSkuOptionsMainOption1", "PAGEUP")
+		SetOverrideBindingClick(self, true, "PAGEDOWN", "OnSkuOptionsMainOption1", "PAGEDOWN")
+		SetOverrideBindingClick(self, true, "CTRL-SHIFT-D", "SkuQuestMainOption1", "CTRL-SHIFT-D")
+		SetOverrideBindingClick(self, true, "CTRL-SHIFT-T", "SkuQuestMainOption1", "CTRL-SHIFT-T")
+		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "OnSkuOptionsMainOption1", "CTRL-SHIFT-UP")
+		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "OnSkuOptionsMainOption1", "CTRL-SHIFT-DOWN")
+		SetOverrideBindingClick(self, true, "SHIFT-UP", "OnSkuOptionsMainOption1", "SHIFT-UP")
+		SetOverrideBindingClick(self, true, "SHIFT-DOWN", "OnSkuOptionsMainOption1", "SHIFT-DOWN")
 
-		SetOverrideBinding(self, true, "SHIFT-RIGHT")
-		SetOverrideBinding(self, true, "HOME")
-		SetOverrideBinding(self, true, "UP")
-		SetOverrideBinding(self, true, "DOWN")
-		SetOverrideBinding(self, true, "LEFT")
-		SetOverrideBinding(self, true, "RIGHT")
-		--SetOverrideBinding(self, true, "ENTER")
-		SetOverrideBinding(self, true, "BACKSPACE")
-		SetOverrideBinding(self, true, "ESCAPE")
+		SetOverrideBindingClick(self, true, "SHIFT-RIGHT", "OnSkuOptionsMainOption1", "SHIFT-RIGHT")
+		SetOverrideBindingClick(self, true, "HOME", "OnSkuOptionsMainOption1", "HOME")
+		SetOverrideBindingClick(self, true, "UP", "OnSkuOptionsMainOption1", "UP")
+		SetOverrideBindingClick(self, true, "DOWN", "OnSkuOptionsMainOption1", "DOWN")
+		SetOverrideBindingClick(self, true, "LEFT", "OnSkuOptionsMainOption1", "LEFT")
+		SetOverrideBindingClick(self, true, "RIGHT", "OnSkuOptionsMainOption1", "RIGHT")
+		--SetOverrideBindingClick(self, true, "ENTER", "OnSkuOptionsMainOption1", "ENTER")
+		SetOverrideBindingClick(self, true, "BACKSPACE", "OnSkuOptionsMainOption1", "BACKSPACE")
+		SetOverrideBindingClick(self, true, "ESCAPE", "OnSkuOptionsMainOption1", "ESCAPE")
 		for x = 1, #SkuOptions.MenuAccessKeysChars do
-			SetOverrideBinding(self, true, SkuOptions.MenuAccessKeysChars[x])
+			SetOverrideBindingClick(self, true, SkuOptions.MenuAccessKeysChars[x], "OnSkuOptionsMainOption1", SkuOptions.MenuAccessKeysChars[x])
 			SkuOptions.MenuAccessKeysChars[SkuOptions.MenuAccessKeysChars[x]] = SkuOptions.MenuAccessKeysChars[x]
 		end
-		SetOverrideBinding(self, true, "SPACE")
+		SetOverrideBindingClick(self, true, "SPACE", "OnSkuOptionsMainOption1", "SPACE")
 		for x = 1, #SkuOptions.MenuAccessKeysNumbers do
-			SetOverrideBinding(self, true, SkuOptions.MenuAccessKeysNumbers[x])
+			SetOverrideBindingClick(self, true, SkuOptions.MenuAccessKeysNumbers[x], "OnSkuOptionsMainOption1", SkuOptions.MenuAccessKeysNumbers[x])
 			SkuOptions.MenuAccessKeysNumbers[SkuOptions.MenuAccessKeysNumbers[x]] = SkuOptions.MenuAccessKeysNumbers[x]
 		end
 		SkuOptions:StartStopBackgroundSound(true)
@@ -1347,7 +1347,7 @@ function SkuOptions:CreateMenuFrame()
 	tFrame:SetScript("OnHide", function(self)
 		ClearOverrideBindings(self)
 	end)
-	tFrame:HookScript("OnKeyDown", _G["OnSkuOptionsMainOption1"]:GetScript("OnKeyDown"))
+	tFrame:HookScript("OnClick", _G["OnSkuOptionsMainOption1"]:GetScript("OnClick"))
 	tFrame:Show()
 end
 

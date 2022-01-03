@@ -3,14 +3,6 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
-Änderungen in Version 22.2
-
-	SkuOptions
-		Fehlerkorrekturen
-			- Die Eingabegeschwindigkeit im Menü wurde erheblich optimiert. Es hakt jetzt nicht mehr und verschluckt auch keine Buchstaben mehr (z. B. beim Filtern). Egal wie schnell man tippt.
-
-
--------------------------------------------------------------------------------------------------------	
 Änderungen in Version 22.1
 
 	SkuAuras
@@ -47,6 +39,7 @@
 						Wähle einen zusätzlich auszugebenenden Attributwert aus. Wenn du erneut nach rechts gehst, kommen wieder alle Attributwerte, und du kannst einen weiteren Attributwert für die Ausgabe auswählen.
 					- Wenn du den Aura-Typ, mindestens eine Bedingung (Attribut, Operator, Wert) und eine Aktion festlegt hast, kannst du die Erstellung der neuen Aura jederzeit abschließen.
 						Zum Abschließen der Erstellung der Aura drückst du einfach ENTER.
+
 
 	SkuNav
 		Neuerungen
