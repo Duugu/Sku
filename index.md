@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 22.3](https://github.com/Duugu/Sku/releases/download/r22.3/Sku-r22.3-bcc.zip) <br>
+[SkuAudioData 24](https://github.com/Duugu/SkuAudioData/releases/download/r24/SkuAudioData-r24-bcc.zip) <br>
+[Sku 22.4](https://github.com/Duugu/Sku/releases/download/r22.4/Sku-r22.4-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
-[SkuAudioData 23](https://github.com/Duugu/SkuAudioData/releases/download/r23/SkuAudioData-r23-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [Sku-Maus Autohotkey-Skript 2](https://1drv.ms/u/s!Aqgp3J_s6MM7iKQcVpcR3IBws7QRuQ?e=GMli2f) <br>
@@ -18,21 +18,51 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
--------------------------------------------------------------------------------------------------------	
+## Änderungen in Version 22.4
+
+### SkuAuras
+*Neuerungen*
+- Das SkuAuras-Modul ist jetzt in seiner Grundfunktion fertig und kann getestet werden. <br>
+  Warnung: Fehler sind zwar nicht bekannt, aber wahrscheinlich. Es kann daher gut sein, dass wir die jetzt erstellten Auren später noch mal löschen müssen.<br>
+  Sollten euch weitere Attribute, Ereignisse oder Werte einfallen, die in Auren für Bedigungen verwenden möchtet, dann her damit.
+- Alle Auren werden fest pro Char gespeichert.
+- Auren können deaktiviert werden, wenn du sie gerade nicht verwenden möchtest. Neue Auren sind standardmäßig aktiviert.
+- Unter "SkuAuras > Auren" findest du folgende Untermenüpunkte:
+  - Neue Aura: Funktioniert wie bisher. Du kannst dir jedoch zu jedem Schritt der Aura-Zusammenstellung mit SHIFT + PFEIL RUNTER Detailinformationen anzeigen lassen.<br>
+   Zum Beispiel, welches Element du gerade auswählst und was der aktuelle Wert bedeutet.<br>
+   Außerdem siehst du darunter welche Attribute und Werte du für die Aura schon ausgewählt hast.<br>
+   Im letzten Schritt der Erstellung (die Werte für die Ausgabe), nach "Aktion dann", entscheidest du dich jetzt zuerst für eine Chat- oder Audioausgabe. Danach kannst du wie bisher beliebig viele Parameter und jetzt auch Sounds in die Ausgabe aufnehmen. <br>
+   Die Sounds sind dieselben wie bei der Fehler-Funktion. Sie werden im Menü zur Verdeutlichung jeweils abspielt, wenn du den Menüpunkt auswählst. <br>
+   Wenn ihr weitere Sounds benötigt, gebt mir bitte welche. Oder sagt mir alternativ genau, was für Sounds ihr möchtet.
+  - Auren verwalten: Hier findest du die drei Untermenüs "Aktivierte", "Deaktiviert" und "Alle". Darunter findest du die entsprechenden Auren.<br>
+    Unter der jeweiligen Aura findest du jeweils Optionen, um die entsprechende Aura zu aktivieren/deaktivieren, zu bearbeiten (noch nicht implementier), zu löschen oder zu exportieren.
+  - Aura importieren: Selbsterklärend. Eine Aura aus einer externen Textdatei importieren. Das Importieren und Exportieren funktioniert genauso wie bei den Routen.
+  - Alle Auren löschen: Ohne weitere Nachfrage werden alle deine Auren gelöscht.
+  - Aura Sets verwalten: Noch nicht implementiert.
+  - Aura Sets importieren: Noch nicht implementiert.
+
+### SkuOptions
+*Fehlerkorrekturen*
+  - Das Menü wird jetzt nicht mehr beim Zielwechsel automatisch geschossen.
+  - Aufgrund eines unbemerkten Zeichensatzproblems hat die Audioausgabe bisher viele Wörter mit Umlauten falsch ausgesprochen. Daher wurden 12000 Wörter neu aufgenommen.
+  - Außerdem wurden 1000 fehlende Wörter aufgenommen.
+
+### SkuQuest
+*Fehlerkorrekturen*
+  - Für die Quest "Lar'korwis Fährte" sind jetzt die Weibchen als Ziele vorhanden.
+
 ## Änderungen in Version 22.3
 
 ### SkuOptions
 *Fehlerkorrekturen*
 - Die Eingabe im Menü ist immer noch schnell, aber alle dadurch entstandenen Fehler sollten behoben sein (Einfügen beim Import, Tasten zuweisen etc.).
 
--------------------------------------------------------------------------------------------------------	
 ## Änderungen in Version 22.2
 
 ### SkuOptions
 *Fehlerkorrekturen*
 - Die Eingabegeschwindigkeit im Menü wurde erheblich optimiert. Es hakt jetzt nicht mehr und verschluckt auch keine Buchstaben mehr (z. B. beim Filtern). Egal wie schnell man tippt.
 
--------------------------------------------------------------------------------------------------------	
 ## Änderungen in Version 22.1
 
 ### SkuAuras
