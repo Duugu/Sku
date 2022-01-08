@@ -6,7 +6,7 @@
         "SkuOptions",
         "Voice",
         "LibStub",
-        "menuEntryTemplate_Menu",
+        "SkuGenericMenuItem",
         "SkuAudioFileIndex",
         "TTS",
         "skudebuglevel",

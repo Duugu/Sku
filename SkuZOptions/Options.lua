@@ -287,11 +287,11 @@ SkuOptions.defaults = {
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilder(aParentEntry)
 	--dprint("SkuOptions:MenuBuilder", aParentEntry)
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, menuEntryTemplate_Menu)
+	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {"Profil"}, menuEntryTemplate_Menu)
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Auswählen"}, menuEntryTemplate_Menu)
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {"Profil"}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Auswählen"}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -299,13 +299,13 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tList = SkuOptions.db:GetProfiles()
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tList, menuEntryTemplate_Menu)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tList, SkuGenericMenuItem)
 	end
 	tNewMenuSubEntry.GetCurrentValue = function(self, aValue, aName)
 		return SkuOptions.db:GetCurrentProfile()
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["New"]}, menuEntryTemplate_Menu)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["New"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -313,7 +313,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		--https://www.wowace.com/projects/ace3/pages/api/ace-db-3-0
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Kopieren von"}, menuEntryTemplate_Menu)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Kopieren von"}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -321,20 +321,20 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tList = SkuOptions.db:GetProfiles()
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tList, menuEntryTemplate_Menu)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tList, SkuGenericMenuItem)
 	end
 	tNewMenuSubEntry.GetCurrentValue = function(self, aValue, aName)
 		return SkuOptions.db:GetCurrentProfile()
 	end
 
 	--[[
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Löschen"}, menuEntryTemplate_Menu)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Löschen"}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		--SkuOptions.db:DeleteProfile(name, silent)
 	end
 	]]
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Zurücksetzen"}, menuEntryTemplate_Menu)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Zurücksetzen"}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		--dprint("db", SkuOptions.db:ResetProfile())
@@ -346,7 +346,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		}
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {"Fehlende Audio Wörter kopieren"}, menuEntryTemplate_Menu)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {"Fehlende Audio Wörter kopieren"}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		if SkuOptions.db.realm then

@@ -1181,6 +1181,7 @@ function SkuCore:UNIT_HAPPINESS(unitTarget)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local SkuDropdownlistGenericFlag = false
 function SkuCore:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
 	--dprint("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
@@ -1206,8 +1207,16 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			
 			for x = 1, #SkuCore.interactFramesList do
 				if _G[SkuCore.interactFramesList[x]] then
-					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", SkuCore.GENERIC_OnOpen)
-					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", SkuCore.GENERIC_OnClose)
+					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Show", function(self, a, b, c, d, e) 
+						SkuDropdownlistGenericFlag = true 
+						SkuCore.GENERIC_OnOpen(self, a, b, c, d, e) 
+					end)
+					hooksecurefunc(_G[SkuCore.interactFramesList[x]], "Hide", function(self, a, b, c, d, e) 
+						if SkuDropdownlistGenericFlag == true then 
+							SkuDropdownlistGenericFlag = false 
+							SkuCore.GENERIC_OnClose(self, a, b, c, d, e) 
+						end 
+					end)
 					SkuCore.interactFramesListHooked[SkuCore.interactFramesList[x]] = true
 				end
 			end

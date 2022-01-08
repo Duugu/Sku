@@ -9,6 +9,8 @@ Instructions for translators:
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
 
+L["aura;sound"] = "aura;sound"
+L["aura"] = "aura"
 L["type"] = "typ"
 L["if"] = "wenn"
 L["then"] = "dann"
@@ -373,4 +375,4 @@ L["Schlachtzugszielsymbol"] = "Schlachtzugszielsymbol"  -- target unit frame con
 L["Fokus setzen"] = "Fokus setzen"   -- target unit frame context menu entry; needs to be exact. don't just translate. get it from the game.
 L["Freund hinzufügen"] = "Freund hinzufügen"   -- target unit frame context menu entry; needs to be exact. don't just translate. get it from the game.
 L["Fenster verschieben"] = "Fenster verschieben"   -- target unit frame context menu entry; needs to be exact. don't just translate. get it from the game.
-L["Spieler melden wegen:"] = "pieler melden wegen:"   -- target unit frame context menu entry; needs to be exact. don't just translate. get it from the game.
+L["Spieler melden wegen:"] = "Spieler melden wegen:"   -- target unit frame context menu entry; needs to be exact. don't just translate. get it from the game.

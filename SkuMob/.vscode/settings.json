@@ -4,6 +4,6 @@
         "SkuOptions",
         "Voice",
         "GameTooltip_SetDefaultAnchor",
-        "menuEntryTemplate_Menu"
+        "SkuGenericMenuItem"
     ]
 }

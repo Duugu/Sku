@@ -6,7 +6,7 @@
         "SkuCore",
         "TTS",
         "SkuOptions",
-        "menuEntryTemplate_Menu",
+        "SkuGenericMenuItem",
         "LibStub",
         "Voice",
         "ChatFrame1"

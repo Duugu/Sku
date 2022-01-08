@@ -5,7 +5,7 @@
     "SkuCore",
     "Voice",
     "SkuOptions",
-    "menuEntryTemplate_Menu",
+    "SkuGenericMenuItem",
     "TTS",
     "ToggleQuestLog",
     "QuestLogFrame",

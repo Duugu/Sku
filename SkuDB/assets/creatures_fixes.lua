@@ -770,6 +770,14 @@ local SkuCreaturesFixes = {
     },
 
 
+    [9683] = {
+        [npcKeys.spawns] = {
+            [zoneIDs.UN_GORO_CRATER] = {
+                {71.4,60},{63.8,62.8},{66.4,66.8},{62.2,66},{67,73.6},{60.8,72.2},{63.2,77.2},{58.2,78.2},
+            }
+        },
+    },
+
     -- Below are fake IDs to show specific quest starts/ends only at one specific location even though the
     -- corresponding real NPC has multiple spawns (e.g. "The Kessel Run" requires you to run to Azure Watch even
     -- though "Exarch Menelaous" also spawns at Bloodmyst Isle)

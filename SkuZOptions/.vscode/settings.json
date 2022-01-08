@@ -14,7 +14,7 @@
         "SystemFont_Huge1",
         "BlizzardOptionsPanel_GetCVarSafe",
         "BlizzardOptionsPanel_SetCVarSafe",
-        "menuEntryTemplate_Menu",
+        "SkuGenericMenuItem",
         "nDCFAddMessage"
     ],
     "Lua.diagnostics.disable": [
