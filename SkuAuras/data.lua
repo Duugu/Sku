@@ -287,6 +287,7 @@ SkuAuras.outputs = {
          end,
       },
    },
+   --[[
    auraType = {
       tooltip = "Der Typ der ausgelösten Aura",
       friendlyName = "aura typ",
@@ -303,12 +304,14 @@ SkuAuras.outputs = {
          end,
       },
    },
+   ]]
    sourceUnitId = {
       tooltip = "Die Einheiten ID der Quelle für das ausgelöste Ereignis",
       friendlyName = "quell einheit",
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.sourceUnitId then
+               dprint("tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
                SkuOptions.Voice:OutputString(tEvaluateData.sourceUnitId, aFirst, true, 0.1, false)
             end
          end,
@@ -324,6 +327,7 @@ SkuAuras.outputs = {
       friendlyName = "ziel einheit",
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            dprint("tEvaluateData.destUnitId", tEvaluateData.destUnitId)
             if tEvaluateData.destUnitId then
                SkuOptions.Voice:OutputString(tEvaluateData.destUnitId, aFirst, true, 0.1, false)
             end
@@ -335,6 +339,22 @@ SkuAuras.outputs = {
          end,
       },
    },
+   unitHealthPlayer = {
+      tooltip = "Dein Gesundheit in Prozent",
+      friendlyName = "eigene Gesundheit",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.unitHealthPlayer then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, false)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitHealthPlayer then
+               print(tEvaluateData.unitHealthPlayer)
+            end
+         end,
+      },
+   },      
    auraAmount = {
       tooltip = "Die Stapel Anzahl der Aura",
       friendlyName = "aura stapel",
@@ -369,34 +389,34 @@ SkuAuras.outputs = {
       },
    },
    ]]
-   unitPower = {
-      tooltip = "Deine Mana Menge für das ausgelöste Ereignis",
-      friendlyName = "eigenes mana",
+   unitPowerPlayer = {
+      tooltip = "Deine Ressourcen Menge (Mana, Wut, Energie) für das ausgelöste Ereignis",
+      friendlyName = "eigene Ressource",
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
-            if tEvaluateData.unitPower then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitPower, aFirst, true, 0.1, false)
+            if tEvaluateData.unitPowerPlayer then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitPowerPlayer, aFirst, true, 0.1, false)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
-            if tEvaluateData.unitPower then
-               print(tEvaluateData.unitPower)
+            if tEvaluateData.unitPowerPlayer then
+               print(tEvaluateData.unitPowerPlayer)
             end
          end,
       },
    },
-   unitHealth = {
+   unitHealthPlayer = {
       tooltip = "Deine Gesundheits Menge für das ausgelöste Ereignis",
       friendlyName = "eigene gesundheit",
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
-            if tEvaluateData.unitHealth then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitHealth, aFirst, true, 0.1, false)
+            if tEvaluateData.unitHealthPlayer then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, false)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
-            if tEvaluateData.unitHealth then
-               print(tEvaluateData.unitHealth)
+            if tEvaluateData.unitHealthPlayer then
+               print(tEvaluateData.unitHealthPlayer)
             end
          end,
       },
@@ -483,6 +503,47 @@ SkuAuras.valuesDefault = {
       ["80"] = {friendlyName = "80",}, 
       ["90"] = {friendlyName = "90",}, 
       ["100"] = {friendlyName = "100",}, 
+   --missType
+      ["ABSORB"] = {
+         tooltip = "Absorbiert",
+         friendlyName = "Absorbiert",
+      },
+      ["BLOCK"] = {
+         tooltip = "Geblockt",
+         friendlyName = "Geblockt",
+      },
+      ["DEFLECT"] = {
+         tooltip = "Umgelenkt",
+         friendlyName = "Umgelenkt",
+      },
+      ["DODGE"] = {
+         tooltip = "Ausgewichen",
+         friendlyName = "Ausgewichen",
+      },
+      ["EVADE"] = {
+         tooltip = "Vermieden",
+         friendlyName = "Vermieden",
+      },
+      ["IMMUNE"] = {
+         tooltip = "Immun",
+         friendlyName = "Immun",
+      },
+      ["MISS"] = {
+         tooltip = "Verfehlt",
+         friendlyName = "Verfehlt",
+      },
+      ["PARRY"] = {
+         tooltip = "Pariert",
+         friendlyName = "Pariert",
+      },
+      ["REFLECT"] = {
+         tooltip = "Reflektiert",
+         friendlyName = "Reflektiert",
+      },
+      ["RESIST"] = {
+         tooltip = "Widerstanden",
+         friendlyName = "Widerstanden",
+      },
    --auraType
       ["BUFF"] = {
          tooltip = "Reagiert, wenn der Aura-Typ ein Buff ist",
@@ -559,6 +620,10 @@ SkuAuras.valuesDefault = {
          friendlyName = "dämonenjäger",
       },
    --event
+      ["UNIT_TARGETCHANGE"] = {
+         tooltip = "Eine Einheit hat das Ziel gewechselt. Quell Einheit ID ist die Einheit, die das Ziel gewechselt hat. Ziel Einheit ID ist das neue Ziel von Quell einheit.",
+         friendlyName = "Ziel änderung",
+      },
       ["UNIT_POWER"] = {
          tooltip = "Ressource hat sich verändert (Mana, Energie, Wut etc.",
          friendlyName = "Ressourcen änderung",
@@ -725,8 +790,8 @@ SkuAuras.attributes = {
       tooltip = "Die Ziel-Einheit, für die die Aura ausgelöst werden soll",
       friendlyName = "ziel",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("SkuAuras.attributes.destUnitId.evaluate")
-         if aEventData.destUnitId then
+      	dprint("SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
+         if aEventData.destUnitId or aValue == "all" then
             local tEvaluation = false
             if aValue == "all" then
                return true
@@ -734,7 +799,7 @@ SkuAuras.attributes = {
                if SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, "player") == true then
                   tEvaluation = true
                end
-               for x = 1, 4 do 
+               for x = 0, 4 do 
                   if SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, "party"..x) == true then
                      tEvaluation = true
                   end
@@ -761,10 +826,10 @@ SkuAuras.attributes = {
    },
    sourceUnitId = {
       tooltip = "Die Quell Einheit, für die die Aura ausgelöst werden soll",
-      friendlyName = "ziel",
+      friendlyName = "Quelle",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("SkuAuras.attributes.sourceUnitId.evaluate")
-         if aEventData.sourceUnitId then
+      	dprint("SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId)
+         if aEventData.sourceUnitId or aValue == "all" then
             local tEvaluation = false
             if aValue == "all" then
                return true
@@ -772,7 +837,7 @@ SkuAuras.attributes = {
                if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, "player") == true then
                   tEvaluation = true
                end
-               for x = 1, 4 do 
+               for x = 0, 4 do 
                   if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, "party"..x) == true then
                      tEvaluation = true
                   end
@@ -852,13 +917,35 @@ SkuAuras.attributes = {
          "ITEM_USE",
       },
    },
-   unitPower = {
+   missType = {
+      tooltip = "Der Typ des Verfehlen Ereignisses",
+      friendlyName = "Verfehlen Typ",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("           SkuAuras.attributes.missType.evaluate")
+         if aEventData.missType then
+            return SkuAuras:ProcessEvaluate(aEventData.missType, aOperator, aValue)
+         end
+      end,
+      values = {
+         "ABSORB",
+         "BLOCK",
+         "DEFLECT",
+         "DODGE",
+         "EVADE",
+         "IMMUNE",
+         "MISS",
+         "PARRY",
+         "REFLECT",
+         "RESIST",
+      },
+   },   
+   unitPowerPlayer = {
       tooltip = "Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc.",
       friendlyName = "Eigene Ressource",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.unitPower.evaluate")
-         if aEventData.unitPower then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitPower), aOperator, tonumber(aValue))
+      	dprint("           SkuAuras.attributes.unitPowerPlayer.evaluate")
+         if aEventData.unitPowerPlayer then
+            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitPowerPlayer), aOperator, tonumber(aValue))
             if tEvaluation == true then
                return true
             end
@@ -896,13 +983,13 @@ SkuAuras.attributes = {
          "100",         
       },      
    },
-   unitHealth = {
+   unitHealthPlayer = {
       tooltip = "Dein gesundheits Level in Prozent, das die Aura auslösen soll",
       friendlyName = "Eigene Gesundheit",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.unitHealth.evaluate")
-         if aEventData.unitHealth then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitHealth), aOperator, tonumber(aValue))
+      	dprint("           SkuAuras.attributes.unitHealthPlayer.evaluate")
+         if aEventData.unitHealthPlayer then
+            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitHealthPlayer), aOperator, tonumber(aValue))
             if tEvaluation == true then
                return true
             end
@@ -970,6 +1057,38 @@ SkuAuras.attributes = {
       values = {
       },      
    },   
+   buffListTarget = {
+      tooltip = "Die Liste der Buffs des Ziels",
+      friendlyName = "Buff Liste Ziel",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("           SkuAuras.attributes.buffListTarget.evaluate")
+         if aEventData.buffListTarget then
+            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.buffListTarget, aOperator, aValue)
+            if tEvaluation == true then
+               return true
+            end
+         end
+         return false
+      end,
+      values = {
+      },      
+   },  
+   debuffListTarget = {
+      tooltip = "Die Liste der Debuffs  des Ziels",
+      friendlyName = "Debuff Liste Ziel",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("         SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
+         if aEventData.debuffListTarget then
+            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.debuffListTarget, aOperator, aValue)
+            if tEvaluation == true then
+               return true
+            end
+         end
+         return false
+      end,
+      values = {
+      },      
+   },  
    itemName = {
       tooltip = "Der Gegenstandsname, der die Aura auslösen soll",
       friendlyName = "gegenstand name",
@@ -1146,8 +1265,10 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut entspricht dem gewählten Wert",
       friendlyName = "gleich",
       func = function(aValueA, aValueB) 
-      	dprint("                           SkuAuras.Operators is", aValueA, aValueB)
+      	--dprint("                           SkuAuras.Operators is", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
+         if type(aValueA) == "table" then return false end
+
          if RemoveTags(aValueA) == RemoveTags(aValueB) then 
             return true 
          end
@@ -1160,18 +1281,63 @@ SkuAuras.Operators = {
       func = function(aValueA, aValueB) 
       	dprint("SkuAuras.Operators isNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
+         if type(aValueA) == "table" then return false end
          if RemoveTags(aValueA) ~= RemoveTags(aValueB) then 
             return true 
          end
          return false
       end,
    },
+   ["contains"] = {
+      tooltip = "Gewähltes Attribut enthält den gewählten Wert",
+      friendlyName = "enthält",
+      func = function(aValueA, aValueB) 
+      	--dprint("                           SkuAuras.Operators contains", aValueA, aValueB)
+         if not aValueA or not aValueB then return false end
+         if type(aValueA) == "table" then 
+            for tName, _ in pairs(aValueA) do
+               local tResult = RemoveTags(tName) == RemoveTags(aValueB)
+               if tResult == true then
+                  return true
+               end
+            end
+         else
+            if RemoveTags(aValueA) == RemoveTags(aValueB) then 
+               return true 
+            end
+         end
+         return false
+      end,
+   },   
+   ["containsNot"] = {
+      tooltip = "Gewähltes Attribut enthält nicht den gewählten Wert",
+      friendlyName = "enthält nicht",
+      func = function(aValueA, aValueB) 
+      	dprint("                           SkuAuras.Operators containsNot", aValueA, aValueB)
+         if not aValueA or not aValueB then return false end
+         if type(aValueA) == "table" then 
+            for tName, _ in pairs(aValueA) do
+               dprint("tName", tName)
+               local tResult = RemoveTags(tName) == RemoveTags(aValueB)
+               if tResult == true then
+                  return false
+               end
+            end
+         else
+            if RemoveTags(aValueA) == RemoveTags(aValueB) then 
+               return true 
+            end
+         end
+         return true
+      end,
+   },   
    ["bigger"] = {
       tooltip = "Gewähltes Attribut ist größer als der gewählte Wert",
       friendlyName = "größer",
       func = function(aValueA, aValueB) 
       	dprint("SkuAuras.Operators >", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
+         if type(aValueA) == "table" then return false end
          if tonumber(RemoveTags(aValueA)) > tonumber(RemoveTags(aValueB)) then 
             return true 
          end
@@ -1184,6 +1350,7 @@ SkuAuras.Operators = {
       func = function(aValueA, aValueB) 
       	dprint("-----------------------------------------SkuAuras.Operators <", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
+         if type(aValueA) == "table" then return false end
          if tonumber(RemoveTags(aValueA)) < tonumber(RemoveTags(aValueB)) then 
             return true 
          end
@@ -1194,16 +1361,71 @@ SkuAuras.Operators = {
 
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.Types = {
+   ["if"] = {
+      tooltip = "Wenn die Bedingungen dieser Aura zutreffen",
+      friendlyName = "Wenn",
+      attributes = {
+         "action",
+         "destUnitId",
+         "sourceUnitId",
+         "event",
+         "unitPowerPlayer",
+         "unitHealthPlayer",
+         "spellId",
+         "spellName",
+         "buffListTarget",
+         "debuffListTarget",
+         "itemName",
+         "itemId",
+         "itemCount",
+         "auraType",
+         "auraAmount",
+         "missType",
+         --"class",
+      },
+   },
+   ["ifNot"] = {
+      tooltip = "Wenn die Bedingungen dieser Aura nicht zutreffen",
+      friendlyName = "Wenn nicht",
+      attributes = {
+         "action",
+         "destUnitId",
+         "sourceUnitId",
+         "event",
+         "unitPowerPlayer",
+         "unitHealthPlayer",
+         "spellId",
+         "spellName",
+         "buffListTarget",
+         "debuffListTarget",
+         "itemName",
+         "itemId",
+         "itemCount",
+         "auraType",
+         "auraAmount",
+         "missType",
+         --"class",
+      },
+   },
+}
+--[[
+------------------------------------------------------------------------------------------------------------------
+SkuAuras.Types = {
    aura = {
       tooltip = "Ein Ereignis im Zusammenhang mit einem Buff oder Debuff löst die Aura aus",
       friendlyName = "Aura",
       attributes = {
          "auraType",
+         "sourceUnitId",
          "destUnitId",
          "spellName",
          "spellId",
          "event",
          "auraAmount",
+         "unitHealthPlayer",
+         "unitPowerPlayer",
+         "buffListTarget",
+         "debuffListTarget",
          "action",
       },
    },
@@ -1213,8 +1435,13 @@ SkuAuras.Types = {
       attributes = {
          "spellName",
          "spellId",
+         "sourceUnitId",
+         "destUnitId",
          "event",
-         "unitPower",
+         "unitHealthPlayer",
+         "unitPowerPlayer",
+         "buffListTarget",
+         "debuffListTarget",
          "action",
       },
    },
@@ -1225,7 +1452,13 @@ SkuAuras.Types = {
          "itemName",
          "itemId",
          "itemCount",
+         "sourceUnitId",
+         "destUnitId",
          "event",
+         "unitHealthPlayer",
+         "unitPowerPlayer",
+         "buffListTarget",
+         "debuffListTarget",
          "action",
       },
    },
@@ -1233,11 +1466,15 @@ SkuAuras.Types = {
       tooltip = "Ein Ereignis im Zusammenhang mit einer Einheit (Spieler, NPC, Mob) löst die Aura aus",
       friendlyName = "Einheit",
       attributes = {
+         "sourceUnitId",
          "destUnitId",
          "class",
-         "unitPower",
-         "unitHealth",
+         "event",
+         "unitPowerPlayer",
+         "unitHealthPlayer",
+         "buffListTarget",
+         "debuffListTarget",
          "action",
       },
    },   
-}
+}]]

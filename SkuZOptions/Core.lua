@@ -365,7 +365,7 @@ function SkuOptions:UpdateOverviewText()
 	local tCount = 1
 
 	local tPosX, tPosY = 0, 0
-	if C_Map.GetBestMapForUnit("player") then
+	if C_Map.GetBestMapForUnit("player") and C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player") then
 		tPosX, tPosY = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player"):GetXY()
 	end
 	tTmpText = tCount.." "..UnitName("player")..", "..GetMinimapZoneText()..", "..math.floor(tPosX * 100).." "..math.floor(tPosY * 100).."\r\n"
@@ -418,7 +418,10 @@ function SkuOptions:UpdateOverviewText()
 	tGeneral = tGeneral.."\r\n".."Reparatur status: "..tTmpText
 
 	--money
-	local tMoney = ContainerFrame1MoneyFrame.staticMoney or BagnonMoneyFrame1.staticMoney
+	local tMoney = ContainerFrame1MoneyFrame.staticMoney
+	if BagnonMoneyFrame1 then
+		tMoney = BagnonMoneyFrame1.staticMoney
+	end
 	if tMoney then
 		local tTmpText = GetCoinText(tMoney)
 		tGeneral = tGeneral.."\r\n".."Geld: "..tTmpText
@@ -433,8 +436,6 @@ function SkuOptions:UpdateOverviewText()
 		end
 	end
 	tGeneral = tGeneral.."\r\n".."Freie Taschenplätze: "..tFreeCount
-
-	--buffs/debuffs
 
 	--time
 	local tTime = date("*t")
@@ -475,6 +476,61 @@ function SkuOptions:UpdateOverviewText()
 	tGeneral = tGeneral.."\r\n".."XP: "..(math.floor(tPlayercurrXP / (tPlayernextXP / 100))).." Prozent ("..tPlayercurrXP.." von "..tPlayernextXP.." für "..(UnitLevel("player") + 1)..")\r\nRuhebonus: "..tPlayerXPExhaustion
 
 	table.insert(tSections, tGeneral)
+
+	--buffs/debuffs
+	local tBuffs = "Buffs"
+	local tFound
+	for x = 1, 40  do
+		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitBuff("player", x)
+		if name then
+			tFound = true
+			local tTimeString = ""
+			if expirationTime > 0 then
+				local tRemainingSec = math.floor((expirationTime - GetTime()))
+				if tRemainingSec > 60 then
+					if tRemainingSec > 3600 then
+						tTimeString = (math.floor(tRemainingSec / 3600) + 1).." Stunden"
+					else
+						tTimeString = (math.floor(tRemainingSec / 60) + 1).." Minuten"
+					end
+				else
+					tTimeString = tRemainingSec.." Sekunden"
+				end
+			end
+			tBuffs = tBuffs.."\r\n"..name.." "..tTimeString
+		end
+	end
+	if not tFound then
+		tBuffs = tBuffs.."\r\n".."Keine"
+	end
+	table.insert(tSections, tBuffs)
+
+	local tDebuffs = "Debuffs"
+	local tFound
+	for x = 1, 40  do
+		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff("player", x)
+		if name then
+			tFound = true
+			local tTimeString = ""
+			if expirationTime > 0 then
+				local tRemainingSec = math.floor((expirationTime - GetTime()))
+				if tRemainingSec > 60 then
+					if tRemainingSec > 3600 then
+						tTimeString = (math.floor(tRemainingSec / 3600) + 1).." Stunden"
+					else
+						tTimeString = (math.floor(tRemainingSec / 60) + 1).." Minuten"
+					end
+				else
+					tTimeString = tRemainingSec.." Sekunden"
+				end
+			end
+			tDebuffs = tDebuffs.."\r\n"..name.." "..tTimeString
+		end
+	end
+	if not tFound then
+		tDebuffs = tDebuffs.."\r\n".."Keine"
+	end
+	table.insert(tSections, tDebuffs)
 
 	--skills
 	local tTmpText = ""
@@ -527,7 +583,7 @@ function SkuOptions:UpdateOverviewText()
 			name = string.sub(name, 1, string.find(name,"-") - 1)
 		end
 		if name and isOnline == true then
-			tTmpText = tTmpText.."\r\n"..name..", "..classDisplayName..", "..level..", "..publicNote
+			tTmpText = tTmpText.."\r\n"..name..", "..classDisplayName..", "..level..", "..zone..", "..publicNote
 		end
 	end
 	table.insert(tSections, "Gilde:\r\n"..tTmpText)

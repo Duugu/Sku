@@ -2,6 +2,45 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 22.5
+
+	SkuOptions
+		Neuerungen
+			- Die Übersichtsseite zeigt jetzt für Gildenmitglieder zusätzlich deren aktuelle Zone an.
+			- Die Übersichtsseite zeigt jetzt deine Buffs und Debuffs an.
+
+		Fehlerkorrekturen
+			- Die Übersichtsseite verursacht jetzt in Istanzen keinen Fehler mehr.
+			- Die Übersichtsseite verursacht jetzt keinen Fehler mehr, wenn du sie öffnest ohne vorher mindestens einmal deine Taschen geöffnet zu haben.
+
+	SkuAuras
+		Neuerungen
+			- Da es Änderungen am Aura-System gab, werden alle bestenden Pre-22.5-Auren beim ersten Einloggen mit 22.5 gelöscht.
+			- Die Aura-Erstellung kann jetzt erst mit ENTER abgeschlossen werden, wenn mindestens "Aktion" und eine Ausgabe ausgewählt wurden. Drückst du vorher ENTER, so geht es einfach normal in das nächste Untermenü (wie bei PFEIL RECHTS).
+			- Den ersten Parameter "Typ" einer Aura (war bisher "Einheit", "Gegenstand", "Zauber" oder "Aura") gibt es nicht mehr.
+			  Stattdessen lauten die Werte für den ersten parameter nun "Wenn" und "Wenn nicht".
+			  Das heißt, du wählst jetzt im ersten Schritt einer Aura aus, ob die Aura ausgelöst werden soll, wenn alle Bedingungen zutreffen oder alle Bedigngungen nicht zutreffen.
+			- Einheiten-IDs werden jetzt von der "größten" zur "kleinsten" ausgewertet: Alle, Raid, Gruppe, Ziel, Spieler
+			- Wird ein Attribut in einer Aura mehrmals verwendet, so gilt jetzt für die identischen Attribute automatisch der Operator "Oder". Beispiel: "wenn zauber name gleich machtwort seelenstärke oder zauber name gleich heiliges wort seelenstärke ..."
+			  Für alle anderen Attribute der Aura gilt weiter automatisch der Operator "Und". Beispiel: "wenn ereignis gleich aura erhalten und zauber name gleich machtwort seelenstärke oder zauber name gleich heiliges wort seelenstärke
+			- Neue Attribute: 
+				- "Buff Liste Ziel" und "Debuff Liste Ziel", mit denen du in Bedingungen prüfen kannst, ob dein Ziel einen bestimmten Buff oder Debuff hat.
+				- "Verfehlen Typ" enthält bei einem Verfehlen-Ereignis den genauen Typ (Ausweichen, Parieren etc.).
+			- Neue Operatoren: 
+				- "enthält" und "enthält nicht" (z. B. zur Verwendung mit "Buff Liste")
+			- Neue Werte: 
+				- Ereignis "Zielwechsel". Tritt immer auf, wenn eine bekannte Einheit ("player", "target", "party1-4" usw.) sein Ziel wechselt.
+			- Neue Ausgabeattribute: 
+				-"Eigene Ressource" (Mana, Wut, Energie) und "Eigene Gesundheit". Beides sind Prozentwerte.
+
+		Fehlerkorrekturen
+			- Das Attribut "Ziel" wurde nicht korrekt ausgewertet. Das wurde behoben.
+			- Vergessene Debug-Ausgaben beim Auraerstellen wurden entfernt.
+			- "Alle" bei "Qeuell Einheit" und "Ziel Einheit" gilt jetzt wirklich füer alle.
+
+
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 22.4
 
@@ -16,7 +55,8 @@
 			  - Neue Aura: Funktioniert wie bisher. Du kannst dir jedoch zu jedem Schritt der Aura-Zusammenstellung mit SHIFT + PFEIL RUNTER Detailinformationen anzeigen lassen.
 			    Zum Beispiel, welches Element du gerade auswählst und was der aktuelle Wert bedeutet.
 				 Außerdem siehst du darunter welche Attribute und Werte du für die Aura schon ausgewählt hast.
-				 Im letzten Schritt der Erstellung (die Werte für die Ausgabe), nach "Aktion dann", entscheidest du dich jetzt zuerst für eine Chat- oder Audioausgabe. Danach kannst du wie bisher beliebig viele Parameter und jetzt auch Sounds in die Ausgabe aufnehmen. 
+				 Im letzten Schritt der Erstellung (die Werte für die Ausgabe), nach "Aktion dann", entscheidest du dich jetzt zuerst für eine Chat- oder Audioausgabe. 
+				 Danach kannst du wie bisher beliebig viele Parameter und jetzt auch Sounds in die Ausgabe aufnehmen. 
 				 Die Sounds sind dieselben wie bei der Fehler-Funktion. Sie werden im Menü zur Verdeutlichung jeweils abspielt, wenn du den Menüpunkt auswählst. 
 				 Wenn ihr weitere Sounds benötigt, gebt mir bitte welche. Oder sagt mir alternativ genau, was für Sounds ihr möchtet.
 			  - Auren verwalten: Hier findest du die drei Untermenüs "Aktivierte", "Deaktiviert" und "Alle". Darunter findest du die entsprechenden Auren.

@@ -636,8 +636,10 @@ SkuPrintMTWo = {
               end
               tf(v, tTab.."  ")
               print(tTab.."},")
-           elseif type(v) == "boolean" then
+            elseif type(v) == "boolean" then
               print(tTab..k.." = "..tostring(v)..",")
+            elseif type(v) == "function" then
+              print(tTab..k.." = func,")
            else
               print(tTab..k.." = "..v..",")
            end

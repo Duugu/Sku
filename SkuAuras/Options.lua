@@ -34,6 +34,23 @@ local function RemoveTagFromValue(aValue)
    tCleanValue = string.gsub(tCleanValue, "output:", "")
    return tCleanValue
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function TableSortByIndex(aTable)
+	local tSortedList = {}
+	for k, v in SkuSpairs(aTable, 
+		function(t, a, b) 
+			--print(t, a, b, t[a].friendlyName, t[b].friendlyName) 
+			--if t[a].friendlyName and t[b].friendlyName then
+				return t[b].friendlyName > t[a].friendlyName 
+			--end
+		end) 
+	do
+		tSortedList[#tSortedList+1] = k
+	end
+	return tSortedList
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:BuildAuraTooltip(aCurrentMenuItem)
 															
@@ -118,7 +135,7 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem)
 			tText = tText.."("..SkuAuras.actions[tCurrent.internalName].tooltip..")"
 		end
 	elseif tCurrent.elementType == "output" then
-		print("tCurrent.internalName", tCurrent.internalName)
+		dprint("tCurrent.internalName", tCurrent.internalName)
 		if SkuAuras.outputs[RemoveTagFromValue(tCurrent.internalName)].tooltip then
 			tText = tText.."("..SkuAuras.outputs[RemoveTagFromValue(tCurrent.internalName)].tooltip..")"
 		end
@@ -145,9 +162,9 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem)
 	SkuOptions.currentMenuPosition.textFull = tSections
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
 local function RebuildUsedOutputsHelper(aCurrentMenuItem)
 	local tUsed = {}
-	setmetatable(tUsed, SkuPrintMTWo)
 	local tCurrentItem = aCurrentMenuItem.parent
 	tUsed[RemoveTagFromValue(aCurrentMenuItem.internalName)] = true
 	while tCurrentItem.parent.parent.internalName ~= "action" do
@@ -155,7 +172,6 @@ local function RebuildUsedOutputsHelper(aCurrentMenuItem)
 		tCurrentItem = tCurrentItem.parent
 	end
 	tUsed[RemoveTagFromValue(tCurrentItem.parent.internalName)] = true
-	print(tUsed)
 	return tUsed
 end
 
@@ -177,7 +193,9 @@ function SkuAuras:NewAuraAttributeBuilder(self)
 		end
 
 		if self.parent.parent.internalName == "action" then
-			for i, v in pairs(SkuAuras.outputs) do
+			local tSortedList = TableSortByIndex(SkuAuras.outputs)
+			for x = 1, #tSortedList do
+				local i, v = tSortedList[x], SkuAuras.outputs[tSortedList[x]]
 				if not tSelectTarget.usedOutputs[i] then
 					tItemCount = true
 					--local tAttributeEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
@@ -204,7 +222,10 @@ function SkuAuras:NewAuraAttributeBuilder(self)
 		else
 			local tItemCount
 			if SkuAuras.Types[tSelectTarget.internalName] then
-				for i, v in pairs(SkuAuras.Types[tSelectTarget.internalName].attributes) do
+				local tSortedList = TableSortByIndex(SkuAuras.attributes)
+				for x = 1, #tSortedList do
+					local i, v = tSortedList[x], tSortedList[x]--, SkuAuras.attributes[tSortedList[x]]
+				--for i, v in pairs(SkuAuras.Types[tSelectTarget.internalName].attributes) do
 					--if not tSelectTarget.usedAttributes[v] then
 						tItemCount = true
 						--local tAttributeEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
@@ -255,7 +276,11 @@ function SkuAuras:NewAuraOutputBuilder(self)
 
 		tItemCount = 0
 
-		for i, v in pairs(SkuAuras.outputs) do
+
+		local tSortedList = TableSortByIndex(SkuAuras.outputs)
+		for x = 1, #tSortedList do
+			local i, v = tSortedList[x], SkuAuras.outputs[tSortedList[x]]
+		--for i, v in pairs(SkuAuras.outputs) do
 			if not tSelectTarget.usedOutputs[i] then
 				tItemCount = tItemCount + 1
 				local tAttributeEntry = SkuOptions:InjectMenuItems(self, {v.friendlyName}, SkuGenericMenuItem)
@@ -319,7 +344,10 @@ function SkuAuras:NewAuraOperatorBuilder(self)
 				dprint("build content of", self.name)
 			end
 		else
-			for i, v in pairs(SkuAuras.Operators) do
+			local tSortedList = TableSortByIndex(SkuAuras.Operators)
+			for x = 1, #tSortedList do
+				local i, v = tSortedList[x], SkuAuras.Operators[tSortedList[x]]
+			--for i, v in pairs(SkuAuras.Operators) do
 				if i ~= "then" then
 					local tAttributeEntry = SkuOptions:InjectMenuItems(self, {v.friendlyName}, SkuGenericMenuItem)
 					tAttributeEntry.internalName = i
@@ -373,7 +401,7 @@ function SkuAuras:NewAuraValueBuilder(self)
 				tAttributeValueEntry.internalName = v
 				tAttributeValueEntry.dynamic = true
 				tAttributeValueEntry.filterable = true
-				tAttributeValueEntry.actionOnEnter = true
+				--tAttributeValueEntry.actionOnEnter = true
 				tAttributeValueEntry.vocalizeAsIs = true
 				tAttributeValueEntry.elementType = "value"
 				tAttributeValueEntry.OnEnter = function(self, aValue, aName)
@@ -409,18 +437,18 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		else
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Aktivieren"}, SkuGenericMenuItem)
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Bearbeiten"}, SkuGenericMenuItem)
+		--local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Bearbeiten"}, SkuGenericMenuItem)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Löschen"}, SkuGenericMenuItem)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Exportieren"}, SkuGenericMenuItem)
 	end
 end
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:ExportAuraData(aAuraName)
 	if not SkuOptions.db.char[MODULE_NAME].Auras[aAuraName] then return end
 
 	local tExportDataTable = {
+		version = 22.5,
 		auraName = aAuraName,
 		auraData = nil,
 	}
@@ -429,7 +457,7 @@ function SkuAuras:ExportAuraData(aAuraName)
 	PlaySound(88)
 	print("Aura exportiert")
 	SkuOptions.Voice:OutputString("Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken", false, true, 0.3)		
-	SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.auraName, tExportDataTable.auraData), function(self) PlaySound(89) end)
+	SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.version, tExportDataTable.auraName, tExportDataTable.auraData), function(self) PlaySound(89) end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -442,13 +470,20 @@ function SkuAuras:ImportAuraData()
 		local tSerializedData = strtrim(table.concat(_G["SkuOptionsEditBoxPaste"].SkuOptionsTextBuffer))
 
 		if tSerializedData ~= "" then
-			local tSuccess, auraName, auraData = SkuOptions:Deserialize(tSerializedData)
-			if auraName and auraData then
+			local tSuccess, version, auraName, auraData = SkuOptions:Deserialize(tSerializedData)
+			if auraName and auraData and version then
+				if version < 22.5 then
+					SkuOptions.Voice:OutputString("Aura version zu alt", false, true, 0.3)		
+					return
+				end
 				auraData.enabled = true
 				SkuOptions.db.char[MODULE_NAME].Auras[auraName] = auraData
 				print("Aura importiert:")
 				print(auraName)
 				SkuOptions.Voice:OutputString("Aura importiert", false, true, 0.3)		
+			else
+				SkuOptions.Voice:OutputString("Aura daten defekt", false, true, 0.3)		
+				return
 			end
 		end
 	end)
@@ -597,19 +632,57 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			SkuOptions.Voice:OutputString("Alle auren gelöscht", true, true, 0.1, true)
 		end
 
-
 		local tTypeItem = SkuOptions:InjectMenuItems(self, {"Aura Sets verwalten"}, SkuGenericMenuItem)
 		tTypeItem.dynamic = true
 		tTypeItem.isSelect = true
 		tTypeItem.OnAction = function(self, aValue, aName)
-			dprint("OnAction Sets verwalten")
-			SkuOptions.Voice:OutputString("noch nicht implementiert", false, true, 0.1, true)
+			dprint("OnAction Sets verwalten", self, aValue, aName)
+			dprint(self.selectedSetInternalName)
+			if aName == "Übernehmen überschreiben" then
+				SkuOptions.db.char[MODULE_NAME].Auras = {}
+				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
+				for tAuraName, tAuraData in pairs(tSetData.auras) do
+					SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = tAuraData
+				end
+
+			elseif aName == "Übernehmen hinzufügen" then
+				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
+				for tAuraName, tAuraData in pairs(tSetData.auras) do
+					SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = tAuraData
+				end
+
+			elseif aName == "Bearbeiten" then
+				SkuOptions.Voice:OutputString("noch nicht implementiert", false, true, 0.1, true)
+
+			elseif aName == "Exportieren" then
+				SkuOptions.Voice:OutputString("noch nicht implementiert", false, true, 0.1, true)
+
+			elseif aName == "Löschen" then
+				SkuAuras.AuraSets[self.selectedSetInternalName] = nil
+
+			end
 		end
 		tTypeItem.BuildChildren = function(self)
 			local tHasEntries = false
-			--for i, v in pairs() do 
-				--tHasEntries = true
-			--end
+			for tIntName, tData in pairs(SkuAuras.AuraSets) do 
+				dprint(tIntName, tData, tData.friendlyName)
+				tHasEntries = true
+				local tSet = SkuOptions:InjectMenuItems(self, {tData.friendlyName}, SkuGenericMenuItem)
+				tSet.dynamic = true
+				tSet.internalName = tIntName
+				tSet.OnEnter = function(self, aValue, aName)
+					dprint(self, aValue, aName)
+					self.parent.selectedSetInternalName = self.internalName
+					self.textFull = SkuAuras.AuraSets[self.internalName].tooltip
+				end
+				tSet.BuildChildren = function(self)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Übernehmen überschreiben"}, SkuGenericMenuItem)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Übernehmen hinzufügen"}, SkuGenericMenuItem)
+					--local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Bearbeiten"}, SkuGenericMenuItem)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Exportieren"}, SkuGenericMenuItem)
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Löschen"}, SkuGenericMenuItem)
+				end
+			end
 			if tHasEntries == false then
 				local tEmpty = SkuOptions:InjectMenuItems(self, {"leer"}, SkuGenericMenuItem)
 			end
