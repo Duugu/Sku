@@ -3,8 +3,8 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[SkuAudioData 24](https://github.com/Duugu/SkuAudioData/releases/download/r24/SkuAudioData-r24-bcc.zip) <br>
-[Sku 22.4](https://github.com/Duugu/Sku/releases/download/r22.4/Sku-r22.4-bcc.zip) <br>
+[SkuAudioData 25](https://github.com/Duugu/SkuAudioData/releases/download/r25/SkuAudioData-r25-bcc.zip) <br>
+[Sku 22.5](https://github.com/Duugu/Sku/releases/download/r22.5/Sku-r22.5-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
@@ -17,6 +17,42 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 22.5
+
+### SkuOptions
+*Neuerungen*
+- Die Übersichtsseite zeigt jetzt für Gildenmitglieder zusätzlich deren aktuelle Zone an.
+- Die Übersichtsseite zeigt jetzt deine Buffs und Debuffs an.
+
+*Fehlerkorrekturen*
+- Die Übersichtsseite verursacht jetzt in Istanzen keinen Fehler mehr.
+- Die Übersichtsseite verursacht jetzt keinen Fehler mehr, wenn du sie öffnest ohne vorher mindestens einmal deine Taschen geöffnet zu haben.
+
+###SkuAuras
+*Neuerungen*
+- Da es Änderungen am Aura-System gab, werden alle bestenden Pre-22.5-Auren beim ersten Einloggen mit 22.5 gelöscht.
+- Die Aura-Erstellung kann jetzt erst mit ENTER abgeschlossen werden, wenn mindestens "Aktion" und eine Ausgabe ausgewählt wurden. Drückst du vorher ENTER, so geht es einfach normal in das nächste Untermenü (wie bei PFEIL RECHTS).
+- Den ersten Parameter "Typ" einer Aura (war bisher "Einheit", "Gegenstand", "Zauber" oder "Aura") gibt es nicht mehr.<br>
+  Stattdessen lauten die Werte für den ersten parameter nun "Wenn" und "Wenn nicht".<br>
+  Das heißt, du wählst jetzt im ersten Schritt einer Aura aus, ob die Aura ausgelöst werden soll, wenn alle Bedingungen zutreffen oder alle Bedigngungen nicht zutreffen.
+- Einheiten-IDs werden jetzt von der "größten" zur "kleinsten" ausgewertet: Alle, Raid, Gruppe, Ziel, Spieler
+- Wird ein Attribut in einer Aura mehrmals verwendet, so gilt jetzt für die identischen Attribute automatisch der Operator "Oder". Beispiel: "wenn zauber name gleich machtwort seelenstärke oder zauber name gleich heiliges wort seelenstärke ..."<br>
+  Für alle anderen Attribute der Aura gilt weiter automatisch der Operator "Und". Beispiel: "wenn ereignis gleich aura erhalten und zauber name gleich machtwort seelenstärke oder zauber name gleich heiliges wort seelenstärke
+- Neue Attribute: 
+  - "Buff Liste Ziel" und "Debuff Liste Ziel", mit denen du in Bedingungen prüfen kannst, ob dein Ziel einen bestimmten Buff oder Debuff hat.
+  - "Verfehlen Typ" enthält bei einem Verfehlen-Ereignis den genauen Typ (Ausweichen, Parieren etc.).
+- Neue Operatoren: 
+  - "enthält" und "enthält nicht" (z. B. zur Verwendung mit "Buff Liste")
+- Neue Werte: 
+  - Ereignis "Zielwechsel". Tritt immer auf, wenn eine bekannte Einheit ("player", "target", "party1-4" usw.) sein Ziel wechselt.
+- Neue Ausgabeattribute: 
+  -"Eigene Ressource" (Mana, Wut, Energie) und "Eigene Gesundheit". Beides sind Prozentwerte.
+
+*Fehlerkorrekturen*
+- Das Attribut "Ziel" wurde nicht korrekt ausgewertet. Das wurde behoben.
+- Vergessene Debug-Ausgaben beim Auraerstellen wurden entfernt.
+- "Alle" bei "Qeuell Einheit" und "Ziel Einheit" gilt jetzt wirklich füer alle.
 
 ## Änderungen in Version 22.4
 
