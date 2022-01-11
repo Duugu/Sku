@@ -3,8 +3,8 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[SkuAudioData 25](https://github.com/Duugu/SkuAudioData/releases/download/r25/SkuAudioData-r25-bcc.zip) <br>
-[Sku 22.5](https://github.com/Duugu/Sku/releases/download/r22.5/Sku-r22.5-bcc.zip) <br>
+[SkuAudioData 26](https://github.com/Duugu/SkuAudioData/releases/download/r26/SkuAudioData-r26-bcc.zip) <br>
+[Sku 22.6](https://github.com/Duugu/Sku/releases/download/r22.6/Sku-r22.6-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
@@ -17,6 +17,14 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 22.6
+
+### SkuAuras
+*Neuerungen*
+- Es gibt jetzt unter "SkuAuras > Auren > Aura Sets verwalten" ein erstes Aura-Set für Schattenpriester. <br>
+Welche Buffs/Debuffs, Cooldowns etc. enthalten sind, steht im Tooltip des Sets (SHIFT + PFEIL RUNTER).<br>
+Bitte ausprobieren und Feedback geben. Danke.
 
 ## Änderungen in Version 22.5
 
