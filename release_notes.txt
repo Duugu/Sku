@@ -4,6 +4,16 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 22.6
+
+	SkuAuras
+		Neuerungen
+			- Es gibt jetzt unter "SkuAuras > Auren > Aura Sets verwalten" ein erstes Aura-Set für Schattenpriester. 
+			  Welche Buffs/Debuffs, Cooldowns etc. enthalten sind, steht im Tooltip des Sets (SHIFT + PFEIL RUNTER).
+			  Bitte ausprobieren und Feedback geben. Danke.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 22.5
 
 	SkuOptions

@@ -635,10 +635,12 @@ SkuAuras.valuesDefault = {
       ["SPELL_AURA_APPLIED;SPELL_AURA_REFRESH;SPELL_AURA_APPLIED_DOSE"] = {
          tooltip = "Buff oder Debuff erhalten oder erneuert",
          friendlyName = "aura erhalten",
+         friendlyNameShort = "erhalten",
       },
       ["SPELL_AURA_REMOVED"] = {
          tooltip = "Buff oder Debuff verloren",
          friendlyName = "aura verloren",
+         friendlyNameShort = "verloren",
       },
       ["SPELL_CAST_START"] = {
          tooltip = "Ein Zauber wurde begonnen",
@@ -651,7 +653,7 @@ SkuAuras.valuesDefault = {
       ["SPELL_COOLDOWN_START"] = {
          tooltip = "Der Cooldown eines Zaubers hat begonnen",
          friendlyName = "zauber cooldown start",  
-         friendlyNameShort = "cooldown start",
+         friendlyNameShort = "cooldown",
       },
       ["SPELL_COOLDOWN_END"] = {
          tooltip = "Der Cooldown eines Zaubers ist beendet",
@@ -661,12 +663,12 @@ SkuAuras.valuesDefault = {
       ["ITEM_COOLDOWN_START"] = {
          tooltip = "Der Cooldown eines Gegenstands hat begonnen",
          friendlyName = "gegenstand cooldown start", 
-         friendlyNameShort = "bereit",
+         friendlyNameShort = "cooldown",
       },
       ["ITEM_COOLDOWN_END"] = {
          tooltip = "Der Cooldown eines Gegenstands ist beendet",
          friendlyName = "gegenstand cooldown ende", 
-         friendlyNameShort = "cooldown start",
+         friendlyNameShort = "bereit",
       },
       ["SWING_DAMAGE"] = {
          tooltip = "Ein Nahkampfangriff hat Schaden verursacht",

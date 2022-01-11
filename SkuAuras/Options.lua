@@ -642,13 +642,15 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				SkuOptions.db.char[MODULE_NAME].Auras = {}
 				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
 				for tAuraName, tAuraData in pairs(tSetData.auras) do
-					SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = tAuraData
+					--SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = tAuraData
+					SkuOptions.db.char[MODULE_NAME].Auras[tAuraData.friendlyNameShort] = tAuraData
 				end
 
 			elseif aName == "Übernehmen hinzufügen" then
 				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
 				for tAuraName, tAuraData in pairs(tSetData.auras) do
-					SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = tAuraData
+					--SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = tAuraData
+					SkuOptions.db.char[MODULE_NAME].Auras[tAuraData.friendlyNameShort] = tAuraData
 				end
 
 			elseif aName == "Bearbeiten" then
