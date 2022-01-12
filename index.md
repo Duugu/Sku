@@ -22,7 +22,7 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 ### SkuAuras
 *Neuerungen*
-- Es zwei Attribute für Bedingungen: 
+- Es gibt zwei neu Attribute für Bedingungen: 
   - Im Kampf (wahr/falsch)
   - Ziel-Einheit angreifbar (wahr/falsch)
 
