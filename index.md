@@ -3,8 +3,8 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
+[Sku 22.7](https://github.com/Duugu/Sku/releases/download/r22.7/Sku-r22.7-bcc.zip) <br>
 [SkuAudioData 26](https://github.com/Duugu/SkuAudioData/releases/download/r26/SkuAudioData-r26-bcc.zip) <br>
-[Sku 22.6](https://github.com/Duugu/Sku/releases/download/r22.6/Sku-r22.6-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
@@ -17,6 +17,23 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 22.7
+
+### SkuAuras
+*Neuerungen*
+- Es zwei Attribute für Bedingungen: 
+  - Im Kampf (wahr/falsch)
+  - Ziel-Einheit angreifbar (wahr/falsch)
+
+*Änderungen am Aura-Set Schattenpriester*
+- Die Aura für Schattenschild wurde entfernt, da es sich um eine Troll-Rassenfähigkeit für Priester handelt.
+- Die Auren für den Cooldown von Gedankenschlag und Vampirberührung sind jetzt standardmäßig deaktiviert.
+- Die Dot-Auren für "Schattenwort: Schmerz", "Vampirberührung" und "Vampirumarmung" melden jetzt das Auslaufen auf dem aktuellen Target, statt auf allen Gegnern.
+- Es wurden drei weitere Auren hinzugefügt, die beim Zielwechsel im Kampf melden, wenn das neue Ziel keinen Dot "Schattenwort: Schmerz", "Vampirberührung" oder "Vampirumarmung" hat.
+
+*Fehlerkorrekturen*
+- Beim Attribute "Ziel" werden jetzt alle Ziele geprüft, nicht nur das erste Zutreffende (z. B. wenn eine Bedingung für den Spieler gilt, und dieser sich selbst im Target hat).
 
 ## Änderungen in Version 22.6
 
