@@ -19,6 +19,9 @@ local function RemoveTags(aValue)
    if not aValue then
       return
    end
+   if type(aValue) ~= "string" then
+      return aValue
+   end
    local tCleanValue = string.gsub(aValue, "item:", "")
    tCleanValue = string.gsub(tCleanValue, "spell:", "")
    tCleanValue = string.gsub(tCleanValue, "output:", "")
@@ -287,24 +290,6 @@ SkuAuras.outputs = {
          end,
       },
    },
-   --[[
-   auraType = {
-      tooltip = "Der Typ der ausgelösten Aura",
-      friendlyName = "aura typ",
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
-            if tEvaluateData.auraType then
-               SkuOptions.Voice:OutputString(tEvaluateData.auraType, aFirst, true, 0.1, false)
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            if tEvaluateData.auraType then
-               print(tEvaluateData.auraType)
-            end
-         end,
-      },
-   },
-   ]]
    sourceUnitId = {
       tooltip = "Die Einheiten ID der Quelle für das ausgelöste Ereignis",
       friendlyName = "quell einheit",
@@ -469,6 +454,38 @@ SkuAuras.outputs = {
          end,
       },
    },
+   buffListTarget = {
+      tooltip = "Aura, die in der Buff liste des Ziels gesucht oder ausgeschlossen wurde",
+      friendlyName = "wert buff liste ziel",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.buffListTarget then
+               SkuOptions.Voice:OutputString(tEvaluateData.buffListTarget, aFirst, true, 0.1, false)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.buffListTarget then
+               print(tEvaluateData.buffListTarget)
+            end
+         end,
+      },
+   },
+   debuffListTarget = {
+      tooltip = "Aura, die in der Debuff liste des Ziels gesucht oder ausgeschlossen wurde",
+      friendlyName = "wert debuff liste ziel",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.debuffListTarget then
+               SkuOptions.Voice:OutputString(tEvaluateData.debuffListTarget, aFirst, true, 0.1, false)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.debuffListTarget then
+               print(tEvaluateData.debuffListTarget)
+            end
+         end,
+      },
+   },
 }
 
 ------------------------------------------------------------------------------------------------------------------
@@ -503,6 +520,15 @@ SkuAuras.valuesDefault = {
       ["80"] = {friendlyName = "80",}, 
       ["90"] = {friendlyName = "90",}, 
       ["100"] = {friendlyName = "100",}, 
+      ["true"] = {
+         tooltip = "triff zu",
+         friendlyName = "wahr",
+      },
+      ["false"] = {
+         tooltip = "Trifft nicht zu",
+         friendlyName = "falsch",
+      },
+
    --missType
       ["ABSORB"] = {
          tooltip = "Absorbiert",
@@ -623,14 +649,17 @@ SkuAuras.valuesDefault = {
       ["UNIT_TARGETCHANGE"] = {
          tooltip = "Eine Einheit hat das Ziel gewechselt. Quell Einheit ID ist die Einheit, die das Ziel gewechselt hat. Ziel Einheit ID ist das neue Ziel von Quell einheit.",
          friendlyName = "Ziel änderung",
+         friendlyNameShort = "ziel änderung",
       },
       ["UNIT_POWER"] = {
          tooltip = "Ressource hat sich verändert (Mana, Energie, Wut etc.",
          friendlyName = "Ressourcen änderung",
+         friendlyNameShort = "ressource",
       },
       ["UNIT_HEALTH"] = {
          tooltip = "Gesundheit hat sich verändert",
          friendlyName = "Gesundheit änderung",
+         friendlyNameShort = "gesundheit",
       },
       ["SPELL_AURA_APPLIED;SPELL_AURA_REFRESH;SPELL_AURA_APPLIED_DOSE"] = {
          tooltip = "Buff oder Debuff erhalten oder erneuert",
@@ -793,26 +822,31 @@ SkuAuras.attributes = {
       friendlyName = "ziel",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
-         if aEventData.destUnitId or aValue == "all" then
+         if aValue == "all" then
+            return true
+         end
+         if aEventData.destUnitId then
             local tEvaluation = false
-            if aValue == "all" then
-               return true
-            elseif aValue == "party" then
-               if SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, "player") == true then
-                  tEvaluation = true
-               end
-               for x = 0, 4 do 
-                  if SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, "party"..x) == true then
+            for x = 1, #aEventData.destUnitId do
+               if aValue == "all" then
+                  return true
+               elseif aValue == "party" then
+                  if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "player") == true then
                      tEvaluation = true
                   end
-               end
-               for x = 1, MAX_RAID_MEMBERS do 
-                  if SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, "raid"..x) == true then
-                     tEvaluation = true
+                  for x = 0, 4 do 
+                     if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "party"..x) == true then
+                        tEvaluation = true
+                     end
                   end
+                  for x = 1, MAX_RAID_MEMBERS do 
+                     if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "raid"..x) == true then
+                        tEvaluation = true
+                     end
+                  end
+               else
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, aValue)
                end
-            else
-               tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, aValue)
             end
             if tEvaluation == true then
                return true
@@ -826,31 +860,68 @@ SkuAuras.attributes = {
          "all",
       },
    },
+   tInCombat = {
+      tooltip = "Ob das Event im Kampf auftritt",
+      friendlyName = "Im Kampf",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
+         if aEventData.tInCombat then
+            return SkuAuras:ProcessEvaluate(aEventData.tInCombat, aOperator,true)
+         end
+      end,
+      values = {
+         "true",
+         "false",
+      },
+   },   
+   tDestinationUnitIDCannAttack = {
+      tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
+      friendlyName = "Ziel Angreifbar",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
+         if aEventData.tDestinationUnitIDCannAttack then
+            return SkuAuras:ProcessEvaluate(aEventData.tDestinationUnitIDCannAttack, aOperator,true)
+         end
+      end,
+      values = {
+         "true",
+         "false",
+      },
+   },   
    sourceUnitId = {
       tooltip = "Die Quell Einheit, für die die Aura ausgelöst werden soll",
       friendlyName = "Quelle",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId)
-         if aEventData.sourceUnitId or aValue == "all" then
+      	dprint("SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
+         if aValue == "all" then
+            return true
+         end
+         if aEventData.sourceUnitId then
+            if type(aEventData.sourceUnitId) ~= "table" then
+               aEventData.sourceUnitId = {aEventData.sourceUnitId}
+            end
+
             local tEvaluation = false
-            if aValue == "all" then
-               return true
-            elseif aValue == "party" then
-               if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, "player") == true then
-                  tEvaluation = true
-               end
-               for x = 0, 4 do 
-                  if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, "party"..x) == true then
+            for x = 1, #aEventData.sourceUnitId do
+               if aValue == "all" then
+                  return true
+               elseif aValue == "party" then
+                  if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "player") == true then
                      tEvaluation = true
                   end
-               end
-               for x = 1, MAX_RAID_MEMBERS do 
-                  if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, "raid"..x) == true then
-                     tEvaluation = true
+                  for x = 0, 4 do 
+                     if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "party"..x) == true then
+                        tEvaluation = true
+                     end
                   end
+                  for x = 1, MAX_RAID_MEMBERS do 
+                     if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "raid"..x) == true then
+                        tEvaluation = true
+                     end
+                  end
+               else
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, aValue)
                end
-            else
-               tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, aValue)
             end
             if tEvaluation == true then
                return true
@@ -888,6 +959,9 @@ SkuAuras.attributes = {
          end
       end,
       values = {
+         "UNIT_TARGETCHANGE",
+         "UNIT_POWER",
+         "UNIT_HEALTH",
          "SPELL_AURA_APPLIED;SPELL_AURA_REFRESH;SPELL_AURA_APPLIED_DOSE",
          "SPELL_AURA_REMOVED",
          "SPELL_CAST_START",
@@ -1267,7 +1341,7 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut entspricht dem gewählten Wert",
       friendlyName = "gleich",
       func = function(aValueA, aValueB) 
-      	--dprint("                           SkuAuras.Operators is", aValueA, aValueB)
+      	dprint("                           SkuAuras.Operators is", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
 
@@ -1383,6 +1457,8 @@ SkuAuras.Types = {
          "auraType",
          "auraAmount",
          "missType",
+         "tDestinationUnitIDCannAttack",
+         "tInCombat",
          --"class",
       },
    },
@@ -1406,6 +1482,8 @@ SkuAuras.Types = {
          "auraType",
          "auraAmount",
          "missType",
+         "tDestinationUnitIDCannAttack",
+         "tInCombat",
          --"class",
       },
    },

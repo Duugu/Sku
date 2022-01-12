@@ -7,9 +7,7 @@ SkuAuras.DefaultAuras = {
 SkuAuras.AuraSets = {
    
    priestShadow = {
-      tooltip = {
-         "Aura set für Schatten Priester\r\nEigene Buffs und Debuffs:\r\n- Inneres feuer verloren\r\n- Schattenschild verloren\r\n- Schattengestalt verloren\r\n- Geschwächte Seele verloren\r\nBuffs und Debuffs Gruppe:\r\n- Machtwort Seelenstärke verloren\r\n- Schattenschutz verloren\r\nEigene Cooldowns:\r\n- Verblassen\r\n- Psychischer Schrei\r\n- Gedankenschlag\r\n- Stille\r\n- Furchtzauberschutz\r\n- Schattengeist\r\n- Vampirumarmung\r\nDebuffs auf Gegner:\r\n- Untote fesseln ausgelaufen\r\n- Schattenwort Schmerz ausgelaufen",
-         },
+      tooltip = {"Aura set für Schatten Priester\r\n", "Eigene Buffs und Debuffs:\r\n- Inneres feuer verloren\r\n- Schattengestalt verloren\r\n- Geschwächte Seele verloren", "Buffs und Debuffs Gruppe:\r\n- Machtwort Seelenstärke verloren\r\n- Schattenschutz verloren", "Eigene Cooldowns:\r\n- Verblassen\r\n- Psychischer Schrei\r\n- Stille\r\n- Furchtzauberschutz\r\n- Schattengeist\r\n- Gedankenschlag (deaktiviert)\r\n- Vampirumarmung (deaktiviert)", "Debuffs auf Gegner:\r\n- Schattenwort Schmerz ausgelaufen oder nicht vorhanden\r\n- Vampirberührung ausgelaufen oder nicht vorhanden\r\n- Vampirumarmung ausgelaufen oder nicht vorhanden\r\n- Untote fesseln ausgelaufen",},
       friendlyName = "Priester Schatten",
       auras = {
          --AURAS
@@ -72,39 +70,6 @@ SkuAuras.AuraSets = {
                   {
                      "is", -- [1]
                      "spell:Geschwächte Seele", -- [2]
-                  }, -- [1]
-               },
-            },
-            ["actions"] = {
-               "notifyAudio", -- [1]
-            },
-            ["outputs"] = {
-               "output:sounddang", -- [1]
-               "output:spellName", -- [2]
-            },
-         },
-         -- Schattenschild		aura verloren selbst	
-         ["Wenn;Quelle;gleich;selbst;und;ereignis;gleich;aura verloren;und;zauber name;gleich;Schattenschild;dann;audio ausgabe;aura;sound#dang;zauber name;"] = {
-            ["friendlyNameShort"] = "Schattenschild verloren selbst",
-            ["enabled"] = true,
-            ["type"] = "if",
-            ["attributes"] = {
-               ["sourceUnitId"] = {
-                  {
-                     "is", -- [1]
-                     "player", -- [2]
-                  }, -- [1]
-               },
-               ["event"] = {
-                  {
-                     "is", -- [1]
-                     "SPELL_AURA_REMOVED", -- [2]
-                  }, -- [1]
-               },
-               ["spellName"] = {
-                  {
-                     "is", -- [1]
-                     "spell:Schattenschild", -- [2]
                   }, -- [1]
                },
             },
@@ -313,10 +278,10 @@ SkuAuras.AuraSets = {
          },	
 
 
-         -- Psychischer Schrei		cd bereit	
+         -- Vampirumarmung		cd bereit	
          ["Wenn;zauber name;gleich;Vampirumarmung;oder;zauber name;gleich;Verbesserte Vampirumarmung;und;ereignis;gleich;zauber cooldown ende;und;Quelle;gleich;selbst;dann;audio ausgabe;zauber name;ereignis;"] = {
             ["friendlyNameShort"] = "Vampirumarmung cooldown",
-            ["enabled"] = true,
+            ["enabled"] = false,
             ["type"] = "if",
             ["attributes"] = {
                ["spellName"] = {
@@ -428,7 +393,7 @@ SkuAuras.AuraSets = {
          -- Gedankenschlag		cd bereit	
          ["Wenn;zauber name;gleich;Gedankenschlag;oder;zauber name;gleich;Verbesserter Gedankenschlag;und;ereignis;gleich;zauber cooldown ende;und;Quelle;gleich;selbst;dann;audio ausgabe;zauber name;ereignis;"] = {
             ["friendlyNameShort"] = "Gedankenschlag cooldown",
-            ["enabled"] = true,
+            ["enabled"] = false,
             ["type"] = "if",
             ["attributes"] = {
                ["spellName"] = {
@@ -500,8 +465,8 @@ SkuAuras.AuraSets = {
                
          --DOTS
          -- Schattenwort: Schmerz		aura verloren alle	
-         ["Wenn;zauber name;gleich;Schattenwort: Schmerz;oder;zauber name;gleich;Verbessertes Schattenwort: Schmerz;und;ereignis;gleich;aura verloren;und;Quelle;gleich;alle;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
-            ["friendlyNameShort"] = "Schattenwort Schmerz ausgelaufen gegner",
+         ["Wenn;zauber name;gleich;Schattenwort: Schmerz;oder;zauber name;gleich;Verbessertes Schattenwort: Schmerz;und;ereignis;gleich;aura verloren;und;Quelle;gleich;target;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
+            ["friendlyNameShort"] = "Schattenwort Schmerz ausgelaufen target",
             ["enabled"] = true,
             ["type"] = "if",
             ["attributes"] = {
@@ -515,16 +480,22 @@ SkuAuras.AuraSets = {
                      "spell:Verbessertes Schattenwort: Schmerz", -- [2]
                   }, -- [2]
                },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
                ["event"] = {
                   {
                      "is", -- [1]
                      "SPELL_AURA_REMOVED", -- [2]
                   }, -- [1]
                },
-               ["sourceUnitId"] = {
+               ["destUnitId"] = {
                   {
                      "is", -- [1]
-                     "all", -- [2]
+                     "target", -- [2]
                   }, -- [1]
                },
             },
@@ -537,6 +508,215 @@ SkuAuras.AuraSets = {
                "output:event", -- [3]
             },
          },	
+         ["Wenn;ereignis;gleich;Ziel änderung;und;Im Kampf;gleich;wahr;und;Ziel Angreifbar;gleich;wahr;und;Debuff Liste Ziel;enthält nicht;Schattenwort: Schmerz;dann;audio ausgabe;aura;sound#brang;wert debuff liste ziel;"] = {
+            ["friendlyNameShort"] = "Schattenwort Schmerz fehlt auf ziel",
+            ["enabled"] = true,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["tDestinationUnitIDCannAttack"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "UNIT_TARGETCHANGE", -- [2]
+                  }, -- [1]
+               },
+               ["debuffListTarget"] = {
+                  {
+                     "containsNot", -- [1]
+                     "spell:Schattenwort: Schmerz", -- [2]
+                  }, -- [1]
+                  {
+                     "is", -- [1]
+                     "spell:Verbessertes Schattenwort: Schmerz", -- [2]
+                  }, -- [2]
+               },
+            },
+            ["actions"] = {
+               "notifyAudio", -- [1]
+            },
+            ["outputs"] = {
+               "output:soundbrang", -- [1]
+               "output:debuffListTarget", -- [2]
+            },
+         },
+
+         -- Vampirberührung		aura verloren alle	
+         ["Wenn;zauber name;gleich;Vampirberührung;oder;zauber name;gleich;Verbesserte Vampirberührung;und;ereignis;gleich;aura verloren;und;Quelle;gleich;target;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
+            ["friendlyNameShort"] = "Vampirberührung ausgelaufen target",
+            ["enabled"] = true,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["spellName"] = {
+                  {
+                     "is", -- [1]
+                     "spell:Vampirberührung", -- [2]
+                  }, -- [1]
+                  {
+                     "is", -- [1]
+                     "spell:Verbesserte Vampirberührung", -- [2]
+                  }, -- [2]
+               },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "SPELL_AURA_REMOVED", -- [2]
+                  }, -- [1]
+               },
+               ["destUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "target", -- [2]
+                  }, -- [1]
+               },
+            },
+            ["actions"] = {
+               "notifyAudio", -- [1]
+            },
+            ["outputs"] = {
+               "output:soundbrang", -- [1]
+               "output:spellName", -- [2]
+               "output:event", -- [3]
+            },
+         },	   
+         ["Wenn;ereignis;gleich;Ziel änderung;und;Im Kampf;gleich;wahr;und;Ziel Angreifbar;gleich;wahr;und;Debuff Liste Ziel;enthält nicht;Vampirberührung;oder;Debuff Liste Ziel;enthält nicht;Verbesserte Vampirberührung;dann;audio ausgabe;aura;sound#brang;wert debuff liste ziel;"] = {
+            ["friendlyNameShort"] = "Vampirberührung fehlt auf ziel",
+            ["enabled"] = true,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["tDestinationUnitIDCannAttack"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "UNIT_TARGETCHANGE", -- [2]
+                  }, -- [1]
+               },
+               ["debuffListTarget"] = {
+                  {
+                     "containsNot", -- [1]
+                     "spell:Vampirberührung", -- [2]
+                  }, -- [1]
+                  {
+                     "is", -- [1]
+                     "spell:Verbesserte Vampirberührung", -- [2]
+                  }, -- [2]
+               },
+            },
+            ["actions"] = {
+               "notifyAudio", -- [1]
+            },
+            ["outputs"] = {
+               "output:soundbrang", -- [1]
+               "output:debuffListTarget", -- [2]
+            },
+         },
+
+         -- Vampirumarmung		aura verloren alle	
+         ["Wenn;zauber name;gleich;Vampirumarmung;und;ereignis;gleich;aura verloren;und;Quelle;gleich;target;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
+            ["friendlyNameShort"] = "Vampirumarmung ausgelaufen target",
+            ["enabled"] = true,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["spellName"] = {
+                  {
+                     "is", -- [1]
+                     "spell:Vampirumarmung", -- [2]
+                  }, -- [1]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "SPELL_AURA_REMOVED", -- [2]
+                  }, -- [1]
+               },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["destUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "target", -- [2]
+                  }, -- [1]
+               },
+            },
+            ["actions"] = {
+               "notifyAudio", -- [1]
+            },
+            ["outputs"] = {
+               "output:soundbrang", -- [1]
+               "output:spellName", -- [2]
+               "output:event", -- [3]
+            },
+         },	       
+         ["Wenn;ereignis;gleich;Ziel änderung;und;Im Kampf;gleich;wahr;und;Ziel Angreifbar;gleich;wahr;und;Debuff Liste Ziel;enthält nicht;Vampirumarmung;dann;audio ausgabe;aura;sound#brang;wert debuff liste ziel;"] = {
+            ["friendlyNameShort"] = "Vampirumarmung fehlt auf ziel",
+            ["enabled"] = true,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["tDestinationUnitIDCannAttack"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "UNIT_TARGETCHANGE", -- [2]
+                  }, -- [1]
+               },
+               ["debuffListTarget"] = {
+                  {
+                     "containsNot", -- [1]
+                     "spell:Vampirumarmung", -- [2]
+                  }, -- [1]
+               },
+            },
+            ["actions"] = {
+               "notifyAudio", -- [1]
+            },
+            ["outputs"] = {
+               "output:soundbrang", -- [1]
+               "output:debuffListTarget", -- [2]
+            },
+         },
+
          -- Untote fesseln		aura verloren alle	
          ["Wenn;zauber name;gleich;Untote fesseln;und;ereignis;gleich;aura verloren;und;Quelle;gleich;alle;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
             ["friendlyNameShort"] = "Untote fesseln ausgelaufen gegner",
@@ -555,7 +735,13 @@ SkuAuras.AuraSets = {
                      "SPELL_AURA_REMOVED", -- [2]
                   }, -- [1]
                },
-               ["sourceUnitId"] = {
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["destUnitId"] = {
                   {
                      "is", -- [1]
                      "all", -- [2]

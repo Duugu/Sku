@@ -4,6 +4,25 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 22.7
+
+	SkuAuras
+		Neuerungen
+		- Es zwei Attribute für Bedingungen: 
+			- Im Kampf (wahr/falsch)
+			- Ziel-Einheit angreifbar (wahr/falsch)
+
+		Änderungen am Aura-Set Schattenpriester
+			- Die Aura für Schattenschild wurde entfernt, da es sich um eine Troll-Rassenfähigkeit für Priester handelt.
+			- Die Auren für den Cooldown von Gedankenschlag und Vampirberührung sind jetzt standardmäßig deaktiviert.
+			- Die Dot-Auren für "Schattenwort: Schmerz", "Vampirberührung" und "Vampirumarmung" melden jetzt das Auslaufen auf dem aktuellen Target, statt auf allen Gegnern.
+			- Es wurden drei weitere Auren hinzugefügt, die beim Zielwechsel im Kampf melden, wenn das neue Ziel keinen Dot "Schattenwort: Schmerz", "Vampirberührung" oder "Vampirumarmung" hat.
+
+		Fehlerkorrekturen
+			- Beim Attribute "Ziel" werden jetzt alle Ziele geprüft, nicht nur das erste Zutreffende (z. B. wenn eine Bedingung für den Spieler gilt, und dieser sich selbst im Target hat).
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 22.6
 
 	SkuAuras
