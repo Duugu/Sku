@@ -23,6 +23,7 @@ SkuCore\data.lua
 SkuCore\LocalMenu.lua
 SkuCore\UIErrors.lua
 SkuCore\RangeCheck.lua
+SkuCore\auctionHouse.lua
 SkuCore\mail.lua
 SkuCore\Options.lua
 

@@ -110,7 +110,7 @@ SkuCore.interactFramesList = {
 	"ContainerFrame6",
 	"DropDownList1",
 	"TalentFrame",
-	"AuctionFrame",
+	--"AuctionFrame",
 	"ClassTrainerFrame",
 	"CharacterFrame",
 	"ReputationFrame",
@@ -187,6 +187,7 @@ function SkuCore:OnInitialize()
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
+	SkuCore:AuctionHouseOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1243,6 +1244,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				_G["GroupLootFrame"..x]:SetParent(_G["GroupLootContainer"])
 			end
 		end
+
+		SkuOptions.db.char[MODULE_NAME].AuctionDB = SkuOptions.db.char[MODULE_NAME].AuctionDB or {}
+
 	end
 
 end
@@ -1884,6 +1888,7 @@ local function IterateChildren(t, tab)
 								if tResults[fName] and _G[fName.."Count"]:GetText() then
 									if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") then
 										tResults[fName].textFirstLine = tResults[fName].textFirstLine.." ".._G[fName.."Count"]:GetText()
+										tResults[fName].stackSize = _G[fName.."Count"]:GetText()
 									else
 										tResults[fName].textFirstLine = tResults[fName].textFirstLine
 									end

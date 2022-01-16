@@ -154,13 +154,13 @@ SkuGenericMenuItem = {
 		--dprint("OnAction generic", self.name, value.name, value, aValue)
 	end,
 	OnLeave = function(self, value, aValue)
-		dprint("OnLeave generic", self.name, value, aValue)
+		--dprint("OnLeave generic", self.name, value, aValue)
 		if tCurrentErrorUtteranceTimerHandle then
 			tCurrentErrorUtteranceTimerHandle:Cancel()
 		end
 	end,
 	OnEnter = function(self, value, aValue)
-		dprint("OnEnter generic", self.name, value, aValue)
+		--dprint("OnEnter generic", self.name, value, aValue)
 		if string.find(self.name, L["error;sound"].."#") then
 			for i, v in pairs(SkuCore.Errors.Sounds) do
 				if self.name == v then
@@ -178,15 +178,7 @@ SkuGenericMenuItem = {
 		elseif string.find(self.name, L["aura;sound"].."#") then
 			for i, v in pairs(SkuAuras.outputs) do
 				if self.name == v.friendlyName then
-					tCurrentErrorUtteranceTimerHandle = C_Timer.NewTimer(1.0, function()
-						if tPrevErrorUtterance then
-							StopSound(tPrevErrorUtterance)
-						end
-						local willPlay, soundHandle = PlaySoundFile(v.soundfile, "Talking Head")
-						if willPlay then
-							tPrevErrorUtterance = soundHandle
-						end
-					end)
+					SkuOptions.Voice:OutputString(v.outputString, false, false, 0.3, true)
 				end
 			end
 		elseif string.find(self.name, L["sound"].."#") then
@@ -348,7 +340,7 @@ SkuGenericMenuItem = {
 			end			
 		end
 
-		SkuOptions.currentMenuPosition:OnEnter()
+		SkuOptions.currentMenuPosition:OnEnter(aEnterFlag)
 		--if self.removeFilter then
 			--SkuOptions.Filterstring = ""
 			--SkuOptions:ApplyFilter(SkuOptions.Filterstring)

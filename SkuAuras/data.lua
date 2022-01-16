@@ -2,7 +2,18 @@
 local _G = _G
 local L = Sku.L
 
+
+
+--[[
+["sound-silence_0.5s"] = L["silent"].." "..L["0.5s"],
+["sound-silence_1s"] = L["silent"].." "..L["1s"],
+["sound-silence0.1"] = L["silent"].." "..L["0.1s"],
+]]
+
 SkuAuras.OutputSounds = {
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\Brass1.mp3"] = L["aura;sound"].."#".."Brass1",
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\Glass1.mp3"] = L["aura;sound"].."#".."Glass1",
+   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\WaterDrop1.mp3"] = L["aura;sound"].."#".."WaterDrop1",
    ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_brang.ogg"] = L["aura;sound"].."#"..L["brang"],
    ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_bring.ogg"] = L["aura;sound"].."#"..L["bring"],
    ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_dang.ogg"] = L["aura;sound"].."#"..L["dang"],
@@ -73,12 +84,13 @@ SkuAuras.actions = {
 ------------------------------------------------------------------------------------------------------------------
 local tPrevAuraPlaySoundFileHandle
 SkuAuras.outputs = {
-   soundbrang = {
-      tooltip = "Ein brang Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_brang.ogg",
-      friendlyName = L["aura;sound"].."#"..L["brang"],
+   --[[
+   soundBrass1 = {
+      tooltip = "Ein Brass1 Sound",
+      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\Brass1.mp3",
+      friendlyName = L["aura;sound"].."#Brass1",
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             if aFirst == true then
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
@@ -87,9 +99,90 @@ SkuAuras.outputs = {
                local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
                tPrevAuraPlaySoundFileHandle = soundHandle
             else
-               SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
+               C_Timer.After(aDelay * 0.125, function()
+                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
+                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
+                  tPrevAuraPlaySoundFileHandle = soundHandle
+               end)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            print("soundBrass1")
+         end,
+      },
+   },  
+   Glass1Brass2 = {
+      tooltip = "Ein Brass3 Sound",
+      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\Glass1.mp3",
+      friendlyName = L["aura;sound"].."#Glass1",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
+            if aFirst == true then
+               if tPrevAuraPlaySoundFileHandle then
+                  StopSound(tPrevAuraPlaySoundFileHandle)
+               end
+               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
                local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
                tPrevAuraPlaySoundFileHandle = soundHandle
+            else
+               C_Timer.After(aDelay * 0.125, function()
+                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
+                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
+                  tPrevAuraPlaySoundFileHandle = soundHandle
+               end)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            print("soundBrass1")
+         end,
+      },
+   },  
+   soundWaterDrop1 = {
+      tooltip = "Ein WaterDrop1 Sound",
+      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\WaterDrop1.mp3",
+      friendlyName = L["aura;sound"].."#WaterDrop1",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
+            if aFirst == true then
+               if tPrevAuraPlaySoundFileHandle then
+                  StopSound(tPrevAuraPlaySoundFileHandle)
+               end
+               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
+               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
+               tPrevAuraPlaySoundFileHandle = soundHandle
+            else
+               C_Timer.After(aDelay * 0.125, function()
+                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
+                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
+                  tPrevAuraPlaySoundFileHandle = soundHandle
+               end)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            print("soundBrass1")
+         end,
+      },
+   },  
+
+   soundbrang = {
+      tooltip = "Ein brang Sound",
+      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_brang.ogg",
+      friendlyName = L["aura;sound"].."#"..L["brang"],
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
+            if aFirst == true then
+               if tPrevAuraPlaySoundFileHandle then
+                  StopSound(tPrevAuraPlaySoundFileHandle)
+               end
+               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
+               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
+               tPrevAuraPlaySoundFileHandle = soundHandle
+            else
+               C_Timer.After(aDelay * 0.125, function()
+                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
+                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
+                  tPrevAuraPlaySoundFileHandle = soundHandle
+               end)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -102,7 +195,7 @@ SkuAuras.outputs = {
       soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_bring.ogg",
       friendlyName = L["aura;sound"].."#"..L["bring"],
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             if aFirst == true then
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
@@ -111,9 +204,11 @@ SkuAuras.outputs = {
                local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
                tPrevAuraPlaySoundFileHandle = soundHandle
             else
-               SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
+               C_Timer.After(aDelay * 0.125, function()
+                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
+                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
+                  tPrevAuraPlaySoundFileHandle = soundHandle
+               end)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -126,7 +221,7 @@ SkuAuras.outputs = {
       soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_dang.ogg",
       friendlyName = L["aura;sound"].."#"..L["dang"],
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             if aFirst == true then
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
@@ -150,7 +245,7 @@ SkuAuras.outputs = {
       soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_drmm.ogg",
       friendlyName = L["aura;sound"].."#"..L["drmm"],
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             if aFirst == true then
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
@@ -174,7 +269,7 @@ SkuAuras.outputs = {
       soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_shhhup.ogg",
       friendlyName = L["aura;sound"].."#"..L["shhhup"],
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             if aFirst == true then
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
@@ -198,7 +293,7 @@ SkuAuras.outputs = {
       soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_spoing.ogg",
       friendlyName = L["aura;sound"].."#"..L["spoing"],
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             if aFirst == true then
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
@@ -222,7 +317,7 @@ SkuAuras.outputs = {
       soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_swoosh.ogg",
       friendlyName = L["aura;sound"].."#"..L["swoosh"],
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             if aFirst == true then
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
@@ -246,7 +341,7 @@ SkuAuras.outputs = {
       soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg",
       friendlyName = L["aura;sound"].."#"..L["tsching"],
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             if aFirst == true then
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
@@ -265,6 +360,7 @@ SkuAuras.outputs = {
          end,
       },
    },   
+   ]]
    event = {
       tooltip = "Der Name des auslösenden Ereignisses der Aura",
       friendlyName = "ereignis",
@@ -487,6 +583,77 @@ SkuAuras.outputs = {
       },
    },
 }
+
+local tOutputSoundFiles = {
+   ["sound-brass1"] = L["aura;sound"].."#"..L["brass 1"],
+   ["sound-brass2"] = L["aura;sound"].."#"..L["brass 2"],
+   ["sound-brass3"] = L["aura;sound"].."#"..L["brass 3"],
+   ["sound-brass4"] = L["aura;sound"].."#"..L["brass 4"],
+   ["sound-brass5"] = L["aura;sound"].."#"..L["brass 5"],
+   ["sound-error_brang"] = L["aura;sound"].."#"..L["brang"],
+   ["sound-error_bring"] = L["aura;sound"].."#"..L["bring"],
+   ["sound-error_dang"] = L["aura;sound"].."#"..L["dang"],
+   ["sound-error_drmm"] = L["aura;sound"].."#"..L["drmm"],
+   ["sound-error_shhhup"] = L["aura;sound"].."#"..L["shhhup"],
+   ["sound-error_spoing"] = L["aura;sound"].."#"..L["spoing"],
+   ["sound-error_swoosh"] = L["aura;sound"].."#"..L["swoosh"],
+   ["sound-error_tsching"] = L["aura;sound"].."#"..L["tsching"],
+   ["sound-glass1"] = L["aura;sound"].."#"..L["glass 1"],
+   ["sound-glass2"] = L["aura;sound"].."#"..L["glass 2"],
+   ["sound-glass3"] = L["aura;sound"].."#"..L["glass 3"],
+   ["sound-glass4"] = L["aura;sound"].."#"..L["glass 4"],
+   ["sound-glass5"] = L["aura;sound"].."#"..L["glass 5"],
+   ["sound-waterdrop1"] = L["aura;sound"].."#"..L["waterdrop 1"],
+   ["sound-waterdrop2"] = L["aura;sound"].."#"..L["waterdrop 2"],
+   ["sound-waterdrop3"] = L["aura;sound"].."#"..L["waterdrop 3"],
+   ["sound-waterdrop4"] = L["aura;sound"].."#"..L["waterdrop 4"],
+   ["sound-waterdrop5"] = L["aura;sound"].."#"..L["waterdrop 5"],
+   ["sound-notification1"] = L["aura;sound"].."#"..L["notification"].." 1",
+   ["sound-notification2"] = L["aura;sound"].."#"..L["notification"].." 2",
+   ["sound-notification3"] = L["aura;sound"].."#"..L["notification"].." 3",
+   ["sound-notification4"] = L["aura;sound"].."#"..L["notification"].." 4",
+   ["sound-notification5"] = L["aura;sound"].."#"..L["notification"].." 5",
+   ["sound-notification6"] = L["aura;sound"].."#"..L["notification"].." 6",
+   ["sound-notification7"] = L["aura;sound"].."#"..L["notification"].." 7",
+   ["sound-notification8"] = L["aura;sound"].."#"..L["notification"].." 8",
+   ["sound-notification9"] = L["aura;sound"].."#"..L["notification"].." 9",
+   ["sound-notification10"] = L["aura;sound"].."#"..L["notification"].." 10",
+   ["sound-notification11"] = L["aura;sound"].."#"..L["notification"].." 11",
+   ["sound-notification12"] = L["aura;sound"].."#"..L["notification"].." 12",
+   ["sound-notification13"] = L["aura;sound"].."#"..L["notification"].." 13",
+   ["sound-notification14"] = L["aura;sound"].."#"..L["notification"].." 14",
+   ["sound-notification15"] = L["aura;sound"].."#"..L["notification"].." 15",
+   ["sound-notification16"] = L["aura;sound"].."#"..L["notification"].." 16",
+   ["sound-notification17"] = L["aura;sound"].."#"..L["notification"].." 17",
+   ["sound-notification18"] = L["aura;sound"].."#"..L["notification"].." 18",
+   ["sound-notification19"] = L["aura;sound"].."#"..L["notification"].." 19",
+   ["sound-notification20"] = L["aura;sound"].."#"..L["notification"].." 20",
+   ["sound-notification21"] = L["aura;sound"].."#"..L["notification"].." 21",
+   ["sound-notification22"] = L["aura;sound"].."#"..L["notification"].." 22",
+   ["sound-notification23"] = L["aura;sound"].."#"..L["notification"].." 23",
+   ["sound-notification24"] = L["aura;sound"].."#"..L["notification"].." 24",
+}
+for tOutputString, tFriendlyName in pairs(tOutputSoundFiles) do
+   SkuAuras.outputs[tOutputString] = {
+      tooltip = tFriendlyName,
+      outputString = tOutputString,
+      friendlyName = tFriendlyName,
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
+            if aFirst == true then
+               if tPrevAuraPlaySoundFileHandle then
+                  StopSound(tPrevAuraPlaySoundFileHandle)
+               end
+               SkuOptions.Voice:OutputString("sound-silence0.1", true, false, 0.3, false)
+            end
+            SkuOptions.Voice:OutputString(tOutputString, false, true, 0.3, true)
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            print(tFriendlyName)
+         end,
+      },
+   }
+end
 
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.valuesDefault = {
@@ -874,6 +1041,20 @@ SkuAuras.attributes = {
          "false",
       },
    },   
+   tSourceUnitIDCannAttack = {
+      tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
+      friendlyName = "Ziel Angreifbar",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
+         if aEventData.tSourceUnitIDCannAttack then
+            return SkuAuras:ProcessEvaluate(aEventData.tSourceUnitIDCannAttack, aOperator,true)
+         end
+      end,
+      values = {
+         "true",
+         "false",
+      },
+   },      
    tDestinationUnitIDCannAttack = {
       tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
       friendlyName = "Ziel Angreifbar",
@@ -1457,6 +1638,7 @@ SkuAuras.Types = {
          "auraType",
          "auraAmount",
          "missType",
+         "tSourceUnitIDCannAttack",
          "tDestinationUnitIDCannAttack",
          "tInCombat",
          --"class",
@@ -1482,6 +1664,7 @@ SkuAuras.Types = {
          "auraType",
          "auraAmount",
          "missType",
+         "tSourceUnitIDCannAttack",
          "tDestinationUnitIDCannAttack",
          "tInCombat",
          --"class",

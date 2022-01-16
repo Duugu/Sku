@@ -1295,16 +1295,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 					end
 				end
 			end
-		
 		end
-
-
-
-
-
-
-
 	end
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Auktionshaus"}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.filterable = true
+	tNewMenuParentEntry.BuildChildren = SkuCore.AuctionHouseMenuBuilder
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	SkuOptions:IterateOptionsArgs(SkuCore.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])

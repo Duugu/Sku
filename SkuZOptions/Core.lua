@@ -120,7 +120,7 @@ function SkuOptions:SlashFunc(input)
 
 					if fields[x] == string.lower(tMenu[y].name) then
 						tFoundMenuPos = tMenu[y]
-						tMenu[y].OnSelect(tMenu[y])
+						tMenu[y].OnSelect(tMenu[y], true)
 						tMenu = tMenu[y].children
 						break
 					end
@@ -883,7 +883,7 @@ function SkuOptions:CreateMainFrame()
 					["QuestFrame"] = "QuestFrameCloseButton",
 					["TaxiFrame"] = "TaxiCloseButton",
 					["PetStableFrame"] = "PetStableFrameCloseButton",
-					["AuctionFrame"] = "AuctionFrameCloseButton",
+					--["AuctionFrame"] = "AuctionFrameCloseButton",
 					["ReputationFrame"] = "CharacterFrameCloseButton",
 					["SkillFrame"] = "CharacterFrameCloseButton",
 					["HonorFrame"] = "CharacterFrameCloseButton",
@@ -917,6 +917,11 @@ function SkuOptions:CreateMainFrame()
 				if (MailFrame:IsShown() ) then
 					CloseMail();
 				end
+
+				if (AuctionFrame:IsShown() ) then
+					_G["AuctionFrameCloseButton"]:Click()
+				end
+				
 
 				SkuOptions.Voice:OutputString(L["Menu;closed"], false, true, 0.3, true)
 				SkuCore.Debug("", L["Menu;closed"], true)
@@ -1033,11 +1038,11 @@ function SkuOptions:CreateMenuFrame()
 	local OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
 
 	tFrame:SetScript("OnChar", function(self, aKey, aB)
-		dprint("OnSkuOptionsMainOption1 OnChar", aKey)
+		--dprint("OnSkuOptionsMainOption1 OnChar", aKey)
 		OnSkuOptionsMainOption1:GetScript("OnClick")(self, aKey)
 	end)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
-		dprint("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
+		--dprint("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
 
 		if aKey == "PAGEDOWN" then
 			if SkuOptions.currentMenuPosition then
@@ -1207,7 +1212,7 @@ function SkuOptions:CreateMenuFrame()
 			SkuOptions:CloseMenu()
 			SkuOptions:ClearFilter()
 		end
-		if  SkuOptions.MenuAccessKeysChars[aKey] or (SkuOptions.MenuAccessKeysNumbers[aKey]) then
+		if SkuOptions.MenuAccessKeysChars[aKey] or (SkuOptions.MenuAccessKeysNumbers[aKey]) then
 			SkuOptions.currentMenuPosition:OnKey(aKey)
 		end
 		PlaySound(811)
@@ -1746,7 +1751,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aReset bool reset queue
 function SkuOptions:VocalizeCurrentMenuName(aReset)
-	dprint("VocalizeCurrentMenuName", aReset)
+	--dprint("VocalizeCurrentMenuName", aReset)
 	if aReset == nil then aReset = true end
 --dprint(aReset)
 	local tTable = SkuOptions.currentMenuPosition
@@ -1937,6 +1942,14 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								SkuCore:CheckFrames(true)
 							else
 								SkuCore:CheckFrames()
+							end
+						end
+					end
+
+					if SkuCore.AuctionHouseOpen == true then
+						if aGossipListTable[index].obj:GetParent() then
+							if string.find(aGossipListTable[index].obj:GetName() or "", "ContainerFrame") or string.find(aGossipListTable[index].obj:GetParent():GetName() or "", "ContainerFrame") then									
+								SkuCore:AuctionHouseBuildItemSellMenu(tNewMenuEntry, aGossipListTable[index])
 							end
 						end
 					end

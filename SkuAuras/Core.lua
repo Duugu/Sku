@@ -94,47 +94,55 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:GetBestUnitId(aUnitName, aReturnAll)
+
+	if not aUnitName then
+		if aReturnAll then return {} else return end
+	end
+	if aUnitName == "" then
+		if aReturnAll then return {} else return end
+	end
+
 	local tUnitIds = {}
 
-	for x = 1, 40 do 
-		if aUnitName == UnitName("raid"..x) then
-			if not aReturnAll then
-				return "raid"..x
-			else
-				tUnitIds[#tUnitIds + 1] = "raid"..x
+		for x = 1, 40 do 
+			if aUnitName == UnitName("raid"..x) then
+				if not aReturnAll then
+					return "raid"..x
+				else
+					tUnitIds[#tUnitIds + 1] = "raid"..x
+				end
 			end
 		end
-	end
-	for x = 1, 4 do 
-		if aUnitName == UnitName("party"..x) then
-			if not aReturnAll then
-				return "party"..x
-			else
-				tUnitIds[#tUnitIds + 1] = "party"..x
+		for x = 1, 4 do 
+			if aUnitName == UnitName("party"..x) then
+				if not aReturnAll then
+					return "party"..x
+				else
+					tUnitIds[#tUnitIds + 1] = "party"..x
+				end
 			end
 		end
-	end
-	if aUnitName == UnitName("player") and (UnitName("party1") or UnitName("raid1")) then
-		if not aReturnAll then
-			return "party0"
-		else
-			tUnitIds[#tUnitIds + 1] = "party0"
+		if aUnitName == UnitName("player") and (UnitName("party1") or UnitName("raid1")) then
+			if not aReturnAll then
+				return "party0"
+			else
+				tUnitIds[#tUnitIds + 1] = "party0"
+			end
 		end
-	end
-	if aUnitName== UnitName("target") then
-		if not aReturnAll then
-			return "target"
-		else
-			tUnitIds[#tUnitIds + 1] = "target"
+		if aUnitName== UnitName("target") then
+			if not aReturnAll then
+				return "target"
+			else
+				tUnitIds[#tUnitIds + 1] = "target"
+			end
 		end
-	end
-	if aUnitName == UnitName("player") then
-		if not aReturnAll then
-			return "player"
-		else
-			tUnitIds[#tUnitIds + 1] = "player"
+		if aUnitName == UnitName("player") then
+			if not aReturnAll then
+				return "player"
+			else
+				tUnitIds[#tUnitIds + 1] = "player"
+			end
 		end
-	end
 
 	if aReturnAll then
 		return tUnitIds
@@ -166,11 +174,11 @@ end
 local tItemHook
 function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
-	SkuOptions.db.char[MODULE_NAME].Auras = SkuOptions.db.char[MODULE_NAME].Auras or {}--SkuAuras.DefaultAuras
+	SkuOptions.db.char[MODULE_NAME].Auras = SkuOptions.db.char[MODULE_NAME].Auras or {}
 
-	if not SkuOptions.db.char[MODULE_NAME].AurasPost22_4 then
-		SkuOptions.db.char[MODULE_NAME].AurasPost22_4 = true
-		SkuOptions.db.char[MODULE_NAME].Auras = {}--SkuAuras.DefaultAuras
+	if not SkuOptions.db.char[MODULE_NAME].AurasPost22_7 then
+		SkuOptions.db.char[MODULE_NAME].AurasPost22_7 = true
+		SkuOptions.db.char[MODULE_NAME].Auras = {}
 	end
 
 	SkuAuras.values = SkuAuras.valuesDefault
@@ -285,7 +293,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:UNIT_TICKER(aUnitId)
-
 	local tUnitId = aUnitId
 
 	if not SkuAuras.UnitRepo[tUnitId] then
@@ -294,9 +301,12 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 		SkuAuras.UnitRepo[tUnitId].unitPower = math.floor(UnitPower(tUnitId) / (UnitPowerMax(tUnitId) / 100))
 	end
 
-	--if UnitName(tUnitId.."target") then
+	if tUnitId == "player" or string.find(tUnitId, "party") or string.find(tUnitId, "raid") then
 		if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= UnitGUID(tUnitId.."target") then
 			SkuAuras.UnitRepo[tUnitId].unitTargetName = UnitGUID(tUnitId.."target")
+
+			print("ooooooooooooooo target change for ", tUnitId)
+			print("changed to", UnitName(tUnitId.."target"))
 			if UnitName(tUnitId.."target") then
 				local tNewTargetUnitId = SkuAuras:GetBestUnitId(UnitName(tUnitId.."target"))
 				local tEventData = {
@@ -320,7 +330,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			end
 		end
 
-	--end
+	end
 
 
 	if SkuAuras.UnitRepo[tUnitId].unitHealth ~= math.floor(UnitHealth(tUnitId) / (UnitHealthMax(tUnitId) / 100)) then
@@ -485,7 +495,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
-	dprint("COMBAT_LOG_EVENT_UNFILTERED", aEventName, aCustomEventData)
+	--dprint("COMBAT_LOG_EVENT_UNFILTERED", aEventName, aCustomEventData)
 	local tEventData = aCustomEventData or {CombatLogGetCurrentEventInfo()}
 
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
@@ -506,10 +516,17 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:EvaluateAllAuras(tEventData)
 	--build non event related data to evaluate
-	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destName])
-	if tDestinationUnitID then
+	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceName], true)
+	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destName], true)
+
+	if tDestinationUnitID and tDestinationUnitID[1] then
 		if tDestinationUnitID ~= "party0" then
-			tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID)
+			tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID[1])
+		end
+	end
+	if tSourceUnitID and tSourceUnitID[1] then
+		if tSourceUnitID ~= "party0" then
+			tSourceUnitIDCannAttack = UnitCanAttack("player", tSourceUnitID[1])
 		end
 	end
 
@@ -541,13 +558,12 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	end
 	tEventData[38] = tdebuffList
 
-	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceName])
-
+--[[
 
 	dprint("---------------------------------------------------------------------")
 	dprint("timestamp", tEventData[1])
 	dprint("subevent", tEventData[2])
-	dprint("sourceName", tEventData[15])
+	dprint("sourceName", tEventData[5])
 	dprint("destName", tEventData[9])
 	dprint("spellId", tEventData[12])
 	dprint("spellName", tEventData[13])
@@ -569,9 +585,14 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	dprint("itemID", tEventData[40])
 	dprint("missType", tEventData[12])
 	dprint("tSourceUnitID", tSourceUnitID)
+	setmetatable(tSourceUnitID, SkuPrintMTWo)
+	print(tSourceUnitID)
 	dprint("tDestinationUnitID", tDestinationUnitID)
+	setmetatable(tDestinationUnitID, SkuPrintMTWo)
+	print(tDestinationUnitID)
+	dprint("tSourceUnitIDCannAttack", tSourceUnitIDCannAttack)
 	dprint("tDestinationUnitIDCannAttack", tDestinationUnitIDCannAttack)
-
+]]
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
@@ -596,6 +617,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 				unitPowerPlayer = tEventData[36],
 				buffListTarget = tEventData[37],
 				debuffListTarget = tEventData[38],
+				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 				tInCombat = SkuCore.inCombat,
 			}		
@@ -693,7 +715,6 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			--add data for outputs
 			tEvaluateData.buffListTarget = tSingleBuffListTargetValue
 			tEvaluateData.debuffListTarget = tSingleDebuffListTargetValue
-
 
 			--overall result
 			dprint("OVERALL RESULT:", tOverallResult, "tHasApplicableAttributes", tHasApplicableAttributes)

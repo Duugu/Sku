@@ -3,6 +3,55 @@
 -------------------------------------------------------------------------------------------------------	
 
 
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23
+
+	SkuCore
+		Neuerungen
+			- Unter "SkuCore > Auktionshaus" kannst du jetzt das Auktionshaus verwenden.
+			- Das Auktionshaus-Menü enthält die folgenden Untermenüs:
+				- Auktionen: Das sind die Auktionen im AH. Es wird nur angezeigt, wenn an einem Auktionator stehst und das Auktionsfenster offen ist.
+					Darunter findest du als ersten Punkt "Filter", unter dem du Filtereinstellungen machen kannst.
+					Dann kommen die einzelnen Auktionskategorien und darunter jeweils Unterkategorien und Unter-Unterkategorien (falls es diese gibt).
+					Unter den Kategorien (bzw. Unter- oder Unter-Unterkategorien) findest du dann die Auktionen.
+					Die Daten der Autkionen werden vom Server abgefragt. Das kann bei großen Kategorien (z. B. "Verbrauchsmaterialien") eine ganze Weile dauern (zwischen 0 und 30-60 Sekunden).
+					Solange die Abfrage läuft, und noch keine Daten vorhanden sind, wird dir "Warten auf Abfrage" angezeigt. Es wird gleichzeitig ein Sound abgespielt.
+					Sobald die Abfrage abgeschlossen ist, verschwindet "Warten auf Abfrage" und es wird automatisch die erste Auktion der Kategorie angezeigt.
+					Wenn "Warten auf Abfrage" läuft, und du die Geduld verlierst, kannst du natürlich jederzeit einen Schritt im Menü zurückgehen und andere Kategorien auswählen.
+				- Gebote: Das sind die laufenden Auktionen auf die du geboten hast. 
+				  	Sofern du mindestens einmal bei einem Auktionator warst, kannst du diese Liste auch unterwegs einsehen. Aber natürlich ist die Liste in diesem Fall möglicherweise nicht mehr aktuell.
+				- Verkäufe: Das sind deine laufenden Verkaufsauktionen. 
+				  	Sofern du mindestens einmal bei einem Auktionator warst, kannst du diese Liste auch unterwegs einsehen. Aber natürlich ist die Liste in diesem Fall möglicherweise nicht mehr aktuell.
+				- Offline Datenbank: Das sind alle Auktionen aus dem AH, die du dir auch dann ansehen kannst, wenn du nicht an einem Auktionator stehst.
+					Bei jedem Öffnen des Auktionshauses werden alle Auktionen gescannt und für die Offline Datenbank gespeichert.
+					Dieser Scan ist nur alle 15 Minuten möglich.
+					Je länger der letzte Scan her ist, desto weniger aktuell sind die Offlinedaten logischerweise.
+					Und natürlich kannst du über die Offlinedaten nichts kaufen. Sie dienen nur der Information.
+					Die Offlinedaten werden zwischen Spielsitzungen für den jeweiligen Char gespeichert. Sie sind nach dem Einloggen mit dem Char wieder verfügbar. Aber dann logischerweie mehr oder weniger veraltet.
+				- Offline Datenbank aktualisieren: Damit kannst du an einem Auktionator die Offline Datenbank manuell aktualisieren (wie gesagt, geht nur alle 15 Minuten).
+			- Gegenstände verkaufen: Du verkaufst aus deinem Taschenmenü heraus.
+			  Jeder Gegenstand in deinen Taschen hat jetzt zusätzlich zu "Linksklick" und "Rechtsklick" noch ein "Verkaufen" Untermenü. Dieses wird nur angezeigt, wenn das Auktionsfenster offen ist.
+			  Im Verkaufen-Menü legst du zuerst den Sofortkaufpreis fest. Geh einfach runter. Du findest Preisabstufunden von 1 Silber bis zu 5000 Gold.
+			  Beim gewünschten Preis gehst du nach rechts und landest im "Anzahl"-Menü. Dort legst du fest, wie viele der Gegenstände im ausgewählten Taschenplatz du verkaufen möchtest. Standardmäßig ist die Maximalmenge festgelegt.
+			  Bei der gewünschten Menge gehst du wieder nach rechts, und entscheidest dich für eine Laufzeit von 12, 24 oder 48 Stunden.
+			  Bei der ausgewählten Laufzeit drückst du EINGABE, und die Auktion wird mit dem von dir ausgewählten Sofortkraufpreis und der Hälfte davon als STartgebot erstellt.
+			- Die "Gebote" und "Verkäufe" Listen berücksichtigen zurzeit nur maximal 50 Einträge.
+			  Darauf, was passiert, wenn du gleichzeitig auf mehr als 50 Auktionen bietest oder mehr als 50 Verkäufe laufen hast, bin ich selbst gespannt. :)
+
+	SkuAuras
+		Neuerungen
+			- Aufgrund weiterer Änderungen am Aura-System werden mit 22.8 erneut einmalig alle bestehenden Auren gelöscht.
+			- Es sind 5 Sounds hinzugekommen (Trompete, Glas, Tropfen), die es in jeweils 5 verschiedenen Tonhöhen gibt.
+			- Es sind 24 weitere Sounds hinzugekommen (Hinweis 1-24), die es jeweils nur in einer Tonhöhe gibt.
+- Das Aura-Set für Schattenpriester wurde erneut überarbeitet und verwendet jetzt andere Sounds.
+- Es ist ein Aura-Set für Heilig-Priester hinzugekommen.
+
+	SkuNav
+		Fehlerkorrekturen
+			- Die kaputte Zone "Auchindoun" wurde repariert.
+
+
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 22.7
 

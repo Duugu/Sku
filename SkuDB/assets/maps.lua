@@ -1648,7 +1648,7 @@ SkuDB.InternalAreaTable = {
     [3914] = {ZoneName = "RunestoneShandor", AreaName_lang = "Runenstein Shan'dor", ContinentID = 530, ParentAreaID = 3430, Faction = 0, Flags = 1073741888,},
     [3915] = {ZoneName = "FairbridgeStrand", AreaName_lang = "Morgentaustrand", ContinentID = 530, ParentAreaID = 3524, Faction = 0, Flags = 1073741888,},
     [3916] = {ZoneName = "MoongrazeWoods", AreaName_lang = "Mondweidenwald", ContinentID = 530, ParentAreaID = 3524, Faction = 0, Flags = 1073741888,},
-    [3917] = {ZoneName = "Auchindoun", AreaName_lang = "Auchindoun", ContinentID = 530, ParentAreaID = 0, Faction = 0, Flags = 64,},
+    --[3917] = {ZoneName = "Auchindoun", AreaName_lang = "Auchindoun", ContinentID = 530, ParentAreaID = 0, Faction = 0, Flags = 64,},
     [3918] = {ZoneName = "ToshleysStation", AreaName_lang = "Toshleys Station", ContinentID = 530, ParentAreaID = 3522, Faction = 0, Flags = 1073759296,},
     [3919] = {ZoneName = "SingingRidge", AreaName_lang = "Der singende Bergrücken", ContinentID = 530, ParentAreaID = 3522, Faction = 0, Flags = 1073759296,},
     [3920] = {ZoneName = "ShatterPoint", AreaName_lang = "Trümmerposten", ContinentID = 530, ParentAreaID = 3483, Faction = 0, Flags = 1073759296,},

@@ -448,7 +448,7 @@ function SkuAuras:ExportAuraData(aAuraName)
 	if not SkuOptions.db.char[MODULE_NAME].Auras[aAuraName] then return end
 
 	local tExportDataTable = {
-		version = 22.5,
+		version = 22.8,
 		auraName = aAuraName,
 		auraData = nil,
 	}
@@ -472,7 +472,7 @@ function SkuAuras:ImportAuraData()
 		if tSerializedData ~= "" then
 			local tSuccess, version, auraName, auraData = SkuOptions:Deserialize(tSerializedData)
 			if auraName and auraData and version then
-				if version < 22.5 then
+				if version < 22.8 then
 					SkuOptions.Voice:OutputString("Aura version zu alt", false, true, 0.3)		
 					return
 				end
