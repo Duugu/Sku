@@ -3,8 +3,8 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 22.7](https://github.com/Duugu/Sku/releases/download/r22.7/Sku-r22.7-bcc.zip) <br>
-[SkuAudioData 26](https://github.com/Duugu/SkuAudioData/releases/download/r26/SkuAudioData-r26-bcc.zip) <br>
+[Sku 23](https://github.com/Duugu/Sku/releases/download/r23/Sku-r23-bcc.zip) <br>
+[SkuAudioData 27](https://github.com/Duugu/SkuAudioData/releases/download/r27/SkuAudioData-r27-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
@@ -17,6 +17,68 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23
+
+Achtung: Es gab nicht nur neue Features wie das Auktionshaus, sondern auch erhebliche interne Optimierungen am Menü.	Fehler sind möglich bzw. wahrscheinlich. Bitte alles testen und Fehler melden. Danke!
+
+### SkuCore
+*Fehlerkorrekturen*
+- Das Post-Menü springt jetzt nicht mehr zum ersten Menüpunkt, wenn man einen noch ungelesenen Brief auswählt.
+- Das Taschen-Menü springt jetzt bei einem Klick nicht mehr immer wieder zum ersten Taschenplatz, sondern bleibt auf dem aktuellen Taschenplatz.
+
+### Neuerungen
+- Unter "SkuCore > Auktionshaus" kannst du jetzt das Auktionshaus verwenden.
+- Das Auktionshaus-Menü enthält die folgenden Untermenüs:
+  - Auktionen: Das sind die Auktionen im AH. Es wird nur angezeigt, wenn an einem Auktionator stehst und das Auktionsfenster offen ist.<br>
+    Darunter findest du als ersten Punkt "Filter und Sortierung", unter dem du Filtereinstellungen machen kannst.<br>
+    Dann kommen die einzelnen Auktionskategorien und darunter jeweils Unterkategorien und Unter-Unterkategorien (falls es diese gibt).<br>
+    Darunter findest du dann die eigentlichen Auktionen.<br>
+    Die Daten der Auktionen werden vom Server abgefragt. Das kann bei großen Kategorien (z. B. "Verbrauchsmaterialien") eine ganze Weile dauern (zwischen 0 und 30-60 Sekunden).<br>
+    Solange die Abfrage läuft, und noch keine Daten vorhanden sind, wird dir "Warten auf Abfrage" angezeigt. Es wird gleichzeitig ein Sound abgespielt.<br>
+    Sobald die Abfrage abgeschlossen ist, verschwindet "Warten auf Abfrage" und es wird automatisch die erste Auktion der Kategorie angezeigt.<br>
+    Mehrere Auktionen mit identischem Gegenstand, Preis und Stack werden zusammengefasst. Dann steht in der Liste z. B. "5 mal ...".
+  - Gebote: Das sind die laufenden Auktionen auf die du geboten hast. <br>
+      Sofern du mindestens einmal bei einem Auktionator warst, kannst du diese Liste auch unterwegs einsehen. Aber natürlich ist die Liste in diesem Fall möglicherweise nicht mehr aktuell.
+  - Verkäufe: Das sind deine laufenden Verkaufsauktionen. <br>
+      Sofern du mindestens einmal bei einem Auktionator warst, kannst du diese Liste auch unterwegs einsehen. Aber natürlich ist die Liste in diesem Fall möglicherweise nicht mehr aktuell.
+  - Offline Datenbank: Das sind alle Auktionen aus dem AH, die du dir auch dann ansehen kannst, wenn du nicht an einem Auktionator stehst.<br>
+    Bei jedem Öffnen des Auktionshauses werden alle Auktionen gescannt und für die Offline Datenbank gespeichert. Dieser Scan ist jedoch nur alle 15 Minuten möglich.<br>
+    Je länger der letzte Scan her ist, desto weniger aktuell sind die Offlinedaten logischerweise.<br>
+    Die Offlinedaten werden pro Fraktion pro Server gespeichert. Alle Allianz-Chars auf einem Server teilen sich also eine Datenbank. Genauso alle Hordler.<br>
+  - Offline Datenbank aktualisieren: Damit kannst du an einem Auktionator die Offline Datenbank manuell aktualisieren (wie gesagt, geht nur alle 15 Minuten).
+- KAUFEN: Du wählst im AH eine Kategorie und dann eine Auktion aus. Dann gehst du nach rechts gehst und wählst "Kaufen" oder "Bieten" aus.<br>
+  Dann gehst du wieder nach rechts und wählst die Anzahl Auktionen aus, auf die du kaufen/bieten möchtest (falls es die Auktion mehrmals gab).<br>
+  Dann drückst du ENTER. Dann wirst du aufgefordert ENTER zur Bestätigung oder ESCAPE zum Abbrechen zu drücken (mehrmals, wenn du mehr als einen ausgewählst hast). Wenn du ENTER drückst, kaufst/bietest du.
+- VERKAUFEN: Du verkaufst aus deinem Taschenmenü heraus ("Lokal > ...").<br>
+  Jeder Gegenstand in deinen Taschen hat jetzt zusätzlich zu "Linksklick" und "Rechtsklick" noch ein "Verkaufen" Untermenü. Dieses wird nur angezeigt, wenn das Auktionsfenster offen ist.<br>
+  Im Verkaufen-Menü gehst du wie bei der Aura-Erstellung immer weiter nach rechts und legst so die Parameter für die Auktion fest. Zum Schluss kommt die Laufzeit. Da drückst du dann EINGABE, und die Auktion wird erstellt.
+- Historische Auktionshausdaten: Bei jedem Scan und jeder Suche im Auktionshauses werden die Daten in einer Datenbank mit historischen Daten gespeichert. Auch dies geschieht pro Fraktion pro Server.<br>
+  Die historischen Daten aus dieser Datenbank (Durchschnittspreis, niedrigster/höchster Preis, Preistendenz etc.) werden dir zu jedem Gegenstand im Tooltip angezeigt.<br>
+  Die Daten sind natürlich erst dann wirklich aussagekräftig, wenn du über mehrere Tage oder Wochen hinweg mindestens einmal täglich das AH gescannt hast.
+- Die "Gebote"- und "Verkäufe"-Listen berücksichtigen zurzeit nur maximal 50 Einträge.<br>
+  Darauf, was passiert, wenn du gleichzeitig auf mehr als 50 Auktionen bietest oder mehr als 50 Verkäufe laufen hast, bin ich selbst gespannt. :)
+
+### SkuAuras
+*Neuerungen*
+- Aufgrund weiterer Änderungen am Aura-System werden erneut einmalig alle bestehenden Auren gelöscht. Mindestens eine weitere Komplettlöschung in einer der nächsten Versionen ist wahrscheinlich.
+- Es wurden (hoffentlich) diverse Fehler behoben. Zum Bespiel bei fehlenden Benachrichtigungen, wenn man sich selbst im Ziel hat.
+- Es sind 5 Sounds hinzugekommen ("Trompete", "Glas", "Tropfen"), die es in jeweils 5 verschiedenen Tonhöhen gibt.
+- Es sind 24 Sounds hinzugekommen ("Hinweis 1-24"), die es jeweils nur in einer Tonhöhe gibt.
+- Das Aura-Set für Schattenpriester wurde überarbeitet und verwendet jetzt weniger nervige Sounds.<br>
+  Für Vampirumarmung, Schattenwort: Schmerz und Vampirberührung wird derselbe Sound verwendet. Jedoch in drei unterschiedlichen und klar zu unterscheidenden Tonhöhen.<br>
+  Die Sounds werden ausgelöst, wenn einer der drei Dots auf deinem Ziel ausläuft oder wenn du das Ziel wechselst.
+
+### SkuNav
+*Neuerungen*
+- Die Routendatenbank enthält jetzt standardmäßig die Daten aus Macs Version "V22Plus-11-AlleKarten-2022-01-16.txt"
+
+*Fehlerkorrekturen*
+- Der Feststecken-Sound wird jetzt parallel zu allen Anderen Audioausgaben ausgegeben und bricht andere Ausgaben nicht mehr ab.
+- Die kaputte Zone "Auchindoun" wurde repariert.
+- "Schmiedevaters Grabmal" und "Schwarzfelsspitze" gehören jetzt zur brennenden Steppe.
+- Die Darstellung der Sku-Minimap wurde optimiert. Sie wird jetzt weniger häufig gerendert wenn mehr Punkte und Links anzuzeigen sind (beim Rauszoomen).<br>
+  Bei sehr weitem Rauszoomen ist es immer noch enorm ruckelig. Aber immerhin friert der Client jetzt nicht mehr vollkommen ein. :)
 
 ## Änderungen in Version 22.7
 
