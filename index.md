@@ -3,8 +3,8 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23](https://github.com/Duugu/Sku/releases/download/r23/Sku-r23-bcc.zip) <br>
-[SkuAudioData 27](https://github.com/Duugu/SkuAudioData/releases/download/r27/SkuAudioData-r27-bcc.zip) <br>
+[Sku 23.1](https://github.com/Duugu/Sku/releases/download/r23.1/Sku-r23.1-bcc.zip) <br>
+[SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
@@ -17,6 +17,17 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.1
+
+### SkuCore
+*Fehlerkorrekturen*
+- Die Abfragegeschwindigkeit im Auktionshaus wurde gesenkt, um "Aufhängen" zu vermeiden. Bitte melden, wenn es weiter hängt.
+- Die Tooltips bei Items passen jetzt.
+- Den Tooltips in den Taschen wurden Auktionsdaten hinzugefügt.
+- Wie Wortlängen von neuen Wörtern wurden korrigiert.
+- Es wird jetzt nicht mehr immer wieder zum Taschenplatz 3 sondern zum korrekten Taschenplatz zurückgegangen.
+- Die Händler funktioniert wieder.
 
 ## Änderungen in Version 23
 
