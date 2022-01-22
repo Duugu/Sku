@@ -486,7 +486,7 @@ do
    tFrame:Show()
    tFrame:SetScript("OnUpdate", function(self, time)
       tTime = tTime + time
-      if tTime < 0.5 then return end
+      if tTime < 0.8 then return end
       if SkuCore.AuctionScanQueueTicker then
          SkuCore:AuctionScanQueueTicker()
       end
@@ -654,7 +654,12 @@ function SkuCore:AuctionHouseBuildItemSellMenu(aParent, aGossipItemTable)
          SkuOptions.Voice:OutputString(tNumAuctions.." Auktionen erstellt", false, true, 1, true)
       end
 
-      SkuCore:CheckFrames()
+      C_Timer.After(0.01, function()
+         SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)      
+      end)
+      C_Timer.After(0.01, function()
+         SkuCore:CheckFrames()
+      end)
    end
 
 	tNewMenuParentEntry.BuildChildren = function(self)
@@ -835,9 +840,13 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
             end
             tNewMenuEntryCategorySubSubItem.dynamic = false
             tNewMenuEntryCategorySubSubItem.data = tData
+            tNewMenuEntryCategorySubSubItem.tIndex = tIndex
             tNewMenuEntryCategorySubSubItem.textFull = function() 
-               return select(2, SkuCore:AuctionBuildItemTooltip(tData, tIndex, true, true))
+               return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
             end
+            
+            --tNewMenuEntryCategorySubSubItem.textFull = select(2, SkuCore:AuctionBuildItemTooltip(tData, tIndex, true, true))
+
 
             if tData[12] ~= true then
                tNewMenuEntryCategorySubSubItem.dynamic = true
@@ -1205,8 +1214,9 @@ function SkuCore:AuctionHouseMenuBuilder()
                tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuCore:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = false
                tNewMenuEntry.filterable = true
+               tNewMenuEntry.tIndex = tIndex
                tNewMenuEntry.textFull = function() 
-                  return select(2, SkuCore:AuctionBuildItemTooltip(tData, tIndex, true, true)) 
+                  return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))                  
                end
             end
          end

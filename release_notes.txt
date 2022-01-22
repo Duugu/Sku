@@ -4,6 +4,19 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.1
+
+	SkuCore
+		Fehlerkorrekturen
+			- Die Abfragegeschwindigkeit im Auktionshaus wurde gesenkt, um "Aufhängen" zu vermeiden. Bitte melden, wenn es weiter hängt.
+			- Die Tooltips bei Items passen jetzt.
+			- Den Tooltips in den Taschen wurden Auktionsdaten hinzugefügt.
+			- Wie Wortlängen von neuen Wörtern wurden korrigiert.
+			- Es wird jetzt nicht mehr immer wieder zum Taschenplatz 3 sondern zum korrekten Taschenplatz zurückgegangen.
+			- Die Händler funktioniert wieder.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23
 
 	Achtung: Es gab nicht nur neue Features wie das Auktionshaus, sondern auch erhebliche interne Optimierungen am Menü.	Fehler sind möglich bzw. wahrscheinlich. Bitte alles testen und Fehler melden. Danke!

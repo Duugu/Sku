@@ -1770,7 +1770,17 @@ local function IterateChildren(t, tab)
 								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
 										local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-										tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
+										
+										if tResults[fName].obj.info.id then
+											tResults[fName].textFirstLine = ItemName_helper(tText)
+											tResults[fName].textFull = SkuCore:AuctionPriceHistoryData(tResults[fName].obj.info.id, true, true)
+										end
+										if not tResults[fName].textFull then
+											tResults[fName].textFull = {}
+										end
+										local tFirst, tFull = ItemName_helper(tText)
+										tResults[fName].textFirstLine = tFirst
+										table.insert(tResults[fName].textFull, 1, tFull)
 									end
 								end
 
@@ -1915,7 +1925,7 @@ local function IterateChildren(t, tab)
 									tEmptyCounter = tEmptyCounter + 1
 								end
 							end
-							if _G[fName.."Count"] then
+							if _G[fName.."Count"] and tResults[fName] then
 								tResults[fName].stackSize = _G[fName.."Count"]:GetText()
 							end
 							if _G[fName].info then
