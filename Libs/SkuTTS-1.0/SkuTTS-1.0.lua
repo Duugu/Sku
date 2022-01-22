@@ -143,6 +143,10 @@ end
 ]]
 ---------------------------------------------------------------------------------------------------------------------
 function SkuTTS:Output(text, duration) --string, integer
+	if type(text) == "function" then
+		text = text()
+	end
+
 	currentLine = 1
 	currentSection = 1
 

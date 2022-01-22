@@ -744,13 +744,15 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 	if tPlayerUIMap == 1415 or tPlayerUIMap == 1414 then
 		local tMMZoneText = GetMinimapZoneText()
 
-			--this is because of strange areas where C_Map.GetBestMapForUnit is returning continent IDs
-			if tMMZoneText == L["Timbermaw Hold"] then
+		--this is because of strange areas where C_Map.GetBestMapForUnit is returning continent IDs
+		if tMMZoneText == L["Timbermaw Hold"] then
 			tPlayerUIMap = 1448
 		elseif tMMZoneText == "Der Südstrom" then
 			tPlayerUIMap = 1413
 		elseif tMMZoneText == "Die Höhlen des Wehklagens" or tMMZoneText == "Höhle der Nebel"  then
 			tPlayerUIMap = 1413
+		elseif tMMZoneText == "Schmiedevaters Grabmal" or tMMZoneText == "Schwarzfelsspitze" then
+			tPlayerUIMap = 1428
 		else
 			for i, v in pairs(SkuDB.InternalAreaTable) do
 				if v.AreaName_lang == tMMZoneText then
@@ -1571,6 +1573,7 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------------
 local metapathFollowingTargetNameAnnounced = false
+SkuNavMmDrawTimer = 0.2
 function SkuNav:CreateSkuNavControl()
 	local ttimeDegreesChangeInitial = nil
 	local ttimeDistanceOutput = 0
@@ -1584,7 +1587,7 @@ function SkuNav:CreateSkuNavControl()
 			ttimeDraw = ttimeDraw + time
 
 			--tmp drawing rts on UIParent for debugging
-			if ttimeDraw > 0.2 then
+			if ttimeDraw > (SkuNavMmDrawTimer or 0.2) then
 				--SkuNav:DrawRoutes(_G["Minimap"])
 				SkuNav:DrawAll(_G["Minimap"])
 				--SkuNav:DrawRoutes(_G["WorldMapFrame"])

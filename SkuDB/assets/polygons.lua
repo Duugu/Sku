@@ -640,6 +640,8 @@ SkuPrintMTWo = {
               print(tTab..k.." = "..tostring(v)..",")
             elseif type(v) == "function" then
               print(tTab..k.." = func,")
+            elseif type(v) == "userdata" then
+              --print(tTab..k.." = <userdata>,")
            else
               print(tTab..k.." = "..v..",")
            end
@@ -674,3 +676,7 @@ SkuPrintMT = {
    end,
 }
 setmetatable(SkuDB.Polygons.data, SkuPrintMT)
+
+
+
+

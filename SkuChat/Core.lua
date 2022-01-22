@@ -52,8 +52,15 @@ function SkuChat:OnEnable()
 			end
 		end
 
-		C_VoiceChat.StopSpeakingText()
-		C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+		if IsMacClient() == true then
+			C_VoiceChat.StopSpeakingText()
+			C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+		else
+			C_VoiceChat.StopSpeakingText()
+			C_Timer.After(0.05, function() 
+				C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+			end)
+		end
 	end)
 	b:Hide()
 
@@ -159,8 +166,15 @@ function SkuChat:OnSkuChatToggle(a, b, c)
 		SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
 		if SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then
 			if SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body then
-				C_VoiceChat.StopSpeakingText()
-				C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+				if IsMacClient() == true then
+					C_VoiceChat.StopSpeakingText()
+					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+				else
+					C_VoiceChat.StopSpeakingText()
+					C_Timer.After(0.05, function() 
+						C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, (table.getn(SkuChatChatBuffer) - SkuOptions.ChatCurrentLine + 1).." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body.." - "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].timestamp, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+					end)
+				end
 			end
 		end
 

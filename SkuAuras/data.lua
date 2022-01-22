@@ -69,14 +69,14 @@ SkuAuras.actions = {
       tooltip = "Die Ausgaben werden als Audio ausgegeben",
       friendlyName = "audio ausgabe",
       func = function(tAuraName, tEvaluateData)
-      	dprint("action func audio benachrichtigung DING")
+      	dprint("    ","action func audio benachrichtigung DING")
       end,
    },
    notifyChat = {
       tooltip = "Die Ausgaben werden als Text im Chat ausgegeben",
       friendlyName = "chat ausgabe",
       func = function(tAuraName, tEvaluateData)
-      	dprint("action func chat benachrichtigung")
+      	dprint("    ","action func chat benachrichtigung")
       end,
    },
 }
@@ -84,289 +84,12 @@ SkuAuras.actions = {
 ------------------------------------------------------------------------------------------------------------------
 local tPrevAuraPlaySoundFileHandle
 SkuAuras.outputs = {
-   --[[
-   soundBrass1 = {
-      tooltip = "Ein Brass1 Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\Brass1.mp3",
-      friendlyName = L["aura;sound"].."#Brass1",
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               C_Timer.After(aDelay * 0.125, function()
-                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-                  tPrevAuraPlaySoundFileHandle = soundHandle
-               end)
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("soundBrass1")
-         end,
-      },
-   },  
-   Glass1Brass2 = {
-      tooltip = "Ein Brass3 Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\Glass1.mp3",
-      friendlyName = L["aura;sound"].."#Glass1",
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               C_Timer.After(aDelay * 0.125, function()
-                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-                  tPrevAuraPlaySoundFileHandle = soundHandle
-               end)
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("soundBrass1")
-         end,
-      },
-   },  
-   soundWaterDrop1 = {
-      tooltip = "Ein WaterDrop1 Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\WaterDrop1.mp3",
-      friendlyName = L["aura;sound"].."#WaterDrop1",
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               C_Timer.After(aDelay * 0.125, function()
-                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-                  tPrevAuraPlaySoundFileHandle = soundHandle
-               end)
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("soundBrass1")
-         end,
-      },
-   },  
-
-   soundbrang = {
-      tooltip = "Ein brang Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_brang.ogg",
-      friendlyName = L["aura;sound"].."#"..L["brang"],
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               C_Timer.After(aDelay * 0.125, function()
-                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-                  tPrevAuraPlaySoundFileHandle = soundHandle
-               end)
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("Bing")
-         end,
-      },
-   },   
-   soundbring = {
-      tooltip = "Ein bring Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_bring.ogg",
-      friendlyName = L["aura;sound"].."#"..L["bring"],
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               C_Timer.After(aDelay * 0.125, function()
-                  SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-                  local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-                  tPrevAuraPlaySoundFileHandle = soundHandle
-               end)
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("bring")
-         end,
-      },
-   },
-   sounddang = {
-      tooltip = "Ein dang Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_dang.ogg",
-      friendlyName = L["aura;sound"].."#"..L["dang"],
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("dang")
-         end,
-      },
-   },   
-   sounddrmm = {
-      tooltip = "Ein drmm Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_drmm.ogg",
-      friendlyName = L["aura;sound"].."#"..L["drmm"],
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("drmm")
-         end,
-      },
-   },   
-   soundshhhup = {
-      tooltip = "Ein shhhup Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_shhhup.ogg",
-      friendlyName = L["aura;sound"].."#"..L["shhhup"],
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("shhhup")
-         end,
-      },
-   },   
-   soundspoing = {
-      tooltip = "Ein spoing Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_spoing.ogg",
-      friendlyName = L["aura;sound"].."#"..L["spoing"],
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("spoing")
-         end,
-      },
-   },   
-   soundswoosh = {
-      tooltip = "Ein swoosh Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_swoosh.ogg",
-      friendlyName = L["aura;sound"].."#"..L["swoosh"],
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("swoosh")
-         end,
-      },
-   },   
-   soundtsching = {
-      tooltip = "Ein tsching Sound",
-      soundfile = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg",
-      friendlyName = L["aura;sound"].."#"..L["tsching"],
-      functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
-               if tPrevAuraPlaySoundFileHandle then
-                  StopSound(tPrevAuraPlaySoundFileHandle)
-               end
-               SkuOptions.Voice:OutputString("silence_0.5s", true, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            else
-               SkuOptions.Voice:OutputString("silence_0.5s", false, true, 0.3, true)
-               local willPlay, soundHandle = PlaySoundFile(SkuAuras.outputs[RemoveTags(aOutputName)].soundfile, "Talking Head")
-               tPrevAuraPlaySoundFileHandle = soundHandle
-            end
-         end,
-         ["notifyChat"] = function(tAuraName, tEvaluateData)
-            print("tsching")
-         end,
-      },
-   },   
-   ]]
    event = {
       tooltip = "Der Name des auslösenden Ereignisses der Aura",
       friendlyName = "ereignis",
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
-            dprint("SkuAuras.outputs.event", tEvaluateData.event)
+            dprint("    ","SkuAuras.outputs.event", tEvaluateData.event)
             if not tEvaluateData.event then return end
             if not SkuAuras.values[tEvaluateData.event] then return end
             if SkuAuras.values[tEvaluateData.event].friendlyNameShort then
@@ -392,8 +115,8 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.sourceUnitId then
-               dprint("tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
-               SkuOptions.Voice:OutputString(tEvaluateData.sourceUnitId, aFirst, true, 0.1, false)
+               dprint("    ","tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
+               SkuOptions.Voice:OutputString(tEvaluateData.sourceUnitId[1], aFirst, true, 0.1, false)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -408,9 +131,9 @@ SkuAuras.outputs = {
       friendlyName = "ziel einheit",
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
-            dprint("tEvaluateData.destUnitId", tEvaluateData.destUnitId)
+            dprint("    ","tEvaluateData.destUnitId", tEvaluateData.destUnitId)
             if tEvaluateData.destUnitId then
-               SkuOptions.Voice:OutputString(tEvaluateData.destUnitId, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.destUnitId[1], aFirst, true, 0.1, false)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -977,7 +700,7 @@ SkuAuras.attributes = {
       tooltip = "Du legst als nächstes die Aktion fest, die bei der Auslösung der Aura passieren soll",
       friendlyName = "aktion",
       evaluate = function()
-      	dprint("SkuAuras.attributes.action.evaluate")
+      	dprint("    ","SkuAuras.attributes.action.evaluate")
       end,
       values = {
          "notifyAudio",
@@ -988,7 +711,7 @@ SkuAuras.attributes = {
       tooltip = "Die Ziel-Einheit, für die die Aura ausgelöst werden soll",
       friendlyName = "ziel",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
+      	dprint("    ","SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
          if aValue == "all" then
             return true
          end
@@ -1012,7 +735,7 @@ SkuAuras.attributes = {
                      end
                   end
                else
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, aValue)
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, aValue)
                end
             end
             if tEvaluation == true then
@@ -1031,7 +754,7 @@ SkuAuras.attributes = {
       tooltip = "Ob das Event im Kampf auftritt",
       friendlyName = "Im Kampf",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
+      	dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
          if aEventData.tInCombat then
             return SkuAuras:ProcessEvaluate(aEventData.tInCombat, aOperator,true)
          end
@@ -1045,7 +768,7 @@ SkuAuras.attributes = {
       tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
       friendlyName = "Ziel Angreifbar",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
+      	dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
          if aEventData.tSourceUnitIDCannAttack then
             return SkuAuras:ProcessEvaluate(aEventData.tSourceUnitIDCannAttack, aOperator,true)
          end
@@ -1059,7 +782,7 @@ SkuAuras.attributes = {
       tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
       friendlyName = "Ziel Angreifbar",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
+      	dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
          if aEventData.tDestinationUnitIDCannAttack then
             return SkuAuras:ProcessEvaluate(aEventData.tDestinationUnitIDCannAttack, aOperator,true)
          end
@@ -1073,7 +796,7 @@ SkuAuras.attributes = {
       tooltip = "Die Quell Einheit, für die die Aura ausgelöst werden soll",
       friendlyName = "Quelle",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
+      	dprint("    ","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
          if aValue == "all" then
             return true
          end
@@ -1120,7 +843,7 @@ SkuAuras.attributes = {
       tooltip = "Das Ereignis, das die Aura auslösen soll",
       friendlyName = "ereignis",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.event.evaluate")
+      	dprint("    ","SkuAuras.attributes.event.evaluate")
          if aEventData.event then
             local tEvaluation
             if string.find(aValue, ";") then
@@ -1178,7 +901,7 @@ SkuAuras.attributes = {
       tooltip = "Der Typ des Verfehlen Ereignisses",
       friendlyName = "Verfehlen Typ",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.missType.evaluate")
+      	dprint("    ","SkuAuras.attributes.missType.evaluate")
          if aEventData.missType then
             return SkuAuras:ProcessEvaluate(aEventData.missType, aOperator, aValue)
          end
@@ -1200,7 +923,7 @@ SkuAuras.attributes = {
       tooltip = "Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc.",
       friendlyName = "Eigene Ressource",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.unitPowerPlayer.evaluate")
+      	dprint("    ","SkuAuras.attributes.unitPowerPlayer.evaluate")
          if aEventData.unitPowerPlayer then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitPowerPlayer), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1244,7 +967,7 @@ SkuAuras.attributes = {
       tooltip = "Dein gesundheits Level in Prozent, das die Aura auslösen soll",
       friendlyName = "Eigene Gesundheit",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.unitHealthPlayer.evaluate")
+      	dprint("    ","SkuAuras.attributes.unitHealthPlayer.evaluate")
          if aEventData.unitHealthPlayer then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitHealthPlayer), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1288,7 +1011,7 @@ SkuAuras.attributes = {
       tooltip = "Die Zauber-ID, die die Aura auslösen soll",
       friendlyName = "zauber nr",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.spellId.evaluate")
+      	dprint("    ","SkuAuras.attributes.spellId.evaluate")
          if aEventData.spellId then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.spellId), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1303,7 +1026,7 @@ SkuAuras.attributes = {
       tooltip = "Der Zauber-name, der die Aura auslösen soll",
       friendlyName = "zauber name",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.spellName.evaluate")
+      	dprint("    ","SkuAuras.attributes.spellName.evaluate")
          if aEventData.spellName then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellName, aOperator, aValue)
             if tEvaluation == true then
@@ -1318,7 +1041,7 @@ SkuAuras.attributes = {
       tooltip = "Die Liste der Buffs des Ziels",
       friendlyName = "Buff Liste Ziel",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.buffListTarget.evaluate")
+      	dprint("    ","SkuAuras.attributes.buffListTarget.evaluate")
          if aEventData.buffListTarget then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.buffListTarget, aOperator, aValue)
             if tEvaluation == true then
@@ -1334,7 +1057,7 @@ SkuAuras.attributes = {
       tooltip = "Die Liste der Debuffs  des Ziels",
       friendlyName = "Debuff Liste Ziel",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("         SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
+      	dprint("    ","SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
          if aEventData.debuffListTarget then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.debuffListTarget, aOperator, aValue)
             if tEvaluation == true then
@@ -1350,7 +1073,7 @@ SkuAuras.attributes = {
       tooltip = "Der Gegenstandsname, der die Aura auslösen soll",
       friendlyName = "gegenstand name",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.itemName.evaluate")
+      	dprint("    ","SkuAuras.attributes.itemName.evaluate")
          if aEventData.itemName then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.itemName, aOperator, aValue)
             if tEvaluation == true then
@@ -1365,7 +1088,7 @@ SkuAuras.attributes = {
       tooltip = "Die Gegenstands-ID, die die Aura auslösen soll",
       friendlyName = "gegenstand nr",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.itemId.evaluate")
+      	dprint("    ","SkuAuras.attributes.itemId.evaluate")
          if aEventData.itemId then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.itemId), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1380,7 +1103,7 @@ SkuAuras.attributes = {
       tooltip = "Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll",
       friendlyName = "gegenstand anzahl",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.itemCount.evaluate")
+      	dprint("    ","SkuAuras.attributes.itemCount.evaluate")
          if aEventData.itemCount then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.itemCount), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1424,7 +1147,7 @@ SkuAuras.attributes = {
       tooltip = "Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll",
       friendlyName = "buff/debuff",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.auraType.evaluate")
+      	dprint("    ","SkuAuras.attributes.auraType.evaluate")
          if aEventData.auraType then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.auraType, aOperator, aValue)
             if tEvaluation == true then
@@ -1441,7 +1164,7 @@ SkuAuras.attributes = {
       tooltip = "Die Anzahl der Stacks einer Aura (Buff oder Debuff), bei der die Aura auslösen soll",
       friendlyName = "aura stacks",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("           SkuAuras.attributes.auraAmount.evaluate")
+      	dprint("    ","SkuAuras.attributes.auraAmount.evaluate")
          if aEventData.auraAmount then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.auraAmount), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1477,7 +1200,7 @@ SkuAuras.attributes = {
       tooltip = "Der Klasse, die die Aura auslösen soll",
       friendlyName = "klasse",
       evaluate = function()
-      	dprint("SkuAuras.attributes.class.evaluate")
+      	dprint("    ","SkuAuras.attributes.class.evaluate")
 
 
 
@@ -1514,7 +1237,7 @@ SkuAuras.Operators = {
       tooltip = "",
       friendlyName = "dann",
       func = function(a) 
-      	dprint("action", a)
+      	--dprint("    ","action", a)
          return
       end,
    },
@@ -1522,7 +1245,7 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut entspricht dem gewählten Wert",
       friendlyName = "gleich",
       func = function(aValueA, aValueB) 
-      	dprint("                           SkuAuras.Operators is", aValueA, aValueB)
+      	dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
 
@@ -1536,7 +1259,7 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut entspricht nicht dem gewählten Wert",
       friendlyName = "ungleich",
       func = function(aValueA, aValueB) 
-      	dprint("SkuAuras.Operators isNot", aValueA, aValueB)
+      	dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
          if RemoveTags(aValueA) ~= RemoveTags(aValueB) then 
@@ -1549,7 +1272,7 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut enthält den gewählten Wert",
       friendlyName = "enthält",
       func = function(aValueA, aValueB) 
-      	--dprint("                           SkuAuras.Operators contains", aValueA, aValueB)
+      	dprint("      ","SkuAuras.Operators contains", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then 
             for tName, _ in pairs(aValueA) do
@@ -1570,11 +1293,11 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut enthält nicht den gewählten Wert",
       friendlyName = "enthält nicht",
       func = function(aValueA, aValueB) 
-      	dprint("                           SkuAuras.Operators containsNot", aValueA, aValueB)
+      	dprint("      ","SkuAuras.Operators containsNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then 
             for tName, _ in pairs(aValueA) do
-               dprint("tName", tName)
+               dprint("    ","tName", tName)
                local tResult = RemoveTags(tName) == RemoveTags(aValueB)
                if tResult == true then
                   return false
@@ -1592,7 +1315,7 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut ist größer als der gewählte Wert",
       friendlyName = "größer",
       func = function(aValueA, aValueB) 
-      	dprint("SkuAuras.Operators >", aValueA, aValueB)
+      	dprint("      ","SkuAuras.Operators >", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
          if tonumber(RemoveTags(aValueA)) > tonumber(RemoveTags(aValueB)) then 
@@ -1605,7 +1328,7 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut ist kleiner als der gewählte Wert",
       friendlyName = "kleiner",
       func = function(aValueA, aValueB) 
-      	dprint("-----------------------------------------SkuAuras.Operators <", aValueA, aValueB)
+      	dprint("      ","SkuAuras.Operators <", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
          if tonumber(RemoveTags(aValueA)) < tonumber(RemoveTags(aValueB)) then 

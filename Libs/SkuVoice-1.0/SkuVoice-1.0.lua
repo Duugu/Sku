@@ -212,10 +212,16 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			end
 		end
 		if engine ~= 3 then
-			C_VoiceChat.StopSpeakingText()
+			if IsMacClient() == true then
+				C_VoiceChat.StopSpeakingText()
+				C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+			else
+				C_VoiceChat.StopSpeakingText()
+				C_Timer.After(0.05, function() 
+					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+				end)
+			end
 		end
-		C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
-
 	else
 		-- don't vocalize numbers > 20000 or floats
 		-- that is for the unique auto wp ids and the coords; we don't want hear them, but we still need them in the wp names

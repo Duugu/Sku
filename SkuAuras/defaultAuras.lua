@@ -44,7 +44,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [2]
             },
          },
@@ -77,7 +77,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [2]
             },
          },
@@ -110,7 +110,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [2]
             },
          },	
@@ -150,14 +150,21 @@ SkuAuras.AuraSets = {
                      "party", -- [2]
                   }, -- [1]
                },
+               ["destUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "party", -- [2]
+                  }, -- [1]
+               },
             },
             ["actions"] = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [2]
                "output:event", -- [3]
+               "output:destUnitId", -- [3]
             },
          },
          -- Schattenschutz	aura verloren gruppe
@@ -193,7 +200,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [2]
                "output:event", -- [3]
             },
@@ -233,7 +240,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [1]
                "output:event", -- [2]
             },
@@ -271,7 +278,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [1]
                "output:event", -- [2]
             },
@@ -311,7 +318,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [1]
                "output:event", -- [2]
             },
@@ -350,7 +357,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [1]
                "output:event", -- [2]
             },
@@ -385,7 +392,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [1]
                "output:event", -- [2]
             },
@@ -423,7 +430,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [1]
                "output:event", -- [2]
             },
@@ -457,39 +464,35 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:sounddang", -- [1]
+               "output:sound-error_dang", -- [1]
                "output:spellName", -- [1]
                "output:event", -- [2]
             },
          },
                
          --DOTS
-         -- Schattenwort: Schmerz		aura verloren alle	
-         ["Wenn;zauber name;gleich;Schattenwort: Schmerz;oder;zauber name;gleich;Verbessertes Schattenwort: Schmerz;und;ereignis;gleich;aura verloren;und;Quelle;gleich;target;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
-            ["friendlyNameShort"] = "Schattenwort Schmerz ausgelaufen target",
+         -- Vampirumarmung		aura verloren alle	
+         ["Wenn;zauber name;gleich;Vampirumarmung;und;ereignis;gleich;aura verloren;und;Quelle;gleich;target;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
+            ["friendlyNameShort"] = "Vampirumarmung ausgelaufen target",
             ["enabled"] = true,
             ["type"] = "if",
             ["attributes"] = {
                ["spellName"] = {
                   {
                      "is", -- [1]
-                     "spell:Schattenwort: Schmerz", -- [2]
-                  }, -- [1]
-                  {
-                     "is", -- [1]
-                     "spell:Verbessertes Schattenwort: Schmerz", -- [2]
-                  }, -- [2]
-               },
-               ["tInCombat"] = {
-                  {
-                     "is", -- [1]
-                     "true", -- [2]
+                     "spell:Vampirumarmung", -- [2]
                   }, -- [1]
                },
                ["event"] = {
                   {
                      "is", -- [1]
                      "SPELL_AURA_REMOVED", -- [2]
+                  }, -- [1]
+               },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
                   }, -- [1]
                },
                ["destUnitId"] = {
@@ -503,13 +506,13 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:soundbrang", -- [1]
-               "output:spellName", -- [2]
-               "output:event", -- [3]
+               "output:sound-glass5", -- [1]
+               --"output:spellName", -- [2]
+               --"output:event", -- [3]
             },
-         },	
-         ["Wenn;ereignis;gleich;Ziel änderung;und;Im Kampf;gleich;wahr;und;Ziel Angreifbar;gleich;wahr;und;Debuff Liste Ziel;enthält nicht;Schattenwort: Schmerz;dann;audio ausgabe;aura;sound#brang;wert debuff liste ziel;"] = {
-            ["friendlyNameShort"] = "Schattenwort Schmerz fehlt auf ziel",
+         },	       
+         ["Wenn;ereignis;gleich;Ziel änderung;und;Im Kampf;gleich;wahr;und;Ziel Angreifbar;gleich;wahr;und;Debuff Liste Ziel;enthält nicht;Vampirumarmung;dann;audio ausgabe;aura;sound#brang;wert debuff liste ziel;"] = {
+            ["friendlyNameShort"] = "Vampirumarmung fehlt auf ziel",
             ["enabled"] = true,
             ["type"] = "if",
             ["attributes"] = {
@@ -534,20 +537,16 @@ SkuAuras.AuraSets = {
                ["debuffListTarget"] = {
                   {
                      "containsNot", -- [1]
-                     "spell:Schattenwort: Schmerz", -- [2]
+                     "spell:Vampirumarmung", -- [2]
                   }, -- [1]
-                  {
-                     "is", -- [1]
-                     "spell:Verbessertes Schattenwort: Schmerz", -- [2]
-                  }, -- [2]
                },
             },
             ["actions"] = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:soundbrang", -- [1]
-               "output:debuffListTarget", -- [2]
+               "output:sound-glass5", -- [1]
+               --"output:debuffListTarget", -- [2]
             },
          },
 
@@ -590,9 +589,9 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:soundbrang", -- [1]
-               "output:spellName", -- [2]
-               "output:event", -- [3]
+               "output:sound-glass3", -- [1]
+               --"output:spellName", -- [2]
+               --"output:event", -- [3]
             },
          },	   
          ["Wenn;ereignis;gleich;Ziel änderung;und;Im Kampf;gleich;wahr;und;Ziel Angreifbar;gleich;wahr;und;Debuff Liste Ziel;enthält nicht;Vampirberührung;oder;Debuff Liste Ziel;enthält nicht;Verbesserte Vampirberührung;dann;audio ausgabe;aura;sound#brang;wert debuff liste ziel;"] = {
@@ -633,33 +632,38 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:soundbrang", -- [1]
-               "output:debuffListTarget", -- [2]
+               "output:sound-glass3", -- [1]
+               --"output:debuffListTarget", -- [2]
             },
          },
 
-         -- Vampirumarmung		aura verloren alle	
-         ["Wenn;zauber name;gleich;Vampirumarmung;und;ereignis;gleich;aura verloren;und;Quelle;gleich;target;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
-            ["friendlyNameShort"] = "Vampirumarmung ausgelaufen target",
+
+         -- Schattenwort: Schmerz		aura verloren alle	
+         ["Wenn;zauber name;gleich;Schattenwort: Schmerz;oder;zauber name;gleich;Verbessertes Schattenwort: Schmerz;und;ereignis;gleich;aura verloren;und;Quelle;gleich;target;dann;audio ausgabe;aura;sound#Glas 1;zauber name;ereignis;"] = {
+            ["friendlyNameShort"] = "Schattenwort Schmerz ausgelaufen target",
             ["enabled"] = true,
             ["type"] = "if",
             ["attributes"] = {
                ["spellName"] = {
                   {
                      "is", -- [1]
-                     "spell:Vampirumarmung", -- [2]
+                     "spell:Schattenwort: Schmerz", -- [2]
+                  }, -- [1]
+                  {
+                     "is", -- [1]
+                     "spell:Verbessertes Schattenwort: Schmerz", -- [2]
+                  }, -- [2]
+               },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
                   }, -- [1]
                },
                ["event"] = {
                   {
                      "is", -- [1]
                      "SPELL_AURA_REMOVED", -- [2]
-                  }, -- [1]
-               },
-               ["tInCombat"] = {
-                  {
-                     "is", -- [1]
-                     "true", -- [2]
                   }, -- [1]
                },
                ["destUnitId"] = {
@@ -673,13 +677,13 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:soundbrang", -- [1]
-               "output:spellName", -- [2]
-               "output:event", -- [3]
+               "output:sound-glass1", -- [1]
+               --"output:spellName", -- [2]
+               --"output:event", -- [3]
             },
-         },	       
-         ["Wenn;ereignis;gleich;Ziel änderung;und;Im Kampf;gleich;wahr;und;Ziel Angreifbar;gleich;wahr;und;Debuff Liste Ziel;enthält nicht;Vampirumarmung;dann;audio ausgabe;aura;sound#brang;wert debuff liste ziel;"] = {
-            ["friendlyNameShort"] = "Vampirumarmung fehlt auf ziel",
+         },	
+         ["Wenn;ereignis;gleich;Ziel änderung;und;Im Kampf;gleich;wahr;und;Ziel Angreifbar;gleich;wahr;und;Debuff Liste Ziel;enthält nicht;Schattenwort: Schmerz;dann;audio ausgabe;aura;sound#brang;wert debuff liste ziel;"] = {
+            ["friendlyNameShort"] = "Schattenwort Schmerz fehlt auf ziel",
             ["enabled"] = true,
             ["type"] = "if",
             ["attributes"] = {
@@ -704,18 +708,23 @@ SkuAuras.AuraSets = {
                ["debuffListTarget"] = {
                   {
                      "containsNot", -- [1]
-                     "spell:Vampirumarmung", -- [2]
+                     "spell:Schattenwort: Schmerz", -- [2]
                   }, -- [1]
+                  {
+                     "is", -- [1]
+                     "spell:Verbessertes Schattenwort: Schmerz", -- [2]
+                  }, -- [2]
                },
             },
             ["actions"] = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:soundbrang", -- [1]
-               "output:debuffListTarget", -- [2]
+               "output:sound-glass1", -- [1]
+               --"output:debuffListTarget", -- [2]
             },
          },
+
 
          -- Untote fesseln		aura verloren alle	
          ["Wenn;zauber name;gleich;Untote fesseln;und;ereignis;gleich;aura verloren;und;Quelle;gleich;alle;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
@@ -752,7 +761,7 @@ SkuAuras.AuraSets = {
                "notifyAudio", -- [1]
             },
             ["outputs"] = {
-               "output:soundbrang", -- [1]
+               "output:sound-brass1", -- [1]
                "output:spellName", -- [2]
                "output:event", -- [3]
             },

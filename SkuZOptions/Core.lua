@@ -70,6 +70,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param input string
 function SkuOptions:SlashFunc(input)
+	--print("SkuOptions:SlashFunc(input)", input)
 	--SkuOptions.AceConfigDialog:Open("SkuOptions")
 	input = input:gsub( ", ", ",")
 	input = input:gsub( " ,", ",")
@@ -859,7 +860,7 @@ function SkuOptions:CreateMainFrame()
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Local"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
-					SkuOptions:MenuBuilderLocal(tNewMenuEntry, {L["Empty"]}, function(a, b, c, d) 
+					SkuOptions:MenuBuilderLocal(self, {L["Empty"]}, function(a, b, c, d) 
 						--dprint(a, b, c, d) 
 					end)
 				end
@@ -918,8 +919,10 @@ function SkuOptions:CreateMainFrame()
 					CloseMail();
 				end
 
-				if (AuctionFrame:IsShown() ) then
-					_G["AuctionFrameCloseButton"]:Click()
+				if AuctionFrame then
+					if (AuctionFrame:IsShown() ) then
+						_G["AuctionFrameCloseButton"]:Click()
+					end
 				end
 				
 
@@ -1883,7 +1886,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
-	
+ 
 	for x = 1, #aGossipListTable do
 		local index = aGossipListTable[x]
 
@@ -1902,57 +1905,64 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			end
 			if tNewMenuEntry and aGossipListTable[index].click == true then
 				if aGossipListTable[index].func then
-					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Left click"]}, SkuGenericMenuItem)
-					if aGossipListTable[index].containerFrameName then
-						tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames()"
-						if aGossipListTable[index].obj.GetParent then
+
+
+					tNewMenuEntry.BuildChildren = function(self)
+						self.children = {}
+						local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
+						if aGossipListTable[index].containerFrameName then
+							tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames()"
+							if aGossipListTable[index].obj.GetParent then
+								if aGossipListTable[index].obj:GetParent() then
+									if aGossipListTable[index].obj:GetParent().rollID then
+										tNewSubMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()"
+									end
+									if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
+										tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button1\"]) SkuCore:CheckFrames()"
+									end
+								end
+							end
+						else
+							tNewSubMenuEntry.OnAction = function()
+								--dprint("links func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
+								aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
+								--dprint("2L")
+								--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
+								if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
+									SkuCore:CheckFrames(true)
+								else
+									SkuCore:CheckFrames()
+								end
+							end
+						end
+						local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
+						if aGossipListTable[index].containerFrameName then
+							tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
+							--dprint("rechts mac", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
+						else
+							tNewSubMenuEntry.OnAction = function()
+								aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
+								--dprint("rechts func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
+								--dprint("2R")
+								--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
+								if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
+									SkuCore:CheckFrames(true)
+								else
+									SkuCore:CheckFrames()
+								end
+							end
+						end
+
+						if SkuCore.AuctionHouseOpen == true then
 							if aGossipListTable[index].obj:GetParent() then
-								if aGossipListTable[index].obj:GetParent().rollID then
-									tNewSubMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()"
+								if string.find(aGossipListTable[index].obj:GetName() or "", "ContainerFrame") or string.find(aGossipListTable[index].obj:GetParent():GetName() or "", "ContainerFrame") then									
+									SkuCore:AuctionHouseBuildItemSellMenu(tNewMenuEntry, aGossipListTable[index])
 								end
-								if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
-									tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button1\"]) SkuCore:CheckFrames()"
-								end
-							end
-						end
-					else
-						tNewSubMenuEntry.OnAction = function()
-							--dprint("links func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
-							aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
-							--dprint("2L")
-							--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
-							if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
-								SkuCore:CheckFrames(true)
-							else
-								SkuCore:CheckFrames()
-							end
-						end
-					end
-					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Right click"]}, SkuGenericMenuItem)
-					if aGossipListTable[index].containerFrameName then
-						tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
-						--dprint("rechts mac", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
-					else
-						tNewSubMenuEntry.OnAction = function()
-							aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
-							--dprint("rechts func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
-							--dprint("2R")
-							--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
-							if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
-								SkuCore:CheckFrames(true)
-							else
-								SkuCore:CheckFrames()
 							end
 						end
 					end
 
-					if SkuCore.AuctionHouseOpen == true then
-						if aGossipListTable[index].obj:GetParent() then
-							if string.find(aGossipListTable[index].obj:GetName() or "", "ContainerFrame") or string.find(aGossipListTable[index].obj:GetParent():GetName() or "", "ContainerFrame") then									
-								SkuCore:AuctionHouseBuildItemSellMenu(tNewMenuEntry, aGossipListTable[index])
-							end
-						end
-					end
+
 				end
 			end
 		else
@@ -1964,7 +1974,10 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 					tNewMenuEntry.textFull = aGossipListTable[index].textFull
 				end
 			end
-			SkuIterateGossipList(aGossipListTable[index].childs, tNewMenuEntry, aTab.."  ")
+			tNewMenuEntry.BuildChildren = function(self)
+				self.children = {}
+				SkuIterateGossipList(aGossipListTable[index].childs, self, aTab.."  ")
+			end
 		end
 
 	end
@@ -1972,8 +1985,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFunc)
-	--dprint("SkuOptions:MenuBuilderLocal", aParentEntry, aEntryDataTable, aOnActionFunc)
-
 	SkuCore.GossipList = SkuCore.GossipList or {}
 	if #SkuCore.GossipList < 1 then
 		table.insert(SkuCore.GossipList, L["Empty"])
@@ -1989,9 +2000,7 @@ function SkuOptions:MenuBuilderLocal(aParentEntry, aEntryDataTable, aOnActionFun
 	end
 
 	if SkuCore.GossipList and #SkuCore.GossipList > 0 then
-		--dprint("===========SkuIterateGossipList Start ==============")
 		SkuIterateGossipList(SkuCore.GossipList, aParentEntry, "  ")
-		--dprint("===========SkuIterateGossipList End ==============")
 	end
 end
 
@@ -2621,7 +2630,7 @@ function SkuOptions:ImportWpAndLinkData()
 
 			SkuOptions.Voice:OutputString("Import erfolgreich", true, true, 0.2, true)			
 
-			--do tWaypoints
+			--do tWaypoints 
 			local tFullCounterWps = 0
 			SkuOptions.db.profile["SkuNav"].Waypoints = {}
 			for tWpName, tWpData in pairs(tWaypoints) do
@@ -2970,3 +2979,65 @@ function SkuOptions:ImportPre22WpAndRouteData()
 	end)
 end
 
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:ImportAddWpAndLinkData()
+	PlaySound(88)
+	SkuOptions.Voice:OutputString(L["Paste data to import now"], false, true, 0.2)
+
+	SkuOptions:EditBoxPasteShow("", function(self)
+		PlaySound(89)
+		local tSerializedData = strtrim(table.concat(_G["SkuOptionsEditBoxPaste"].SkuOptionsTextBuffer))
+
+		local tImportCounterLinks = 0
+		local tImportCounterWps = 0
+		local tIgnoredCounterWps = 0
+		local tIgnoredCounterLinks = 0
+
+		if tSerializedData ~= "" then
+			local tSuccess, tVersion, tLinks, tWaypoints = SkuOptions:Deserialize(tSerializedData)
+
+			--do tWaypoints 
+			local tFullCounterWps = 0
+			--SkuOptions.db.profile["SkuNav"].Waypoints = {}
+			for tWpName, tWpData in pairs(tWaypoints) do
+				if not SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] then
+					SkuOptions.db.profile["SkuNav"].Waypoints[tFullCounterWps + 1] = tWpName
+					SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] = tWpData
+					tImportCounterWps = tImportCounterWps + 1
+				else
+					tIgnoredCounterWps = tIgnoredCounterWps + 1
+				end
+				tFullCounterWps = tFullCounterWps + 1
+			end
+
+			SkuNav:CreateWaypointCache()
+
+			
+			--do tLinks
+			for tLinkName, tData in pairs(tLinks) do
+				if not SkuOptions.db.profile["SkuNav"].Links[tLinkName] then
+					SkuOptions.db.profile["SkuNav"].Links[tLinkName] = tData
+					tImportCounterLinks = tImportCounterLinks + 1
+				else
+					tIgnoredCounterLinks = tIgnoredCounterLinks + 1
+				end
+			end
+			
+
+			SkuNav:LoadLinkDataFromProfile()
+
+			--done
+			print("Links importiert:", tImportCounterLinks)
+			print("Links ignoriert:", tIgnoredCounterLinks)
+			print("Wegpunkte importiert:", tImportCounterWps)
+			print("Wegpunkte ignoriert:", tIgnoredCounterWps)
+		end
+	end)
+end

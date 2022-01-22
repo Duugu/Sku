@@ -71,6 +71,41 @@ SkuGenericMenuItem = {
 	selectTarget = nil,
 	dynamic = false,
 	filterable = false,
+	OnUpdate = function(self, aKey)
+		local tCurrentItemNumber
+		local tCurrentItemName = self.name
+		local tParent = self.parent
+
+		if not self.parent then
+			return
+		end
+		if not self.parent.children then
+			return
+		end
+
+		local tMenuItems = self.parent.children
+		for x = 1, #tMenuItems do
+			if tMenuItems[x].name == tCurrentItemName then
+				tCurrentItemNumber = x
+			end
+		end
+
+		self.parent.children = {}
+		tParent:BuildChildren(self.parent)
+
+		tParent:OnSelect()
+
+		if tMenuItems[tCurrentItemNumber] then
+			SkuOptions.currentMenuPosition = tMenuItems[tCurrentItemNumber]
+		elseif tMenuItems[tCurrentItemNumber - 1] then
+			SkuOptions.currentMenuPosition = tMenuItems[tCurrentItemNumber - 1]
+		else
+			SkuOptions.currentMenuPosition = tMenuItems[1]
+		end
+
+		SkuOptions.currentMenuPosition:OnEnter()
+		SkuOptions:VocalizeCurrentMenuName()
+	end,
 	OnKey = function(self, aKey)
 		--dprint("OnKey", aKey)
 		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)

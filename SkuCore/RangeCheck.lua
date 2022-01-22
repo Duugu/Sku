@@ -115,15 +115,17 @@ function SkuCore:DoRangeCheck()
          end
       end
 
-      if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange] then
-         local tSoundChannel = SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head"
-         if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound == L["vocalized"] then
-            --PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
-            PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
-         else
-            PlaySoundFile(SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound, tSoundChannel)
+      if SkuOptions.db.char[MODULE_NAME].RangeChecks then
+         if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange] then
+            local tSoundChannel = SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head"
+            if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound == L["vocalized"] then
+               --PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
+               PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
+            else
+               PlaySoundFile(SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound, tSoundChannel)
+            end
+            
          end
-         
       end
    end
 

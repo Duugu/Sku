@@ -3,53 +3,69 @@
 -------------------------------------------------------------------------------------------------------	
 
 
-
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23
 
+	Achtung: Es gab nicht nur neue Features wie das Auktionshaus, sondern auch erhebliche interne Optimierungen am Menü.	Fehler sind möglich bzw. wahrscheinlich. Bitte alles testen und Fehler melden. Danke!
+
 	SkuCore
+		Fehlerkorrekturen
+			- Das Post-Menü springt jetzt nicht mehr zum ersten Menüpunkt, wenn man einen noch ungelesenen Brief auswählt.
+			- Das Taschen-Menü springt jetzt bei einem Klick nicht mehr immer wieder zum ersten Taschenplatz, sondern bleibt auf dem aktuellen Taschenplatz.
+
 		Neuerungen
 			- Unter "SkuCore > Auktionshaus" kannst du jetzt das Auktionshaus verwenden.
 			- Das Auktionshaus-Menü enthält die folgenden Untermenüs:
 				- Auktionen: Das sind die Auktionen im AH. Es wird nur angezeigt, wenn an einem Auktionator stehst und das Auktionsfenster offen ist.
-					Darunter findest du als ersten Punkt "Filter", unter dem du Filtereinstellungen machen kannst.
+					Darunter findest du als ersten Punkt "Filter und Sortierung", unter dem du Filtereinstellungen machen kannst.
 					Dann kommen die einzelnen Auktionskategorien und darunter jeweils Unterkategorien und Unter-Unterkategorien (falls es diese gibt).
-					Unter den Kategorien (bzw. Unter- oder Unter-Unterkategorien) findest du dann die Auktionen.
-					Die Daten der Autkionen werden vom Server abgefragt. Das kann bei großen Kategorien (z. B. "Verbrauchsmaterialien") eine ganze Weile dauern (zwischen 0 und 30-60 Sekunden).
+					Darunter findest du dann die eigentlichen Auktionen.
+					Die Daten der Auktionen werden vom Server abgefragt. Das kann bei großen Kategorien (z. B. "Verbrauchsmaterialien") eine ganze Weile dauern (zwischen 0 und 30-60 Sekunden).
 					Solange die Abfrage läuft, und noch keine Daten vorhanden sind, wird dir "Warten auf Abfrage" angezeigt. Es wird gleichzeitig ein Sound abgespielt.
 					Sobald die Abfrage abgeschlossen ist, verschwindet "Warten auf Abfrage" und es wird automatisch die erste Auktion der Kategorie angezeigt.
-					Wenn "Warten auf Abfrage" läuft, und du die Geduld verlierst, kannst du natürlich jederzeit einen Schritt im Menü zurückgehen und andere Kategorien auswählen.
+					Mehrere Auktionen mit identischem Gegenstand, Preis und Stack werden zusammengefasst. Dann steht in der Liste z. B. "5 mal ...".
 				- Gebote: Das sind die laufenden Auktionen auf die du geboten hast. 
 				  	Sofern du mindestens einmal bei einem Auktionator warst, kannst du diese Liste auch unterwegs einsehen. Aber natürlich ist die Liste in diesem Fall möglicherweise nicht mehr aktuell.
 				- Verkäufe: Das sind deine laufenden Verkaufsauktionen. 
 				  	Sofern du mindestens einmal bei einem Auktionator warst, kannst du diese Liste auch unterwegs einsehen. Aber natürlich ist die Liste in diesem Fall möglicherweise nicht mehr aktuell.
 				- Offline Datenbank: Das sind alle Auktionen aus dem AH, die du dir auch dann ansehen kannst, wenn du nicht an einem Auktionator stehst.
-					Bei jedem Öffnen des Auktionshauses werden alle Auktionen gescannt und für die Offline Datenbank gespeichert.
-					Dieser Scan ist nur alle 15 Minuten möglich.
+					Bei jedem Öffnen des Auktionshauses werden alle Auktionen gescannt und für die Offline Datenbank gespeichert. Dieser Scan ist jedoch nur alle 15 Minuten möglich.
 					Je länger der letzte Scan her ist, desto weniger aktuell sind die Offlinedaten logischerweise.
 					Und natürlich kannst du über die Offlinedaten nichts kaufen. Sie dienen nur der Information.
-					Die Offlinedaten werden zwischen Spielsitzungen für den jeweiligen Char gespeichert. Sie sind nach dem Einloggen mit dem Char wieder verfügbar. Aber dann logischerweie mehr oder weniger veraltet.
+					Die Offlinedaten werden pro Fraktion pro Server gespeichert. Alle Allianz-Chars auf einem Server teilen sich also eine Datenbank. Genauso alle Hordler.
 				- Offline Datenbank aktualisieren: Damit kannst du an einem Auktionator die Offline Datenbank manuell aktualisieren (wie gesagt, geht nur alle 15 Minuten).
-			- Gegenstände verkaufen: Du verkaufst aus deinem Taschenmenü heraus.
+			- KAUFEN: Du wählst im AH eine Kategorie und dann eine Auktion aus. Dann gehst du nach rechts gehst und wählst "Kaufen" oder "Bieten" aus.
+			  Dann gehst du wieder nach rechts und wählst die Anzahl Auktionen aus, auf die du kaufen/bieten möchtest (falls es die Auktion mehrmals gab).
+			  Dann drückst du ENTER. Dann wirst du aufgefordert ENTER zur Bestätigung oder ESCAPE zum Abbrechen zu drücken (mehrmals, wenn du mehr als einen ausgewählst hast). Wenn du ENTER drückst, kaufst/bietest du.
+			- VERKAUFEN: Du verkaufst aus deinem Taschenmenü heraus ("Lokal > ...").
 			  Jeder Gegenstand in deinen Taschen hat jetzt zusätzlich zu "Linksklick" und "Rechtsklick" noch ein "Verkaufen" Untermenü. Dieses wird nur angezeigt, wenn das Auktionsfenster offen ist.
-			  Im Verkaufen-Menü legst du zuerst den Sofortkaufpreis fest. Geh einfach runter. Du findest Preisabstufunden von 1 Silber bis zu 5000 Gold.
-			  Beim gewünschten Preis gehst du nach rechts und landest im "Anzahl"-Menü. Dort legst du fest, wie viele der Gegenstände im ausgewählten Taschenplatz du verkaufen möchtest. Standardmäßig ist die Maximalmenge festgelegt.
-			  Bei der gewünschten Menge gehst du wieder nach rechts, und entscheidest dich für eine Laufzeit von 12, 24 oder 48 Stunden.
-			  Bei der ausgewählten Laufzeit drückst du EINGABE, und die Auktion wird mit dem von dir ausgewählten Sofortkraufpreis und der Hälfte davon als STartgebot erstellt.
-			- Die "Gebote" und "Verkäufe" Listen berücksichtigen zurzeit nur maximal 50 Einträge.
+			  Im Verkaufen-Menü gehst du wie bei der Aura-Erstellung immer weiter nach rechts und legst so die Parameter für die Auktion fest. Zum Schluss kommt die Laufzeit. Da drückst du dann EINGABE, und die Auktion wird erstellt.
+			- Historische Auktionshausdaten: Bei jedem Scan und jeder Suche im Auktionshauses werden die Daten in einer Datenbank mit historischen Daten gespeichert. Auch dies geschieht pro Fraktion pro Server.
+			  Die historischen Daten aus dieser Datenbank (Durchschnittspreis, niedrigster/höchster Preis, Preistendenz etc.) werden dir zu jedem Gegenstand im Tooltip angezeigt.
+			  Die Daten sind natürlich erst dann wirklich aussagekräftig, wenn du über mehrere Tage oder Wochen hinweg mindestens einmal täglich das AH gescannt hast.
+			- Die "Gebote"- und "Verkäufe"-Listen berücksichtigen zurzeit nur maximal 50 Einträge.
 			  Darauf, was passiert, wenn du gleichzeitig auf mehr als 50 Auktionen bietest oder mehr als 50 Verkäufe laufen hast, bin ich selbst gespannt. :)
 
 	SkuAuras
 		Neuerungen
-			- Aufgrund weiterer Änderungen am Aura-System werden mit 22.8 erneut einmalig alle bestehenden Auren gelöscht.
-			- Es sind 5 Sounds hinzugekommen (Trompete, Glas, Tropfen), die es in jeweils 5 verschiedenen Tonhöhen gibt.
-			- Es sind 24 weitere Sounds hinzugekommen (Hinweis 1-24), die es jeweils nur in einer Tonhöhe gibt.
-- Das Aura-Set für Schattenpriester wurde erneut überarbeitet und verwendet jetzt andere Sounds.
-- Es ist ein Aura-Set für Heilig-Priester hinzugekommen.
+			- Aufgrund weiterer Änderungen am Aura-System werden erneut einmalig alle bestehenden Auren gelöscht. Mindestens eine weitere Komplettlöschung in einer der nächsten Versionen ist wahrscheinlich.
+			- Es wurden (hoffentlich) diverse Fehler behoben. Zum Bespiel bei fehlenden Benachrichtigungen, wenn man sich selbst im Ziel hat.
+			- Es sind 5 Sounds hinzugekommen ("Trompete", "Glas", "Tropfen"), die es in jeweils 5 verschiedenen Tonhöhen gibt.
+			- Es sind 24 Sounds hinzugekommen ("Hinweis 1-24"), die es jeweils nur in einer Tonhöhe gibt.
+			- Das Aura-Set für Schattenpriester wurde überarbeitet und verwendet jetzt weniger nervige Sounds.
+			  Für Vampirumarmung, Schattenwort: Schmerz und Vampirberührung wird derselbe Sound verwendet. Jedoch in drei unterschiedlichen und klar zu unterscheidenden Tonhöhen.
+			  Die Sounds werden ausgelöst, wenn einer der drei Dots auf deinem Ziel ausläuft oder wenn du das Ziel wechselst.
 
 	SkuNav
+		Neuerungen
+			- Die Routendatenbank enthält jetzt standardmäßig die Daten aus Macs Version "V22Plus-11-AlleKarten-2022-01-16.txt"
+
 		Fehlerkorrekturen
+			- Der Feststecken-Sound wird jetzt parallel zu allen Anderen Audioausgaben ausgegeben und bricht andere Ausgaben nicht mehr ab.
 			- Die kaputte Zone "Auchindoun" wurde repariert.
+			- "Schmiedevaters Grabmal" und "Schwarzfelsspitze" gehören jetzt zur brennenden Steppe.
+			- Die Darstellung der Sku-Minimap wurde optimiert. Sie wird jetzt weniger häufig gerendert wenn mehr Punkte und Links anzuzeigen sind (beim Rauszoomen).
+			  Bei sehr weitem Rauszoomen ist es immer noch enorm ruckelig. Aber immerhin friert der Client jetzt nicht mehr vollkommen ein. :)
 
 
 -------------------------------------------------------------------------------------------------------	

@@ -781,7 +781,7 @@ function SkuCore:OnEnable()
 								if SkuCoreMovement.counter > 5 and tSound > 0 then
 									SkuCoreMovement.counter = 0
 									--dprint(tSound, t * 10000)
-									SkuOptions.Voice:OutputString("sound-stuck"..tSound, true, false, 0.8)
+									SkuOptions.Voice:OutputString("sound-stuck"..tSound, false, false, 0.8)
 								end
 							end
 
@@ -1245,10 +1245,26 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			end
 		end
 
-		SkuOptions.db.char[MODULE_NAME].AuctionDB = SkuOptions.db.char[MODULE_NAME].AuctionDB or {}
+		SkuCore:ItemRatingOnLogin()
 
+		SkuCore:AuctionHouseOnLogin()
+		if not SkuOptions.db.char[MODULE_NAME] then
+			SkuOptions.db.char[MODULE_NAME] = {}
+		end
+		if not SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter then
+			SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
+				["LevelMin"] = nil,
+				["LevelMax"] = nil,
+				["MinQuality"] = nil,
+				["Usable"] = nil,
+				["SortBy"] = 1,
+			}
+		end
+
+		SkuOptions.db.factionrealm[MODULE_NAME] = SkuOptions.db.factionrealm[MODULE_NAME] or {}
+		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB or {}
+		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or {}
 	end
-
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1888,7 +1904,6 @@ local function IterateChildren(t, tab)
 								if tResults[fName] and _G[fName.."Count"]:GetText() then
 									if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") then
 										tResults[fName].textFirstLine = tResults[fName].textFirstLine.." ".._G[fName.."Count"]:GetText()
-										tResults[fName].stackSize = _G[fName.."Count"]:GetText()
 									else
 										tResults[fName].textFirstLine = tResults[fName].textFirstLine
 									end
@@ -1900,6 +1915,12 @@ local function IterateChildren(t, tab)
 									tEmptyCounter = tEmptyCounter + 1
 								end
 							end
+							if _G[fName.."Count"] then
+								tResults[fName].stackSize = _G[fName.."Count"]:GetText()
+							end
+							if _G[fName].info then
+								tResults[fName].itemId = _G[fName].info.id
+							end							
 						end
 					end
 				end
@@ -1961,6 +1982,7 @@ end
 -------------------------------------------------------------------------------------------------
 ---@param aForceLocalRoot bool force the audio menu to return to the "Local" root element if there are new childs in Local
 function SkuCore:CheckFrames(aForceLocalRoot)
+	--print("!!!!!!!!!!!!!!!!!!!!!!CheckFrames", aForceLocalRoot)
 	-- temp hack to avoid the CURSOR_UPDATE spam from questie
 	if Questie then
 		Questie:UnregisterEvent("CURSOR_UPDATE")
@@ -2014,23 +2036,32 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 			end
 
 			CleanUpGossipList(tGossipList)
-
-			--tprint(tGossipList, 1)
-
 			SkuCore.GossipList = tGossipList
 
-			--tprint(SkuCore.GossipList)
-
+			local tIndex
 			local tBread = nil
 			local tFirstFrame = nil
 			if SkuOptions.currentMenuPosition then
 				local tTable = SkuOptions.currentMenuPosition.parent
+
+				if tTable.children then
+					for x = 1, #tTable.children do
+						if tTable.children[x].name == SkuOptions.currentMenuPosition.name then
+							tIndex = x
+						end
+					end
+				end
+
 				tBread = SkuOptions.currentMenuPosition.parent.name
 				if tTable.parent then
 					while tTable.parent.name do
 						tFirstFrame = tTable.name
 						tTable = tTable.parent
-						tBread = tTable.name..","..tBread
+						if tBread then
+							tBread = tTable.name..","..tBread
+						else
+							tBread = tTable.name
+						end
 					end
 				end
 				--dprint("tBread", tBread)
@@ -2047,6 +2078,14 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 						if _G[i] then
 							if _G[i]:IsVisible() then
 								SkuOptions:SlashFunc(L["short"]..","..tBread)
+								if tIndex then
+									for x = 1, tIndex - 1 do
+										SkuOptions.currentMenuPosition:OnNext()
+									end
+									--SkuOptions.currentMenuPosition.parent.children[tIndex]:OnSelect()
+									SkuOptions:VocalizeCurrentMenuName()
+								end
+
 								tFlag = true
 							end
 						end

@@ -8,7 +8,7 @@ Sku = {}
 Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-Sku.debug = true
+Sku.debug = false
 function dprint(...)
 	if Sku.debug == true then
 		print(...)

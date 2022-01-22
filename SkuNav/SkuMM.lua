@@ -487,6 +487,8 @@ function SkuNavDrawWaypointsMM(aFrame)
 	--wp draw
 	local tWP = nil
 
+	local tCountDrawnWPs = 0
+
 	for i, v in SkuNav:ListWaypoints2(false, nil, tAreaId, tPlayerContintentId, nil) do
 		--print(i, v)
 		tWP = SkuNav:GetWaypointData2(v)
@@ -505,7 +507,9 @@ function SkuNavDrawWaypointsMM(aFrame)
 			if tShow == true then
 				if tWP.worldX and tWP.worldY then
 					local tFinalX, tFinalY = SkuNavMMWorldToContent(tWP.worldX, tWP.worldY)
-					if tFinalX > -(tTileSize * 1.5) and tFinalX < (tTileSize * 1.5) and tFinalY > -(tTileSize * 1.5) and tFinalY < (tTileSize * 1.5) then
+					if tFinalX > -(tTileSize * 0.6) and tFinalX < (tTileSize * 0.6) and tFinalY > -(tTileSize * 0.6) and tFinalY < (tTileSize * 0.6) then
+						tCountDrawnWPs = tCountDrawnWPs + 1
+
 						local tSize = 4
 						
 						if tWP.typeId == 1 or tWP.typeId == 4 then
@@ -539,10 +543,10 @@ function SkuNavDrawWaypointsMM(aFrame)
 						end
 
 						if (SkuNavMMShowCustomWo == true or SkuNavMMShowDefaultWo == true) == false then
-
 							if tWP.links.byName then
 								for tName, tDistance in pairs(tWP.links.byName) do
 									if tWpFrames[tName] then
+										tCountDrawnWPs = tCountDrawnWPs + 1
 										local _, relativeTo, _, xOfs, yOfs = tWpFrames[v]:GetPoint(1)
 										local _, PrevrelativeTo, _, PrevxOfs, PrevyOfs = tWpFrames[tName]:GetPoint(1)
 										SkuNavDrawLine(xOfs, yOfs, PrevxOfs, PrevyOfs, 3, tRouteColor.a, tRouteColor.r, tRouteColor.g, tRouteColor.b, aFrame, nil, relativeTo, PrevrelativeTo) 
@@ -555,6 +559,10 @@ function SkuNavDrawWaypointsMM(aFrame)
 			end
 		end
 	end
+
+	SkuNavMmDrawTimer = tCountDrawnWPs / 5000
+	if SkuNavMmDrawTimer < 0.1 then SkuNavMmDrawTimer = 0.1 end
+	--if SkuNavMmDrawTimer > 1 then SkuNavMmDrawTimer = 1 end
 
 	--dprint("End SkuNavDrawWaypointsMM", debugprofilestop() - beginTime)
 end
@@ -1251,7 +1259,7 @@ function SkuNav:SkuNavMMOpen()
 						SkuNavDrawWaypointsMM(_G["SkuNavMMMainFrameScrollFrameContent1"])
 						DrawPolyZonesMM(_G["SkuNavMMMainFrameScrollFrameContent1"])
 					else
-						if SkuNavMMMainFrameScrollFrameContenttTime1 > 0.1 then
+						if SkuNavMMMainFrameScrollFrameContenttTime1 > (SkuNavMmDrawTimer or 0.1) then
 							if tFocusOnPlayer == true then
 								local tPx, tPy = UnitPosition("player")
 								if tPx then

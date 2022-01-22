@@ -305,8 +305,8 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 		if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= UnitGUID(tUnitId.."target") then
 			SkuAuras.UnitRepo[tUnitId].unitTargetName = UnitGUID(tUnitId.."target")
 
-			print("ooooooooooooooo target change for ", tUnitId)
-			print("changed to", UnitName(tUnitId.."target"))
+			dprint("ooooooooooooooo target change for ", tUnitId)
+			dprint("changed to", UnitName(tUnitId.."target"))
 			if UnitName(tUnitId.."target") then
 				local tNewTargetUnitId = SkuAuras:GetBestUnitId(UnitName(tUnitId.."target"))
 				local tEventData = {
@@ -558,8 +558,10 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	end
 	tEventData[38] = tdebuffList
 
---[[
 
+
+	dprint("---------------------------------------------------------------------")
+	dprint("--NEW EVENT:", tEventData[2] )
 	dprint("---------------------------------------------------------------------")
 	dprint("timestamp", tEventData[1])
 	dprint("subevent", tEventData[2])
@@ -586,18 +588,18 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	dprint("missType", tEventData[12])
 	dprint("tSourceUnitID", tSourceUnitID)
 	setmetatable(tSourceUnitID, SkuPrintMTWo)
-	print(tSourceUnitID)
+	dprint(tSourceUnitID)
 	dprint("tDestinationUnitID", tDestinationUnitID)
 	setmetatable(tDestinationUnitID, SkuPrintMTWo)
-	print(tDestinationUnitID)
+	dprint(tDestinationUnitID)
 	dprint("tSourceUnitIDCannAttack", tSourceUnitIDCannAttack)
 	dprint("tDestinationUnitIDCannAttack", tDestinationUnitIDCannAttack)
-]]
+
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
 		dprint("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+")
-		dprint(tAuraName, tAuraData)
+		dprint("  ",tAuraName, tAuraData)
 
 		if tAuraData.enabled == true then
 
@@ -646,7 +648,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			end
 
 			if string.find(tEventData[CleuBase.subevent], "_MISSED") then
-				dprint("----------- _MISSED -----------", tEventData[12])
+				--dprint("  ","----------- _MISSED -----------", tEventData[12])
 				tEvaluateData.missType = tEventData[12]
 			end
 
@@ -688,7 +690,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 					local tLocalResult = false
 					for tInd, tLocalValue in pairs(tAttributeValue) do
 						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2])
-						dprint("RESULT:", tResult)
+						dprint("  ","RESULT:", tResult)
 						if tResult == true then
 							tLocalResult = true
 						end
@@ -698,7 +700,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 					end
 				else
 					local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2])
-					dprint("RESULT:", tResult)
+					dprint("  ","RESULT:", tResult)
 					if tResult ~= true then
 						tOverallResult = false
 					end
@@ -717,14 +719,14 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			tEvaluateData.debuffListTarget = tSingleDebuffListTargetValue
 
 			--overall result
-			dprint("OVERALL RESULT:", tOverallResult, "tHasApplicableAttributes", tHasApplicableAttributes)
+			dprint("  ","OVERALL RESULT:", tOverallResult, "tHasApplicableAttributes", tHasApplicableAttributes)
 			if tAuraData.type == "if" then
 				if tOverallResult == true and tHasApplicableAttributes == true then
-					dprint("== trigger:", #tAuraData.actions, tAuraData.actions[1])
+					dprint("  ","== trigger:", #tAuraData.actions, tAuraData.actions[1])
 					for i, v in pairs(tAuraData.outputs) do
 						if SkuAuras.outputs[string.gsub(v, "output:", "")] then
-							dprint(tAuraData.actions[1])
-							dprint("output", i, v)
+							dprint("  ",tAuraData.actions[1])
+							dprint("  ","output", i, v)
 							SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAuraData.actions[1]](tAuraName, tEvaluateData, tFirst, v)
 							tFirst = false
 						end
@@ -732,11 +734,11 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 				end		
 			else
 				if tOverallResult == false and tHasApplicableAttributes == true then
-					dprint("~= trigger:", #tAuraData.actions, tAuraData.actions[1])
+					dprint("  ","~= trigger:", #tAuraData.actions, tAuraData.actions[1])
 					for i, v in pairs(tAuraData.outputs) do
 						if SkuAuras.outputs[string.gsub(v, "output:", "")] then
-							dprint(tAuraData.actions[1])
-							dprint("output", i, v)
+							dprint("  ",tAuraData.actions[1])
+							dprint("  ","  output", i, v)
 							SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAuraData.actions[1]](tAuraName, tEvaluateData, tFirst, v)
 							tFirst = false
 						end

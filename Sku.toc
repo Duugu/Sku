@@ -1,8 +1,8 @@
-## Interface: 20502
-## Title: Sku (22.7)
+## Interface: 20503
+## Title: Sku (23)
 ## SavedVariables: SkuOptionsDB
 ## Dependencies: SkuAudioData, SkuBeaconSoundsets
-## Version: 22.7
+## Version: 23
 
 embeds.xml
 
@@ -24,6 +24,7 @@ SkuCore\LocalMenu.lua
 SkuCore\UIErrors.lua
 SkuCore\RangeCheck.lua
 SkuCore\auctionHouse.lua
+SkuCore\itemRating.lua
 SkuCore\mail.lua
 SkuCore\Options.lua
 
