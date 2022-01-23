@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.1](https://github.com/Duugu/Sku/releases/download/r23.1/Sku-r23.1-bcc.zip) <br>
+[Sku 23.2](https://github.com/Duugu/Sku/releases/download/r23.2/Sku-r23.2-bcc.zip) <br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
@@ -17,6 +17,22 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.2
+
+### SkuCore
+*Fehlerkorrekturen*
+- Die Post wird jetzt wieder auch beim zweiten Öffnen korrekt geöffnet.
+
+*Neuerungen*
+- Das Audiomenü macht jetzt beim Vorlesen von Auktionen kurze Sprechpausen zwischen den Beträgen von "Kauf" und "Gebot".
+- Im Auktionshausmenü gibt es jetzt unter "Verkäufe" als ersten Punkt "Neue Auktion". Danach kommen dann wie bisher die laufenden Auktionen.<br>
+  Unter "Neue Auktion" kannst du direkt Gegenstände in deinen Taschen verkaufen (statt ins Taschenmenü wechseln zu müssen). <br>
+  Es werden _nur_ Gegenstände aufgelistet, die verkaufbar sind. Jeder Gegenstand wird nur _einmal_ aufgelistet. Dahinter steht die Anzahl die du _insgesamt_ in allen Taschen hast.<br>
+  Unter dem jeweiligen Gegestand findest du dann das bekannte Menü zum Erstellen einer Auktion.
+- Es gibt zwei neue Sortieroptionen für das AH: "Level absteigend", "Level aufsteigend"
+- Wenn im AH nach Level gefiltert oder sortiert wird, enthält die Liste der Auktionen nun das Level des Gegenstands hinter jedem Gegenstandsnamen.
+- Filter und Sortierung werden jetzt bei jedem Öffnen des AHs zurückgesetzt.
 
 ## Änderungen in Version 23.1
 
