@@ -2047,7 +2047,8 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 
 			CleanUpGossipList(tGossipList)
 			SkuCore.GossipList = tGossipList
-
+			--print("SkuOptions.currentMenuPosition", SkuOptions.currentMenuPosition)
+			--print("SkuOptions.currentMenuPosition.name", SkuOptions.currentMenuPosition.name)
 			local tIndex
 			local tBread = nil
 			local tFirstFrame = nil
@@ -2081,7 +2082,6 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 			SkuOptions:SlashFunc(L["short"]..","..L["Local"])
 
 			local tFlag = false
-
 			if tBread and aForceLocalRoot ~= true and tFlag == false then
 				for i, v in pairs(friendlyFrameNames) do
 					if v == tFirstFrame then

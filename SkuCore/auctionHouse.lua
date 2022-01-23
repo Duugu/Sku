@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
-local MODULE_NAME, MODULE_PART = "SkuCore", "AuctionHouse"
+local MODULE_NAME, MODULE_PART = "SkuCore", "AuctionHouse"  
 local L = Sku.L
 local _G = _G
 
@@ -23,6 +23,8 @@ SkuCore.SortByValues = {
    [2] = "Kaufpreis für Auktionsmenge aufsteigend",
    [3] = "Gebotspreis für 1 Gegenstand aufsteigend",
    [4] = "Gebotspreis für Auktionsmenge aufsteigend",
+   [5] = "Level absteigend",
+   [6] = "Level aufsteigend",
 }
 
 local AUCTION_ITEM_LIST_UPDATE_timerHandle
@@ -224,7 +226,7 @@ local function EpochValueHelper(aValue)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionItemNameFormat(aItemData, aIndex)
+function SkuCore:AuctionItemNameFormat(aItemData, aIndex, aAddLevel)
    if not aItemData then
       return
    end
@@ -241,14 +243,18 @@ function SkuCore:AuctionItemNameFormat(aItemData, aIndex)
       rName = rName..aItemData[tAIDIndex["name"]]
    end
 
+   if aAddLevel and aItemData[20] then
+      rName = rName.." Level "..aItemData[20]
+   end
+
    rName = rName.." "..aItemData[tAIDIndex["count"]].." stück"
 
    if aItemData[tAIDIndex["minBid"]] == aItemData[tAIDIndex["buyoutPrice"]] then
-      rName = rName.." / Nur Kauf "..SkuGetCoinText(aItemData[tAIDIndex["buyoutPrice"]], true, true)..""
+      rName = rName.." §01 §01 Nur Kauf "..SkuGetCoinText(aItemData[tAIDIndex["buyoutPrice"]], true, true)..""
    elseif aItemData[tAIDIndex["buyoutPrice"]] > 0 then
-      rName = rName.." / Kauf "..SkuGetCoinText(aItemData[tAIDIndex["buyoutPrice"]], true, true).." / Gebot "..SkuGetCoinText(aItemData[tAIDIndex["minBid"]], true, true)..""  
+      rName = rName.." §01 §01 Kauf "..SkuGetCoinText(aItemData[tAIDIndex["buyoutPrice"]], true, true).." §01 §01 Gebot "..SkuGetCoinText(aItemData[tAIDIndex["minBid"]], true, true)..""  
    elseif aItemData[tAIDIndex["buyoutPrice"]] == 0 then
-      rName = rName.." / Nur Gebot "..SkuGetCoinText(aItemData[tAIDIndex["minBid"]], true, true)..""
+      rName = rName.." §01 §01 Nur Gebot "..SkuGetCoinText(aItemData[tAIDIndex["minBid"]], true, true)..""
    end
 
    if aItemData[12] == true then
@@ -497,7 +503,20 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
    aSelf.GetCurrentValue = function(self, aValue, aName)
-      local tItemId = _G[aGossipItemTable.containerFrameName].info.id
+      local tItemId
+      if _G[aGossipItemTable.containerFrameName] then
+         if _G[aGossipItemTable.containerFrameName].info then
+            tItemId = _G[aGossipItemTable.containerFrameName].info.id
+         end
+      end
+      if not tItemId then
+         tItemId = aGossipItemTable.itemId
+      end
+
+      if not tItemId then
+         return
+      end
+
       local tBestBuyoutCopper = select(2, SkuCore:AuctionPriceHistoryData(tItemId, true, true))
 
       if not tBestBuyoutCopper then
@@ -654,6 +673,8 @@ function SkuCore:AuctionHouseBuildItemSellMenu(aParent, aGossipItemTable)
          SkuOptions.Voice:OutputString(tNumAuctions.." Auktionen erstellt", false, true, 1, true)
       end
 
+      GetOwnerAuctionItems()
+
       C_Timer.After(0.01, function()
          SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)      
       end)
@@ -776,6 +797,7 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
             if tFound == false then
                tCurrentDBClean[#tCurrentDBClean + 1] = {}
                tCurrentDBClean[#tCurrentDBClean].name = tName
+               tCurrentDBClean[#tCurrentDBClean].level = select(4, GetItemInfo(tData[17])) or 0
                tCurrentDBClean[#tCurrentDBClean].pricePerItem = SkuCore:AuctionGetPricePerItem(tData)
                tCurrentDBClean[#tCurrentDBClean].pricePerAuction = {bid = tData[8], buy = tData[10],}
                tCurrentDBClean[#tCurrentDBClean].dupes = {}
@@ -784,7 +806,7 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
          end
       end
    end
-
+   
    tCurrentDBCleanSorted = {}
 
    if SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 1 or not SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy then
@@ -794,7 +816,7 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
             return t[b].pricePerItem.buy > t[a].pricePerItem.buy
          end) 
       do 
-         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerItem = v.pricePerItem,})
+         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerItem = v.pricePerItem, level = v.level,})
       end
    elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 2 then
       for k, v in SkuSpairs(tCurrentDBClean, 
@@ -803,7 +825,7 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
             return t[b].pricePerAuction.buy > t[a].pricePerAuction.buy
          end) 
       do 
-         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction,})
+         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction, level = v.level,})
       end
    elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 3 then
       for k, v in SkuSpairs(tCurrentDBClean, 
@@ -812,7 +834,7 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
             return t[b].pricePerItem.bid > t[a].pricePerItem.bid
          end) 
       do 
-         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerItem = v.pricePerItem,})
+         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerItem = v.pricePerItem, level = v.level,})
       end      
    elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 4 then
       for k, v in SkuSpairs(tCurrentDBClean, 
@@ -821,8 +843,29 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
             return t[b].pricePerAuction.bid > t[a].pricePerAuction.bid
          end) 
       do 
-         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction,})
+         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction, level = v.level,})
       end
+
+   elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 5 then
+      for k, v in SkuSpairs(tCurrentDBClean, 
+         function(t,a,b) 
+            --return t[b].name > t[a].name 
+            return t[b].level < t[a].level
+         end) 
+      do 
+         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction, level = v.level,})
+      end
+   elseif SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 6 then
+      for k, v in SkuSpairs(tCurrentDBClean, 
+         function(t,a,b) 
+            --return t[b].name > t[a].name 
+            return t[b].level > t[a].level
+         end) 
+      do 
+         table.insert(tCurrentDBCleanSorted, {name = v.name, dupes = v.dupes, pricePerAuction = v.pricePerAuction, level = v.level,})
+      end
+
+
    end
 
    dprint("SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy", SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy, SkuCore.SortByValues[SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy])
@@ -831,22 +874,25 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
    for tIndex, tDataTmp in pairs(tCurrentDBCleanSorted) do
       tData = tDataTmp.dupes[1]
       tData[19] = tDataTmp.dupes
+      tData[20] = tDataTmp.level
       if tData then
          if tData[1] then
-            if #tData[19] == 1 then
-               tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(aParent, {SkuCore:AuctionItemNameFormat(tData)}, SkuGenericMenuItem)
-            else
-               tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(aParent, {#tData[19].." mal "..SkuCore:AuctionItemNameFormat(tData)}, SkuGenericMenuItem)
+            local tNewMenuItemName = ""
+            if #tData[19] > 1 then
+               tNewMenuItemName = #tData[19].." mal "
             end
+            local tWithLevel = nil
+            if SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 5 or SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 6 or SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin or SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax then
+               tWithLevel = true
+            end
+
+            tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(aParent, {tNewMenuItemName..SkuCore:AuctionItemNameFormat(tData, nil, tWithLevel)}, SkuGenericMenuItem)
             tNewMenuEntryCategorySubSubItem.dynamic = false
             tNewMenuEntryCategorySubSubItem.data = tData
             tNewMenuEntryCategorySubSubItem.tIndex = tIndex
             tNewMenuEntryCategorySubSubItem.textFull = function() 
                return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))
             end
-            
-            --tNewMenuEntryCategorySubSubItem.textFull = select(2, SkuCore:AuctionBuildItemTooltip(tData, tIndex, true, true))
-
 
             if tData[12] ~= true then
                tNewMenuEntryCategorySubSubItem.dynamic = true
@@ -935,7 +981,7 @@ end
 function SkuCore:AuctionListItemMenuBuilder(aParent)
 
    if #SkuCore.ScanQueue > 0 or SkuCore.AuctionIsScanning == true  or tPage > 0 then
-      tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {"Warten auf Abfrage"}, SkuGenericMenuItem)
+      tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {"Warten"}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
       local tTable = SkuOptions.currentMenuPosition
       tBread = SkuOptions.currentMenuPosition.name
@@ -946,7 +992,7 @@ function SkuCore:AuctionListItemMenuBuilder(aParent)
       tNewMenuEntryCategorySubSubItemWaitTickerHandle = C_Timer.NewTicker(0, function(self)
          if #SkuCore.ScanQueue == 0 and SkuCore.AuctionIsScanning == false then
             self:Cancel()
-            if SkuOptions.currentMenuPosition.name == "Warten auf Abfrage" then
+            if SkuOptions.currentMenuPosition.name == "Warten" then
                SkuOptions:SlashFunc("short,"..tBread)
             end
          end
@@ -974,10 +1020,6 @@ function SkuCore:AuctionHouseMenuBuilder()
       tNewMenuEntry.dynamic = true
       --tNewMenuEntry.filterable = true
       tNewMenuEntry.BuildChildren = function(self)
-
-
-
-
 
          tNewMenuEntryFaS = SkuOptions:InjectMenuItems(self, {"Filter und Sortierung"}, SkuGenericMenuItem)
          tNewMenuEntryFaS.dynamic = true
@@ -1188,6 +1230,134 @@ function SkuCore:AuctionHouseMenuBuilder()
    tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
+      if SkuCore.AuctionIsFullScanning == true then
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Nicht möglich, volle Abfrage läuft"}, SkuGenericMenuItem)
+         return
+      end
+      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Neue Auktion"}, SkuGenericMenuItem)
+      tNewMenuEntry.dynamic = true
+      tNewMenuEntry.BuildChildren = function(self)
+        
+         local tCountItems = {}
+         for tbag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
+            for tslot = 1, GetContainerNumSlots(tbag) do
+               local _, titemCount, _, _, _, _, _, _, _, titemID = GetContainerItemInfo(tbag, tslot)
+               if titemID then
+                  if tCountItems[titemID] then
+                     tCountItems[titemID] = tCountItems[titemID] + titemCount
+                  else
+                     tCountItems[titemID] = titemCount
+                  end
+               end
+            end
+         end
+
+         local tHasEntries = false
+         local tFoundItems = {}
+         for bag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
+            for slot = 1, GetContainerNumSlots(bag) do
+               --local itemLink = GetContainerItemLink(bag, slot)
+               local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bag, slot)
+               if icon then
+                  isBound = C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(bag, slot))
+                  if isBound == false then
+                     local tName = C_Item.GetItemName(ItemLocation:CreateFromBagAndSlot(bag, slot))
+                     if not tFoundItems[itemID] then
+                        tFoundItems[itemID] = true
+                        local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {tName.." ("..tCountItems[itemID]..")"}, SkuGenericMenuItem)
+                        tNewMenuSubSubEntry.dynamic = true
+                        tNewMenuSubSubEntry.filterable = true
+                        tNewMenuSubSubEntry.isSelect = true
+                        tNewMenuSubSubEntry.itemId = itemID
+                        tNewMenuSubSubEntry.amountMax = tCountItems[itemID]
+
+                        local aGossipItemTable = {
+                           textFull = select(1, SkuCore:AuctionBuildItemTooltip({[17] = itemID}, nil, true, true)),
+                           itemId = itemID,
+                           containerFrameName = "ContainerFrame"..bag.."Item"..slot,
+                        }
+                        if _G["BagnonInventoryFrame1"] then
+                           aGossipItemTable.containerFrameName = _G["BagnonInventoryFrame1"].itemGroup.buttons[bag][slot]:GetName()
+                        end
+                     
+                        tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
+                           dprint("Verkaufen OnAction", self, aValue, aName, self.selectTarget.name, self.selectTarget.price, self.price)
+                           local tAmount = tonumber(self.selectTarget.amount)
+                           local tNumAuctions = tonumber(self.selectTarget.numAuctions)
+                           local tCopperBuyout = tonumber(self.selectTarget.price)
+                           local tCopperStartBid = mfloor(tCopperBuyout / 2)
+                           local tDuration
+                           if aName == "Erstellen: 12 Stunden" then
+                              tDuration = 720
+                           elseif aName == "Erstellen: 24 Stunden" then
+                              tDuration = 1440
+                           elseif aName == "Erstellen: 48 Stunden" then
+                              tDuration = 2880
+                           end
+                     
+                           if not tDuration or not tCopperBuyout or not tAmount or not tNumAuctions then
+                              return
+                           end
+                     
+                           --post it
+                           ClearCursor()
+                           _G["AuctionFrameTab3"]:GetScript("OnClick")(_G["AuctionFrameTab3"], "LeftButton") 
+                           _G["AuctionsItemButton"]:GetScript("OnDragStart")(_G["AuctionsItemButton"], "LeftButton") 
+                           ClearCursor()
+                           _G[aGossipItemTable.containerFrameName]:GetScript("OnDragStart")(_G[aGossipItemTable.containerFrameName], "LeftButton") 
+                           ClickAuctionSellItemButton() 
+                     
+                           PostAuction(tCopperStartBid, tCopperBuyout, tDuration, tAmount, tNumAuctions)
+                     
+                           if tNumAuctions == 1 then
+                              SkuOptions.Voice:OutputString("Auktion erstellt", false, true, 1, true)
+                           else
+                              SkuOptions.Voice:OutputString(tNumAuctions.." Auktionen erstellt", false, true, 1, true)
+                           end
+
+                           GetOwnerAuctionItems()
+                     
+                           C_Timer.After(0.01, function()
+                              SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)      
+                           end)
+                           C_Timer.After(0.01, function()
+                              SkuCore:CheckFrames()
+                           end)
+                           
+                        end
+                     
+                        tNewMenuSubSubEntry.BuildChildren = function(self)
+                           local tStackMenuEntry = SkuOptions:InjectMenuItems(self, {"Stack Größe"}, SkuGenericMenuItem)
+                           local _, _, _, _, _, _, _, itemStackMaxCount = GetItemInfo(self.itemId) 
+                     
+                           local tCount = self.amountMax or 1
+                           if itemStackMaxCount < tCount then
+                              tCount = itemStackMaxCount
+                           end
+                     
+                           for z = 1, tonumber(tCount) do
+                              local tStackMenuEntry = SkuOptions:InjectMenuItems(self, {z.." ("..self.amountMax..")"}, SkuGenericMenuItem)
+                              tStackMenuEntry.filterable = true
+                              tStackMenuEntry.dynamic = true
+                              tStackMenuEntry.OnEnter = function(self, aValue, aName)
+                                 self.selectTarget.amount = z
+                              end
+                              SkuCore:AuctionHouseBuildItemSellMenuSub(tStackMenuEntry, aGossipItemTable)
+                           end
+                        end
+                        tHasEntries = true
+                     end
+                  end
+               end
+            end
+         end
+   
+         if tHasEntries == false then
+            SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+         end
+ 
+      end
+
       if #SkuCore.OwnedDB > 0 then
          for tIndex, tData in pairs(SkuCore.OwnedDB) do
             if tData then
@@ -1297,10 +1467,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_HOUSE_SHOW()
-   tOldAuctionFrameBrowse_Update = AuctionFrameBrowse_Update
+   --tOldAuctionFrameBrowse_Update = AuctionFrameBrowse_Update
    --AuctionFrameBrowse_Update = function() end
    --AuctionFrame:SetScale(0.02)
-   --[[
+
    SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
       ["LevelMin"] = nil,
       ["LevelMax"] = nil,
@@ -1308,7 +1478,6 @@ function SkuCore:AUCTION_HOUSE_SHOW()
       ["Usable"] = nil,
       ["SortBy"] = 1,
    }   
-   ]]
    SkuCore.AuctionHouseOpen = true
    SkuOptions:SlashFunc(L["short"]..",SkuCore,Auktionshaus")
 
@@ -1790,7 +1959,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
 
       else
          --this is just a usual query
-         if SkuOptions.currentMenuPosition.name == "Warten auf Abfrage" then
+         if SkuOptions.currentMenuPosition.name == "Warten" then
             SkuOptions.Voice:OutputString("sound-notification6", false, false)--24
          end
 

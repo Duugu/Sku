@@ -329,6 +329,9 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 
 		for x = 1, #tStrings do
+			if tStrings[x] == "§01" then
+				tStrings[x] = "sound-silence0.1"
+			end
 			local tFile = SkuAudioFileIndex[tostring(tStrings[x])]
 
 			if tFile == nil then

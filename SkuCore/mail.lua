@@ -26,13 +26,14 @@ end
 ------------------------------------------------------------------------------------------------------------
 local MailboxOpenFlag = false
 function SkuCore:MAIL_SHOW(...)
-   --dprint("MAIL_SHOW", ...)
+   --print("MAIL_SHOW", ...)
+   SkuOptions:SlashFunc(L["short"]..",SkuCore,"..L["Mail"])
    MailboxOpenFlag = true
 end
 
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_INBOX_UPDATE(...)
-   --dprint("MAIL_INBOX_UPDATE", ...)
+   --print("MAIL_INBOX_UPDATE", ...)
    if MailboxOpenFlag == true then
       if SkuOptions.currentMenuPosition then
          SkuOptions.currentMenuPosition:OnUpdate()
