@@ -4,7 +4,7 @@ local L = Sku.L
 
 SkuChat = LibStub("AceAddon-3.0"):NewAddon("SkuChat", "AceConsole-3.0", "AceEvent-3.0")
 
-local SkuChatChatBuffer = {}
+SkuChatChatBuffer = {}
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:OnInitialize()
@@ -12,6 +12,7 @@ function SkuChat:OnInitialize()
 	SkuChat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuChat:RegisterEvent("PLAYER_REGEN_DISABLED")
 	SkuChat:RegisterEvent("PLAYER_REGEN_ENABLED")
+	SkuChat:RegisterEvent("CHAT_MSG_WHISPER")
 
 	SkuChat.hooked = false
 end
@@ -104,6 +105,7 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 		{
 			["timestamp"] = string.format("%02d:%02d",h,m),
 			["body"] = body,
+			["data"] = ...,
 		})
 
 		if table.getn(SkuChatChatBuffer) > 100 then
@@ -202,6 +204,29 @@ function SkuChat:PLAYER_LOGIN(...)
 			hooksecurefunc(ChatFrame1, "AddMessage", SkuChat.ChatFrame1AddMessageHook)
 		end
 	end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:CHAT_MSG_WHISPER(aEvent, aMsgBody, aSenderName)
+	if aMsgBody == "inv" then
+		SkuChat.InvitePlayerName = aSenderName
+
+		if string.find(SkuChat.InvitePlayerName, "-") then
+			SkuChat.InvitePlayerName = string.sub(SkuChat.InvitePlayerName, 1, string.find(SkuChat.InvitePlayerName, "-") - 1)
+		end
+
+		local tSpeakText = aSenderName.." hat eine Einladung angefordert. Mit /sku invite einladen."
+		if IsMacClient() == true then
+			C_VoiceChat.StopSpeakingText()
+			C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+		else
+			C_VoiceChat.StopSpeakingText()
+			C_Timer.After(0.05, function() 
+				C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+			end)
+		end
+
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

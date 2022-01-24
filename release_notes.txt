@@ -2,6 +2,19 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.3
+
+	SkuCore
+		Fehlerkorrekturen
+			- STRG + SHIFT + TAB für nicht ins Ziel nehmbare NPCs (Startgebiete) funktioniert jetzt wieder.
+
+	SkuChat
+		Neuerungen
+			- Wenn andere Spieler von dir eingeladen werden möchten, können diese dich jetzt mit dem Wort "inv" anflüstern.
+			  Wenn dich jemand mit "inv" anflüstert, wird dir das mitgeteilt.
+			  Du kannst diese Person dann mit einem Slash-Befehl einladen: /sku invite
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.2

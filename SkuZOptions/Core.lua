@@ -93,6 +93,23 @@ function SkuOptions:SlashFunc(input)
 			--dprint("SkuOptions off")
 		end
 		]]
+		if fields[1] == "invite" then
+			if SkuChat.InvitePlayerName then
+				InviteToGroup(SkuChat.InvitePlayerName)
+				local tSpeakText = SkuChat.InvitePlayerName.." eingeladen"
+				if IsMacClient() == true then
+					C_VoiceChat.StopSpeakingText()
+					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText,  4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+				else
+					C_VoiceChat.StopSpeakingText()
+					C_Timer.After(0.05, function() 
+						C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+					end)
+				end				
+				return
+			end
+		end
+		
 		if fields[1] == L["short"] then
 			if SkuCore.inCombat == true then
 				SkuCore.openMenuAfterCombat = true

@@ -486,7 +486,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 do
    local tTime = 0
-   local tFrame = CreateFrame("Button", "SkuCoreSecureTabButton", _G["UIParent"], "SecureActionButtonTemplate")
+   local tFrame = CreateFrame("Button", "SkuCoreSecureTabButtonAuctions", _G["UIParent"], "SecureActionButtonTemplate")
    tFrame:SetSize(1, 1)
    tFrame:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)
    tFrame:Show()
