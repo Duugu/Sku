@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.2](https://github.com/Duugu/Sku/releases/download/r23.2/Sku-r23.2-bcc.zip) <br>
+[Sku 23.3](https://github.com/Duugu/Sku/releases/download/r23.3/Sku-r23.3-bcc.zip) <br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
@@ -17,6 +17,16 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.3
+
+### SkuCore
+*Fehlerkorrekturen*
+- STRG + SHIFT + TAB für nicht ins Ziel nehmbare NPCs (Startgebiete) funktioniert jetzt wieder.
+
+### SkuChat
+*Neuerungen*
+- Wenn andere Spieler von dir eingeladen werden möchten, können diese dich jetzt mit dem Wort "inv" anflüstern. Wenn dich jemand mit "inv" anflüstert, wird dir das mitgeteilt. Du kannst diese Person dann mit einem Slash-Befehl einladen: /sku invite
 
 ## Änderungen in Version 23.2
 
