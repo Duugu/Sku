@@ -1276,6 +1276,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                            itemId = itemID,
                            containerFrameName = "ContainerFrame"..bag.."Item"..slot,
                         }
+                        tNewMenuSubSubEntry.textFull = aGossipItemTable.textFull
                         if _G["BagnonInventoryFrame1"] then
                            aGossipItemTable.containerFrameName = _G["BagnonInventoryFrame1"].itemGroup.buttons[bag][slot]:GetName()
                         end

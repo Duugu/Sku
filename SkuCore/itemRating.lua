@@ -14,14 +14,14 @@ function SkuCore:ItemRatingGetRating(aTooltipName)
 
 
 	for SpecID = 1, 4 do
-		print(ClassID, SpecID)
+		--print(ClassID, SpecID)
 		local tResult = 0
 		if tStatRatings[ClassID][SpecID] then
 			for tStatName, tStatValue in pairs(Stats) do
 				--print("  "tStatName, tStatValue)
 				tResult = tResult + (tStatRatings[ClassID][SpecID][tStatName] * tStatValue)
 			end
-			print(SpecID, tResult)
+			--print(SpecID, tResult)
 		end
 	end
 end

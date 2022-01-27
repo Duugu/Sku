@@ -72,6 +72,7 @@ SkuGenericMenuItem = {
 	dynamic = false,
 	filterable = false,
 	OnUpdate = function(self, aKey)
+		--print("OnUpdate generic")
 		local tCurrentItemNumber
 		local tCurrentItemName = self.name
 		local tParent = self.parent
@@ -186,16 +187,16 @@ SkuGenericMenuItem = {
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
 	OnAction = function(self, value, aValue)
-		--dprint("OnAction generic", self.name, value.name, value, aValue)
+		--print("OnAction generic", self.name, value.name, value, aValue)
 	end,
 	OnLeave = function(self, value, aValue)
-		--dprint("OnLeave generic", self.name, value, aValue)
+		--print("OnLeave generic", self.name, value, aValue)
 		if tCurrentErrorUtteranceTimerHandle then
 			tCurrentErrorUtteranceTimerHandle:Cancel()
 		end
 	end,
 	OnEnter = function(self, value, aValue)
-		--dprint("OnEnter generic", self.name, value, aValue)
+		--print("OnEnter generic", self.name, value, aValue)
 		if string.find(self.name, L["error;sound"].."#") then
 			for i, v in pairs(SkuCore.Errors.Sounds) do
 				if self.name == v then
@@ -246,18 +247,28 @@ SkuGenericMenuItem = {
 		end
 	end,
 	OnSelect = function(self, aEnterFlag)
-		--dprint("OnSelect generic", self.name, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
+		--print("OnSelect generic", self.name, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
 		local spellID
 		local itemID
 		local macroID
+
+		local tCollectValuesFrom
+
 		if self.selectTarget then
 			spellID = self.selectTarget.spellID
 			itemID = self.selectTarget.itemID
 			macroID = self.selectTarget.macroID
+
+			tCollectValuesFrom = self.selectTarget.collectValuesFrom
 		end
 
 		SkuOptions.Filterstring = ""
 		SkuOptions:ApplyFilter(SkuOptions.Filterstring)
+
+		if tCollectValuesFrom then
+			self.selectTarget.collectValuesFrom = tCollectValuesFrom
+		end
+
 
 		if self.selectTarget then
 			--dprint("   ", self.selectTarget.name)
@@ -266,6 +277,7 @@ SkuGenericMenuItem = {
 			self.selectTarget.macroID = macroID
 	
 		end
+
 		if string.find(self.name, L["Filter"]..";") then
 			return
 		end
@@ -277,7 +289,7 @@ SkuGenericMenuItem = {
 		self:OnPostSelect(aEnterFlag)
 	end,
 	OnPostSelect = function(self, aEnterFlag)
-		--dprint("OnPostSelect generic", self.name, self.actionOnEnter, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
+		--print("OnPostSelect generic", self.name, self.actionOnEnter, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
 		if self.dynamic == true then
 			self.children = {}
 			if self.isMultiselect == true then

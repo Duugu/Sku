@@ -5,13 +5,17 @@ SkuAuras.DefaultAuras = {
 --setmetatable(SkuAuras.DefaultAuras, SkuPrintMTWo)
 
 SkuAuras.AuraSets = {
-   
-   priestShadow = {
-      tooltip = {"Aura set für Schatten Priester\r\n", "Eigene Buffs und Debuffs:\r\n- Inneres feuer verloren\r\n- Schattengestalt verloren\r\n- Geschwächte Seele verloren", "Buffs und Debuffs Gruppe:\r\n- Machtwort Seelenstärke verloren\r\n- Schattenschutz verloren", "Eigene Cooldowns:\r\n- Verblassen\r\n- Psychischer Schrei\r\n- Stille\r\n- Furchtzauberschutz\r\n- Schattengeist\r\n- Gedankenschlag (deaktiviert)\r\n- Vampirumarmung (deaktiviert)", "Debuffs auf Gegner:\r\n- Schattenwort Schmerz ausgelaufen oder nicht vorhanden\r\n- Vampirberührung ausgelaufen oder nicht vorhanden\r\n- Vampirumarmung ausgelaufen oder nicht vorhanden\r\n- Untote fesseln ausgelaufen",},
-      friendlyName = "Priester Schatten",
+
+   priestAll = {
+      tooltip = {
+         "Aura set für alle Priester\r\n", 
+         "Eigene Buffs und Debuffs:\r\n- Inneres feuer verloren\r\n- Geschwächte Seele verloren", 
+         "Buffs und Debuffs Gruppe:\r\n- Machtwort Seelenstärke verloren\r\n- Schattenschutz verloren", 
+         "Eigene Cooldowns:\r\n- Verblassen\r\n- Psychischer Schrei\r\n- Stille\r\n- Furchtzauberschutz\r\n- Schattengeist", 
+         "Debuffs auf Gegner:\r\n- Untote fesseln ausgelaufen",
+      },
+      friendlyName = "Priester Alle",
       auras = {
-         --AURAS
-         -- Inneres feuer			aura verloren selbst
          ["Wenn;Quelle;gleich;selbst;und;ereignis;gleich;aura verloren;und;zauber name;gleich;Inneres Feuer;oder;zauber name;gleich;Verbessertes inneres Feuer;dann;audio ausgabe;aura;sound#dang;zauber name;"] = {
             ["friendlyNameShort"] = "Inneres feuer verloren selbst",
             ["enabled"] = true,
@@ -81,39 +85,6 @@ SkuAuras.AuraSets = {
                "output:spellName", -- [2]
             },
          },
-         -- Schattengestalt		aura verloren selbst
-         ["Wenn;Quelle;gleich;selbst;und;ereignis;gleich;aura verloren;und;zauber name;gleich;Schattengestalt;dann;audio ausgabe;aura;sound#dang;zauber name;"] = {
-            ["friendlyNameShort"] = "Schattengestalt verloren selbst",
-            ["enabled"] = true,
-            ["type"] = "if",
-            ["attributes"] = {
-               ["sourceUnitId"] = {
-                  {
-                     "is", -- [1]
-                     "player", -- [2]
-                  }, -- [1]
-               },
-               ["event"] = {
-                  {
-                     "is", -- [1]
-                     "SPELL_AURA_REMOVED", -- [2]
-                  }, -- [1]
-               },
-               ["spellName"] = {
-                  {
-                     "is", -- [1]
-                     "spell:Schattengestalt", -- [2]
-                  }, -- [1]
-               },
-            },
-            ["actions"] = {
-               "notifyAudio", -- [1]
-            },
-            ["outputs"] = {
-               "output:sound-error_dang", -- [1]
-               "output:spellName", -- [2]
-            },
-         },	
          -- Machtwort: Seelenstärke	aura verloren gruppe
          ["Wenn;zauber name;gleich;Machtwort: Seelenstärke;oder;zauber name;gleich;Machtwort: Seelenstärke;oder;zauber name;gleich;Verbessertes Machtwort: Seelenstärke;oder;zauber name;gleich;Gebet der Seelenstärke;oder;zauber name;gleich;Heiliges Wort: Seelenstärke;und;ereignis;gleich;aura verloren;und;Quelle;gleich;gruppenmitglied;dann;audio ausgabe;aura;sound#bring;zauber name;ereignis;"] = {
             ["friendlyNameShort"] = "Machtwort Seelenstärke verloren gruppe";
@@ -283,46 +254,6 @@ SkuAuras.AuraSets = {
                "output:event", -- [2]
             },
          },	
-
-
-         -- Vampirumarmung		cd bereit	
-         ["Wenn;zauber name;gleich;Vampirumarmung;oder;zauber name;gleich;Verbesserte Vampirumarmung;und;ereignis;gleich;zauber cooldown ende;und;Quelle;gleich;selbst;dann;audio ausgabe;zauber name;ereignis;"] = {
-            ["friendlyNameShort"] = "Vampirumarmung cooldown",
-            ["enabled"] = false,
-            ["type"] = "if",
-            ["attributes"] = {
-               ["spellName"] = {
-                  {
-                     "is", -- [1]
-                     "spell:Vampirumarmung", -- [2]
-                  }, -- [1]
-                  {
-                     "is", -- [1]
-                     "spell:Verbesserte Vampirumarmung", -- [2]
-                  }, -- [2]
-               },
-               ["event"] = {
-                  {
-                     "is", -- [1]
-                     "SPELL_COOLDOWN_END", -- [2]
-                  }, -- [1]
-               },
-               ["sourceUnitId"] = {
-                  {
-                     "is", -- [1]
-                     "player", -- [2]
-                  }, -- [1]
-               },
-            },
-            ["actions"] = {
-               "notifyAudio", -- [1]
-            },
-            ["outputs"] = {
-               "output:sound-error_dang", -- [1]
-               "output:spellName", -- [1]
-               "output:event", -- [2]
-            },
-         },
             
          -- Psychischer Schrei		cd bereit	
          ["Wenn;zauber name;gleich;Psychischer Schrei;oder;zauber name;gleich;Verbesserter psychischer Schrei;und;ereignis;gleich;zauber cooldown ende;und;Quelle;gleich;selbst;dann;audio ausgabe;zauber name;ereignis;"] = {
@@ -397,6 +328,134 @@ SkuAuras.AuraSets = {
                "output:event", -- [2]
             },
          },	
+
+         -- Stille			cd bereit		
+         ["Wenn;zauber name;gleich;Stille;und;ereignis;gleich;zauber cooldown ende;und;Quelle;gleich;selbst;dann;audio ausgabe;zauber name;ereignis;"] = {
+            ["friendlyNameShort"] = "Stille cooldown",
+            ["enabled"] = true,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["spellName"] = {
+                  {
+                     "is", -- [1]
+                     "spell:Stille", -- [2]
+                  }, -- [1]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "SPELL_COOLDOWN_END", -- [2]
+                  }, -- [1]
+               },
+               ["sourceUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "player", -- [2]
+                  }, -- [1]
+               },
+            },
+            ["actions"] = {
+               "notifyAudio", -- [1]
+            },
+            ["outputs"] = {
+               "output:sound-error_dang", -- [1]
+               "output:spellName", -- [1]
+               "output:event", -- [2]
+            },
+         },
+  
+         -- Untote fesseln		aura verloren alle	
+         ["Wenn;zauber name;gleich;Untote fesseln;und;ereignis;gleich;aura verloren;und;Quelle;gleich;alle;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
+            ["friendlyNameShort"] = "Untote fesseln ausgelaufen gegner",
+            ["enabled"] = true,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["spellName"] = {
+                  {
+                     "is", -- [1]
+                     "spell:Untote fesseln", -- [2]
+                  }, -- [1]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "SPELL_AURA_REMOVED", -- [2]
+                  }, -- [1]
+               },
+               ["tInCombat"] = {
+                  {
+                     "is", -- [1]
+                     "true", -- [2]
+                  }, -- [1]
+               },
+               ["destUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "all", -- [2]
+                  }, -- [1]
+               },
+            },
+            ["actions"] = {
+               "notifyAudio", -- [1]
+            },
+            ["outputs"] = {
+               "output:sound-brass1", -- [1]
+               "output:spellName", -- [2]
+               "output:event", -- [3]
+            },
+         },	
+      },
+   },
+   
+   priestShadow = {
+      tooltip = {
+         "Aura set für Schatten Priester\r\n", 
+         "Eigene Buffs und Debuffs:\r\n- Schattengestalt verloren", 
+         "Eigene Cooldowns:\r\n- Vampirumarmung (deaktiviert)\r\n- Gedankenschlag (deaktiviert)", 
+         "Debuffs auf Gegner:\r\n- Schattenwort Schmerz ausgelaufen oder nicht vorhanden\r\n- Vampirberührung ausgelaufen oder nicht vorhanden\r\n- Vampirumarmung ausgelaufen oder nicht vorhanden",
+      },
+      friendlyName = "Priester Schatten",
+      auras = {
+         --COOLDOWNS
+         -- Vampirumarmung		cd bereit	
+         ["Wenn;zauber name;gleich;Vampirumarmung;oder;zauber name;gleich;Verbesserte Vampirumarmung;und;ereignis;gleich;zauber cooldown ende;und;Quelle;gleich;selbst;dann;audio ausgabe;zauber name;ereignis;"] = {
+            ["friendlyNameShort"] = "Vampirumarmung cooldown",
+            ["enabled"] = false,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["spellName"] = {
+                  {
+                     "is", -- [1]
+                     "spell:Vampirumarmung", -- [2]
+                  }, -- [1]
+                  {
+                     "is", -- [1]
+                     "spell:Verbesserte Vampirumarmung", -- [2]
+                  }, -- [2]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "SPELL_COOLDOWN_END", -- [2]
+                  }, -- [1]
+               },
+               ["sourceUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "player", -- [2]
+                  }, -- [1]
+               },
+            },
+            ["actions"] = {
+               "notifyAudio", -- [1]
+            },
+            ["outputs"] = {
+               "output:sound-error_dang", -- [1]
+               "output:spellName", -- [1]
+               "output:event", -- [2]
+            },
+         },
+            
          -- Gedankenschlag		cd bereit	
          ["Wenn;zauber name;gleich;Gedankenschlag;oder;zauber name;gleich;Verbesserter Gedankenschlag;und;ereignis;gleich;zauber cooldown ende;und;Quelle;gleich;selbst;dann;audio ausgabe;zauber name;ereignis;"] = {
             ["friendlyNameShort"] = "Gedankenschlag cooldown",
@@ -435,40 +494,6 @@ SkuAuras.AuraSets = {
                "output:event", -- [2]
             },
          },
-         -- Stille			cd bereit		
-         ["Wenn;zauber name;gleich;Stille;und;ereignis;gleich;zauber cooldown ende;und;Quelle;gleich;selbst;dann;audio ausgabe;zauber name;ereignis;"] = {
-            ["friendlyNameShort"] = "Stille cooldown",
-            ["enabled"] = true,
-            ["type"] = "if",
-            ["attributes"] = {
-               ["spellName"] = {
-                  {
-                     "is", -- [1]
-                     "spell:Stille", -- [2]
-                  }, -- [1]
-               },
-               ["event"] = {
-                  {
-                     "is", -- [1]
-                     "SPELL_COOLDOWN_END", -- [2]
-                  }, -- [1]
-               },
-               ["sourceUnitId"] = {
-                  {
-                     "is", -- [1]
-                     "player", -- [2]
-                  }, -- [1]
-               },
-            },
-            ["actions"] = {
-               "notifyAudio", -- [1]
-            },
-            ["outputs"] = {
-               "output:sound-error_dang", -- [1]
-               "output:spellName", -- [1]
-               "output:event", -- [2]
-            },
-         },
                
          --DOTS
          -- Vampirumarmung		aura verloren alle	
@@ -477,6 +502,12 @@ SkuAuras.AuraSets = {
             ["enabled"] = true,
             ["type"] = "if",
             ["attributes"] = {
+               ["sourceUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "player", -- [2]
+                  }, -- [1]
+               },
                ["spellName"] = {
                   {
                      "is", -- [1]
@@ -556,6 +587,12 @@ SkuAuras.AuraSets = {
             ["enabled"] = true,
             ["type"] = "if",
             ["attributes"] = {
+               ["sourceUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "player", -- [2]
+                  }, -- [1]
+               },
                ["spellName"] = {
                   {
                      "is", -- [1]
@@ -637,13 +674,18 @@ SkuAuras.AuraSets = {
             },
          },
 
-
          -- Schattenwort: Schmerz		aura verloren alle	
          ["Wenn;zauber name;gleich;Schattenwort: Schmerz;oder;zauber name;gleich;Verbessertes Schattenwort: Schmerz;und;ereignis;gleich;aura verloren;und;Quelle;gleich;target;dann;audio ausgabe;aura;sound#Glas 1;zauber name;ereignis;"] = {
             ["friendlyNameShort"] = "Schattenwort Schmerz ausgelaufen target",
             ["enabled"] = true,
             ["type"] = "if",
             ["attributes"] = {
+               ["sourceUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "player", -- [2]
+                  }, -- [1]
+               },
                ["spellName"] = {
                   {
                      "is", -- [1]
@@ -724,48 +766,6 @@ SkuAuras.AuraSets = {
                --"output:debuffListTarget", -- [2]
             },
          },
-
-
-         -- Untote fesseln		aura verloren alle	
-         ["Wenn;zauber name;gleich;Untote fesseln;und;ereignis;gleich;aura verloren;und;Quelle;gleich;alle;dann;audio ausgabe;aura;sound#brang;zauber name;ereignis;"] = {
-            ["friendlyNameShort"] = "Untote fesseln ausgelaufen gegner",
-            ["enabled"] = true,
-            ["type"] = "if",
-            ["attributes"] = {
-               ["spellName"] = {
-                  {
-                     "is", -- [1]
-                     "spell:Untote fesseln", -- [2]
-                  }, -- [1]
-               },
-               ["event"] = {
-                  {
-                     "is", -- [1]
-                     "SPELL_AURA_REMOVED", -- [2]
-                  }, -- [1]
-               },
-               ["tInCombat"] = {
-                  {
-                     "is", -- [1]
-                     "true", -- [2]
-                  }, -- [1]
-               },
-               ["destUnitId"] = {
-                  {
-                     "is", -- [1]
-                     "all", -- [2]
-                  }, -- [1]
-               },
-            },
-            ["actions"] = {
-               "notifyAudio", -- [1]
-            },
-            ["outputs"] = {
-               "output:sound-brass1", -- [1]
-               "output:spellName", -- [2]
-               "output:event", -- [3]
-            },
-         },	
       },
    },
 }

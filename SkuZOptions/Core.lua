@@ -3022,10 +3022,9 @@ function SkuOptions:ImportAddWpAndLinkData()
 
 			--do tWaypoints 
 			local tFullCounterWps = 0
-			--SkuOptions.db.profile["SkuNav"].Waypoints = {}
 			for tWpName, tWpData in pairs(tWaypoints) do
 				if not SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] then
-					SkuOptions.db.profile["SkuNav"].Waypoints[tFullCounterWps + 1] = tWpName
+					table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, tWpName)
 					SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] = tWpData
 					tImportCounterWps = tImportCounterWps + 1
 				else
@@ -3043,7 +3042,13 @@ function SkuOptions:ImportAddWpAndLinkData()
 					SkuOptions.db.profile["SkuNav"].Links[tLinkName] = tData
 					tImportCounterLinks = tImportCounterLinks + 1
 				else
-					tIgnoredCounterLinks = tIgnoredCounterLinks + 1
+					for i, v in pairs(tData) do
+						if not SkuOptions.db.profile["SkuNav"].Links[tLinkName][i] then
+							SkuOptions.db.profile["SkuNav"].Links[tLinkName][i] = v
+						end
+					end
+
+					--tIgnoredCounterLinks = tIgnoredCounterLinks + 1
 				end
 			end
 			

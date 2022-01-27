@@ -180,7 +180,7 @@ function SkuCore:OnInitialize()
 	SkuCore:RegisterEvent("NAME_PLATE_CREATED")
 	SkuCore:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 	SkuCore:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
-	--SkuCore:RegisterEvent("CURSOR_UPDATE")
+	--SkuCore:RegisterEvent("CURSOR_CHANGED")
 	--SkuCore:RegisterEvent("PET_STABLE_SHOW")
 	--SkuCore:RegisterEvent("PET_STABLE_CLOSED")
 
@@ -511,7 +511,8 @@ function SkuCore:OnEnable()
 	tFrame:SetAttribute("type1", "macro") 
 	tFrame:SetAttribute("macrotext1", "")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-TAB", "SkuCoreSecureTabButton")
-
+	--tFrame:RegisterEvent("CURSOR_CHANGED")
+	--tFrame:SetScript("OnUpdate", function(self, time)
 	local tLastPlayerTargetNr = 0
 	local tSkuCoreSecureTabButtonTime = 0
 	tFrame:SetScript("OnUpdate", function(self, time)
@@ -1008,9 +1009,9 @@ end
 function SkuCore:ITEM_UNLOCKED(...)
 	--dprint("ITEM_UNLOCKED", ...)
 end
-function SkuCore:CURSOR_UPDATE(...)
-	--dprint("CURSOR_UPDATE", ...)
-end
+--function SkuCore:CURSOR_CHANGED(...)
+	--print("CURSOR_CHANGED", ...)
+--end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local PLAYER_CONTROL_LOST_flag = 0
@@ -1264,6 +1265,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuOptions.db.factionrealm[MODULE_NAME] = SkuOptions.db.factionrealm[MODULE_NAME] or {}
 		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB or {}
 		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or {}
+
+		SkuCore:JunkAndRepairInitialize()
 	end
 end
 
@@ -2223,7 +2226,7 @@ function SkuCore:ResetBindings(aToWowDefaults)
 			end
 		end
 	else
-		print("ResetBindings with aToWowDefaults parameter - this should not happen atm")
+		print("ResetBindings with aToWowDefaults parameter - this should not happen")
 	end
 	
 	SkuCore:SaveBindings()

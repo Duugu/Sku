@@ -44,6 +44,57 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:OnEnable()
 	--dprint("SkuAuras OnEnable")
+
+	--frame to trigger custom "keypress" event
+	local f = _G["SkuAurasKeypressTrigger"] or CreateFrame("Frame", "SkuAurasKeypressTrigger", UIParent)
+	f:EnableKeyboard(true)
+	f:SetPropagateKeyboardInput(true)
+	f:SetPoint("TOP", _G["SkuAurasControl"], "BOTTOM", 0, 0)
+	f:SetScript("OnKeyDown", function(self, aKey)
+		--print(aKey)
+		local aEventData =  {
+			GetTime(),
+			"KEY_PRESS",
+			nil,
+			nil,
+			UnitName("player"),
+			nil,
+			nil,
+			nil,
+			UnitName("playertarget"),
+			nil,
+			nil,
+			nil,
+			nil,
+			nil,
+		}
+		aEventData[50] = aKey
+		aEventData[35] = math.floor(UnitHealth("player") / (UnitHealthMax("player") / 100))
+		aEventData[36] = math.floor(UnitPower("player") / (UnitPowerMax("player") / 100))
+
+		local tUnitID = "target"
+		if UnitName(tUnitID) then
+			local tBuffList = {}
+			for x = 1, 40  do
+				local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitBuff(tUnitID, x)
+				if name then
+					tBuffList[name] = true
+				end
+			end
+			aEventData[37] = tBuffList
+			local tdebuffList = {}
+			for x = 1, 40  do
+				local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff(tUnitID, x)
+				if name then
+					tdebuffList[name] = true
+				end
+			end
+			aEventData[38] = tdebuffList
+		end
+
+		SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
+	end)
+
 	local ttime = 0
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
@@ -90,7 +141,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:OnDisable()
 end
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:GetBestUnitId(aUnitName, aReturnAll)
@@ -148,6 +198,7 @@ function SkuAuras:GetBestUnitId(aUnitName, aReturnAll)
 		return tUnitIds
 	end
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function GetItemCooldownLeft(start, duration)
 	-- Before restarting the GetTime() will always be greater than [start]
@@ -171,8 +222,29 @@ local function GetItemCooldownLeft(start, duration)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function TableCopy(t, deep, seen)
+	seen = seen or {}
+	if t == nil then return nil end
+	if seen[t] then return seen[t] end
+	local nt = {}
+	for k, v in pairs(t) do
+		if type(v) ~= "userdata" and k ~= "frame" and k ~= 0  then
+			if deep and type(v) == 'table' then
+				nt[k] = TableCopy(v, deep, seen)
+			else
+				nt[k] = v
+			end
+		end
+	end
+	--setmetatable(nt, getmetatable(t), deep, seen))
+	seen[t] = nt
+	return nt
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tItemHook
 function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
+	dprint("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	SkuOptions.db.char[MODULE_NAME].Auras = SkuOptions.db.char[MODULE_NAME].Auras or {}
 
@@ -181,7 +253,9 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		SkuOptions.db.char[MODULE_NAME].Auras = {}
 	end
 
-	SkuAuras.values = SkuAuras.valuesDefault
+	--SkuAuras.values = SkuAuras.valuesDefault
+	local seen = {}
+	SkuAuras.values = TableCopy(SkuAuras.valuesDefault, true, seen)
 
 	SkuAuras.attributes.itemId.values = {}
 	SkuAuras.attributes.itemName.values = {}
@@ -201,11 +275,9 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuAuras.attributes.debuffListTarget.values = {}
 	for spellId, spellData in pairs(SkuDB.SpellDataTBC_DE) do
 		local spellName = spellData[SkuDB.spellKeys["name_lang"]]
-
 		SkuAuras.attributes.spellId.values[#SkuAuras.attributes.spellId.values + 1] = "spell:"..tostring(spellId)
-		SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
-
 		if not SkuAuras.values["spell:"..tostring(spellName)] then
+			SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
 			SkuAuras.attributes.spellName.values[#SkuAuras.attributes.spellName.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.attributes.buffListTarget.values[#SkuAuras.attributes.buffListTarget.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.attributes.debuffListTarget.values[#SkuAuras.attributes.debuffListTarget.values + 1] = "spell:"..tostring(spellName)
@@ -594,6 +666,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	dprint(tDestinationUnitID)
 	dprint("tSourceUnitIDCannAttack", tSourceUnitIDCannAttack)
 	dprint("tDestinationUnitIDCannAttack", tDestinationUnitIDCannAttack)
+	dprint("50 aKey", tEventData[50])
 
 	--evaluate all auras
 	local tFirst = true
@@ -622,6 +695,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 				tInCombat = SkuCore.inCombat,
+				pressedKey = tEventData[50],
 			}		
 			tEvaluateData.spellId = tEventData[CleuBase.spellId]
 			tEvaluateData.spellName = tEventData[CleuBase.spellName]
@@ -802,7 +876,8 @@ function SkuAuras:CreateAura(aType, aAttributes)
 	tAuraName = tAuraName.."dann;"..SkuAuras.actions[tActions[1]].friendlyName..";"
 
 	for tOutputIndex, tOutputName in pairs(tOutputs) do
-		tAuraName = tAuraName..SkuAuras.outputs[string.gsub(tOutputName, "output:", "")].friendlyName..";"
+		tAuraName = tAuraName..";und;"..SkuAuras.outputs[string.gsub(tOutputName, "output:", "")].friendlyName..";"
+		tAuraName = string.gsub(tAuraName, "aura;sound#", "sound;")
 	end
 
 	--add aura

@@ -25,6 +25,44 @@ SkuAuras.OutputSounds = {
    ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3"] = L["aura;sound"].."#"..L["silent"],
 }
 
+
+------------------------------------------------------------------------------------------------------------------
+local function KeyValuesHelper()
+   local tKeys = {
+      "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", 
+      "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+      "BACKSPACE", "BACKSPACE_MAC", "DELETE", "DELETE_MAC", "DOWN", "END", "ENTER", "ENTER_MAC", "ESCAPE", "HOME", 
+      "INSERT", "INSERT_MAC", "LEFT", "NUMLOCK", "NUMLOCK_MAC", "NUMPAD0", "NUMPAD1", "NUMPAD2", "NUMPAD3", "NUMPAD4", 
+      "NUMPAD5", "NUMPAD6", "NUMPAD7", "NUMPAD8", "NUMPAD9", "NUMPADDECIMAL", "NUMPADDIVIDE", "NUMPADMINUS", "NUMPADMULTIPLY", 
+      "NUMPADPLUS", "PAGEDOWN", "PAGEUP", "PAUSE", "PAUSE_MAC", "PRINTSCREEN", "PRINTSCREEN_MAC", "RIGHT", "SCROLLLOCK", 
+      "SCROLLLOCK_MAC", "SPACE", "TAB", "TILDE", "'", "%+", "´", ",", "#",
+      "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",
+   }
+
+   local tModifiers = {"CTRL-", "SHIFT-", "ALT-", "CTRL-SHIFT-", "CTRL-ALT-", "SHIFT-ALT-", }
+   local tResultTable = {}
+
+   for x = 1, #tKeys do
+      if SkuCore.Keys.LocNames[string.upper(tKeys[x])] then
+         tResultTable[tKeys[x]] = SkuCore.Keys.LocNames[string.upper(tKeys[x])]
+      else
+         tResultTable[tKeys[x]] = tKeys[x]
+      end
+   end
+
+   for y = 1, #tModifiers do
+      local tLocModifier = string.gsub(tModifiers[y], "CTRL", SkuCore.Keys.LocNames["CTRL"])
+      for x = 1, #tKeys do
+         if SkuCore.Keys.LocNames[string.upper(tKeys[x])] then
+            tResultTable[tModifiers[y]..tKeys[x]] = tLocModifier..SkuCore.Keys.LocNames[string.upper(tKeys[x])]
+         else
+            tResultTable[tModifiers[y]..tKeys[x]] = tLocModifier..tKeys[x]
+         end
+      end
+   end
+   return tResultTable
+end
+
 ------------------------------------------------------------------------------------------------------------------
 local function RemoveTags(aValue)
    if not aValue then
@@ -680,6 +718,11 @@ SkuAuras.valuesDefault = {
          friendlyName = "gegenstand verwenden", 
          friendlyNameShort = "verwenden",
       },
+      ["KEY_PRESS"] = {
+         tooltip = "Eine Taste wurde gedrückt",
+         friendlyName = "Taste gedrückt", 
+         friendlyNameShort = "Taste",
+      },
    --spellId
       --build from skudb on PLAYER_ENTERING_WORLD
    --itemId
@@ -690,6 +733,12 @@ SkuAuras.valuesDefault = {
          friendlyNameShort = "anzahl",
       },
 }
+--add keys for pressedKey
+local tKeys = KeyValuesHelper()
+for i, v in pairs (tKeys) do
+   SkuAuras.valuesDefault[i] = {friendlyName = v}
+end
+
 
 SkuAuras.values = {
 }
@@ -750,6 +799,17 @@ SkuAuras.attributes = {
          "all",
       },
    },
+   pressedKey = {
+      tooltip = "Welche Taste das Ereignis ausgelöst hat",
+      friendlyName = "Taste",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.pressedKey then
+            dprint("    ","SkuAuras.attributes.pressedKey.evaluate", string.upper(aEventData.pressedKey), aOperator, string.upper(aValue))
+            return SkuAuras:ProcessEvaluate(string.upper(aEventData.pressedKey), aOperator,string.upper(aValue))
+         end
+      end,
+      values = {}, --values are added below the attributes table
+   },   
    tInCombat = {
       tooltip = "Ob das Event im Kampf auftritt",
       friendlyName = "Im Kampf",
@@ -765,8 +825,8 @@ SkuAuras.attributes = {
       },
    },   
    tSourceUnitIDCannAttack = {
-      tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
-      friendlyName = "Ziel Angreifbar",
+      tooltip = "Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist",
+      friendlyName = "Quell Einheit angreifbar",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
          if aEventData.tSourceUnitIDCannAttack then
@@ -780,7 +840,7 @@ SkuAuras.attributes = {
    },      
    tDestinationUnitIDCannAttack = {
       tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
-      friendlyName = "Ziel Angreifbar",
+      friendlyName = "Ziel Einheit angreifbar",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
          if aEventData.tDestinationUnitIDCannAttack then
@@ -895,6 +955,7 @@ SkuAuras.attributes = {
          "UNIT_DIED",
          "UNIT_DESTROYED",
          "ITEM_USE",
+         "KEY_PRESS",
       },
    },
    missType = {
@@ -1231,7 +1292,12 @@ SkuAuras.attributes = {
       },      
    },      
 }
+local tKeys = KeyValuesHelper()
+for i, v in pairs (tKeys) do
+   table.insert(SkuAuras.attributes.pressedKey.values , i)
+end
 
+------------------------------------------------------------------------------------------------------------------
 SkuAuras.Operators = {
    ["then"] = {
       tooltip = "",
@@ -1364,6 +1430,7 @@ SkuAuras.Types = {
          "tSourceUnitIDCannAttack",
          "tDestinationUnitIDCannAttack",
          "tInCombat",
+         "pressedKey",
          --"class",
       },
    },
@@ -1390,6 +1457,7 @@ SkuAuras.Types = {
          "tSourceUnitIDCannAttack",
          "tDestinationUnitIDCannAttack",
          "tInCombat",
+         "pressedKey",
          --"class",
       },
    },

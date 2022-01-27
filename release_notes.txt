@@ -3,6 +3,42 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.4
+
+	SkuCore
+		Neuerungen
+			- Grauer Schrott wird jetzt automatisch verkauft, sobald ein Händlerfenster offen ist.
+			- Es wird jetzt automatisch repariert, sobald ein Händlerfenster mit Reparaturmöglichkeit offen ist, und du genug Gold hast.
+			- Leatrix ist somit nicht mehr notwendig.
+
+		Fehlerkorrekturen
+			- Im AH-Menü sind jetzt unter "Neue Auktion" Tooltips für die verkaufbaren Gegenstände vorhanden.
+
+	SkuAuras
+		Fehlerkorrekturen
+			- Es wurde ein Fehler behoben, bei dem nach einem Zonenwechsel (z. B. Portal) das Erstellen von Auren mit Textwerten (z. B. Zaubername) fehlschlug.
+			- Statt zweimal das Attribut "Ziel angreifbar" gibt es nun wie vorgesehen "Quell Einheit angreifbar" und "Ziel Einheit angreifbar".
+			- Wenn bei der Auswahl der Ausgabewerte ein Filter aktiv ist, wird jetzt korrekt der gefilterte ausgewählte Wert in die Aura übernommen statt der erste Wert der ungefilterten Liste.
+			- Die Attribut-, Operator- und Wert-Listen sind jetzt korrekt alphabetisch sortiert.
+
+		Neuerungen
+			- Aura-Sets:
+				- Das Schattenpriester-Set wurde in zwei geteilt: "Priester alle" (z. B. Buffs und CDs von allgemeinen Zaubern) und "Priester Schatten" (z. B. DoTs, Schattengestalt etc.). Übernehme als Schattenpriester einfach beide Sets nacheinander.
+				- Das Schattenpriester-Set berücksichtigt jetzt nur noch auslaufende Debuffs auf deinem Target, wenn diese von dir sind (falls mehrere Priester in der Gruppe sind).
+			- Es ist jetzt möglich bestehende Auren zu bearbeiten.
+			  Unter "Auren verwalten" findest du unter den einzelnen Auren zusätzlich zu "Aktivieren"/"Deaktivieren" die Option "Bearbeiten".
+			  Darunter kannst du die in der Aura enthaltenen Bedingungen einzeln ändern und löschen sowie weitere Bedingungen hinzufügen. 
+			  Eine Bedingung bearbeiten bzw. hinzuzufügen funktioniert genau wie beim Erstellen. Nur, dass du hier nur einmal Attribut, Operator und Wert festlegst (ist ja auch nur eine einzelne Bedingung).
+			  Beim Bearbeiten von Ausgaben legst du einfach der Reihe nach die gewünschten Ausgaben neu fest. Genau wie beim Erstellen.
+			  Wenn du eine Aura bearbeitest, ändert sich natürlich auch der Name der Aura (der setzt sich ja auch ihren Einzelteilen zusammen).
+			- Es ist jetzt möglich bestehende Auren zu duplizieren.
+			  Unter "Auren verwalten" findest du unter den einzelnen Auren zusätzlich die Option "Duplizieren". Damit wird eine neue Aura als Kopie der aktuellen erstellt.
+			  Der neuen Aura ist "Kopie x" vorangestellt. Das Menü springt direkt zur duplizierten Aura.
+			- Es ist ein neuer Wert zum Attribut "Ereignis" hinzugekommen: "Taste gedrückt". Dieses Ereignis wird bei jedem Tastendruck ausgelöst.
+			- Es ist ein neues Attribut "Taste" hinzugekommen. Über dieses kann die gedrückte Taste bzw. Tastenkombination ausgewertet werden.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.3
 
 	SkuCore
