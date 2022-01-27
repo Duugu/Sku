@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.3](https://github.com/Duugu/Sku/releases/download/r23.3/Sku-r23.3-bcc.zip) <br>
-[SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
+[Sku 23.4](https://github.com/Duugu/Sku/releases/download/r23.4/Sku-r23.4-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
+[SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [Sku-Maus Autohotkey-Skript 2](https://1drv.ms/u/s!Aqgp3J_s6MM7iKQcVpcR3IBws7QRuQ?e=GMli2f) <br>
@@ -17,6 +17,41 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.4
+
+### SkuCore
+*Neuerungen*
+- Grauer Schrott wird jetzt automatisch verkauft, sobald ein Händlerfenster offen ist.
+- Es wird jetzt automatisch repariert, sobald ein Händlerfenster mit Reparaturmöglichkeit offen ist, und du genug Gold hast.
+- Leatrix ist somit nicht mehr notwendig.
+
+*Fehlerkorrekturen*
+- Im AH-Menü sind jetzt unter "Neue Auktion" Tooltips für die verkaufbaren Gegenstände vorhanden.
+
+### SkuAuras
+*Fehlerkorrekturen*
+- Es wurde ein Fehler behoben, bei dem nach einem Zonenwechsel (z. B. Portal) das Erstellen von Auren mit Textwerten (z. B. Zaubername) fehlschlug.
+- Statt zweimal das Attribut "Ziel angreifbar" gibt es nun wie vorgesehen "Quell Einheit angreifbar" und "Ziel Einheit angreifbar".
+- Wenn bei der Auswahl der Ausgabewerte ein Filter aktiv ist, wird jetzt korrekt der gefilterte ausgewählte Wert in die Aura übernommen statt der erste Wert der ungefilterten Liste.
+- Die Attribut-, Operator- und Wert-Listen sind jetzt korrekt alphabetisch sortiert.
+
+*Neuerungen*
+- Aura-Sets:
+  - Das Schattenpriester-Set wurde in zwei geteilt: "Priester alle" (z. B. Buffs und CDs von allgemeinen Zaubern) und "Priester Schatten" (z. B. DoTs, Schattengestalt etc.). Übernehme als Schattenpriester einfach beide Sets nacheinander.
+  - Das Schattenpriester-Set berücksichtigt jetzt nur noch auslaufende Debuffs auf deinem Target, wenn diese von dir sind (falls mehrere Priester in der Gruppe sind).
+- Es ist jetzt möglich bestehende Auren zu bearbeiten.<br>
+  Unter "Auren verwalten" findest du unter den einzelnen Auren zusätzlich zu "Aktivieren"/"Deaktivieren" die Option "Bearbeiten".<br>
+  Darunter kannst du die in der Aura enthaltenen Bedingungen einzeln ändern und löschen sowie weitere Bedingungen hinzufügen. <br>
+  Eine Bedingung bearbeiten bzw. hinzuzufügen funktioniert genau wie beim Erstellen. Nur, dass du hier nur einmal Attribut, Operator und Wert festlegst (ist ja auch nur eine einzelne Bedingung).<br>
+  Beim Bearbeiten von Ausgaben legst du einfach der Reihe nach die gewünschten Ausgaben neu fest. Genau wie beim Erstellen.<br>
+  Wenn du eine Aura bearbeitest, ändert sich natürlich auch der Name der Aura (der setzt sich ja auch ihren Einzelteilen zusammen).
+- Es ist jetzt möglich bestehende Auren zu duplizieren.<br>
+  Unter "Auren verwalten" findest du unter den einzelnen Auren zusätzlich die Option "Duplizieren". Damit wird eine neue Aura als Kopie der aktuellen erstellt.<br>
+  Der neuen Aura ist "Kopie x" vorangestellt. Das Menü springt direkt zur duplizierten Aura.
+- Es ist ein neuer Wert zum Attribut "Ereignis" hinzugekommen: "Taste gedrückt". Dieses Ereignis wird bei jedem Tastendruck ausgelöst.
+- Es ist ein neues Attribut "Taste" hinzugekommen. Über dieses kann die gedrückte Taste bzw. Tastenkombination ausgewertet werden.
+
 
 ## Änderungen in Version 23.3
 
