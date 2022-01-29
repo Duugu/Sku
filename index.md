@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.4](https://github.com/Duugu/Sku/releases/download/r23.4/Sku-r23.4-bcc.zip) <br>
+[Sku 23.5](https://github.com/Duugu/Sku/releases/download/r23.5/Sku-r23.5-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
@@ -17,6 +17,12 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.5
+
+### SkuNav
+*Fehlerkorrekturen*
+- Ein Problem mit der Karte vom Schwarzfels wurde behoben.
 
 ## Änderungen in Version 23.4
 
