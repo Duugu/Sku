@@ -3,11 +3,31 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.6
+
+	SkuCore
+		Neuerungen
+			- Automatisch verkaufen und reparieren haben jetzt Audiomeldungen.
+			- Im Lokal-Menü steht jetzt nicht mehr "Button:" vor Buttons.
+			- Auf der Übersichtsseite werden jetzt unter "Allgemein" deine Gesundheit und Mana, Wut, Energie angezeigt (Prozent und absolut).
+			- Für benutzbare Gegestände wird jetzt ganz unten im Tooltip eine Wertung für deine möglichen Spezialisierungen angezeigt. 
+			  Die Wertung zeigt die Verbesserung bzw. Verschlechterung durch den Gegenstand gegenüber des aktuell angelegten Gegenstands an.
+			  Bitte nimm diese Wertung nicht als einzige Quelle der Wahrheit. Sie basiert auf bestimmten annahmen, die nicht unbedingt auf dich oder deine Spielweise zutreffen müssen. Sie ist also eher als grobe Richtlinie zur Entscheidungshilfe zu verstehen.
+			  Die Wertung berücksichtigt zurzeit weder Verzauberungen noch Edelsteinsockel von Gegenständen.
+			- Du kannst jetzt Gegenstände manuell für das automatische Verkaufen von Schrott festlegen.
+			  Standardmäßig werden nur graue Gegenstände automatisch verkauft. Im Taschenmenü findest du jetzt unter jedem Gegenstand die Option "Für Auto Verkaufen markieren".
+			  So markierte Gegenstände werden ab dann automatisch ohne Rückfrage mit dem Schrott verkauft - egal, ob sie grau, weiß, grün blau oder legendär sind. Also vorsicht!
+			  Du kannst die Markierung genauso über den Gegenstand im Taschenmenü wieder aufheben.
+			  Die Liste der zu verkaufenden Gegenstände wird pro Char gespeichert.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.5
 
 	SkuNav
 		Fehlerkorrekturen
 			- Ein Problem mit der Karte vom Schwarzfels wurde behoben.
+
 
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.4

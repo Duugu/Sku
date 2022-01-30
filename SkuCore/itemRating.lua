@@ -6,31 +6,163 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 
 local tStatRatings = {}
 
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:ItemRatingGetRating(aTooltipName)
+SkuCore.Specs = {
+	[11] = {"Druid", locName = "Druide", specs = {
+			[1] = {"Balance", locName = "Gleichgewicht"},
+			[2] = {"Feral (Damage)", locName = "Katze"},
+			[3] = {"Feral (Tank)", locName = "Bär"},
+			[4] = {"Restoration", locName = "Wiederherstellung"},
+		},
+	},
+	[3] = {"Hunter", locName = "Jäger", specs = {
+			[1] = {"Beast Mastery", locName = "Tierherrschaft"},
+			[2] = {"Marksmanship", locName = "Treffsicherheit"},
+			[3] = {"Survival", locName = "Überleben"},
+		},
+	},
+	[8] = {"Mage", locName = "Magie", specs = {
+			[1] = {"Arcane", locName = ""},
+			[2] = {"Fire", locName = ""},
+			[3] = {"Frost", locName = ""},
+		},
+	},
+	[2] = {"Paladin", locName = "Paladin", specs = {
+			[1] = {"Holy", locName = "Heilig"},
+			[2] = {"Protection", locName = "Schutz"},
+			[3] = {"Retribution", locName = "Vergeltung"},
+		},
+	},
+	[5] = {"Priest", locName = "Priester", specs = {
+			[1] = {"Discipline", locName = "Disziplin"},
+			[2] = {"Holy", locName = "Heilig"},
+			[3] = {"Shadow", locName = "Schatten"},
+		},
+	},
+	[4] = {"Rogue", locName = "Schuke", specs = {
+			[1] = {"Assassination", locName = "Meucheln"},
+			[2] = {"Combat", locName = "Kampf"},
+			[3] = {"Subtlety", locName = "Täuschung"},
+		},
+	},
+	[7] = {"Shaman", locName = "Schamane", specs = {
+			[1] = {"Elemental", locName = "Elementar"},
+			[2] = {"Enhancement", locName = "Verstärkung"},
+			[3] = {"Restoration", locName = "Wiederherstellung"},
+		},
+	},
+	[9] = {"Warlock", locName = "Hexer", specs = {
+			[1] = {"Affliction", locName = "Gebrechen"},
+			[2] = {"Demonology", locName = "Dämonologie"},
+			[3] = {"Destruction", locName = "Zerstörung"},
+		},
+	},
+	[1] = {"Warrior", locName = "Krieger", specs = {
+			[1] = {"Arms", locName = "Waffen"},
+			[2] = {"Fury", locName = "Furor"},
+			[3] = {"Protection", locName = "Schutz"},
+		},
+	},
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------
+local function IsRedColor(r, g, b, a)
+	return math.ceil(r*255) == 255 and math.ceil(g*255) == 32 and math.ceil(b*255) == 32
+ end
+
+----------------------------------------------------------------------------------------------------------------------------------------
+local function ScanTooltipRegions(regions)
+	for _, region in ipairs(regions) do
+	  if region and region:GetObjectType() == "FontString" and
+		 region:GetText() and IsRedColor(region:GetTextColor()) then
+		 return true
+	  end
+	end
+	return false
+ end
+ 
+----------------------------------------------------------------------------------------------------------------------------------------
+local function ScanTooltipForUsable(tooltip, aItemId)
+	tooltip:SetItemByID(aItemId)
+	return ScanTooltipRegions({tooltip:GetRegions()})
+ end
+
+----------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
+	SkuScanningTooltip:SetItemByID(aItemIdItemToRate) 
+	local tInvTypeOfNewItem = C_Item.GetItemInventoryTypeByID(aItemIdItemToRate)
+	local tCurrentEqItemId = GetInventoryItemID("player", tInvTypeOfNewItem)
+
+	local tResultsString = "Wertung:"
+
+	if not tCurrentEqItemId then
+		return ""
+	end
+
+	if not IsEquippableItem(aItemIdItemToRate) then
+		return ""
+	end
+
+	if ScanTooltipForUsable(SkuScanningTooltip, aItemIdItemToRate) ~= false then
+		return ""
+	end
+
 	local _, _, ClassID = UnitClass("player")
-	--local SpecID = GetSpecialization()
-	local Stats, SocketBonusStats, UnknownLines, PrettyLink = PawnGetStatsFromTooltip(aTooltipName, false)
 
-
+	--new item
+	local tNewItemRatings = {}
+	SkuScanningTooltip:SetItemByID(aItemIdItemToRate)	
 	for SpecID = 1, 4 do
-		--print(ClassID, SpecID)
 		local tResult = 0
 		if tStatRatings[ClassID][SpecID] then
+			local Stats, SocketBonusStats, UnknownLines, PrettyLink = PawnGetStatsFromTooltip("SkuScanningTooltip", false)
 			for tStatName, tStatValue in pairs(Stats) do
-				--print("  "tStatName, tStatValue)
-				tResult = tResult + (tStatRatings[ClassID][SpecID][tStatName] * tStatValue)
+				if tStatRatings[ClassID][SpecID][tStatName] then
+					tResult = tResult + (tStatRatings[ClassID][SpecID][tStatName] * tStatValue)
+				else
+					tResult = tResult + tStatValue
+				end
 			end
-			--print(SpecID, tResult)
+			tNewItemRatings[SpecID] = tResult
 		end
 	end
+
+	if not tCurrentEqItemId or tCurrentEqItemId == 0 then
+		return ""
+	end
+
+	--current item
+	local tCurrentItemRatings = {}
+	SkuScanningTooltip:SetItemByID(tCurrentEqItemId)	
+	for SpecID = 1, 4 do
+		local tResult = 0
+		if tStatRatings[ClassID][SpecID] then
+			local Stats, SocketBonusStats, UnknownLines, PrettyLink = PawnGetStatsFromTooltip("SkuScanningTooltip", false)
+			for tStatName, tStatValue in pairs(Stats) do
+				if tStatRatings[ClassID][SpecID][tStatName] then
+					tResult = tResult + (tStatRatings[ClassID][SpecID][tStatName] * tStatValue)
+				else
+					tResult = tResult + tStatValue
+				end
+			end
+			tCurrentItemRatings[SpecID] = tResult
+		end
+	end
+	
+
+	for i, v in pairs(tCurrentItemRatings) do
+		local tDiff = math.floor(((tNewItemRatings[i] / v) * 100) - 100)
+		local tMod = "plus "..tDiff.."%"
+		if tDiff < 0 then
+			tDiff = tDiff * -1
+			tMod = "minus "..tDiff.."%"
+		elseif tDiff == 0 then
+			tMod = "Keine Veränderung"
+		end
+		tResultsString = tResultsString.."\r\n"..SkuCore.Specs[ClassID].specs[i].locName.." "..tMod
+	end
+
+	return tResultsString
 end
-
-
-
-
-
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function AddTemplate(ProviderInternalName, ClassID, SpecID, Stats)
@@ -315,9 +447,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:ItemRatingOnLogin()
+	--print("SkuCore:ItemRatingOnLogin")
    ItemRatingAddScales()
 end
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- NOTE: These functions are not super-flexible for general purpose; they don't properly handle all sorts of Lua pattern matching syntax

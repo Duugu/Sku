@@ -1,8 +1,8 @@
 ## Interface: 20503
-## Title: Sku (23.5)
+## Title: Sku (23.6)
 ## SavedVariables: SkuOptionsDB
 ## Dependencies: SkuAudioData, SkuBeaconSoundsets
-## Version: 23.5
+## Version: 23.6
 
 embeds.xml
 

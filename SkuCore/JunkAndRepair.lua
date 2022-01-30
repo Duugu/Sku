@@ -8,6 +8,11 @@ local SellJunkFrame
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:JunkAndRepairInitialize()
+
+   if not SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter then
+      SkuOptions.db.char[MODULE_NAME].SellJunkCustomItemIds = {}
+   end
+
    -- Declarations
    local IterationCount, totalPrice = 500, 0
    local SellJunkTicker, mBagID, mBagSlot
@@ -32,18 +37,20 @@ function SkuCore:JunkAndRepairInitialize()
       local SoldCount, Rarity, ItemPrice = 0, 0, 0
       local CurrentItemLink, void
 
+      local tSouldSomething = false
       -- Traverse bags and sell grey items
       for BagID = 0, 4 do
          for BagSlot = 1, GetContainerNumSlots(BagID) do
             CurrentItemLink = GetContainerItemLink(BagID, BagSlot)
             if CurrentItemLink then
                void, void, Rarity, void, void, void, void, void, void, void, ItemPrice = GetItemInfo(CurrentItemLink)
-               local void, itemCount = GetContainerItemInfo(BagID, BagSlot)
-               if Rarity == 0 and ItemPrice ~= 0 then
+               local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(BagID, BagSlot)
+               if (Rarity == 0 or SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[itemID]) and ItemPrice ~= 0 then
                   SoldCount = SoldCount + 1
                   if MerchantFrame:IsShown() then
                      -- If merchant frame is open, vendor the item
                      UseContainerItem(BagID, BagSlot)
+                     tSouldSomething = true
                      -- Perform actions on first iteration
                      if SellJunkTicker._remainingIterations == IterationCount then
                         -- Calculate total price
@@ -66,7 +73,7 @@ function SkuCore:JunkAndRepairInitialize()
       -- Stop selling if no items were sold for this iteration or iteration limit was reached
       if SoldCount == 0 or SellJunkTicker and SellJunkTicker._remainingIterations == 1 then 
          StopSelling() 
-         if totalPrice > 0 and LeaPlusLC["AutoSellShowSummary"] == "On" then 
+         if totalPrice > 0 then 
             dprint("Sold junk for" .. " " .. GetCoinText(totalPrice) .. ".")
          end
       end
@@ -84,7 +91,12 @@ function SkuCore:JunkAndRepairInitialize()
             dprint("RepairCost, CanRepair", RepairCost, CanRepair)
             if CanRepair then -- If merchant is offering repair
                dprint("RepairAllItems")
-               RepairAllItems()
+               if RepairCost > GetMoney() then
+                  SkuOptions.Voice:OutputString("Nicht genug Gold zum Reparieren", false, true, 1, true)
+               else
+                  RepairAllItems()
+                  SkuOptions.Voice:OutputString("Alles repariert", false, true, 1, true)
+               end
             end
          end
 
@@ -93,11 +105,11 @@ function SkuCore:JunkAndRepairInitialize()
          -- Cancel existing ticker if present
          if SellJunkTicker then SellJunkTicker:Cancel() end
          -- Sell grey items using ticker (ends when all grey items are sold or iteration count reached)
+         SkuOptions.Voice:OutputString("Schrott verkauft", false, true, 1, true)
          SellJunkTicker = C_Timer.NewTicker(0.2, SellJunkFunc, IterationCount)
          SellJunkFrame:RegisterEvent("ITEM_LOCKED")
          SellJunkFrame:RegisterEvent("ITEM_UNLOCKED")
       elseif event == "ITEM_LOCKED" then
-         StartMsg:Show()
          SellJunkFrame:UnregisterEvent("ITEM_LOCKED")
       elseif event == "ITEM_UNLOCKED" then
          SellJunkFrame:UnregisterEvent("ITEM_UNLOCKED")

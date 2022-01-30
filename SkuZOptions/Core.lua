@@ -417,8 +417,18 @@ function SkuOptions:UpdateOverviewText()
 	end
 
 	--general
-	--repair status
 	local tGeneral = "Allgemeines"
+	if UnitHealth("player") then
+		tGeneral = tGeneral.."\r\n".."Gesundheit: "..(math.floor(UnitHealth("player") / UnitHealthMax("player")) * 100).."% ("..UnitHealth("player")..")"
+	end
+	if UnitPower("player") then
+		local powerType, powerToken = UnitPowerType("player")
+		tPowerString = _G[powerToken]
+
+		tGeneral = tGeneral.."\r\n"..tPowerString..": "..(math.floor(UnitPower("player") / UnitPowerMax("player")) * 100).."% ("..UnitPower("player")..")"
+	end
+
+	--repair status
 	local tDurabilityStatus = {[0] = 0, [1] = 0, [2] = 0,}
 	for index, value in pairs(INVENTORY_ALERT_STATUS_SLOTS) do
 		tDurabilityStatus[GetInventoryAlertStatus(index)] = tDurabilityStatus[GetInventoryAlertStatus(index)] + 1
@@ -1046,6 +1056,64 @@ function SkuOptions:CreateMainFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull)
+	if not aUnmodifiedTextFull then
+		return ""
+	end
+
+	if type(aUnmodifiedTextFull) == "function" then
+		aUnmodifiedTextFull = aUnmodifiedTextFull()
+	end
+
+	local tDNA
+	for i, v in pairs(aUnmodifiedTextFull) do
+		if string.find(v, "Wertung:") then
+			tDNA = true
+		end
+	end
+
+	local tNewTextFull = aUnmodifiedTextFull
+
+	if not tDNA then
+		local tFirstLine = aUnmodifiedTextFull[1] or aUnmodifiedTextFull
+
+		local tFirstWord
+		if string.find(tFirstLine, " ") then
+			tFirstWord = string.sub(tFirstLine, 1, string.find(tFirstLine, " ") - 1)
+			if string.len(tFirstWord) < 5 then
+				tFirstWord = nil
+			end
+		end
+		
+		if string.find(tFirstLine, "\r") then
+			local tItemName = string.sub(tFirstLine, 1, string.find(tFirstLine, "\r") - 1)
+			local tItemId
+			local tItemIdWord
+
+			for i, v in pairs(SkuDB.itemLookup) do
+				if tItemName == v then
+					tItemId = i
+					break
+				end
+				if tFirstWord then
+					if tFirstWord == v then
+						tItemIdWord = i
+					end
+				end
+			end
+
+			if tItemId then
+				table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemId))
+			elseif tItemIdWord then
+				table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemIdWord))
+			end
+		end
+	end
+
+	return tNewTextFull
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:CreateMenuFrame()
 	local OnSkuOptionsMainOption1LastInputTime = GetTime()
 	local OnSkuOptionsMainOption1LastInputTimeout = 0.5
@@ -1261,8 +1329,9 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "SHIFT-UP" then 
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull)
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
+						SkuOptions.TTS:Output(tTextFull, 1000)
 					end
 					SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
 				end
@@ -1271,8 +1340,9 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "SHIFT-DOWN" then
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull)
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
+						SkuOptions.TTS:Output(tTextFull, 1000)
 					end
 					SkuOptions.TTS:NextLine(SkuOptions.currentMenuPosition.ttsEngine)
 				end
@@ -1281,8 +1351,9 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "CTRL-SHIFT-UP" then
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull)
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
+						SkuOptions.TTS:Output(tTextFull, 1000)
 					end
 					SkuOptions.TTS:PreviousSection(SkuOptions.currentMenuPosition.ttsEngine)
 				end
@@ -1291,8 +1362,9 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "CTRL-SHIFT-DOWN" then
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull)
 					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
+						SkuOptions.TTS:Output(tTextFull, 1000)
 					end
 					SkuOptions.TTS:NextSection(SkuOptions.currentMenuPosition.ttsEngine)
 				end
@@ -1977,9 +2049,45 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 							end
 						end
+
+						local tItemId
+						if aGossipListTable[index].obj.info then
+							tItemId = aGossipListTable[index].obj.info.id
+						end
+						if not tItemId then
+							tItemId = aGossipListTable.itemId
+						end
+						if tItemId then
+							if not SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds then
+								SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = {}
+							end
+							if SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] then
+								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {"Markierung für Auto Verkaufen entfernen"}, SkuGenericMenuItem)
+								tNewSubMenuEntry.OnAction = function(self, a, b)
+									local tItemId
+									if aGossipListTable[index].obj.info then
+										tItemId = aGossipListTable[index].obj.info.id
+									end
+									if not tItemId then
+										tItemId = aGossipListTable.itemId
+									end
+									SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = nil
+								end
+							else
+								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {"Für Auto Verkaufen markieren"}, SkuGenericMenuItem)
+								tNewSubMenuEntry.OnAction = function(self, a, b)
+									local tItemId
+									if aGossipListTable[index].obj.info then
+										tItemId = aGossipListTable[index].obj.info.id
+									end
+									if not tItemId then
+										tItemId = aGossipListTable.itemId
+									end
+									SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = true
+								end
+							end
+						end
 					end
-
-
 				end
 			end
 		else

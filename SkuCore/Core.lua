@@ -1980,7 +1980,7 @@ local function CleanUpGossipList(aTable)
 		end
 
 		if value.type == "Button" and value.func then
-			value.textFirstLine = L["Button"]..": "..value.textFirstLine
+			value.textFirstLine = value.textFirstLine
 		end
 
 		aTable[aTable[x]] = value
