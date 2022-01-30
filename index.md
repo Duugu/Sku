@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.5](https://github.com/Duugu/Sku/releases/download/r23.5/Sku-r23.5-bcc.zip) <br>
+[Sku 23.6](https://github.com/Duugu/Sku/releases/download/r23.6/Sku-r23.6-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
@@ -18,6 +18,23 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
+## Änderungen in Version 23.6
+
+### SkuCore
+*Neuerungen*
+- Automatisch verkaufen und reparieren haben jetzt Audiomeldungen.
+- Im Lokal-Menü steht jetzt nicht mehr "Button:" vor Buttons.
+- Auf der Übersichtsseite werden jetzt unter "Allgemein" deine Gesundheit und Mana, Wut, Energie angezeigt (Prozent und absolut).
+- Für benutzbare Gegestände wird jetzt ganz unten im Tooltip eine Wertung für deine möglichen Spezialisierungen angezeigt. <br>
+  Die Wertung zeigt die Verbesserung bzw. Verschlechterung durch den Gegenstand gegenüber des aktuell angelegten Gegenstands an.<br>
+  Bitte nimm diese Wertung nicht als einzige Quelle der Wahrheit. Sie basiert auf bestimmten Annahmen, die nicht unbedingt auf dich oder deine Spielweise zutreffen müssen. Sie ist also eher als grobe Richtlinie zur Entscheidungshilfe zu verstehen.<br>
+  Die Wertung berücksichtigt zurzeit weder Verzauberungen noch Edelsteinsockel von Gegenständen.
+- Du kannst jetzt Gegenstände manuell für das automatische Verkaufen von Schrott festlegen.<br>
+  Standardmäßig werden nur graue Gegenstände automatisch verkauft. Im Taschenmenü findest du jetzt unter jedem Gegenstand die Option "Für Auto Verkaufen markieren".<br>
+  So markierte Gegenstände werden ab dann automatisch ohne Rückfrage mit dem Schrott verkauft - egal, ob sie grau, weiß, grün blau oder legendär sind. Also Vorsicht!<br>
+  Du kannst die Markierung genauso über den Gegenstand im Taschenmenü wieder aufheben.<br>
+  Die Liste der zu verkaufenden Gegenstände wird pro Char gespeichert.
+        
 ## Änderungen in Version 23.5
 
 ### SkuNav
