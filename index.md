@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.6](https://github.com/Duugu/Sku/releases/download/r23.6/Sku-r23.6-bcc.zip) <br>
+[Sku 23.7](https://github.com/Duugu/Sku/releases/download/r23.7/Sku-r23.7-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
@@ -18,6 +18,24 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
+## Änderungen in Version 23.7
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Die Tooltips für das Talentfenster etc. funktionieren jetzt wieder.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Ein Fehler beim automatischen Verkaufen wurde behoben.
+- Vor den Bewertungen für Gegenstände werden jetzt auch für Magier die Namen der Spezialisierungen angezeigt.
+- Die Prozentwerte für Gesundheit und Mana werden jetzt auch unter 100% korrekt angezeigt.
+- Im Verkaufen-Menü des Auktionshauses werden jetzt Tooltips für die Gegenstände angezeigt.
+- Möglicherweise werden jetzt beim Verkaufen mehrere Auktionen korrekt erstellt. Bitte testen.
+
+### SkuNav
+*Fehlerkorrekturen*
+- Die Wegpunkthinweise werden jetzt wieder vorgelesen.
+      
 ## Änderungen in Version 23.6
 
 ### SkuCore
