@@ -21,9 +21,9 @@ SkuCore.Specs = {
 		},
 	},
 	[8] = {"Mage", locName = "Magie", specs = {
-			[1] = {"Arcane", locName = ""},
-			[2] = {"Fire", locName = ""},
-			[3] = {"Frost", locName = ""},
+			[1] = {"Arcane", locName = "Arkan"},
+			[2] = {"Fire", locName = "Feuer"},
+			[3] = {"Frost", locName = "Frost"},
 		},
 	},
 	[2] = {"Paladin", locName = "Paladin", specs = {
@@ -79,7 +79,7 @@ local function ScanTooltipRegions(regions)
 	end
 	return false
  end
- 
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 local function ScanTooltipForUsable(tooltip, aItemId)
 	tooltip:SetItemByID(aItemId)
@@ -152,7 +152,10 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 	for i, v in pairs(tCurrentItemRatings) do
 		local tDiff = math.floor(((tNewItemRatings[i] / v) * 100) - 100)
 		local tMod = "plus "..tDiff.."%"
-		if tDiff < 0 then
+
+		if v == 0 or tNewItemRatings[i] == 0 then
+			tMod = "Keine Bewertung möglich"
+		elseif tDiff < 0 then
 			tDiff = tDiff * -1
 			tMod = "minus "..tDiff.."%"
 		elseif tDiff == 0 then

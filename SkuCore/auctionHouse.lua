@@ -163,6 +163,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)
+print("AuctionBuildItemTooltip",aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)   
    local tTextFirstLine, tTextFull = "", ""
    _G["SkuScanningTooltip"]:ClearLines()
    local hsd, rc = _G["SkuScanningTooltip"]:SetItemByID(aItemData[17])
@@ -177,7 +178,7 @@ function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData
 
    table.insert(tPriceHistoryData, 1, tTextFull)
 
-   return tTextFirstLine, tPriceHistoryData 
+   return tTextFirstLine, tPriceHistoryData
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -594,6 +595,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseBuildItemSellMenu(aParent, aGossipItemTable)
    dprint("AuctionHouseBuildItemSellMenu", aGossipItemTable, aGossipItemTable.containerFrameName, aGossipItemTable.itemId)
+   --we need to stop all running scans, as PostAuction will fail otherwise
+   SkuCore:AuctionScanQueueReset()
 
    if SkuCore.AuctionHouseOpen ~= true then
       return
@@ -620,7 +623,6 @@ function SkuCore:AuctionHouseBuildItemSellMenu(aParent, aGossipItemTable)
          end
       end
    end
-
 
    local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParent, {"Verkaufen"}, SkuGenericMenuItem)
    tNewMenuParentEntry.filterable = true
@@ -1237,6 +1239,8 @@ function SkuCore:AuctionHouseMenuBuilder()
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Neue Auktion"}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.BuildChildren = function(self)
+         --we need this query to stop all running scans, as PostAuction will fail otherwise
+         SkuCore:AuctionScanQueueReset()
         
          local tCountItems = {}
          for tbag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
@@ -1272,7 +1276,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                         tNewMenuSubSubEntry.amountMax = tCountItems[itemID]
 
                         local aGossipItemTable = {
-                           textFull = select(1, SkuCore:AuctionBuildItemTooltip({[17] = itemID}, nil, true, true)),
+                           textFull = select(2, SkuCore:AuctionBuildItemTooltip({[17] = itemID}, nil, true, true)),
                            itemId = itemID,
                            containerFrameName = "ContainerFrame"..bag.."Item"..slot,
                         }
@@ -1395,7 +1399,7 @@ function SkuCore:AuctionHouseMenuBuilder()
          tNewMenuEntry  = SkuOptions:InjectMenuItems(self, {"leer"}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = false
       end
-   end  
+   end
    if SkuCore.AuctionHouseOpen == true then
       tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Offline Datenbank aktualisieren"}, SkuGenericMenuItem)
       tNewMenuEntry.isSelect = true

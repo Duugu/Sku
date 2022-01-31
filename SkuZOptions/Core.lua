@@ -419,13 +419,13 @@ function SkuOptions:UpdateOverviewText()
 	--general
 	local tGeneral = "Allgemeines"
 	if UnitHealth("player") then
-		tGeneral = tGeneral.."\r\n".."Gesundheit: "..(math.floor(UnitHealth("player") / UnitHealthMax("player")) * 100).."% ("..UnitHealth("player")..")"
+		tGeneral = tGeneral.."\r\n".."Gesundheit: "..(math.floor(UnitHealth("player") / UnitHealthMax("player") * 100)).."% ("..UnitHealth("player")..")"
 	end
 	if UnitPower("player") then
 		local powerType, powerToken = UnitPowerType("player")
 		tPowerString = _G[powerToken]
-
-		tGeneral = tGeneral.."\r\n"..tPowerString..": "..(math.floor(UnitPower("player") / UnitPowerMax("player")) * 100).."% ("..UnitPower("player")..")"
+print(UnitPower("player") , UnitPowerMax("player"))
+		tGeneral = tGeneral.."\r\n"..tPowerString..": "..(math.floor(UnitPower("player") / UnitPowerMax("player") * 100)).."% ("..UnitPower("player")..")"
 	end
 
 	--repair status
@@ -1059,6 +1059,10 @@ end
 function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull)
 	if not aUnmodifiedTextFull then
 		return ""
+	end
+
+	if type(aUnmodifiedTextFull) == "string" then
+		return aUnmodifiedTextFull
 	end
 
 	if type(aUnmodifiedTextFull) == "function" then

@@ -778,7 +778,7 @@ function SkuNav:PlayWpComments(aWpName)
 			for x = 1, #tWpData.comments do
 				print(L["Waypoint information"]..": "..tWpData.comments[x])
 				SkuOptions.Voice:OutputString(" ", true, true, 0.3)
-				SkuOptions:VocalizeMultipartString(L["Waypoint information"]..": "..tWpData.comments[x], false, true, nil, nil, 3)
+				SkuOptions:VocalizeMultipartString(L["Waypoint information"]..": "..tWpData.comments[x], false, true, nil, nil, 2)
 			end
 		end
 	end
@@ -1434,6 +1434,8 @@ function SkuNav:ProcessCheckReachingWp()
 						if not SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget] then
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 							SkuOptions:VocalizeMultipartString(L["Error in route;follow stopped"]..SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, false, true, 0.3, true)
+							SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = nil
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
 						end
 						if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr] then
 							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)

@@ -32,7 +32,7 @@ function SkuCore:JunkAndRepairInitialize()
 
    -- Vendor function
    local function SellJunkFunc()
-
+      SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds or {}
       -- Variables
       local SoldCount, Rarity, ItemPrice = 0, 0, 0
       local CurrentItemLink, void
@@ -45,7 +45,7 @@ function SkuCore:JunkAndRepairInitialize()
             if CurrentItemLink then
                void, void, Rarity, void, void, void, void, void, void, void, ItemPrice = GetItemInfo(CurrentItemLink)
                local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(BagID, BagSlot)
-               if (Rarity == 0 or SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[itemID]) and ItemPrice ~= 0 then
+               if itemID and (Rarity == 0 or SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[itemID]) and ItemPrice ~= 0 then
                   SoldCount = SoldCount + 1
                   if MerchantFrame:IsShown() then
                      -- If merchant frame is open, vendor the item
