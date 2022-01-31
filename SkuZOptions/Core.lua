@@ -424,7 +424,6 @@ function SkuOptions:UpdateOverviewText()
 	if UnitPower("player") then
 		local powerType, powerToken = UnitPowerType("player")
 		tPowerString = _G[powerToken]
-print(UnitPower("player") , UnitPowerMax("player"))
 		tGeneral = tGeneral.."\r\n"..tPowerString..": "..(math.floor(UnitPower("player") / UnitPowerMax("player") * 100)).."% ("..UnitPower("player")..")"
 	end
 
