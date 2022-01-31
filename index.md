@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.7](https://github.com/Duugu/Sku/releases/download/r23.7/Sku-r23.7-bcc.zip) <br>
+[Sku 23.8](https://github.com/Duugu/Sku/releases/download/r23.8/Sku-r23.8-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
@@ -17,6 +17,12 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.8
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Eine vergessene Debug-Ausgabe wurde entfernt getan gemacht hätten, würde können.
 
 ## Änderungen in Version 23.7
 
