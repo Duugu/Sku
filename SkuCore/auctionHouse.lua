@@ -163,7 +163,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)
-print("AuctionBuildItemTooltip",aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)   
+   --print("AuctionBuildItemTooltip",aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)   
    local tTextFirstLine, tTextFull = "", ""
    _G["SkuScanningTooltip"]:ClearLines()
    local hsd, rc = _G["SkuScanningTooltip"]:SetItemByID(aItemData[17])

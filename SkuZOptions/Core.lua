@@ -664,8 +664,11 @@ function SkuOptions:CreateMainFrame()
 	tFrame:SetPoint("CENTER")
 
 	SkuOptions.TooltipReaderText = ""
+	SkuOptions.InteractMove = false
+
 	tFrame:SetScript("OnClick", function(self, a, b)
 		--dprint("OnSkuOptionsMain OnClick ", a, b)
+
 		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
 			print("Funktion erst nach Abschluss von Routen Umwandlung verfügbar")
 			SkuOptions.Voice:OutputString("Funktion erst nach Abschluss von Routen Umwandlung verfügbar", true, true, 0.3, true)

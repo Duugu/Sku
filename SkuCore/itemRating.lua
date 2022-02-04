@@ -1,3 +1,4 @@
+--[[
 local MODULE_NAME, MODULE_PART = "SkuCore", "itemRating"
 local L = Sku.L
 local _G = _G
@@ -1634,3 +1635,4 @@ end
 
 
 
+]]

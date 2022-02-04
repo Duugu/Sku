@@ -27,6 +27,17 @@ SkuCore.options = {
 				return SkuOptions.db.profile[MODULE_NAME].autoFollow
 			end
 		},
+		interactMove = {
+			name = "Bei Interagieren zum Ziel laufen",
+			desc = "",
+			type = "toggle",
+			set = function(info, val)
+				SkuOptions.db.profile[MODULE_NAME].interactMove = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].interactMove
+			end
+		},
 		classes={
 			name = L["Classes"],
 			type = "group",
@@ -210,6 +221,7 @@ SkuCore.options = {
 SkuCore.defaults = {
 	enable = true,
 	autoFollow = false,
+	interactMove = false,
 	classes = {
 		hunter = {
 			petHappyness = true,

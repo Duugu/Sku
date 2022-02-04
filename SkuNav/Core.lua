@@ -1433,36 +1433,38 @@ function SkuNav:ProcessCheckReachingWp()
 						end
 						if not SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget] then
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-							SkuOptions:VocalizeMultipartString(L["Error in route;follow stopped"]..SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, false, true, 0.3, true)
+							SkuOptions:VocalizeMultipartString("Route folgen beendet", false, true, 0.3, true)
 							SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = nil
 							SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
 						end
-						if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr] then
-							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)
-							SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-							if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-							end
-							SkuOptions.Voice:OutputString(L["still"]..";"..(#SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps - tNextWPNr + 1), true, true, 0, true)
+						if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint or SkuOptions.db.profile[MODULE_NAME].metapathFollowing then
+							if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr] then
+								SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)
+								SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+								if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+								end
+								SkuOptions.Voice:OutputString(L["still"]..";"..(#SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps - tNextWPNr + 1), true, true, 0, true)
 
-							SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr], true)
-							SkuNav:UpdateReverseRtData()
-							SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = tNextWPNr
-						else
-							SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)
-							SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-							if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
-								SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-							end
-							SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
+								SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr], true)
+								SkuNav:UpdateReverseRtData()
+								SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = tNextWPNr
+							else
+								SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3, true)
+								SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+								if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
+									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
+								end
+								SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
 
-							SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
-							SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
-							SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
-							SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = nil
-							SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = nil
-							SkuNav:UpdateReverseRtData()
-							SkuNav:SelectWP("", true)
+								SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
+								SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
+								SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
+								SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = nil
+								SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = nil
+								SkuNav:UpdateReverseRtData()
+								SkuNav:SelectWP("", true)
+							end
 						end
 					end
 				end

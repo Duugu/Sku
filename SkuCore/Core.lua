@@ -519,6 +519,20 @@ function SkuCore:OnEnable()
 		tSkuCoreSecureTabButtonTime = tSkuCoreSecureTabButtonTime + time
 		if tSkuCoreSecureTabButtonTime < 0.1 then return end
 
+		SkuOptions.db.profile[MODULE_NAME].interactMove = SkuOptions.db.profile[MODULE_NAME].interactMove or false
+		local interactMoveVal = "0"
+		if SkuOptions.db.profile[MODULE_NAME].interactMove == true then
+			interactMoveVal = "1"
+		end
+		if C_CVar.GetCVar("AutoInteract") ~= interactMoveVal then
+			if C_CVar.GetCVar("AutoInteract") == "0" then
+				C_CVar.SetCVar("AutoInteract", "1")
+			else
+				C_CVar.SetCVar("AutoInteract", "0")
+			end
+		end
+
+
 		SkuCore:DoRangeCheck()
 
 		if SkuCore.inCombat ~= true then
@@ -830,7 +844,7 @@ function SkuCore:OnEnable()
 	tFrame:SetPoint("TOP", _G["SkuCoreControl"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		--dprint("SkuCoreControlOption1", self, aKey, aB)
-		
+
 		if aKey == "CTRL-SHIFT-Y" then
 			SkuCore:PanicModeStart()
 		end
@@ -1246,7 +1260,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			end
 		end
 
-		SkuCore:ItemRatingOnLogin()
+		--SkuCore:ItemRatingOnLogin()
 
 		SkuCore:AuctionHouseOnLogin()
 		if not SkuOptions.db.char[MODULE_NAME] then
