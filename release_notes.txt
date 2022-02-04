@@ -4,6 +4,14 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.10
+
+	SkuCore
+		Fehlerkorrekturen
+			- Ein Problem mit den Tooltips wurde behoben. Sie funktionieren jetzt wieder.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.9
 
 	SkuCore
