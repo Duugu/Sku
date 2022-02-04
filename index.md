@@ -18,6 +18,32 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
+## Änderungen in Version 23.9
+
+### SkuCore
+*Neuerungen*
+- Es gibt eine neue Einstellung namens "Bei Interagieren zum Ziel laufen". Du findest sie unter "SkuCore > Optionen". Sie ist standardmäßig aus.<br>
+  Wenn du die Einstellung einschaltest, läuft dein Char bei jeder Benutzung deiner "Mit dem Ziel interagieren Taste" (G) automatisch in gerader Linie zur Position deines jeweiligen Ziels.<br>
+  Das funktioniert für alles was du ins Ziel nehmen kannst. Gegner, NPCs, Leichen etc.<br>
+  Am Zielpunkt bleibt dein Char automatisch stehen. Wenn du dich während des automatischen laufens bewegst, wird das automatische Laufen abgebrochen.<br>
+  Ein paar Tips dazu:
+  - Dein Char läuft Luftline zur Zielposition. Hindernisse werden nicht erkannt oder umlaufen.
+  - Dein Char läuft nicht deinem Ziel hinterher. Er läuft nur automatisch zu der Position, an der sich das Ziel beim Drücken der Interagieren-Taste befunden hat.
+  - Wenn du die Interagieren-Taste mit der Funktion drückst, und die Bewegung sofort wieder abbrichst, hast du dich zum Ziel gedreht.
+  - Das Ganze funktioniert überall in der Spielwelt. Auch in Instanzen.
+  - Es geht auch mit Spielern im Ziel. So wie mit Folgen. Nur, dass du beim automatischen Laufen mit Interagieren nicht dauerhaft folgst, sondern nur einmal zur entsprechenden Position läufst.
+
+*Fehlerkorrekturen*
+- Das Modul für die Gegenstandsbewertungen musste deaktiviert werden. <br>
+  Die Bewertungen basieren auf Code des Pawn-Addons. Anscheinend ist bei Pawn beim letzten WoW-Patch was kaputtgegangen. <br>
+  Der Code im Sku-Addon und Pawn liefert entweder gar keine Ergebnisse mehr, oder nur noch Schrottwerte. Außerdem verursacht er seitdem starke Lags.<br>
+  Möglicherweise kommt die Funktion wieder, falls es irgendwann ein Update für Pawn gibt, und ich den Code im Sku-Addon auf der Basis aktualisieren kann.
+- Im Auktionshausmenü wurden vergessen Debug-Ausgaben entfernt.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Beim Wechsel des Kontinents (Ruhestein, Portal etc.) mit laufender Routenverfolgung gibt es jetzt keinen Fehler mehr. Stattdessen wir die laufende Route einfach beendet.
+
 ## Änderungen in Version 23.8
 
 ### SkuOptions
