@@ -149,9 +149,10 @@ SkuAuras.outputs = {
             if not tEvaluateData.event then return end
             if not SkuAuras.values[tEvaluateData.event] then return end
             if SkuAuras.values[tEvaluateData.event].friendlyNameShort then
-               SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyNameShort, aFirst, true, 0.1, false)
+                                          --aString,                                               aOverwrite, aWait, aLength, aDoNotOverwrite
+               SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyNameShort, aFirst, true, 0.1, true)
             else
-               SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyName, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyName, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -172,7 +173,7 @@ SkuAuras.outputs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.sourceUnitId then
                dprint("    ","tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
-               SkuOptions.Voice:OutputString(tEvaluateData.sourceUnitId[1], aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.sourceUnitId[1], aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -189,7 +190,7 @@ SkuAuras.outputs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             dprint("    ","tEvaluateData.destUnitId", tEvaluateData.destUnitId)
             if tEvaluateData.destUnitId then
-               SkuOptions.Voice:OutputString(tEvaluateData.destUnitId[1], aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.destUnitId[1], aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -205,7 +206,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthPlayer then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -221,7 +222,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.auraAmount then
-               SkuOptions.Voice:OutputString(tEvaluateData.auraAmount, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.auraAmount, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -238,7 +239,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.class then
-               SkuOptions.Voice:OutputString(tEvaluateData.class, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.class, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -255,7 +256,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitPowerPlayer then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitPowerPlayer, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitPowerPlayer, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -271,7 +272,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthPlayer then
-               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -287,7 +288,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.spellName then
-               SkuOptions.Voice:OutputString(tEvaluateData.spellName, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.spellName, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -303,7 +304,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.itemName then
-               SkuOptions.Voice:OutputString(tEvaluateData.itemName, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.itemName, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -319,7 +320,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.itemCount then
-               SkuOptions.Voice:OutputString(tEvaluateData.itemCount, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.itemCount, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -335,7 +336,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.buffListTarget then
-               SkuOptions.Voice:OutputString(tEvaluateData.buffListTarget, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.buffListTarget, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -351,7 +352,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.debuffListTarget then
-               SkuOptions.Voice:OutputString(tEvaluateData.debuffListTarget, aFirst, true, 0.1, false)
+               SkuOptions.Voice:OutputString(tEvaluateData.debuffListTarget, aFirst, true, 0.1, true)
             end
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
@@ -423,7 +424,7 @@ for tOutputString, tFriendlyName in pairs(tOutputSoundFiles) do
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
                end
-               SkuOptions.Voice:OutputString("sound-silence0.1", true, false, 0.3, false)
+               SkuOptions.Voice:OutputString("sound-silence0.1", true, false, 0.3, true)
             end
             SkuOptions.Voice:OutputString(tOutputString, false, true, 0.3, true)
          end,
@@ -438,34 +439,107 @@ end
 SkuAuras.valuesDefault = {
    --auraAmount;itemCount
       ["0"] = {friendlyName = "0",},
-      ["1"] = {friendlyName = "1",},
-      ["2"] = {friendlyName = "2",},
-      ["3"] = {friendlyName = "3",},
-      ["4"] = {friendlyName = "4",},
-      ["5"] = {friendlyName = "5",},
-      ["6"] = {friendlyName = "6",},
-      ["7"] = {friendlyName = "7",},
-      ["8"] = {friendlyName = "8",},
-      ["9"] = {friendlyName = "9",},
-      ["10"] = {friendlyName = "10",},
-      ["11"] = {friendlyName = "11",},
-      ["12"] = {friendlyName = "12",},
-      ["13"] = {friendlyName = "13",},
-      ["14"] = {friendlyName = "14",},
-      ["15"] = {friendlyName = "15",},
-      ["16"] = {friendlyName = "16",},
-      ["17"] = {friendlyName = "17",},
-      ["18"] = {friendlyName = "18",},
-      ["19"] = {friendlyName = "19",},
-      ["20"] = {friendlyName = "20",}, 
-      ["30"] = {friendlyName = "30",}, 
-      ["40"] = {friendlyName = "40",}, 
-      ["50"] = {friendlyName = "50",}, 
-      ["60"] = {friendlyName = "60",}, 
-      ["70"] = {friendlyName = "70",}, 
-      ["80"] = {friendlyName = "80",}, 
-      ["90"] = {friendlyName = "90",}, 
-      ["100"] = {friendlyName = "100",}, 
+      ["1"] = {friendlyName = "0",},
+      ["2"] = {friendlyName = "0",},
+      ["3"] = {friendlyName = "0",},
+      ["4"] = {friendlyName = "0",},
+      ["5"] = {friendlyName = "0",},
+      ["6"] = {friendlyName = "0",},
+      ["7"] = {friendlyName = "0",},
+      ["8"] = {friendlyName = "0",},
+      ["9"] = {friendlyName = "0",},
+      ["10"] = {friendlyName = "0",},
+      ["11"] = {friendlyName = "0",},
+      ["12"] = {friendlyName = "0",},
+      ["13"] = {friendlyName = "0",},
+      ["14"] = {friendlyName = "0",},
+      ["15"] = {friendlyName = "0",},
+      ["16"] = {friendlyName = "0",},
+      ["17"] = {friendlyName = "0",},
+      ["18"] = {friendlyName = "0",},
+      ["19"] = {friendlyName = "0",},
+      ["20"] = {friendlyName = "0",},
+      ["21"] = {friendlyName = "0",},
+      ["22"] = {friendlyName = "0",},
+      ["23"] = {friendlyName = "0",},
+      ["24"] = {friendlyName = "0",},
+      ["25"] = {friendlyName = "0",},
+      ["26"] = {friendlyName = "0",},
+      ["27"] = {friendlyName = "0",},
+      ["28"] = {friendlyName = "0",},
+      ["29"] = {friendlyName = "0",},
+      ["30"] = {friendlyName = "0",},
+      ["31"] = {friendlyName = "0",},
+      ["32"] = {friendlyName = "0",},
+      ["33"] = {friendlyName = "0",},
+      ["34"] = {friendlyName = "0",},
+      ["35"] = {friendlyName = "0",},
+      ["36"] = {friendlyName = "0",},
+      ["37"] = {friendlyName = "0",},
+      ["38"] = {friendlyName = "0",},
+      ["39"] = {friendlyName = "0",},
+      ["40"] = {friendlyName = "0",},
+      ["41"] = {friendlyName = "0",},
+      ["42"] = {friendlyName = "0",},
+      ["43"] = {friendlyName = "0",},
+      ["44"] = {friendlyName = "0",},
+      ["45"] = {friendlyName = "0",},
+      ["46"] = {friendlyName = "0",},
+      ["47"] = {friendlyName = "0",},
+      ["48"] = {friendlyName = "0",},
+      ["49"] = {friendlyName = "0",},
+      ["50"] = {friendlyName = "0",},
+      ["51"] = {friendlyName = "0",},
+      ["52"] = {friendlyName = "0",},
+      ["53"] = {friendlyName = "0",},
+      ["54"] = {friendlyName = "0",},
+      ["55"] = {friendlyName = "0",},
+      ["56"] = {friendlyName = "0",},
+      ["57"] = {friendlyName = "0",},
+      ["58"] = {friendlyName = "0",},
+      ["59"] = {friendlyName = "0",},
+      ["60"] = {friendlyName = "0",},
+      ["61"] = {friendlyName = "0",},
+      ["62"] = {friendlyName = "0",},
+      ["63"] = {friendlyName = "0",},
+      ["64"] = {friendlyName = "0",},
+      ["65"] = {friendlyName = "0",},
+      ["66"] = {friendlyName = "0",},
+      ["67"] = {friendlyName = "0",},
+      ["68"] = {friendlyName = "0",},
+      ["69"] = {friendlyName = "0",},
+      ["70"] = {friendlyName = "0",},
+      ["71"] = {friendlyName = "0",},
+      ["72"] = {friendlyName = "0",},
+      ["73"] = {friendlyName = "0",},
+      ["74"] = {friendlyName = "0",},
+      ["75"] = {friendlyName = "0",},
+      ["76"] = {friendlyName = "0",},
+      ["77"] = {friendlyName = "0",},
+      ["78"] = {friendlyName = "0",},
+      ["79"] = {friendlyName = "0",},
+      ["80"] = {friendlyName = "0",},
+      ["81"] = {friendlyName = "0",},
+      ["82"] = {friendlyName = "0",},
+      ["83"] = {friendlyName = "0",},
+      ["84"] = {friendlyName = "0",},
+      ["85"] = {friendlyName = "0",},
+      ["86"] = {friendlyName = "0",},
+      ["87"] = {friendlyName = "0",},
+      ["88"] = {friendlyName = "0",},
+      ["89"] = {friendlyName = "0",},
+      ["90"] = {friendlyName = "0",},
+      ["91"] = {friendlyName = "0",},
+      ["92"] = {friendlyName = "0",},
+      ["93"] = {friendlyName = "0",},
+      ["94"] = {friendlyName = "0",},
+      ["95"] = {friendlyName = "0",},
+      ["96"] = {friendlyName = "0",},
+      ["97"] = {friendlyName = "0",},
+      ["98"] = {friendlyName = "0",},
+      ["99"] = {friendlyName = "0",},
+      ["100"] = {friendlyName = "0",},
+   
       ["true"] = {
          tooltip = "triff zu",
          friendlyName = "wahr",
@@ -1034,14 +1108,87 @@ SkuAuras.attributes = {
          "18",
          "19",
          "20",
+         "21",
+         "22",
+         "23",
+         "24",
+         "25",
+         "26",
+         "27",
+         "28",
+         "29",
          "30",
+         "31",
+         "32",
+         "33",
+         "34",
+         "35",
+         "36",
+         "37",
+         "38",
+         "39",
          "40",
+         "41",
+         "42",
+         "43",
+         "44",
+         "45",
+         "46",
+         "47",
+         "48",
+         "49",
          "50",
+         "51",
+         "52",
+         "53",
+         "54",
+         "55",
+         "56",
+         "57",
+         "58",
+         "59",
          "60",
+         "61",
+         "62",
+         "63",
+         "64",
+         "65",
+         "66",
+         "67",
+         "68",
+         "69",
          "70",
+         "71",
+         "72",
+         "73",
+         "74",
+         "75",
+         "76",
+         "77",
+         "78",
+         "79",
          "80",
+         "81",
+         "82",
+         "83",
+         "84",
+         "85",
+         "86",
+         "87",
+         "88",
+         "89",
          "90",
-         "100",         
+         "91",
+         "92",
+         "93",
+         "94",
+         "95",
+         "96",
+         "97",
+         "98",
+         "99",
+         "100",
+                 
       },
    },
    unitHealthPlayer = {
@@ -1078,14 +1225,87 @@ SkuAuras.attributes = {
          "18",
          "19",
          "20",
+         "21",
+         "22",
+         "23",
+         "24",
+         "25",
+         "26",
+         "27",
+         "28",
+         "29",
          "30",
+         "31",
+         "32",
+         "33",
+         "34",
+         "35",
+         "36",
+         "37",
+         "38",
+         "39",
          "40",
+         "41",
+         "42",
+         "43",
+         "44",
+         "45",
+         "46",
+         "47",
+         "48",
+         "49",
          "50",
+         "51",
+         "52",
+         "53",
+         "54",
+         "55",
+         "56",
+         "57",
+         "58",
+         "59",
          "60",
+         "61",
+         "62",
+         "63",
+         "64",
+         "65",
+         "66",
+         "67",
+         "68",
+         "69",
          "70",
+         "71",
+         "72",
+         "73",
+         "74",
+         "75",
+         "76",
+         "77",
+         "78",
+         "79",
          "80",
+         "81",
+         "82",
+         "83",
+         "84",
+         "85",
+         "86",
+         "87",
+         "88",
+         "89",
          "90",
-         "100",         
+         "91",
+         "92",
+         "93",
+         "94",
+         "95",
+         "96",
+         "97",
+         "98",
+         "99",
+         "100",
+                 
       },      
    },
    spellId = {
@@ -1240,14 +1460,87 @@ SkuAuras.attributes = {
          "18",
          "19",
          "20",
+         "21",
+         "22",
+         "23",
+         "24",
+         "25",
+         "26",
+         "27",
+         "28",
+         "29",
          "30",
+         "31",
+         "32",
+         "33",
+         "34",
+         "35",
+         "36",
+         "37",
+         "38",
+         "39",
          "40",
+         "41",
+         "42",
+         "43",
+         "44",
+         "45",
+         "46",
+         "47",
+         "48",
+         "49",
          "50",
+         "51",
+         "52",
+         "53",
+         "54",
+         "55",
+         "56",
+         "57",
+         "58",
+         "59",
          "60",
+         "61",
+         "62",
+         "63",
+         "64",
+         "65",
+         "66",
+         "67",
+         "68",
+         "69",
          "70",
+         "71",
+         "72",
+         "73",
+         "74",
+         "75",
+         "76",
+         "77",
+         "78",
+         "79",
          "80",
+         "81",
+         "82",
+         "83",
+         "84",
+         "85",
+         "86",
+         "87",
+         "88",
+         "89",
          "90",
+         "91",
+         "92",
+         "93",
+         "94",
+         "95",
+         "96",
+         "97",
+         "98",
+         "99",
          "100",
+         
       },      
    },
    auraType = {
@@ -1301,6 +1594,87 @@ SkuAuras.attributes = {
          "18",
          "19",
          "20",
+         "21",
+         "22",
+         "23",
+         "24",
+         "25",
+         "26",
+         "27",
+         "28",
+         "29",
+         "30",
+         "31",
+         "32",
+         "33",
+         "34",
+         "35",
+         "36",
+         "37",
+         "38",
+         "39",
+         "40",
+         "41",
+         "42",
+         "43",
+         "44",
+         "45",
+         "46",
+         "47",
+         "48",
+         "49",
+         "50",
+         "51",
+         "52",
+         "53",
+         "54",
+         "55",
+         "56",
+         "57",
+         "58",
+         "59",
+         "60",
+         "61",
+         "62",
+         "63",
+         "64",
+         "65",
+         "66",
+         "67",
+         "68",
+         "69",
+         "70",
+         "71",
+         "72",
+         "73",
+         "74",
+         "75",
+         "76",
+         "77",
+         "78",
+         "79",
+         "80",
+         "81",
+         "82",
+         "83",
+         "84",
+         "85",
+         "86",
+         "87",
+         "88",
+         "89",
+         "90",
+         "91",
+         "92",
+         "93",
+         "94",
+         "95",
+         "96",
+         "97",
+         "98",
+         "99",
+         "100",
+         
       },      
    },
    class = {

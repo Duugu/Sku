@@ -534,7 +534,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		self.selectTarget.targetAuraName = self.name
 	end
 	tTypeItem.BuildChildren = function(self)
-		if SkuOptions.db.char[MODULE_NAME].Auras[self.name].enabled == true then
+		if self.parent.name == "Aktivierte" then
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Deaktivieren"}, SkuGenericMenuItem)
 		else
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Aktivieren"}, SkuGenericMenuItem)
@@ -673,14 +673,18 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 				local tActions = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].actions
 				local tOutputs = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].outputs
 
-				local tNewOutputs = {}
+				local tTmpOutputs = {}
 				local tCurrent = self.collectValuesFrom
 				while tCurrent.name ~= "Ausgaben" do
-					tNewOutputs[#tNewOutputs + 1] = tCurrent.internalName
+					tTmpOutputs[#tTmpOutputs + 1] = tCurrent.internalName
 					tCurrent = tCurrent.parent
 				end
+				
+				local tNewOutputs = {}
+				for x = #tTmpOutputs, 1, -1 do
+					tNewOutputs[#tNewOutputs + 1] = tTmpOutputs[x]
+				end
 
-				--tNewOutputs
 				SkuAuras:UpdateAura(self.auraName, tType, tEnabled, tAttributes, tActions, tNewOutputs)
 			end
 			tNewMenuEntryOutp.BuildChildren = SkuAuras:NewAuraAttributeBuilder(tNewMenuEntryOutp)

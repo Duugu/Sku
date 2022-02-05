@@ -4,6 +4,17 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.12
+
+	SkuAuras
+		Fehlerkorrekturen
+			- Aura-Ausgaben sollten jetzt (vermutlich) nicht mehr von anderen Ausgaben überschrieben oder verschluckt werden.
+			- Beim Bearbeiten der Ausgaben von bestehenden Auren werden die neu gewählten Ausgaben jetzt in der richtigen Reihenfolge in die bearbeitete Aura übertragen. (Bisher war die Reihenfolge der Ausgaben nach dem Bearbeiten ungedreht.)
+			- Bei Attributen mit Zahlenwerten (z. B. "Eigene Ressource" oder "Eigene Gesundheit") sind jetzt alle Zahlen von 0 bis 100 verfügbar, statt nur Zehnerschritte.
+			- Die Listen der aktivierten und deaktivierten Auren können jetzt wie vorgesehen ganz normal über den Menüfilter gefiltert werden.
+			
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.11
 
 	SkuAuras

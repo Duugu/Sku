@@ -350,6 +350,13 @@ function SkuAuras:SPELL_COOLDOWN_START(aEventData)
 				if not start or start == 0 then
 					return
 				end
+
+
+				if SkuAuras.SpellCDRepo[aEventData[CleuBase.spellId]] then
+					dprint("STILL OLD THERE, TRIUGGER BEFORE NEW!!!!!!!!!!!!!!")
+					SkuAuras:SPELL_COOLDOWN_END(SkuAuras.SpellCDRepo[aEventData[CleuBase.spellId]].eventData)
+				end
+
 				aEventData[CleuBase.subevent] = "SPELL_COOLDOWN_START"
 				SkuAuras.SpellCDRepo[aEventData[CleuBase.spellId]] = {
 					sourceName = aEventData[CleuBase.sourceName], 
@@ -362,6 +369,7 @@ function SkuAuras:SPELL_COOLDOWN_START(aEventData)
 					eventData = aEventData,
 				}
 
+				dprint("SPELL_COOLDOWN_START", aEventData[CleuBase.spellName])
 				if aEventData[CleuBase.spellName] then
 					SkuAuras.thingsNamesOnCd["spell:"..aEventData[CleuBase.spellName]] = "spell:"..aEventData[CleuBase.spellName]
 				end
@@ -461,6 +469,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:COOLDOWN_TICKER()
 	for spellId, cooldownData in pairs(SkuAuras.SpellCDRepo) do
+		dprint("COOLDOWN_TICKER", cooldownData.spellname, GetTime() - cooldownData.start, cooldownData.duration)
 		if (GetTime() - cooldownData.start) >= cooldownData.duration then
 			cooldownData.subevent = "SPELL_COOLDOWN_END"
 			SkuAuras:SPELL_COOLDOWN_END(cooldownData.eventData)
@@ -482,6 +491,7 @@ function SkuAuras:SPELL_COOLDOWN_END(aEventData)
 	aEventData[CleuBase.subevent] = "SPELL_COOLDOWN_END"
 	aEventData[CleuBase.timestamp] = GetTime()
 	SkuAuras.thingsNamesOnCd["spell:"..aEventData[13]] = nil
+	dprint("SPELL_COOLDOWN_END", aEventData[CleuBase.subevent], aEventData[13])
 	SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 end
 
@@ -575,8 +585,12 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
-	--dprint("COMBAT_LOG_EVENT_UNFILTERED", aEventName, aCustomEventData)
 	local tEventData = aCustomEventData or {CombatLogGetCurrentEventInfo()}
+	if aCustomEventData then
+		dprint("CLEU", aCustomEventData[2])
+	else
+		dprint("CLEU", tEventData[2])
+	end
 
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
 		C_Timer.After(0.1, function()
