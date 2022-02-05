@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.11](https://github.com/Duugu/Sku/releases/download/r23.11/Sku-r23.11-bcc.zip) <br>
+[Sku 23.12](https://github.com/Duugu/Sku/releases/download/r23.12/Sku-r23.12-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
@@ -17,6 +17,15 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.12
+
+### SkuAuras
+*Fehlerkorrekturen*
+- Aura-Ausgaben sollten jetzt (vermutlich) nicht mehr von anderen Ausgaben überschrieben oder verschluckt werden.
+- Beim Bearbeiten der Ausgaben von bestehenden Auren werden die neu gewählten Ausgaben jetzt in der richtigen Reihenfolge in die bearbeitete Aura übertragen. (Bisher war die Reihenfolge der Ausgaben nach dem Bearbeiten ungedreht.)
+- Bei Attributen mit Zahlenwerten (z. B. "Eigene Ressource" oder "Eigene Gesundheit") sind jetzt alle Zahlen von 0 bis 100 verfügbar, statt nur Zehnerschritte.
+- Die Listen der aktivierten und deaktivierten Auren können jetzt wie vorgesehen ganz normal über den Menüfilter gefiltert werden.
 
 ## Änderungen in Version 23.11
 
