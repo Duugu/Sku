@@ -109,6 +109,7 @@ SkuAuras.actions = {
       func = function(tAuraName, tEvaluateData)
       	dprint("    ","action func audio benachrichtigung DING")
       end,
+      single = false,
    },
    notifyChat = {
       tooltip = "Die Ausgaben werden als Text im Chat ausgegeben",
@@ -116,6 +117,23 @@ SkuAuras.actions = {
       func = function(tAuraName, tEvaluateData)
       	dprint("    ","action func chat benachrichtigung")
       end,
+      single = false,
+   },
+   notifyAudioSingle = {
+      tooltip = "Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.",
+      friendlyName = "audio ausgabe einmal",
+      func = function(tAuraName, tEvaluateData)
+      	dprint("    ","action func audio benachrichtigung single")
+      end,
+      single = true,
+   },
+   notifyChatSingle = {
+      tooltip = "Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.",
+      friendlyName = "chat ausgabe einmal",
+      func = function(tAuraName, tEvaluateData)
+      	dprint("    ","action func chat benachrichtigung single")
+      end,
+      single = true,
    },
 }
 
@@ -753,7 +771,9 @@ SkuAuras.attributes = {
       end,
       values = {
          "notifyAudio",
+         "notifyAudioSingle",
          "notifyChat",
+         "notifyChatSingle",
       },
    },
    destUnitId = {
@@ -809,7 +829,7 @@ SkuAuras.attributes = {
          end
       end,
       values = {}, --values are added below the attributes table
-   },   
+   },
    tInCombat = {
       tooltip = "Ob das Event im Kampf auftritt",
       friendlyName = "Im Kampf",
@@ -823,7 +843,7 @@ SkuAuras.attributes = {
          "true",
          "false",
       },
-   },   
+   },
    tSourceUnitIDCannAttack = {
       tooltip = "Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist",
       friendlyName = "Quell Einheit angreifbar",
@@ -837,7 +857,7 @@ SkuAuras.attributes = {
          "true",
          "false",
       },
-   },      
+   },
    tDestinationUnitIDCannAttack = {
       tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
       friendlyName = "Ziel Einheit angreifbar",
@@ -851,7 +871,7 @@ SkuAuras.attributes = {
          "true",
          "false",
       },
-   },   
+   },
    sourceUnitId = {
       tooltip = "Die Quell Einheit, für die die Aura ausgelöst werden soll",
       friendlyName = "Quelle",
@@ -979,7 +999,7 @@ SkuAuras.attributes = {
          "REFLECT",
          "RESIST",
       },
-   },   
+   },
    unitPowerPlayer = {
       tooltip = "Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc.",
       friendlyName = "Eigene Ressource",
@@ -1022,7 +1042,7 @@ SkuAuras.attributes = {
          "80",
          "90",
          "100",         
-      },      
+      },
    },
    unitHealthPlayer = {
       tooltip = "Dein gesundheits Level in Prozent, das die Aura auslösen soll",
@@ -1083,6 +1103,32 @@ SkuAuras.attributes = {
       values = {
       },      
    },
+
+
+   spellNameOnCd = {
+      tooltip = "Ob ein Zauber gerade auf CD ist",
+      friendlyName = "zauber auf cd",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("    ","SkuAuras.attributes.spellNameOnCd.evaluate", aValue)
+         if aEventData.spellsNamesOnCd then
+            dprint("aEventData.spellsNamesOnCd")
+            setmetatable(aEventData.spellsNamesOnCd, SkuPrintMTWo)
+            dprint(aEventData.spellsNamesOnCd)
+      
+            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellsNamesOnCd[aValue], aOperator, aValue)
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = {
+      },      
+   },
+
+
+
+
+
    spellName = {
       tooltip = "Der Zauber-name, der die Aura auslösen soll",
       friendlyName = "zauber name",
@@ -1097,7 +1143,7 @@ SkuAuras.attributes = {
       end,
       values = {
       },      
-   },   
+   },
    buffListTarget = {
       tooltip = "Die Liste der Buffs des Ziels",
       friendlyName = "Buff Liste Ziel",
@@ -1113,7 +1159,7 @@ SkuAuras.attributes = {
       end,
       values = {
       },      
-   },  
+   },
    debuffListTarget = {
       tooltip = "Die Liste der Debuffs  des Ziels",
       friendlyName = "Debuff Liste Ziel",
@@ -1129,7 +1175,7 @@ SkuAuras.attributes = {
       end,
       values = {
       },      
-   },  
+   },
    itemName = {
       tooltip = "Der Gegenstandsname, der die Aura auslösen soll",
       friendlyName = "gegenstand name",
@@ -1144,7 +1190,7 @@ SkuAuras.attributes = {
       end,
       values = {
       },      
-   },   
+   },
    itemId = {
       tooltip = "Die Gegenstands-ID, die die Aura auslösen soll",
       friendlyName = "gegenstand nr",
@@ -1203,7 +1249,7 @@ SkuAuras.attributes = {
          "90",
          "100",
       },      
-   },   
+   },
    auraType = {
       tooltip = "Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll",
       friendlyName = "buff/debuff",
@@ -1290,7 +1336,7 @@ SkuAuras.attributes = {
          "Druid",
          "Demon Hunter",
       },      
-   },      
+   },
 }
 local tKeys = KeyValuesHelper()
 for i, v in pairs (tKeys) do
@@ -1418,6 +1464,7 @@ SkuAuras.Types = {
          "unitPowerPlayer",
          "unitHealthPlayer",
          "spellId",
+         "spellNameOnCd",
          "spellName",
          "buffListTarget",
          "debuffListTarget",
@@ -1445,6 +1492,7 @@ SkuAuras.Types = {
          "unitPowerPlayer",
          "unitHealthPlayer",
          "spellId",
+         "spellNameOnCd",
          "spellName",
          "buffListTarget",
          "debuffListTarget",

@@ -32,6 +32,7 @@ local CleuBase = {
 SkuAuras.ItemCDRepo = {}
 SkuAuras.SpellCDRepo = {}
 SkuAuras.UnitRepo = {}
+SkuAuras.thingsNamesOnCd = {}
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:OnInitialize()
@@ -270,6 +271,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	end
 	
 	SkuAuras.attributes.spellId.values = {}
+	SkuAuras.attributes.spellNameOnCd.values = {}
 	SkuAuras.attributes.spellName.values = {}
 	SkuAuras.attributes.buffListTarget.values = {}
 	SkuAuras.attributes.debuffListTarget.values = {}
@@ -278,6 +280,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		SkuAuras.attributes.spellId.values[#SkuAuras.attributes.spellId.values + 1] = "spell:"..tostring(spellId)
 		if not SkuAuras.values["spell:"..tostring(spellName)] then
 			SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
+			SkuAuras.attributes.spellNameOnCd.values[#SkuAuras.attributes.spellName.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.attributes.spellName.values[#SkuAuras.attributes.spellName.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.attributes.buffListTarget.values[#SkuAuras.attributes.buffListTarget.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.attributes.debuffListTarget.values[#SkuAuras.attributes.debuffListTarget.values + 1] = "spell:"..tostring(spellName)
@@ -358,6 +361,10 @@ function SkuAuras:SPELL_COOLDOWN_START(aEventData)
 					modRate = modRate,
 					eventData = aEventData,
 				}
+
+				if aEventData[CleuBase.spellName] then
+					SkuAuras.thingsNamesOnCd["spell:"..aEventData[CleuBase.spellName]] = "spell:"..aEventData[CleuBase.spellName]
+				end
 			end
 		end
 	end
@@ -474,6 +481,7 @@ end
 function SkuAuras:SPELL_COOLDOWN_END(aEventData)
 	aEventData[CleuBase.subevent] = "SPELL_COOLDOWN_END"
 	aEventData[CleuBase.timestamp] = GetTime()
+	SkuAuras.thingsNamesOnCd["spell:"..aEventData[13]] = nil
 	SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 end
 
@@ -631,43 +639,48 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	tEventData[38] = tdebuffList
 
 
-if tEventData[2] ~= "KEY_PRESS" then
-	dprint("---------------------------------------------------------------------")
-	dprint("--NEW EVENT:", tEventData[2] )
-	dprint("---------------------------------------------------------------------")
-	dprint("timestamp", tEventData[1])
-	dprint("subevent", tEventData[2])
-	dprint("sourceName", tEventData[5])
-	dprint("destName", tEventData[9])
-	dprint("spellId", tEventData[12])
-	dprint("spellName", tEventData[13])
-	dprint(" 14", tEventData[14])
-	dprint("auraType", tEventData[15])
-	dprint("auraAmount", tEventData[16])
-	dprint(" 17", tEventData[17])
-	dprint(" 18", tEventData[18])
-	dprint(" 19", tEventData[19])
-	dprint(" 20", tEventData[20])
-	dprint(" 21", tEventData[21])
-	dprint(" 22", tEventData[22])
-	dprint(" 23", tEventData[23])
-	dprint(" 24", tEventData[24])	
-	dprint("unitHealthPlayer", tEventData[35])
-	dprint("unitPowerPlayer", tEventData[36])
-	dprint("buffListTarget", tEventData[37])
-	dprint("dbuffListTarget", tEventData[38])
-	dprint("itemID", tEventData[40])
-	dprint("missType", tEventData[12])
-	dprint("tSourceUnitID", tSourceUnitID)
-	setmetatable(tSourceUnitID, SkuPrintMTWo)
-	dprint(tSourceUnitID)
-	dprint("tDestinationUnitID", tDestinationUnitID)
-	setmetatable(tDestinationUnitID, SkuPrintMTWo)
-	dprint(tDestinationUnitID)
-	dprint("tSourceUnitIDCannAttack", tSourceUnitIDCannAttack)
-	dprint("tDestinationUnitIDCannAttack", tDestinationUnitIDCannAttack)
-	dprint("50 aKey", tEventData[50])
-end
+	if tEventData[2] ~= "KEY_PRESS" then
+		dprint("---------------------------------------------------------------------")
+		dprint("--NEW EVENT:", tEventData[2] )
+		dprint("---------------------------------------------------------------------")
+		dprint("timestamp", tEventData[1])
+		dprint("subevent", tEventData[2])
+		dprint("sourceName", tEventData[5])
+		dprint("destName", tEventData[9])
+		dprint("spellId", tEventData[12])
+		dprint("spellName", tEventData[13])
+		dprint(" 14", tEventData[14])
+		dprint("auraType", tEventData[15])
+		dprint("auraAmount", tEventData[16])
+		dprint(" 17", tEventData[17])
+		dprint(" 18", tEventData[18])
+		dprint(" 19", tEventData[19])
+		dprint(" 20", tEventData[20])
+		dprint(" 21", tEventData[21])
+		dprint(" 22", tEventData[22])
+		dprint(" 23", tEventData[23])
+		dprint(" 24", tEventData[24])	
+		dprint("unitHealthPlayer", tEventData[35])
+		dprint("unitPowerPlayer", tEventData[36])
+		dprint("buffListTarget", tEventData[37])
+		dprint("dbuffListTarget", tEventData[38])
+		dprint("itemID", tEventData[40])
+		dprint("missType", tEventData[12])
+		dprint("tSourceUnitID", tSourceUnitID)
+		setmetatable(tSourceUnitID, SkuPrintMTWo)
+		dprint(tSourceUnitID)
+		dprint("tDestinationUnitID", tDestinationUnitID)
+		setmetatable(tDestinationUnitID, SkuPrintMTWo)
+		dprint(tDestinationUnitID)
+		dprint("tSourceUnitIDCannAttack", tSourceUnitIDCannAttack)
+		dprint("tDestinationUnitIDCannAttack", tDestinationUnitIDCannAttack)
+		dprint("50 aKey", tEventData[50])
+		dprint("SpellNamesOnCd")
+		setmetatable(SkuAuras.thingsNamesOnCd, SkuPrintMTWo)
+		dprint(SkuAuras.thingsNamesOnCd)
+		
+	end
+
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
@@ -696,6 +709,7 @@ end
 				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 				tInCombat = SkuCore.inCombat,
 				pressedKey = tEventData[50],
+				spellsNamesOnCd = SkuAuras.thingsNamesOnCd,
 			}		
 			tEvaluateData.spellId = tEventData[CleuBase.spellId]
 			tEvaluateData.spellName = tEventData[CleuBase.spellName]
@@ -794,29 +808,71 @@ end
 
 			--overall result
 			dprint("  ","OVERALL RESULT:", tOverallResult, "tHasApplicableAttributes", tHasApplicableAttributes)
+			dprint("  ","used", tAuraData.used)
+			dprint("  ","single", SkuAuras.actions[tAuraData.actions[1]].single)
+
 			if tAuraData.type == "if" then
 				if tOverallResult == true and tHasApplicableAttributes == true then
-					dprint("  ","== trigger:", #tAuraData.actions, tAuraData.actions[1])
-					for i, v in pairs(tAuraData.outputs) do
-						if SkuAuras.outputs[string.gsub(v, "output:", "")] then
-							dprint("  ",tAuraData.actions[1])
-							dprint("  ","output", i, v)
-							SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAuraData.actions[1]](tAuraName, tEvaluateData, tFirst, v)
-							tFirst = false
+					if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then
+						dprint("  ","== trigger:", #tAuraData.actions, tAuraData.actions[1])
+						
+						--set aura to used
+						tAuraData.used = true
+
+						for i, v in pairs(tAuraData.outputs) do
+							if SkuAuras.outputs[string.gsub(v, "output:", "")] then
+								dprint("  ",tAuraData.actions[1])
+								dprint("  ","output", i, v)
+
+								local tAction = tAuraData.actions[1]
+								if tAction == "notifyAudioSingle" then
+									tAction = "notifyAudio"
+								end
+								if tAction == "notifyChatSingle" then
+									tAction = "notifyChat"
+								end
+
+								SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, v)
+								tFirst = false
+							end
 						end
 					end
+				else
+					--set aura to unused
+					tAuraData.used = false
+
 				end		
 			else
 				if tOverallResult == false and tHasApplicableAttributes == true then
-					dprint("  ","~= trigger:", #tAuraData.actions, tAuraData.actions[1])
-					for i, v in pairs(tAuraData.outputs) do
-						if SkuAuras.outputs[string.gsub(v, "output:", "")] then
-							dprint("  ",tAuraData.actions[1])
-							dprint("  ","  output", i, v)
-							SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAuraData.actions[1]](tAuraName, tEvaluateData, tFirst, v)
-							tFirst = false
+					if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then					
+						dprint("  ","~= trigger:", #tAuraData.actions, tAuraData.actions[1])
+						--set aura to used
+						tAuraData.used = true
+
+						for i, v in pairs(tAuraData.outputs) do
+							if SkuAuras.outputs[string.gsub(v, "output:", "")] then
+								dprint("  ",tAuraData.actions[1])
+								dprint("  ","  output", i, v)
+
+								local tAction = tAuraData.actions[1]
+								if tAction == "notifyAudioSingle" then
+									tAction = "notifyAudio"
+								end
+								if tAction == "notifyChatSingle" then
+									tAction = "notifyChat"
+								end							
+								SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, v)
+								tFirst = false
+							end
 						end
 					end
+				else
+					--set aura to unused
+					tAuraData.used = false
+
+
+
+
 				end	
 			end
 		end

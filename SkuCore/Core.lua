@@ -494,6 +494,38 @@ function SkuCore:IsNamePlateVisible(aCreatureName)
 	return false
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+local SkuInteractMoveTmpFlag = false
+function SkuCore:UpdateInteractMove(aForceFlag)
+	if SkuInteractMoveTmpFlag == true then
+		return
+	end
+
+	SkuOptions.db.profile[MODULE_NAME].interactMove = SkuOptions.db.profile[MODULE_NAME].interactMove or false
+	local interactMoveVal = "0"
+	if SkuOptions.db.profile[MODULE_NAME].interactMove == true then
+		interactMoveVal = "1"
+	end
+
+	if C_CVar.GetCVar("AutoInteract") ~= interactMoveVal or aForceFlag then
+		if C_CVar.GetCVar("AutoInteract") == "0" then
+			C_CVar.SetCVar("AutoInteract", "1")
+
+			WorldFrame:SetScript("OnMouseDown", function() 
+				SkuInteractMoveTmpFlag = true
+				C_CVar.SetCVar("AutoInteract", "0")
+			end)
+			WorldFrame:SetScript("OnMouseUp", function() 
+				C_Timer.After(0.0, function()
+					C_CVar.SetCVar("AutoInteract", "1")
+					SkuInteractMoveTmpFlag = false
+				end)
+			end)
+		else
+			C_CVar.SetCVar("AutoInteract", "0")
+		end
+	end
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local oinfoType, oitemID, oitemLink = nil, nil, nil
@@ -519,19 +551,7 @@ function SkuCore:OnEnable()
 		tSkuCoreSecureTabButtonTime = tSkuCoreSecureTabButtonTime + time
 		if tSkuCoreSecureTabButtonTime < 0.1 then return end
 
-		SkuOptions.db.profile[MODULE_NAME].interactMove = SkuOptions.db.profile[MODULE_NAME].interactMove or false
-		local interactMoveVal = "0"
-		if SkuOptions.db.profile[MODULE_NAME].interactMove == true then
-			interactMoveVal = "1"
-		end
-		if C_CVar.GetCVar("AutoInteract") ~= interactMoveVal then
-			if C_CVar.GetCVar("AutoInteract") == "0" then
-				C_CVar.SetCVar("AutoInteract", "1")
-			else
-				C_CVar.SetCVar("AutoInteract", "0")
-			end
-		end
-
+		SkuCore:UpdateInteractMove()
 
 		SkuCore:DoRangeCheck()
 
@@ -1281,6 +1301,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or {}
 
 		SkuCore:JunkAndRepairInitialize()
+
+		SkuCore:UpdateInteractMove(true)
 	end
 end
 

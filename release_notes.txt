@@ -4,6 +4,25 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.11
+
+	SkuAuras
+		Neuerungen
+			- Es gibt ein neues Attribut namens "Zauber auf CD". Mit diesem kannst du in einer Bedingung prüfen, ob ein Zauber gerade auf Cooldown ist.
+			- Zusätzlich zu "Audio Ausgabe" und "Chat Ausgabe" gibt es zwei neue Ausgabetypen: "audio ausgabe einmal" und "chat ausgabe einmal"
+			  Bei diesen Ausgabetypen erfolgt die Ausgabe beim Zutreffen der Aura nur einmal. 
+			  Die nächste Ausgabe erfolgt frühestens dann, wenn die Aura mindestens einmal _nicht_ zugetroffen hat.
+			  Beispiel-Aura: "Wenn eigene Gesundheit kleiner 90 Prozent dann audio ausgabe einmal Ping".
+			  Bei dieser Aura wird nur ein einziges mal Ping ausgegeben, wenn deine Gesundheit unter 90 Prozent fällt. 
+			  Erst, wenn sie einmal wieder über 90 Prozent war, und dann erneut unter 90 Prozent fällt, kommt die Ausgabe erneut.
+
+	SkuCore
+		Fehlerkorrekturen
+			- Die neue Funktion "Bei Interagieren zum Ziel laufen" reagiert jetzt nur noch wenn du die Interagieren-Taste (G) drückst.
+			  Sie reagiert nicht mehr bei Mausklicks in der Spielwelt (z. B. beim Kürschnern, bei Briefkasten etc.).
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.10
 
 	SkuCore
