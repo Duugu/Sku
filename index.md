@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.10](https://github.com/Duugu/Sku/releases/download/r23.10/Sku-r23.10-bcc.zip) <br>
+[Sku 23.11](https://github.com/Duugu/Sku/releases/download/r23.11/Sku-r23.11-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
@@ -17,6 +17,23 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.11
+
+### SkuAuras
+*Neuerungen*
+- Es gibt ein neues Attribut namens "Zauber auf CD". Mit diesem kannst du in einer Bedingung prüfen, ob ein Zauber gerade auf Cooldown ist.
+- Zusätzlich zu "Audio Ausgabe" und "Chat Ausgabe" gibt es zwei neue Ausgabetypen: "audio ausgabe einmal" und "chat ausgabe einmal"<br>
+  Bei diesen Ausgabetypen erfolgt die Ausgabe beim Zutreffen der Aura nur einmal. <br>
+  Die nächste Ausgabe erfolgt frühestens dann, wenn die Aura mindestens einmal _nicht_ zugetroffen hat.<br>
+  Beispiel-Aura: "Wenn eigene Gesundheit kleiner 90 Prozent dann audio ausgabe einmal Ping".<br>
+  Bei dieser Aura wird nur ein einziges mal Ping ausgegeben, wenn deine Gesundheit unter 90 Prozent fällt. <br>
+  Erst, wenn sie einmal wieder über 90 Prozent war, und dann erneut unter 90 Prozent fällt, kommt die Ausgabe erneut.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Die neue Funktion "Bei Interagieren zum Ziel laufen" reagiert jetzt nur noch wenn du die Interagieren-Taste (G) drückst.<br>
+  Sie reagiert nicht mehr bei Mausklicks in der Spielwelt (z. B. beim Kürschnern, bei Briefkasten etc.).
 
 ## Änderungen in Version 23.10
 
