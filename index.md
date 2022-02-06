@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.13](https://github.com/Duugu/Sku/releases/download/r23.13/Sku-r23.13-bcc.zip) <br>
+[Sku 23.14](https://github.com/Duugu/Sku/releases/download/r23.14/Sku-r23.14-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
@@ -17,6 +17,25 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.14
+
+### SkuAuras
+*Fehlerkorrekturen*
+  - Die Eingabe einer Zahl bei Bedingungen mit Zahlen (z. B. "Anzahl Gegenstände") funktioniert jetzt wieder korrekt.
+
+### SkuNav und SkuQuest
+*Fehlerkorrekturen*
+- "Nach Name" und "Nach Entferung" haben in allen relevanten Menüs die Plätze getauscht. Erster Punkt ist jetzt immer "Nach Entfernung".
+
+### SkuCore
+*Neuerungen*
+  - Unter "SkuCore > Optionen" gibt es eine neue Option namens "Folgen beim Zaubern temporär beenden" für Heiler bzw. Caster.<br>
+    Wenn du die Option aktivierst, und gerade einem anderen Spieler folgst, wird das Folgen automatisch beendet, wenn du einen Zauber mit Castzeit beginnst. Wenn der Zauber abgeschlossen ist, wird das Folgen dann automatisch wieder aufgenommen.
+    Die Option ist standardmäßig aus. Sie funktioniert nur mit Spielern in deiner Gruppe bzw. deinem Raid.
+  - Die Standardbelegung des Schnellzugriffs 3 (SHIFT + F11) ist jetzt "SkuCore > Aktionsleisten"
+  - Die Standardbelegung des Schnellzugriffs 4 (SHIFT + F11) ist jetzt "SkuNav > Alles abwählen"
+  - Da sich die Funktion "Bei Interagieren zum Ziel laufen" als hilfreich erwiesen hat, ist sie jetzt bei neuen Profilen standardmäßig eingeschaltet.
 
 ## Änderungen in Version 23.13
 
