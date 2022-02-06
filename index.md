@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.12](https://github.com/Duugu/Sku/releases/download/r23.12/Sku-r23.12-bcc.zip) <br>
+[Sku 23.13](https://github.com/Duugu/Sku/releases/download/r23.13/Sku-r23.13-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
@@ -17,6 +17,22 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.13
+
+- Die Datei mit den verfügbaren Maus- und Tastenkombinationen des Sku-Addons (shortcuts.txt) im Sku-Ordner wurde aktualisiert
+
+### SkuCore
+*Neuerungen*
+- Das Sku-Addon richtet nun beim allerersten Einloggen in WoW automatisch die folgenden kontoweiten Einstellungen ein:
+  - Schnellplündern: aktiv
+  - Aktionsleisten anzeigen: immer
+  - Kamera folgen: immer
+  - Sku-Standardtastenzuweisungen für die kontoweite Tastenbelegung
+- Das Sku-Addon richtet beim ersten Einloggen mit einem neuen Char automatisch die folgenden Char-Einstellungen ein:
+  - Filterliste bei Lehrern: nur verfügbare
+  - Zusätzliche Aktionsleisten anzeigen: Zusatzaktionsleiste oben links/rechts, Zusatzaktionsleiste 1 und 2 rechts
+  - Tastenbelegung: kontoweit
 
 ## Änderungen in Version 23.12
 
