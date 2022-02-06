@@ -1,39 +1,66 @@
 -------------------------------------------------------------------------------------------------------	
 - TASTATURBELEGUNG
 -------------------------------------------------------------------------------------------------------	
-	Alle:
-		Bei geöffnetem TTS-Panel (Questlog, Dialoge, Fenster-Elemente etc.):
-			Nächste/vorherige Zeile vorlesen: SHIFT + PFEIL RUNTER/HOCH
-			Zum nächsten/vorherigen Abschnitt springen: STRG + SHIFT + PFEIL RUNTER/HOCH
 
-	SkuNav:
-		Bei ausgewähltem Wegpunkt Richtung und Entfernung ansagen: ALTGr oder STRG + ALT
-		Globalen Kompass ansagen: SHIFT + ALT
-		Schnellwegpunkt 1 bis 3 auswählen: SHIFT + F5 bis F7
-		Schnellwegpunkt 1 bis 3 festlegen: STRG + SHIFT + F5 bis F7
-		Minimap vergrößern: SHIFT + M
-		Bei Routenaufzeichnung kleinen Zwischen-Wegpunkt einfügen: STRG + SHIFT + P
-		Bei Routenaufzeichnung großen Zwischen-Wegpunkt einfügen: STRG + SHIFT + O
-		Routen auf der Minimap ein- und ausblenden: STRG + SHIFT + R
-		Beim folgen einer Route zum nächsten Wegpuntk wechseln: STRG + SHIFT + W
-		Beim folgen einer Route zum vorherigen Wegpuntk wechseln: STRG + SHIFT + S
-		Reichweite für das Erreichen von kleinen Routenwegpunkten umschalten (1 oder 3 Meter): STRG + SHIFT + Q
-		
-	SkuChat
-		Chat öffnen/schließen: SHIFT + F2
-		
-	SkuQuest
-		Questlog öffnen/schließen: L
-		Aktuell angezeigte Quest abbrechen: STRG + SHIFT + D
-		Aktuell angezeigte Quest teilen: STRG + SHIFT + T
+Allgemein
+	Tooltip zum aktuellen Audiomenüelement öffnen und erste Zeile im Tooltiptext vorlesen: SHIFT + PFEIL HOCH (SHIFT halten)
+	Nächste/vorherige Zeile vorlesen: SHIFT + PFEIL RUNTER/HOCH
+	Zum nächsten/vorherigen Abschnitt springen: STRG + SHIFT + PFEIL RUNTER/HOCH
+	Wiederholen auf welchen Loot aktuell gewürfelt wird: STRG + SHIFT + C
+	Auf aktuell angezeigten Loot "Bedarf" würfeln: STRG + SHIFT + B
+	Auf aktuell angezeigten Loot "Gier" würfeln: STRG + SHIFT + G
+	Auf aktuell angezeigten Loot passen: STRG + SHIFT + X
+	Alternativmethode für nächstes freundliches Ziel in Startgebieten: STRG + SHIFT + TAB
 
-	SkuOptions:
-		Audiomenü öffnen/schließen: SHIFT + F1
-		Audiomenü-Schnellwahl 1 bis 4 auswählen: SHIFT + F9 bis F12
-		Audiomenü-Schnellwahl 1 bis 4 festlegen: STRG + SHIFT + F9 bis F12
-		Lokal-Menü Button-Tooltip anzeigen: SHIFT + PFEIL RUNTER
-		Aktuelle Audioausgabe abbrechen: rechte SHIFT-Taste
-		Bedarf würfeln: STRG + SHIFT + B
-		Gier würfeln: STRG + SHIFT + G
-		Auf Gegenstand passen: STRG + SHIFT + X
-		Gegenstand, um den gewürfelt wird, erneut ansagen: STRG + SHIFT + C
+Audiomenü
+	Audiomenü öffnen: SHIFT + F1
+	Zum ersten Menüpunkt der aktuellen Menüebene springen: POS1
+	Vorherigen/nächsten Menüpunkt der aktuellen Menüebene auswählen: PFEIL HOCH und RUNTER
+	Untermenüebene bzw. übergeordnete Menüebene auswählen: PFEIL LINKS und RECHTS
+	Zum ersten Menüpunkt mit Anfangsbuchstaben oder der Zahl springen: A bis Z und 0 bis 9
+	Menü filtern: Schnell zwei oder mehr Zeichen eingeben
+	Aktuellen Filter löschen: RÜCKSCHRITT
+	Aktuelles Menüelement auswählen: EINGABE
+	Aktuelles Menüelement buchstabieren: SHIFT + PFEIL RECHTS
+	Menü schließen: ESCAPE
+	Schnellzugriff 1 bis 4 auf Audiomenüpunkte: SHIFT + F9 bis SHIFT + F12
+	Schnellzugriff 1 bis 4 auf Audiomenüpunkte auf den aktuell ausgewählten Audiomenüpunkt neu festlegen: STRG + SHIFT + F9 bis STRG + SHIFT + F12
+
+Chat
+	Chat öffnen/schließen: SHIFT + F2
+	Vorherige Chatzeile: PFEIL RUNTER
+	Nächste Chatzeile: PFEIL HOCH
+	Chat schließen: ESCAPE
+
+Navigation und Routen:
+	Bei ausgewähltem Wegpunkt Richtung und Entfernung ansagen: ALTGr oder STRG + ALT
+	Globalen Kompass ansagen: SHIFT + ALT
+	Schnellwegpunkt 1 bis 4 auswählen: SHIFT + F5 bis SHIFT + F8
+	Schnellwegpunkt 1 bis 4 auf aktuelle Position festlegen: STRG + SHIFT + F5 bis STRG + SHIFT + F8
+	Nächsten Routenwegpunkt auswählen: STRG + SHIFT + W
+	Vorherigen Routenwegpunkt auswählen: STRG + SHIFT + S
+	Entferung für Wegpunkt-Erreichen umschalten: STRG + SHIFT + Q
+	Route umkehren: STRG + SHIFT + Z
+	Panik-Modus aktivieren: STRG + SHIFT + Y
+
+Quests
+	Questlog öffnen/schließen: L
+	Aktuell angezeigte Quest teilen: STRG + SHIFT + T
+	Aktuell ausgewählte Quest abbrechen: STRG + SHIFT + D
+
+Routenerstellung und Debugging:
+	STRG + SHIFT + F: Sku-Minimap anzeigen/ausblenden
+	STRG + SHIFT + R: Routen auf WoW-Minimap anzeigen/ausblenden
+	STRG + SHIFT + O: Wegpunkt erstellen (groß)
+	STRG + SHIFT + P: Wegpunkt erstellen (normal)
+	STRG + SHIFT + F3: Debuginformationen im Chat ausgeben aktivieren/deaktivieren
+	SHIFT + M: Skalierung der Minimap vergrößern
+
+	MAUS LINKS + SHIFT: Wegpunkt verschieben
+	MAUS RECHTS: Neuen Polygonpunkt für fraktionsspezifische Zonen (wenn Zonenaufzeichnung aktiviert ist)
+	MAUS MITTE: Link erstellen
+	MAUS MITTE + SHIFT: Link löschen
+	MAUS MITTE + ALT: Wegpunktkommentare für Wegpunkt löschen
+	MAUS4: Wegpunkt erstellen
+	MAUS4 + SHIFT: Großen Wegpunkt erstellen
+	MAUS5: Wegpunkt löschen

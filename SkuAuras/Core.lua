@@ -249,10 +249,10 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	SkuOptions.db.char[MODULE_NAME].Auras = SkuOptions.db.char[MODULE_NAME].Auras or {}
 
-	if not SkuOptions.db.char[MODULE_NAME].AurasPost22_7 then
-		SkuOptions.db.char[MODULE_NAME].AurasPost22_7 = true
-		SkuOptions.db.char[MODULE_NAME].Auras = {}
-	end
+	--if not SkuOptions.db.char[MODULE_NAME].AurasPost22_7 then
+		--SkuOptions.db.char[MODULE_NAME].AurasPost22_7 = true
+		--SkuOptions.db.char[MODULE_NAME].Auras = {}
+	--end
 
 	--SkuAuras.values = SkuAuras.valuesDefault
 	local seen = {}

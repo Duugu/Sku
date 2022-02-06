@@ -1220,7 +1220,54 @@ end
 local SkuDropdownlistGenericFlag = false
 function SkuCore:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
-	--dprint("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
+	dprint("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
+
+	SkuOptions.db.global[MODULE_NAME] = SkuOptions.db.global[MODULE_NAME] or {}
+	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
+	SkuOptions.db.char["SkuAuras"] = SkuOptions.db.char["SkuAuras"] or {}
+
+	if isInitialLogin == true then
+
+		if SkuOptions.db.char["SkuAuras"].AurasPost22_7 == true then
+			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
+			SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
+		end
+
+		if SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin ~= false then
+
+			if SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin ~= false then
+				--this is the first load of wow ever
+				--set up account wide things
+				C_CVar.SetCVar("autoLootDefault", "1")
+				C_CVar.SetCVar("alwaysShowActionBars", "1")
+				C_CVar.SetCVar("cameraSmoothStyle", "2")
+				C_CVar.GetCVar("removeChatDelay", "1")
+
+				LoadBindings(ACCOUNT_BINDINGS) 
+				SaveBindings(1)
+				SkuCore:ResetBindings()
+
+				SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
+			end
+
+			--first load with character
+			--set up char specific things
+			TRAINER_FILTER_AVAILABLE = 1 
+			TRAINER_FILTER_UNAVAILABLE = 0 
+			TRAINER_FILTER_USED = 0
+			SetActionBarToggles(1,1,1,1,1) 
+			SHOW_MULTI_ACTIONBAR_1 = 1 
+			SHOW_MULTI_ACTIONBAR_2 = 1 
+			SHOW_MULTI_ACTIONBAR_3 = 1 
+			SHOW_MULTI_ACTIONBAR_4 = 1 
+			MultiActionBar_Update() 
+			UIParent_ManageFramePositions() 
+			LoadBindings(ACCOUNT_BINDINGS) 
+			SaveBindings(1)
+			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
+			
+		end
+	end
 
 	if isInitialLogin == true or isReloadingUi == true then
 		WorldMapFrame:Show()

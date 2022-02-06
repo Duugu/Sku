@@ -4,6 +4,24 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.13
+
+	Die Datei mit den verfügbaren Maus- und Tastenkombinationen des Sku-Addons (shortcuts.txt) im Sku-Ordner wurde aktualisiert
+
+	SkuCore
+		Neuerungen
+			- Das Sku-Addon richtet nun beim allerersten Einloggen in WoW automatisch die folgenden kontoweiten Einstellungen ein:
+			  - Schnellplündern: aktiv
+			  - Aktionsleisten anzeigen: immer
+			  - Kamera folgen: immer
+			  - Sku-Standardtastenzuweisungen für die kontoweite Tastenbelegung
+			- Das Sku-Addon richtet beim ersten Einloggen mit einem neuen Char automatisch die folgenden Char-Einstellungen ein:
+			  - Filterliste bei Lehrern: nur verfügbare
+			  - Zusätzliche Aktionsleisten anzeigen: Zusatzaktionsleiste oben links/rechts, Zusatzaktionsleiste 1 und 2 rechts
+			  - Tastenbelegung: kontoweit
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.12
 
 	SkuAuras
