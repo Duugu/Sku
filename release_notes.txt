@@ -10,6 +10,10 @@
 		Fehlerkorrekturen
 			- Die Eingabe einer Zahl bei Bedingungen mit Zahlen (z. B. "Anzahl Gegenstände") funktioniert jetzt wieder korrekt.
 
+	SkuNav und SkuQuest
+		Fehlerkorrekturen
+			- "Nach Name" und "Nach Entferung" haben in allen relevanten Menüs die Plätze getauscht. Erster Punkt ist jetzt immer "Nach Entfernung".
+
 	SkuCore
 		Neuerungen
 			- Unter "SkuCore > Optionen" gibt es eine neue Option namens "Folgen beim Zaubern temporär beenden" für Heiler bzw. Caster.
