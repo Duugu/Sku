@@ -4,6 +4,23 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.14
+
+	SkuAuras
+		Fehlerkorrekturen
+			- Die Eingabe einer Zahl bei Bedingungen mit Zahlen (z. B. "Anzahl Gegenstände") funktioniert jetzt wieder korrekt.
+
+	SkuCore
+		Neuerungen
+			- Unter "SkuCore > Optionen" gibt es eine neue Option namens "Folgen beim Zaubern temporär beenden" für Heiler bzw. Caster.
+			  Wenn du die Option aktivierst, und gerade einem anderen Spieler folgst, wird das Folgen automatisch beendet, wenn du einen Zauber mit Castzeit beginnst. Wenn der Zauber abgeschlossen ist, wird das Folgen dann automatisch wieder aufgenommen.
+			  Die Option ist standardmäßig aus. Sie funktioniert nur mit Spielern in deiner Gruppe bzw. deinem Raid.
+			- Die Standardbelegung des Schnellzugriffs 3 (SHIFT + F11) ist jetzt "SkuCore > Aktionsleisten"
+			- Die Standardbelegung des Schnellzugriffs 4 (SHIFT + F11) ist jetzt "SkuNav > Alles abwählen"
+			- Da sich die Funktion "Bei Interagieren zum Ziel laufen" als hilfreich erwiesen hat, ist sie jetzt bei neuen Profilen standardmäßig eingeschaltet.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.13
 
 	Die Datei mit den verfügbaren Maus- und Tastenkombinationen des Sku-Addons (shortcuts.txt) im Sku-Ordner wurde aktualisiert

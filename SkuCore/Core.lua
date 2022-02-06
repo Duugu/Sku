@@ -173,10 +173,22 @@ function SkuCore:OnInitialize()
 	SkuCore:RegisterEvent("ITEM_UNLOCKED")
 	SkuCore:RegisterEvent("ITEM_LOCK_CHANGED")
 	SkuCore:RegisterEvent("BAG_UPDATE")
-	SkuCore:RegisterEvent("CURRENT_SPELL_CAST_CHANGED")
 	SkuCore:RegisterEvent("UNIT_POWER_UPDATE")
 	SkuCore:RegisterEvent("UNIT_HAPPINESS")
+
+	SkuCore:RegisterEvent("CURRENT_SPELL_CAST_CHANGED")
+
 	SkuCore:RegisterEvent("UNIT_SPELLCAST_START")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_DELAYED")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_FAILED")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_STOP")
+	SkuCore:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+
 	SkuCore:RegisterEvent("NAME_PLATE_CREATED")
 	SkuCore:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 	SkuCore:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
@@ -976,6 +988,12 @@ function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
 			SkuStatus.followUnitId = ""
 			SkuStatus.followUnitName = ""
 			local tTargetName = UnitName("TARGET")
+			for x = 1, 40 do
+				local tUnitName = UnitName("RAID"..x)
+				if tUnitName == tTargetName then
+					SkuStatus.followUnitId = "RAID"..x
+				end
+			end			
 			for x = 1, 5 do
 				local tUnitName = UnitName("PARTY"..x)
 				if tUnitName == tTargetName then
@@ -1187,12 +1205,85 @@ function SkuCore:PLAYER_LOGIN(...)
 	CraftFrame:Hide()
 
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local unfollowOnCastWasOnFollowUnitName = nil
+function SkuCore:UnfollowOnCast()
+	dprint("UnfollowOnCast", unfollowOnCastWasOnFollowUnitName)
+	if SkuOptions.db.profile[MODULE_NAME].endFollowOnCast == true and SkuStatus.followUnitName ~= "" then
+		unfollowOnCastWasOnFollowUnitName = SkuStatus.followUnitName
+		FollowUnit("player")
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:FollowOnCast()
+	dprint("UnfollowOnCast", unfollowOnCastWasOnFollowUnitName)
+	if SkuOptions.db.profile[MODULE_NAME].endFollowOnCast == true and unfollowOnCastWasOnFollowUnitName then
+		if UnitName("TARGET") == unfollowOnCastWasOnFollowUnitName then
+			FollowUnit("TARGET")
+		end
+		for x = 1, 40 do
+			local tUnitName = UnitName("RAID"..x)
+			if tUnitName == unfollowOnCastWasOnFollowUnitName then
+				FollowUnit("RAID"..x)
+			end
+		end			
+		for x = 1, 5 do
+			local tUnitName = UnitName("PARTY"..x)
+			if tUnitName == unfollowOnCastWasOnFollowUnitName then
+				FollowUnit("PARTY"..x)
+			end
+		end
+		unfollowOnCastWasOnFollowUnitName = nil
+	end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	dprint(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	if aUnitTarget == "player" and SkuCore.inCombat == false then
 		SkuOptions.Voice:OutputString(L["cast"], true, true, 0.2)
 	end
+	if aUnitTarget == "player" then
+		SkuCore:UnfollowOnCast()
+	end
 end
+function SkuCore:UNIT_SPELLCAST_CHANNEL_START(aEvent, unitTarget, castGUID, spellID)
+	dprint(aEvent)
+	if aUnitTarget == "player" then
+		SkuCore:UnfollowOnCast()
+	end
+end
+function SkuCore:UNIT_SPELLCAST_STOP(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	dprint(aEvent)
+	if aUnitTarget == "player" then
+		SkuCore:FollowOnCast()
+	end
+end
+function SkuCore:UNIT_SPELLCAST_CHANNEL_STOP(aEvent, unitTarget, castGUID, spellID)
+	dprint(aEvent)
+	if aUnitTarget == "player" then
+		SkuCore:FollowOnCast()
+	end
+end
+function SkuCore:UNIT_SPELLCAST_CHANNEL_UPDATE(aEvent, unitTarget, castGUID, spellID)
+	dprint(aEvent)
+end
+function SkuCore:UNIT_SPELLCAST_DELAYED(aEvent, unitTarget, castGUID, spellID)
+	dprint(aEvent)
+end
+function SkuCore:UNIT_SPELLCAST_FAILED(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	dprint(aEvent)
+end
+function SkuCore:UNIT_SPELLCAST_FAILED_QUIET(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	dprint(aEvent)
+end
+function SkuCore:UNIT_SPELLCAST_INTERRUPTED(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	dprint(aEvent)
+end
+function SkuCore:UNIT_SPELLCAST_SUCCEEDED(aEvent, aUnitTarget, aCastGUID, aSpellID)
+	dprint(aEvent)
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:CURRENT_SPELL_CAST_CHANGED(aCancelledCast)
 	local nameCn, text, texture, startTime, endTime, isTradeSkill, spellID = ChannelInfo()
@@ -1226,47 +1317,44 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	SkuOptions.db.char["SkuAuras"] = SkuOptions.db.char["SkuAuras"] or {}
 
-	if isInitialLogin == true then
+	if SkuOptions.db.char["SkuAuras"].AurasPost22_7 == true then
+		SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
+		SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
+	end
 
-		if SkuOptions.db.char["SkuAuras"].AurasPost22_7 == true then
-			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
+	if SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin ~= false then
+
+		if SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin ~= false then
+			--this is the first load of wow ever
+			--set up account wide things
+			C_CVar.SetCVar("autoLootDefault", "1")
+			C_CVar.SetCVar("alwaysShowActionBars", "1")
+			C_CVar.SetCVar("cameraSmoothStyle", "2")
+			C_CVar.GetCVar("removeChatDelay", "1")
+
+			LoadBindings(ACCOUNT_BINDINGS) 
+			SaveBindings(1)
+			SkuCore:ResetBindings()
+
 			SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
 		end
 
-		if SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin ~= false then
-
-			if SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin ~= false then
-				--this is the first load of wow ever
-				--set up account wide things
-				C_CVar.SetCVar("autoLootDefault", "1")
-				C_CVar.SetCVar("alwaysShowActionBars", "1")
-				C_CVar.SetCVar("cameraSmoothStyle", "2")
-				C_CVar.GetCVar("removeChatDelay", "1")
-
-				LoadBindings(ACCOUNT_BINDINGS) 
-				SaveBindings(1)
-				SkuCore:ResetBindings()
-
-				SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
-			end
-
-			--first load with character
-			--set up char specific things
-			TRAINER_FILTER_AVAILABLE = 1 
-			TRAINER_FILTER_UNAVAILABLE = 0 
-			TRAINER_FILTER_USED = 0
-			SetActionBarToggles(1,1,1,1,1) 
-			SHOW_MULTI_ACTIONBAR_1 = 1 
-			SHOW_MULTI_ACTIONBAR_2 = 1 
-			SHOW_MULTI_ACTIONBAR_3 = 1 
-			SHOW_MULTI_ACTIONBAR_4 = 1 
-			MultiActionBar_Update() 
-			UIParent_ManageFramePositions() 
-			LoadBindings(ACCOUNT_BINDINGS) 
-			SaveBindings(1)
-			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
-			
-		end
+		--first load with character
+		--set up char specific things
+		TRAINER_FILTER_AVAILABLE = 1 
+		TRAINER_FILTER_UNAVAILABLE = 0 
+		TRAINER_FILTER_USED = 0
+		SetActionBarToggles(1,1,1,1,1) 
+		SHOW_MULTI_ACTIONBAR_1 = 1 
+		SHOW_MULTI_ACTIONBAR_2 = 1 
+		SHOW_MULTI_ACTIONBAR_3 = 1 
+		SHOW_MULTI_ACTIONBAR_4 = 1 
+		MultiActionBar_Update() 
+		UIParent_ManageFramePositions() 
+		LoadBindings(ACCOUNT_BINDINGS) 
+		SaveBindings(1)
+		SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
+		
 	end
 
 	if isInitialLogin == true or isReloadingUi == true then

@@ -27,6 +27,17 @@ SkuCore.options = {
 				return SkuOptions.db.profile[MODULE_NAME].autoFollow
 			end
 		},
+		endFollowOnCast = {
+			name = "Folgen beim Zaubern temporär beenden",
+			desc = "",
+			type = "toggle",
+			set = function(info, val)
+				SkuOptions.db.profile[MODULE_NAME].endFollowOnCast = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].endFollowOnCast
+			end
+		},
 		interactMove = {
 			name = "Bei Interagieren zum Ziel laufen",
 			desc = "",
@@ -221,7 +232,8 @@ SkuCore.options = {
 SkuCore.defaults = {
 	enable = true,
 	autoFollow = false,
-	interactMove = false,
+	endFollowOnCast = false,
+	interactMove = true,
 	classes = {
 		hunter = {
 			petHappyness = true,

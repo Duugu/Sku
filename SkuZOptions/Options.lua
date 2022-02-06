@@ -267,8 +267,8 @@ SkuOptions.defaults = {
 	allModules  = {
 		MenuQuickSelect1 = "SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung",
 		MenuQuickSelect2 = "SkuNav,Route,Route folgen,Ziele Entfernung",
-		MenuQuickSelect3 = "SkuNav,Alles abwählen",
-		MenuQuickSelect4 = "SkuNav,Route",
+		MenuQuickSelect3 = "SkuCore,Aktionsleisten",
+		MenuQuickSelect4 = "SkuNav,Alles abwählen",
 		},
 	soundChannels  = {
 		MasterVolume = -1, --this is to check if the profile has sound settings. take the current blizz settings, if not.
