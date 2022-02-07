@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.15](https://github.com/Duugu/Sku/releases/download/r23.15/Sku-r23.15-bcc.zip) <br>
+[Sku 23.16](https://github.com/Duugu/Sku/releases/download/r23.16/Sku-r23.16-bcc.zip) <br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
@@ -17,6 +17,12 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.16
+
+### SkuCore
+*Fehlerkorrekturen*
+- Die automatische Einrichtung der Sku-Standardtastenbelegung beim allerersten Öffnen des Spiels wurde vorerst deaktiviert, da die Funktion anscheinend Probleme macht und eine schon bestehende Tastenbelegung löscht. Man kann sie aber natürlich noch immer über "SkuCore > Tastenbelegung" ausführen.
 
 ## Änderungen in Version 23.15
 
