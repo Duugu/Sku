@@ -4,6 +4,14 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.16
+
+	SkuCore
+		Fehlerkorrekturen
+			- Die automatische Einrichtung der Sku-Standardtastenbelegung beim allerersten Öffnen des Spiels wurde vorerst deaktiviert, da die Funktion anscheinend Probleme macht und eine schon bestehende Tastenbelegung löscht. Man kann sie aber natürlich noch immer über "SkuCore > Tastenbelegung" ausführen.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.15
 
 	SkuCore

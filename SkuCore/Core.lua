@@ -1333,9 +1333,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			C_CVar.SetCVar("cameraSmoothStyle", "2")
 			C_CVar.GetCVar("removeChatDelay", "1")
 
-			LoadBindings(ACCOUNT_BINDINGS) 
-			SaveBindings(1)
-			SkuCore:ResetBindings()
+			--LoadBindings(ACCOUNT_BINDINGS) 
+			--SaveBindings(1)
+			--SkuCore:ResetBindings()
 
 			SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
 		end
@@ -1352,8 +1352,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SHOW_MULTI_ACTIONBAR_4 = 1 
 		MultiActionBar_Update() 
 		UIParent_ManageFramePositions() 
-		LoadBindings(ACCOUNT_BINDINGS) 
-		SaveBindings(1)
+		--LoadBindings(ACCOUNT_BINDINGS) 
+		--SaveBindings(1)
 		SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
 		
 	end
