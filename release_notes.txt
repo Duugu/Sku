@@ -4,6 +4,20 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.15
+
+	SkuCore
+		Neuerungen
+			- Es gibt jetzt testweise ein kurzes Tutorial für neue Spieler für Feedback.
+			  Das Tutorial startet am Spawnpunkt im Nordhain. Mach dir einen neuen Menschen, betretet wie Welt, und startet das Tutorial mit dem folgenden Befehl:
+			  /run SkuCore:TutorialStart()
+			  Du benötigst für das Tutorial die neueste Audiodata-Version (29)
+
+		Fehlerkorrekturen
+			- Die Übersichtsseite sollte deine Gruppe jetzt auch in Raidgruppen korrekt anzeigen.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.14
 
 	SkuAuras

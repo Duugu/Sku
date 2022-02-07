@@ -4,6 +4,7 @@ local SkuVoice, oldminor = LibStub:NewLibrary(SkuVoice_MAJOR, SkuVoice_MINOR)
 if not SkuVoice then return end -- No upgrade needed
 
 local mSkuVoiceQueue = {}
+SkuVoice.LastPlayedString = ""
 --setmetatable(mSkuVoiceQueue, SkuNav.PrintMT)
 
 function SkuVoice:Create()
@@ -19,6 +20,7 @@ function SkuVoice:Create()
 				if mSkuVoiceQueue[i].wait == false and not mSkuVoiceQueue[i].soundHandle then
 					local willPlay, soundHandle = PlaySoundFile(mSkuVoiceQueue[i].file, mSkuVoiceQueue[i].soundChannel)
 					if willPlay then
+						SkuVoice.LastPlayedString = mSkuVoiceQueue[i].text
 						mSkuVoiceQueue[i].soundHandle = soundHandle
 						mSkuVoiceQueue[i].endTimestamp = GetTime() + mSkuVoiceQueue[i].length
 					end
@@ -68,6 +70,7 @@ function SkuVoice:Create()
 				if not mSkuVoiceQueue[i].soundHandle and mSkuVoiceQueue[i].tombstone ~= true and tPlayNext == true and mSkuVoiceQueue[i].wait ~= false then
 					local willPlay, soundHandle = PlaySoundFile(mSkuVoiceQueue[i].file, mSkuVoiceQueue[i].soundChannel)
 					if willPlay then
+						SkuVoice.LastPlayedString = mSkuVoiceQueue[i].text
 						mSkuVoiceQueue[i].soundHandle = soundHandle
 						mSkuVoiceQueue[i].endTimestamp = GetTime() + mSkuVoiceQueue[i].length
 						tPlayNext = false
@@ -153,6 +156,12 @@ local function Unescape(aString)
 	tResult = gsub(tResult, "{.-}", "") -- Remove raid target icons.
 	return tResult
 end
+
+---------------------------------------------------------------------------------------------------------
+function SkuVoice:GetLastPlayedString()
+	return SkuVoice.LastPlayedString
+end
+
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:StopAllOutputs()
@@ -382,6 +391,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 							SkuVoiceQueue = {}
 						end]]
 					end
+
 					table.insert(mSkuVoiceQueue, {
 						["text"] = tStrings[x],
 						["file"] = tFile,

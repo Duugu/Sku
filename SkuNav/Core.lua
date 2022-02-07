@@ -985,6 +985,10 @@ function SkuNav:GetDirectionToWp(aWpName)
 		return nil
 	end
 	local x, y = UnitPosition("player")
+
+	--this is just a flag for the tutorial
+	tSkuTutorialGlobalTmpVar1 = true
+
 	return SkuNav:GetDirectionTo(x, y, SkuNav:GetWaypointData2(aWpName).worldX, SkuNav:GetWaypointData2(aWpName).worldY)
 end
 
@@ -1264,7 +1268,7 @@ function SkuNav:ProcessGlobalDirection(ttimeDistanceOutput)
 	if not tText then
 		return
 	end
-	if (IsShiftKeyDown() and IsAltKeyDown())then
+	if (IsShiftKeyDown() and IsAltKeyDown()) then
 		if GetServerTime() - ttimeDistanceOutput > 0.5 then
 			local x, y = UnitPosition("player")
 			ttimeDistanceOutput = GetServerTime()

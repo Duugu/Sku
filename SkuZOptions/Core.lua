@@ -387,16 +387,30 @@ function SkuOptions:UpdateOverviewText()
 		tPosX, tPosY = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player"):GetXY()
 	end
 	tTmpText = tCount.." "..UnitName("player")..", "..GetMinimapZoneText()..", "..math.floor(tPosX * 100).." "..math.floor(tPosY * 100).."\r\n"
-	
-	for x = 1, 5 do
+
+	local tPlayersSubgroup 
+	for x = 1, 40 do
+		local name, rank, subgroup = GetRaidRosterInfo(x)
+		if name then
+			local tPlayerName = UnitName("player")
+			if name == tPlayerName then
+				tPlayersSubgroup = subgroup
+			end
+		end
+	end
+
+	for x = 1, 40 do
 		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
 		if online then online = "online" else online = "offline" end
 		if isDead then isDead = "tot" else isDead = "lebt" end
 		if name then
-			local tPlayerName = UnitName("player")
-			if name ~= tPlayerName then
-				tCount = tCount + 1
-				tTmpText = tTmpText..tCount.." "..name..", "..class..", "..level..", "..zone..", "..online..", "..isDead.."\r\n"
+			if subgroup == tPlayersSubgroup then
+				local tPlayerName = UnitName("player")
+				if name ~= tPlayerName then
+					print(name, subgroup, tPlayersSubgroup)
+					tCount = tCount + 1
+					tTmpText = tTmpText..tCount.." "..name..", "..class..", "..level..", "..zone..", "..online..", "..isDead.."\r\n"
+				end
 			end
 		end
 	end

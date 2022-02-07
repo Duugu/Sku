@@ -200,6 +200,7 @@ function SkuCore:OnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
+	SkuCore:TutorialOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
