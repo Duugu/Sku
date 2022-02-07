@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.14](https://github.com/Duugu/Sku/releases/download/r23.14/Sku-r23.14-bcc.zip) <br>
+[Sku 23.15](https://github.com/Duugu/Sku/releases/download/r23.15/Sku-r23.15-bcc.zip) <br>
+[SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
-[SkuAudioData 28](https://github.com/Duugu/SkuAudioData/releases/download/r28/SkuAudioData-r28-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [Sku-Maus Autohotkey-Skript 2](https://1drv.ms/u/s!Aqgp3J_s6MM7iKQcVpcR3IBws7QRuQ?e=GMli2f) <br>
@@ -17,6 +17,18 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.15
+
+### SkuCore
+*Neuerungen*
+- Es gibt jetzt testweise ein kurzes Tutorial zum Testen für Feedback.<br>
+  Das Tutorial startet am Spawnpunkt im Nordhain. Mach dir einen neuen Menschen, betretet wie Welt, und startet das Tutorial mit dem folgenden Befehl:<br>
+  /run SkuCore:TutorialStart()<br>
+  Du benötigst für das Tutorial die neueste Audiodata-Version (29)
+
+*Fehlerkorrekturen*
+- Die Übersichtsseite sollte deine Gruppe jetzt auch in Raidgruppen korrekt anzeigen.
 
 ## Änderungen in Version 23.14
 
