@@ -407,7 +407,6 @@ function SkuOptions:UpdateOverviewText()
 			if subgroup == tPlayersSubgroup then
 				local tPlayerName = UnitName("player")
 				if name ~= tPlayerName then
-					print(name, subgroup, tPlayersSubgroup)
 					tCount = tCount + 1
 					tTmpText = tTmpText..tCount.." "..name..", "..class..", "..level..", "..zone..", "..online..", "..isDead.."\r\n"
 				end
@@ -1570,7 +1569,7 @@ function SkuOptions:OnInitialize()
 	SkuOptions.AceConfig:RegisterOptionsTable("Sku", options, {"taop"})
 	SkuOptions.AceConfigDialog = LibStub("AceConfigDialog-3.0")
 	SkuOptions.AceConfigDialog:AddToBlizOptions("Sku")
-	SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults) -- TODO: fix default values for subgroups
+	SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults, true) -- TODO: fix default values for subgroups
 	options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(SkuOptions.db)
 	SkuOptions.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	SkuOptions.db.RegisterCallback(self, "OnProfileCopied", "OnProfileCopied")

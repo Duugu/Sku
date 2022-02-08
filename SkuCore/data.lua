@@ -299,7 +299,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON2"] = {
 			["key1"] = "CTRL-F2",
-			["index"] = 44,
+			["index"] = -1,
 		},
 		["ACTIONPAGE2"] = {
 			["key1"] = "SHIFT-2",
@@ -311,7 +311,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON4"] = {
 			["key1"] = "CTRL-F4",
-			["index"] = 46,
+			["index"] = -1,
 		},
 		["ACTIONBUTTON3"] = {
 			["key1"] = "3",
@@ -327,7 +327,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON10"] = {
 			["key1"] = "CTRL-F10",
-			["index"] = 52,
+			["index"] = -1,
 		},
 		["BONUSACTIONBUTTON9"] = {
 			["key1"] = "CTRL-9",
@@ -335,11 +335,11 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON7"] = {
 			["key1"] = "CTRL-F7",
-			["index"] = 49,
+			["index"] = -1,
 		},
 		["SHAPESHIFTBUTTON5"] = {
 			["key1"] = "CTRL-F5",
-			["index"] = 47,
+			["index"] = -1,
 		},
 		["BONUSACTIONBUTTON4"] = {
 			["key1"] = "CTRL-4",
@@ -359,7 +359,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON1"] = {
 			["key1"] = "CTRL-F1",
-			["index"] = 43,
+			["index"] = -1,
 		},
 		["BONUSACTIONBUTTON2"] = {
 			["key1"] = "CTRL-2",
@@ -378,7 +378,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON8"] = {
 			["key1"] = "CTRL-F8",
-			["index"] = 50,
+			["index"] = -1,
 		},
 		["BONUSACTIONBUTTON3"] = {
 			["key1"] = "CTRL-3",
@@ -386,7 +386,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON3"] = {
 			["key1"] = "CTRL-F3",
-			["index"] = 45,
+			["index"] = -1,
 		},
 		["BONUSACTIONBUTTON8"] = {
 			["key1"] = "CTRL-8",
@@ -406,7 +406,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON6"] = {
 			["key1"] = "CTRL-F6",
-			["index"] = 48,
+			["index"] = -1,
 		},
 		["ACTIONPAGE6"] = {
 			["key1"] = "SHIFT-6",
@@ -414,7 +414,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["SHAPESHIFTBUTTON9"] = {
 			["key1"] = "CTRL-F9",
-			["index"] = 51,
+			["index"] = -1,
 		},
 		["ACTIONBUTTON7"] = {
 			["key1"] = "7",

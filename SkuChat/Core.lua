@@ -95,7 +95,7 @@ end
 local SkuChatNewLineInCombat = false
 SkuChat.inCombat = false
 function SkuChat:ChatFrame1AddMessageHook(...)
-	local body = ...--, infor, infog, infob, infoid, accessID, typeID = ...
+	local body, infor, infog, infob, infoid, accessID, typeID = ...
 	if body then
 		body = unescape(body)
 
@@ -110,6 +110,31 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 
 		if table.getn(SkuChatChatBuffer) > 100 then
 			table.remove(SkuChatChatBuffer, 1) 
+		end
+	end
+
+	if infor and infog and infob then
+		infor, infog, infob = math.floor(infor * 100), math.floor(infog * 100), math.floor(infob * 100)
+		if (infor == 66 and infog == 66 and infob == 100) or (infor == 46 and infog == 78 and infob == 100) then
+			if SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat == true then
+				local tPlayerName = UnitName("player")
+				if not string.find(body, "%["..tPlayerName.."%]") then
+					SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
+					if SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then
+						if SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body then
+							if IsMacClient() == true then
+								C_VoiceChat.StopSpeakingText()
+								C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+							else
+								C_VoiceChat.StopSpeakingText()
+								C_Timer.After(0.05, function() 
+									C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)
+								end)
+							end
+						end
+					end		
+				end
+			end
 		end
 	end
 

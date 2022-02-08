@@ -1424,18 +1424,20 @@ function SkuNav:ProcessCheckReachingWp()
 					local tDistanceMod = SkuNav.CurrentStandardWpReachedRange --0
 					if ((distance < SkuNavWpSize[SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size] + tDistanceMod) or SkuNav.MoveToWp ~= 0) and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 						local tNextWPNr
-						if SkuNav.MoveToWp ~= 0 then
-							tNextWPNr = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp + SkuNav.MoveToWp
-							if tNextWPNr > #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps then
-								tNextWPNr = #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps
+						if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps then
+							if SkuNav.MoveToWp ~= 0 then
+								tNextWPNr = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp + SkuNav.MoveToWp
+								if tNextWPNr > #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps then
+									tNextWPNr = #SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps
+								end
+								if tNextWPNr < 1  then
+									tNextWPNr = 1
+								end
+							else
+								tNextWPNr = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp + 1
 							end
-							if tNextWPNr < 1  then
-								tNextWPNr = 1
-							end
-						else
-							tNextWPNr = SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp + 1
 						end
-						if not SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget] then
+						if not SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget] or not tNextWPNr then
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 							SkuOptions:VocalizeMultipartString("Route folgen beendet", false, true, 0.3, true)
 							SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = nil
@@ -2630,19 +2632,21 @@ function SkuNav:SetWaypoint(aName, aData)
 	WaypointCacheLookupPerContintent[WaypointCache[tWpIndex].contintentId][tWpIndex] = aName
 	
 	if WaypointCache[tWpIndex].typeId == 1 then
-		if not SkuOptions.db.profile[MODULE_NAME].Waypoints[aName] then
-			table.insert(SkuOptions.db.profile[MODULE_NAME].Waypoints, aName)
+		if SkuOptions.db.profile[MODULE_NAME].Waypoints then
+			if not SkuOptions.db.profile[MODULE_NAME].Waypoints[aName] then
+				table.insert(SkuOptions.db.profile[MODULE_NAME].Waypoints, aName)
+			end
+			SkuOptions.db.profile[MODULE_NAME].Waypoints[aName] = {
+				["contintentId"] = WaypointCache[tWpIndex].contintentId,
+				["areaId"] = WaypointCache[tWpIndex].areaId,
+				["worldX"] = WaypointCache[tWpIndex].worldX,
+				["worldY"] = WaypointCache[tWpIndex].worldY,
+				["createdAt"] = WaypointCache[tWpIndex].createdAt,
+				["createdBy"] = WaypointCache[tWpIndex].createdBy,
+				["size"] = WaypointCache[tWpIndex].size,
+				["comments"] = WaypointCache[tWpIndex].comments,
+			}
 		end
-		SkuOptions.db.profile[MODULE_NAME].Waypoints[aName] = {
-			["contintentId"] = WaypointCache[tWpIndex].contintentId,
-			["areaId"] = WaypointCache[tWpIndex].areaId,
-			["worldX"] = WaypointCache[tWpIndex].worldX,
-			["worldY"] = WaypointCache[tWpIndex].worldY,
-			["createdAt"] = WaypointCache[tWpIndex].createdAt,
-			["createdBy"] = WaypointCache[tWpIndex].createdBy,
-			["size"] = WaypointCache[tWpIndex].size,
-			["comments"] = WaypointCache[tWpIndex].comments,
-		}
 	end
 
 	SkuNav:UpdateWpLinks(aName)

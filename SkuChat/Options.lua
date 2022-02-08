@@ -71,6 +71,18 @@ SkuChat.options = {
 				return SkuOptions.db.profile[MODULE_NAME].WowTtsVolume
 			end
 		},
+		autoPlayPartyChat = {
+			order = 6,
+			name = "Gruppenchat automatisch lesen",
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat
+			end
+		},
 
 	},
 
@@ -83,6 +95,7 @@ SkuChat.defaults = {
 	WowTtsVoice = 1,
 	WowTtsSpeed = 3,
 	WowTtsVolume = 50,
+	autoPlayPartyChat = false,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------

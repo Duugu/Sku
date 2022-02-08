@@ -1318,13 +1318,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	SkuOptions.db.char["SkuAuras"] = SkuOptions.db.char["SkuAuras"] or {}
 
-	if SkuOptions.db.char["SkuAuras"].AurasPost22_7 == true then
-		SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
-		SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
-	end
-
-	if SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin ~= false then
-
+	if isInitialLogin == true then
 		if SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin ~= false then
 			--this is the first load of wow ever
 			--set up account wide things
@@ -1332,30 +1326,59 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			C_CVar.SetCVar("alwaysShowActionBars", "1")
 			C_CVar.SetCVar("cameraSmoothStyle", "2")
 			C_CVar.GetCVar("removeChatDelay", "1")
+			
+			C_Timer.After(5, function()
+				SkuCore:ResetBindings()
+				SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+			end)
+			SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
 
-			--LoadBindings(ACCOUNT_BINDINGS) 
-			--SaveBindings(1)
-			--SkuCore:ResetBindings()
+			local pGeneral, pHealer, pCaster, pMelee
+			local tProfiles = SkuOptions.db:GetProfiles()
+			for i, v in pairs(tProfiles) do
+				if v == "Standard profil Allgemein" then pGeneral = true end
+				if v == "Standard profil Heiler" then pHealer = true end
+				if v == "Standard profil Caster" then pCaster = true end
+				if v == "Standard profil Nahkämpfer" then pMelee = true end
+			end
+
+			if not pGeneral then SkuOptions.db:SetProfile("Standard profil Allgemein") end
+			if not pHealer then SkuOptions.db:SetProfile("Standard profil Heiler") end
+			if not pCaster then SkuOptions.db:SetProfile("Standard profil Caster") end
+			if not pMelee then SkuOptions.db:SetProfile("Standard profil Nahkämpfer") end
 
 			SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
 		end
 
-		--first load with character
-		--set up char specific things
-		TRAINER_FILTER_AVAILABLE = 1 
-		TRAINER_FILTER_UNAVAILABLE = 0 
-		TRAINER_FILTER_USED = 0
-		SetActionBarToggles(1,1,1,1,1) 
-		SHOW_MULTI_ACTIONBAR_1 = 1 
-		SHOW_MULTI_ACTIONBAR_2 = 1 
-		SHOW_MULTI_ACTIONBAR_3 = 1 
-		SHOW_MULTI_ACTIONBAR_4 = 1 
-		MultiActionBar_Update() 
-		UIParent_ManageFramePositions() 
-		--LoadBindings(ACCOUNT_BINDINGS) 
-		--SaveBindings(1)
-		SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
-		
+		if SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin ~= false then
+			--first load with character
+			--set up char specific things
+			C_Timer.After(5, function()
+				TRAINER_FILTER_AVAILABLE = 1 
+				TRAINER_FILTER_UNAVAILABLE = 0 
+				TRAINER_FILTER_USED = 0
+				SetActionBarToggles(1,1,1,1,1) 
+				SHOW_MULTI_ACTIONBAR_1 = 1 
+				SHOW_MULTI_ACTIONBAR_2 = 1 
+				SHOW_MULTI_ACTIONBAR_3 = 1 
+				SHOW_MULTI_ACTIONBAR_4 = 1 
+				MultiActionBar_Update() 
+				UIParent_ManageFramePositions() 
+				SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+			end)
+			SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+
+			local tCurrentP = SkuOptions.db:GetCurrentProfile()
+			local tName, tServer = UnitFullName("player") 
+			if tCurrentP == tName.." - "..tServer then 
+				SkuOptions.db:SetProfile("Standard profil Allgemein")
+				SkuOptions.db:DeleteProfile(tName.." - "..tServer)--, true)
+			end
+
+			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
+		end
+		SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+	
 	end
 
 	if isInitialLogin == true or isReloadingUi == true then
@@ -1439,6 +1462,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:JunkAndRepairInitialize()
 
 		SkuCore:UpdateInteractMove(true)
+
+		SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
 	end
 end
 
@@ -2390,10 +2415,18 @@ function SkuCore:ResetBindings(aToWowDefaults)
 		for icat, vcat in pairs(SkuCore.Keys.SkuDefaultBindings) do
 			for icom, vcom in pairs(vcat) do
 				if vcom.key1 then
-					SetBinding(vcom.key1, icom, 1)
+					if vcom.index == -1 then
+						SetBinding(vcom.key1)
+					else
+						SetBinding(vcom.key1, icom, 1)
+					end
 				end
 				if vcom.key2 then
-					SetBinding(vcom.key2, icom, 1)
+					if vcom.index == -1 then
+						SetBinding(vcom.key2)
+					else
+						SetBinding(vcom.key2, icom, 1)
+					end
 				end
 			end
 		end
