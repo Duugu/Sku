@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.16](https://github.com/Duugu/Sku/releases/download/r23.16/Sku-r23.16-bcc.zip) <br>
+[Sku 23.17](https://github.com/Duugu/Sku/releases/download/r23.17/Sku-r23.17-bcc.zip) <br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
@@ -17,6 +17,32 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.17
+
+### SkuChat
+*Neuerungen*
+- Es gibt jetzt unter "SkuChat > Optionen" eine Option namens "Gruppenchat automatisch lesen".<br>
+  Sie ist standardmäßig aus. Wenn du die Option aktivierst, wird jede neue Chatnachricht im Gruppenchat (/p) direkt vorgelesen - ohne, dass du das Chatfenster offen hast.<br>
+  Du kannst diese Ausgabe wie alle Audioausgaben mit der rechten Shift-Taste abbrechen.
+
+### SkuNav
+*Fehlerkorrekturen*
+- Möglicherweise :) wurde ein Fehler behoben, der sporadisch beim Folgen von Routen auftaucht. Bitte weiter beobachten. Melden, wenn eine Routenverfolgung unerwartet beendet wird.
+- Auch unter "wegpunkt, auswählen, atuelle karte entfernung ... nahe routen" wird jetzt zuerst "Nach Entferung" und dann "Nach Name angezeigt".
+
+###SkuCore
+*Fehlerkorrekturen*
+- Eine vergessene Debug-Ausgabe bei der Übersichtsseite wurde entfernt.
+- Die Grundeinrichtung beim ersten Einloggen mit WoW überhaupt bzw. mit einem neuen Char sollte jetzt funktionieren.<br>
+  Beim ersten Einloggen in WoW überhaupt wird die Sku-Tastenbelegung eingestellt.<br>
+  Bei ersten Einloggen mit einem Char werden nur die Char-bezogenen Einstellungen eingestellt. Die bestehende globale Tastenbelegung bleibt erhalten.
+- Das Zurücksetzen auf die Standardtastenbelegung legt jetzt nicht mehr ungewollte die Tastenkombinationen STRG + F1-F12 fest.
+
+###SkuOptions
+*Neuerungen*
+- Neu erstellten Chars wird jetzt automatisch ein neues Sku-Profil mit dem Namen "Standard profil Allgemein" zugewiesen, statt jedem neuen Char ein eigenes Profil mit seinem Namen zuzuweisen.
+- Es gibt zudem unter "SkuOptions > Optionen > Profil" drei weitere neue Sku-Standardprofile zur Auswahl: "Standard profil Heiler", "Standard profil Caster", "Standard profil Nahkämpfer", die du für alle entsprechenden Chars verwenden kannst.
 
 ## Änderungen in Version 23.16
 
