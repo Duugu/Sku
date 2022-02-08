@@ -2,7 +2,7 @@
 <html lang="de">
   <head>
     <meta charset="utf-8">
-    <title>My page title</title>
+    <title>Sku Dokumentation</title>
     <link rel="stylesheet" href="style.css">
   </head>
 <body>
@@ -11,10 +11,25 @@
     </header>
 
     <nav>
-      <ul id="Inhaltsverzeichnis">Inhaltsverzeichnis">
-        <li><a href="#">Kapitel eins</a></li>
-        <li><a href="#">Kapitel zwei</a></li>
-        <li><a href="#">Kapitel drei</a></li>
+      <ul id="index">Inhaltsverzeichnis</>
+        <li><a href="#c1">Kapitel eins</a></li>
+          <ul>
+            <li><a href="#c1s1">Abschnitt eins von Kapitel eins</a></li>
+            <li><a href="#c1s2">Abschnitt zwei von Kapitel eins</a></li>
+            <li><a href="#c1s3">Abschnitt drei von Kapitel eins</a></li>
+          </ul>
+        <li><a href="#c2">Kapitel zwei</a></li>
+          <ul>
+            <li><a href="#c2s1">Abschnitt eins von Kapitel zwei</a></li>
+            <li><a href="#c2s2">Abschnitt zwei von Kapitel zwei</a></li>
+            <li><a href="#c2s3">Abschnitt drei von Kapitel zwei</a></li>
+          </ul>
+        <li><a href="#c3">Kapitel drei</a></li>
+          <ul>
+            <li><a href="#c3s1">Abschnitt eins von Kapitel drei</a></li>
+            <li><a href="#c3s2">Abschnitt zwei von Kapitel drei</a></li>
+            <li><a href="#c3s3">Abschnitt drei von Kapitel drei</a></li>
+          </ul>
       </ul>
 
       <!-- A Search form is another common non-linear way to navigate through a website. -->
@@ -30,43 +45,50 @@
 
       <!-- It contains an article -->
       <article>
-        <h2>Kapitel eins</h2>
-        <h3>Abschnitt eins</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
-        <p><a href="#Inhaltsverzeichnis">Zum Inhaltsverzeichnis</a></p>
-        <h3>Abschnitt zwei</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
-        <h3>Abschnitt drei</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+        <h2 id="c1">Kapitel eins</h2>
+          <h3 id="c1s1">Abschnitt eins von Kapitel eins</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+          <h3 id="c1s2">Abschnitt zwei von Kapitel eins</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+          <h3 id="c1s3">Abschnitt drei von Kapitel eins</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
       </article>
 
       <article>
-        <h2>Kapitel zwei</h2>
-        <h3>Abschnitt eins</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
-        <h3>Abschnitt zwei</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
-        <h3>Abschnitt drei</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+        <h2 id="c2">Kapitel zwei</h2>
+        <h3 id="c2s1">Abschnitt eins von Kapitel zwei</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+        <h3 id="c2s2">Abschnitt zwei von Kapitel zwei</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+        <h3 id="c2s3">>Abschnitt drei von Kapitel zwei</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
       </article>
 
       <article>
-        <h2>Kapitel drei</h2>
-        <h3>Abschnitt eins</h3>
+        <h2 id="c3">Kapitel drei</h2>
+        <h3 id="c3s1">Abschnitt eins von Kapitel drei</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
-        <h3>Abschnitt zwei</h3>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+        <h3 id="c3s2">>Abschnitt zwei von Kapitel drei</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
-        <h3>Abschnitt drei</h3>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+        <h3 id="c3s3">>Abschnitt drei von Kapitel drei</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
+            <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
       </article>
 
       <!-- the aside content can also be nested within the main content -->
       <aside>
         <h2>Hilfreiche Links</h2>
         <ul>
-          <li><a href="#">Link eins</a></li>
-          <li><a href="#">Link zwei</a></li>
-          <li><a href="#">Link drei</a></li>
+          <li><a href="https://duugu.github.io/Sku/">Link eins</a></li>
+          <li><a href="https://google.com">Link zwei</a></li>
         </ul>
       </aside>
 
