@@ -4,6 +4,18 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.18
+
+	SkuNav
+		Fehlerkorrekturen
+			- Es wurde ein Fehler beim Routenfolgen behoben, der auftrat, wenn man bereits einer Route gefolgt hat, und dann im Menü mögliche andere Routen durchgesehen hat, ohne eine neue Route auszuwählen.
+
+	SkuOptions
+		Neuerungen
+			- Die neuen vier Standard-Profile (Allgemein, Heiler etc.) werden jetzt auch dann automatisch erstellt, wenn man sich nicht zum allerersten Mal in WoW einloggt.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.17
 
 	SkuChat

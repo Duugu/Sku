@@ -198,6 +198,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnProfileChanged()
+	if SkuCore.AutoChange == true then return end
+
 	dprint("SkuOptions:OnProfileChanged")
 	SkuNav:PLAYER_ENTERING_WORLD()
 

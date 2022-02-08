@@ -799,6 +799,10 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 		SkuOptions.db.profile[MODULE_NAME].metapathFollowing = false
 
+
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = SkuOptions.db.profile[MODULE_NAME].metapathFollowingStartTMP
+		SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapathsTMP
+
 		if SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint == true and SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData then
 			if #SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData < 2 then
 				return
@@ -875,9 +879,10 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
-			SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
-			SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
-
+			--SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
+			--SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
+			SkuOptions.db.profile[MODULE_NAME].metapathFollowingStartTMP = nil
+			SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapathsTMP = nil
 			local tPlayX, tPlayY = UnitPosition("player")
 			local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, 1000)--SkuOptions.db.profile[MODULE_NAME].nearbyWpRange)
 
@@ -908,9 +913,9 @@ function SkuNav:MenuBuilder(aParentEntry)
 						tNewMenuEntry.dynamic = true
 						tNewMenuEntry.filterable = true
 						tNewMenuEntry.BuildChildren = function(self)
-							SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = v
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowingStartTMP = v
 							local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(string.sub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs)--
-							SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = tMetapaths
+							SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapathsTMP = tMetapaths
 
 							local tData = {}
 							for i, v in pairs(tMetapaths) do--
@@ -949,9 +954,11 @@ function SkuNav:MenuBuilder(aParentEntry)
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint = nil
-			SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
-			SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
-
+			--SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
+			--SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = nil
+			SkuOptions.db.profile[MODULE_NAME].metapathFollowingStartTMP = nil
+			SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapathsTMP = nil
+	
 			local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
 			tUnitDbWaypointData = {}
 

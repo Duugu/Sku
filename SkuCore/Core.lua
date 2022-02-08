@@ -1319,6 +1319,28 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	SkuOptions.db.char["SkuAuras"] = SkuOptions.db.char["SkuAuras"] or {}
 
 	if isInitialLogin == true then
+		--add default profiles if they are not there
+		local tCurrentP = SkuOptions.db:GetCurrentProfile()
+
+		local pGeneral, pHealer, pCaster, pMelee
+		
+		local tProfiles = SkuOptions.db:GetProfiles()
+		for i, v in pairs(tProfiles) do
+			if v == "Standard profil Allgemein" then pGeneral = true end
+			if v == "Standard profil Heiler" then pHealer = true end
+			if v == "Standard profil Caster" then pCaster = true end
+			if v == "Standard profil Nahkämpfer" then pMelee = true end
+		end
+
+		SkuCore.AutoChange = true
+		if not pGeneral then SkuOptions.db:SetProfile("Standard profil Allgemein") end
+		if not pHealer then SkuOptions.db:SetProfile("Standard profil Heiler") end
+		if not pCaster then SkuOptions.db:SetProfile("Standard profil Caster") end
+		if not pMelee then SkuOptions.db:SetProfile("Standard profil Nahkämpfer") end
+		SkuCore.AutoChange = nil
+
+		SkuOptions.db:SetProfile(tCurrentP)
+
 		if SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin ~= false then
 			--this is the first load of wow ever
 			--set up account wide things
@@ -1332,20 +1354,6 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
 			end)
 			SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
-
-			local pGeneral, pHealer, pCaster, pMelee
-			local tProfiles = SkuOptions.db:GetProfiles()
-			for i, v in pairs(tProfiles) do
-				if v == "Standard profil Allgemein" then pGeneral = true end
-				if v == "Standard profil Heiler" then pHealer = true end
-				if v == "Standard profil Caster" then pCaster = true end
-				if v == "Standard profil Nahkämpfer" then pMelee = true end
-			end
-
-			if not pGeneral then SkuOptions.db:SetProfile("Standard profil Allgemein") end
-			if not pHealer then SkuOptions.db:SetProfile("Standard profil Heiler") end
-			if not pCaster then SkuOptions.db:SetProfile("Standard profil Caster") end
-			if not pMelee then SkuOptions.db:SetProfile("Standard profil Nahkämpfer") end
 
 			SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
 		end
