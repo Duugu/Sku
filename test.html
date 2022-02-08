@@ -2,12 +2,12 @@
 <html lang="de">
   <head>
     <meta charset="utf-8">
-    <title>Sku Dokumentation</title>
+    <title>Sku Download</title>
     <link rel="stylesheet" href="style.css">
   </head>
 <body>
     <header>
-      <h1>Testseite eins</h1>
+      <h1>Sku Download</h1>
     </header>
 
     <nav>
@@ -28,16 +28,16 @@
           </ul>
       </ul>
 
-      <!-- A Search form is another common non-linear way to navigate through a website. -->
-
+      <!-- 
       <form>
         <input type="search" name="q" placeholder="Suchtext">
         <input type="submit" value="Suchen">
       </form>
+      -->
     </nav>
   
       <main>
-        <!-- It contains an article -->
+
         <article>
           <h2 id="c1">Download Links</h2>
             <h3 id="c1s1">Aktualisierte Downloads</h3>
@@ -58,17 +58,129 @@
               <h4>SkuCore</h4>
                 <h5>Fehlerkorrekturen</h5>
                 <ul>
-                  <li><p>Die automatische Einrichtung der Sku-Standardtastenbelegung beim allerersten Öffnen des Spiels wurde vorerst deaktiviert, da die Funktion anscheinend Probleme macht und eine schon bestehende Tastenbelegung löscht. Man kann sie aber natürlich noch immer über "SkuCore &gt; Tastenbelegung" ausführen.</p></li>
                   <li>Die automatische Einrichtung der Sku-Standardtastenbelegung beim allerersten Öffnen des Spiels wurde vorerst deaktiviert, da die Funktion anscheinend Probleme macht und eine schon bestehende Tastenbelegung löscht. Man kann sie aber natürlich noch immer über "SkuCore &gt; Tastenbelegung" ausführen.</li>
                 </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Donec a diam lectus. Set sit amet ipsum mauris</p>
-                <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+              <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+          
+            <h3 id="c2s2">Version 23.15</h3>
+              <h4>SkuCore</h4>
+                <h5>Neuerungen</h5>
+                <ul>
+                  <li>
+                    Es gibt jetzt testweise ein kurzes Tutorial zum Testen für Feedback.<br>
+                    Das Tutorial startet am Spawnpunkt im Nordhain. Mach dir einen neuen Menschen, betretet wie Welt, und startet das Tutorial mit dem folgenden Befehl:<br>
+                    /run SkuCore:TutorialStart()<br>
+                    Du benötigst für das Tutorial die neueste Audiodata-Version (29)
+                  </li>
+                </ul>
+                <h5>Fehlerkorrekturen</h5>
+                <ul>
+                  <li>
+                  Die Übersichtsseite sollte deine Gruppe jetzt auch in Raidgruppen korrekt anzeigen.
+                  </li>
+                </ul>
+              <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+          
+            <h3 id="c2s3">Version 23.14</h3>
+              <h4>SkuAuras</h4>
+                <h5>Fehlerkorrekturen</h5>
+                <ul>
+                  <li>Die Eingabe einer Zahl bei Bedingungen mit Zahlen (z. B. "Anzahl Gegenstände") funktioniert jetzt wieder korrekt.</li>
+                </ul>
+              <h4>SkuNav und SkuQuest</h4>
+                <h5>Fehlerkorrekturen</h5>
+                <ul>
+                  <li>"Nach Name" und "Nach Entferung" haben in allen relevanten Menüs die Plätze getauscht. Erster Punkt ist jetzt immer "Nach Entfernung".</li>
+                </ul>
+              <h4>SkuCore</h4>
+                <h5>Neuerungen</h5>
+                <ul>
+                  <li>
+                    Unter "SkuCore > Optionen" gibt es eine neue Option namens "Folgen beim Zaubern temporär beenden" für Heiler bzw. Caster.<br>
+                    Wenn du die Option aktivierst, und gerade einem anderen Spieler folgst, wird das Folgen automatisch beendet, wenn du einen Zauber mit Castzeit beginnst. Wenn der Zauber abgeschlossen ist, wird das Folgen dann automatisch wieder aufgenommen.
+                    Die Option ist standardmäßig aus. Sie funktioniert nur mit Spielern in deiner Gruppe bzw. deinem Raid.
+                  </li>
+                  <li>
+                    Die Standardbelegung des Schnellzugriffs 3 (SHIFT + F11) ist jetzt "SkuCore > Aktionsleisten"
+                  </li>
+                  <li>
+                    Die Standardbelegung des Schnellzugriffs 4 (SHIFT + F11) ist jetzt "SkuNav > Alles abwählen"
+                  </li>
+                  <li>
+                    Da sich die Funktion "Bei Interagieren zum Ziel laufen" als hilfreich erwiesen hat, ist sie jetzt bei neuen Profilen standardmäßig eingeschaltet.
+                  </li>
+                </ul>
+              <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+
+            <h3 id="c2s4">Version 23.13</h3>
+              <h4>Allgemein</h4>
+                <h5>Neuerungen</h5>
+                <ul>
+                  <li>Die Datei mit den verfügbaren Maus- und Tastenkombinationen des Sku-Addons (shortcuts.txt) im Sku-Ordner wurde aktualisiert.</li>
+                </ul>
+              <h4>SkuCore</h4>
+                <h5>Neuerungen</h5>
+                <ul>
+                  <li>
+                    <p>Das Sku-Addon richtet nun beim allerersten Einloggen in WoW automatisch die folgenden kontoweiten Einstellungen ein:</p>
+                    <ul>
+                      <li>Schnellplündern: aktiv</li>
+                      <li>Aktionsleisten anzeigen: immer</li>
+                      <li>Kamera folgen: immer</li>
+                      <li>Sku-Standardtastenzuweisungen für die kontoweite Tastenbelegung</li>
+                    </ul>
+                  </li>
+                  <li>
+                    <p>Das Sku-Addon richtet beim ersten Einloggen mit einem neuen Char automatisch die folgenden Char-Einstellungen ein:</p>
+                    <ul>
+                      <li>Filterliste bei Lehrern: nur verfügbare</li>
+                      <li>Zusätzliche Aktionsleisten anzeigen: Zusatzaktionsleiste oben links/rechts, Zusatzaktionsleiste 1 und 2 rechts</li>
+                      <li>Tastenbelegung: kontoweit</li>
+                    </ul>
+                  </li>
+                </ul>
+              <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+
+            <h3 id="c2s5">Version 23.12</h3>
+              <h4>SkuAuras</h4>
+                <h5>Fehlerkorrekturen</h5>
+                <ul>
+                  <li>Aura-Ausgaben sollten jetzt (vermutlich) nicht mehr von anderen Ausgaben überschrieben oder verschluckt werden.</li>
+                  <li>Beim Bearbeiten der Ausgaben von bestehenden Auren werden die neu gewählten Ausgaben jetzt in der richtigen Reihenfolge in die bearbeitete Aura übertragen. (Bisher war die Reihenfolge der Ausgaben nach dem Bearbeiten ungedreht.)</li>
+                  <li>Bei Attributen mit Zahlenwerten (z. B. "Eigene Ressource" oder "Eigene Gesundheit") sind jetzt alle Zahlen von 0 bis 100 verfügbar, statt nur Zehnerschritte.</li>
+                  <li>Die Listen der aktivierten und deaktivierten Auren können jetzt wie vorgesehen ganz normal über den Menüfilter gefiltert werden.</li>
+                </ul>
+              <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
+
+            <h3 id="c2s6">Version 23.11</h3>
+              <h4>SkuAuras</h4>
+                <h5>Neuerungen</h5>
+                <ul>
+                  <li>Es gibt ein neues Attribut namens "Zauber auf CD". Mit diesem kannst du in einer Bedingung prüfen, ob ein Zauber gerade auf Cooldown ist.
+                  </li>
+                  <li>Zusätzlich zu "Audio Ausgabe" und "Chat Ausgabe" gibt es zwei neue Ausgabetypen: "audio ausgabe einmal" und "chat ausgabe einmal"<br>
+                    Bei diesen Ausgabetypen erfolgt die Ausgabe beim Zutreffen der Aura nur einmal. <br>
+                    Die nächste Ausgabe erfolgt frühestens dann, wenn die Aura mindestens einmal _nicht_ zugetroffen hat.<br>
+                    Beispiel-Aura: "Wenn eigene Gesundheit kleiner 90 Prozent dann audio ausgabe einmal Ping".<br>
+                    Bei dieser Aura wird nur ein einziges mal Ping ausgegeben, wenn deine Gesundheit unter 90 Prozent fällt. <br>
+                    Erst, wenn sie einmal wieder über 90 Prozent war, und dann erneut unter 90 Prozent fällt, kommt die Ausgabe erneut.                  
+                  </li>
+                </ul>
+              <h4>SkuCore</h4>
+                <h5>Fehlerkorrekturen</h5>
+                <ul>
+                  <li>Die neue Funktion "Bei Interagieren zum Ziel laufen" reagiert jetzt nur noch wenn du die Interagieren-Taste (G) drückst.<br>
+                    Sie reagiert nicht mehr bei Mausklicks in der Spielwelt (z. B. beim Kürschnern, bei Briefkasten etc.).</li>
+                </ul>
+              <p><a href="#index">Zum Inhaltsverzeichnis</a></p>
         </article>
 
         <!-- the aside content can also be nested within the main content -->
         <aside>
           <h2>Weitere Links</h2>
           <ul>
+            <li><a href="https://discord.gg/t2fUTy6kbe">Sku Discord</a></li>
+            <li><a href="https://www.youtube.com/channel/UCXkjxEgdNQ6-BkH-XuBQOCQ">Sku YouTube Kanal</a></li>
             <li><a href="https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Abug">Bug Liste</a></li>
             <li><a href="https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement">To Do Liste</a></li>
           </ul>
@@ -76,11 +188,10 @@
 
     </main>
 
-    <!-- And here is our main footer that is used across all the pages of our website -->
-
+    <!--
     <footer>
-      <p>©Copyright 2050 by Duugu. Kontakt: duugu@duugu.com</p>
+      <p>©Copyright 2050 by Duugu.</p>
     </footer>
-  
+     -->
 </body>
 </html>
