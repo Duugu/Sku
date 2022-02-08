@@ -31,7 +31,7 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 - Möglicherweise :) wurde ein Fehler behoben, der sporadisch beim Folgen von Routen auftaucht. Bitte weiter beobachten. Melden, wenn eine Routenverfolgung unerwartet beendet wird.
 - Auch unter "wegpunkt, auswählen, atuelle karte entfernung ... nahe routen" wird jetzt zuerst "Nach Entferung" und dann "Nach Name angezeigt".
 
-###SkuCore
+### SkuCore
 *Fehlerkorrekturen*
 - Eine vergessene Debug-Ausgabe bei der Übersichtsseite wurde entfernt.
 - Die Grundeinrichtung beim ersten Einloggen mit WoW überhaupt bzw. mit einem neuen Char sollte jetzt funktionieren.<br>
@@ -39,7 +39,7 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
   Bei ersten Einloggen mit einem Char werden nur die Char-bezogenen Einstellungen eingestellt. Die bestehende globale Tastenbelegung bleibt erhalten.
 - Das Zurücksetzen auf die Standardtastenbelegung legt jetzt nicht mehr ungewollte die Tastenkombinationen STRG + F1-F12 fest.
 
-###SkuOptions
+### SkuOptions
 *Neuerungen*
 - Neu erstellten Chars wird jetzt automatisch ein neues Sku-Profil mit dem Namen "Standard profil Allgemein" zugewiesen, statt jedem neuen Char ein eigenes Profil mit seinem Namen zuzuweisen.
 - Es gibt zudem unter "SkuOptions > Optionen > Profil" drei weitere neue Sku-Standardprofile zur Auswahl: "Standard profil Heiler", "Standard profil Caster", "Standard profil Nahkämpfer", die du für alle entsprechenden Chars verwenden kannst.
