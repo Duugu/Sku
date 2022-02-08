@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.17](https://github.com/Duugu/Sku/releases/download/r23.17/Sku-r23.17-bcc.zip) <br>
+[Sku 23.18](https://github.com/Duugu/Sku/releases/download/r23.18/Sku-r23.18-bcc.zip) <br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
@@ -17,6 +17,16 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.18
+
+### SkuNav
+*Fehlerkorrekturen*
+- Es wurde ein Fehler beim Routenfolgen behoben, der auftrat, wenn man bereits einer Route gefolgt hat, und dann im Menü mögliche andere Routen durchgesehen hat, ohne eine neue Route auszuwählen.
+
+### SkuOptions
+*Neuerungen*
+- Die neuen vier Standard-Profile (Allgemein, Heiler etc.) werden jetzt auch dann automatisch erstellt, wenn man sich nicht zum allerersten Mal in WoW einloggt.
 
 ## Änderungen in Version 23.17
 
