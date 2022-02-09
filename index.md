@@ -23,8 +23,8 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 ### SkuCore
 *Fehlerkorrekturen*
 - Bei der Entfernung wurde bisher fälschlicherweise nicht die aktuelle Entfernung sondern immer der nächste Entfernungsschritt angesagt. <br>
-  Beispiel: Bei 35 Meter Entferung wurde 30 gesagt. Bei 30 Meter Entferung wurde 25 gesagt.<br>
-  Das wurde behoben. Jetzt passt die Entferungsangabe.
+  Beispiel: Bei 35 Meter Entfernung wurde 30 gesagt. Bei 30 Meter Entfernung wurde 25 gesagt.<br>
+  Das wurde behoben. Jetzt passt die Entfernungsangabe.
 
 ### SkuChat
 *Neuerungen*
