@@ -4,6 +4,23 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.20
+
+	SkuCore
+			Fehlerkorrekturen
+			- Bei der Entferung wurde bisher nicht die aktuelle Entferung sondern immer der nächste Entferungsschritt angesagt. 
+			  Beispiel: Bei 35 Meter Entferung wurde 30 gesagt. Bei 30 Meter Entferung wurde 25 gesagt.
+			  Das wurde behoben. Jetzt passt die Entferungsangabe.
+
+	SkuChat
+		Neuerungen
+			- Es gibt jetzt unter "SkuChat > Optionen" zwei weitere Optionen, um auch den Gildenchat und Flüsterchat automatisch vorlesen lassen zu können.
+
+		Fehlerkorrekturen
+			- Automatisch vorgelesene Chatnachrichten brechen jetzt nicht mehr die Ausgabe der vorherigen Nachricht ab.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.19
 
 	SkuCore

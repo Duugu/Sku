@@ -92,8 +92,7 @@ function SkuCore:DoRangeCheck()
    end
 
    local tCheckRequired = false
-   local tMinRange = SkuOptions.RangeCheck:GetRange("target")
-
+   local tMaxRange, tMinRange = SkuOptions.RangeCheck:GetRange("target")
    if tRangeCheckLastTarget ~= UnitName("target") then
       tRangeCheckLastTarget = UnitName("target")
       tRangeCheckLastTargetminRange = tMinRange

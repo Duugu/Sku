@@ -73,7 +73,7 @@ SkuChat.options = {
 		},
 		autoPlayPartyChat = {
 			order = 6,
-			name = "Gruppenchat automatisch lesen",
+			name = "Gruppen Chat automatisch lesen",
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -83,7 +83,30 @@ SkuChat.options = {
 				return SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat
 			end
 		},
-
+		autoPlayGuildChat = {
+			order = 6,
+			name = "Gilden Chat automatisch lesen",
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].autoPlayGuildChat = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].autoPlayGuildChat
+			end
+		},
+		autoPlayTellChat = {
+			order = 6,
+			name = "Flüster Chat automatisch lesen",
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].autoPlayTellChat = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].autoPlayTellChat
+			end
+		},
 	},
 
 }
@@ -96,6 +119,8 @@ SkuChat.defaults = {
 	WowTtsSpeed = 3,
 	WowTtsVolume = 50,
 	autoPlayPartyChat = false,
+	autoPlayGuildChat = false,
+	autoPlayTellChat = false,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------
