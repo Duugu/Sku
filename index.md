@@ -22,7 +22,7 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 ### SkuCore
 *Fehlerkorrekturen*
-- Bei der Entferung wurde bisher nicht die aktuelle Entferung sondern immer der nächste Entferungsschritt angesagt. <br>
+- Bei der Entfernung wurde bisher nicht die aktuelle Entfernung sondern immer der nächste Entfernungsschritt angesagt. <br>
   Beispiel: Bei 35 Meter Entferung wurde 30 gesagt. Bei 30 Meter Entferung wurde 25 gesagt.<br>
   Das wurde behoben. Jetzt passt die Entferungsangabe.
 
