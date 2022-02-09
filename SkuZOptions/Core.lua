@@ -1124,9 +1124,9 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull)
 			end
 
 			if tItemId then
-				--table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemId))
+				table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemId))
 			elseif tItemIdWord then
-				--table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemIdWord))
+				table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemIdWord))
 			end
 		end
 	end

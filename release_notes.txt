@@ -4,6 +4,21 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.19
+
+	SkuCore
+		Neuerungen
+			- Die Gegenstandsbewertungen sind zurück. Diesmal ohne Pawn und selbstgebaut. Bitte ausführlich prüfen, ob die angezeigten Verbesserungen/Verschlechterungen Sinn ergeben.
+			  Folgende Einschränkungen gelten für die Bewertungen:
+				- Werte, die sich auf andere Gegenstände auswirken, werden nicht berücksichtig (Beispiel: Waffe erhöht den Blockwert eines Schildes)
+				- Sockel und Sockelboni werden nicht berücksichtigt
+				- Verzauberungen werden nicht berücksichtigt
+				- Boni von Item-Set werden nicht berücksichtigt
+				- Aktiverbare Effekte werden nicht berücksichtigt
+				- Ringe und Schmuckstücke werden immer mit Ring 1 bzw Schmuckstück 1 verglichen
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.18
 
 	SkuNav

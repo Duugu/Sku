@@ -1,9 +1,80 @@
---[[
 local MODULE_NAME, MODULE_PART = "SkuCore", "itemRating"
 local L = Sku.L
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+
+local tItemStatNameToRatingValue = {
+	["ITEM_MOD_DAMAGE_PER_SECOND_SHORT"] = "Dps",
+	["ITEM_MOD_MANA_SHORT"] = "Mana",
+	["ITEM_MOD_HEALTH_SHORT"] = "Health",
+	["ITEM_MOD_AGILITY_SHORT"] = "Agility",
+	["ITEM_MOD_STRENGTH_SHORT"] = "Strength",
+	["ITEM_MOD_INTELLECT_SHORT"] = "Intellect",
+	["ITEM_MOD_SPIRIT_SHORT"] = "Spirit",
+	["ITEM_MOD_STAMINA_SHORT"] = "Stamina",
+	["ITEM_MOD_DEFENSE_SKILL_RATING_SHORT"] = "DefenseRating",
+	["ITEM_MOD_DODGE_RATING_SHORT"] = "DodgeRating",
+	["ITEM_MOD_PARRY_RATING_SHORT"] = "ParryRating",
+	["ITEM_MOD_BLOCK_RATING_SHORT"] = "BlockRating",
+	["ITEM_MOD_HIT_MELEE_RATING_SHORT"] = "HitRating",
+	["ITEM_MOD_HIT_RANGED_RATING_SHORT"] = "HitRating",
+	["ITEM_MOD_HIT_SPELL_RATING_SHORT"] = "SpellHitRating",
+	["ITEM_MOD_CRIT_MELEE_RATING_SHORT"] = "CritRating",
+	["ITEM_MOD_CRIT_RANGED_RATING_SHORT"] = "CritRating",
+	["ITEM_MOD_CRIT_SPELL_RATING_SHORT"] = "SpellCritRating",
+	["ITEM_MOD_HASTE_MELEE_RATING_SHORT"] = "HasteRating",
+	["ITEM_MOD_HASTE_RANGED_RATING_SHORT"] = "HasteRating",
+	["ITEM_MOD_HASTE_SPELL_RATING_SHORT"] = "SpellHasteRating",
+	["ITEM_MOD_HIT_RATING_SHORT"] = "HitRating",
+	["ITEM_MOD_CRIT_RATING_SHORT"] = "CritRating",
+	["ITEM_MOD_RESILIENCE_RATING_SHORT"] = "ResilienceRating",
+	["ITEM_MOD_HASTE_RATING_SHORT"] = "HasteRating",
+	["ITEM_MOD_EXPERTISE_RATING_SHORT"] = "ExpertiseRating",
+	["ITEM_MOD_ATTACK_POWER_SHORT"] = "Ap",
+	["ITEM_MOD_RANGED_ATTACK_POWER_SHORT"] = "Rap",
+	--["ITEM_MOD_VERSATILITY"] = "",
+	["ITEM_MOD_SPELL_HEALING_DONE_SHORT"] = "Healing",
+	["ITEM_MOD_SPELL_DAMAGE_DONE_SHORT"] = "SpellDamage",
+	["ITEM_MOD_MANA_REGENERATION_SHORT"] = "Mp5",
+	["ITEM_MOD_POWER_REGEN0_SHORT"] = "Mp5",
+	["ITEM_MOD_ARMOR_PENETRATION_RATING_SHORT"] = "ArmorPenetration",
+	["ITEM_MOD_SPELL_POWER_SHORT"] = "SpellPower",
+	["ITEM_MOD_HEALTH_REGEN_SHORT"] = "Hp5",
+	["ITEM_MOD_SPELL_PENETRATION_SHORT"] = "SpellPenetration",
+	["ITEM_MOD_BLOCK_VALUE_SHORT"] = "BlockValue",
+	--["ITEM_MOD_MASTERY_RATING_SHORT"] = "",
+	["ITEM_MOD_ARMOR_SHORT"] = "Armor",
+	["ITEM_MOD_EXTRA_ARMOR_SHORT"] = "Armor",
+	["ITEM_MOD_FIRE_RESISTANCE_SHORT"] = "FireResist",
+	["ITEM_MOD_FROST_RESISTANCE_SHORT"] = "FrostResist",
+	--["ITEM_MOD_HOLY_RESISTANCE_SHORT"] = "",
+	["ITEM_MOD_SHADOW_RESISTANCE_SHORT"] = "ShadowResist",
+	["ITEM_MOD_NATURE_RESISTANCE_SHORT"] = "NatureResist",
+	["ITEM_MOD_ARCANE_RESISTANCE_SHORT"] = "ArcaneResist",
+	--[[ 
+	["ITEM_MOD_CR_AMPLIFY_SHORT"] = "",
+	["ITEM_MOD_CR_MULTISTRIKE_SHORT"] = "",
+	["ITEM_MOD_CR_READINESS_SHORT"] = "",
+	["ITEM_MOD_CR_SPEED_SHORT"] = "",
+	["ITEM_MOD_CR_LIFESTEAL_SHORT"] = "",
+	["ITEM_MOD_CR_AVOIDANCE_SHORT"] = "",
+	["ITEM_MOD_CR_STURDINESS_SHORT"] = "",
+	["ITEM_MOD_CR_UNUSED_7_SHORT"] = "",
+	["ITEM_MOD_CR_CLEAVE_SHORT"] = "",
+	["ITEM_MOD_CR_UNUSED_9_SHORT"] = "",
+	["ITEM_MOD_CR_UNUSED_10_SHORT"] = "",
+	["ITEM_MOD_CR_UNUSED_11_SHORT"] = "",
+	["ITEM_MOD_CR_UNUSED_12_SHORT"] = "",
+	ITEM_MOD_POWER_REGEN0_SHORT = "Mana Per 5 Sec.";
+	ITEM_MOD_POWER_REGEN1_SHORT = "Rage Per 5 Sec.";
+	ITEM_MOD_POWER_REGEN2_SHORT = "Focus Per 5 Sec.";
+	ITEM_MOD_POWER_REGEN3_SHORT = "Energy Per 5 Sec.";
+	ITEM_MOD_POWER_REGEN4_SHORT = "Happiness Per 5 Sec.";
+	ITEM_MOD_POWER_REGEN5_SHORT = "Runes Per 5 Sec.";
+	ITEM_MOD_POWER_REGEN6_SHORT = "Runic Power Per 5 Sec.";	
+	]]
+}
 
 local tStatRatings = {}
 
@@ -68,29 +139,87 @@ SkuCore.Specs = {
 ----------------------------------------------------------------------------------------------------------------------------------------
 local function IsRedColor(r, g, b, a)
 	return math.ceil(r*255) == 255 and math.ceil(g*255) == 32 and math.ceil(b*255) == 32
- end
+end
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 local function ScanTooltipRegions(regions)
 	for _, region in ipairs(regions) do
-	  if region and region:GetObjectType() == "FontString" and
-		 region:GetText() and IsRedColor(region:GetTextColor()) then
-		 return true
-	  end
+		if region and region:GetObjectType() == "FontString" and
+			region:GetText() and IsRedColor(region:GetTextColor()) then
+			return true
+		end
 	end
 	return false
- end
+end
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 local function ScanTooltipForUsable(tooltip, aItemId)
 	tooltip:SetItemByID(aItemId)
 	return ScanTooltipRegions({tooltip:GetRegions()})
- end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function GetArmorFromTooltip(aItemLink)
+
+	local tTooltipFrame = _G["SkuScanningTooltip"] --_G["GameTooltip"]
+	tTooltipFrame:ClearLines()
+	tTooltipFrame:SetOwner(WorldFrame, "ANCHOR_NONE")
+	tTooltipFrame:SetHyperlink(aItemLink)
+	tTooltipFrame:Show()
+
+	for x = 1, tTooltipFrame:NumLines() do 
+		local tText = _G[tTooltipFrame:GetName().."TextLeft"..x]:GetText()
+		if tText then
+			local tPattern = string.gsub(ARMOR_TEMPLATE, "%%s", "(%%d+)") 
+			local tArmor = string.match(tText, tPattern)
+			if tArmor then
+				tTooltipFrame:Hide()
+				return tArmor
+			end
+		end
+	end
+	
+	tTooltipFrame:Hide()
+end
 
 ----------------------------------------------------------------------------------------------------------------------------------------
+local GetItemStatsHook
+local function GetItemStatsHelperHook(aItemLink, aStatsTable)
+	aStatsTable["ITEM_MOD_ARMOR_SHORT"] = GetArmorFromTooltip(aItemLink)
+	return GetItemStatsHook(aItemLink, aStatsTable)
+end
+
+----------------------------------------------------------------------------------------------------------------------------------------
+local getItemInventoryTypeToInvSlotId = {
+	[1] = 1,
+	[2] = 2,
+	[3] = 3,
+	[4] = 4,
+	[5] = 5,
+	[6] = 6,
+	[7] = 7,
+	[8] = 8,
+	[9] = 9,
+	[10] = 10,
+	[11] = 11,
+	[12] = 13,
+	[13] = 16,
+	[14] = 17,
+	[15] = 16,
+	[16] = 15,
+	[17] = 16,
+	[19] = 19,
+	[20] = 5,
+	[21] = 16,
+	[22] = 16,
+	[23] = 17,
+	[25] = 16,
+	[26] = 16,
+}
 function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 	SkuScanningTooltip:SetItemByID(aItemIdItemToRate) 
 	local tInvTypeOfNewItem = C_Item.GetItemInventoryTypeByID(aItemIdItemToRate)
+	tInvTypeOfNewItem = getItemInventoryTypeToInvSlotId[tInvTypeOfNewItem]
 	local tCurrentEqItemId = GetInventoryItemID("player", tInvTypeOfNewItem)
 
 	local tResultsString = "Wertung:"
@@ -107,53 +236,54 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 		return ""
 	end
 
+	--[[GetItemStatDelta("item:"..tCurrentEqItemId,"item:"..aItemIdItemToRate, stats)]]
+
 	local _, _, ClassID = UnitClass("player")
 
-	--new item
+	-- new item
 	local tNewItemRatings = {}
-	SkuScanningTooltip:SetItemByID(aItemIdItemToRate)	
+	local stats = {}
+	GetItemStats("item:"..aItemIdItemToRate, stats)
+	setmetatable(stats, SkuPrintMT)
+	dprint("-- ITEM STATS ----------------")
+	dprint(stats)
 	for SpecID = 1, 4 do
-		local tResult = 0
 		if tStatRatings[ClassID][SpecID] then
-			local Stats, SocketBonusStats, UnknownLines, PrettyLink = PawnGetStatsFromTooltip("SkuScanningTooltip", false)
-			for tStatName, tStatValue in pairs(Stats) do
-				if tStatRatings[ClassID][SpecID][tStatName] then
-					tResult = tResult + (tStatRatings[ClassID][SpecID][tStatName] * tStatValue)
-				else
-					tResult = tResult + tStatValue
-				end
+			dprint("ClassID", ClassID, "SpecID", SpecID)
+			local tResult = 0
+			for bName, value in pairs(stats) do
+				local pname = tItemStatNameToRatingValue[bName] or tItemStatNameToRatingValue[bName.."_SHORT"]
+				tResult = tResult + value * tStatRatings[ClassID][SpecID][pname]
+				tNewItemRatings[SpecID] = tResult
 			end
-			tNewItemRatings[SpecID] = tResult
+			dprint("        new item Result:", tResult)
 		end
 	end
 
-	if not tCurrentEqItemId or tCurrentEqItemId == 0 then
-		return ""
-	end
-
-	--current item
+	-- old item
 	local tCurrentItemRatings = {}
-	SkuScanningTooltip:SetItemByID(tCurrentEqItemId)	
+	local stats = {}
+	GetItemStats("item:"..tCurrentEqItemId, stats)
+	setmetatable(stats, SkuPrintMT)
+	dprint("-- ITEM STATS ----------------")
+	dprint(stats)
 	for SpecID = 1, 4 do
-		local tResult = 0
 		if tStatRatings[ClassID][SpecID] then
-			local Stats, SocketBonusStats, UnknownLines, PrettyLink = PawnGetStatsFromTooltip("SkuScanningTooltip", false)
-			for tStatName, tStatValue in pairs(Stats) do
-				if tStatRatings[ClassID][SpecID][tStatName] then
-					tResult = tResult + (tStatRatings[ClassID][SpecID][tStatName] * tStatValue)
-				else
-					tResult = tResult + tStatValue
-				end
+			dprint("ClassID", ClassID, "SpecID", SpecID)
+			local tResult = 0
+			for bName, value in pairs(stats) do
+				local pname = tItemStatNameToRatingValue[bName] or tItemStatNameToRatingValue[bName.."_SHORT"]
+				tResult = tResult + value * tStatRatings[ClassID][SpecID][pname]
+				tCurrentItemRatings[SpecID] = tResult
 			end
-			tCurrentItemRatings[SpecID] = tResult
+			dprint("        old item Result:", tResult)
 		end
 	end
-	
 
+	--create rating
 	for i, v in pairs(tCurrentItemRatings) do
 		local tDiff = math.floor(((tNewItemRatings[i] / v) * 100) - 100)
 		local tMod = "plus "..tDiff.."%"
-
 		if v == 0 or tNewItemRatings[i] == 0 then
 			tMod = "Keine Bewertung möglich"
 		elseif tDiff < 0 then
@@ -452,9 +582,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:ItemRatingOnLogin()
 	--print("SkuCore:ItemRatingOnLogin")
+
+	if not GetItemStatsHook then
+		GetItemStatsHook = GetItemStats
+		GetItemStats = GetItemStatsHelperHook
+	end
+
    ItemRatingAddScales()
 end
-
+--[[
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- NOTE: These functions are not super-flexible for general purpose; they don't properly handle all sorts of Lua pattern matching syntax
 -- that could be in strings, like "." and so on.  But they've been sufficient so far.

@@ -1447,7 +1447,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			end
 		end
 
-		--SkuCore:ItemRatingOnLogin()
+		SkuCore:ItemRatingOnLogin()
 
 		SkuCore:AuctionHouseOnLogin()
 		if not SkuOptions.db.char[MODULE_NAME] then
