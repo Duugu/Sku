@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.19](https://github.com/Duugu/Sku/releases/download/r23.19/Sku-r23.19-bcc.zip) <br>
+[Sku 23.20](https://github.com/Duugu/Sku/releases/download/r23.20/Sku-r23.20-bcc.zip) <br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
@@ -18,6 +18,21 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
+## Änderungen in Version 23.20
+
+### SkuCore
+*Fehlerkorrekturen*
+- Bei der Entferung wurde bisher nicht die aktuelle Entferung sondern immer der nächste Entferungsschritt angesagt. <br>
+  Beispiel: Bei 35 Meter Entferung wurde 30 gesagt. Bei 30 Meter Entferung wurde 25 gesagt.<br>
+  Das wurde behoben. Jetzt passt die Entferungsangabe.
+
+### SkuChat
+*Neuerungen*
+- Es gibt jetzt unter "SkuChat > Optionen" zwei weitere Optionen, um auch den Gildenchat und Flüsterchat automatisch vorlesen lassen zu können.
+
+*Fehlerkorrekturen*
+- Automatisch vorgelesene Chatnachrichten brechen jetzt nicht mehr die Ausgabe der vorherigen Nachricht ab.
+      
 ## Änderungen in Version 23.19
 
 ### SkuCore
