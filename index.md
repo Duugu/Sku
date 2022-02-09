@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.18](https://github.com/Duugu/Sku/releases/download/r23.18/Sku-r23.18-bcc.zip) <br>
+[Sku 23.19](https://github.com/Duugu/Sku/releases/download/r23.19/Sku-r23.19-bcc.zip) <br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
@@ -17,6 +17,19 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.19
+
+### SkuCore
+*Neuerungen*
+- Die Gegenstandsbewertungen sind zurück. Diesmal ohne Pawn und selbstgebaut. Bitte ausführlich prüfen, ob die angezeigten Verbesserungen/Verschlechterungen Sinn ergeben.
+  Folgende Einschränkungen gelten für die Bewertungen:
+  - Werte, die sich auf andere Gegenstände auswirken, werden nicht berücksichtig (Beispiel: Waffe erhöht den Blockwert eines Schildes)
+  - Sockel und Sockelboni werden nicht berücksichtigt
+  - Verzauberungen werden nicht berücksichtigt
+  - Boni von Item-Set werden nicht berücksichtigt
+  - Aktiverbare Effekte werden nicht berücksichtigt
+  - Ringe und Schmuckstücke werden immer mit Ring 1 bzw Schmuckstück 1 verglichen
 
 ## Änderungen in Version 23.18
 
