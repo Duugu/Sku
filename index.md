@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.20](https://github.com/Duugu/Sku/releases/download/r23.20/Sku-r23.20-bcc.zip) <br>
+[Sku 23.21](https://github.com/Duugu/Sku/releases/download/r23.21/Sku-r23.21-bcc.zip) <br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
@@ -17,6 +17,18 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.21
+
+### SkuCore
+*Fehlerkorrekturen*
+- Ein Problem mit Gegenstandsbewertungen in Tooltips, das die Tooltips an vielen Stellen kaputt gemacht hat, wurde behoben.
+- Die Gegenstandsbewertungen stehen für viele Gegenstände nicht mehr zur Verfügung.<br>
+  Gegenstände, die einen Basisgegenstand haben, und einen zufälligen Wert bekommen, können nicht bewertet werden.<br>
+  Beispiel dazu: "Azuritring der Ausdauer". Bei diesem Gegenstand handelt es sich um den Basisgegenstand "Azuritring", den es in vielen verschiedenen Varianten geben kann.<br>
+  Azuritring der Ausdauer (mit Ausdauer), Azuritring der Eule (mit Int und Wille), Azuritring des Affen (mit Beweglichkeit) etc. pp.<br>
+  Heißt ein Gegenstand also "xyz der/des irgendwas", dann ist vermutlich keine Bewertung möglich.<br>
+  Daran wird sich auch vorerst nichts mehr ändern. Ich stecke keine Weitere Arbeit mehr in dieses Scheissfeature. :)
 
 ## Änderungen in Version 23.20
 
