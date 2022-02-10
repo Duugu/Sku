@@ -1073,7 +1073,7 @@ function SkuOptions:CreateMainFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull)
+function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 	if not aUnmodifiedTextFull then
 		return ""
 	end
@@ -1108,6 +1108,7 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull)
 		
 		if string.find(tFirstLine, "\r") then
 			local tItemName = string.sub(tFirstLine, 1, string.find(tFirstLine, "\r") - 1)
+
 			local tItemId
 			local tItemIdWord
 
@@ -1123,6 +1124,9 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull)
 				end
 			end
 
+			if aItemId then
+				tItemId = aItemId
+			end
 			if tItemId then
 				table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemId))
 			elseif tItemIdWord then
@@ -1350,7 +1354,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "SHIFT-UP" then 
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull)
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(tTextFull, 1000)
 					end
@@ -1361,7 +1365,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "SHIFT-DOWN" then
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull)
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(tTextFull, 1000)
 					end
@@ -1372,7 +1376,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "CTRL-SHIFT-UP" then
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull)
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(tTextFull, 1000)
 					end
@@ -1383,7 +1387,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "CTRL-SHIFT-DOWN" then
 			if SkuOptions.currentMenuPosition.textFull then
 				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull)
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
 					if not SkuOptions.TTS:IsVisible() then
 						SkuOptions.TTS:Output(tTextFull, 1000)
 					end
@@ -2012,6 +2016,16 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 					end
 				end]]
 				tNewMenuEntry.textFull = aGossipListTable[index].textFull
+				local tItemId
+				if aGossipListTable[index].obj.info then
+					tItemId = aGossipListTable[index].obj.info.id
+				end
+				if not tItemId then
+					tItemId = aGossipListTable.itemId
+				end
+				if tItemId then
+						tNewMenuEntry.itemId = tItemId
+				end
 			end
 			if tNewMenuEntry and aGossipListTable[index].click == true then
 				if aGossipListTable[index].func then
@@ -2079,6 +2093,8 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							tItemId = aGossipListTable.itemId
 						end
 						if tItemId then
+							aGossipListTable[index].itemId = tItemId
+
 							if not SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds then
 								SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = {}
 							end

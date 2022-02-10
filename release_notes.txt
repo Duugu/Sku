@@ -4,6 +4,20 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.21
+
+	SkuCore
+			Fehlerkorrekturen
+				- Ein Problem mit Gegenstandsbewertungen in Tooltips, das die Tooltips an vielen Stellen kaputt gemacht hat, wurde behoben.
+				- Die Gegenstandsbewertungen stehen für viele Gegenstände nicht mehr zur Verfügung.
+				  Gegenstände, die einen Basisgegenstand haben, und einen zufälligen Wert bekommen, können nicht bewertet werden.
+				  Beispiel dazu: "Azuritring der Ausdauer". Bei diesem Gegenstand handelt es sich um den Basisgegenstand "Azuritring", den es in vielen verschiedenen Varianten geben kann.
+				  Azuritring der Ausdauer (mit Ausdauer), Azuritring der Eule (mit Int und Wille), Azuritring des Affen (mit Beweglichkeit) etc. pp.
+				  Heißt ein Gegenstand also "xyz der/des irgendwas", dann ist vermutlich keine Bewertung möglich.
+				  Daran wird sich auch vorerst nichts mehr ändern. Ich stecke keine Weitere Arbeit mehr in dieses Feature. :)
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.20
 
 	SkuCore

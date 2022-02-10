@@ -1886,6 +1886,7 @@ local function IterateChildren(t, tab)
 						obj = dtc[x],
 						textFirstLine = "",
 						textFull = "",
+						itemId = dtc[x].itemId,
 					}
 					if dtc[x].GetText then
 						if dtc[x]:GetText() then
@@ -1931,7 +1932,6 @@ local function IterateChildren(t, tab)
 		end
 		local tEmptyCounter = 1
 		for x = 1, #dtc do
-			--dprint(tab, x, dtc[x])
 			if validTypes[dtc[x]:GetObjectType()] then
 				if dtc[x]:IsVisible() == true then
 					local tEnabled = true
@@ -1948,6 +1948,7 @@ local function IterateChildren(t, tab)
 							textFirstLine = "",
 							textFull = "",
 							childs = {},
+							itemId = dtc[x].itemId,
 							}
 						--get the onclick func if there is one
 						if tResults[fName].obj:IsMouseClickEnabled() == true then
@@ -1980,6 +1981,7 @@ local function IterateChildren(t, tab)
 										local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 										
 										if tResults[fName].obj.info.id then
+											tResults[fName].itemId = tResults[fName].obj.info.id
 											tResults[fName].textFirstLine = ItemName_helper(tText)
 											tResults[fName].textFull = SkuCore:AuctionPriceHistoryData(tResults[fName].obj.info.id, true, true)
 										end
