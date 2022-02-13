@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.21](https://github.com/Duugu/Sku/releases/download/r23.21/Sku-r23.21-bcc.zip) <br>
-[SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
+[Sku 23.22](https://github.com/Duugu/Sku/releases/download/r23.22/Sku-r23.22-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
+[SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [Sku-Maus Autohotkey-Skript 2](https://1drv.ms/u/s!Aqgp3J_s6MM7iKQcVpcR3IBws7QRuQ?e=GMli2f) <br>
@@ -17,6 +17,20 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.22
+
+### SkuCore
+*Neuerungen*
+- Beim Folgen bzw. Folgen beenden wird jetzt grundsätzlich nicht mehr "Folgen"/"Folgen beendet" gesagt, sondern es gibt die bekannten zwei Pling-Sounds (hoch, tief). Das gilt auch für das automatische ab- und anhängen beim Casten.
+
+*Fehlerkorrekturen*
+- In den Taschen werden die Zahlen für die Anzahl der Gegenstände in einem Taschenplatz jetzt korrekt aktualisiert.
+- Im Auktionshausmenü funktionieren jetzt die Tooltips für die Offline-Datenbank
+
+### SkuNav
+*Neuerungen*
+- Die Kartendaten aus V22Plus-14-AlleKarten-2022-02-12 sind jetzt bereits im Addon enthalten.
 
 ## Änderungen in Version 23.21
 
