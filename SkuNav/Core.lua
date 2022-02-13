@@ -2381,9 +2381,11 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 		SkuOptions.db.profile["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
 		SkuNav:LoadLinkDataFromProfile()
 
+		--[[
 		SkuOptions.Voice:OutputString("Achtung", true, true, 0.2)
 		SkuOptions.Voice:OutputString("Erste Verwendung von Profil ab Sku 22", false, true, 0.2)
 		SkuOptions.Voice:OutputString("Alle vorhandenen Routen und Wegpunkte wurden gelöscht", false, true, 0.2)
+		]]
 		local tVersion = GetAddOnMetadata("Sku", "Version") 
 		if tVersion then tVersion = tonumber(tVersion) end
 		SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion

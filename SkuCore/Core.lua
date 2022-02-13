@@ -199,6 +199,7 @@ function SkuCore:OnInitialize()
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
+	SkuCore:AqOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
 	SkuCore:TutorialOnInitialize()
 end
@@ -1008,7 +1009,7 @@ function SkuCore:AUTOFOLLOW_BEGIN(event, target, ...)
 			--end
 		--end)
 	end
-	SkuOptions.Voice:OutputString("male-Folgen", false, true, 0.2)
+	SkuOptions.Voice:OutputString("sound-on3_1", false, false, 0.2, false)
 	SkuOptions:SendTrackingStatusUpdates("F-1")
 	if SkuStatus.followUnitName then
 		SkuOptions:SendTrackingStatusUpdates("FN-"..SkuStatus.followUnitName)
@@ -1022,7 +1023,7 @@ function SkuCore:AUTOFOLLOW_END(event, ...)
 			if SkuStatus.follow ~= 0 then
 				SkuStatus.follow = 0
 				if SkuStatus.follow == 0 then
-					SkuOptions.Voice:OutputString("male-Folgen beendet", false, true, 0.2)
+					SkuOptions.Voice:OutputString("sound-off2", false, false, 0.2, false)
 					SkuStatus.followUnitName = ""
 				end
 				if SkuStatus.followUnitId then
@@ -1341,13 +1342,11 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 		SkuOptions.db:SetProfile(tCurrentP)
 
+		dprint(SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin, SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin)
 		if SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin ~= false then
+			dprint("SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin", SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin)
 			--this is the first load of wow ever
 			--set up account wide things
-			C_CVar.SetCVar("autoLootDefault", "1")
-			C_CVar.SetCVar("alwaysShowActionBars", "1")
-			C_CVar.SetCVar("cameraSmoothStyle", "2")
-			C_CVar.GetCVar("removeChatDelay", "1")
 			
 			C_Timer.After(5, function()
 				SkuCore:ResetBindings()
@@ -1359,9 +1358,19 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		end
 
 		if SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin ~= false then
+			dprint("SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin", SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin)
 			--first load with character
 			--set up char specific things
-			C_Timer.After(5, function()
+			SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+
+			local tCurrentP = SkuOptions.db:GetCurrentProfile()
+			local tName, tServer = UnitFullName("player") 
+			if tCurrentP == tName.." - "..tServer or tCurrentP == "Default" then 
+				SkuOptions.db:SetProfile("Standard profil Allgemein")
+				--SkuOptions.db:DeleteProfile(tName.." - "..tServer)--, true)
+			end
+
+			C_Timer.After(15, function()
 				TRAINER_FILTER_AVAILABLE = 1 
 				TRAINER_FILTER_UNAVAILABLE = 0 
 				TRAINER_FILTER_USED = 0
@@ -1372,16 +1381,16 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				SHOW_MULTI_ACTIONBAR_4 = 1 
 				MultiActionBar_Update() 
 				UIParent_ManageFramePositions() 
-				SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
-			end)
-			SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
 
-			local tCurrentP = SkuOptions.db:GetCurrentProfile()
-			local tName, tServer = UnitFullName("player") 
-			if tCurrentP == tName.." - "..tServer then 
-				SkuOptions.db:SetProfile("Standard profil Allgemein")
-				SkuOptions.db:DeleteProfile(tName.." - "..tServer)--, true)
-			end
+				C_CVar.SetCVar("instantQuestText", "1")
+				C_CVar.SetCVar("autoLootDefault", "1")
+				dprint("autoLootDefault", C_CVar.GetCVar("autoLootDefault", "1"))
+				C_CVar.SetCVar("alwaysShowActionBars", "1")
+				C_CVar.SetCVar("cameraSmoothStyle", "2")
+				C_CVar.GetCVar("removeChatDelay", "1")
+	
+				SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+			end)			
 
 			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
 		end
@@ -2120,7 +2129,7 @@ local function IterateChildren(t, tab)
 							end
 						end
 						if string.find(fName, "ContainerFrame") or string.find(fName, "ItemButton") then
-							if _G[fName.."Count"] then
+							if _G[fName.."Count"] and not _G[fName].info then
 								if tResults[fName] and _G[fName.."Count"]:GetText() then
 									if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") then
 										tResults[fName].textFirstLine = tResults[fName].textFirstLine.." ".._G[fName.."Count"]:GetText()
@@ -2140,7 +2149,13 @@ local function IterateChildren(t, tab)
 							end
 							if _G[fName].info then
 								tResults[fName].itemId = _G[fName].info.id
+								if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") and _G[fName].info.count > 1 then
+									tResults[fName].textFirstLine = tResults[fName].textFirstLine.." ".._G[fName].info.count
+								else
+									tResults[fName].textFirstLine = tResults[fName].textFirstLine
+								end								
 							end							
+
 						end
 					end
 				end

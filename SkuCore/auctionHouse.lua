@@ -1390,6 +1390,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                tNewMenuEntry.dynamic = false
                tNewMenuEntry.filterable = true
                tNewMenuEntry.tIndex = tIndex
+               tNewMenuEntry.data = tData
                tNewMenuEntry.textFull = function() 
                   return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))                  
                end

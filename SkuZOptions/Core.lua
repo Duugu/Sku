@@ -110,6 +110,10 @@ function SkuOptions:SlashFunc(input)
 			end
 		end
 		
+		if fields[1] == "aq" then
+			SkuCore:AqSlashHandler(fields)
+		end
+
 		if fields[1] == L["short"] then
 			if SkuCore.inCombat == true then
 				SkuCore.openMenuAfterCombat = true
@@ -683,13 +687,13 @@ function SkuOptions:CreateMainFrame()
 
 	tFrame:SetScript("OnClick", function(self, a, b)
 		--dprint("OnSkuOptionsMain OnClick ", a, b)
-
+		--[[
 		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
 			print("Funktion erst nach Abschluss von Routen Umwandlung verfügbar")
 			SkuOptions.Voice:OutputString("Funktion erst nach Abschluss von Routen Umwandlung verfügbar", true, true, 0.3, true)
 			return
 		end
-
+		]]
 		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
 			SkuCore.openMenuAfterMoving = true
 			return
@@ -2017,8 +2021,10 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 				end]]
 				tNewMenuEntry.textFull = aGossipListTable[index].textFull
 				local tItemId
-				if aGossipListTable[index].obj.info then
-					tItemId = aGossipListTable[index].obj.info.id
+				if aGossipListTable[index].obj then
+					if aGossipListTable[index].obj.info then
+						tItemId = aGossipListTable[index].obj.info.id
+					end
 				end
 				if not tItemId then
 					tItemId = aGossipListTable.itemId

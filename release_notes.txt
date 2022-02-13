@@ -4,17 +4,33 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.22
+
+	SkuCore
+		Neuerungen
+			- Beim Folgen bzw. Folgen beenden wird jetzt grundsätzlich nicht mehr "Folgen"/"Folgen beendet" gesagt, sondern es gibt die bekannten zwei Pling-Sounds (hoch, tief). Das gilt auch für das automatische ab- und anhängen beim Casten.
+
+		Fehlerkorrekturen
+			- In den Taschen werden die Zahlen für die Anzahl der Gegenstände in einem Taschenplatz jetzt korrekt aktualisiert.
+			- Im Auktionshausmenü funktionieren jetzt die Tooltips für die Offline-Datenbank
+
+	SkuNav
+		Neuerungen
+			- Die Kartendaten aus V22Plus-14-AlleKarten-2022-02-12 sind jetzt bereits im Addon enthalten.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.21
 
 	SkuCore
-			Fehlerkorrekturen
-				- Ein Problem mit Gegenstandsbewertungen in Tooltips, das die Tooltips an vielen Stellen kaputt gemacht hat, wurde behoben.
-				- Die Gegenstandsbewertungen stehen für viele Gegenstände nicht mehr zur Verfügung.
-				  Gegenstände, die einen Basisgegenstand haben, und einen zufälligen Wert bekommen, können nicht bewertet werden.
-				  Beispiel dazu: "Azuritring der Ausdauer". Bei diesem Gegenstand handelt es sich um den Basisgegenstand "Azuritring", den es in vielen verschiedenen Varianten geben kann.
-				  Azuritring der Ausdauer (mit Ausdauer), Azuritring der Eule (mit Int und Wille), Azuritring des Affen (mit Beweglichkeit) etc. pp.
-				  Heißt ein Gegenstand also "xyz der/des irgendwas", dann ist vermutlich keine Bewertung möglich.
-				  Daran wird sich auch vorerst nichts mehr ändern. Ich stecke keine Weitere Arbeit mehr in dieses Feature. :)
+		Fehlerkorrekturen
+			- Ein Problem mit Gegenstandsbewertungen in Tooltips, das die Tooltips an vielen Stellen kaputt gemacht hat, wurde behoben.
+			- Die Gegenstandsbewertungen stehen für viele Gegenstände nicht mehr zur Verfügung.
+				Gegenstände, die einen Basisgegenstand haben, und einen zufälligen Wert bekommen, können nicht bewertet werden.
+				Beispiel dazu: "Azuritring der Ausdauer". Bei diesem Gegenstand handelt es sich um den Basisgegenstand "Azuritring", den es in vielen verschiedenen Varianten geben kann.
+				Azuritring der Ausdauer (mit Ausdauer), Azuritring der Eule (mit Int und Wille), Azuritring des Affen (mit Beweglichkeit) etc. pp.
+				Heißt ein Gegenstand also "xyz der/des irgendwas", dann ist vermutlich keine Bewertung möglich.
+				Daran wird sich auch vorerst nichts mehr ändern. Ich stecke keine Weitere Arbeit mehr in dieses Feature. :)
 
 
 -------------------------------------------------------------------------------------------------------	
