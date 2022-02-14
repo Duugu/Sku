@@ -4,12 +4,12 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 *Aktualisiert:* <br>
 [Sku 23.22](https://github.com/Duugu/Sku/releases/download/r23.22/Sku-r23.22-bcc.zip) <br>
+[Sku-Maus Skript 1.1](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUFHgcnUeHJk9kABQ?e=vGcmMO) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
-[Sku-Maus Autohotkey-Skript 2](https://1drv.ms/u/s!Aqgp3J_s6MM7iKQcVpcR3IBws7QRuQ?e=GMli2f) <br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 
 # Bug- und Todo-Liste
@@ -17,6 +17,35 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Sku-Maus Skript Version 1.1
+
+### Funktionsweise des neuen Sku-Maus Skripts
+
+*1. Was macht das Skript?*
+
+Das Skript hat zwei Modi: "Login" und "Spielen", zwischen denen du mit ALT + F1 umschalten kannst.<br>
+Im Modus "Login" kannst du über ein Audio-Menü auf der Charakterauswahl-Seite von WoW Chars auswählen und mit diesen die Spielwelt betreten, neue Chars erstellen, zu einem anderen Server wechseln oder Chars löschen.<br>
+Im Modus "Spielen" kannst du über die Tasten NUMMERNBLOCK 7-8 zwischen drei Kameraperspektiven im Spiel umschalten und gleichzeitig einen Rechtsklick im Spiel durchführen. Diese Funktion dient dem Plündern im Spiel.<br>
+
+*2. Verwendung*
+
+Du startest das Skript indem du die Datei wow-menu.ahk ausführst.<br>
+Das Skript startet im Modus "Login". Es wird erst aktiv, wenn du WoW gestartet hast und das WoW-Fenster den Fokus bekommt.<br>
+Dann versucht es die Charauswahlseite zu erkennen, bzw. es warte so lange, bist du in WoW angemeldet bist und die Charakterauswahlseite geladen ist. Solange das Skript irgendeine Erkennung durchführt oder wartet, hörst du einen Sound. Der Sound bedeutet, dass du warten musst.<br>
+Achtung: Drücke keine Taste, wechsel nicht das Fenster und mach keine anderen Dinge solange der Sound läuft. Niemals. Nirgendwo im Menü. Selbst dann nicht, wenn sonst die Welt untergeht. Hebe deine Hände in die Luft, solange der Sound läuft.<br>
+Sobald du auf der Charakterauswahlseite angekommen bist, öffnet sich das Audio-Menü. Es sagt "Hauptmenü". Du kannst im Menü nach rechts gehen, und die einzelnen Optionen verwenden.<br>
+Wenn du dich mit einem Char einloggen möchtest, musst du diesen erst auswählen und dich dann mit dem ausgewählen Char einloggen.<br>
+Charkternamen werden dabei nicht erkannt oder vorgelesen. Dir wird nur "1, 2, 3 bis 10" für die Charakterplätze vorgelesen. Was sich für ein Char auf dem jeweiligen Platz befindet musst du dir selbst notieren.<br>
+Neu erstellte Chars landen immer auf dem nächsten freien Platz. Wenn du also schon 3 Chars hast, und einen neuen erstellst, dann ist dieser auf Platz 4.<br>
+Nach dem Einloggen schaltet das Skript automatisch auf "Spielen". Beim Ausloggen musst du mit ALT + F1 selbst wieder auf "Login" umschalten, um einen anderen Char auswählen zu können.
+
+*3. Voraussetzungen:*
+
+- Das Skript besteht aus einer Skript-Datei namens "wow-menu.ahk" und einem Ordner namens "soundfiles". Skript und Ordner müssen sich im selben Windows-Ordner befinden. In welchem Ordner sie sind, ist egal. Du kannst auch beides auf deinen Desktop legen.
+- Das Skript funktioniert nur unter Windows, nur mit WoW TBC und nur mit dem deutschen WoW-Client.
+- Das Skript erfordert, dass du WoW im Vollbildmodus spielst. (Das ist standardmäßig so.)
+- Das Skript erfordert, dass du in WoW dieselbe Auflösung wie in Windows verwendest (das ist standardmäßig so).
 
 ## Änderungen in Version 23.22
 
