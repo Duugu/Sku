@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.22](https://github.com/Duugu/Sku/releases/download/r23.22/Sku-r23.22-bcc.zip) <br>
-[Sku-Maus Skript 1.1](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUFHgcnUeHJk9kABQ?e=vGcmMO) <br>
+[Sku-Maus Skript 1.2](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUGn1fK3YbvDKRhdw?e=hYHvav) <br>
 
 *Nicht aktualisiert:*<br>
+[Sku 23.22](https://github.com/Duugu/Sku/releases/download/r23.22/Sku-r23.22-bcc.zip) <br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
@@ -17,6 +17,12 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Sku-Maus Skript Version 1.2
+
+- Das Skript kann jetzt mit der Tastenkombination ALT + ESC komplett beendet werden.
+- Das Skript beendet jetzt sämtliche laufenden Aktivitäten (Sound ist zu hören) im Login-Modus, wenn das WoW-Fenster den Fokus verliert. Zusätzlich wechselt es dann automatisch zum Spiel-Modus.
+- Das Skript blockiert jetzt nicht mehr die Pfeiltasten, Enter und Escape, wenn das WoW-Fenster nicht im Fokus ist.
 
 ## Sku-Maus Skript Version 1.1
 
