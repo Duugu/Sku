@@ -118,7 +118,7 @@ SkuChat.defaults = {
 	WowTtsVoice = 1,
 	WowTtsSpeed = 3,
 	WowTtsVolume = 50,
-	autoPlayPartyChat = false,
+	autoPlayPartyChat = true,
 	autoPlayGuildChat = false,
 	autoPlayTellChat = false,
 }

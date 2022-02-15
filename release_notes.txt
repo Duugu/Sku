@@ -4,6 +4,18 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.23
+
+	SkuChat
+		Neuerungen
+			- Das automatische Vorlesen des Gruppenchats ist jetzt bei neuen Profilen/Chars standardmäßig aktiviert.
+
+	SkuOptions
+		Neuerungen
+			- In der linken oberen Bildschirmecke wird jetzt ein winziges blaues Quadrat angezeigt. Das ist kein Fehler. Es dient dazu, dass das Sku-Maus Skript die Spielwelt erkennen kann.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.22
 
 	SkuCore

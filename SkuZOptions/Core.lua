@@ -1780,6 +1780,20 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 			oDCFAddMessage = DEFAULT_CHAT_FRAME.AddMessage
 			DEFAULT_CHAT_FRAME.AddMessage = nDCFAddMessage
 		end
+
+		local tWidget = _G["SkuSkriptRecognizer"]
+		if not tWidget then
+			tWidget = CreateFrame("Frame", "SkuSkriptRecognizer", _G["UIParent"])
+			tWidget:SetFrameStrata("TOOLTIP")
+			tWidget:SetFrameLevel(10000)
+			tWidget:SetWidth(5)  
+			tWidget:SetHeight(5) 
+			local tex = tWidget:CreateTexture(nil, "OVERLAY")
+			tex:SetAllPoints()
+			tex:SetColorTexture(0, 0, 1, 1)
+			tWidget:SetPoint("TOPLEFT")
+			tWidget:Show()
+		end
 	end
 end
 
