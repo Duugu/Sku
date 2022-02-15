@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku-Maus Skript 1.2](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUGn1fK3YbvDKRhdw?e=hYHvav) <br>
+[Sku-Maus Skript 1.3](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUKsyJG-IXTkaKRNg?e=HvyeLZ) <br>
+[Sku 23.23](https://github.com/Duugu/Sku/releases/download/r23.23/Sku-r23.23-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
-[Sku 23.22](https://github.com/Duugu/Sku/releases/download/r23.22/Sku-r23.22-bcc.zip) <br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
@@ -17,6 +17,22 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Sku-Maus Skript Version 1.3
+
+- Es gibt eine neue Ausgabe bzw. einen dritten Modus: "Pausiert". Dieser tritt immer dann in Aktion, wenn das WoW-Fenster nicht den Fokus hat.
+- Das Skript erkennt jetzt immer automatisch den passenden Modus ("Login", "Spielen", "Pausiert"). STRG + F1 zum Umschalten des Modus ist zwar noch möglich, sollte aber nicht mehr notwendig sein. (Du benötigst Sku 23.23 für diese Funktion.)
+- Die Lautstärke des "laden"-Sounds wurde verringert.
+
+## Änderungen in Version 23.23
+
+### SkuChat
+*Neuerungen*
+- Das automatische Vorlesen des Gruppenchats ist jetzt bei neuen Profilen/Chars standardmäßig aktiviert.
+
+### SkuOptions
+*Neuerungen*
+- In der linken oberen Bildschirmecke wird jetzt ein winziges blaues Quadrat angezeigt. Das ist kein Fehler. Es dient dazu, dass das Sku-Maus Skript die Spielwelt erkennen kann.
 
 ## Sku-Maus Skript Version 1.2
 
