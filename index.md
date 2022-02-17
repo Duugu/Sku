@@ -3,8 +3,9 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku-Maus Skript 1.3](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUKsyJG-IXTkaKRNg?e=HvyeLZ) <br>
-[Sku 23.23](https://github.com/Duugu/Sku/releases/download/r23.23/Sku-r23.23-bcc.zip) <br>
+[Sku-Maus Skript 1.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUOiVwKm1TTezg-cw?e=F3n1vt) <br>
+[Sku 23.24](https://github.com/Duugu/Sku/releases/download/r23.24/Sku-r23.24-bcc.zip) <br>
+[SkuAudioData 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [SkuAudioData 29](https://github.com/Duugu/SkuAudioData/releases/download/r29/SkuAudioData-r29-bcc.zip) <br>
@@ -17,6 +18,31 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Sku-Maus Skript Version 1.4
+
+- Das WoW-Forum wird jetzt nicht mehr fälschlicherweise als Login-Seite des Spiels erkannt.
+
+## Sku-Addon Version 23.24
+
+### SkuChat
+*Neuerungen*
+- Das automatische Vorlesen des Gruppenchats ist jetzt um eine Option zum automatischen Vorlesen von Chatnachrichten von Kreaturen (NPCs, Mobs, Bosse etc.) erweitert (standardmäßig deaktiviert).<br>
+  Die Option liest alles vor was von Kreaturen kommt - "Sagen", "Schreien", "Flüstern", "Emote".
+
+### SkuAuras
+*Neuerungen*
+- Es gibt diverse neue Werte für Einheiten: gruppenmitglied 0-4, fokus, ziel deines ziels, ziel deines fokus, ziel von gruppenmitglied 0-4<br>
+  Damit kannst du zum Beispiel testen, ob eine Quell- oder Zieleinheit eines Ereignisses dem Ziel deines Ziels entspricht.
+- Es gibt eine neue Bedingung: "ziel deines ziels". Damit kannst du testen, ob das Ziel deines Ziels einer bestimmten Einheit entspricht (z. B. du selbst, beim Tanken).
+- Es gibt drei neue Sounds von Nils für Auren: "aura sound hinweis 25" bis "aura sound hinweis 27". Dafür ist SkuAudioData 30 erforderlich.
+
+*Fehlerkorrekturen*
+- Das Aktivieren und Deaktivieren von Auren funktioniert jetzt auch dann korrekt, wenn die Liste der Auren gefiltert ist.
+
+### SkuOptions
+*Fehlerkorrekturen*
+- Die Übersichtsseite verursacht jetzt keinen Fehler mehr, wenn sich Gildenmitgliedern in unbekannten Zonen aufhalten.
 
 ## Sku-Maus Skript Version 1.3
 
