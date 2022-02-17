@@ -625,6 +625,9 @@ function SkuOptions:UpdateOverviewText()
 	local tTmpText = ""
 	for x = 1, GetNumGuildMembers() do
 		local name, rankName, rankIndex, level, classDisplayName, zone, publicNote, officerNote, isOnline, status, class, achievementPoints, achievementRank, isMobile, canSoR, repStanding, GUID = GetGuildRosterInfo(x)
+		if not zone then
+			zone = "unbekannt"
+		end
 		if string.find(name,"-") then
 			name = string.sub(name, 1, string.find(name,"-") - 1)
 		end

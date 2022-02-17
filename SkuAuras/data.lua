@@ -412,6 +412,9 @@ local tOutputSoundFiles = {
    ["sound-notification22"] = L["aura;sound"].."#"..L["notification"].." 22",
    ["sound-notification23"] = L["aura;sound"].."#"..L["notification"].." 23",
    ["sound-notification24"] = L["aura;sound"].."#"..L["notification"].." 24",
+   ["sound-notification25"] = L["aura;sound"].."#"..L["notification"].." 25",
+   ["sound-notification26"] = L["aura;sound"].."#"..L["notification"].." 26",
+   ["sound-notification27"] = L["aura;sound"].."#"..L["notification"].." 27",
 }
 for tOutputString, tFriendlyName in pairs(tOutputSoundFiles) do
    SkuAuras.outputs[tOutputString] = {
@@ -602,21 +605,83 @@ SkuAuras.valuesDefault = {
       },
    --destUnitId
       ["target"] = {
-         tooltip = "Reagiert auf ein Ereignis, das für dein aktuelles Ziel aufgetreten ist. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausgelaufen ist",
-         friendlyName = "target",
+         tooltip = "dein aktuelles Ziel. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausgelaufen ist",
+         friendlyName = "dein ziel",
       },
       ["player"] = {
-         tooltip = "Reagiert auf ein Ereignis, das für dich selbst aufgetreten ist. Beispiel: Ein Buff, der auf dich gezaubert wurde",
+         tooltip = "du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde",
          friendlyName = "selbst",
       },
+      ["focus"] = {
+         tooltip = "dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde",
+         friendlyName = "fokus",
+      },
       ["party"] = {
-         tooltip = "Reagiert auf ein Ereignis, das für ein Gruppenmitglied aufgetreten ist. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist",
+         tooltip = "ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist",
          friendlyName = "gruppenmitglied",
       },
+      ["party0"] = {
+         tooltip = "Gruppenmitglied 0 (du).",
+         friendlyName = "gruppenmitglied 0",
+      },      
+      ["party1"] = {
+         tooltip = "Gruppenmitglied 1.",
+         friendlyName = "gruppenmitglied 1",
+      },      
+      ["party2"] = {
+         tooltip = "Gruppenmitglied 2.",
+         friendlyName = "gruppenmitglied 2",
+      },      
+      ["party3"] = {
+         tooltip = "Gruppenmitglied 3.",
+         friendlyName = "gruppenmitglied 3",
+      },      
+      ["party4"] = {
+         tooltip = "Gruppenmitglied 4.",
+         friendlyName = "gruppenmitglied 4",
+      },      
       ["all"] = {
-         tooltip = "Reagiert auf ein Ereignis, dass für eine beliebige Einheit aufgetreten ist. Beispiel: Irgendein Mob stirbt",
+         tooltip = "eine beliebige Einheit. Beispiel: Irgendein Mob stirbt",
          friendlyName = "alle",
       },
+
+
+      ["targettarget"] = {
+         tooltip = "ziel deines Ziels",
+         friendlyName = "ziel deines ziels",
+      },
+      ["focustarget"] = {
+         tooltip = "ziel deines deines fokus",
+         friendlyName = "ziel deines fokus",
+      },
+      ["party0target"] = {
+         tooltip = "ziel von Gruppenmitglied 0 (du).",
+         friendlyName = "ziel von gruppenmitglied 0",
+      },      
+      ["party1target"] = {
+         tooltip = "ziel von Gruppenmitglied 1.",
+         friendlyName = "ziel von gruppenmitglied 1",
+      },      
+      ["party2target"] = {
+         tooltip = "ziel von Gruppenmitglied 2.",
+         friendlyName = "ziel von gruppenmitglied 2",
+      },      
+      ["party3target"] = {
+         tooltip = "ziel von Gruppenmitglied 3.",
+         friendlyName = "ziel von gruppenmitglied 3",
+      },      
+      ["party4target"] = {
+         tooltip = "ziel von Gruppenmitglied 4.",
+         friendlyName = "ziel von gruppenmitglied 4",
+      },      
+
+
+
+
+
+
+
+
    --class
       ["Warrior"] = {
          tooltip = "Reagiert, wenn die Zieleinheit die Klasse Krieger hat",
@@ -852,7 +917,7 @@ SkuAuras.attributes = {
       },
    },
    destUnitId = {
-      tooltip = "Die Ziel-Einheit, für die die Aura ausgelöst werden soll",
+      tooltip = "Die Ziel-Einheit, bei der die Aura ausgelöst werden soll",
       friendlyName = "ziel",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
@@ -892,8 +957,79 @@ SkuAuras.attributes = {
          "player",
          "party",
          "all",
+         "focus",
+         "party0",
+         "party1",
+         "party2",
+         "party3",
+         "party4",
+         "targettarget",
+         "focustarget",
+         "party0target",
+         "party1target",
+         "party2target",
+         "party3target",
+         "party4target",
+         
       },
    },
+   targetTargetUnitId = {
+      tooltip = "Die Einheit des Ziels deines Ziels",
+      friendlyName = "ziel deines ziels",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("    ","SkuAuras.attributes.targetTargetUnitId.evaluate", aEventData.targetTargetUnitId)
+         if aValue == "all" then
+            return true
+         end
+         if aEventData.targetTargetUnitId then
+            local tEvaluation = false
+            for x = 1, #aEventData.targetTargetUnitId do
+               if aValue == "all" then
+                  return true
+               elseif aValue == "party" then
+                  if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "player") == true then
+                     tEvaluation = true
+                  end
+                  for x = 0, 4 do 
+                     if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "party"..x) == true then
+                        tEvaluation = true
+                     end
+                  end
+                  for x = 1, MAX_RAID_MEMBERS do 
+                     if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "raid"..x) == true then
+                        tEvaluation = true
+                     end
+                  end
+               else
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, aValue)
+               end
+            end
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = {
+         "target",
+         "player",
+         "party",
+         "all",
+         "focus",
+         "party0",
+         "party1",
+         "party2",
+         "party3",
+         "party4",
+         "targettarget",
+         "focustarget",
+         "party0target",
+         "party1target",
+         "party2target",
+         "party3target",
+         "party4target",
+         
+      },
+   },   
    pressedKey = {
       tooltip = "Welche Taste das Ereignis ausgelöst hat",
       friendlyName = "Taste",
@@ -948,7 +1084,7 @@ SkuAuras.attributes = {
       },
    },
    sourceUnitId = {
-      tooltip = "Die Quell Einheit, für die die Aura ausgelöst werden soll",
+      tooltip = "Die Quell Einheit, bei der die Aura ausgelöst werden soll",
       friendlyName = "Quelle",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
@@ -992,6 +1128,20 @@ SkuAuras.attributes = {
          "player",
          "party",
          "all",
+         "focus",
+         "party0",
+         "party1",
+         "party2",
+         "party3",
+         "party4",
+         "targettarget",
+         "focustarget",
+         "party0target",
+         "party1target",
+         "party2target",
+         "party3target",
+         "party4target",
+         
       },
    },
    event = {
@@ -1834,6 +1984,7 @@ SkuAuras.Types = {
       attributes = {
          "action",
          "destUnitId",
+         "targetTargetUnitId",
          "sourceUnitId",
          "event",
          "unitPowerPlayer",

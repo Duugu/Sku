@@ -107,8 +107,19 @@ SkuChat.options = {
 				return SkuOptions.db.profile[MODULE_NAME].autoPlayTellChat
 			end
 		},
+		autoPlayCreatureChat = {
+			order = 6,
+			name = "Chat von kreaturen automatisch lesen",
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].autoPlayCreatureChat = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].autoPlayCreatureChat
+			end
+		},
 	},
-
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -121,6 +132,7 @@ SkuChat.defaults = {
 	autoPlayPartyChat = true,
 	autoPlayGuildChat = false,
 	autoPlayTellChat = false,
+	autoPlayCreatureChat = false,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------

@@ -178,6 +178,10 @@ end
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs) -- for strings with lookup in string index
 	--print(aString)
+	if not aString then
+		return
+	end
+	
 	local tString = ""
 	if aSpell == true then
 		aString = string.lower(aString)

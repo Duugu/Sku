@@ -4,6 +4,29 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.24
+
+	SkuChat
+		Neuerungen
+			- Das automatische Vorlesen des Gruppenchats ist jetzt um eine Option zum automatischen Vorlesen von Chatnachrichten von Kreaturen (NPCs, Mobs, Bosse etc.) erweitert (standardmäßig deaktiviert).
+			  Die Option liest alles vor was von Kreaturen kommt - "Sagen", "Schreien", "Flüstern", "Emote".
+
+	SkuAuras
+		Neuerungen
+			- Es gibt diverse neue Werte für Einheiten: gruppenmitglied 0-4, fokus, ziel deines ziels, ziel deines fokus, ziel von gruppenmitglied 0-4
+			  Damit kannst du zum Beispiel testen, ob eine Quell- oder Zieleinheit eines Ereignisses dem Ziel deines Ziels entspricht.
+			- Es gibt eine neue Bedingung: "ziel deines ziels". Damit kannst du testen, ob das Ziel deines Ziels einer bestimmten Einheit entspricht (z. B. du selbst, beim Tanken).
+			- Es gibt drei neue Sounds von Nils für Auren: "aura sound hinweis 25" bis "aura sound hinweis 27". Dafür ist SkuAudioData 30 erforderlich.
+
+		Fehlerkorrekturen
+			- Das Aktivieren und Deaktivieren von Auren funktioniert jetzt auch dann korrekt, wenn die Liste der Auren gefiltert ist.
+
+	SkuOptions
+		Fehlerkorrekturen
+			- Die Übersichtsseite verursacht jetzt keinen Fehler mehr, wenn sich Gildenmitgliedern in unbekannten Zonen aufhalten.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.23
 
 	SkuChat

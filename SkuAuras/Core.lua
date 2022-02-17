@@ -100,17 +100,20 @@ function SkuAuras:OnEnable()
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
 		ttime = ttime + time
-		if ttime < 0.1 then return end
+		if ttime < 0.05 then return end
 
 		SkuAuras:COOLDOWN_TICKER()
 		SkuAuras:UNIT_TICKER("player")
-		SkuAuras:UNIT_TICKER("pet")
-		SkuAuras:UNIT_TICKER("target")
 		SkuAuras:UNIT_TICKER("playertarget")
-		SkuAuras:UNIT_TICKER("pettarget")
+		SkuAuras:UNIT_TICKER("focus")
+		SkuAuras:UNIT_TICKER("focustarget")
+		SkuAuras:UNIT_TICKER("target")
 		SkuAuras:UNIT_TICKER("targettarget")
+		SkuAuras:UNIT_TICKER("pet")
+		SkuAuras:UNIT_TICKER("pettarget")
 		for x = 1, 4 do
 			SkuAuras:UNIT_TICKER("party"..x)
+			SkuAuras:UNIT_TICKER("party"..x.."target")
 		end
 		for x = 1, 40 do
 			SkuAuras:UNIT_TICKER("raid"..x)
@@ -388,36 +391,34 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 		SkuAuras.UnitRepo[tUnitId].unitPower = math.floor(UnitPower(tUnitId) / (UnitPowerMax(tUnitId) / 100))
 	end
 
-	if tUnitId == "player" or string.find(tUnitId, "party") or string.find(tUnitId, "raid") then
-		if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= UnitGUID(tUnitId.."target") then
-			SkuAuras.UnitRepo[tUnitId].unitTargetName = UnitGUID(tUnitId.."target")
+	if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= UnitGUID(tUnitId.."target") then
+		SkuAuras.UnitRepo[tUnitId].unitTargetName = UnitGUID(tUnitId.."target")
 
-			dprint("ooooooooooooooo target change for ", tUnitId)
-			dprint("changed to", UnitName(tUnitId.."target"))
-			if UnitName(tUnitId.."target") then
-				local tNewTargetUnitId = SkuAuras:GetBestUnitId(UnitName(tUnitId.."target"))
-				local tEventData = {
-					GetTime(),
-					"UNIT_TARGETCHANGE",
-					nil,
-					tUnitId,
-					UnitName(tUnitId),
-					nil,
-					nil,
-					tNewTargetUnitId,
-					UnitName(tUnitId.."target"),
-					nil,
-					nil,
-					nil,
-					nil,
-					nil,
-				}
-				tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth,		
-				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)
-			end
+		dprint("ooooooooooooooo target change for ", tUnitId)
+		dprint("changed to", UnitName(tUnitId.."target"))
+		if UnitName(tUnitId.."target") then
+			local tNewTargetUnitId = SkuAuras:GetBestUnitId(UnitName(tUnitId.."target"))
+			local tEventData = {
+				GetTime(),
+				"UNIT_TARGETCHANGE",
+				nil,
+				tUnitId,
+				UnitName(tUnitId),
+				nil,
+				nil,
+				tNewTargetUnitId,
+				UnitName(tUnitId.."target"),
+				nil,
+				nil,
+				nil,
+				nil,
+				nil,
+			}
+			tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth,		
+			SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)
 		end
-
 	end
+
 
 
 	if SkuAuras.UnitRepo[tUnitId].unitHealth ~= math.floor(UnitHealth(tUnitId) / (UnitHealthMax(tUnitId) / 100)) then
@@ -612,12 +613,17 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	--build non event related data to evaluate
 	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceName], true)
 	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destName], true)
-
 	if tDestinationUnitID and tDestinationUnitID[1] then
 		if tDestinationUnitID ~= "party0" then
 			tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID[1])
 		end
 	end
+
+	local tTargetTargetUnitId = {}
+	if UnitName("playertargettarget") then
+		tTargetTargetUnitId = SkuAuras:GetBestUnitId(UnitName("playertargettarget"), true)
+	end
+
 	if tSourceUnitID and tSourceUnitID[1] then
 		if tSourceUnitID ~= "party0" then
 			tSourceUnitIDCannAttack = UnitCanAttack("player", tSourceUnitID[1])
@@ -680,12 +686,12 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		dprint("dbuffListTarget", tEventData[38])
 		dprint("itemID", tEventData[40])
 		dprint("missType", tEventData[12])
-		dprint("tSourceUnitID", tSourceUnitID)
 		setmetatable(tSourceUnitID, SkuPrintMTWo)
-		dprint(tSourceUnitID)
-		dprint("tDestinationUnitID", tDestinationUnitID)
+		dprint("tSourceUnitID", tSourceUnitID)
 		setmetatable(tDestinationUnitID, SkuPrintMTWo)
-		dprint(tDestinationUnitID)
+		dprint("tDestinationUnitID", tDestinationUnitID)
+		setmetatable(tTargetTargetUnitId, SkuPrintMTWo)
+		dprint("tTargetTargetUnitId", tTargetTargetUnitId)
 		dprint("tSourceUnitIDCannAttack", tSourceUnitIDCannAttack)
 		dprint("tDestinationUnitIDCannAttack", tDestinationUnitIDCannAttack)
 		dprint("50 aKey", tEventData[50])
@@ -711,6 +717,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 				sourceUnitId = tSourceUnitID,
 				sourceName = tEventData[CleuBase.sourceName],
 				destUnitId = tDestinationUnitID,
+				targetTargetUnitId = tTargetTargetUnitId,
 				destName = tEventData[CleuBase.destName],
 				event = tEventData[CleuBase.subevent],
 				spellId = tEventData[CleuBase.spellId],

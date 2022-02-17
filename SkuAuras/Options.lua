@@ -536,10 +536,19 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 	tTypeItem.BuildChildren = function(self)
 		if self.parent.name == "Aktivierte" then
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Deaktivieren"}, SkuGenericMenuItem)
+			tNewMenuEntry.OnEnter = function(self)
+				self.selectTarget.targetAuraName = self.parent.name
+			end
 		else
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Aktivieren"}, SkuGenericMenuItem)
+			tNewMenuEntry.OnEnter = function(self)
+				self.selectTarget.targetAuraName = self.parent.name
+			end			
 		end
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Bearbeiten"}, SkuGenericMenuItem)
+		tNewMenuEntry.OnEnter = function(self)
+			self.selectTarget.targetAuraName = self.parent.name
+		end		
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.internalName = "action"
 		tNewMenuEntry.BuildChildren = function(self)
@@ -827,7 +836,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			dprint("OnAction Auren verwalten")
+			print("OnAction Auren verwalten", aValue, aName, self.targetAuraName)
 			if not self.targetAuraName then return end
 			if not SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] then return end
 			if aName == "Deaktivieren" or aName == "Aktivieren" then
