@@ -3,11 +3,11 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku-Maus Skript 1.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUOiVwKm1TTezg-cw?e=F3n1vt) <br>
-[Sku 23.24](https://github.com/Duugu/Sku/releases/download/r23.24/Sku-r23.24-bcc.zip) <br>
-[SkuAudioData 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
+[Sku 23.25](https://github.com/Duugu/Sku/releases/download/r23.25/Sku-r23.25-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
+[Sku-Maus Skript 1.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUOiVwKm1TTezg-cw?e=F3n1vt) <br>
+[SkuAudioData 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
@@ -17,6 +17,17 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 23.25
+
+### SkuAuras
+*Neuerungen*
+- Es gibt eine neue Bedingung namens "zauber nicht auf cd".
+- Es wurde ein Problem behoben, bei dem Bedingungen mit den Attributen "Eigene Ressource" oder "Eigene Gesundheit" im Zusammenhang mit einem Cooldown-Ende eines Zaubers zweimal augelöst wurden.
+
+### SkuQuest
+*Fehlerkorrekturen*
+- Die Quest "Von den Kristallen lernen" sollte jetzt in der Datenbank funktionierende Ziele haben.
 
 ## Sku-Maus Skript Version 1.4
 
