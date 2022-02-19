@@ -100,7 +100,7 @@ function SkuAuras:OnEnable()
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
 		ttime = ttime + time
-		if ttime < 0.05 then return end
+		--if ttime < 0.05 then return end
 
 		SkuAuras:COOLDOWN_TICKER()
 		SkuAuras:UNIT_TICKER("player")
@@ -354,6 +354,9 @@ function SkuAuras:SPELL_COOLDOWN_START(aEventData)
 					return
 				end
 
+				for x = 15, 100 do
+					aEventData[x] = nil
+				end
 
 				if SkuAuras.SpellCDRepo[aEventData[CleuBase.spellId]] then
 					dprint("STILL OLD THERE, TRIUGGER BEFORE NEW!!!!!!!!!!!!!!")
@@ -590,7 +593,7 @@ function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 	if aCustomEventData then
 		dprint("CLEU", aCustomEventData[2])
 	else
-		dprint("CLEU", tEventData[2])
+		dprint("---------- CLEU", tEventData[2])
 	end
 
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
@@ -630,15 +633,8 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		end
 	end
 
-	local tUnitID = "player"
-	if SkuAuras.UnitRepo[tUnitID] then
-		if not tEventData[35] then
-			tEventData[35] = SkuAuras.UnitRepo[tUnitID].unitHealth
-		end
-		if not tEventData[36] then
-			tEventData[36] = SkuAuras.UnitRepo[tUnitID].unitPower
-		end
-	end
+	tEventData[35] = math.floor(UnitHealth("player") / (UnitHealthMax("player") / 100))
+	tEventData[36] = math.floor(UnitPower("player") / (UnitPowerMax("player") / 100))
 
 	local tUnitID = "target"
 	local tBuffList = {}
@@ -704,8 +700,8 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
-		dprint("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+")
-		dprint("  ",tAuraName, tAuraData)
+		dprint(tEventData[2], "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+")
+		dprint("  ",tAuraName, tAuraData, tEventData[36])
 
 		if tAuraData.enabled == true then
 
@@ -831,13 +827,15 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			dprint("  ","OVERALL RESULT:", tOverallResult, "tHasApplicableAttributes", tHasApplicableAttributes)
 			dprint("  ","used", tAuraData.used)
 			dprint("  ","single", SkuAuras.actions[tAuraData.actions[1]].single)
+			dprint("  ","instant", SkuAuras.actions[tAuraData.actions[1]].instant)
 
 			if tAuraData.type == "if" then
 				if tOverallResult == true and tHasApplicableAttributes == true then
 					if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then
-						dprint("  ","== trigger:", #tAuraData.actions, tAuraData.actions[1])
+						dprint(" x x x x x  ","== trigger:", #tAuraData.actions, tAuraData.actions[1])
 						
 						--set aura to used
+						dprint("   USED = true")
 						tAuraData.used = true
 
 						for i, v in pairs(tAuraData.outputs) do
@@ -846,20 +844,21 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 								dprint("  ","output", i, v)
 
 								local tAction = tAuraData.actions[1]
-								if tAction == "notifyAudioSingle" then
+								if tAction == "notifyAudioSingle" or tAction == "notifyAudioSingleInstant" then
 									tAction = "notifyAudio"
 								end
 								if tAction == "notifyChatSingle" then
 									tAction = "notifyChat"
 								end
 
-								SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, v)
+								SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								tFirst = false
 							end
 						end
 					end
 				else
 					--set aura to unused
+					dprint("   USED = false")
 					tAuraData.used = false
 
 				end		
@@ -882,7 +881,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 								if tAction == "notifyChatSingle" then
 									tAction = "notifyChat"
 								end							
-								SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, v)
+								SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								tFirst = false
 							end
 						end

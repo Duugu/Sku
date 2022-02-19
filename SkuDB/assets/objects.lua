@@ -10432,6 +10432,7 @@ SkuDB.objectLookup = {
    [181768] = "Versiegelter Foliant",
    [181770] = "Verderbter Kristall",
    [181771] = "Verderbter Kristall",
+   [181779] = "Kristallprobe der Absturzstelle",
    [181798] = "Teufelseisentruhe",
    [181800] = "Schwere Teufelseisentruhe",
    [181802] = "Adamantitbeschlagene Truhe",

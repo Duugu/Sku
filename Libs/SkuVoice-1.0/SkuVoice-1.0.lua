@@ -176,8 +176,8 @@ function SkuVoice:StopAllOutputs()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs) -- for strings with lookup in string index
-	--print(aString)
+function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant) -- for strings with lookup in string index
+	--print(aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
 	if not aString then
 		return
 	end
@@ -396,17 +396,29 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 						end]]
 					end
 
-					table.insert(mSkuVoiceQueue, {
-						["text"] = tStrings[x],
-						["file"] = tFile,
-						["wait"] = aWait,
-						["length"] = tLength,
-						["endTimestamp"] = 0,
-						["soundHandle"] = nil,
-						["doNotOverwrite"] = aDoNotOverwrite or false,
-						["soundChannel"] = aSoundChannel,
-					})
-
+					if aInstant == true then
+						table.insert(mSkuVoiceQueue, 0 + x, {
+							["text"] = tStrings[x],
+							["file"] = tFile,
+							["wait"] = aWait,
+							["length"] = tLength,
+							["endTimestamp"] = 0,
+							["soundHandle"] = nil,
+							["doNotOverwrite"] = aDoNotOverwrite or false,
+							["soundChannel"] = aSoundChannel,
+						})
+					else
+						table.insert(mSkuVoiceQueue, {
+							["text"] = tStrings[x],
+							["file"] = tFile,
+							["wait"] = aWait,
+							["length"] = tLength,
+							["endTimestamp"] = 0,
+							["soundHandle"] = nil,
+							["doNotOverwrite"] = aDoNotOverwrite or false,
+							["soundChannel"] = aSoundChannel,
+						})
+					end
 				end
 			end
 		end

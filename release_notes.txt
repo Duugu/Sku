@@ -4,6 +4,19 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 23.25
+
+	SkuAuras
+		Neuerungen
+			- Es gibt eine neue Bedingung namens "zauber nicht auf cd".
+			- Es wurde ein Problem behoben, bei dem Bedingungen mit den Attributen "Eigene Ressource" oder "Eigene Gesundheit" im Zusammenhang mit einem Cooldown-Ende eines Zaubers zweimal augelöst wurden.
+
+	SkuQuest
+		Fehlerkorrekturen
+			- Die Quest "Von den Kristallen lernen" sollte jetzt in der Datenbank funktionierende Ziele haben.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 23.24
 
 	SkuChat

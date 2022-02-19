@@ -127,6 +127,17 @@ SkuAuras.actions = {
       end,
       single = true,
    },
+   --[[
+   notifyAudioSingleInstant = {
+      tooltip = "Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.",
+      friendlyName = "audio ausgabe einmal sofort",
+      func = function(tAuraName, tEvaluateData)
+      	dprint("    ","action func audio benachrichtigung SingleInstant")
+      end,
+      single = true,
+      instant = true,
+   },
+   ]]
    notifyChatSingle = {
       tooltip = "Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.",
       friendlyName = "chat ausgabe einmal",
@@ -144,8 +155,8 @@ SkuAuras.outputs = {
       tooltip = "Der Name des auslösenden Ereignisses der Aura",
       friendlyName = "ereignis",
       functs = {
-         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
-            dprint("    ","SkuAuras.outputs.event", tEvaluateData.event)
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
+            print("    ","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
             if not tEvaluateData.event then return end
             if not SkuAuras.values[tEvaluateData.event] then return end
             if SkuAuras.values[tEvaluateData.event].friendlyNameShort then
@@ -912,6 +923,7 @@ SkuAuras.attributes = {
       values = {
          "notifyAudio",
          "notifyAudioSingle",
+         --"notifyAudioSingleInstant",
          "notifyChat",
          "notifyChatSingle",
       },
@@ -1498,6 +1510,25 @@ SkuAuras.attributes = {
 
 
 
+   spellNameNotOnCd = {
+      tooltip = "Ob ein Zauber gerade nicht auf CD ist",
+      friendlyName = "zauber nicht auf cd",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("    ","SkuAuras.attributes.spellNameNotOnCd.evaluate", aValue)
+         if aEventData.spellsNamesOnCd then
+            dprint("aEventData.spellsNamesOnCd")
+            setmetatable(aEventData.spellsNamesOnCd, SkuPrintMTWo)
+            dprint(aEventData.spellsNamesOnCd)
+      
+            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellsNamesOnCd[aValue], aOperator, aValue)
+            if tEvaluation == false then
+               return true
+            end
+         end
+      end,
+      values = {
+      },      
+   },
 
 
    spellName = {
@@ -1991,6 +2022,7 @@ SkuAuras.Types = {
          "unitHealthPlayer",
          "spellId",
          "spellNameOnCd",
+         "spellNameNotOnCd",
          "spellName",
          "buffListTarget",
          "debuffListTarget",
@@ -2019,6 +2051,7 @@ SkuAuras.Types = {
          "unitHealthPlayer",
          "spellId",
          "spellNameOnCd",
+         "spellNameNotOnCd",
          "spellName",
          "buffListTarget",
          "debuffListTarget",
