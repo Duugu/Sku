@@ -6,6 +6,54 @@ SkuAuras.DefaultAuras = {
 
 SkuAuras.AuraSets = {
 
+   warriorDef = {
+      tooltip = {
+         "Aura set für Schutz Krieger\r\n", 
+         "Tank Aura:\r\nWenn dein Ziel ein Gruppenmitglied im Target hat, gibt es einen Sound und das Gruppenmitglied wird angesagt.", 
+         --"Eigene Buffs und Debuffs:\r\n- Inneres feuer verloren\r\n- Geschwächte Seele verloren", 
+         --"Buffs und Debuffs Gruppe:\r\n- Machtwort Seelenstärke verloren\r\n- Schattenschutz verloren", 
+         --"Eigene Cooldowns:\r\n- Verblassen\r\n- Psychischer Schrei\r\n- Stille\r\n- Furchtzauberschutz\r\n- Schattengeist", 
+         --"Debuffs auf Gegner:\r\n- Untote fesseln ausgelaufen",
+      },
+      friendlyName = "Krieger Schutz",
+      auras = {
+         ["Wenn;ziel;gleich;gruppenmitglieder ohne dich;und;ereignis;gleich;Ziel änderung;und;Quelle;ungleich;gruppenmitglieder ohne dich;dann;audio ausgabe einmal;;und;ziel einheit;;und;sound;hinweis 12;"] = {
+            ["friendlyNameShort"] = "Dein Ziel greift ein Gruppenmitglied an",
+            ["enabled"] = true,
+            ["type"] = "if",
+            ["attributes"] = {
+               ["destUnitId"] = {
+                  {
+                     "is", -- [1]
+                     "partyWoPlayer", -- [2]
+                  }, -- [1]
+               },
+               ["event"] = {
+                  {
+                     "is", -- [1]
+                     "UNIT_TARGETCHANGE", -- [2]
+                  }, -- [1]
+               },
+               ["sourceUnitId"] = {
+                  {
+                     "isNot", -- [1]
+                     "partyWoPlayer", -- [2]
+                  }, -- [1]
+               },
+            },
+            ["used"] = false,
+            ["actions"] = {
+               "notifyAudioSingle", -- [1]
+            },
+            ["outputs"] = {
+               "output:sound-notification12", -- [1]
+               "output:destUnitId", -- [2]
+            },
+         },
+      },
+   },
+ 
+
    priestAll = {
       tooltip = {
          "Aura set für alle Priester\r\n", 

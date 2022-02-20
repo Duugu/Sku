@@ -104,16 +104,16 @@ function SkuAuras:OnEnable()
 
 		SkuAuras:COOLDOWN_TICKER()
 		SkuAuras:UNIT_TICKER("player")
-		SkuAuras:UNIT_TICKER("playertarget")
+		--SkuAuras:UNIT_TICKER("playertarget")
 		SkuAuras:UNIT_TICKER("focus")
-		SkuAuras:UNIT_TICKER("focustarget")
+		--SkuAuras:UNIT_TICKER("focustarget")
 		SkuAuras:UNIT_TICKER("target")
-		SkuAuras:UNIT_TICKER("targettarget")
+		--SkuAuras:UNIT_TICKER("targettarget")
 		SkuAuras:UNIT_TICKER("pet")
-		SkuAuras:UNIT_TICKER("pettarget")
+		--SkuAuras:UNIT_TICKER("pettarget")
 		for x = 1, 4 do
 			SkuAuras:UNIT_TICKER("party"..x)
-			SkuAuras:UNIT_TICKER("party"..x.."target")
+			--SkuAuras:UNIT_TICKER("party"..x.."target")
 		end
 		for x = 1, 40 do
 			SkuAuras:UNIT_TICKER("raid"..x)
@@ -316,13 +316,29 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 			end
 		end)
-		--[[
 		hooksecurefunc("UseAction", function(aSlot, aCheckCursor, aOnSelf) 
-			dprint("to implement UseAction", aSlot, aCheckCursor, aOnSelf) 
-
-
-
-
+			local actionType, id, subType = GetActionInfo(aSlot)
+			dprint("to implement UseAction", aSlot, aCheckCursor, aOnSelf, actionType, id, subType) 
+			if actionType == "item" then
+				local aEventData =  {
+					GetTime(),
+					"ITEM_USE",
+					nil,
+					nil,
+					UnitName("player"),
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+				}
+				aEventData[40] = id
+				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
+			end
 		end)
 		hooksecurefunc("RunMacro", function(aMacroIdOrName) 
 			dprint("to implement RunMacro", aMacroIdOrName) 
@@ -339,7 +355,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 
 
 		end)
-		]]
+		
 		tItemHook = true
 	end
 end
@@ -473,7 +489,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:COOLDOWN_TICKER()
 	for spellId, cooldownData in pairs(SkuAuras.SpellCDRepo) do
-		dprint("COOLDOWN_TICKER", cooldownData.spellname, GetTime() - cooldownData.start, cooldownData.duration)
+		--dprint("COOLDOWN_TICKER", cooldownData.spellname, GetTime() - cooldownData.start, cooldownData.duration)
 		if (GetTime() - cooldownData.start) >= cooldownData.duration then
 			cooldownData.subevent = "SPELL_COOLDOWN_END"
 			SkuAuras:SPELL_COOLDOWN_END(cooldownData.eventData)
@@ -591,9 +607,9 @@ end
 function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 	local tEventData = aCustomEventData or {CombatLogGetCurrentEventInfo()}
 	if aCustomEventData then
-		dprint("CLEU", aCustomEventData[2])
+		--dprint("CLEU", aCustomEventData[2])
 	else
-		dprint("---------- CLEU", tEventData[2])
+		--dprint("---------- CLEU", tEventData[2])
 	end
 
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
@@ -654,7 +670,6 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	end
 	tEventData[38] = tdebuffList
 
-
 	if tEventData[2] ~= "KEY_PRESS" then
 		dprint("---------------------------------------------------------------------")
 		dprint("--NEW EVENT:", tEventData[2] )
@@ -678,7 +693,9 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		dprint(" 24", tEventData[24])	
 		dprint("unitHealthPlayer", tEventData[35])
 		dprint("unitPowerPlayer", tEventData[36])
+		setmetatable(tEventData[37], SkuPrintMTWo)
 		dprint("buffListTarget", tEventData[37])
+		setmetatable(tEventData[38], SkuPrintMTWo)
 		dprint("dbuffListTarget", tEventData[38])
 		dprint("itemID", tEventData[40])
 		dprint("missType", tEventData[12])
@@ -784,6 +801,25 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			end
 
 			tEvaluateData.class = nil
+
+			--add spell name and item name from condition values to data for output if there are no value from eventdata
+			local tAttributesWithSpellNameData = {
+				--["spellName"] = true,
+				["spellNameOnCd"] = true,
+				["buffListTarget"] = true,
+				["debuffListTarget"] = true,
+			}
+			local tAttributesWithItemNameData = {
+				["itemName"] = true,
+			}
+			for tAttributeName, tAttributeValue in pairs(tAuraData.attributes) do
+				if tAttributesWithSpellNameData[tAttributeName] then
+					tEvaluateData.spellName = SkuAuras:RemoveTags(tAttributeValue[1][2])
+				end
+				if tAttributesWithItemNameData[tAttributeName] then
+					--tEvaluateData.itemName = SkuAuras:RemoveTags(tAttributeValue[1][2])
+				end
+			end
 
 			--evaluate attributes
 			local tSingleBuffListTargetValue

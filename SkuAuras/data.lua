@@ -64,7 +64,7 @@ local function KeyValuesHelper()
 end
 
 ------------------------------------------------------------------------------------------------------------------
-local function RemoveTags(aValue)
+function SkuAuras:RemoveTags(aValue)
    if not aValue then
       return
    end
@@ -627,9 +627,13 @@ SkuAuras.valuesDefault = {
          tooltip = "dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde",
          friendlyName = "fokus",
       },
+      ["partyWoPlayer"] = {
+         tooltip = "ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist",
+         friendlyName = "gruppenmitglieder ohne dich",
+      },
       ["party"] = {
          tooltip = "ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist",
-         friendlyName = "gruppenmitglied",
+         friendlyName = "gruppenmitglieder",
       },
       ["party0"] = {
          tooltip = "Gruppenmitglied 0 (du).",
@@ -930,33 +934,58 @@ SkuAuras.attributes = {
    },
    destUnitId = {
       tooltip = "Die Ziel-Einheit, bei der die Aura ausgelöst werden soll",
-      friendlyName = "ziel",
+      friendlyName = "ziel (L)",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
-         if aValue == "all" then
-            return true
+         if aOperator == "is" then
+            aOperator = "contains"
+         elseif aOperator == "isNot" then
+            aOperator = "containsNot"
          end
+   
          if aEventData.destUnitId then
+
+            if aValue == "all" then
+               return true
+            end
             local tEvaluation = false
-            for x = 1, #aEventData.destUnitId do
-               if aValue == "all" then
-                  return true
-               elseif aValue == "party" then
-                  if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "player") == true then
-                     tEvaluation = true
-                  end
-                  for x = 0, 4 do 
-                     if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "party"..x) == true then
-                        tEvaluation = true
-                     end
-                  end
-                  for x = 1, MAX_RAID_MEMBERS do 
-                     if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "raid"..x) == true then
-                        tEvaluation = true
-                     end
-                  end
+
+            if aOperator == "containsNot" or aOperator == "contains" then
+               
+               if aValue == "party" then
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, {"player", "party0", "party1", "party2", "party3", "party4"})
+               elseif aValue == "partyWoPlayer" then
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, {"party1", "party2", "party3", "party4"})
                else
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, aValue)
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, aValue)
+               end
+            else
+               for x = 1, #aEventData.destUnitId do
+                  if aValue == "all" then
+                     return true
+                  elseif aValue == "party" or aValue == "partyWoPlayer" then
+                     if aValue == "party" then
+                        if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "player") == true then
+                           tEvaluation = true
+                        end
+                     end
+                     local tStart = 0
+                     if aValue == "partyWoPlayer" then
+                        tStart = 1
+                     end
+                     for x = tStart, 4 do 
+                        if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "party"..x) == true then
+                           tEvaluation = true
+                        end
+                     end
+                     for x = 1, MAX_RAID_MEMBERS do 
+                        if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "raid"..x) == true then
+                           tEvaluation = true
+                        end
+                     end
+                  else
+                     tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, aValue)
+                  end
                end
             end
             if tEvaluation == true then
@@ -968,6 +997,7 @@ SkuAuras.attributes = {
          "target",
          "player",
          "party",
+         "partyWoPlayer",
          "all",
          "focus",
          "party0",
@@ -987,33 +1017,57 @@ SkuAuras.attributes = {
    },
    targetTargetUnitId = {
       tooltip = "Die Einheit des Ziels deines Ziels",
-      friendlyName = "ziel deines ziels",
+      friendlyName = "ziel deines ziels (L)",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.targetTargetUnitId.evaluate", aEventData.targetTargetUnitId)
-         if aValue == "all" then
-            return true
+         if aOperator == "is" then
+            aOperator = "contains"
+         elseif aOperator == "isNot" then
+            aOperator = "containsNot"
          end
+
          if aEventData.targetTargetUnitId then
+            if aValue == "all" then
+               return true
+            end
             local tEvaluation = false
-            for x = 1, #aEventData.targetTargetUnitId do
-               if aValue == "all" then
-                  return true
-               elseif aValue == "party" then
-                  if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "player") == true then
-                     tEvaluation = true
-                  end
-                  for x = 0, 4 do 
-                     if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "party"..x) == true then
-                        tEvaluation = true
-                     end
-                  end
-                  for x = 1, MAX_RAID_MEMBERS do 
-                     if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "raid"..x) == true then
-                        tEvaluation = true
-                     end
-                  end
+
+            if aOperator == "containsNot" or aOperator == "contains" then
+               
+               if aValue == "party" then
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId, aOperator, {"player", "party0", "party1", "party2", "party3", "party4"})
+               elseif aValue == "partyWoPlayer" then
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId, aOperator, {"party1", "party2", "party3", "party4"})
                else
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, aValue)
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId, aOperator, aValue)
+               end
+            else            
+               for x = 1, #aEventData.targetTargetUnitId do
+                  if aValue == "all" then
+                     return true
+                  elseif aValue == "party" then
+                     if aValue == "party" then
+                        if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "player") == true then
+                           tEvaluation = true
+                        end
+                     end
+                     local tStart = 0
+                     if aValue == "partyWoPlayer" then
+                        tStart = 1
+                     end
+                     for x = tStart, 4 do 
+                        if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "party"..x) == true then
+                           tEvaluation = true
+                        end
+                     end
+                     for x = 1, MAX_RAID_MEMBERS do 
+                        if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "raid"..x) == true then
+                           tEvaluation = true
+                        end
+                     end
+                  else
+                     tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, aValue)
+                  end
                end
             end
             if tEvaluation == true then
@@ -1025,6 +1079,7 @@ SkuAuras.attributes = {
          "target",
          "player",
          "party",
+         "partyWoPlayer",
          "all",
          "focus",
          "party0",
@@ -1097,9 +1152,15 @@ SkuAuras.attributes = {
    },
    sourceUnitId = {
       tooltip = "Die Quell Einheit, bei der die Aura ausgelöst werden soll",
-      friendlyName = "Quelle",
+      friendlyName = "Quelle (L)",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
+         if aOperator == "is" then
+            aOperator = "contains"
+         elseif aOperator == "isNot" then
+            aOperator = "containsNot"
+         end
+
          if aValue == "all" then
             return true
          end
@@ -1108,28 +1169,50 @@ SkuAuras.attributes = {
                aEventData.sourceUnitId = {aEventData.sourceUnitId}
             end
 
+            if aValue == "all" then
+               return true
+            end
             local tEvaluation = false
-            for x = 1, #aEventData.sourceUnitId do
-               if aValue == "all" then
-                  return true
-               elseif aValue == "party" then
-                  if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "player") == true then
-                     tEvaluation = true
-                  end
-                  for x = 0, 4 do 
-                     if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "party"..x) == true then
-                        tEvaluation = true
-                     end
-                  end
-                  for x = 1, MAX_RAID_MEMBERS do 
-                     if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "raid"..x) == true then
-                        tEvaluation = true
-                     end
-                  end
+
+            if aOperator == "containsNot" or aOperator == "contains" then
+               
+               if aValue == "party" then
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, {"player", "party0", "party1", "party2", "party3", "party4"})
+               elseif aValue == "partyWoPlayer" then
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, {"party1", "party2", "party3", "party4"})
                else
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, aValue)
+                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, aValue)
+               end
+
+
+            else
+               for x = 1, #aEventData.sourceUnitId do
+                  if aValue == "party" then
+                     if aValue == "party" then
+                        if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "player") == true then
+                           tEvaluation = true
+                        end
+                     end
+                     local tStart = 0
+                     if aValue == "partyWoPlayer" then
+                        tStart = 1
+                     end
+                     for x = tStart, 4 do 
+                        if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "party"..x) == true then
+                           tEvaluation = true
+                        end
+                     end
+                     for x = 1, MAX_RAID_MEMBERS do 
+                        if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "raid"..x) == true then
+                           tEvaluation = true
+                        end
+                     end
+                  else
+                     tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, aValue)
+                  end
                end
             end
+
             if tEvaluation == true then
                return true
             end
@@ -1139,6 +1222,7 @@ SkuAuras.attributes = {
          "target",
          "player",
          "party",
+         "partyWoPlayer",
          "all",
          "focus",
          "party0",
@@ -1490,15 +1574,17 @@ SkuAuras.attributes = {
 
    spellNameOnCd = {
       tooltip = "Ob ein Zauber gerade auf CD ist",
-      friendlyName = "zauber auf cd",
+      friendlyName = "zauber auf cd (L)",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.spellNameOnCd.evaluate", aValue)
+      	dprint("    ","SkuAuras.attributes.spellNameOnCd.evaluate", aEventData, aOperator, aValue)
+         if aOperator == "is" then
+            aOperator = "contains"
+         elseif aOperator == "isNot" then
+            aOperator = "containsNot"
+         end
+
          if aEventData.spellsNamesOnCd then
-            dprint("aEventData.spellsNamesOnCd")
-            setmetatable(aEventData.spellsNamesOnCd, SkuPrintMTWo)
-            dprint(aEventData.spellsNamesOnCd)
-      
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellsNamesOnCd[aValue], aOperator, aValue)
+            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellsNamesOnCd, aOperator, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1509,10 +1595,10 @@ SkuAuras.attributes = {
    },
 
 
-
+--[[
    spellNameNotOnCd = {
       tooltip = "Ob ein Zauber gerade nicht auf CD ist",
-      friendlyName = "zauber nicht auf cd",
+      friendlyName = "zauber nicht auf cd (L)",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.spellNameNotOnCd.evaluate", aValue)
          if aEventData.spellsNamesOnCd then
@@ -1529,7 +1615,7 @@ SkuAuras.attributes = {
       values = {
       },      
    },
-
+]]
 
    spellName = {
       tooltip = "Der Zauber-name, der die Aura auslösen soll",
@@ -1548,11 +1634,11 @@ SkuAuras.attributes = {
    },
    buffListTarget = {
       tooltip = "Die Liste der Buffs des Ziels",
-      friendlyName = "Buff Liste Ziel",
+      friendlyName = "Buff Liste Ziel (L)",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.buffListTarget.evaluate")
+      	dprint("    ","SkuAuras.attributes.buffListTarget.evaluate", aEventData, aOperator, aValue)
          if aEventData.buffListTarget then
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.buffListTarget, aOperator, aValue)
+            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.buffListTarget, aOperator, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1564,11 +1650,11 @@ SkuAuras.attributes = {
    },
    debuffListTarget = {
       tooltip = "Die Liste der Debuffs  des Ziels",
-      friendlyName = "Debuff Liste Ziel",
+      friendlyName = "Debuff Liste Ziel (L)",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
          if aEventData.debuffListTarget then
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.debuffListTarget, aOperator, aValue)
+            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.debuffListTarget, aOperator, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1913,11 +1999,11 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut entspricht dem gewählten Wert",
       friendlyName = "gleich",
       func = function(aValueA, aValueB) 
-      	dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
+      	--dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
 
-         if RemoveTags(aValueA) == RemoveTags(aValueB) then 
+         if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(aValueB) then 
             return true 
          end
          return false
@@ -1927,10 +2013,10 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut entspricht nicht dem gewählten Wert",
       friendlyName = "ungleich",
       func = function(aValueA, aValueB) 
-      	dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
+      	--dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
-         if RemoveTags(aValueA) ~= RemoveTags(aValueB) then 
+         if SkuAuras:RemoveTags(aValueA) ~= SkuAuras:RemoveTags(aValueB) then 
             return true 
          end
          return false
@@ -1940,53 +2026,84 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut enthält den gewählten Wert",
       friendlyName = "enthält",
       func = function(aValueA, aValueB) 
-      	dprint("      ","SkuAuras.Operators contains", aValueA, aValueB)
+      	--dprint("      ","SkuAuras.Operators contains", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
+
+         if type(aValueB) ~= "table" then 
+            aValueB = {aValueB}
+         end
+
          if type(aValueA) == "table" then 
-            for tName, _ in pairs(aValueA) do
-               local tResult = RemoveTags(tName) == RemoveTags(aValueB)
-               if tResult == true then
-                  return true
+            for tName, tValue in pairs(aValueA) do
+               for tNameB, tValueB in pairs(aValueB) do
+                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
+                  if tResult == true then
+                     return true
+                  end
                end
             end
          else
-            if RemoveTags(aValueA) == RemoveTags(aValueB) then 
-               return true 
+            for tNameB, tValueB in pairs(aValueB) do
+               if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB) then 
+                  return true 
+               end
             end
          end
-         return false
+         --return false
       end,
    },   
    ["containsNot"] = {
       tooltip = "Gewähltes Attribut enthält nicht den gewählten Wert",
       friendlyName = "enthält nicht",
       func = function(aValueA, aValueB) 
-      	dprint("      ","SkuAuras.Operators containsNot", aValueA, aValueB)
+      	--dprint("      ","SkuAuras.Operators containsNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
+
+         if type(aValueB) ~= "table" then 
+            aValueB = {aValueB}
+         end
+
+
          if type(aValueA) == "table" then 
-            for tName, _ in pairs(aValueA) do
-               dprint("    ","tName", tName)
-               local tResult = RemoveTags(tName) == RemoveTags(aValueB)
-               if tResult == true then
-                  return false
+            local tFound = false
+            for tName, tValue in pairs(aValueA) do
+               for tNameB, tValueB in pairs(aValueB) do
+                  dprint("    ","tName", tName, tValue, tNameB, tValueB)
+                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
+                  if tResult == true then
+                     tFound = true
+                  end
                end
             end
-         else
-            if RemoveTags(aValueA) == RemoveTags(aValueB) then 
-               return true 
+            if tFound == false then
+               return true
+            else
+               return false
             end
+         else
+            local tFound = false
+            for tNameB, tValueB in pairs(aValueB) do
+               if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB) then 
+                  tFound = true
+               end
+            end
+            if tFound == false then
+               return true
+            else
+               return false
+            end            
          end
-         return true
+         --return true
       end,
    },   
    ["bigger"] = {
       tooltip = "Gewähltes Attribut ist größer als der gewählte Wert",
       friendlyName = "größer",
       func = function(aValueA, aValueB) 
-      	dprint("      ","SkuAuras.Operators >", aValueA, aValueB)
+      	--dprint("      ","SkuAuras.Operators >", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
-         if tonumber(RemoveTags(aValueA)) > tonumber(RemoveTags(aValueB)) then 
+         if tonumber(SkuAuras:RemoveTags(aValueA)) > tonumber(SkuAuras:RemoveTags(aValueB)) then 
             return true 
          end
          return false
@@ -1996,10 +2113,10 @@ SkuAuras.Operators = {
       tooltip = "Gewähltes Attribut ist kleiner als der gewählte Wert",
       friendlyName = "kleiner",
       func = function(aValueA, aValueB) 
-      	dprint("      ","SkuAuras.Operators <", aValueA, aValueB)
+      	--dprint("      ","SkuAuras.Operators <", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
-         if tonumber(RemoveTags(aValueA)) < tonumber(RemoveTags(aValueB)) then 
+         if tonumber(SkuAuras:RemoveTags(aValueA)) < tonumber(SkuAuras:RemoveTags(aValueB)) then 
             return true 
          end
          return false

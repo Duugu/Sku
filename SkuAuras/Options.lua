@@ -78,7 +78,7 @@ local function TableSortByIndex(aTable)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAuras:BuildAuraTooltip(aCurrentMenuItem)
+function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
 															
 	local tMenuItem = aCurrentMenuItem
 	local tSections = {}
@@ -137,37 +137,60 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem)
 		tAction = "nicht festgelegt"
 	end
 
-	local tText = "Aktuelles Element: "..SkuAuras.itemTypes[tCurrent.elementType].friendlyName.."\r\nAuswählter Wert: "..tCurrent.name.." "
-	if tCurrent.elementType == "type" then
-		if SkuAuras.Types[tCurrent.internalName].tooltip then
-			tText = tText.."("..SkuAuras.Types[tCurrent.internalName].tooltip..")"
-		end
-	elseif tCurrent.elementType == "attribute" then
-		if SkuAuras.attributes[tCurrent.internalName].tooltip then
-			tText = tText.."("..SkuAuras.attributes[tCurrent.internalName].tooltip..")"
-		end
-	elseif tCurrent.elementType == "operator" then
-		if SkuAuras.Operators[tCurrent.internalName].tooltip then
-			tText = tText.."("..SkuAuras.Operators[tCurrent.internalName].tooltip..")"
-		end
-	elseif tCurrent.elementType == "value" then
-		if SkuAuras.values[tCurrent.internalName] then
-			if SkuAuras.values[tCurrent.internalName].tooltip then
-				tText = tText.."("..SkuAuras.values[tCurrent.internalName].tooltip..")"
+	if tCurrent.elementType then
+		local tText = "Aktuelles Element: "..SkuAuras.itemTypes[tCurrent.elementType].friendlyName.."\r\nAuswählter Wert: "..tCurrent.name.." "
+		if tCurrent.elementType == "type" then
+			if SkuAuras.Types[tCurrent.internalName].tooltip then
+				tText = tText.."("..SkuAuras.Types[tCurrent.internalName].tooltip..")"
+			end
+		elseif tCurrent.elementType == "attribute" then
+			if SkuAuras.attributes[tCurrent.internalName].tooltip then
+				tText = tText.."("..SkuAuras.attributes[tCurrent.internalName].tooltip..")"
+			end
+		elseif tCurrent.elementType == "operator" then
+			if SkuAuras.Operators[tCurrent.internalName].tooltip then
+				tText = tText.."("..SkuAuras.Operators[tCurrent.internalName].tooltip..")"
+			end
+		elseif tCurrent.elementType == "value" then
+			if SkuAuras.values[tCurrent.internalName] then
+				if SkuAuras.values[tCurrent.internalName].tooltip then
+					tText = tText.."("..SkuAuras.values[tCurrent.internalName].tooltip..")"
+				end
+			end
+		elseif tCurrent.elementType == "action" then
+			if SkuAuras.actions[tCurrent.internalName].tooltip then
+				tText = tText.."("..SkuAuras.actions[tCurrent.internalName].tooltip..")"
+			end
+		elseif tCurrent.elementType == "output" then
+			if SkuAuras.outputs[RemoveTagFromValue(tCurrent.internalName)].tooltip then
+				tText = tText.."("..SkuAuras.outputs[RemoveTagFromValue(tCurrent.internalName)].tooltip..")"
 			end
 		end
-	elseif tCurrent.elementType == "action" then
-		if SkuAuras.actions[tCurrent.internalName].tooltip then
-			tText = tText.."("..SkuAuras.actions[tCurrent.internalName].tooltip..")"
-		end
-	elseif tCurrent.elementType == "output" then
-		if SkuAuras.outputs[RemoveTagFromValue(tCurrent.internalName)].tooltip then
-			tText = tText.."("..SkuAuras.outputs[RemoveTagFromValue(tCurrent.internalName)].tooltip..")"
-		end
+		table.insert(tSections, tText)
 	end
-	table.insert(tSections, tText)
 
-	table.insert(tSections, "Bisherige Aura Elemente\r\n")
+
+	if aAuraName then
+		if SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].type then
+			tType = SkuAuras.Types[SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].type].friendlyName
+		end
+		tConditions = {}
+		for tName, tData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].attributes) do
+			for tDataIndex, tDataData in pairs(tData) do
+				tConditions[#tConditions + 1] = {attribute = SkuAuras.attributes[tName].friendlyName, operator = SkuAuras.Operators[tDataData[1]].friendlyName, value = SkuAuras.values[tDataData[2]].friendlyName}
+			end
+		end
+		tAction = SkuAuras.actions[SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].actions[1]].friendlyName
+		tOutputs = {}
+		for tIndex, tData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].outputs) do
+			local tString = string.gsub(SkuAuras.outputs[RemoveTagFromValue(tData)].friendlyName, "sound#", ";")
+			tOutputs[#tOutputs + 1] = tString
+		end
+		table.insert(tSections, "Aura Elemente\r\n")
+	else
+		table.insert(tSections, "Bisherige Aura Elemente\r\n")
+	end
+
 	table.insert(tSections, "Aura Typ: "..(tType or ""))
 	
 	local tString = "Aura Bedingungen:\r\n"
@@ -532,6 +555,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 	tTypeItem.internalName = "action"
 	tTypeItem.OnEnter = function(self)
 		self.selectTarget.targetAuraName = self.name
+		SkuAuras:BuildAuraTooltip(self, self.name)
 	end
 	tTypeItem.BuildChildren = function(self)
 		if self.parent.name == "Aktivierte" then
@@ -836,7 +860,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			print("OnAction Auren verwalten", aValue, aName, self.targetAuraName)
+			--print("OnAction Auren verwalten", aValue, aName, self.targetAuraName)
 			if not self.targetAuraName then return end
 			if not SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] then return end
 			if aName == "Deaktivieren" or aName == "Aktivieren" then
