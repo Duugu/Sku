@@ -192,9 +192,9 @@ function SkuOptions:SlashFunc(input)
 
 		elseif fields[1] == "rdatareset" then
 			dprint("/sku rdatareset")
-			SkuOptions.db.profile["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+			SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
 			SkuNav:CreateWaypointCache()
-			SkuOptions.db.profile["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+			SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
 			SkuNav:LoadLinkDataFromProfile()
 		end
 	end
@@ -270,9 +270,9 @@ function SkuOptions:OnProfileReset()
 	if tVersion then tVersion = tonumber(tVersion) end
 	SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
 	SkuOptions.db.profile["SkuNav"].Routes = nil
-	SkuOptions.db.profile["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+	SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
 	SkuNav:CreateWaypointCache()
-	SkuOptions.db.profile["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+	SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
 	SkuNav:LoadLinkDataFromProfile()
 
 
@@ -2817,13 +2817,13 @@ function SkuOptions:ImportWpAndLinkData()
 
 			--do tWaypoints 
 			local tFullCounterWps = 0
-			SkuOptions.db.profile["SkuNav"].Waypoints = {}
+			SkuOptions.db.global["SkuNav"].Waypoints = {}
 			for tWpName, tWpData in pairs(tWaypoints) do
-				if not SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] then
-					--table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, tWpName)
-					--SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] = tWpData
-					SkuOptions.db.profile["SkuNav"].Waypoints[tFullCounterWps + 1] = tWpName
-					SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] = tWpData
+				if not SkuOptions.db.global["SkuNav"].Waypoints[tWpName] then
+					--table.insert(SkuOptions.db.global["SkuNav"].Waypoints, tWpName)
+					--SkuOptions.db.global["SkuNav"].Waypoints[tWpName] = tWpData
+					SkuOptions.db.global["SkuNav"].Waypoints[tFullCounterWps + 1] = tWpName
+					SkuOptions.db.global["SkuNav"].Waypoints[tWpName] = tWpData
 					tImportCounterWps = tImportCounterWps + 1
 				else
 					tIgnoredCounterWps = tIgnoredCounterWps + 1
@@ -2837,7 +2837,7 @@ function SkuOptions:ImportWpAndLinkData()
 			for _ in pairs(tLinks) do
 				tImportCounterLinks = tImportCounterLinks + 1
 			end
-			SkuOptions.db.profile["SkuNav"].Links = tLinks or {}
+			SkuOptions.db.global["SkuNav"].Links = tLinks or {}
 
 			SkuNav:LoadLinkDataFromProfile()
 
@@ -2860,13 +2860,13 @@ function SkuOptions:ExportWpAndLinkData()
 	}
 
 	--build Links
-	tExportDataTable.links = SkuOptions.db.profile["SkuNav"].Links
+	tExportDataTable.links = SkuOptions.db.global["SkuNav"].Links
 	tDataToExport = true
 	--build Waypoints without quick wps
-	for i, v in ipairs(SkuOptions.db.profile["SkuNav"].Waypoints) do
+	for i, v in ipairs(SkuOptions.db.global["SkuNav"].Waypoints) do
 		if not string.find(v, L["Quick waypoint"]) then
-			if SkuOptions.db.profile["SkuNav"].Waypoints[v] then
-				local tWpData = SkuOptions.db.profile["SkuNav"].Waypoints[v]
+			if SkuOptions.db.global["SkuNav"].Waypoints[v] then
+				local tWpData = SkuOptions.db.global["SkuNav"].Waypoints[v]
 				if tWpData then
 					tExportDataTable.waypoints[v] = tWpData
 				end
@@ -2917,7 +2917,7 @@ function SkuOptions:ImportPre22WpAndRouteData()
 
 			if tSuccess == true then
 				SkuOptions.db.profile["SkuNav"].Routes = {}
-				SkuOptions.db.profile["SkuNav"].Waypoints = {}
+				SkuOptions.db.global["SkuNav"].Waypoints = {}
 
 				--collect wps in importable routes
 				local tImprableRouteWps = {}
@@ -2945,34 +2945,34 @@ function SkuOptions:ImportPre22WpAndRouteData()
 						local tWayp = tWaypoints[v] or SkuNav:GetWaypointData2(v)
 
 						if (aAreaId and SkuNav:GetAreaIdFromUiMapId(SkuNav:GetUiMapIdFromAreaId(tWayp.areaId)) == aAreaId) or not aAreaId or tImprableRouteWps[v] then
-							if not SkuOptions.db.profile["SkuNav"].Waypoints[v] then
+							if not SkuOptions.db.global["SkuNav"].Waypoints[v] then
 								--dprint("wp exists NOT: ", v)
 								--new wp name > import
-								table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, v)
-								SkuOptions.db.profile["SkuNav"].Waypoints[v] = tWaypoints[v]
+								table.insert(SkuOptions.db.global["SkuNav"].Waypoints, v)
+								SkuOptions.db.global["SkuNav"].Waypoints[v] = tWaypoints[v]
 								tImportCounterWps = tImportCounterWps + 1
 							else
 								--wp name exists
 								--dprint("wp exists: ", v)
 								if (
-										SkuOptions.db.profile["SkuNav"].Waypoints[v].worldX ~= tWaypoints[v].worldX 
-										or SkuOptions.db.profile["SkuNav"].Waypoints[v].worldY ~= tWaypoints[v].worldY
+										SkuOptions.db.global["SkuNav"].Waypoints[v].worldX ~= tWaypoints[v].worldX 
+										or SkuOptions.db.global["SkuNav"].Waypoints[v].worldY ~= tWaypoints[v].worldY
 									) 
-									or SkuOptions.db.profile["SkuNav"].Waypoints[v].areaId ~=  tWaypoints[v].areaId  
-									or SkuOptions.db.profile["SkuNav"].Waypoints[v].contintentId ~= tWaypoints[v].contintentId 
+									or SkuOptions.db.global["SkuNav"].Waypoints[v].areaId ~=  tWaypoints[v].areaId  
+									or SkuOptions.db.global["SkuNav"].Waypoints[v].contintentId ~= tWaypoints[v].contintentId 
 								then
 									--dprint("wp name exists and data NOT same")
 									--update name of wp and update the wp name in all import routes and import
 									local tNewWpName = v
 									local tCounter = 1
 									local tInsert = true
-									while SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter] do
+									while SkuOptions.db.global["SkuNav"].Waypoints[v..";"..tCounter] do
 										if 
-											SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].worldX == tWaypoints[v].worldX 
-											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].worldY == tWaypoints[v].worldY 
-											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].areaId ==  tWaypoints[v].areaId 
-											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].contintentId == tWaypoints[v].contintentId 
-											and SkuOptions.db.profile["SkuNav"].Waypoints[v..";"..tCounter].comments == tWaypoints[v].comments 
+											SkuOptions.db.global["SkuNav"].Waypoints[v..";"..tCounter].worldX == tWaypoints[v].worldX 
+											and SkuOptions.db.global["SkuNav"].Waypoints[v..";"..tCounter].worldY == tWaypoints[v].worldY 
+											and SkuOptions.db.global["SkuNav"].Waypoints[v..";"..tCounter].areaId ==  tWaypoints[v].areaId 
+											and SkuOptions.db.global["SkuNav"].Waypoints[v..";"..tCounter].contintentId == tWaypoints[v].contintentId 
+											and SkuOptions.db.global["SkuNav"].Waypoints[v..";"..tCounter].comments == tWaypoints[v].comments 
 										then
 											tInsert = false
 											--dprint("renamed as", tNewWpName, "found")
@@ -3001,15 +3001,15 @@ function SkuOptions:ImportPre22WpAndRouteData()
 									end
 									if tInsert == true then
 										--dprint("no renamed as", tNewWpName, "found and inserted")
-										table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, tNewWpName)
-										SkuOptions.db.profile["SkuNav"].Waypoints[tNewWpName] = tWaypoints[v]
+										table.insert(SkuOptions.db.global["SkuNav"].Waypoints, tNewWpName)
+										SkuOptions.db.global["SkuNav"].Waypoints[tNewWpName] = tWaypoints[v]
 										tRenameCounterWps = tRenameCounterWps + 1
 										tImportCounterWps = tImportCounterWps + 1
 									end
 								else
-									if SkuOptions.db.profile["SkuNav"].Waypoints[v].comments ~= tWaypoints[v].comments then
+									if SkuOptions.db.global["SkuNav"].Waypoints[v].comments ~= tWaypoints[v].comments then
 										--same name, same data, but different comments > update comments
-										SkuOptions.db.profile["SkuNav"].Waypoints[v].comments = tWaypoints[v].comments
+										SkuOptions.db.global["SkuNav"].Waypoints[v].comments = tWaypoints[v].comments
 									else
 										--same name, same data > ignore
 										tIgnoredCounterWps = tIgnoredCounterWps + 1
@@ -3191,9 +3191,9 @@ function SkuOptions:ImportAddWpAndLinkData()
 			--do tWaypoints 
 			local tFullCounterWps = 0
 			for tWpName, tWpData in pairs(tWaypoints) do
-				if not SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] then
-					table.insert(SkuOptions.db.profile["SkuNav"].Waypoints, tWpName)
-					SkuOptions.db.profile["SkuNav"].Waypoints[tWpName] = tWpData
+				if not SkuOptions.db.global["SkuNav"].Waypoints[tWpName] then
+					table.insert(SkuOptions.db.global["SkuNav"].Waypoints, tWpName)
+					SkuOptions.db.global["SkuNav"].Waypoints[tWpName] = tWpData
 					tImportCounterWps = tImportCounterWps + 1
 				else
 					tIgnoredCounterWps = tIgnoredCounterWps + 1
@@ -3206,13 +3206,13 @@ function SkuOptions:ImportAddWpAndLinkData()
 			
 			--do tLinks
 			for tLinkName, tData in pairs(tLinks) do
-				if not SkuOptions.db.profile["SkuNav"].Links[tLinkName] then
-					SkuOptions.db.profile["SkuNav"].Links[tLinkName] = tData
+				if not SkuOptions.db.global["SkuNav"].Links[tLinkName] then
+					SkuOptions.db.global["SkuNav"].Links[tLinkName] = tData
 					tImportCounterLinks = tImportCounterLinks + 1
 				else
 					for i, v in pairs(tData) do
-						if not SkuOptions.db.profile["SkuNav"].Links[tLinkName][i] then
-							SkuOptions.db.profile["SkuNav"].Links[tLinkName][i] = v
+						if not SkuOptions.db.global["SkuNav"].Links[tLinkName][i] then
+							SkuOptions.db.global["SkuNav"].Links[tLinkName][i] = v
 						end
 					end
 

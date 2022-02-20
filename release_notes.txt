@@ -27,8 +27,11 @@
 	SkuNav
 		Neuerungen
 			- Die Routendaten werden jetzt intern nicht mehr pro Sku-Profil gespeichert, sondern nur einmal pro Account für alle Chars gemeinsam. 
-			  Das sorgt dafür, dass die gespeicherten Variablen (WTF-Ordner) deutlich kleiner werden, und somit hoffentlich auch die Ladezeiten etwas reduziert werden. 
-			  Auf die Benutzung der Routen hat das jedoch keine sichtbaren Auswirkungen.
+			  Auf die Benutzung der Routen hat das keine sichtbaren Auswirkungen.
+			  Es sorgt jedoch dafür, dass die gespeicherten Variablen (WTF-Ordner) langfristig kleiner werden, und somit hoffentlich auch die Ladezeiten reduziert werden. 
+			  Wenn ihr bereits unterschiedliche Profile verwendet, bleiben die alten Daten in jedem einzelnen Profil so lange gespeichert, bis ihr euch einmal mit einem Char einloggt, der das Profil verwendet.
+			  Die gespeicherten Daten werden also nicht direkt nach dem Update auf diese Sku-Version von Zauberhand kleiner werden und die Ladezeiten nicht sinken.
+			  Die Alternative zum Anmelden mit jedem verwendeten Profil ist die Dateien "Sku.lua" und "Sku.lua.bak" im WTF-Ordner zu löschen. Aber Achtung: Das setzt alles zurück. Danach ist das Sku-Addon für alle Chars wie frisch installiert.
 
 
 -------------------------------------------------------------------------------------------------------	

@@ -1063,8 +1063,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 			SkuOptions.db.profile[MODULE_NAME].Routes = nil
 			SkuOptions.db.profile["SkuNav"].RtAndWpVersion = 22
 
-			SkuOptions.db.profile[MODULE_NAME].Waypoints = {}
-			SkuOptions.db.profile[MODULE_NAME].Links = {}
+			SkuOptions.db.global[MODULE_NAME].Waypoints = {}
+			SkuOptions.db.global[MODULE_NAME].Links = {}
 			SkuNav:CreateWaypointCache()
 			SkuOptions.Voice:OutputString("Alles gelöscht", false, true, 0.3, true)
 		end
