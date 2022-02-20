@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 23.25](https://github.com/Duugu/Sku/releases/download/r23.25/Sku-r23.25-bcc.zip) <br>
+[Sku 24](https://github.com/Duugu/Sku/releases/download/r24/Sku-r24-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [Sku-Maus Skript 1.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUOiVwKm1TTezg-cw?e=F3n1vt) <br>
@@ -17,6 +17,35 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 24
+
+### SkuAuras
+*Neuerungen*
+- Es gibt ein neues vordefiniertes Aura-Set: "Schutz Krieger". Dieses enthält bisher jedoch erst eine einzige Aura zum Tanken, die dich warnt, wenn dein Ziel ein anderes Gruppenmitglied im Ziel hat oder ins Ziel nimmt.
+- Die meisten Bedingungen stellen Einzelwerte dar. Beispiel: "Im Kampf" kann nur "Wahr" oder "Falsch" sein. <br>
+  Einige Bedigungen stellen jedoch Liste von mehreren Werten dar. Beispiel "zauber auf cd". Diese Bedingung enthält keinen Einzelwert, sondern ist eine Liste alle Zauber die gerade auf Cooldown sind.<br>
+  Solche Bedingungen können zusätzlich mit "enthält" und "enthält nicht" abgefragt werden. Beispiel: "zauber auf CD enthält Wirbelwind".<br>
+  Solltest du "gleich" oder "ungleich" verwenden, wird ab jetzt stillschweigend intern "gleich" durch "enthält" und "ungleich" durch "enthält nicht" ersetzt.<br>
+  Zur Verdeutlichung ist ab sofort an die entsprechenden Bedingungen ein (L für "Liste") angehängt. Die Bedingung "zauber auf CD" heißt daher jetzt also z. B. "zauber auf CD (L)".
+- In der Aura-Verwaltung (Aktivierte/Deaktivierte) kann man jetzt Tooltips für die Auren in den Listen anzeigen.
+- Es gibt einen neuen Wert zur Abfrage von Einheiten: "gruppenmitglieder ohne dich". Dieser zutriff für alle Gruppenmitglieder außer dir zu. (Im Gegensatz zu "Gruppenmitglieder", der für alle Gruppenmitglieder inkl. dir zutriff.)
+
+*Fehlerkorrekturen*
+- Die Bedingung "zauber nicht auf cd" wurde wieder entfernt. Sie ist unnötigt. Verwendet stattdessen "Zauber auf CD enthält NICHT xyz" (siehe oben zu Listen).
+- Es wurden Fehler bei den Bedingungen "zauber auf cd", "Buff Liste Ziel" und "debuff Liste Ziel" behoben, die dafür gesorgt haben, dass diese Bedingungen nicht funktionierten.
+- Zauber- und Gegenstandsnamen sollten jetzt immer angesagt werden, wenn als Ausgabe Zauber- bzw. Gegenstandsname ausgewählt ist.
+- Die Abfrage/Ansage der Gegenstandsanzahl funktioniert jetzt auch bei Gegenständen die auf Auktionsleisten liegen (bisher hat das nur über die Tasche funktioniert).
+- Eine vergessene Debug-Ausgabe beim Verwalten von Auren wurde entfernt.
+
+### SkuNav
+*Neuerungen*
+- Die Routendaten werden jetzt intern nicht mehr pro Sku-Profil gespeichert, sondern nur einmal pro Account für alle Chars gemeinsam. <br>
+  Auf die Benutzung der Routen hat das keine sichtbaren Auswirkungen.<br>
+  Es sorgt jedoch dafür, dass die gespeicherten Variablen (WTF-Ordner) langfristig kleiner werden, und somit hoffentlich auch die Ladezeiten reduziert werden. <br>
+  Wenn ihr bereits unterschiedliche Profile verwendet, bleiben die alten Daten in jedem einzelnen Profil so lange gespeichert, bis ihr euch einmal mit einem Char einloggt, der das Profil verwendet.<br>
+  Die gespeicherten Daten werden also nicht direkt nach dem Update auf diese Sku-Version von Zauberhand kleiner werden und die Ladezeiten nicht sinken.<br>
+  Die Alternative zum Anmelden mit jedem verwendeten Profil ist die Dateien "Sku.lua" und "Sku.lua.bak" im WTF-Ordner zu löschen. Aber Achtung: Das setzt alles zurück. Danach ist das Sku-Addon für alle Chars wie frisch installiert.
 
 ## Änderungen in Version 23.25
 
