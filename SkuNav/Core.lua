@@ -1854,6 +1854,9 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:OnEnable()
 	--dprint("SkuNav OnEnable")
+	if not SkuOptions.db.global[MODULE_NAME] then
+		SkuOptions.db.global[MODULE_NAME] = {}
+	end
 	if not SkuOptions.db.global[MODULE_NAME].Waypoints then
 		SkuOptions.db.profile[MODULE_NAME].Waypoints = nil
 		SkuOptions.db.global[MODULE_NAME].Waypoints = {}

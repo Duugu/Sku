@@ -4,6 +4,14 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 24.1
+
+	SkuNav
+		Fehlerkorrekturen
+			- Ein Fehler wurde behoben, durch den die Routen nach dem Update auf Sku 24 erst nach einem einmaligen Reload funktioniert haben.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 24
 
 	SkuAuras
