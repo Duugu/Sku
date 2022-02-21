@@ -3,7 +3,7 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 24](https://github.com/Duugu/Sku/releases/download/r24/Sku-r24-bcc.zip) <br>
+[Sku 24.1](https://github.com/Duugu/Sku/releases/download/r24.1/Sku-r24.1-bcc.zip) <br>
 
 *Nicht aktualisiert:*<br>
 [Sku-Maus Skript 1.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUOiVwKm1TTezg-cw?e=F3n1vt) <br>
@@ -18,6 +18,12 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 
 # Versionshinweise
 
+## Änderungen in Version 24.1
+
+### SkuNav
+*Fehlerkorrekturen*
+- Ein Fehler wurde behoben, durch den die Routen nach dem Update auf Sku 24 erst nach einem einmaligen Reload funktioniert haben.
+      
 ## Änderungen in Version 24
 
 ### SkuAuras
