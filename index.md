@@ -3,10 +3,10 @@
 Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
 
 *Aktualisiert:* <br>
-[Sku 24.1](https://github.com/Duugu/Sku/releases/download/r24.1/Sku-r24.1-bcc.zip) <br>
+[Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) <br>
 
 *Nicht aktualisiert:*<br>
-[Sku-Maus Skript 1.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUOiVwKm1TTezg-cw?e=F3n1vt) <br>
+[Sku 24.1](https://github.com/Duugu/Sku/releases/download/r24.1/Sku-r24.1-bcc.zip) <br>
 [SkuAudioData 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
@@ -17,6 +17,10 @@ Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunte
 [Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
+
+## Sku-Maus Skript Version 1.5
+
+- Es wurde ein Fehler behoben, bei dem das Skript nach der Charaktererstellung die EINGABETASTE nicht mehr erkannt hat.
 
 ## Änderungen in Version 24.1
 
