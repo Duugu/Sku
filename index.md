@@ -1,20 +1,18 @@
-# Downloads
+Wenn du Sku noch nie installiert hast, musst du zwingend erst der Einrichtungsanleitung folgen:<br>
+<a href="https://duugu.github.io/Sku/first_steps_de.html">https://duugu.github.io/Sku/first_steps_de.html</a><br>
+Erst dann kannst du hier Updates der Addons herunterladen.
 
-Wenn du Sku noch nie installiert hattest, musst du dir alle Addons unten herunterladen. Ansonsten vermutlich nur die aktualisierten Addons.
+# Addon-Update Downloads
 
-*Aktualisiert:* <br>
-[Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) <br>
+*Zuletzt aktualisiert Addons:* <br>
+[Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
 
 *Nicht aktualisiert:*<br>
-[Sku 24.1](https://github.com/Duugu/Sku/releases/download/r24.1/Sku-r24.1-bcc.zip) <br>
+[Sku 24.1](https://github.com/Duugu/Sku/releases/download/r24.1/Sku-r24.1-bcc.zip)<br>
 [SkuAudioData 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
-
-# Bug- und Todo-Liste
-[Bug-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Abug) <br>
-[Todo-Liste](https://github.com/Duugu/Sku/issues?q=is%3Aissue+is%3Aopen+label%3Aenhancement) <br>
 
 # Versionshinweise
 
