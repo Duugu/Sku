@@ -270,7 +270,50 @@ function SkuChat:CHAT_MSG_WHISPER(aEvent, aMsgBody, aSenderName)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuChat:PLAYER_ENTERING_WORLD(...)
-	local event, isInitialLogin, isReloadingUi = ...
+function SkuChat:JoinOrLeaveSkuChatChannel()
+	local id, name, instanceID, isCommunitiesChannel = GetChannelName("SkuChat")
+
+	if SkuOptions.db.profile["SkuChat"].joinSkuChannel == true then
+		if id == 0 then
+			JoinPermanentChannel("SkuChat", nil, FCF_GetCurrentChatFrame():GetID())
+			ChatFrame_AddChannel(ChatFrame1, "SkuChat")
+		end
+	else
+		if id ~= 0 then
+			LeaveChannelByName("SkuChat")
+		end
+	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+local SkuChatEditboxHookFlag = false
+function SkuChat:PLAYER_ENTERING_WORLD(...)
+	local event, isInitialLogin, isReloadingUi = ...
+
+	ChatFrame1:HookScript("OnShow", function(self)
+		C_Timer.After(5, function()
+			SkuChat:JoinOrLeaveSkuChatChannel()
+		end)
+	end)
+
+	ChatFrame1EditBox:HookScript("OnTextChanged", function(self, a, b, c)
+		if SkuChatEditboxHookFlag == false then
+			local tCurrentText = ChatFrame1EditBox:GetText() or ""
+			tCurrentText = string.lower(tCurrentText)
+			if tCurrentText == "/skuchat" then
+				SkuChat:SetEditboxToSkuChat("")
+			end
+		end
+	end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:SetEditboxToSkuChat(aMsg)
+	SkuChatEditboxHookFlag = true
+	local channelNum, channelName = GetChannelName("SkuChat")
+	ChatFrame1EditBox:SetAttribute("channelTarget", channelNum)
+	ChatFrame1EditBox:SetAttribute("chatType", "CHANNEL")
+	ChatFrame1EditBox:SetText(aMsg)
+	ChatEdit_UpdateHeader(ChatFrame1EditBox)
+	SkuChatEditboxHookFlag = false
+end

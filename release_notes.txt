@@ -4,6 +4,26 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 24.2
+
+	SkuChat
+		Neuerungen
+			- Es gibt einen neuen Chat Channel, dem das Sku-Addon automatisch beitritt. Der Channel Name lautet "SkuChat"
+			  Das bedeutet, dass nun jeder Benutzer des Sku-Addons automatisch in diesem Chat Channel ist. So können neue Benutzer einfach mit erfahrenen Benutzern Kontakt aufnehmen.
+			  Du kannst den Channel über "SkuChat > Optionen > Sku Chat Channel beitreten" verlassen bzw. wieder beitreten. Standardmäßig bist du drin.
+			  Du kannst wie bei /say oder /tell etc. mit /skuchat direkt in den Channel schreiben, oder wie bei allen anderen Channels die Channelnummer verwenden (per /chatinfo rausfinden).
+
+	SkuNav
+		Fehlerkorrekturen
+			- Für die Sku-Minimap sollte jetzt nach dem Einloggen auf der Höllenfeuerhalbinsel korrekt "Current Zone" statt "Scherbenwelt" ausgewählt sein.
+			- In der Zone "Höllenfeuerzitadelle" wird jetzt die Karte korrekt angezeigt.
+
+	SkuCore
+		Fehlerkorrekturen
+			- Ohne Bagnon gibt es jetzt immerhin keinen Fehler mehr beim Taschen-Öffnen. Die Taschen ohne Bagnon sind allerdings im Moment total kaputt. Ich mag sie auch nicht reparieren, da ja eh alle Bagnon nutzen. :)
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 24.1
 
 	SkuNav

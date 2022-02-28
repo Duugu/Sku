@@ -488,7 +488,6 @@ function SkuNavDrawWaypointsMM(aFrame)
 	local tWP = nil
 
 	local tCountDrawnWPs = 0
-
 	for i, v in SkuNav:ListWaypoints2(false, nil, tAreaId, tPlayerContintentId, nil) do
 		--print(i, v)
 		tWP = SkuNav:GetWaypointData2(v)

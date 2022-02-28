@@ -9,7 +9,6 @@ SkuNav = SkuNav or LibStub("AceAddon-3.0"):NewAddon("SkuNav", "AceConsole-3.0", 
 local lastDirection = -1
 local lastDistance = 0
 SkuDrawFlag = false
-SkuCacheFlag = false
 
 local slower = string.lower
 local sfind = string.find
@@ -2295,7 +2294,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_LOGIN(...)
-	--dprint("PLAYER_LOGIN", ...)
+	--print("PLAYER_LOGIN", ...)
 	SkuNav.MinimapFull = false
 
 	--delete pre r24 waypoint/link tables from profiles
@@ -2313,7 +2312,8 @@ function SkuNav:PLAYER_LOGIN(...)
 		end
 	end
 	if tWpsEmpty == true then
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata["Waypoints"]
+		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata["Waypoints"]
 	end
 
 	if SkuOptions.db.global["SkuNav"].Links then
@@ -2323,7 +2323,8 @@ function SkuNav:PLAYER_LOGIN(...)
 		end
 	end
 	if tLinksEmpty == true then
-		SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata["Links"]
+		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata["Links"]
 	end
 
 
@@ -2368,7 +2369,7 @@ function SkuNav:PLAYER_LOGIN(...)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_ENTERING_WORLD(...)
-	dprint("PLAYER_ENTERING_WORLD", ...)
+	--print("PLAYER_ENTERING_WORLD", ...)
 	SkuNav:UpdateStandardWpReachedRange()
 
 	--load default data if there isn't any
@@ -2381,7 +2382,8 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	end
 	if tWpsEmpty == true then
 		SkuOptions.db.profile[MODULE_NAME].Waypoints = nil		
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata["Waypoints"]
+		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata["Waypoints"]
 	end
 
 	if SkuOptions.db.global["SkuNav"].Links then
@@ -2392,12 +2394,11 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	end
 	if tLinksEmpty == true then
 		SkuOptions.db.profile[MODULE_NAME].Links = nil
-		SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata["Links"]
+		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata["Links"]
 	end
 
 	C_Timer.NewTimer(15, function() SkuDrawFlag = true end)
-	--C_Timer.NewTimer(15, function() SkuCacheFlag = true end)
-	SkuCacheFlag = true
 
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowing = false
 	SkuOptions.db.profile[MODULE_NAME].routeRecording = false
@@ -2411,25 +2412,12 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 
 	SkuNav:ClearWaypointsTemporary(true)
 	
-	if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
-		--SkuOptions.db.global[MODULE_NAME].Links = nil
-		--SkuOptions.db.global[MODULE_NAME].Waypoints = {}
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
-		SkuNav:CreateWaypointCache()
-		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
-		SkuNav:LoadLinkDataFromProfile()
-
-		--[[
-		SkuOptions.Voice:OutputString("Achtung", true, true, 0.2)
-		SkuOptions.Voice:OutputString("Erste Verwendung von Profil ab Sku 22", false, true, 0.2)
-		SkuOptions.Voice:OutputString("Alle vorhandenen Routen und Wegpunkte wurden gelöscht", false, true, 0.2)
-		]]
-		local tVersion = GetAddOnMetadata("Sku", "Version") 
-		if tVersion then tVersion = tonumber(tVersion) end
-		SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
-	end
+	local tVersion = GetAddOnMetadata("Sku", "Version") 
+	if tVersion then tVersion = tonumber(tVersion) end
+	SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
 
 	SkuNav:CreateWaypointCache()
+	SkuNav:LoadLinkDataFromProfile()
 
 	if _G["SkuNavMMMainFrameZoneSelect"] then
 		C_Timer.NewTimer(1, function()

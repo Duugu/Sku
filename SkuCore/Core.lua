@@ -1989,16 +1989,21 @@ local function IterateChildren(t, tab)
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
 										local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 										
-										if tResults[fName].obj.info.id then
-											tResults[fName].itemId = tResults[fName].obj.info.id
-											tResults[fName].textFirstLine = ItemName_helper(tText)
-											tResults[fName].textFull = SkuCore:AuctionPriceHistoryData(tResults[fName].obj.info.id, true, true)
+										if tResults[fName].obj.info then
+											if tResults[fName].obj.info.id then
+												tResults[fName].itemId = tResults[fName].obj.info.id
+												tResults[fName].textFirstLine = ItemName_helper(tText)
+												tResults[fName].textFull = SkuCore:AuctionPriceHistoryData(tResults[fName].obj.info.id, true, true)
+											end
 										end
 										if not tResults[fName].textFull then
 											tResults[fName].textFull = {}
 										end
 										local tFirst, tFull = ItemName_helper(tText)
 										tResults[fName].textFirstLine = tFirst
+										if type(tResults[fName].textFull) ~= "table" then
+											tResults[fName].textFull = {(tResults[fName].textFull or tResults[fName].textFirstLine or ""),}
+										end
 										table.insert(tResults[fName].textFull, 1, tFull)
 									end
 								end
@@ -2149,10 +2154,14 @@ local function IterateChildren(t, tab)
 							end
 							if _G[fName].info then
 								tResults[fName].itemId = _G[fName].info.id
-								if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") and _G[fName].info.count > 1 then
-									tResults[fName].textFirstLine = tResults[fName].textFirstLine.." ".._G[fName].info.count
-								else
+								if not _G[fName].info.count then
 									tResults[fName].textFirstLine = tResults[fName].textFirstLine
+								else
+									if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") and _G[fName].info.count > 1 then
+										tResults[fName].textFirstLine = tResults[fName].textFirstLine.." ".._G[fName].info.count
+									else
+										tResults[fName].textFirstLine = tResults[fName].textFirstLine
+									end
 								end								
 							end							
 

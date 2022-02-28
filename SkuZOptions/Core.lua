@@ -69,6 +69,15 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param input string
+function SkuOptions:SlashFuncSkuChat(input)
+	print("SlashFuncSkuChat", input)
+	SkuChat:SetEditboxToSkuChat(input)
+
+	
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+---@param input string
 function SkuOptions:SlashFunc(input)
 	--print("SkuOptions:SlashFunc(input)", input)
 	--SkuOptions.AceConfigDialog:Open("SkuOptions")
@@ -1546,7 +1555,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnInitialize()
-	--dprint("SkuOptions OnInitialize")
+	--print("SkuOptions OnInitialize")
 
 	if SkuOptions then
 		options.args["SkuOptions"] = SkuOptions.options
@@ -1578,6 +1587,7 @@ function SkuOptions:OnInitialize()
 	end
 
 	SkuOptions:RegisterChatCommand("Sku", "SlashFunc")
+	SkuOptions:RegisterChatCommand("Skuchat", "SlashFuncSkuChat")
 	SkuOptions.AceConfig = LibStub("AceConfig-3.0")
 	SkuOptions.AceConfig:RegisterOptionsTable("Sku", options, {"taop"})
 	SkuOptions.AceConfigDialog = LibStub("AceConfigDialog-3.0")
@@ -2209,6 +2219,10 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 						self.profilePath[self.profileIndex] = true
 					elseif aName == L["Off"] then
 						self.profilePath[self.profileIndex] = false
+					end
+					
+					if self.optionsPath[self.profileIndex].OnAction then
+						self.optionsPath[self.profileIndex]:OnAction()
 					end
 					--PlaySound(835)
 				end

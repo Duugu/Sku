@@ -20,7 +20,7 @@ SkuChat.options = {
 			end,
 			get = function(info) 
 				return SkuOptions.db.profile[MODULE_NAME].enable
-			end
+			end,
 		},
 		audio = {
 			order = 2,
@@ -32,7 +32,7 @@ SkuChat.options = {
 			end,
 			get = function(info) 
 				return SkuOptions.db.profile[MODULE_NAME].audio
-			end
+			end,
 			},
 		WowTtsVoice = {
 			order = 3,
@@ -45,7 +45,7 @@ SkuChat.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].WowTtsVoice
-			end
+			end,
 		},
 		WowTtsSpeed = {
 			order = 4,
@@ -57,7 +57,7 @@ SkuChat.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed
-			end
+			end,
 		},
 		WowTtsVolume = {
 			order = 5,
@@ -69,7 +69,7 @@ SkuChat.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].WowTtsVolume
-			end
+			end,
 		},
 		autoPlayPartyChat = {
 			order = 6,
@@ -81,7 +81,7 @@ SkuChat.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat
-			end
+			end,
 		},
 		autoPlayGuildChat = {
 			order = 6,
@@ -93,7 +93,7 @@ SkuChat.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].autoPlayGuildChat
-			end
+			end,
 		},
 		autoPlayTellChat = {
 			order = 6,
@@ -105,7 +105,7 @@ SkuChat.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].autoPlayTellChat
-			end
+			end,
 		},
 		autoPlayCreatureChat = {
 			order = 6,
@@ -117,7 +117,22 @@ SkuChat.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].autoPlayCreatureChat
-			end
+			end,
+		},
+		joinSkuChannel = {
+			order = 7,
+			name = "Sku Chat Channel beitreten",
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].joinSkuChannel = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].joinSkuChannel
+			end,
+			OnAction = function()
+				SkuChat:JoinOrLeaveSkuChatChannel()
+			end,
 		},
 	},
 }
@@ -133,6 +148,7 @@ SkuChat.defaults = {
 	autoPlayGuildChat = false,
 	autoPlayTellChat = false,
 	autoPlayCreatureChat = false,
+	joinSkuChannel = true,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------
