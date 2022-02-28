@@ -5,16 +5,33 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Addon-Update Downloads
 
 *Zuletzt aktualisiert Addons:* <br>
+[Sku 24.2](https://github.com/Duugu/Sku/releases/download/r24.2/Sku-r24.2-bcc.zip) (28.02.2022)<br>
 [Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
 
 *Nicht aktualisiert:*<br>
-[Sku 24.1](https://github.com/Duugu/Sku/releases/download/r24.1/Sku-r24.1-bcc.zip)<br>
 [SkuAudioData 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 
 # Versionshinweise
+## Änderungen in Version 24.2
+
+### SkuChat
+*Neuerungen*
+- Es gibt einen neuen Chat Channel, dem das Sku-Addon automatisch beitritt. Der Channel Name lautet "SkuChat".<br>
+Das bedeutet, dass nun jeder Benutzer des Sku-Addons automatisch in diesem Chat Channel ist. So können neue Benutzer einfach mit erfahrenen Benutzern Kontakt aufnehmen.<br>
+Du kannst den Channel über "SkuChat > Optionen > Sku Chat Channel beitreten" verlassen bzw. wieder beitreten. Standardmäßig bist du drin.<br>
+Du kannst wie bei /say oder /tell etc. mit /skuchat direkt in den Channel schreiben, oder wie bei allen anderen Channels die Channelnummer verwenden (per /chatinfo rausfinden).
+
+### SkuNav
+*Fehlerkorrekturen*
+- Für die Sku-Minimap sollte jetzt nach dem Einloggen auf der Höllenfeuerhalbinsel korrekt "Current Zone" statt "Scherbenwelt" ausgewählt sein.
+- In der Zone "Höllenfeuerzitadelle" wird jetzt die Karte korrekt angezeigt.
+
+### SkuCore
+*Fehlerkorrekturen*
+- Ohne Bagnon gibt es jetzt immerhin keinen Fehler mehr beim Taschen-Öffnen. Die Taschen ohne Bagnon sind allerdings im Moment total kaputt. Ich mag sie auch nicht reparieren, da ja eh alle Bagnon nutzen. :)
 
 ## Sku-Maus Skript Version 1.5
 
