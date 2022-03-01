@@ -5,16 +5,32 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Addon-Update Downloads
 
 *Zuletzt aktualisiert Addons:* <br>
-[Sku 24.2](https://github.com/Duugu/Sku/releases/download/r24.2/Sku-r24.2-bcc.zip) (28.02.2022)<br>
-[Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
+[Sku 24.3](https://github.com/Duugu/Sku/releases/download/r24.3/Sku-r24.3-bcc.zip) (01.03.2022)<br>
 
 *Nicht aktualisiert:*<br>
+[Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
 [SkuAudioData 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 24.3
+
+### SkuDB
+*Neuerungen*
+- Zur Integration von Daten in anderen Sprachen musste die Datenbankstruktur erheblich verändert werden.<br>
+Mir sind zwar bei Tests keinerlei Fehler aufgefallen, aber das muss nichts bedeuten. :) Bitte bei komischen Dingen direkt melden! Danke.
+
+### SkuAuras
+*Fehlerkorrekturen*
+- Es wurde ein Fehler beim Operator "enthält" behoben. Zum Beispiel hat "wenn debuff liste enthält xyz" dadurch nicht funktioniert.
+
+### SkuQuest
+*Fehlerkorrekturen*
+- Ein Fehler in ca. 800 Questtexten wurde behoben, der bei einzelnen Wörtern im Questtext zu Piepsern geführt hat.
+
 ## Änderungen in Version 24.2
 
 ### SkuChat
