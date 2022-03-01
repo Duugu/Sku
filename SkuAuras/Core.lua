@@ -263,7 +263,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 
 	SkuAuras.attributes.itemId.values = {}
 	SkuAuras.attributes.itemName.values = {}
-	for itemId, itemName in pairs(SkuDB.itemLookup) do
+	for itemId, itemName in pairs(SkuDB.itemLookup[Sku.Loc]) do
 		SkuAuras.attributes.itemId.values[#SkuAuras.attributes.itemId.values + 1] = "item:"..tostring(itemId)
 		SkuAuras.values["item:"..tostring(itemId)] = {friendlyName = itemId.." ("..itemName..")",}
 
@@ -278,8 +278,8 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuAuras.attributes.spellName.values = {}
 	SkuAuras.attributes.buffListTarget.values = {}
 	SkuAuras.attributes.debuffListTarget.values = {}
-	for spellId, spellData in pairs(SkuDB.SpellDataTBC_DE) do
-		local spellName = spellData[SkuDB.spellKeys["name_lang"]]
+	for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
+		local spellName = spellData[Sku.Loc][SkuDB.spellKeys["name_lang"]]
 		SkuAuras.attributes.spellId.values[#SkuAuras.attributes.spellId.values + 1] = "spell:"..tostring(spellId)
 		if not SkuAuras.values["spell:"..tostring(spellName)] then
 			SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
@@ -778,7 +778,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 
 			tEvaluateData.itemId = tEventData[40]
 			if tEventData[40] then
-				tEvaluateData.itemName = SkuDB.itemLookup[tEventData[40]]
+				tEvaluateData.itemName = SkuDB.itemLookup[Sku.Loc][tEventData[40]]
 				for bagId = 0, 4 do
 					local tNumberOfSlots = GetContainerNumSlots(bagId)
 					for slotId = 1, tNumberOfSlots do

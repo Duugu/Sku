@@ -418,6 +418,7 @@ function SkuAuras:NewAuraOperatorBuilder(self)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local slower = string.lower
 function SkuAuras:NewAuraValueBuilder(self)
 	local tSelectTarget = nil
 	if self.isSelect then
@@ -441,9 +442,9 @@ function SkuAuras:NewAuraValueBuilder(self)
 			for k, v in SkuSpairs(SkuAuras.attributes[self.parent.internalName].values, 
 				function(t, a, b) 
 					if SkuAuras.actions[SkuAuras.attributes[self.parent.internalName].values[b]] then
-						return string.lower(SkuAuras.actions[SkuAuras.attributes[self.parent.internalName].values[b]].friendlyName) > string.lower(SkuAuras.actions[SkuAuras.attributes[self.parent.internalName].values[a]].friendlyName)
+						return slower(SkuAuras.actions[SkuAuras.attributes[self.parent.internalName].values[b]].friendlyName) > slower(SkuAuras.actions[SkuAuras.attributes[self.parent.internalName].values[a]].friendlyName)
 					else
-						return string.lower(SkuAuras.values[SkuAuras.attributes[self.parent.internalName].values[b]].friendlyName) > string.lower(SkuAuras.values[SkuAuras.attributes[self.parent.internalName].values[a]].friendlyName)
+						return slower(SkuAuras.values[SkuAuras.attributes[self.parent.internalName].values[b]].friendlyName) > slower(SkuAuras.values[SkuAuras.attributes[self.parent.internalName].values[a]].friendlyName)
 					end
 				end) 
 			do

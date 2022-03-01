@@ -458,7 +458,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 			--collectgarbage("collect")
 			local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId()))
 			local tWaypointList = {}
-			for i, v in pairs(SkuDB.NpcData.NamesDE) do
+			for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
 				local tHasValidSpawns = false
 				if SkuDB.NpcData.Data[i] then
 					if not string.find((SkuDB.NpcData.Data[i][1]), "UNUSED") then				
@@ -510,13 +510,13 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tWaypointList = {}
-			for q = 1, #SkuDB.DefaultWaypoints2.Zones do
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints2.Zones[q]}, SkuGenericMenuItem)
+			for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones do
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.filterable = true
 				tNewMenuEntry.BuildChildren = function(self)--continents
-					for q = 1, #SkuDB.DefaultWaypoints2.Zones[self.name] do
-						local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints2.Zones[self.name][q]}, SkuGenericMenuItem)
+					for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones[self.name] do
+						local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints[Sku.Loc].Zones[self.name][q]}, SkuGenericMenuItem)
 					end
 				end
 			end
@@ -529,15 +529,15 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		tNewMenuEntry.BuildChildren = function(self)
 			local tFullGlossary = {}
 			local tIndex = 1
-			for i, v in pairs(SkuOptions.Glossary1) do
+			for i, v in pairs(SkuOptions.Glossary1[Sku.Loc]) do
 				for i1, v1 in pairs(v) do
 					tFullGlossary[string.lower(v1)] = string.lower(v1)
 					tIndex = tIndex + 1
 				end
 			end
-			for q = 1, #SkuDB.DefaultWaypoints2.Zones do
-				for w = 1, #SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]] do
-					tFullGlossary[string.lower(SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]][w])] = string.lower(SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]][w])
+			for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones do
+				for w = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones[SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]] do
+					tFullGlossary[string.lower(SkuDB.DefaultWaypoints[Sku.Loc].Zones[SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]][w])] = string.lower(SkuDB.DefaultWaypoints[Sku.Loc].Zones[SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]][w])
 					tIndex = tIndex + 1
 				end
 			end
@@ -550,7 +550,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedGlossary, SkuGenericMenuItem)
 		end
 
-		for i, v in pairs(SkuOptions.Glossary1) do
+		for i, v in pairs(SkuOptions.Glossary1[Sku.Loc]) do
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.BuildChildren = function(self)
@@ -561,15 +561,15 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		--SkuOptions:InjectMenuItems(self, {"Ab hier komplette Wortliste"}, SkuGenericMenuItem)
 		local tFullGlossary = {}
 		local tIndex = 1
-		for i, v in pairs(SkuOptions.Glossary1) do
+		for i, v in pairs(SkuOptions.Glossary1[Sku.Loc]) do
 			for i1, v1 in pairs(v) do
 				tFullGlossary[string.lower(v1)] = string.lower(v1)
 				tIndex = tIndex + 1
 			end
 		end
-		for q = 1, #SkuDB.DefaultWaypoints2.Zones do
-			for w = 1, #SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]] do
-				tFullGlossary[string.lower(SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]][w])] = string.lower(SkuDB.DefaultWaypoints2.Zones[SkuDB.DefaultWaypoints2.Zones[q]][w])
+		for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones do
+			for w = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones[SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]] do
+				tFullGlossary[string.lower(SkuDB.DefaultWaypoints[Sku.Loc].Zones[SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]][w])] = string.lower(SkuDB.DefaultWaypoints[Sku.Loc].Zones[SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]][w])
 				tIndex = tIndex + 1
 			end
 		end

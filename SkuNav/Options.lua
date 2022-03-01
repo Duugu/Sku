@@ -963,7 +963,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			tUnitDbWaypointData = {}
 
 			local tWaypointList = {}
-			for i, v in pairs(SkuDB.NpcData.NamesDE) do
+			for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
 				if SkuDB.NpcData.Data[i] then
 					local tSpawns = SkuDB.NpcData.Data[i][7]
 					local tCreatureDbExtraWaypoints = SkuDB.NpcData.Data[i][8]
@@ -974,7 +974,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 									local tData = SkuDB.InternalAreaTable[is]
 									if tData then
 										local tNumberOfSpawns = #vs
-										local tSubname = SkuDB.NpcData.NamesDE[i][2]
+										local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
 										local tRolesString = ""
 										if not tSubname then
 											local tRoles = SkuNav:GetNpcRoles(v[1], i)
@@ -988,13 +988,13 @@ function SkuNav:MenuBuilder(aParentEntry)
 											tRolesString = tRolesString..";"..tSubname
 										end
 										for sp = 1, 1 do
-											local tWayP = SkuNav:GetWaypointData2(v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
+											local tWayP = SkuNav:GetWaypointData2(v[1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
 											if tWayP then
 												local tWpX, tWpY = tWayP.worldX, tWayP.worldY
 												local tPlayX, tPlayY = UnitPosition("player")
 												local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
-												tWaypointList[v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tDistance
-												tUnitDbWaypointData[v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tCreatureDbExtraWaypoints[tCurrentAreaId][1]
+												tWaypointList[v[1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tDistance
+												tUnitDbWaypointData[v[1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tCreatureDbExtraWaypoints[tCurrentAreaId][1]
 											end
 										end
 									end

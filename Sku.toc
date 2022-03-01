@@ -1,8 +1,8 @@
 ## Interface: 20503
-## Title: Sku (24.2)
-## SavedVariables: SkuOptionsDB
+## Title: Sku (24.3)
+## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuAudioData, SkuBeaconSoundsets
-## Version: 24.2
+## Version: 24.3
 
 embeds.xml
 
@@ -44,7 +44,8 @@ SkuDB\assets\objects.lua
 SkuDB\assets\objects_fixes.lua
 SkuDB\assets\spells.lua
 SkuDB\assets\polygons.lua
-SkuDB\assets\routedata.lua
+SkuDB\assets\routedata_deDE.lua
+SkuDB\assets\routedata_enUS.lua
 
 SkuMob\Core.lua
 SkuMob\Options.lua

@@ -4,6 +4,23 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Version 24.3
+
+	SkuDB
+		Neuerungen
+			- Zur Integration von Daten in anderen Sprachen musste die Datenbankstruktur erheblich verändert werden.
+			  Mir sind zwar bei Tests keinerlei Fehler aufgefallen, aber das muss nichts bedeuten. :) Bitte bei komischen Dingen direkt melden! Danke.
+
+	SkuAuras
+		Fehlerkorrekturen
+			- Es wurde ein Fehler beim Operator "enthält" behoben. Zum Beispiel hat "wenn debuff liste enthält xyz" dadurch nicht funktioniert.
+
+	SkuQuest
+		Fehlerkorrekturen
+			- Ein Fehler in ca. 800 Questtexten wurde behoben, der bei einzelnen Wörtern im Questtext zu Piepsern geführt hat.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Version 24.2
 
 	SkuChat

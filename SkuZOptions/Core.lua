@@ -201,9 +201,9 @@ function SkuOptions:SlashFunc(input)
 
 		elseif fields[1] == "rdatareset" then
 			dprint("/sku rdatareset")
-			SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+			SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
 			SkuNav:CreateWaypointCache()
-			SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+			SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
 			SkuNav:LoadLinkDataFromProfile()
 		end
 	end
@@ -279,9 +279,9 @@ function SkuOptions:OnProfileReset()
 	if tVersion then tVersion = tonumber(tVersion) end
 	SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
 	SkuOptions.db.profile["SkuNav"].Routes = nil
-	SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
+	SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
 	SkuNav:CreateWaypointCache()
-	SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
+	SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
 	SkuNav:LoadLinkDataFromProfile()
 
 
@@ -1129,12 +1129,12 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 			local tItemIdWord
 
 			for i, v in pairs(SkuDB.itemLookup) do
-				if tItemName == v then
+				if tItemName == v[Sku.Loc] then
 					tItemId = i
 					break
 				end
 				if tFirstWord then
-					if tFirstWord == v then
+					if tFirstWord == v[Sku.Loc] then
 						tItemIdWord = i
 					end
 				end

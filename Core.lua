@@ -6,6 +6,7 @@ local ADDON_NAME = ...
 
 Sku = {}
 Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
+Sku.Loc = Sku.L["locale"]
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 Sku.debug = false

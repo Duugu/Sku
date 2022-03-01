@@ -8,6 +8,7 @@ Instructions for translators:
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")	
 if not L then return end
+L["locale"] = "deDE"
 
 L["aura;sound"] = "aura;sound"
 L["aura"] = "aura"

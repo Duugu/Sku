@@ -7,6 +7,7 @@ Instructions for translators:
 
 local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "enUS", true)	
 if not L then return end
+L["locale"] = "enUS"
 
 L["Enabled"] = "Enable"
 L["Enables / disables the addon"] = "Enables / disables the addon"

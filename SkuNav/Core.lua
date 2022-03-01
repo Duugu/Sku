@@ -65,7 +65,7 @@ function SkuNav:CreateWaypointCache()
 	WaypointCacheLookupPerContintent = {}
 
 	--add creatures
-	for i, v in pairs(SkuDB.NpcData.NamesDE) do
+	for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
 		if SkuDB.NpcData.Data[i] then
 			local tSpawns = SkuDB.NpcData.Data[i][7]
 			if tSpawns then
@@ -76,7 +76,7 @@ function SkuNav:CreateWaypointCache()
 						local tData = SkuDB.InternalAreaTable[is]
 						if tData then
 							local tNumberOfSpawns = #vs
-							local tSubname = SkuDB.NpcData.NamesDE[i][2]
+							local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
 							local tRolesString = ""
 							if not tSubname then
 								local tRoles = SkuNav:GetNpcRoles(v[1], i)
@@ -94,13 +94,13 @@ function SkuNav:CreateWaypointCache()
 								local tWorldX, tWorldY = worldPosition:GetXY()
 
 								local tNewIndex = #WaypointCache + 1
-								WaypointCacheLookupAll[v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
+								WaypointCacheLookupAll[v[1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
 								if not WaypointCacheLookupPerContintent[tData.ContinentID] then
 									WaypointCacheLookupPerContintent[tData.ContinentID] = {}
 								end
-								WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+								WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = v[1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
 								WaypointCache[tNewIndex] = {
-									name = v[1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
+									name = v[1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
 									role = tRolesString,
 									typeId = 2,
 									dbIndex = i,
@@ -127,9 +127,9 @@ function SkuNav:CreateWaypointCache()
 	end
 
 	--add objects
-	for i, v in pairs(SkuDB.objectLookup) do
+	for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
 		--we don't want stuff like ores, herbs, etc.
-		if not SkuDB.objectResourceNames[v] then
+		if not SkuDB.objectResourceNames[Sku.Loc][v] then
 			if SkuDB.objectDataTBC[i] then
 				local tSpawns = SkuDB.objectDataTBC[i][4]
 				if tSpawns then
@@ -145,13 +145,13 @@ function SkuNav:CreateWaypointCache()
 									local tWorldX, tWorldY = worldPosition:GetXY()
 	
 									local tNewIndex = #WaypointCache + 1
-									WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
+									WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
 									if not WaypointCacheLookupPerContintent[tData.ContinentID] then
 										WaypointCacheLookupPerContintent[tData.ContinentID] = {}
 									end
-									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
 									WaypointCache[tNewIndex] = {
-										name = L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
+										name = L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
 										role = "",
 										typeId = 3,
 										dbIndex = i,
@@ -180,13 +180,13 @@ function SkuNav:CreateWaypointCache()
 
 	--add standard
 	--zones
-	for q = 1, #SkuDB.DefaultWaypoints2.Zones do
-		local tZone = SkuDB.DefaultWaypoints2.Zones[q]
-		for u = 1, #SkuDB.DefaultWaypoints2.Zones[tZone] do
-			local tSubzone = SkuDB.DefaultWaypoints2.Zones[tZone][u]
-			for z = 1, #SkuDB.DefaultWaypoints2.Zones[tZone][tSubzone] do
-				local tName = SkuDB.DefaultWaypoints2.Zones[tZone][tSubzone][z]
-				local tWaypointData = SkuDB.DefaultWaypoints2.Zones[tZone][tSubzone][tName]
+	for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones do
+		local tZone = SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]
+		for u = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones[tZone] do
+			local tSubzone = SkuDB.DefaultWaypoints[Sku.Loc].Zones[tZone][u]
+			for z = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones[tZone][tSubzone] do
+				local tName = SkuDB.DefaultWaypoints[Sku.Loc].Zones[tZone][tSubzone][z]
+				local tWaypointData = SkuDB.DefaultWaypoints[Sku.Loc].Zones[tZone][tSubzone][tName]
 				local isUiMap = SkuNav:GetUiMapIdFromAreaId(tWaypointData.areaId)
 				
 				local tNewIndex = #WaypointCache + 1
@@ -217,11 +217,11 @@ function SkuNav:CreateWaypointCache()
 		end
 	end
 	--postboxes
-	for q = 1, #SkuDB.DefaultWaypoints2.Postbox do
-		local tFaction = SkuDB.DefaultWaypoints2.Postbox[q]
-		for q = 1, #SkuDB.DefaultWaypoints2.Postbox[tFaction] do
-			local tName = SkuDB.DefaultWaypoints2.Postbox[tFaction][q]
-			local tWaypointData = SkuDB.DefaultWaypoints2.Postbox[tFaction][tName]
+	for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Postbox do
+		local tFaction = SkuDB.DefaultWaypoints[Sku.Loc].Postbox[q]
+		for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Postbox[tFaction] do
+			local tName = SkuDB.DefaultWaypoints[Sku.Loc].Postbox[tFaction][q]
+			local tWaypointData = SkuDB.DefaultWaypoints[Sku.Loc].Postbox[tFaction][tName]
 			local isUiMap = SkuNav:GetUiMapIdFromAreaId(tWaypointData.areaId)
 			
 			local tNewIndex = #WaypointCache + 1
@@ -755,7 +755,7 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 			tPlayerUIMap = 1428
 		else
 			for i, v in pairs(SkuDB.InternalAreaTable) do
-				if v.AreaName_lang == tMMZoneText then
+				if v.AreaName_lang[Sku.Loc] == tMMZoneText then
 					tPlayerUIMap = SkuNav:GetUiMapIdFromAreaId(v.ParentAreaID)
 				end
 			end
@@ -853,7 +853,7 @@ function SkuNav:GetContinentNameFromContinentId(aContinentId)
 	if not SkuDB.ContinentIds[aContinentId] then
 		return
 	end
-	return SkuDB.ContinentIds[aContinentId].Name_lang
+	return SkuDB.ContinentIds[aContinentId].Name_lang[Sku.Loc]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -900,7 +900,7 @@ function SkuNav:GetAreaIdFromAreaName(aAreaName)
 	local rAreaId
 	local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
 	for i, v in pairs(SkuDB.InternalAreaTable) do
-		if (v.AreaName_lang == aAreaName) and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
+		if (v.AreaName_lang[Sku.Loc] == aAreaName) and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
 			rAreaId = i
 		end
 	end
@@ -913,7 +913,7 @@ function SkuNav:GetAreaData(aAreaId)
 	if not SkuDB.InternalAreaTable[aAreaId] then 
 		return
 	end
-	return SkuDB.InternalAreaTable[aAreaId].ZoneName, SkuDB.InternalAreaTable[aAreaId].AreaName_lang, SkuDB.InternalAreaTable[aAreaId].ContinentID, SkuDB.InternalAreaTable[aAreaId].ParentAreaID, SkuDB.InternalAreaTable[aAreaId].Faction, SkuDB.InternalAreaTable[aAreaId].Flags
+	return SkuDB.InternalAreaTable[aAreaId].ZoneName, SkuDB.InternalAreaTable[aAreaId].AreaName_lang[Sku.Loc], SkuDB.InternalAreaTable[aAreaId].ContinentID, SkuDB.InternalAreaTable[aAreaId].ParentAreaID, SkuDB.InternalAreaTable[aAreaId].Faction, SkuDB.InternalAreaTable[aAreaId].Flags
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -939,7 +939,7 @@ function SkuNav:GetCurrentAreaId()
 	local tMinimapZoneText = GetMinimapZoneText()
 	local tAreaId
 	for i, v in pairs(SkuDB.InternalAreaTable) do
-		if (v.AreaName_lang == tMinimapZoneText)  and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
+		if (v.AreaName_lang[Sku.Loc] == tMinimapZoneText)  and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
 			tAreaId = i
 			break
 		end
@@ -948,7 +948,7 @@ function SkuNav:GetCurrentAreaId()
 		local tExtMapId = SkuDB.ExternalMapID[SkuNav:GetBestMapForUnit("player")]
 		if tExtMapId then
 			for i, v in pairs(SkuDB.InternalAreaTable) do
-				if v.AreaName_lang == tExtMapId.Name_lang then
+				if v.AreaName_lang[Sku.Loc] == tExtMapId.Name_lang[Sku.Loc] then
 					tAreaId = i
 					break
 				end
@@ -2312,8 +2312,8 @@ function SkuNav:PLAYER_LOGIN(...)
 		end
 	end
 	if tWpsEmpty == true then
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
-		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata["Waypoints"]
+		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
+		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata[Sku.Loc]["Waypoints"]
 	end
 
 	if SkuOptions.db.global["SkuNav"].Links then
@@ -2323,8 +2323,8 @@ function SkuNav:PLAYER_LOGIN(...)
 		end
 	end
 	if tLinksEmpty == true then
-		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
-		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata["Links"]
+		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
+		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata[Sku.Loc]["Links"]
 	end
 
 
@@ -2382,8 +2382,8 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	end
 	if tWpsEmpty == true then
 		SkuOptions.db.profile[MODULE_NAME].Waypoints = nil		
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata["Waypoints"])
-		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata["Waypoints"]
+		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
+		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata[Sku.Loc]["Waypoints"]
 	end
 
 	if SkuOptions.db.global["SkuNav"].Links then
@@ -2394,8 +2394,8 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	end
 	if tLinksEmpty == true then
 		SkuOptions.db.profile[MODULE_NAME].Links = nil
-		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata["Links"])
-		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata["Links"]
+		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
+		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata[Sku.Loc]["Links"]
 	end
 
 	C_Timer.NewTimer(15, function() SkuDrawFlag = true end)
@@ -2423,7 +2423,7 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 		C_Timer.NewTimer(1, function()
 			if SkuNav:GetCurrentAreaId() then
 				_G["SkuNavMMMainFrameZoneSelect"].value = SkuNav:GetCurrentAreaId()
-				_G["SkuNavMMMainFrameZoneSelect"]:SetText(SkuDB.InternalAreaTable[SkuNav:GetCurrentAreaId()].AreaName_lang)	
+				_G["SkuNavMMMainFrameZoneSelect"]:SetText(SkuDB.InternalAreaTable[SkuNav:GetCurrentAreaId()].AreaName_lang[Sku.Loc])	
 			end
 		end)
 	end
@@ -2684,7 +2684,7 @@ end
 local GetNpcRolesCache = {}
 function SkuNav:GetNpcRoles(aNpcName, aNpcId)
 	if not aNpcId then
-		for i, v in pairs(SkuDB.NpcData.NamesDE) do
+		for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
 			if v[1] == aNpcName then
 				aNpcId = i
 				break

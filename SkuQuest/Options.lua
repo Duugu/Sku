@@ -69,7 +69,7 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 
 	table.insert(tSections, L["Quest ID"]..": "..i)
 
-	table.insert(tSections, SkuDB.questLookup[i][1]) --de name
+	table.insert(tSections, SkuDB.questLookup[Sku.Loc][i][1]) --de name
 
 	local tCurrentQuestLogQuestsTable = {}
 	local numEntries = GetNumQuestLogEntries()
@@ -86,15 +86,15 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 	end
 
 	if SkuDB.InternalAreaTable[aZoneID] then
-		table.insert(tSections, L["Zone"]..": "..SkuDB.InternalAreaTable[aZoneID].AreaName_lang)
+		table.insert(tSections, L["Zone"]..": "..SkuDB.InternalAreaTable[aZoneID].AreaName_lang[Sku.Loc])
 	else
 		table.insert(tSections, L["Zone: Unknown"])
 	end
 
 	table.insert(tSections, L["Level"]..": "..SkuDB.questDataTBC[i][SkuDB.questKeys["questLevel"]].." ("..SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]]..")")
 
-	if SkuDB.questLookup[i][3] then
-		table.insert(tSections, L["Objectives"].."\r\n"..(SkuDB.questLookup[i][3][1] or ""))
+	if SkuDB.questLookup[Sku.Loc][i][3] then
+		table.insert(tSections, L["Objectives"].."\r\n"..(SkuDB.questLookup[Sku.Loc][i][3][1] or ""))
 	else
 		table.insert(tSections, L["Objectives"].."\r\n")
 	end
@@ -147,28 +147,28 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 	if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
 		local preQuestGroup = ""
 		for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]]) do
-			preQuestGroup = preQuestGroup.."\r\n"..iR.." "..SkuDB.questLookup[vR][1]
+			preQuestGroup = preQuestGroup.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
 		end
 		table.insert(tSections, L["Pre Quests"]..": "..preQuestGroup)
 	end
 	if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
 		local preQuestSingle = ""
 		for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]]) do
-			preQuestSingle = preQuestSingle.."\r\n"..iR.." "..SkuDB.questLookup[vR][1]
+			preQuestSingle = preQuestSingle.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
 		end
 		table.insert(tSections, L["Pre Quest"]..": "..preQuestSingle)
 	end
 	if SkuDB.questDataTBC[i][SkuDB.questKeys["inGroupWith"]] then -- table: {quest(int)} - to be completed additional to this before next in series
 		local inGroupWith = ""
 		for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["inGroupWith"]]) do
-			inGroupWith = inGroupWith.."\r\n"..iR.." "..SkuDB.questLookup[vR][1]
+			inGroupWith = inGroupWith.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
 		end
 		table.insert(tSections, L["Quests group"]..": "..inGroupWith)
 	end
 
 	if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - to be completed additional to this before next in series
 		local parentQuest = ""
-		parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..SkuDB.questLookup[SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
+		parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
 		table.insert(tSections, L["Parent quest"]..": "..parentQuest)
 	end
 
@@ -234,11 +234,11 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
 								if tNumberOfSpawns > 3 and aOnly3 == true then
 									tNumberOfSpawns = 3
 								end
-								if SkuDB.NpcData.NamesDE[i] then
-									local tSubname = SkuDB.NpcData.NamesDE[i][2]
+								if SkuDB.NpcData.Names[Sku.Loc][i] then
+									local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
 									local tRolesString = ""
 									if not tSubname then
-										local tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.NamesDE[i], i)
+										local tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.Names[Sku.Loc][i], i)
 										if #tRoles > 0 then
 											for i, v in pairs(tRoles) do
 												tRolesString = tRolesString..";"..v
@@ -249,18 +249,18 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
 										tRolesString = tRolesString..";"..tSubname
 									end
 									for sp = 1, tNumberOfSpawns do
-										if not aTargetTable[SkuDB.NpcData.NamesDE[i][1]..tRolesString] then
-											aTargetTable[SkuDB.NpcData.NamesDE[i][1]..tRolesString] = {}
+										if not aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] then
+											aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] = {}
 										end
-										table.insert(aTargetTable[SkuDB.NpcData.NamesDE[i][1]..tRolesString], SkuDB.NpcData.NamesDE[i][1]..tRolesString..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
+										table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
 									end
 								end
 							else
-								if SkuDB.NpcData.NamesDE[i] then
-									local tSubname = SkuDB.NpcData.NamesDE[i][2]
+								if SkuDB.NpcData.Names[Sku.Loc][i] then
+									local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
 									local tRolesString = ""
 									if not tSubname then
-										local tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.NamesDE[i], i)
+										local tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.Names[Sku.Loc][i], i)
 										if #tRoles > 0 then
 											for i, v in pairs(tRoles) do
 												tRolesString = tRolesString..";"..v
@@ -270,10 +270,10 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
 									else
 										tRolesString = tRolesString..";"..tSubname
 									end
-									if not aTargetTable[SkuDB.NpcData.NamesDE[i][1]..tRolesString] then
-										aTargetTable[SkuDB.NpcData.NamesDE[i][1]..tRolesString] = {}
+									if not aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] then
+										aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] = {}
 									end
-									table.insert(aTargetTable[SkuDB.NpcData.NamesDE[i][1]..tRolesString], "Anderer Kontinent;"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang)
+									table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], "Anderer Kontinent;"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
 								end
 
 							end
@@ -301,7 +301,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 					local tObjectData = SkuDB.objectDataTBC[tObjectId]
 					if tObjectData then					
 						local tObjectSpawns = tObjectData[SkuDB.objectKeys["spawns"]]
-						local tObjectName = SkuDB.objectLookup[tObjectId] or SkuDB.objectDataTBC[tObjectId][1]
+						local tObjectName = SkuDB.objectLookup[Sku.Loc][tObjectId] or SkuDB.objectDataTBC[tObjectId][1]
 						if tObjectSpawns then
 							for is, vs in pairs(tObjectSpawns) do
 								local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
@@ -318,7 +318,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 													if not tResultWPs[tObjectName] then
 														tResultWPs[tObjectName] = {}
 													end
-													table.insert(tResultWPs[tObjectName], L["OBJECT"]..";"..tObjectId..";"..tObjectName..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
+													table.insert(tResultWPs[tObjectName], L["OBJECT"]..";"..tObjectId..";"..tObjectName..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
 												end
 											end
 										end
@@ -359,11 +359,11 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 											tNumberOfSpawns = 3
 										end
 										for sp = 1, tNumberOfSpawns do
-											local tObjectName = SkuDB.objectLookup[tObjectId] or SkuDB.objectDataTBC[tObjectId][1] or "Object name missing"
+											local tObjectName = SkuDB.objectLookup[Sku.Loc][tObjectId] or SkuDB.objectDataTBC[tObjectId][1] or "Object name missing"
 											if not tResultWPs[tObjectName] then
 												tResultWPs[tObjectName] = {}
 											end
-											table.insert(tResultWPs[tObjectName], L["OBJECT"]..";"..tObjectId..";"..tObjectName..";"..tData.AreaName_lang..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
+											table.insert(tResultWPs[tObjectName], L["OBJECT"]..";"..tObjectId..";"..tObjectName..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
 
 										end
 									end
@@ -833,7 +833,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
 			for i, v in pairs(tPreQuestTable) do
-				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[v][1]}, SkuGenericMenuItem)
+				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[Sku.Loc][v][1]}, SkuGenericMenuItem)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					C_Timer.NewTimer(0.1, function()
@@ -1031,7 +1031,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				end
 			end
 
-			for i, v in pairs(SkuDB.questLookup) do
+			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
 				if SkuDB.questDataTBC[i] then
 					local tZoneId
 					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
@@ -1208,8 +1208,8 @@ function SkuQuest:MenuBuilder(aParentEntry)
 								local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
 								local tX, tY = worldPosition:GetXY()
 								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
-								tUnSortedTable[SkuDB.questLookup[i][1]] = tDistance
-								tIdTable[tDistance..";Meter#"..SkuDB.questLookup[i][1]] = i
+								tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = tDistance
+								tIdTable[tDistance..";Meter#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 							end
 						end
 					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then
@@ -1223,18 +1223,18 @@ function SkuQuest:MenuBuilder(aParentEntry)
 								local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
 								local tX, tY = worldPosition:GetXY()
 								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
-								tUnSortedTable[SkuDB.questLookup[i][1]] = tDistance
-								tIdTable[tDistance..";Meter#"..SkuDB.questLookup[i][1]] = i
+								tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = tDistance
+								tIdTable[tDistance..";Meter#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 							end
 						end
 					else
-						tUnSortedTable[SkuDB.questLookup[i][1]] = 99999
-						tIdTable["99999;Meter#"..SkuDB.questLookup[i][1]] = i
+						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
+						tIdTable["99999;Meter#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 					end
 
-					if not tUnSortedTable[SkuDB.questLookup[i][1]] then
-						tUnSortedTable[SkuDB.questLookup[i][1]] = 99999
-						tIdTable["99999;Meter#"..SkuDB.questLookup[i][1]] = i
+					if not tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] then
+						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
+						tIdTable["99999;Meter#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 					end
 				end
 
@@ -1271,7 +1271,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
 			local tNameCache = {}
-			for i, v in pairs(SkuDB.questLookup) do
+			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
 				if SkuDB.questDataTBC[i] then
 					local tZoneId
 					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures

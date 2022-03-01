@@ -950,7 +950,7 @@ function SkuNav:SkuNavMMOpen()
 				local tMenuItems = {}
 				for i, v in pairs(SkuDB.InternalAreaTable) do
 					if v.ContinentID == tPlayerContintentId and v.ParentAreaID == 0 then
-						tMenuItems[#tMenuItems + 1] = {zoneId = i, buttonText = v.AreaName_lang,}
+						tMenuItems[#tMenuItems + 1] = {zoneId = i, buttonText = v.AreaName_lang[Sku.Loc],}
 					end
 				end
 				tMenuItems[#tMenuItems + 1] = {zoneId = -1, buttonText = "Current Zone",}
@@ -970,7 +970,7 @@ function SkuNav:SkuNavMMOpen()
 				local tMenuItemsMaxLen = 0
 				for i, v in pairs(SkuDB.InternalAreaTable) do
 					if v.ContinentID == tPlayerContintentId and v.ParentAreaID == 0 then
-						tMenuItems[#tMenuItems + 1] = {zoneId = i, buttonText = v.AreaName_lang,}
+						tMenuItems[#tMenuItems + 1] = {zoneId = i, buttonText = v.AreaName_lang[Sku.Loc],}
 						if string.len(tMenuItems[#tMenuItems].buttonText) > tMenuItemsMaxLen then
 							tMenuItemsMaxLen = string.len(tMenuItems[#tMenuItems].buttonText)
 						end
