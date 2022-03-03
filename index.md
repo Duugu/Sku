@@ -5,7 +5,7 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Addon-Update Downloads
 
 *Zuletzt aktualisiert Addons:* <br>
-[Sku 24.3](https://github.com/Duugu/Sku/releases/download/r24.3/Sku-r24.3-bcc.zip) (01.03.2022)<br>
+[Sku 24.4](https://github.com/Duugu/Sku/releases/download/r24.4/Sku-r24.4-bcc.zip) (03.03.2022)<br>
 
 *Nicht aktualisiert:*<br>
 [Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
@@ -15,6 +15,12 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 24.4
+
+### SkuAuras
+*Fehlerkorrekturen*
+- Aura-Ausgaben für Nahkampf funktionieren jetzt wieder.
 
 ## Änderungen in Version 24.3
 
