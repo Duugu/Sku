@@ -2327,7 +2327,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:StopSounds(aNumberOfSounds)
-	local _, currentSoundHandle = PlaySoundFile([[Interface\AddOns\SkuAudioData\assets\audio\silence_1s.mp3]], "Dialog")--PlaySound(871, "Dialog")
+	local _, currentSoundHandle = PlaySoundFile([[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\silence_1s.mp3]], "Dialog")--PlaySound(871, "Dialog")
 
 	if currentSoundHandle then
 		for i = 1, aNumberOfSounds do

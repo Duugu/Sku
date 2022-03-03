@@ -177,7 +177,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant) -- for strings with lookup in string index
-	--print(aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
+	dprint(aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
 	if not aString then
 		return
 	end
@@ -381,7 +381,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 					--end
 
 
-					tFile = "Interface\\AddOns\\SkuAudioData\\assets\\audio\\"..tFile
+					tFile = "Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..tFile
 					aOverwrite = aOverwrite or false
 					aWait = aWait or false
 					tLength = tLength or 0
@@ -395,6 +395,8 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 							SkuVoiceQueue = {}
 						end]]
 					end
+
+					dprint(tStrings[x])
 
 					if aInstant == true then
 						table.insert(mSkuVoiceQueue, 0 + x, {

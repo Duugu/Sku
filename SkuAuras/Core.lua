@@ -318,7 +318,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		end)
 		hooksecurefunc("UseAction", function(aSlot, aCheckCursor, aOnSelf) 
 			local actionType, id, subType = GetActionInfo(aSlot)
-			dprint("to implement UseAction", aSlot, aCheckCursor, aOnSelf, actionType, id, subType) 
+			--dprint("to implement UseAction", aSlot, aCheckCursor, aOnSelf, actionType, id, subType) 
 			if actionType == "item" then
 				local aEventData =  {
 					GetTime(),
@@ -341,7 +341,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 			end
 		end)
 		hooksecurefunc("RunMacro", function(aMacroIdOrName) 
-			dprint("to implement RunMacro", aMacroIdOrName) 
+			--dprint("to implement RunMacro", aMacroIdOrName) 
 
 
 
@@ -349,7 +349,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 
 		end)
 		hooksecurefunc("RunMacroText", function(aMacroText) 
-			dprint("to implement RunMacroText", aMacroText) 
+			--dprint("to implement RunMacroText", aMacroText) 
 
 
 
@@ -413,8 +413,8 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 	if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= UnitGUID(tUnitId.."target") then
 		SkuAuras.UnitRepo[tUnitId].unitTargetName = UnitGUID(tUnitId.."target")
 
-		dprint("ooooooooooooooo target change for ", tUnitId)
-		dprint("changed to", UnitName(tUnitId.."target"))
+		--dprint("ooooooooooooooo target change for ", tUnitId)
+		--dprint("changed to", UnitName(tUnitId.."target"))
 		if UnitName(tUnitId.."target") then
 			local tNewTargetUnitId = SkuAuras:GetBestUnitId(UnitName(tUnitId.."target"))
 			local tEventData = {
@@ -669,7 +669,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		end
 	end
 	tEventData[38] = tdebuffList
-
+--[[
 	if tEventData[2] ~= "KEY_PRESS" then
 		dprint("---------------------------------------------------------------------")
 		dprint("--NEW EVENT:", tEventData[2] )
@@ -713,12 +713,12 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		dprint(SkuAuras.thingsNamesOnCd)
 		
 	end
-
+]]
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
-		dprint(tEventData[2], "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+")
-		dprint("  ",tAuraName, tAuraData, tEventData[36])
+		--dprint(tEventData[2], "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+")
+		--dprint("  ",tAuraName, tAuraData, tEventData[36])
 
 		if tAuraData.enabled == true then
 

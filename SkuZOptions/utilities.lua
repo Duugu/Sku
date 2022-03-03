@@ -421,7 +421,7 @@ function SkuTranslateStringDeToEn(aString)
 			if tFound == false then
 				for i, v in pairs(SkuDB.ExternalMapID) do
 					if slower(v.Name_lang.deDE) == tstrlower then
-						tTarget = slower(v.Name_lang.enUS)
+						tTarget = v.Name_lang.enUS
 						tFound = true
 						break
 					end
@@ -429,7 +429,7 @@ function SkuTranslateStringDeToEn(aString)
 				if tFound == false then
 					for i, v in pairs(SkuDB.InternalAreaTable) do
 						if slower(v.AreaName_lang.deDE) == tstrlower then
-							tTarget = slower(v.AreaName_lang.enUS)
+							tTarget = v.AreaName_lang.enUS
 							tFound = true
 							break
 						end
@@ -443,7 +443,7 @@ function SkuTranslateStringDeToEn(aString)
 					if SkuDB.NpcData.Names.enUS[i] then
 						if v[1] then
 							if slower(v[1]) == tstrlower then
-								tTarget = slower(SkuDB.NpcData.Names.enUS[i][1])
+								tTarget = SkuDB.NpcData.Names.enUS[i][1]
 								tFound = true
 								break
 							end
@@ -451,7 +451,7 @@ function SkuTranslateStringDeToEn(aString)
 						if tFound == false then
 							if v[2] then
 								if slower(v[2]) == tstrlower then
-									tTarget = slower(SkuDB.NpcData.Names.enUS[i][2])
+									tTarget = SkuDB.NpcData.Names.enUS[i][2]
 									tFound = true
 									break
 								end
@@ -467,7 +467,7 @@ function SkuTranslateStringDeToEn(aString)
 					if SkuDB.objectLookup.enUS[i] then
 						if v then
 							if slower(v) == tstrlower then
-								tTarget = slower(SkuDB.objectLookup.enUS[i])
+								tTarget = SkuDB.objectLookup.enUS[i]
 								tFound = true
 								break
 							end
@@ -509,7 +509,7 @@ function SkuTranslateStringDeToEn(aString)
 					if SkuDB.itemLookup.enUS[i] then
 						if v then
 							if slower(v) == tstrlower then
-								tTarget = slower(SkuDB.itemLookup.enUS[i])
+								tTarget = SkuDB.itemLookup.enUS[i]
 								tFound = true
 								break
 							end
@@ -522,7 +522,7 @@ function SkuTranslateStringDeToEn(aString)
 			if tFound == false then
 				for i, v in pairs(SkuDB.SpellDataTBC) do
 					if slower(v.deDE[1]) == tstrlower then
-						tTarget = slower(v.enUS[1])
+						tTarget = v.enUS[1]
 						tFound = true
 						break
 					end
@@ -536,7 +536,7 @@ function SkuTranslateStringDeToEn(aString)
 						if SkuDB.questLookup.enUS[i][1] then
 							if v[1] then
 								if slower(v[1]) == tstrlower then
-									tTarget = slower(SkuDB.questLookup.enUS[i][1])
+									tTarget = SkuDB.questLookup.enUS[i][1]
 									tFound = true
 									break
 								end
@@ -573,11 +573,12 @@ function SkuDefaultWp2DeToEn()
 	SkuTranslatedData.DefaultWaypoints2 = {}
 
 	local co = coroutine.create(function ()
-		for q = 1, #SkuDB.DefaultWaypoints do
-			local tIndex = SkuDB.DefaultWaypoints[q]
+		print("test")
+		--for q = 1, #SkuDB.DefaultWaypoints["deDE"] do
+			local tIndex = SkuDB.DefaultWaypoints["deDE"][4]
 			local tIndexEN = SkuTranslateStringDeToEn(tIndex)
-			local tValue = SkuDB.DefaultWaypoints[SkuDB.DefaultWaypoints[q]]
-			print(1, tIndex, tValue)
+			local tValue = SkuDB.DefaultWaypoints["deDE"][SkuDB.DefaultWaypoints["deDE"][4]]
+			print(4, tIndex, tValue)
 			table.insert(SkuTranslatedData.DefaultWaypoints2, #SkuTranslatedData.DefaultWaypoints2 + 1, tIndexEN)
 			SkuTranslatedData.DefaultWaypoints2[tIndexEN] = {}
 
@@ -640,7 +641,7 @@ function SkuDefaultWp2DeToEn()
 					end
 				end
 			end
-		end
+		--end
 	end)
 
 	local tCoCompleted = false
