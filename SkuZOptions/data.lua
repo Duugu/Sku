@@ -4,11 +4,11 @@ local _G = _G
 
 
 SkuOptions.BindTypeStrings = {
-	[0] = "ungebunden",
-	[1] = "BOP",
-	[2] = "BOE",
-	[3] = "BOU",
-	[4] = "BOQ",
+	[0] = L["ungebunden"],
+	[1] = L["BOP"],
+	[2] = L["BOE"],
+	[3] = L["BOU"],
+	[4] = L["BOQ"],
 }
 
 SkuOptions.Glossary1 = {
@@ -510,18 +510,18 @@ SkuOptions.Glossary1 = {
 }
 
 SkuOptions.BackgroundSoundFiles = {
-	["silence.mp3"] = "Nichts",
-	["benny_hill.mp3"] = "Benny Hill",
-	["chor1.mp3"] = "Chormusik 1",
-	["chor2.mp3"] = "Chormusik 2",
-	["chor3.mp3"] = "Chormusik 3",
-	["chor4.mp3"] = "Chormusik 4",
-	["entspannungsmusik.mp3"] = "Entspannungsmusik",
-	["gewitter.mp3"] = "Gewitter",
-	["nachts_im_wald.mp3"] = "Nachts im Wald",
-	["wald.mp3"] = "Vögel",
-	["walgesang.mp3"] = "Walgesang",
-	["slowreggaet.mp3"] = "Slow Reggae",
+	["silence.mp3"] = L["Nichts"],
+	["benny_hill.mp3"] = L["Benny Hill"],
+	["chor1.mp3"] = L["Chormusik 1"],
+	["chor2.mp3"] = L["Chormusik 2"],
+	["chor3.mp3"] = L["Chormusik 3"],
+	["chor4.mp3"] = L["Chormusik 4"],
+	["entspannungsmusik.mp3"] = L["Entspannungsmusik"],
+	["gewitter.mp3"] = L["Gewitter"],
+	["nachts_im_wald.mp3"] = L["Nachts im Wald"],
+	["wald.mp3"] = L["Vögel"],
+	["walgesang.mp3"] = L["Walgesang"],
+	["slowreggaet.mp3"] = L["Slow Reggae"],
 }
 SkuOptions.BackgroundSoundFilesLen = {
 	["benny_hill.mp3"] = 238,8,

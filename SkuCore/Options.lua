@@ -28,7 +28,7 @@ SkuCore.options = {
 			end
 		},
 		endFollowOnCast = {
-			name = "Folgen beim Zaubern temporär beenden",
+			name = L["Folgen beim Zaubern temporär beenden"],
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
@@ -39,7 +39,7 @@ SkuCore.options = {
 			end
 		},
 		interactMove = {
-			name = "Bei Interagieren zum Ziel laufen",
+			name = L["Bei Interagieren zum Ziel laufen"],
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
@@ -705,7 +705,7 @@ local function RangecheckMenuBuilder(aParent, aType)
 		end
 	end
 	if tEntriesFound == false then
-		local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {"leer"}, SkuGenericMenuItem)
+		local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
 	end
 
 end
@@ -1083,40 +1083,40 @@ function SkuCore:MenuBuilder(aParentEntry)
 		--end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Entfernung"}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Entfernung"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Freundlich"}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Freundlich"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Friendly")
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Feindlich"}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Feindlich"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Hostile")
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Unbekannt"}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unbekannt"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Misc")
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Spiel Tastenbelegung"}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Spiel Tastenbelegung"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alles zurücksetzen"}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.BuildChildren = function(self)
-			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {"Wirklich zurücksetzen? (keine weitere Warnung)"}, SkuGenericMenuItem)
+			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
 			tNewMenuEntry1.OnAction = function(self, aValue, aName)
 				SkuCore:ResetBindings()
-				SkuOptions.Voice:OutputString("Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt.", true, true, 0.2)						
+				SkuOptions.Voice:OutputString(L["Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt."], true, true, 0.2)						
 			end
-			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {"Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"}, SkuGenericMenuItem)
+			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Taste zuweisen"}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -1176,7 +1176,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 							if categoryConst2 == categoryConst then
 								if _G["BINDING_NAME_" .. commandConst2] then
 									--local tLocKey = gsub(v1.key1, "CTRL", "STRG")
-									local tFriendlyKey1, tFriendlyKey2 = v1.key1 or "nichts", v1.key2 or "nichts"
+									local tFriendlyKey1, tFriendlyKey2 = v1.key1 or L["nichts"], v1.key2 or L["nichts"]
 									for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
 										tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
 										tFriendlyKey2 = gsub(tFriendlyKey2, kLocKey, vLocKey)
@@ -1192,13 +1192,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 										tFriendlyKey2 = gsub(tFriendlyKey2, "%-%-", "-"..L["Minus"])
 									end
 
-									local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {_G["BINDING_NAME_" .. commandConst2].." Taste 1: "..(tFriendlyKey1 or "nichts").." Taste 2: "..(tFriendlyKey2 or "nichts")}, SkuGenericMenuItem)
+									local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {_G["BINDING_NAME_" .. commandConst2]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])}, SkuGenericMenuItem)
 									tNewMenuEntryKey.isSelect = true
 									tNewMenuEntryKey.dynamic = true
 									tNewMenuEntryKey.OnAction = function(self, aValue, aName)
 										--dprint("cat OnAction 2", aValue, aName, self.name)
-										if aName == "Neu belegen" then
-											SkuOptions.Voice:OutputString(L["Press new key or Escape to cancel"].." ".."Oder Rückschritt zum löschen", true, true, 0.2)						
+										if aName == L["Neu belegen"] then
+											SkuOptions.Voice:OutputString(L["Press new key or Escape to cancel"].." "..L["Oder Rückschritt zum löschen"], true, true, 0.2)						
 
 											local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
 											f.menuTarget = self
@@ -1225,13 +1225,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 												}
 						
 												if tBlockedKeys[aKey] or tBlockedKeys[string.lower(aKey)] then 
-													SkuOptions.Voice:OutputString("Ungültig. Andere Taste drücken.", true, true, 0.2)						
+													SkuOptions.Voice:OutputString(L["Ungültig. Andere Taste drücken."], true, true, 0.2)						
 													return 
 												end
 						
 												for z = 1, #tBlockedKeysParts do
 													if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
-														SkuOptions.Voice:OutputString("Ungültig. Andere Taste drücken.", true, true, 0.2)						
+														SkuOptions.Voice:OutputString(L["Ungültig. Andere Taste drücken."], true, true, 0.2)						
 														return 
 													end
 												end
@@ -1244,12 +1244,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 													SkuCore:SetBinding(aKey, self.command)
 													
 													local tCommand, tCategory, tKey1, tKey2 = GetBinding(self.index, GetCurrentBindingSet())
-													local tFriendlyKey1, tFriendlyKey2 = tKey1 or "nichts", tKey2 or "nichts"
+													local tFriendlyKey1, tFriendlyKey2 = tKey1 or L["nichts"], tKey2 or L["nichts"]
 													for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
 														tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
 														tFriendlyKey2 = gsub(tFriendlyKey2, kLocKey, vLocKey)
 													end							
-													self.menuTarget.name = _G["BINDING_NAME_" .. tCommand].." Taste 1: "..(tFriendlyKey1).." Taste 2: "..(tFriendlyKey2)
+													self.menuTarget.name = _G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(tFriendlyKey1)..L[" Taste 2: "]..(tFriendlyKey2)
 													_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 													_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
 													SkuOptions.Voice:OutputString(L["New key"]..";"..tFriendlyKey1, true, true, 0.2)						
@@ -1293,15 +1293,15 @@ function SkuCore:MenuBuilder(aParentEntry)
 													SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
 												end
 											end
-										elseif aName == "Belegung löschen" then
+										elseif aName == L["Belegung löschen"] then
 											if not self.command or not self.category or not self.index then return end
 											SkuCore:DeleteBinding(self.command)
 											local tCommand, tCategory, tKey1, tKey2 = GetBinding(self.index, GetCurrentBindingSet())
 											local tFriendlyKey1, tFriendlyKey2
-											self.name = _G["BINDING_NAME_" .. tCommand].." Taste 1: "..(tFriendlyKey1 or "nichts").." Taste 2: "..(tFriendlyKey2 or "nichts")
+											self.name = _G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])
 											_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 											_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-											SkuOptions.Voice:OutputString("Belegung gelöscht", true, true, 0.2)						
+											SkuOptions.Voice:OutputString(L["Belegung gelöscht"], true, true, 0.2)						
 										end					
 									end
 									tNewMenuEntryKey.command = commandConst2
@@ -1309,8 +1309,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 									tNewMenuEntryKey.index = v1.index
 									
 									tNewMenuEntryKey.BuildChildren = function(self)
-										local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {"Neu belegen"}, SkuGenericMenuItem)
-										local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {"Belegung löschen"}, SkuGenericMenuItem)
+										local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Neu belegen"]}, SkuGenericMenuItem)
+										local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
 									end
 
 								end
@@ -1322,7 +1322,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Auktionshaus"}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Auktionshaus"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.AuctionHouseMenuBuilder

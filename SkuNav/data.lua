@@ -80,29 +80,29 @@ SkuNav.NPCRolesToRecognize = {
 SkuNav.routeRecordingIntWpMethods = {
 	names = {
 		L["Manually"],
-		"10 Grad 10 Meter",
-		"20 Grad 20 Meter",
-		"20 Grad 30 Meter",
-		"40 Grad 40 Meter",
+		L["10 Grad 10 Meter"],
+		L["20 Grad 20 Meter"],
+		L["20 Grad 30 Meter"],
+		L["40 Grad 40 Meter"],
 		},
 	values = {
 		[L["Manually"]] = {
 			rot = 1000,
 			dist = 100000,
 		},
-		["10 Grad 10 Meter"] = {
+		[L["10 Grad 10 Meter"]] = {
 			rot = 10,
 			dist = 10,
 		},
-		["20 Grad 20 Meter"] = {
+		[L["20 Grad 20 Meter"]] = {
 			rot = 20,
 			dist = 20,
 		},
-		["20 Grad 30 Meter"] = {
+		[L["20 Grad 30 Meter"]] = {
 			rot = 20,
 			dist = 30,
 		},
-		["40 Grad 40 Meter"] = {
+		[L["40 Grad 40 Meter"]] = {
 			rot = 40,
 			dist = 40,
 		},

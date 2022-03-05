@@ -16,6 +16,7 @@ SkuQuest.options = {
 				return SkuOptions.db.profile[MODULE_NAME].enable
 			end
 		},
+		--[[
 		TestDropdown = {
 			name = "Test Dropdown" ,
 			desc = "",
@@ -34,12 +35,13 @@ SkuQuest.options = {
 				return SkuOptions.db.profile[MODULE_NAME].enable
 			end
 		},
+		]]
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuQuest.defaults = {
 	enable = true,
-	TestDropdown = "Dialog",
+	--TestDropdown = "Dialog",
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -273,7 +275,7 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
 									if not aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] then
 										aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] = {}
 									end
-									table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], "Anderer Kontinent;"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
+									table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
 								end
 
 							end
@@ -359,7 +361,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 											tNumberOfSpawns = 3
 										end
 										for sp = 1, tNumberOfSpawns do
-											local tObjectName = SkuDB.objectLookup[Sku.Loc][tObjectId] or SkuDB.objectDataTBC[tObjectId][1] or "Object name missing"
+											local tObjectName = SkuDB.objectLookup[Sku.Loc][tObjectId] or SkuDB.objectDataTBC[tObjectId][1] or L["Object name missing"]
 											if not tResultWPs[tObjectName] then
 												tResultWPs[tObjectName] = {}
 											end
@@ -396,7 +398,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 		local tNewMenuGeneralName = SkuOptions:InjectMenuItems(aParent, {unitGeneralName}, SkuGenericMenuItem)
 		tNewMenuGeneralName.dynamic = true
 		tNewMenuGeneralName.BuildChildren = function(self)
-			if string.find(wpTable[1], "Anderer Kontinent") then
+			if string.find(wpTable[1], L["Anderer Kontinent"]) then
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {wpTable[1]}, SkuGenericMenuItem)
 			else
 				local tCoveredWps = {}
@@ -482,7 +484,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 										if string.find(tV, wpName) then
 											local tDistText = tMetapaths[tV].distance..";"..L["Meter"]
 											if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
-												tDistText = "weit"
+												tDistText = L["weit"]
 											end
 											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, SkuGenericMenuItem)
 											tNewMenuEntry.OnEnter = function(self, aValue, aName)
@@ -520,7 +522,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								for tK, tV in ipairs(tSortedWaypointList) do
 									local tDistText = tMetapaths[tV].distance..";"..L["Meter"]
 									if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
-										tDistText = "weit"
+										tDistText = L["weit"]
 									end
 									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
@@ -562,7 +564,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
 							SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 							SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
-							SkuOptions.Voice:OutputString("Metaroute folgen gestartet", false, true, 0.2)
+							SkuOptions.Voice:OutputString(L["Metaroute folgen gestartet"], false, true, 0.2)
 							SkuOptions:CloseMenu()
 						end
 					end
@@ -573,12 +575,12 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 					for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
 						local tFnd = false
 						for tK, tV in pairs(tSortedWaypointList) do
-							if tV == v.nearestWpRange..";Meter#"..v.nearestWP then
+							if tV == v.nearestWpRange..";"..L["Meter"].."#"..v.nearestWP then
 								tFnd = true
 							end
 						end
 						if tFnd == false then
-							table.insert(tSortedWaypointList, v.nearestWpRange..";Meter#"..v.nearestWP)
+							table.insert(tSortedWaypointList, v.nearestWpRange..";"..L["Meter"].."#"..v.nearestWP)
 						end
 					end
 					if #tSortedWaypointList == 0 then
@@ -623,7 +625,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 							else
 								for tK, tV in ipairs(tSortedList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";plus;"..tResults[tV].distanceTargetWp..";Meter#"..tV}, SkuGenericMenuItem)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"].."#"..tV}, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
@@ -634,7 +636,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							end
 						end
 
-						local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {"Nach Name"}, SkuGenericMenuItem)
+						local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["Nach Name"]}, SkuGenericMenuItem)
 						tNewMenuGeneralSort.dynamic = true
 						tNewMenuGeneralSort.filterable = true
 						tNewMenuGeneralSort.BuildChildren = function(self)
@@ -646,7 +648,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 							else
 								for tK, tV in ipairs(tSortedWaypointList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";plus;"..tResults[tV].distanceTargetWp..";"..L["Meter"]}, SkuGenericMenuItem)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"]}, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
@@ -659,7 +661,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 					end
 				end
 			
-				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {"Wegpunkt"}, SkuGenericMenuItem)
+				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {L["Wegpunkt"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.isSelect = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
@@ -679,7 +681,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						SkuOptions:CloseMenu()
 					else
 						SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
-						SkuOptions.Voice:OutputString("Wegpunkt nicht ausgewählt", false, true, 0.3, true)
+						SkuOptions.Voice:OutputString(L["Wegpunkt nicht ausgewählt"], false, true, 0.3, true)
 					end
 
 				end
@@ -705,7 +707,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 						else
 							for tK, tV in ipairs(tSortedList) do
-								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {tResults[tV].distance..";Meter#"..tV}, SkuGenericMenuItem)
+								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {tResults[tV].distance..";"..L["Meter"].."#"..tV}, SkuGenericMenuItem)
 								tNewMenuGeneralSp.OnEnter = function(self, aValue, aName)
 									SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint = tV
 								end
@@ -713,7 +715,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							end
 						end
 					end
-					local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {"Nach Name"}, SkuGenericMenuItem)
+					local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["Nach Name"]}, SkuGenericMenuItem)
 					tNewMenuGeneralSort.dynamic = true
 					tNewMenuGeneralSort.filterable = true
 					tNewMenuGeneralSort.BuildChildren = function(self)
@@ -826,7 +828,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 
 	if #tPreQuestTable > 0 then
 		tHasEntries = true
-		local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {"Pre Quests"}, SkuGenericMenuItem)
+		local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Pre Quests"]}, SkuGenericMenuItem)
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 
@@ -837,7 +839,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					C_Timer.NewTimer(0.1, function()
-						SkuOptions:SlashFunc("short,SkuQuest,Questdatenbank,Alle,"..self.name)
+						SkuOptions:SlashFunc("short,"..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
 						SkuOptions.Voice:OutputString(self.name, true, true, 0.3, true)
 					end)
 				end
@@ -857,7 +859,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 			
 			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
 
-			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {"Annahme"}, SkuGenericMenuItem)
+			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Annahme"]}, SkuGenericMenuItem)
 			tNewMenuSubEntry.dynamic = true
 			tNewMenuSubEntry.filterable = true
 			tNewMenuSubEntry.BuildChildren = function(self)
@@ -877,7 +879,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 		tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
 
 		if	tTargetType then
-			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {"Ziel"}, SkuGenericMenuItem)
+			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Ziel"]}, SkuGenericMenuItem)
 			tNewMenuSubEntry.dynamic = true
 			--tNewMenuSubEntry.filterable = true
 			tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -891,7 +893,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 
 	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
 		tHasEntries = true
-		local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {"Abgabe"}, SkuGenericMenuItem)
+		local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Abgabe"]}, SkuGenericMenuItem)
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.filterable = true
 		local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
@@ -917,7 +919,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:MenuBuilder(aParentEntry)
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Aktuelle Quests"}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Aktuelle Quests"]}, SkuGenericMenuItem)
 	--Alle
 	--Zonen
 	--Entfernung Questgeber
@@ -948,15 +950,15 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
 				local tAddTitle = ""
 				if isComplete == 1 then
-					tAddTitle = "(Fertig) "
+					tAddTitle = L["(Fertig) "]
 				elseif isComplete == -1 then
-					tAddTitle = "(Fehlgeschlagen) "
+					tAddTitle = L["(Fehlgeschlagen) "]
 				end
 				if suggestedGroup then
 					tAddTitle = tAddTitle.."("..suggestedGroup..") "
 				end
 				if frequency == 2 then
-					tAddTitle = tAddTitle.."(Daily) "
+					tAddTitle = tAddTitle..L["(Daily) "]
 				end
 				if isHeader == false then
 					tQuestsByHeader[tHeader][tAddTitle..title] = questLogID
@@ -966,7 +968,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 				end
 			end
 			--all
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Alle"}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
 			tNewMenuEntry.filterable = true
 			for ih, vh in pairs(tQuestsByHeader) do
 				for iq, vq in pairs(vh) do
@@ -1006,12 +1008,12 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {"Questdatenbank"}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Questdatenbank"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
 	end
 	tNewMenuParentEntry.BuildChildren = function(self)	
-		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {"Start in Zone"}, SkuGenericMenuItem)
+		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Start in Zone"]}, SkuGenericMenuItem)
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.filterable = true
 		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -1209,7 +1211,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 								local tX, tY = worldPosition:GetXY()
 								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
 								tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = tDistance
-								tIdTable[tDistance..";Meter#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+								tIdTable[tDistance..";"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 							end
 						end
 					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then
@@ -1224,23 +1226,23 @@ function SkuQuest:MenuBuilder(aParentEntry)
 								local tX, tY = worldPosition:GetXY()
 								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
 								tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = tDistance
-								tIdTable[tDistance..";Meter#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+								tIdTable[tDistance..";"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 							end
 						end
 					else
 						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
-						tIdTable["99999;Meter#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+						tIdTable["99999;"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 					end
 
 					if not tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] then
 						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
-						tIdTable["99999;Meter#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+						tIdTable["99999;"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
 					end
 				end
 
 				local tSortedTable = {}
 				for k,v in SkuSpairs(tUnSortedTable, function(t,a,b) return t[b] > t[a] end) do --nach wert
-					tSortedTable[#tSortedTable+1] = v..";Meter#"..k
+					tSortedTable[#tSortedTable+1] = v..";"..L["Meter"].."#"..k
 				end
 				if #tSortedTable > 0 then
 					for iS, vS in ipairs(tSortedTable) do
@@ -1263,7 +1265,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			]]
 		end
 
-		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {"Alle"}, SkuGenericMenuItem)
+		local tNewMenuSubEntry =SkuOptions:InjectMenuItems(self, {L["Alle"]}, SkuGenericMenuItem)
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.filterable = true
 		tNewMenuSubEntry.OnAction = function(self, aValue, aName)

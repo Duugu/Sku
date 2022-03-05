@@ -967,13 +967,13 @@ function SkuAuras:CreateAura(aType, aAttributes)
 	local tOuterCount = 0
 	for tAttributeName, tAttributeValue in pairs(tAttributes) do
 		if tOuterCount > 0 then
-			tAuraName = tAuraName.."und;"
+			tAuraName = tAuraName..L["und;"]
 		end
 		if #tAttributeValue > 1 then
 			local tCount = 0
 			for tInd, tLocalValue in pairs(tAttributeValue) do
 				if tCount > 0 then
-					tAuraName = tAuraName.."oder;"..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..SkuAuras.values[tLocalValue[2]].friendlyName..";"
+					tAuraName = tAuraName..L["oder;"]..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..SkuAuras.values[tLocalValue[2]].friendlyName..";"
 				else
 					tAuraName = tAuraName..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..SkuAuras.values[tLocalValue[2]].friendlyName..";"
 				end
@@ -985,10 +985,10 @@ function SkuAuras:CreateAura(aType, aAttributes)
 		tOuterCount = tOuterCount + 1
 	end				
 
-	tAuraName = tAuraName.."dann;"..SkuAuras.actions[tActions[1]].friendlyName..";"
+	tAuraName = tAuraName..L["dann;"]..SkuAuras.actions[tActions[1]].friendlyName..";"
 
 	for tOutputIndex, tOutputName in pairs(tOutputs) do
-		tAuraName = tAuraName..";und;"..SkuAuras.outputs[string.gsub(tOutputName, "output:", "")].friendlyName..";"
+		tAuraName = tAuraName..L[";und;"]..SkuAuras.outputs[string.gsub(tOutputName, "output:", "")].friendlyName..";"
 		tAuraName = string.gsub(tAuraName, "aura;sound#", "sound;")
 	end
 

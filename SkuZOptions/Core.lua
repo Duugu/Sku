@@ -105,7 +105,7 @@ function SkuOptions:SlashFunc(input)
 		if fields[1] == "invite" then
 			if SkuChat.InvitePlayerName then
 				InviteToGroup(SkuChat.InvitePlayerName)
-				local tSpeakText = SkuChat.InvitePlayerName.." eingeladen"
+				local tSpeakText = SkuChat.InvitePlayerName..L[" eingeladen"]
 				if IsMacClient() == true then
 					C_VoiceChat.StopSpeakingText()
 					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText,  4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
@@ -238,7 +238,7 @@ function SkuOptions:OnProfileChanged()
 		SkuOptions:OnEnable()
 	end
 
-	SkuOptions.Voice:OutputString("Profil gewechselt", false, true, 0.2)
+	SkuOptions.Voice:OutputString(L["Profil gewechselt"], false, true, 0.2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -268,7 +268,7 @@ function SkuOptions:OnProfileCopied()
 		SkuOptions:OnEnable()
 	end
 
-	SkuOptions.Voice:OutputString("Profil kopiert", false, true, 0.2)
+	SkuOptions.Voice:OutputString(L["Profil kopiert"], false, true, 0.2)
 
 end
 
@@ -309,7 +309,7 @@ function SkuOptions:OnProfileReset()
 		SkuOptions:OnEnable()
 	end
 
-	SkuOptions.Voice:OutputString("Profil zurückgesetzt", false, true, 0.2)
+	SkuOptions.Voice:OutputString(L["Profil zurückgesetzt"], false, true, 0.2)
 
 end
 
@@ -416,8 +416,8 @@ function SkuOptions:UpdateOverviewText()
 
 	for x = 1, 40 do
 		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-		if online then online = "online" else online = "offline" end
-		if isDead then isDead = "tot" else isDead = "lebt" end
+		if online then online = L["online"] else online = L["offline"] end
+		if isDead then isDead = L["tot"] else isDead = L["lebt"] end
 		if name then
 			if subgroup == tPlayersSubgroup then
 				local tPlayerName = UnitName("player")
@@ -431,23 +431,23 @@ function SkuOptions:UpdateOverviewText()
 
 	--loot
 	local lootStrings = 	{
-		["freeforall"] = "Jeder gegen jeden",
-		["roundrobin"] = "Reihum",
-		["group"] = "Als Gruppe",
-		["needbeforegreed"] = "Bedarf bevor Gier",
-		["master"] = "Plündermeister",
-		["personalloot"] = "Persönliche Beute",
+		["freeforall"] = L["Jeder gegen jeden"],
+		["roundrobin"] = L["Reihum"],
+		["group"] = L["Als Gruppe"],
+		["needbeforegreed"] = L["Bedarf bevor Gier"],
+		["master"] = L["Plündermeister"],
+		["personalloot"] = L["Persönliche Beute"],
 	}
 	local lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
 
 	if tTmpText then
-		table.insert(tSections, "Gruppe".."\r\n"..tTmpText.."\r\nPlündern: "..lootStrings[lootmethod])
+		table.insert(tSections, L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod])
 	end
 
 	--general
-	local tGeneral = "Allgemeines"
+	local tGeneral = L["Allgemeines"]
 	if UnitHealth("player") then
-		tGeneral = tGeneral.."\r\n".."Gesundheit: "..(math.floor(UnitHealth("player") / UnitHealthMax("player") * 100)).."% ("..UnitHealth("player")..")"
+		tGeneral = tGeneral.."\r\n"..L["Gesundheit: "]..(math.floor(UnitHealth("player") / UnitHealthMax("player") * 100)).."% ("..UnitHealth("player")..")"
 	end
 	if UnitPower("player") then
 		local powerType, powerToken = UnitPowerType("player")
@@ -462,15 +462,15 @@ function SkuOptions:UpdateOverviewText()
 	end
 	local tTmpText = ""
 	if tDurabilityStatus[2] > 0 then
-		tTmpText = tTmpText..tDurabilityStatus[2].." rot "
+		tTmpText = tTmpText..tDurabilityStatus[2]..L[" rot "]
 	end
 	if tDurabilityStatus[1] > 0 then
-		tTmpText = tTmpText..tDurabilityStatus[1].." gelb "
+		tTmpText = tTmpText..tDurabilityStatus[1]..L[" gelb "]
 	end
 	if tDurabilityStatus[0] > 0 then
-		tTmpText = tTmpText..tDurabilityStatus[0].." ok "
+		tTmpText = tTmpText..tDurabilityStatus[0]..L[" ok "]
 	end
-	tGeneral = tGeneral.."\r\n".."Reparatur status: "..tTmpText
+	tGeneral = tGeneral.."\r\n"..L["Reparatur status: "]..tTmpText
 
 	--money
 	local tMoney = ContainerFrame1MoneyFrame.staticMoney
@@ -479,7 +479,7 @@ function SkuOptions:UpdateOverviewText()
 	end
 	if tMoney then
 		local tTmpText = GetCoinText(tMoney)
-		tGeneral = tGeneral.."\r\n".."Geld: "..tTmpText
+		tGeneral = tGeneral.."\r\n"..L["Geld: "]..tTmpText
 	end
 
 	--bag space
@@ -490,15 +490,15 @@ function SkuOptions:UpdateOverviewText()
 			tFreeCount = tFreeCount + #t
 		end
 	end
-	tGeneral = tGeneral.."\r\n".."Freie Taschenplätze: "..tFreeCount
+	tGeneral = tGeneral.."\r\n"..L["Freie Taschenplätze: "]..tFreeCount
 
 	--time
 	local tTime = date("*t")
-	tGeneral = tGeneral.."\r\n".."Zeit: "..tTime.hour..":"..tTime.min.." Uhr"
+	tGeneral = tGeneral.."\r\n"..L["Zeit: "]..tTime.hour..":"..tTime.min..L[" Uhr"]
 
 	--mail
 	local sender1, sender2, sender3 = GetLatestThreeSenders()
-	local tTmpText = "keine"
+	local tTmpText = L["keine"]
 	if sender1 then
 		tTmpText = sender1
 	end
@@ -508,32 +508,32 @@ function SkuOptions:UpdateOverviewText()
 	if sender3 then
 		tTmpText = tTmpText .." "..sender3
 	end
-	tGeneral = tGeneral.."\r\n".."Post: "..tTmpText
+	tGeneral = tGeneral.."\r\n"..L["Post: "]..tTmpText
 
 	--hearthstone
-	local tTmpText = "Keiner vorhanden"
+	local tTmpText = L["Keiner vorhanden"]
 	local tHearthstoneId = PlayerHasHearthstone()
 	if tHearthstoneId then
 		local startTime, duration, enable = GetItemCooldown(tHearthstoneId)
 		if duration == 0 then
-			tTmpText = " bereit"
+			tTmpText = L[" bereit"]
 		else
-			tTmpText = math.floor((duration / 60) + ((startTime -  GetTime()) / 60)).." Minuten"
+			tTmpText = math.floor((duration / 60) + ((startTime -  GetTime()) / 60))..L[" Minuten"]
 		end
 		tTmpText = tTmpText.." "..GetBindLocation()
 	end
-	tGeneral = tGeneral.."\r\n".."Ruhestein: "..tTmpText
+	tGeneral = tGeneral.."\r\n"..L["Ruhestein: "]..tTmpText
 
 	--xp
 	local tPlayerXPExhaustion = GetXPExhaustion()
 	tPlayerXPExhaustion = tPlayerXPExhaustion or 0
 	local tPlayercurrXP, tPlayernextXP = UnitXP("player"), UnitXPMax("player")
-	tGeneral = tGeneral.."\r\n".."XP: "..(math.floor(tPlayercurrXP / (tPlayernextXP / 100))).." Prozent ("..tPlayercurrXP.." von "..tPlayernextXP.." für "..(UnitLevel("player") + 1)..")\r\nRuhebonus: "..tPlayerXPExhaustion
+	tGeneral = tGeneral.."\r\n"..L["XP: "]..(math.floor(tPlayercurrXP / (tPlayernextXP / 100)))..L[" Prozent ("]..tPlayercurrXP..L[" von "]..tPlayernextXP..L[" für "]..(UnitLevel("player") + 1)..L[")\r\nRuhebonus: "]..tPlayerXPExhaustion
 
 	table.insert(tSections, tGeneral)
 
 	--buffs/debuffs
-	local tBuffs = "Buffs"
+	local tBuffs = L["Buffs"]
 	local tFound
 	for x = 1, 40  do
 		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitBuff("player", x)
@@ -544,23 +544,23 @@ function SkuOptions:UpdateOverviewText()
 				local tRemainingSec = math.floor((expirationTime - GetTime()))
 				if tRemainingSec > 60 then
 					if tRemainingSec > 3600 then
-						tTimeString = (math.floor(tRemainingSec / 3600) + 1).." Stunden"
+						tTimeString = (math.floor(tRemainingSec / 3600) + 1)..L[" Stunden"]
 					else
-						tTimeString = (math.floor(tRemainingSec / 60) + 1).." Minuten"
+						tTimeString = (math.floor(tRemainingSec / 60) + 1)..L[" Minuten"]
 					end
 				else
-					tTimeString = tRemainingSec.." Sekunden"
+					tTimeString = tRemainingSec..L[" Sekunden"]
 				end
 			end
 			tBuffs = tBuffs.."\r\n"..name.." "..tTimeString
 		end
 	end
 	if not tFound then
-		tBuffs = tBuffs.."\r\n".."Keine"
+		tBuffs = tBuffs.."\r\n"..L["Keine"]
 	end
 	table.insert(tSections, tBuffs)
 
-	local tDebuffs = "Debuffs"
+	local tDebuffs = L["Debuffs"]
 	local tFound
 	for x = 1, 40  do
 		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff("player", x)
@@ -571,19 +571,19 @@ function SkuOptions:UpdateOverviewText()
 				local tRemainingSec = math.floor((expirationTime - GetTime()))
 				if tRemainingSec > 60 then
 					if tRemainingSec > 3600 then
-						tTimeString = (math.floor(tRemainingSec / 3600) + 1).." Stunden"
+						tTimeString = (math.floor(tRemainingSec / 3600) + 1)..L[" Stunden"]
 					else
-						tTimeString = (math.floor(tRemainingSec / 60) + 1).." Minuten"
+						tTimeString = (math.floor(tRemainingSec / 60) + 1)..L[" Minuten"]
 					end
 				else
-					tTimeString = tRemainingSec.." Sekunden"
+					tTimeString = tRemainingSec..L[" Sekunden"]
 				end
 			end
 			tDebuffs = tDebuffs.."\r\n"..name.." "..tTimeString
 		end
 	end
 	if not tFound then
-		tDebuffs = tDebuffs.."\r\n".."Keine"
+		tDebuffs = tDebuffs.."\r\n"..L["Keine"]
 	end
 	table.insert(tSections, tDebuffs)
 
@@ -595,7 +595,7 @@ function SkuOptions:UpdateOverviewText()
 			tTmpText = tTmpText.."\r\n"..skillName.." ("..skillRank.." / "..skillMaxRank..")"
 		end
 	end
-	table.insert(tSections, "Fertigkeiten:\r\n"..tTmpText)
+	table.insert(tSections, L["Fertigkeiten:\r\n"]..tTmpText)
 
 	--reputation
 	ExpandAllFactionHeaders()
@@ -626,7 +626,7 @@ function SkuOptions:UpdateOverviewText()
 			end
 		end
 	end
-	table.insert(tSections, "Ruf:\r\n"..tTmpText)
+	table.insert(tSections, L["Ruf:\r\n"]..tTmpText)
 
 	--guild members
 	SetGuildRosterShowOffline(false)
@@ -635,7 +635,7 @@ function SkuOptions:UpdateOverviewText()
 	for x = 1, GetNumGuildMembers() do
 		local name, rankName, rankIndex, level, classDisplayName, zone, publicNote, officerNote, isOnline, status, class, achievementPoints, achievementRank, isMobile, canSoR, repStanding, GUID = GetGuildRosterInfo(x)
 		if not zone then
-			zone = "unbekannt"
+			zone = L["unbekannt"]
 		end
 		if string.find(name,"-") then
 			name = string.sub(name, 1, string.find(name,"-") - 1)
@@ -644,12 +644,12 @@ function SkuOptions:UpdateOverviewText()
 			tTmpText = tTmpText.."\r\n"..name..", "..classDisplayName..", "..level..", "..zone..", "..publicNote
 		end
 	end
-	table.insert(tSections, "Gilde:\r\n"..tTmpText)
+	table.insert(tSections, L["Gilde:\r\n"]..tTmpText)
 
 	--pet
 	local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
 	if UnitName("playerpet") then
-		table.insert(tSections, "Tier XP: "..tPetcurrXP.." von "..tPetnextXP.." für "..UnitLevel("playerpet") + 1)
+		table.insert(tSections, L["Tier XP: "]..tPetcurrXP..L[" von "]..tPetnextXP..L[" für "]..UnitLevel("playerpet") + 1)
 	end
 	--GetPetFoodTypes
 
@@ -1104,7 +1104,7 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 
 	local tDNA
 	for i, v in pairs(aUnmodifiedTextFull) do
-		if string.find(v, "Wertung:") then
+		if string.find(v, L["Wertung:"]) then
 			tDNA = true
 		end
 	end
@@ -2132,7 +2132,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = {}
 							end
 							if SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] then
-								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {"Markierung für Auto Verkaufen entfernen"}, SkuGenericMenuItem)
+								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Markierung für Auto Verkaufen entfernen"]}, SkuGenericMenuItem)
 								tNewSubMenuEntry.OnAction = function(self, a, b)
 									local tItemId
 									if aGossipListTable[index].obj.info then
@@ -2144,7 +2144,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = nil
 								end
 							else
-								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {"Für Auto Verkaufen markieren"}, SkuGenericMenuItem)
+								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Für Auto Verkaufen markieren"]}, SkuGenericMenuItem)
 								tNewSubMenuEntry.OnAction = function(self, a, b)
 									local tItemId
 									if aGossipListTable[index].obj.info then
@@ -2201,7 +2201,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPath)
-
 	for i, v in SkuSpairs(aArgTable, function(t, a, b) if t[b].order and t[a].order then return t[b].order > t[a].order end end) do
 		if v.args and v.forAudioMenu ~= false then
 			local tParentMenu =  SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
@@ -2819,15 +2818,15 @@ function SkuOptions:ImportWpAndLinkData()
 			local tSuccess, tVersion, tLinks, tWaypoints = SkuOptions:Deserialize(tSerializedData)
 
 			if tVersion ~= 22 then
-				SkuOptions.Voice:OutputString("Import fehlgeschlagen. Falsche Version.", false, true, 0.2)										
+				SkuOptions.Voice:OutputString(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2)										
 				return
 			end
 			if tSuccess ~= true then
-				SkuOptions.Voice:OutputString("Import fehlgeschlagen. Daten fehlerhaft.", false, true, 0.2)										
+				SkuOptions.Voice:OutputString(L["Import fehlgeschlagen. Daten fehlerhaft."], false, true, 0.2)										
 				return
 			end
 
-			SkuOptions.Voice:OutputString("Import erfolgreich", true, true, 0.2, true)			
+			SkuOptions.Voice:OutputString(L["Import erfolgreich"], true, true, 0.2, true)			
 
 			--do tWaypoints 
 			local tFullCounterWps = 0
@@ -2856,9 +2855,9 @@ function SkuOptions:ImportWpAndLinkData()
 			SkuNav:LoadLinkDataFromProfile()
 
 			--done
-			print("Links importiert:", tImportCounterLinks)
-			print("Wegpunkte importiert:", tImportCounterWps)
-			print("Wegpunkte ignoriert:", tIgnoredCounterWps)
+			print(L["Links importiert:"], tImportCounterLinks)
+			print(L["Wegpunkte importiert:"], tImportCounterWps)
+			print(L["Wegpunkte ignoriert:"], tIgnoredCounterWps)
 		end
 	end)
 end
@@ -2894,14 +2893,14 @@ function SkuOptions:ExportWpAndLinkData()
 	for _, _ in pairs(tExportDataTable.links) do
 		tCount = tCount + 1
 	end
-	print("Links exportiert:", tCount)
+	print(L["Links exportiert:"], tCount)
 	tCount = 0
 	for _, _ in pairs(tExportDataTable.waypoints) do
 		tCount = tCount + 1
 	end
-	print("Wegpunkte exportiert:", tCount)
+	print(L["Wegpunkte exportiert:"], tCount)
 
-	SkuOptions.Voice:OutputString("Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken", false, true, 0.3)		
+	SkuOptions.Voice:OutputString(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], false, true, 0.3)		
 
 	--setmetatable(tExportDataTable, SkuPrintMT)
 	--SkuOptions:EditBoxShow(tostring(tExportDataTable), function(self) PlaySound(89) end)
@@ -3238,10 +3237,10 @@ function SkuOptions:ImportAddWpAndLinkData()
 			SkuNav:LoadLinkDataFromProfile()
 
 			--done
-			print("Links importiert:", tImportCounterLinks)
-			print("Links ignoriert:", tIgnoredCounterLinks)
-			print("Wegpunkte importiert:", tImportCounterWps)
-			print("Wegpunkte ignoriert:", tIgnoredCounterWps)
+			print(L["Links importiert:"], tImportCounterLinks)
+			print(L["Links ignoriert:"], tIgnoredCounterLinks)
+			print(L["Wegpunkte importiert:"], tImportCounterWps)
+			print(L["Wegpunkte ignoriert:"], tIgnoredCounterWps)
 		end
 	end)
 end

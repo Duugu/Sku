@@ -1,6 +1,9 @@
 local SkuVoice_MAJOR, SkuVoice_MINOR = "SkuVoice-1.0", 1
 local SkuVoice, oldminor = LibStub:NewLibrary(SkuVoice_MAJOR, SkuVoice_MINOR)
 
+--local L = Sku.L
+local L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
+
 if not SkuVoice then return end -- No upgrade needed
 
 local mSkuVoiceQueue = {}
@@ -112,10 +115,10 @@ local function SplitString(aString)
 	aString = string.gsub(aString, "\"", ";")
 	--aString = string.gsub(aString, "\"", ";backslash;")
 	aString = string.gsub(aString, "'", ";")
-	aString = string.gsub(aString, "%.", ";punkt;")
+	aString = string.gsub(aString, "%.", L[";punkt;"])
 	aString = string.gsub(aString, ",", ";")
-	aString = string.gsub(aString, "%?", ";fragezeichen;")
-	aString = string.gsub(aString, "!", ";ausrufungszeichen;")
+	aString = string.gsub(aString, "%?", L[";fragezeichen;"])
+	aString = string.gsub(aString, "!", L[";ausrufungszeichen;"])
 	aString = string.gsub(aString, "|", ";")
 	aString = string.gsub(aString, "%[", ";")
 	aString = string.gsub(aString, "%]", ";")
@@ -123,16 +126,16 @@ local function SplitString(aString)
 	aString = string.gsub(aString, "%*", ";")
 	aString = string.gsub(aString, "#", ";")
 	aString = string.gsub(aString, "%-", ";")
-	aString = string.gsub(aString, ":", ";doppelpunkt;")
+	aString = string.gsub(aString, ":", L[";doppelpunkt;"])
 	aString = string.gsub(aString, "&", ";und;")
-	aString = string.gsub(aString, "%%", ";prozent;")
-	aString = string.gsub(aString, "/", ";slash;")
+	aString = string.gsub(aString, "%%", L[";prozent;"])
+	aString = string.gsub(aString, "/", L[";slash;"])
 	aString = string.gsub(aString, "\\", ";\\;")
-	aString = string.gsub(aString, "%(", ";klammer;")
-	aString = string.gsub(aString, "%)", ";klammer;")
-	aString = string.gsub(aString, "=", ";gleich;")
-	aString = string.gsub(aString, "<", ";spitze;klammer;")
-	aString = string.gsub(aString, ">", ";spitze;klammer;")
+	aString = string.gsub(aString, "%(", L[";klammer;"])
+	aString = string.gsub(aString, "%)", L[";klammer;"])
+	aString = string.gsub(aString, "=", L[";gleich;"])
+	aString = string.gsub(aString, "<", L[";spitze;klammer;"])
+	aString = string.gsub(aString, ">", L[";spitze;klammer;"])
 	aString = string.gsub(aString, "	", ";")
 	aString = string.gsub(aString, "  ", " ")
 	aString = string.gsub(aString, " ", ";")
@@ -302,7 +305,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 								local tIVal = string.format("%d", tFloatNumber)
 								local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
 								table.insert(tStrings, tIVal)
-								table.insert(tStrings, "Komma")
+								table.insert(tStrings, L["Komma"])
 								table.insert(tStrings, tFVal)
 							else
 								--int
@@ -482,7 +485,7 @@ function SkuVoice:CollectString(aString, aOverwrite, aWait, aLength, aDoNotOverw
 						local tIVal = string.format("%d", tFloatNumber)
 						local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
 						table.insert(tStrings, tIVal)
-						table.insert(tStrings, "Komma")
+						table.insert(tStrings, L["Komma"])
 						table.insert(tStrings, tFVal)
 					else
 						--int
@@ -578,7 +581,7 @@ function SkuVoice:Output(file, overwrite, wait, length, doNotOverwrite, isMulti,
 
 	local length = SkuAudioDataLenIndex[file] or length
 
-	file = "Interface\\AddOns\\SkuAudioData\\assets\\audio\\"..file
+	file = "Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..file
 
 	overwrite = overwrite or false
 	wait = wait or false

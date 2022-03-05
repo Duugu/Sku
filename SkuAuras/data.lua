@@ -80,48 +80,48 @@ end
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.itemTypes = {
    ["type"] = {
-      friendlyName = "Aura Typ",
+      friendlyName = L["Aura Typ"],
    },
    ["attribute"] = {
-      friendlyName = "Attribut für Bedingung",
+      friendlyName = L["Attribut für Bedingung"],
    },
    ["operator"] = {
-      friendlyName = "Operator für Bedingung",
+      friendlyName = L["Operator für Bedingung"],
    },
    ["value"] = {
-      friendlyName = "Wert für Bedingung",
+      friendlyName = L["Wert für Bedingung"],
    },
    ["then"] = {
-      friendlyName = "Beginn des Dann Teils der Aura",
+      friendlyName = L["Beginn des Dann Teils der Aura"],
    },
    ["action"] = {
-      friendlyName = "Aktion für Aura",
+      friendlyName = L["Aktion für Aura"],
    },
    ["output"] = {
-      friendlyName = "Ausgabe von Aura",
+      friendlyName = L["Ausgabe von Aura"],
    },
 }
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.actions = {
    notifyAudio = {
-      tooltip = "Die Ausgaben werden als Audio ausgegeben",
-      friendlyName = "audio ausgabe",
+      tooltip = L["Die Ausgaben werden als Audio ausgegeben"],
+      friendlyName = L["audio ausgabe"],
       func = function(tAuraName, tEvaluateData)
       	dprint("    ","action func audio benachrichtigung DING")
       end,
       single = false,
    },
    notifyChat = {
-      tooltip = "Die Ausgaben werden als Text im Chat ausgegeben",
-      friendlyName = "chat ausgabe",
+      tooltip = L["Die Ausgaben werden als Text im Chat ausgegeben"],
+      friendlyName = L["chat ausgabe"],
       func = function(tAuraName, tEvaluateData)
       	dprint("    ","action func chat benachrichtigung")
       end,
       single = false,
    },
    notifyAudioSingle = {
-      tooltip = "Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.",
-      friendlyName = "audio ausgabe einmal",
+      tooltip = L["Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."],
+      friendlyName = L["audio ausgabe einmal"],
       func = function(tAuraName, tEvaluateData)
       	dprint("    ","action func audio benachrichtigung single")
       end,
@@ -129,8 +129,8 @@ SkuAuras.actions = {
    },
    --[[
    notifyAudioSingleInstant = {
-      tooltip = "Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.",
-      friendlyName = "audio ausgabe einmal sofort",
+      tooltip = L["Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."],
+      friendlyName = L["audio ausgabe einmal sofort",
       func = function(tAuraName, tEvaluateData)
       	dprint("    ","action func audio benachrichtigung SingleInstant")
       end,
@@ -139,8 +139,8 @@ SkuAuras.actions = {
    },
    ]]
    notifyChatSingle = {
-      tooltip = "Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.",
-      friendlyName = "chat ausgabe einmal",
+      tooltip = L["Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."],
+      friendlyName = L["chat ausgabe einmal"],
       func = function(tAuraName, tEvaluateData)
       	dprint("    ","action func chat benachrichtigung single")
       end,
@@ -152,11 +152,11 @@ SkuAuras.actions = {
 local tPrevAuraPlaySoundFileHandle
 SkuAuras.outputs = {
    event = {
-      tooltip = "Der Name des auslösenden Ereignisses der Aura",
-      friendlyName = "ereignis",
+      tooltip = L["Der Name des auslösenden Ereignisses der Aura"],
+      friendlyName = L["ereignis"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
-            print("    ","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
+            dprint("    ","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
             if not tEvaluateData.event then return end
             if not SkuAuras.values[tEvaluateData.event] then return end
             if SkuAuras.values[tEvaluateData.event].friendlyNameShort then
@@ -178,8 +178,8 @@ SkuAuras.outputs = {
       },
    },
    sourceUnitId = {
-      tooltip = "Die Einheiten ID der Quelle für das ausgelöste Ereignis",
-      friendlyName = "quell einheit",
+      tooltip = L["Die Einheiten ID der Quelle für das ausgelöste Ereignis"],
+      friendlyName = L["quell einheit"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.sourceUnitId then
@@ -195,8 +195,8 @@ SkuAuras.outputs = {
       },
    },   
    destUnitId = {
-      tooltip = "Die Einheiten ID des Ziels für das ausgelöste Ereignis",
-      friendlyName = "ziel einheit",
+      tooltip = L["Die Einheiten ID des Ziels für das ausgelöste Ereignis"],
+      friendlyName = L["ziel einheit"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             dprint("    ","tEvaluateData.destUnitId", tEvaluateData.destUnitId)
@@ -212,8 +212,8 @@ SkuAuras.outputs = {
       },
    },
    unitHealthPlayer = {
-      tooltip = "Dein Gesundheit in Prozent",
-      friendlyName = "eigene Gesundheit",
+      tooltip = L["Dein Gesundheit in Prozent"],
+      friendlyName = L["eigene Gesundheit"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthPlayer then
@@ -228,8 +228,8 @@ SkuAuras.outputs = {
       },
    },      
    auraAmount = {
-      tooltip = "Die Stapel Anzahl der Aura",
-      friendlyName = "aura stapel",
+      tooltip = L["Die Stapel Anzahl der Aura"],
+      friendlyName = L["aura stapel"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.auraAmount then
@@ -245,8 +245,8 @@ SkuAuras.outputs = {
    },
    --[[
    class = {
-      tooltip = "Die Klasse der Einheit für das ausgelöste Ereignis",
-      friendlyName = "klasse",
+      tooltip = L["Die Klasse der Einheit für das ausgelöste Ereignis",
+      friendlyName = L["klasse",
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.class then
@@ -262,8 +262,8 @@ SkuAuras.outputs = {
    },
    ]]
    unitPowerPlayer = {
-      tooltip = "Deine Ressourcen Menge (Mana, Wut, Energie) für das ausgelöste Ereignis",
-      friendlyName = "eigene Ressource",
+      tooltip = L["Deine Ressourcen Menge (Mana, Wut, Energie) für das ausgelöste Ereignis"],
+      friendlyName = L["eigene Ressource"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitPowerPlayer then
@@ -278,8 +278,8 @@ SkuAuras.outputs = {
       },
    },
    unitHealthPlayer = {
-      tooltip = "Deine Gesundheits Menge für das ausgelöste Ereignis",
-      friendlyName = "eigene gesundheit",
+      tooltip = L["Deine Gesundheits Menge für das ausgelöste Ereignis"],
+      friendlyName = L["eigene gesundheit"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthPlayer then
@@ -294,8 +294,8 @@ SkuAuras.outputs = {
       },
    },
    spellName = {
-      tooltip = "Der Name des Zaubers, der die Aura ausgelöst hat",
-      friendlyName = "zauber name",
+      tooltip = L["Der Name des Zaubers, der die Aura ausgelöst hat"],
+      friendlyName = L["zauber name"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.spellName then
@@ -310,8 +310,8 @@ SkuAuras.outputs = {
       },
    },
    itemName = {
-      tooltip = "Der Name des Gegenstands, der die Aura ausgelöst hat",
-      friendlyName = "gegenstand name",
+      tooltip = L["Der Name des Gegenstands, der die Aura ausgelöst hat"],
+      friendlyName = L["gegenstand name"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.itemName then
@@ -326,8 +326,8 @@ SkuAuras.outputs = {
       },
    },
    itemCount = {
-      tooltip = "Die Anzahl in deiner Tasche des Gegenstands, der die Aura ausgelöst hat",
-      friendlyName = "gegenstand anzahl",
+      tooltip = L["Die Anzahl in deiner Tasche des Gegenstands, der die Aura ausgelöst hat"],
+      friendlyName = L["gegenstand anzahl"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.itemCount then
@@ -342,8 +342,8 @@ SkuAuras.outputs = {
       },
    },
    buffListTarget = {
-      tooltip = "Aura, die in der Buff liste des Ziels gesucht oder ausgeschlossen wurde",
-      friendlyName = "wert buff liste ziel",
+      tooltip = L["Aura, die in der Buff liste des Ziels gesucht oder ausgeschlossen wurde"],
+      friendlyName = L["wert buff liste ziel"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.buffListTarget then
@@ -358,8 +358,8 @@ SkuAuras.outputs = {
       },
    },
    debuffListTarget = {
-      tooltip = "Aura, die in der Debuff liste des Ziels gesucht oder ausgeschlossen wurde",
-      friendlyName = "wert debuff liste ziel",
+      tooltip = L["Aura, die in der Debuff liste des Ziels gesucht oder ausgeschlossen wurde"],
+      friendlyName = L["wert debuff liste ziel"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.debuffListTarget then
@@ -556,138 +556,138 @@ SkuAuras.valuesDefault = {
 
    
       ["true"] = {
-         tooltip = "triff zu",
-         friendlyName = "wahr",
+         tooltip = L["triff zu"],
+         friendlyName = L["wahr"],
       },
       ["false"] = {
-         tooltip = "Trifft nicht zu",
-         friendlyName = "falsch",
+         tooltip = L["Trifft nicht zu"],
+         friendlyName = L["falsch"],
       },
 
    --missType
       ["ABSORB"] = {
-         tooltip = "Absorbiert",
-         friendlyName = "Absorbiert",
+         tooltip = L["Absorbiert"],
+         friendlyName = L["Absorbiert"],
       },
       ["BLOCK"] = {
-         tooltip = "Geblockt",
-         friendlyName = "Geblockt",
+         tooltip = L["Geblockt"],
+         friendlyName = L["Geblockt"],
       },
       ["DEFLECT"] = {
-         tooltip = "Umgelenkt",
-         friendlyName = "Umgelenkt",
+         tooltip = L["Umgelenkt"],
+         friendlyName = L["Umgelenkt"],
       },
       ["DODGE"] = {
-         tooltip = "Ausgewichen",
-         friendlyName = "Ausgewichen",
+         tooltip = L["Ausgewichen"],
+         friendlyName = L["Ausgewichen"],
       },
       ["EVADE"] = {
-         tooltip = "Vermieden",
-         friendlyName = "Vermieden",
+         tooltip = L["Vermieden"],
+         friendlyName = L["Vermieden"],
       },
       ["IMMUNE"] = {
-         tooltip = "Immun",
-         friendlyName = "Immun",
+         tooltip = L["Immun"],
+         friendlyName = L["Immun"],
       },
       ["MISS"] = {
-         tooltip = "Verfehlt",
-         friendlyName = "Verfehlt",
+         tooltip = L["Verfehlt"],
+         friendlyName = L["Verfehlt"],
       },
       ["PARRY"] = {
-         tooltip = "Pariert",
-         friendlyName = "Pariert",
+         tooltip = L["Pariert"],
+         friendlyName = L["Pariert"],
       },
       ["REFLECT"] = {
-         tooltip = "Reflektiert",
-         friendlyName = "Reflektiert",
+         tooltip = L["Reflektiert"],
+         friendlyName = L["Reflektiert"],
       },
       ["RESIST"] = {
-         tooltip = "Widerstanden",
-         friendlyName = "Widerstanden",
+         tooltip = L["Widerstanden"],
+         friendlyName = L["Widerstanden"],
       },
    --auraType
       ["BUFF"] = {
-         tooltip = "Reagiert, wenn der Aura-Typ ein Buff ist",
-         friendlyName = "buff",
+         tooltip = L["Reagiert, wenn der Aura-Typ ein Buff ist"],
+         friendlyName = L["buff"],
       },
       ["DEBUFF"] = {
-         tooltip = "Reagiert, wenn der Aura-Typ ein Debuff ist",
-         friendlyName = "debuff",
+         tooltip = L["Reagiert, wenn der Aura-Typ ein Debuff ist"],
+         friendlyName = L["debuff"],
       },
    --destUnitId
       ["target"] = {
-         tooltip = "dein aktuelles Ziel. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausgelaufen ist",
-         friendlyName = "dein ziel",
+         tooltip = L["dein aktuelles Ziel. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausgelaufen ist"],
+         friendlyName = L["dein ziel"],
       },
       ["player"] = {
-         tooltip = "du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde",
-         friendlyName = "selbst",
+         tooltip = L["du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde"],
+         friendlyName = L["selbst"],
       },
       ["focus"] = {
-         tooltip = "dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde",
-         friendlyName = "fokus",
+         tooltip = L["dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde"],
+         friendlyName = L["fokus"],
       },
       ["partyWoPlayer"] = {
-         tooltip = "ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist",
-         friendlyName = "gruppenmitglieder ohne dich",
+         tooltip = L["ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist"],
+         friendlyName = L["gruppenmitglieder ohne dich"],
       },
       ["party"] = {
-         tooltip = "ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist",
-         friendlyName = "gruppenmitglieder",
+         tooltip = L["ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist"],
+         friendlyName = L["gruppenmitglieder"],
       },
       ["party0"] = {
-         tooltip = "Gruppenmitglied 0 (du).",
-         friendlyName = "gruppenmitglied 0",
+         tooltip = L["Gruppenmitglied 0 (du)."],
+         friendlyName = L["gruppenmitglied 0"],
       },      
       ["party1"] = {
-         tooltip = "Gruppenmitglied 1.",
-         friendlyName = "gruppenmitglied 1",
+         tooltip = L["Gruppenmitglied 1."],
+         friendlyName = L["gruppenmitglied 1"],
       },      
       ["party2"] = {
-         tooltip = "Gruppenmitglied 2.",
-         friendlyName = "gruppenmitglied 2",
+         tooltip = L["Gruppenmitglied 2."],
+         friendlyName = L["gruppenmitglied 2"],
       },      
       ["party3"] = {
-         tooltip = "Gruppenmitglied 3.",
-         friendlyName = "gruppenmitglied 3",
+         tooltip = L["Gruppenmitglied 3."],
+         friendlyName = L["gruppenmitglied 3"],
       },      
       ["party4"] = {
-         tooltip = "Gruppenmitglied 4.",
-         friendlyName = "gruppenmitglied 4",
+         tooltip = L["Gruppenmitglied 4."],
+         friendlyName = L["gruppenmitglied 4"],
       },      
       ["all"] = {
-         tooltip = "eine beliebige Einheit. Beispiel: Irgendein Mob stirbt",
-         friendlyName = "alle",
+         tooltip = L["eine beliebige Einheit. Beispiel: Irgendein Mob stirbt"],
+         friendlyName = L["alle"],
       },
 
 
       ["targettarget"] = {
-         tooltip = "ziel deines Ziels",
-         friendlyName = "ziel deines ziels",
+         tooltip = L["ziel deines Ziels"],
+         friendlyName = L["ziel deines ziels"],
       },
       ["focustarget"] = {
-         tooltip = "ziel deines deines fokus",
-         friendlyName = "ziel deines fokus",
+         tooltip = L["ziel deines deines fokus"],
+         friendlyName = L["ziel deines fokus"],
       },
       ["party0target"] = {
-         tooltip = "ziel von Gruppenmitglied 0 (du).",
-         friendlyName = "ziel von gruppenmitglied 0",
+         tooltip = L["ziel von Gruppenmitglied 0 (du)."],
+         friendlyName = L["ziel von gruppenmitglied 0"],
       },      
       ["party1target"] = {
-         tooltip = "ziel von Gruppenmitglied 1.",
-         friendlyName = "ziel von gruppenmitglied 1",
+         tooltip = L["ziel von Gruppenmitglied 1."],
+         friendlyName = L["ziel von gruppenmitglied 1"],
       },      
       ["party2target"] = {
-         tooltip = "ziel von Gruppenmitglied 2.",
-         friendlyName = "ziel von gruppenmitglied 2",
+         tooltip = L["ziel von Gruppenmitglied 2."],
+         friendlyName = L["ziel von gruppenmitglied 2"],
       },      
       ["party3target"] = {
-         tooltip = "ziel von Gruppenmitglied 3.",
-         friendlyName = "ziel von gruppenmitglied 3",
+         tooltip = L["ziel von Gruppenmitglied 3."],
+         friendlyName = L["ziel von gruppenmitglied 3"],
       },      
       ["party4target"] = {
-         tooltip = "ziel von Gruppenmitglied 4.",
-         friendlyName = "ziel von gruppenmitglied 4",
+         tooltip = L["ziel von Gruppenmitglied 4."],
+         friendlyName = L["ziel von gruppenmitglied 4"],
       },      
 
 
@@ -699,211 +699,211 @@ SkuAuras.valuesDefault = {
 
    --class
       ["Warrior"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Krieger hat",
-         friendlyName = "krieger",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Krieger hat"],
+         friendlyName = L["krieger"],
       },
       ["Paladin"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Paladin hat",
-         friendlyName = "paladin",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Paladin hat"],
+         friendlyName = L["paladin"],
       },
       ["Hunter"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Jäger hat",
-         friendlyName = "jäger",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Jäger hat"],
+         friendlyName = L["jäger"],
       },
       ["Rogue"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Schurke hat",
-         friendlyName = "schurke",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Schurke hat"],
+         friendlyName = L["schurke"],
       },
       ["Priest"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Priester hat",
-         friendlyName = "priester",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Priester hat"],
+         friendlyName = L["priester"],
       },
       --["Death Knight"] = {
-         --tooltip = "Reagiert, wenn die Zieleinheit die Klasse Todesritter hat",
-         --friendlyName = "todesritter",
+         --tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Todesritter hat"],
+         --friendlyName = L["todesritter"],
       --},
       ["Shaman"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Schamane hat",
-         friendlyName = "schamane",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Schamane hat"],
+         friendlyName = L["schamane"],
       },
       ["Mage"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Magier hat",
-         friendlyName = "magier",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Magier hat"],
+         friendlyName = L["magier"],
       },
       ["Warlock"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Hexer hat",
-         friendlyName = "hexer",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Hexer hat"],
+         friendlyName = L["hexer"],
       },
       --["Monk"] = {
-         --tooltip = "Reagiert, wenn die Zieleinheit die Klasse Mönch hat",
-         --friendlyName = "mönch",
+         --tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Mönch hat"],
+         --friendlyName = L["mönch"],
       --},
       ["Druid"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Druide hat",
-         friendlyName = "druide",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Druide hat"],
+         friendlyName = L["druide"],
       },
       ["Demon Hunter"] = {
-         tooltip = "Reagiert, wenn die Zieleinheit die Klasse Dämonenjäger hat",
-         friendlyName = "dämonenjäger",
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Dämonenjäger hat"],
+         friendlyName = L["dämonenjäger"],
       },
    --event
       ["UNIT_TARGETCHANGE"] = {
-         tooltip = "Eine Einheit hat das Ziel gewechselt. Quell Einheit ID ist die Einheit, die das Ziel gewechselt hat. Ziel Einheit ID ist das neue Ziel von Quell einheit.",
-         friendlyName = "Ziel änderung",
-         friendlyNameShort = "ziel änderung",
+         tooltip = L["Eine Einheit hat das Ziel gewechselt. Quell Einheit ID ist die Einheit, die das Ziel gewechselt hat. Ziel Einheit ID ist das neue Ziel von Quell einheit."],
+         friendlyName = L["Ziel änderung"],
+         friendlyNameShort = L["ziel änderung"],
       },
       ["UNIT_POWER"] = {
-         tooltip = "Ressource hat sich verändert (Mana, Energie, Wut etc.",
-         friendlyName = "Ressourcen änderung",
-         friendlyNameShort = "ressource",
+         tooltip = L["Ressource hat sich verändert (Mana, Energie, Wut etc."],
+         friendlyName = L["Ressourcen änderung"],
+         friendlyNameShort = L["ressource"],
       },
       ["UNIT_HEALTH"] = {
-         tooltip = "Gesundheit hat sich verändert",
-         friendlyName = "Gesundheit änderung",
-         friendlyNameShort = "gesundheit",
+         tooltip = L["Gesundheit hat sich verändert"],
+         friendlyName = L["Gesundheit änderung"],
+         friendlyNameShort = L["gesundheit"],
       },
       ["SPELL_AURA_APPLIED;SPELL_AURA_REFRESH;SPELL_AURA_APPLIED_DOSE"] = {
-         tooltip = "Buff oder Debuff erhalten oder erneuert",
-         friendlyName = "aura erhalten",
-         friendlyNameShort = "erhalten",
+         tooltip = L["Buff oder Debuff erhalten oder erneuert"],
+         friendlyName = L["aura erhalten"],
+         friendlyNameShort = L["erhalten"],
       },
       ["SPELL_AURA_REMOVED"] = {
-         tooltip = "Buff oder Debuff verloren",
-         friendlyName = "aura verloren",
-         friendlyNameShort = "verloren",
+         tooltip = L["Buff oder Debuff verloren"],
+         friendlyName = L["aura verloren"],
+         friendlyNameShort = L["verloren"],
       },
       ["SPELL_CAST_START"] = {
-         tooltip = "Ein Zauber wurde begonnen",
-         friendlyName = "zauber start",
+         tooltip = L["Ein Zauber wurde begonnen"],
+         friendlyName = L["zauber start"],
       },
       ["SPELL_CAST_SUCCESS"] = {
-         tooltip = "Ein Zauber wurde erfolgreich gezaubert",
-         friendlyName = "zauber erfolgreich",
+         tooltip = L["Ein Zauber wurde erfolgreich gezaubert"],
+         friendlyName = L["zauber erfolgreich"],
       },
       ["SPELL_COOLDOWN_START"] = {
-         tooltip = "Der Cooldown eines Zaubers hat begonnen",
-         friendlyName = "zauber cooldown start",  
-         friendlyNameShort = "cooldown",
+         tooltip = L["Der Cooldown eines Zaubers hat begonnen"],
+         friendlyName = L["zauber cooldown start"],  
+         friendlyNameShort = L["cooldown"],
       },
       ["SPELL_COOLDOWN_END"] = {
-         tooltip = "Der Cooldown eines Zaubers ist beendet",
-         friendlyName = "zauber cooldown ende", 
-         friendlyNameShort = "bereit",
+         tooltip = L["Der Cooldown eines Zaubers ist beendet"],
+         friendlyName = L["zauber cooldown ende"], 
+         friendlyNameShort = L["bereit"],
       },
       ["ITEM_COOLDOWN_START"] = {
-         tooltip = "Der Cooldown eines Gegenstands hat begonnen",
-         friendlyName = "gegenstand cooldown start", 
-         friendlyNameShort = "cooldown",
+         tooltip = L["Der Cooldown eines Gegenstands hat begonnen"],
+         friendlyName = L["gegenstand cooldown start"], 
+         friendlyNameShort = L["cooldown"],
       },
       ["ITEM_COOLDOWN_END"] = {
-         tooltip = "Der Cooldown eines Gegenstands ist beendet",
-         friendlyName = "gegenstand cooldown ende", 
-         friendlyNameShort = "bereit",
+         tooltip = L["Der Cooldown eines Gegenstands ist beendet"],
+         friendlyName = L["gegenstand cooldown ende"], 
+         friendlyNameShort = L["bereit"],
       },
       ["SWING_DAMAGE"] = {
-         tooltip = "Ein Nahkampfangriff hat Schaden verursacht",
-         friendlyName = "nahkampf schaden",
+         tooltip = L["Ein Nahkampfangriff hat Schaden verursacht"],
+         friendlyName = L["nahkampf schaden"],
       },
       ["SWING_MISSED"] = {
-         tooltip = "Ein Nahkampfangriff hat verfehlt",
-         friendlyName = "nahkampf verfehlt",
+         tooltip = L["Ein Nahkampfangriff hat verfehlt"],
+         friendlyName = L["nahkampf verfehlt"],
       },
       ["SWING_EXTRA_ATTACKS"] = {
-         tooltip = "Ein Nahkampfangriff hat einen Extrangriff gewährt",
-         friendlyName = "nahkampf zusatz angriff",
+         tooltip = L["Ein Nahkampfangriff hat einen Extrangriff gewährt"],
+         friendlyName = L["nahkampf zusatz angriff"],
       },
       ["SWING_ENERGIZE"] = {
-         tooltip = "Ein Nahkampfangriff hat eine Ressource (Wut, Energie, Kombopunkt) gewährt",
-         friendlyName = "nahkampf ressource",
+         tooltip = L["Ein Nahkampfangriff hat eine Ressource (Wut, Energie, Kombopunkt) gewährt"],
+         friendlyName = L["nahkampf ressource"],
       },
       ["RANGE_DAMAGE"] = {
-         tooltip = "Ein Fernkampfangriff hat Schaden verursacht",
-         friendlyName = "fernkampf schaden",
+         tooltip = L["Ein Fernkampfangriff hat Schaden verursacht"],
+         friendlyName = L["fernkampf schaden"],
       },
       ["RANGE_MISSED"] = {
-         tooltip = "Ein Fernkampfangriff hat verfehlt",
-         friendlyName = "fernkampf verfehlt",
+         tooltip = L["Ein Fernkampfangriff hat verfehlt"],
+         friendlyName = L["fernkampf verfehlt"],
       },
       ["RANGE_EXTRA_ATTACKS"] = {
-         tooltip = "Ein Fernkampfangriff hat einen Extraangriff ausgelöst",
-         friendlyName = "fernkampf zusatz angriff",
+         tooltip = L["Ein Fernkampfangriff hat einen Extraangriff ausgelöst"],
+         friendlyName = L["fernkampf zusatz angriff"],
       },
       --[[
       ["RANGE_ENERGIZE"] = {
-         tooltip = "",
-         friendlyName = "fernkampf ressource",
+         tooltip = L[""],
+         friendlyName = L["fernkampf ressource"],
       },]]
       ["SPELL_DAMAGE"] = {
-         tooltip = "Ein Zauber hat Schaden verursacht",
-         friendlyName = "zauber schaden",
+         tooltip = L["Ein Zauber hat Schaden verursacht"],
+         friendlyName = L["zauber schaden"],
       },
       ["SPELL_MISSED"] = {
-         tooltip = "Ein Zauber hat Schaden verfehlt",
-         friendlyName = "zauber verfehlt",
+         tooltip = L["Ein Zauber hat Schaden verfehlt"],
+         friendlyName = L["zauber verfehlt"],
       },
       ["SPELL_HEAL"] = {
-         tooltip = "Ein Zauber hat Heilung verursacht",
-         friendlyName = "zauber heilung",
+         tooltip = L["Ein Zauber hat Heilung verursacht"],
+         friendlyName = L["zauber heilung"],
       },
       ["SPELL_ENERGIZE"] = {
-         tooltip = "Ein Zauber hat eine Ressource (Mana) gewährt",
-         friendlyName = "zauber ressource",
+         tooltip = L["Ein Zauber hat eine Ressource (Mana) gewährt"],
+         friendlyName = L["zauber ressource"],
       },
       ["SPELL_INTERRUPT"] = {
-         tooltip = "Ein Zauber wurde unterbrochen",
-         friendlyName = "zauber unterbrochen",
+         tooltip = L["Ein Zauber wurde unterbrochen"],
+         friendlyName = L["zauber unterbrochen"],
       },
       ["SPELL_EXTRA_ATTACKS"] = {
-         tooltip = "Ein Zauber hat einen Extraangriff gewährt",
-         friendlyName = "zauber zusatz angriff",
+         tooltip = L["Ein Zauber hat einen Extraangriff gewährt"],
+         friendlyName = L["zauber zusatz angriff"],
       },
       ["SPELL_CAST_FAILED"] = {
-         tooltip = "Ein Zauber ist fehlgeschlagen",
-         friendlyName = "zauber fehlgeschlagen",
+         tooltip = L["Ein Zauber ist fehlgeschlagen"],
+         friendlyName = L["zauber fehlgeschlagen"],
       },
       ["SPELL_CREATE"] = {
-         tooltip = "Etwas wurde durch einen Zauber hergestellt (z. B. Berufe-Skill)",
-         friendlyName = "zauber erstellen", 
-         friendlyNameShort = "erstellen",
+         tooltip = L["Etwas wurde durch einen Zauber hergestellt (z. B. Berufe-Skill)"],
+         friendlyName = L["zauber erstellen"], 
+         friendlyNameShort = L["erstellen"],
       },
       ["SPELL_SUMMON"] = {
-         tooltip = "Etwas wurde duch einen Zauber beschworen (z. B. Leerwandler beim Hexer",
-         friendlyName = "zauber beschwören", 
-         friendlyNameShort = "beschwören",
+         tooltip = L["Etwas wurde duch einen Zauber beschworen (z. B. Leerwandler beim Hexer"],
+         friendlyName = L["zauber beschwören"], 
+         friendlyNameShort = L["beschwören"],
       },
       ["SPELL_RESURRECT"] = {
-         tooltip = "Ein Zauber hat etwas wiederbelebt",
-         friendlyName = "zauber wiederbeleben",  
-         friendlyNameShort = "wiederbeleben",
+         tooltip = L["Ein Zauber hat etwas wiederbelebt"],
+         friendlyName = L["zauber wiederbeleben"],  
+         friendlyNameShort = L["wiederbeleben"],
       },
       ["UNIT_DIED"] = {
-         tooltip = "Eine Einheit (Spieler, NPC, Mob etc.) ist gestorben",
-         friendlyName = "einheit tot", 
-         friendlyNameShort = "tot",
+         tooltip = L["Eine Einheit (Spieler, NPC, Mob etc.) ist gestorben"],
+         friendlyName = L["einheit tot"], 
+         friendlyNameShort = L["tot"],
       },
       ["UNIT_DESTROYED"] = {
-         tooltip = "Etwas wurde zerstört (z. B. ein Totem)",
-         friendlyName = "einheit zerstört", 
-         friendlyNameShort = "zerstört",
+         tooltip = L["Etwas wurde zerstört (z. B. ein Totem)"],
+         friendlyName = L["einheit zerstört"], 
+         friendlyNameShort = L["zerstört"],
       },
       ["ITEM_USE"] = {
-         tooltip = "Ein Gegenstand wurde verwendet",
-         friendlyName = "gegenstand verwenden", 
-         friendlyNameShort = "verwenden",
+         tooltip = L["Ein Gegenstand wurde verwendet"],
+         friendlyName = L["gegenstand verwenden"], 
+         friendlyNameShort = L["verwenden"],
       },
       ["KEY_PRESS"] = {
-         tooltip = "Eine Taste wurde gedrückt",
-         friendlyName = "Taste gedrückt", 
-         friendlyNameShort = "Taste",
+         tooltip = L["Eine Taste wurde gedrückt"],
+         friendlyName = L["Taste gedrückt"], 
+         friendlyNameShort = L["Taste"],
       },
    --spellId
       --build from skudb on PLAYER_ENTERING_WORLD
    --itemId
       --build from skudb on PLAYER_ENTERING_WORLD
       ["itemCount"] = {
-         tooltip = "Die Anzahl der verbleibenden Gegenstände in deinen Taschen, vom Typ des Gegenstands, der das Ereignis ausgelöst hat",
-         friendlyName = "gegenstand anzahl", 
-         friendlyNameShort = "anzahl",
+         tooltip = L["Die Anzahl der verbleibenden Gegenstände in deinen Taschen, vom Typ des Gegenstands, der das Ereignis ausgelöst hat"],
+         friendlyName = L["gegenstand anzahl"], 
+         friendlyNameShort = L["anzahl"],
       },
 }
 --add keys for pressedKey
@@ -919,8 +919,8 @@ SkuAuras.values = {
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.attributes = {
    action = {
-      tooltip = "Du legst als nächstes die Aktion fest, die bei der Auslösung der Aura passieren soll",
-      friendlyName = "aktion",
+      tooltip = L["Du legst als nächstes die Aktion fest, die bei der Auslösung der Aura passieren soll"],
+      friendlyName = L["aktion"],
       evaluate = function()
       	dprint("    ","SkuAuras.attributes.action.evaluate")
       end,
@@ -933,8 +933,8 @@ SkuAuras.attributes = {
       },
    },
    destUnitId = {
-      tooltip = "Die Ziel-Einheit, bei der die Aura ausgelöst werden soll",
-      friendlyName = "ziel (L)",
+      tooltip = L["Die Ziel-Einheit, bei der die Aura ausgelöst werden soll"],
+      friendlyName = L["ziel (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
          if aOperator == "is" then
@@ -1016,8 +1016,8 @@ SkuAuras.attributes = {
       },
    },
    targetTargetUnitId = {
-      tooltip = "Die Einheit des Ziels deines Ziels",
-      friendlyName = "ziel deines ziels (L)",
+      tooltip = L["Die Einheit des Ziels deines Ziels"],
+      friendlyName = L["ziel deines ziels (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.targetTargetUnitId.evaluate", aEventData.targetTargetUnitId)
          if aOperator == "is" then
@@ -1098,8 +1098,8 @@ SkuAuras.attributes = {
       },
    },   
    pressedKey = {
-      tooltip = "Welche Taste das Ereignis ausgelöst hat",
-      friendlyName = "Taste",
+      tooltip = L["Welche Taste das Ereignis ausgelöst hat"],
+      friendlyName = L["Taste"],
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.pressedKey then
             dprint("    ","SkuAuras.attributes.pressedKey.evaluate", string.upper(aEventData.pressedKey), aOperator, string.upper(aValue))
@@ -1109,8 +1109,8 @@ SkuAuras.attributes = {
       values = {}, --values are added below the attributes table
    },
    tInCombat = {
-      tooltip = "Ob das Event im Kampf auftritt",
-      friendlyName = "Im Kampf",
+      tooltip = L["Ob das Event im Kampf auftritt"],
+      friendlyName = L["Im Kampf"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
          if aEventData.tInCombat then
@@ -1123,8 +1123,8 @@ SkuAuras.attributes = {
       },
    },
    tSourceUnitIDCannAttack = {
-      tooltip = "Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist",
-      friendlyName = "Quell Einheit angreifbar",
+      tooltip = L["Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
+      friendlyName = L["Quell Einheit angreifbar"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
          if aEventData.tSourceUnitIDCannAttack then
@@ -1137,8 +1137,8 @@ SkuAuras.attributes = {
       },
    },
    tDestinationUnitIDCannAttack = {
-      tooltip = "Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist",
-      friendlyName = "Ziel Einheit angreifbar",
+      tooltip = L["Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
+      friendlyName = L["Ziel Einheit angreifbar"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
          if aEventData.tDestinationUnitIDCannAttack then
@@ -1151,8 +1151,8 @@ SkuAuras.attributes = {
       },
    },
    sourceUnitId = {
-      tooltip = "Die Quell Einheit, bei der die Aura ausgelöst werden soll",
-      friendlyName = "Quelle (L)",
+      tooltip = L["Die Quell Einheit, bei der die Aura ausgelöst werden soll"],
+      friendlyName = L["Quelle (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
          if aOperator == "is" then
@@ -1241,8 +1241,8 @@ SkuAuras.attributes = {
       },
    },
    event = {
-      tooltip = "Das Ereignis, das die Aura auslösen soll",
-      friendlyName = "ereignis",
+      tooltip = L["Das Ereignis, das die Aura auslösen soll"],
+      friendlyName = L["ereignis"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.event.evaluate")
          if aEventData.event then
@@ -1300,8 +1300,8 @@ SkuAuras.attributes = {
       },
    },
    missType = {
-      tooltip = "Der Typ des Verfehlen Ereignisses",
-      friendlyName = "Verfehlen Typ",
+      tooltip = L["Der Typ des Verfehlen Ereignisses"],
+      friendlyName = L["Verfehlen Typ"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.missType.evaluate")
          if aEventData.missType then
@@ -1322,8 +1322,8 @@ SkuAuras.attributes = {
       },
    },
    unitPowerPlayer = {
-      tooltip = "Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc.",
-      friendlyName = "Eigene Ressource",
+      tooltip = L["Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc."],
+      friendlyName = L["Eigene Ressource"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.unitPowerPlayer.evaluate")
          if aEventData.unitPowerPlayer then
@@ -1439,8 +1439,8 @@ SkuAuras.attributes = {
       },
    },
    unitHealthPlayer = {
-      tooltip = "Dein gesundheits Level in Prozent, das die Aura auslösen soll",
-      friendlyName = "Eigene Gesundheit",
+      tooltip = L["Dein gesundheits Level in Prozent, das die Aura auslösen soll"],
+      friendlyName = L["Eigene Gesundheit"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.unitHealthPlayer.evaluate")
          if aEventData.unitHealthPlayer then
@@ -1556,8 +1556,8 @@ SkuAuras.attributes = {
       },      
    },
    spellId = {
-      tooltip = "Die Zauber-ID, die die Aura auslösen soll",
-      friendlyName = "zauber nr",
+      tooltip = L["Die Zauber-ID, die die Aura auslösen soll"],
+      friendlyName = L["zauber nr"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.spellId.evaluate")
          if aEventData.spellId then
@@ -1573,8 +1573,8 @@ SkuAuras.attributes = {
 
 
    spellNameOnCd = {
-      tooltip = "Ob ein Zauber gerade auf CD ist",
-      friendlyName = "zauber auf cd (L)",
+      tooltip = L["Ob ein Zauber gerade auf CD ist"],
+      friendlyName = L["zauber auf cd (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.spellNameOnCd.evaluate", aEventData, aOperator, aValue)
          if aOperator == "is" then
@@ -1597,8 +1597,8 @@ SkuAuras.attributes = {
 
 --[[
    spellNameNotOnCd = {
-      tooltip = "Ob ein Zauber gerade nicht auf CD ist",
-      friendlyName = "zauber nicht auf cd (L)",
+      tooltip = L["Ob ein Zauber gerade nicht auf CD ist"],
+      friendlyName = L["zauber nicht auf cd (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.spellNameNotOnCd.evaluate", aValue)
          if aEventData.spellsNamesOnCd then
@@ -1618,8 +1618,8 @@ SkuAuras.attributes = {
 ]]
 
    spellName = {
-      tooltip = "Der Zauber-name, der die Aura auslösen soll",
-      friendlyName = "zauber name",
+      tooltip = L["Der Zauber-name, der die Aura auslösen soll"],
+      friendlyName = L["zauber name"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.spellName.evaluate")
          if aEventData.spellName then
@@ -1633,8 +1633,8 @@ SkuAuras.attributes = {
       },      
    },
    buffListTarget = {
-      tooltip = "Die Liste der Buffs des Ziels",
-      friendlyName = "Buff Liste Ziel (L)",
+      tooltip = L["Die Liste der Buffs des Ziels"],
+      friendlyName = L["Buff Liste Ziel (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.buffListTarget.evaluate", aEventData, aOperator, aValue)
          if aEventData.buffListTarget then
@@ -1649,8 +1649,8 @@ SkuAuras.attributes = {
       },      
    },
    debuffListTarget = {
-      tooltip = "Die Liste der Debuffs  des Ziels",
-      friendlyName = "Debuff Liste Ziel (L)",
+      tooltip = L["Die Liste der Debuffs  des Ziels"],
+      friendlyName = L["Debuff Liste Ziel (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
          if aEventData.debuffListTarget then
@@ -1665,8 +1665,8 @@ SkuAuras.attributes = {
       },      
    },
    itemName = {
-      tooltip = "Der Gegenstandsname, der die Aura auslösen soll",
-      friendlyName = "gegenstand name",
+      tooltip = L["Der Gegenstandsname, der die Aura auslösen soll"],
+      friendlyName = L["gegenstand name"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.itemName.evaluate")
          if aEventData.itemName then
@@ -1680,8 +1680,8 @@ SkuAuras.attributes = {
       },      
    },
    itemId = {
-      tooltip = "Die Gegenstands-ID, die die Aura auslösen soll",
-      friendlyName = "gegenstand nr",
+      tooltip = L["Die Gegenstands-ID, die die Aura auslösen soll"],
+      friendlyName = L["gegenstand nr"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.itemId.evaluate")
          if aEventData.itemId then
@@ -1695,8 +1695,8 @@ SkuAuras.attributes = {
       },      
    },
    itemCount = {
-      tooltip = "Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll",
-      friendlyName = "gegenstand anzahl",
+      tooltip = L["Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll"],
+      friendlyName = L["gegenstand anzahl"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.itemCount.evaluate")
          if aEventData.itemCount then
@@ -1812,8 +1812,8 @@ SkuAuras.attributes = {
       },      
    },
    auraType = {
-      tooltip = "Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll",
-      friendlyName = "buff/debuff",
+      tooltip = L["Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll"],
+      friendlyName = L["buff/debuff"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.auraType.evaluate")
          if aEventData.auraType then
@@ -1829,8 +1829,8 @@ SkuAuras.attributes = {
       },      
    },
    auraAmount = {
-      tooltip = "Die Anzahl der Stacks einer Aura (Buff oder Debuff), bei der die Aura auslösen soll",
-      friendlyName = "aura stacks",
+      tooltip = L["Die Anzahl der Stacks einer Aura (Buff oder Debuff), bei der die Aura auslösen soll"],
+      friendlyName = L["aura stacks"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.auraAmount.evaluate")
          if aEventData.auraAmount then
@@ -1946,8 +1946,8 @@ SkuAuras.attributes = {
       },      
    },
    class = {
-      tooltip = "Der Klasse, die die Aura auslösen soll",
-      friendlyName = "klasse",
+      tooltip = L["Der Klasse, die die Aura auslösen soll"],
+      friendlyName = L["klasse"],
       evaluate = function()
       	dprint("    ","SkuAuras.attributes.class.evaluate")
 
@@ -1988,16 +1988,16 @@ end
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.Operators = {
    ["then"] = {
-      tooltip = "",
-      friendlyName = "dann",
+      tooltip = L[""],
+      friendlyName = L["dann"],
       func = function(a) 
       	--dprint("    ","action", a)
          return
       end,
    },
    ["is"] = {
-      tooltip = "Gewähltes Attribut entspricht dem gewählten Wert",
-      friendlyName = "gleich",
+      tooltip = L["Gewähltes Attribut entspricht dem gewählten Wert"],
+      friendlyName = L["gleich"],
       func = function(aValueA, aValueB) 
       	--dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
@@ -2006,9 +2006,17 @@ SkuAuras.Operators = {
          if type(aValueA) == "table" then 
             dprint("TABLE")
             for tName, tValue in pairs(aValueA) do
-               for tNameB, tValueB in pairs(aValueB) do
-                  dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB))
-                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
+               if type(aValueB) == "table" then
+                  for tNameB, tValueB in pairs(aValueB) do
+                     dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB))
+                     local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
+                     if tResult == true then
+                        return true
+                     end
+                  end
+               else
+                  dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(aValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(aValueB))
+                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(aValueB)
                   if tResult == true then
                      return true
                   end
@@ -2024,17 +2032,25 @@ SkuAuras.Operators = {
       end,
    },
    ["isNot"] = {
-      tooltip = "Gewähltes Attribut entspricht nicht dem gewählten Wert",
-      friendlyName = "ungleich",
+      tooltip = L["Gewähltes Attribut entspricht nicht dem gewählten Wert"],
+      friendlyName = L["ungleich"],
       func = function(aValueA, aValueB) 
       	--dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          --if type(aValueA) == "table" then return false end
          if type(aValueA) == "table" then 
             for tName, tValue in pairs(aValueA) do
-               for tNameB, tValueB in pairs(aValueB) do
-                  dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB))
-                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
+               if type(aValueB) == "table" then
+                  for tNameB, tValueB in pairs(aValueB) do
+                     dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB))
+                     local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
+                     if tResult == true then
+                        return true
+                     end
+                  end
+               else
+                  dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(aValueB))
+                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(aValueB)
                   if tResult == true then
                      return true
                   end
@@ -2050,8 +2066,8 @@ SkuAuras.Operators = {
       end,
    },
    ["contains"] = {
-      tooltip = "Gewähltes Attribut enthält den gewählten Wert",
-      friendlyName = "enthält",
+      tooltip = L["Gewähltes Attribut enthält den gewählten Wert"],
+      friendlyName = L["enthält"],
       func = function(aValueA, aValueB) 
       	--dprint("      ","SkuAuras.Operators contains", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
@@ -2082,8 +2098,8 @@ SkuAuras.Operators = {
       end,
    },   
    ["containsNot"] = {
-      tooltip = "Gewähltes Attribut enthält nicht den gewählten Wert",
-      friendlyName = "enthält nicht",
+      tooltip = L["Gewähltes Attribut enthält nicht den gewählten Wert"],
+      friendlyName = L["enthält nicht"],
       func = function(aValueA, aValueB) 
       	--dprint("      ","SkuAuras.Operators containsNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
@@ -2126,8 +2142,8 @@ SkuAuras.Operators = {
       end,
    },   
    ["bigger"] = {
-      tooltip = "Gewähltes Attribut ist größer als der gewählte Wert",
-      friendlyName = "größer",
+      tooltip = L["Gewähltes Attribut ist größer als der gewählte Wert"],
+      friendlyName = L["größer"],
       func = function(aValueA, aValueB) 
       	--dprint("      ","SkuAuras.Operators >", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
@@ -2139,8 +2155,8 @@ SkuAuras.Operators = {
       end,
    },
    ["smaller"] = {
-      tooltip = "Gewähltes Attribut ist kleiner als der gewählte Wert",
-      friendlyName = "kleiner",
+      tooltip = L["Gewähltes Attribut ist kleiner als der gewählte Wert"],
+      friendlyName = L["kleiner"],
       func = function(aValueA, aValueB) 
       	--dprint("      ","SkuAuras.Operators <", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
@@ -2156,8 +2172,8 @@ SkuAuras.Operators = {
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.Types = {
    ["if"] = {
-      tooltip = "Wenn die Bedingungen dieser Aura zutreffen",
-      friendlyName = "Wenn",
+      tooltip = L["Wenn die Bedingungen dieser Aura zutreffen"],
+      friendlyName = L["Wenn"],
       attributes = {
          "action",
          "destUnitId",
@@ -2186,8 +2202,8 @@ SkuAuras.Types = {
       },
    },
    ["ifNot"] = {
-      tooltip = "Wenn die Bedingungen dieser Aura nicht zutreffen",
-      friendlyName = "Wenn nicht",
+      tooltip = L["Wenn die Bedingungen dieser Aura nicht zutreffen"],
+      friendlyName = L["Wenn nicht"],
       attributes = {
          "action",
          "destUnitId",
@@ -2219,8 +2235,8 @@ SkuAuras.Types = {
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.Types = {
    aura = {
-      tooltip = "Ein Ereignis im Zusammenhang mit einem Buff oder Debuff löst die Aura aus",
-      friendlyName = "Aura",
+      tooltip = L["Ein Ereignis im Zusammenhang mit einem Buff oder Debuff löst die Aura aus",
+      friendlyName = L["Aura",
       attributes = {
          "auraType",
          "sourceUnitId",
@@ -2237,8 +2253,8 @@ SkuAuras.Types = {
       },
    },
    spell = {
-      tooltip = "Ein Ereignis im Zusammenhang mit einem Zauber löst die Aura aus",
-      friendlyName = "Zauber",
+      tooltip = L["Ein Ereignis im Zusammenhang mit einem Zauber löst die Aura aus",
+      friendlyName = L["Zauber",
       attributes = {
          "spellName",
          "spellId",
@@ -2253,8 +2269,8 @@ SkuAuras.Types = {
       },
    },
    item = {
-      tooltip = "Ein Ereignis im Zusammenhang mit einem Gegenstand löst die Aura aus",
-      friendlyName = "gegenstand",
+      tooltip = L["Ein Ereignis im Zusammenhang mit einem Gegenstand löst die Aura aus",
+      friendlyName = L["gegenstand",
       attributes = {
          "itemName",
          "itemId",
@@ -2270,8 +2286,8 @@ SkuAuras.Types = {
       },
    },
    unit = {
-      tooltip = "Ein Ereignis im Zusammenhang mit einer Einheit (Spieler, NPC, Mob) löst die Aura aus",
-      friendlyName = "Einheit",
+      tooltip = L["Ein Ereignis im Zusammenhang mit einer Einheit (Spieler, NPC, Mob) löst die Aura aus",
+      friendlyName = L["Einheit",
       attributes = {
          "sourceUnitId",
          "destUnitId",

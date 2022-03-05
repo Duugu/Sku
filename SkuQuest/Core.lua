@@ -22,43 +22,43 @@ local EnumItemQuality = {
 }
 
 SkuQuest.racesFriendly = {
-	ALL_ALLIANCE = "Allianz",
-	ALL_HORDE = "Horde",
+	ALL_ALLIANCE = L["Allianz"],
+	ALL_HORDE = L["Horde"],
 	--ALL = VANILLA and 255 or 2047,
-	NONE = "Keine",
+	NONE = L["Keine"],
 
-	HUMAN = "Mensch",
-	ORC = "Ork",
-	DWARF = "Zwerg",
-	NIGHT_ELF = "Nachtelf",
-	UNDEAD = "Untoter",
-	TAUREN = "Taure",
-	GNOME = "Gnom",
-	TROLL = "Troll",
-	--GOBLIN = "Goblin",
-	BLOOD_ELF = "Blutelf",
-	DRAENEI = "Draenei",
+	HUMAN = L["Mensch"],
+	ORC = L["Ork"],
+	DWARF = L["Zwerg"],
+	NIGHT_ELF = L["Nachtelf"],
+	UNDEAD = L["Untoter"],
+	TAUREN = L["Taure"],
+	GNOME = L["Gnom"],
+	TROLL = L["Troll"],
+	--GOBLIN = L["Goblin"],
+	BLOOD_ELF = L["Blutelf"],
+	DRAENEI = L["Draenei"],
 }
 
 SkuQuest.classesFriendly = {
-	NONE = "Keine",
-	WARRIOR = "Krieger",
-	PALADIN = "Paladin",
-	HUNTER = "Jäger",
-	ROGUE = "Schurke",
-	PRIEST = "Priester",
-	SHAMAN = "Shamane",
-	MAGE = "Magier",
-	WARLOCK = "Hexer",
-	DRUID = "Druide",
+	NONE = L["Keine"],
+	WARRIOR = L["Krieger"],
+	PALADIN = L["Paladin"],
+	HUNTER = L["Jäger"],
+	ROGUE = L["Schurke"],
+	PRIEST = L["Priester"],
+	SHAMAN = L["Shamane"],
+	MAGE = L["Magier"],
+	WARLOCK = L["Hexer"],
+	DRUID = L["Druide"],
 }
 
 SkuDB.QuestFlagsFriendly = {
-	NONE = "Keine",
-	SHARABLE = "Teilbar",
-	EPIC = "Episch",
-	RAID = "Raid",
-	DAILY = "Täglich",
+	NONE = L["Keine"],
+	SHARABLE = L["Teilbar"],
+	EPIC = L["Episch"],
+	RAID = L["Raid"],
+	DAILY = L["Täglich"],
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -193,7 +193,7 @@ function SkuQuest:OnEnable()
 		end
 		
 		PlaySound(88)
-		SkuOptions.Voice:OutputString("Quest;geöffnet", true, true, 0.3)
+		SkuOptions.Voice:OutputString(L["Quest;geöffnet"], true, true, 0.3)
 		--[[
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "SkuQuestMainOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "SkuQuestMainOption1", "CTRL-SHIFT-DOWN")
@@ -217,7 +217,7 @@ function SkuQuest:OnEnable()
 			return
 		end
 		
-		SkuOptions.Voice:OutputString("Quest;geschlossen", true, true, 0.3)
+		SkuOptions.Voice:OutputString(L["Quest;geschlossen"], true, true, 0.3)
 		--SkuOptions.TTS:Output("", -1)
 		ClearOverrideBindings(self)
 		PlaySound(89)
@@ -238,9 +238,9 @@ end
 function SkuQuest:OnSkuQuestPush()
 	if (GetQuestLogPushable()) then
 		QuestLogPushQuest()
-		SkuOptions.Voice:OutputString("quest;geteilt", true, true, 0.2, true)
+		SkuOptions.Voice:OutputString(L["quest;geteilt"], true, true, 0.2, true)
 	else
-		SkuOptions.Voice:OutputString("quest;nicht;teilbar", true, true, 0.2, true)
+		SkuOptions.Voice:OutputString(L["quest;nicht;teilbar"], true, true, 0.2, true)
 	end
 end
 
@@ -251,7 +251,7 @@ function SkuQuest:OnSkuQuestAbandon()
 	--SkuQuest:ToggleQuestLogHook()
 	HideUIPanel(QuestLogFrame)
 	--SkuOptions.TTS:Output("", -1)
-	SkuOptions.Voice:OutputString("quest;abgebrochen", true, true, 0.2, true)
+	SkuOptions.Voice:OutputString(L["quest;abgebrochen"], true, true, 0.2, true)
 	SkuOptions:CloseMenu()
 end
 
@@ -446,17 +446,17 @@ function SkuQuest:GetTTSText(aQuestID)
 	local tTextProgresss = ""
 
 	if isHeader then
-		tText = "Nr: "..SkuQuest.SelectedQuest.."\r\n\r\nZone: "..questLogTitleText
-		table.insert(tSections, SkuQuest.SelectedQuest.." Zone "..questLogTitleText)
+		tText = L["Nr: "]..SkuQuest.SelectedQuest.."\r\n\r\n"..L["Zone: "]..questLogTitleText
+		table.insert(tSections, SkuQuest.SelectedQuest..L[" Zone "]..questLogTitleText)
 	else
 		if ( isComplete and isComplete < 0 ) then
 			questTag = FAILED
 			--tText = tText.."\r\n".."FAILED"
-			tTextFailedCompleted = "Fehlgeschlagen"
+			tTextFailedCompleted = L["Fehlgeschlagen"]
 		elseif ( isComplete and isComplete > 0 ) then
 			questTag = COMPLETE
 			--tText = tText.."\r\n".."COMPLETE"
-			tTextFailedCompleted = "Abgeschlossen"
+			tTextFailedCompleted = L["Abgeschlossen"]
 		else
 			--tText = tText.."\r\n".."isComplete nil"
 			tTextFailedCompleted = nil
@@ -477,7 +477,7 @@ function SkuQuest:GetTTSText(aQuestID)
 				text = ttype
 			end
 			if ( not text or strlen(text) == 0 ) then
-				text = "Keine Informationen vorhanden"
+				text = L["Keine Informationen vorhanden"]
 			end
 
 			if ( finished ) then
@@ -508,14 +508,14 @@ function SkuQuest:GetTTSText(aQuestID)
 		if tonumber(money) > 0 then
 			tCurrencyFormated = GetCoinText(tonumber(money), " ")
 		else
-			tCurrencyFormated = "Kein Gold"
+			tCurrencyFormated = L["Kein Gold"]
 		end
-		local tRewardsText = {tCurrencyFormated, numRewards.." feste Gegenstände", numChoices.." Gegenstände zur Auswahl"}
+		local tRewardsText = {tCurrencyFormated, numRewards..L[" feste Gegenstände"], numChoices..L[" Gegenstände zur Auswahl"]}
 
 		local tTtipText = ""
 
 		if numRewards > 0 then
-			tTtipText = tTtipText.."\r\nFeste Gegenstände\r\n"
+			tTtipText = tTtipText..L["\r\nFeste Gegenstände\r\n"]
 			for i=1, numRewards, 1 do
 				local link
 				local tQuestLogItem = _G["QuestLogItem"..i]
@@ -559,7 +559,7 @@ function SkuQuest:GetTTSText(aQuestID)
 		end
 
 		if numChoices > 0 then
-			tTtipText = tTtipText.."\r\nGegenstände zur Auswahl\r\n"
+			tTtipText = tTtipText..L["\r\nGegenstände zur Auswahl\r\n"]
 			for i=1, numChoices, 1 do
 				local link
 				local tQuestLogItem = _G["QuestLogItem"..i]
@@ -602,29 +602,29 @@ function SkuQuest:GetTTSText(aQuestID)
 			end
 		end
 
-		tText = "\r\nNr: "..SkuQuest.SelectedQuest.."\r\n\r\n"
+		tText = "\r\n"..L["Nr: "]..SkuQuest.SelectedQuest.."\r\n\r\n"
 		local tTemptext = ""
 		--table.insert(tSections, "Nr: "..SkuQuest.SelectedQuest)
 		if tTextFailedCompleted then
-			tText = tText.."Titel: "..questLogTitleText.." ("..tTextFailedCompleted..")\r\n\r\n"
+			tText = tText..L["Titel: "]..questLogTitleText.." ("..tTextFailedCompleted..")\r\n\r\n"
 			--table.insert(tSections, "Titel: "..questLogTitleText.." ("..tTextFailedCompleted..")")
 			tTemptext = tTemptext..questLogTitleText.." ("..tTextFailedCompleted..")"
 		else
-			tText = tText.."Titel: "..questLogTitleText.."\r\n\r\n"
+			tText = tText..L["Titel: "]..questLogTitleText.."\r\n\r\n"
 			--table.insert(tSections, "Titel: "..questLogTitleText)
 			tTemptext = tTemptext..questLogTitleText
 		end
 		table.insert(tSections, tTemptext)
-		tText = tText.."Level: "..level.."\r\n\r\n"
-		table.insert(tSections, "Level "..level)
+		tText = tText..L["Level: "]..level.."\r\n\r\n"
+		table.insert(tSections, L["Level "]..level)
 		--tText = tText.."Tag: "..questTag.."\r\n\r\n"
 		if tTextProgresss ~= "" then
-			tText = tText.."Fortschritt:\r\n"..tTextProgresss.."\r\n\r\n"
-			table.insert(tSections, "Fortschritt\r\n"..tTextProgresss)
+			tText = tText..L["Fortschritt:\r\n"]..tTextProgresss.."\r\n\r\n"
+			table.insert(tSections, L["Fortschritt\r\n"]..tTextProgresss)
 		end
 		if table.getn(tRewardsText) > 0 then
-			tText = tText.."Belohnungen:\r\n"
-			local tmpText = "Belohnungen\r\n"
+			tText = tText..L["Belohnungen:\r\n"]
+			local tmpText = L["Belohnungen\r\n"]
 			for y = 1, table.getn(tRewardsText) do
 				tText = tText..y..". "..tRewardsText[y].."\r\n"
 				tmpText = tmpText..y..". "..tRewardsText[y].."\r\n"
@@ -633,15 +633,15 @@ function SkuQuest:GetTTSText(aQuestID)
 			table.insert(tSections, tmpText)
 		end
 		if tTtipText ~= "" then
-			table.insert(tSections, "Belohnungen:\r\n"..tTtipText)
+			table.insert(tSections, L["Belohnungen:\r\n"]..tTtipText)
 		end
 
 
-		tText = tText.."Ziele:\r\n"..questObjectives.."\r\n"
-		table.insert(tSections, "Ziele\r\n"..questObjectives)
+		tText = tText..L["Ziele:\r\n"]..questObjectives.."\r\n"
+		table.insert(tSections, L["Ziele\r\n"]..questObjectives)
 		-- Die Belohnungen mit Nummerierung - Kopf, Leder, RÃ¼stung, Stats (+1 Int, +2 Ausdauer) in textform
-		tText = tText.."Questtext:\r\n"..questDescription.."\r\n\r\n"
-		table.insert(tSections, "Questtext\r\n"..questDescription)
+		tText = tText..L["Questtext:\r\n"]..questDescription.."\r\n\r\n"
+		table.insert(tSections, L["Questtext\r\n"]..questDescription)
 	end
 
 	--SkuOptions.TTS:Output(tSections, 10000)
@@ -697,17 +697,17 @@ function SkuQuest:ShowForTTS(aQuestID)
 	local tTextProgresss = ""
 
 	if isHeader then
-		tText = "Nr: "..SkuQuest.SelectedQuest.."\r\n\r\nZone: "..questLogTitleText
-		table.insert(tSections, SkuQuest.SelectedQuest.." Zone "..questLogTitleText)
+		tText = L["Nr: "]..SkuQuest.SelectedQuest.."\r\n\r\n"..L["Zone: "]..questLogTitleText
+		table.insert(tSections, SkuQuest.SelectedQuest..L[" Zone "]..questLogTitleText)
 	else
 		if ( isComplete and isComplete < 0 ) then
 			questTag = FAILED
 			--tText = tText.."\r\n".."FAILED"
-			tTextFailedCompleted = "Fehlgeschlagen"
+			tTextFailedCompleted = L["Fehlgeschlagen"]
 		elseif ( isComplete and isComplete > 0 ) then
 			questTag = COMPLETE
 			--tText = tText.."\r\n".."COMPLETE"
-			tTextFailedCompleted = "Abgeschlossen"
+			tTextFailedCompleted = L["Abgeschlossen"]
 		else
 			--tText = tText.."\r\n".."isComplete nil"
 			tTextFailedCompleted = nil
@@ -755,14 +755,14 @@ function SkuQuest:ShowForTTS(aQuestID)
 		if tonumber(money) > 0 then
 			tCurrencyFormated = GetCoinText(tonumber(money), " ")
 		else
-			tCurrencyFormated = "Kein Gold"
+			tCurrencyFormated = L["Kein Gold"]
 		end
-		local tRewardsText = {tCurrencyFormated, numRewards.." feste Gegenstände", numChoices.." Gegenstände zur Auswahl"}
+		local tRewardsText = {tCurrencyFormated, numRewards..L[" feste Gegenstände"], numChoices..L[" Gegenstände zur Auswahl"]}
 
 		local tTtipText = ""
 
 		if numRewards > 0 then
-			tTtipText = tTtipText.."\r\nFeste Gegenstände\r\n"
+			tTtipText = tTtipText..L["\r\nFeste Gegenstände\r\n"]
 			for i=1, numRewards, 1 do
 				local link
 				local tQuestLogItem = _G["QuestLogItem"..i]
@@ -806,7 +806,7 @@ function SkuQuest:ShowForTTS(aQuestID)
 		end
 
 		if numChoices > 0 then
-			tTtipText = tTtipText.."\r\nGegenstände zur Auswahl\r\n"
+			tTtipText = tTtipText..L["\r\nGegenstände zur Auswahl\r\n"]
 			for i=1, numChoices, 1 do
 				local link
 				local tQuestLogItem = _G["QuestLogItem"..i]
@@ -849,29 +849,29 @@ function SkuQuest:ShowForTTS(aQuestID)
 			end
 		end
 
-		tText = "\r\nNr: "..SkuQuest.SelectedQuest.."\r\n\r\n"
+		tText = "\r\n"..L["Nr: "]..SkuQuest.SelectedQuest.."\r\n\r\n"
 		local tTemptext = SkuQuest.SelectedQuest.." "
 		--table.insert(tSections, "Nr: "..SkuQuest.SelectedQuest)
 		if tTextFailedCompleted then
-			tText = tText.."Titel: "..questLogTitleText.." ("..tTextFailedCompleted..")\r\n\r\n"
+			tText = tText..L["Titel: "]..questLogTitleText.." ("..tTextFailedCompleted..")\r\n\r\n"
 			--table.insert(tSections, "Titel: "..questLogTitleText.." ("..tTextFailedCompleted..")")
 			tTemptext = tTemptext..questLogTitleText.." ("..tTextFailedCompleted..")"
 		else
-			tText = tText.."Titel: "..questLogTitleText.."\r\n\r\n"
+			tText = tText..L["Titel: "]..questLogTitleText.."\r\n\r\n"
 			--table.insert(tSections, "Titel: "..questLogTitleText)
 			tTemptext = tTemptext..questLogTitleText
 		end
 		table.insert(tSections, tTemptext)
-		tText = tText.."Level: "..level.."\r\n\r\n"
-		table.insert(tSections, "Level "..level)
+		tText = tText..L["Level: "]..level.."\r\n\r\n"
+		table.insert(tSections, L["Level "]..level)
 		--tText = tText.."Tag: "..questTag.."\r\n\r\n"
 		if tTextProgresss ~= "" then
-			tText = tText.."Fortschritt:\r\n"..tTextProgresss.."\r\n\r\n"
-			table.insert(tSections, "Fortschritt\r\n"..tTextProgresss)
+			tText = tText..L["Fortschritt:\r\n"]..tTextProgresss.."\r\n\r\n"
+			table.insert(tSections, L["Fortschritt\r\n"]..tTextProgresss)
 		end
 		if table.getn(tRewardsText) > 0 then
-			tText = tText.."Belohnungen:\r\n"
-			local tmpText = "Belohnungen\r\n"
+			tText = tText..L["Belohnungen:\r\n"]
+			local tmpText = L["Belohnungen\r\n"]
 			for y = 1, table.getn(tRewardsText) do
 				tText = tText..y..". "..tRewardsText[y].."\r\n"
 				tmpText = tmpText..y..". "..tRewardsText[y].."\r\n"
@@ -880,29 +880,29 @@ function SkuQuest:ShowForTTS(aQuestID)
 			table.insert(tSections, tmpText)
 		end
 		if tTtipText ~= "" then
-			table.insert(tSections, "Belohnungen:\r\n"..tTtipText)
+			table.insert(tSections, L["Belohnungen:\r\n"]..tTtipText)
 		end
 
 
-		tText = tText.."Ziele:\r\n"..questObjectives.."\r\n"
-		table.insert(tSections, "Ziele\r\n"..questObjectives)
+		tText = tText..L["Ziele:\r\n"]..questObjectives.."\r\n"
+		table.insert(tSections, L["Ziele\r\n"]..questObjectives)
 		-- Die Belohnungen mit Nummerierung - Kopf, Leder, RÃ¼stung, Stats (+1 Int, +2 Ausdauer) in textform
-		tText = tText.."Questtext:\r\n"..questDescription.."\r\n\r\n"
-		table.insert(tSections, "Questtext\r\n"..questDescription)
+		tText = tText..L["Questtext:\r\n"]..questDescription.."\r\n\r\n"
+		table.insert(tSections, L["Questtext\r\n"]..questDescription)
 	end
 
 	SkuOptions.TTS:Output(tSections, 10000)
 	--SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest), false, true, 0.3)
 
 	if isHeader then
-		SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest).." zone "..questLogTitleText, true, true)
+		SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest)..L[" Zone "]..questLogTitleText, true, true)
 		--SkuOptions.Voice:OutputString(questLogTitleText, false, true)
 	--elseif SkuQuest_QuestTitlesAudioIndex[questID] then
 	else
 		if tTextFailedCompleted then
-			if tTextFailedCompleted == "Abgeschlossen" then
+			if tTextFailedCompleted == L["Abgeschlossen"] then
 				--SkuOptions.Voice:OutputString("abgeschlossen", false, true, 0.8)
-			elseif tTextFailedCompleted == "Fehlgeschlagen" then
+			elseif tTextFailedCompleted == L["Fehlgeschlagen"] then
 				--SkuOptions.Voice:OutputString("fehlgeschlagen", false, true, 0.8)
 			end
 		else
@@ -937,7 +937,7 @@ function SkuQuest:ToggleQuestLogHook(...)
 	if ( QuestLogFrame:IsVisible() ) then
 		--SkuOptions.TTS:Output("", 10000)--HideUIPanel(QuestLogFrame)
 		C_Timer.NewTimer(0.1, function()
-			SkuOptions:SlashFunc("short,SkuQuest")
+			SkuOptions:SlashFunc("short,"..L["SkuQuest"])
 			--SkuOptions.Voice:OutputString(self.name, true, true, 0.3, true)
 		end)
 

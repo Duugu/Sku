@@ -92,10 +92,10 @@ function SkuCore:JunkAndRepairInitialize()
             if CanRepair then -- If merchant is offering repair
                dprint("RepairAllItems")
                if RepairCost > GetMoney() then
-                  SkuOptions.Voice:OutputString("Nicht genug Gold zum Reparieren", false, true, 1, true)
+                  SkuOptions.Voice:OutputString(L["Nicht genug Gold zum Reparieren"], false, true, 1, true)
                else
                   RepairAllItems()
-                  SkuOptions.Voice:OutputString("Alles repariert", false, true, 1, true)
+                  SkuOptions.Voice:OutputString(L["Alles repariert"], false, true, 1, true)
                end
             end
          end
@@ -105,7 +105,7 @@ function SkuCore:JunkAndRepairInitialize()
          -- Cancel existing ticker if present
          if SellJunkTicker then SellJunkTicker:Cancel() end
          -- Sell grey items using ticker (ends when all grey items are sold or iteration count reached)
-         SkuOptions.Voice:OutputString("Schrott verkauft", false, true, 1, true)
+         SkuOptions.Voice:OutputString(L["Schrott verkauft"], false, true, 1, true)
          SellJunkTicker = C_Timer.NewTicker(0.2, SellJunkFunc, IterationCount)
          SellJunkFrame:RegisterEvent("ITEM_LOCKED")
          SellJunkFrame:RegisterEvent("ITEM_UNLOCKED")

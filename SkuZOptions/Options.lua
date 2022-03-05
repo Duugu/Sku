@@ -8,7 +8,7 @@ SkuOptions.options = {
 	args = {
 		vocalizeMenuNumbers = {
 			order = 1,
-			name = "Menünummern ansagen",
+			name = L["Menünummern ansagen"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -20,7 +20,7 @@ SkuOptions.options = {
 		},
 		vocalizeSubmenus = {
 			order = 2,
-			name = "Untermenüs ansagen" ,
+			name = L["Untermenüs ansagen"] ,
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -32,7 +32,7 @@ SkuOptions.options = {
 		},
 		TTSSepPause = {
 			order = 3,
-			name = "Audio Dauer Pause" ,
+			name = L["Audio Dauer Pause"] ,
 			desc = "",
 			type = "range",
 			set = function(info,val)
@@ -44,7 +44,7 @@ SkuOptions.options = {
 		},
 		backgroundSound = {
 			order = 4,
-			name = "Hintergrund Audio" ,
+			name = L["Hintergrund Audio"] ,
 			desc = "",
 			type = "select",
 			values = SkuOptions.BackgroundSoundFiles,
@@ -57,7 +57,7 @@ SkuOptions.options = {
 		},
 		localActive = {
 			order = 5,
-			name = "Lokal aktiv" ,
+			name = L["Lokal aktiv"] ,
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -69,7 +69,7 @@ SkuOptions.options = {
 		},
 		visualAudioMenu = {
 			order = 6,
-			name = "Audio Menü visuell" ,
+			name = L["Audio Menü visuell"] ,
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -80,13 +80,13 @@ SkuOptions.options = {
 			end
 		},
 		soundChannels={
-			name = "Audio-Kanäle",
+			name = L["Audio-Kanäle"],
 			type = "group",
 			order = 4,
 			args= {
 					MasterVolume = {
 						order = 2,
-						name = "Gesamt Lautstärke" ,
+						name = L["Gesamt Lautstärke"] ,
 						desc = "",
 						type = "range",
 						set = function(info,val)
@@ -99,7 +99,7 @@ SkuOptions.options = {
 					},
 					SFXVolume = {
 						order = 3,
-						name = "Soundeffekte Lautstärke" ,
+						name = L["Soundeffekte Lautstärke"] ,
 						desc = "",
 						type = "range",
 						set = function(info,val)
@@ -112,7 +112,7 @@ SkuOptions.options = {
 					},
 					MusicVolume = {
 						order = 5,
-						name = "Musik Lautstärke" ,
+						name = L["Musik Lautstärke"] ,
 						desc = "",
 						type = "range",
 						set = function(info,val)
@@ -125,7 +125,7 @@ SkuOptions.options = {
 					},
 					AmbienceVolume = {
 						order = 4,
-						name = "Umgebung Lautstärke" ,
+						name = L["Umgebung Lautstärke"] ,
 						desc = "",
 						type = "range",
 						set = function(info,val)
@@ -138,7 +138,7 @@ SkuOptions.options = {
 					},
 					DialogVolume = {
 						order = 6	,
-						name = "Dialog Lautstärke" ,
+						name = L["Dialog Lautstärke"] ,
 						desc = "",
 						type = "range",
 						set = function(info,val)
@@ -151,7 +151,7 @@ SkuOptions.options = {
 					},
 					SkuChannel = {
 						order = 1,
-						name = "Sku Kanal" ,
+						name = L["Sku Kanal"] ,
 						desc = "",
 						type = "select",
 						values = SKU_CONSTANTS.SOUNDCHANNELS,
@@ -165,13 +165,13 @@ SkuOptions.options = {
 				},
 			},
 			debugOptions={
-				name = "Debug Optionen",
+				name = L["Debug Optionen"],
 				type = "group",
 				order = 4,
 				args= {
 					soundOnError = {
 						order = 2,
-						name = "Sound bei Fehler" ,
+						name = L["Sound bei Fehler"] ,
 						desc = "",
 						type = "toggle",
 						set = function(info,val)
@@ -183,7 +183,7 @@ SkuOptions.options = {
 					},
 					showError = {
 						order = 2,
-						name = "Fehler anzeigen" ,
+						name = L["Fehler anzeigen"] ,
 						desc = "",
 						type = "execute",
 						set = function(info,val)
@@ -200,13 +200,13 @@ SkuOptions.options = {
 			},
 	
 		allModules={
-			name = "Schnellwahl",
+			name = L["Schnellwahl"],
 			type = "group",
 			order = 5,
 			args={
 					MenuQuickSelect1 = {
 						order = 1,
-						name = "Schnellwahl 1" ,
+						name = L["Schnellwahl 1"] ,
 						desc = "",
 						type = "input",
 						set = function(info,val)
@@ -218,7 +218,7 @@ SkuOptions.options = {
 					},
 					MenuQuickSelect2 = {
 						order = 2,
-						name = "Schnellwahl 2" ,
+						name = L["Schnellwahl 2"] ,
 						desc = "",
 						type = "input",
 						set = function(info,val)
@@ -230,7 +230,7 @@ SkuOptions.options = {
 					},
 					MenuQuickSelect3 = {
 						order = 3,
-						name = "Schnellwahl 3" ,
+						name = L["Schnellwahl 3"] ,
 						desc = "",
 						type = "input",
 						set = function(info,val)
@@ -242,7 +242,7 @@ SkuOptions.options = {
 					},
 					MenuQuickSelect4 = {
 						order = 4,
-						name = "Schnellwahl 4" ,
+						name = L["Schnellwahl 4"] ,
 						desc = "",
 						type = "input",
 						set = function(info,val)
@@ -265,10 +265,10 @@ SkuOptions.defaults = {
 	localActive = true,
 	visualAudioMenu = false,
 	allModules  = {
-		MenuQuickSelect1 = "SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung",
-		MenuQuickSelect2 = "SkuNav,Route,Route folgen,Ziele Entfernung",
-		MenuQuickSelect3 = "SkuCore,Aktionsleisten",
-		MenuQuickSelect4 = "SkuNav,Alles abwählen",
+		MenuQuickSelect1 = L["SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung"],
+		MenuQuickSelect2 = L["SkuNav,Route,Route folgen,Ziele Entfernung"],
+		MenuQuickSelect3 = L["SkuCore,Aktionsleisten"],
+		MenuQuickSelect4 = L["SkuNav,Alles abwählen"],
 		},
 	soundChannels  = {
 		MasterVolume = -1, --this is to check if the profile has sound settings. take the current blizz settings, if not.
@@ -280,7 +280,7 @@ SkuOptions.defaults = {
 		},
 	debugOptions = {
 		soundOnError = false,
-		showError = "fehler anzeigen default",
+		showError = L["fehler anzeigen default"],
 		},
 	}
 
@@ -290,8 +290,8 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {"Profil"}, SkuGenericMenuItem)
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Auswählen"}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Profil"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Auswählen"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -313,7 +313,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		--https://www.wowace.com/projects/ace3/pages/api/ace-db-3-0
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Kopieren von"}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Kopieren von"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -334,7 +334,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		--SkuOptions.db:DeleteProfile(name, silent)
 	end
 	]]
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Zurücksetzen"}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Zurücksetzen"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		--dprint("db", SkuOptions.db:ResetProfile())
@@ -346,7 +346,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		}
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {"Fehlende Audio Wörter kopieren"}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Fehlende Audio Wörter kopieren"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		if SkuOptions.db.realm then
@@ -358,7 +358,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 					end
 				end
 				PlaySound(88)
-				SkuOptions.Voice:OutputString("Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken", true, true, 0.2)										
+				SkuOptions.Voice:OutputString(L["Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken"], true, true, 0.2)										
 				SkuOptions:EditBoxShow(tText, function(self) PlaySound(89) end)
 				SkuOptions.db.realm.missingAudio = {}
 			end

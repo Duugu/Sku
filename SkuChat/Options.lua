@@ -2,7 +2,7 @@ local MODULE_NAME = "SkuChat"
 local L = Sku.L
 
 SkuChat.WowTtsVoices = {
-	[1] = "def Microsoft Hedda Desktop - German",
+	[1] = L["def Microsoft Hedda Desktop - German"],
 }
 
 
@@ -73,7 +73,7 @@ SkuChat.options = {
 		},
 		autoPlayPartyChat = {
 			order = 6,
-			name = "Gruppen Chat automatisch lesen",
+			name = L["Gruppen Chat automatisch lesen"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -85,7 +85,7 @@ SkuChat.options = {
 		},
 		autoPlayGuildChat = {
 			order = 6,
-			name = "Gilden Chat automatisch lesen",
+			name = L["Gilden Chat automatisch lesen"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -97,7 +97,7 @@ SkuChat.options = {
 		},
 		autoPlayTellChat = {
 			order = 6,
-			name = "Flüster Chat automatisch lesen",
+			name = L["Flüster Chat automatisch lesen"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -109,7 +109,7 @@ SkuChat.options = {
 		},
 		autoPlayCreatureChat = {
 			order = 6,
-			name = "Chat von kreaturen automatisch lesen",
+			name = L["Chat von kreaturen automatisch lesen"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -121,7 +121,7 @@ SkuChat.options = {
 		},
 		joinSkuChannel = {
 			order = 7,
-			name = "Sku Chat Channel beitreten",
+			name = L["Sku Chat Channel beitreten"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)

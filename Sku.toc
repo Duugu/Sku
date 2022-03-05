@@ -1,8 +1,8 @@
 ## Interface: 20503
-## Title: Sku (24.4)
+## Title: Sku (25)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 24.4
+## Version: 25
 
 embeds.xml
 
@@ -14,6 +14,10 @@ locales\enUS.lua
 locales\deDE.lua
 
 Core.lua
+
+Libs\SkuTTS-1.0\SkuTTS-1.0.lua
+Libs\SkuVoice-1.0\SkuVoice-1.0.lua
+Libs\SkuBeacon-1.0\SkuBeacon-1.0.lua
 
 SkuChat\Core.lua
 SkuChat\Options.lua

@@ -10,12 +10,8 @@
   <Include file="Libs\AceEvent-3.0\AceEvent-3.0.xml"/>
   <Include file="Libs\AceLocale-3.0\AceLocale-3.0.xml"/>
   <Include file="Libs\AceSerializer-3.0\AceSerializer-3.0.xml"/>
-  <Include file="Libs\SkuTTS-1.0\SkuTTS-1.0.xml"/>
-  <Include file="Libs\SkuVoice-1.0\SkuVoice-1.0.xml"/>
   <Include file="Libs\AceComm-3.0\AceComm-3.0.xml"/>
-  <Include file="Libs\SkuBeacon-1.0\SkuBeacon-1.0.xml"/>
   <Include file="Libs\LibRangeCheck-2.0\LibRangeCheck-2.0.lua"/>
-  
   <Include file="Libs\LibUIDropDownMenu\LibUIDropDownMenuTemplates.xml"/>
   <Include file="Libs\LibUIDropDownMenu\LibUIDropDownMenu.xml"/>
 </Ui>

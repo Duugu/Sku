@@ -80,59 +80,59 @@ local tItemStatNameToRatingValue = {
 local tStatRatings = {}
 
 SkuCore.Specs = {
-	[11] = {"Druid", locName = "Druide", specs = {
-			[1] = {"Balance", locName = "Gleichgewicht"},
-			[2] = {"Feral (Damage)", locName = "Katze"},
-			[3] = {"Feral (Tank)", locName = "Bär"},
-			[4] = {"Restoration", locName = "Wiederherstellung"},
+	[11] = {"Druid", locName = L["Druide"], specs = {
+			[1] = {"Balance", locName = L["Gleichgewicht"]},
+			[2] = {"Feral (Damage)", locName = L["Katze"]},
+			[3] = {"Feral (Tank)", locName = L["Bär"]},
+			[4] = {"Restoration", locName = L["Wiederherstellung"]},
 		},
 	},
-	[3] = {"Hunter", locName = "Jäger", specs = {
-			[1] = {"Beast Mastery", locName = "Tierherrschaft"},
-			[2] = {"Marksmanship", locName = "Treffsicherheit"},
-			[3] = {"Survival", locName = "Überleben"},
+	[3] = {"Hunter", locName = L["Jäger"], specs = {
+			[1] = {"Beast Mastery", locName = L["Tierherrschaft"]},
+			[2] = {"Marksmanship", locName = L["Treffsicherheit"]},
+			[3] = {"Survival", locName = L["Überleben"]},
 		},
 	},
-	[8] = {"Mage", locName = "Magie", specs = {
-			[1] = {"Arcane", locName = "Arkan"},
-			[2] = {"Fire", locName = "Feuer"},
-			[3] = {"Frost", locName = "Frost"},
+	[8] = {"Mage", locName = L["Magie"], specs = {
+			[1] = {"Arcane", locName = L["Arkan"]},
+			[2] = {"Fire", locName = L["Feuer"]},
+			[3] = {"Frost", locName = L["Frost"]},
 		},
 	},
-	[2] = {"Paladin", locName = "Paladin", specs = {
-			[1] = {"Holy", locName = "Heilig"},
-			[2] = {"Protection", locName = "Schutz"},
-			[3] = {"Retribution", locName = "Vergeltung"},
+	[2] = {"Paladin", locName = L["Paladin"], specs = {
+			[1] = {"Holy", locName = L["Heilig"]},
+			[2] = {"Protection", locName = L["Schutz"]},
+			[3] = {"Retribution", locName = L["Vergeltung"]},
 		},
 	},
-	[5] = {"Priest", locName = "Priester", specs = {
-			[1] = {"Discipline", locName = "Disziplin"},
-			[2] = {"Holy", locName = "Heilig"},
-			[3] = {"Shadow", locName = "Schatten"},
+	[5] = {"Priest", locName = L["Priester"], specs = {
+			[1] = {"Discipline", locName = L["Disziplin"]},
+			[2] = {"Holy", locName = L["Heilig"]},
+			[3] = {"Shadow", locName = L["Schatten"]},
 		},
 	},
-	[4] = {"Rogue", locName = "Schuke", specs = {
-			[1] = {"Assassination", locName = "Meucheln"},
-			[2] = {"Combat", locName = "Kampf"},
-			[3] = {"Subtlety", locName = "Täuschung"},
+	[4] = {"Rogue", locName = L["Schuke"], specs = {
+			[1] = {"Assassination", locName = L["Meucheln"]},
+			[2] = {"Combat", locName = L["Kampf"]},
+			[3] = {"Subtlety", locName = L["Täuschung"]},
 		},
 	},
-	[7] = {"Shaman", locName = "Schamane", specs = {
-			[1] = {"Elemental", locName = "Elementar"},
-			[2] = {"Enhancement", locName = "Verstärkung"},
-			[3] = {"Restoration", locName = "Wiederherstellung"},
+	[7] = {"Shaman", locName = L["Schamane"], specs = {
+			[1] = {"Elemental", locName = L["Elementar"]},
+			[2] = {"Enhancement", locName = L["Verstärkung"]},
+			[3] = {"Restoration", locName = L["Wiederherstellung"]},
 		},
 	},
-	[9] = {"Warlock", locName = "Hexer", specs = {
-			[1] = {"Affliction", locName = "Gebrechen"},
-			[2] = {"Demonology", locName = "Dämonologie"},
-			[3] = {"Destruction", locName = "Zerstörung"},
+	[9] = {"Warlock", locName = L["Hexer"], specs = {
+			[1] = {"Affliction", locName = L["Gebrechen"]},
+			[2] = {"Demonology", locName = L["Dämonologie"]},
+			[3] = {"Destruction", locName = L["Zerstörung"]},
 		},
 	},
-	[1] = {"Warrior", locName = "Krieger", specs = {
-			[1] = {"Arms", locName = "Waffen"},
-			[2] = {"Fury", locName = "Furor"},
-			[3] = {"Protection", locName = "Schutz"},
+	[1] = {"Warrior", locName = L["Krieger"], specs = {
+			[1] = {"Arms", locName = L["Waffen"]},
+			[2] = {"Fury", locName = L["Furor"]},
+			[3] = {"Protection", locName = L["Schutz"]},
 		},
 	},
 }
@@ -240,7 +240,7 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 	if ScanTooltipForUsable(SkuRatingTooltip, aItemIdItemToRate) ~= false then return "" end
 
 	--[[GetItemStatDelta("item:"..tCurrentEqItemId,"item:"..aItemIdItemToRate, stats)]]
-	local tResultsString = "Wertung:"
+	local tResultsString = L["Wertung:"]
 
 	local _, _, ClassID = UnitClass("player")
 
@@ -300,7 +300,7 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 	--create rating
 	for i, v in pairs(tCurrentItemRatings) do
 		dprint(i, v)
-		local tMod = "Keine Bewertung möglich"
+		local tMod = L["Keine Bewertung möglich"]
 		if tNewItemRatings[i] then
 			local tDiff
 			if v == 0 then
@@ -308,21 +308,21 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 			else
 				tDiff = math.floor(((tNewItemRatings[i] / v) * 100) - 100)
 			end
-			tMod = "plus "..tDiff.."%"
+			tMod = L["plus "]..tDiff.."%"
 			if tDiff < 0 then
 				tDiff = tDiff * -1
-				tMod = "minus "..tDiff.."%"
+				tMod = L["minus "]..tDiff.."%"
 			elseif tDiff == 0 then
-				tMod = "Keine Veränderung"
+				tMod = L["Keine Veränderung"]
 			end
 		else
-			tMod = "Keine Bewertung für neuen Gegenstand möglich"
+			tMod = L["Keine Bewertung für neuen Gegenstand möglich"]
 		end
 		tResultsString = tResultsString.."\r\n"..SkuCore.Specs[ClassID].specs[i].locName.." "..tMod
 	end
 
-	if tResultsString == "Wertung:" then
-		tResultsString = tResultsString.."\r\n".."Keine Bewertung für angelegter Gegenstand möglich"
+	if tResultsString == L["Wertung:"] then
+		tResultsString = tResultsString.."\r\n"..L["Keine Bewertung für angelegter Gegenstand möglich"]
 	end
 
 	return tResultsString

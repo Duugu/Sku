@@ -606,7 +606,28 @@ function SkuCore:OnEnable()
 	local f = _G["SkuCoreControl"] or CreateFrame("Frame", "SkuCoreControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
 		if SkuOptions.db.profile[MODULE_NAME].enable ~= true then return end
-			
+
+		if ClassTrainerFrame then
+			if ClassTrainerFrame:IsShown() == true then
+				if SkuOptions.db.profile[MODULE_NAME].trainerSkillsUnavailableDisabled ~= true then
+					ClassTrainerFrameFilterDropDownButton:Click()
+					if DropDownList1Button2.checked == 1 then 
+						DropDownList1Button2:Click()
+					end
+					ClassTrainerFrameFilterDropDownButton:Click()
+					SkuOptions.db.profile[MODULE_NAME].trainerSkillsUnavailableDisabled = true 
+				end
+			end
+		end
+
+		if _G["StaticPopup1Button2"] then
+			if _G["StaticPopup1Button2"]:IsShown() == true then
+				if _G["StaticPopup1Button2"]:GetText() == "Ignorieren" then
+					_G["StaticPopup1Button2"]:Click()
+				end
+			end
+		end
+
 		--hunter pet happiness
 		if select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"] then
 			if SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true then
@@ -1327,17 +1348,17 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		
 		local tProfiles = SkuOptions.db:GetProfiles()
 		for i, v in pairs(tProfiles) do
-			if v == "Standard profil Allgemein" then pGeneral = true end
-			if v == "Standard profil Heiler" then pHealer = true end
-			if v == "Standard profil Caster" then pCaster = true end
-			if v == "Standard profil Nahkämpfer" then pMelee = true end
+			if v == L["Standard profil Allgemein"] then pGeneral = true end
+			if v == L["Standard profil Heiler"] then pHealer = true end
+			if v == L["Standard profil Caster"] then pCaster = true end
+			if v == L["Standard profil Nahkämpfer"] then pMelee = true end
 		end
 
 		SkuCore.AutoChange = true
-		if not pGeneral then SkuOptions.db:SetProfile("Standard profil Allgemein") end
-		if not pHealer then SkuOptions.db:SetProfile("Standard profil Heiler") end
-		if not pCaster then SkuOptions.db:SetProfile("Standard profil Caster") end
-		if not pMelee then SkuOptions.db:SetProfile("Standard profil Nahkämpfer") end
+		if not pGeneral then SkuOptions.db:SetProfile(L["Standard profil Allgemein"]) end
+		if not pHealer then SkuOptions.db:SetProfile(L["Standard profil Heiler"]) end
+		if not pCaster then SkuOptions.db:SetProfile(L["Standard profil Caster"]) end
+		if not pMelee then SkuOptions.db:SetProfile(L["Standard profil Nahkämpfer"]) end
 		SkuCore.AutoChange = nil
 
 		SkuOptions.db:SetProfile(tCurrentP)
@@ -1366,7 +1387,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			local tCurrentP = SkuOptions.db:GetCurrentProfile()
 			local tName, tServer = UnitFullName("player") 
 			if tCurrentP == tName.." - "..tServer or tCurrentP == "Default" then 
-				SkuOptions.db:SetProfile("Standard profil Allgemein")
+				SkuOptions.db:SetProfile(L["Standard profil Allgemein"])
 				--SkuOptions.db:DeleteProfile(tName.." - "..tServer)--, true)
 			end
 
@@ -1482,6 +1503,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 		SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
 	end
+
+	
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1743,11 +1766,11 @@ local validTypes = {
 }
 
 local blockedWidgetStrings = {
-	["Schlachtzugszielsymbol"] = true,
-	["Fokus setzen"] = true,
-	["Freund hinzufügen"] = true,
-	["Fenster verschieben"] = true,
-	["Spieler melden wegen:"] = true,
+	[L["Schlachtzugszielsymbol"]] = true,
+	[L["Fokus setzen"]] = true,
+	[L["Freund hinzufügen"]] = true,
+	[L["Fenster verschieben"]] = true,
+	[L["Spieler melden wegen:"]] = true,
 }
 
 local friendlyFrameNames = {
@@ -2469,4 +2492,8 @@ function SkuCore:ResetBindings(aToWowDefaults)
 	end
 	
 	SkuCore:SaveBindings()
+end
+
+function test()
+	SetAllowDangerousScripts(true)
 end

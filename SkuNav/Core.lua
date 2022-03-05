@@ -718,19 +718,19 @@ function SkuNav:UpdateStandardWpReachedRange(aDistanceToNextWp)
 	else
 		if not aDistanceToNextWp then 
 			if SkuNav.CurrentStandardWpReachedRange ~= 0 and SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 3 then
-				SkuOptions.Voice:OutputString("nah", false, true, 0.3, true)
+				SkuOptions.Voice:OutputString(L["nah"], false, true, 0.3, true)
 			end
 			SkuNav.CurrentStandardWpReachedRange = 0
 			return
 		end
 		if aDistanceToNextWp <= 9 then
 			if SkuNav.CurrentStandardWpReachedRange ~= 0 and SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 3 then
-				SkuOptions.Voice:OutputString("nah", false, true, 0.3, true)
+				SkuOptions.Voice:OutputString(L["nah"], false, true, 0.3, true)
 			end
 			SkuNav.CurrentStandardWpReachedRange = 0
 		elseif aDistanceToNextWp > 14 then
 			if SkuNav.CurrentStandardWpReachedRange ~= 3 and SkuOptions.db.profile["SkuNav"].standardWpReachedRange == 3 then
-				SkuOptions.Voice:OutputString("weit", false, true, 0.3, true)
+				SkuOptions.Voice:OutputString(L["weit"], false, true, 0.3, true)
 			end
 			SkuNav.CurrentStandardWpReachedRange = 3
 		end
@@ -747,11 +747,11 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 		--this is because of strange areas where C_Map.GetBestMapForUnit is returning continent IDs
 		if tMMZoneText == L["Timbermaw Hold"] then
 			tPlayerUIMap = 1448
-		elseif tMMZoneText == "Der Südstrom" then
+		elseif tMMZoneText == L["Der Südstrom"] then
 			tPlayerUIMap = 1413
-		elseif tMMZoneText == "Die Höhlen des Wehklagens" or tMMZoneText == "Höhle der Nebel"  then
+		elseif tMMZoneText == L["Die Höhlen des Wehklagens"] or tMMZoneText == L["Höhle der Nebel"]  then
 			tPlayerUIMap = 1413
-		elseif tMMZoneText == "Schmiedevaters Grabmal" or tMMZoneText == "Schwarzfelsspitze" then
+		elseif tMMZoneText == L["Schmiedevaters Grabmal"] or tMMZoneText == L["Schwarzfelsspitze"] then
 			tPlayerUIMap = 1428
 		else
 			for i, v in pairs(SkuDB.InternalAreaTable) do
@@ -1019,18 +1019,18 @@ function SkuNav:StartRouteRecording(aWPAName, aDeleteFlag)
 	print("StartRouteRecording", aWPAName, aDeleteFlag)
 	if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true then
 		SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
-		SkuOptions.Voice:OutputString("Route folgen läuft", false, true, 0.3, true)
+		SkuOptions.Voice:OutputString(L["Route folgen läuft"], false, true, 0.3, true)
 		return
 	end
 	if SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].routeRecordingLastWp then
 		SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
-		SkuOptions.Voice:OutputString("Aufzeichnung läuft", false, true, 0.3, true)
+		SkuOptions.Voice:OutputString(L["Aufzeichnung läuft"], false, true, 0.3, true)
 		return
 	end
 	if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 		SkuOptions.Voice:OutputString(L["Error"], false, true, 0.3, true)
 		SkuOptions.Voice:OutputString("", false, true, 0.3, true)
-		SkuOptions.Voice:OutputString("Wegpunkt folgen läuft", false, true, 0.3, true)
+		SkuOptions.Voice:OutputString(L["Wegpunkt folgen läuft"], false, true, 0.3, true)
 		return
 	end
 
@@ -1050,7 +1050,7 @@ function SkuNav:StartRouteRecording(aWPAName, aDeleteFlag)
 	if not aDeleteFlag then
 		SkuOptions:VocalizeMultipartString(L["recording;starts"], false, true, 0.3, true)
 	else
-		SkuOptions:VocalizeMultipartString("Löschen beginnt", false, true, 0.3, true)
+		SkuOptions:VocalizeMultipartString(L["Löschen beginnt"], false, true, 0.3, true)
 	end
 end
 
@@ -1087,9 +1087,9 @@ function SkuNav:EndRouteRecording(aWpName, aDeleteFlag)
 
 	SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)
 	if not aDeleteFlag then
-		SkuOptions.Voice:OutputString("Aufzeichnung beendet", false, true, 0.2)
+		SkuOptions.Voice:OutputString(L["Aufzeichnung beendet"], false, true, 0.2)
 	else
-		SkuOptions.Voice:OutputString("Löschen beendet", false, true, 0.2)
+		SkuOptions.Voice:OutputString(L["Löschen beendet"], false, true, 0.2)
 	end
 
 	SkuOptions:CloseMenu()	
@@ -1216,10 +1216,10 @@ function SkuNav:ProcessPolyZones()
 	if tOldPolyZones[4][1] ~= tNewPolyZones[4][1] then
 		if tNewPolyZones[4][1] == 0 then
 			--dprint("other left")
-			SkuOptions.Voice:OutputString("Wer das hört ist doof verlassen", false, true, nil, true)
+			SkuOptions.Voice:OutputString(L["Wer das hört ist doof verlassen"], false, true, nil, true)
 		elseif tOldPolyZones[4][1] == 0 then
 			--dprint("other entered")
-			SkuOptions.Voice:OutputString("Wer das hört ist doof betreten", false, true, nil, true)
+			SkuOptions.Voice:OutputString(L["Wer das hört ist doof betreten"], false, true, nil, true)
 		end
 		tOldPolyZones[4][1] = tNewPolyZones[4][1] 
 	end
@@ -1349,7 +1349,7 @@ function SkuNav:StartReverseRtFollow()
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowing = true
 
 	SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, true)
-	SkuOptions.Voice:OutputString("Zurück Metaroute folgen gestartet", false, true, 0.2)
+	SkuOptions.Voice:OutputString(L["Zurück Metaroute folgen gestartet"], false, true, 0.2)
 
 	SkuOptions:CloseMenu()
 end
@@ -1441,7 +1441,7 @@ function SkuNav:ProcessCheckReachingWp()
 						end
 						if not SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget] or not tNextWPNr then
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
-							SkuOptions:VocalizeMultipartString("Route folgen beendet", false, true, 0.3, true)
+							SkuOptions:VocalizeMultipartString(L["Route folgen beendet"], false, true, 0.3, true)
 							SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = nil
 							SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
 						end
@@ -1703,14 +1703,14 @@ function SkuNav:CreateSkuNavControl()
 						if SkuCore:IsNamePlateVisible(SkuOptions.db.profile[MODULE_NAME].metapathFollowingTargetName) == true then
 							if metapathFollowingTargetNameAnnounced == false then
 								SkuOptions.Voice:OutputString(SkuOptions.db.profile[MODULE_NAME].metapathFollowingTargetName, true, true, 0.3, true)
-								SkuOptions.Voice:OutputString("sichtbar", false, true, 0.3, true)
+								SkuOptions.Voice:OutputString(L["sichtbar"], false, true, 0.3, true)
 
 								metapathFollowingTargetNameAnnounced = true
 							end
 						else
 							if metapathFollowingTargetNameAnnounced == true then
 								SkuOptions.Voice:OutputString(SkuOptions.db.profile[MODULE_NAME].metapathFollowingTargetName, true, true, 0.3, true)
-								SkuOptions.Voice:OutputString("nicht sichtbar", false, true, 0.3, true)
+								SkuOptions.Voice:OutputString(L["nicht sichtbar"], false, true, 0.3, true)
 								metapathFollowingTargetNameAnnounced = false
 							end
 						end
@@ -1734,8 +1734,8 @@ function SkuNav:CreateSkuNavMain()
 
 	tFrame:SetScript("OnClick", function(self, a, b)
 		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
-			print("Funktion erst nach Abschluss von Routen Umwandlung verfügbar")
-			SkuOptions.Voice:OutputString("Funktion erst nach Abschluss von Routen Umwandlung verfügbar", true, true, 0.3, true)
+			print(L["Funktion erst nach Abschluss von Routen Umwandlung verfügbar"])
+			SkuOptions.Voice:OutputString(L["Funktion erst nach Abschluss von Routen Umwandlung verfügbar"], true, true, 0.3, true)
 			return
 		end
 
@@ -2731,8 +2731,8 @@ function SkuNav:ClearWaypointsTemporary(aFull)
 
 	if aFull then
 		local tIndex = 1
-		while SkuNav:GetWaypointData2("Einheiten;Route;"..tIndex) do
-			if SkuNav:DeleteWaypoint("Einheiten;Route;"..tIndex) ~= true then
+		while SkuNav:GetWaypointData2(L["Einheiten;Route;"]..tIndex) do
+			if SkuNav:DeleteWaypoint(L["Einheiten;Route;"]..tIndex) ~= true then
 				dprint("THIS SHOULD NOT HAPPEN: tmp WP could not be deleted on clear:", "Einheiten;Route;"..tIndex)
 			end
 			tIndex = tIndex + 1
@@ -2886,8 +2886,8 @@ function SkuNav:CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToRe
 	local tCacheNbWpsTimerWpList = {}
 	if tCacheNbWpsTimerCounterProgressShow == true then
 		--dprint("SkuNav: WPs and RTs cache req")
-		SkuOptions.Voice:OutputString("Routen Umwandlung auf neue Version gestartet", false, true, 0.3, true)
-		print("Routen Umwandlung auf neue Version gestartet")
+		SkuOptions.Voice:OutputString(L["Routen Umwandlung auf neue Version gestartet"], false, true, 0.3, true)
+		print(L["Routen Umwandlung auf neue Version gestartet"])
 
 	end
 	for i, tRouteName in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes) do
@@ -2937,8 +2937,8 @@ function SkuNav:CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToRe
 							--end
 							tFoundThisRound = false
 
-							SkuOptions.Voice:OutputString("Routen Umwandlung abgeschlossen", false, true, 0.3, true)
-							print("Routen Umwandlung abgeschlossen")
+							SkuOptions.Voice:OutputString(L["Routen Umwandlung abgeschlossen"], false, true, 0.3, true)
+							print(L["Routen Umwandlung abgeschlossen"])
 							SkuNav:UpdateWaypointCacheLinks()
 							SkuNav:SaveLinkDataToProfile()
 							SkuOptions.db.profile[MODULE_NAME].Routes = nil
@@ -2957,8 +2957,8 @@ function SkuNav:CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToRe
 			if tCacheNbWpsTimerCounterProgressShow == true then
 				if math.floor(tCacheNbWpsTimerCounterProgress / 1000) ~= math.floor(tCacheNbWpsTimerCounter / 1000) then
 					tCacheNbWpsTimerCounterProgress = tCacheNbWpsTimerCounter
-					SkuOptions.Voice:OutputString("Routen Umwandlung "..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000), false, true, 0.3, true)
-					print("Routen Umwandlung "..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000))
+					SkuOptions.Voice:OutputString(L["Routen Umwandlung "]..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000), false, true, 0.3, true)
+					print(L["Routen Umwandlung "]..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000))
 					--dprint("SkuNav: Caching progress "..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000))
 				end
 			end
@@ -2976,7 +2976,7 @@ function SkuNav:CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToRe
 			end
 		end)
 	else
-		SkuOptions.Voice:OutputString("Routen Umwandlung abgeschlossen", false, true, 0.3, true)
+		SkuOptions.Voice:OutputString(L["Routen Umwandlung abgeschlossen"], false, true, 0.3, true)
 		SkuOptions.db.profile[MODULE_NAME].Routes = nil
 		SkuOptions.db.profile["SkuNav"].RtAndWpVersion = 22		
 	end

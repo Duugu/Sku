@@ -97,7 +97,7 @@ end
 function SkuCore:Build_CraftFrame(aParentChilds)
 
    local tFrameName = "CraftFrame"
-   local tFriendlyName = "Wildtierausbildung"
+   local tFriendlyName = L["Wildtierausbildung"]
    table.insert(aParentChilds, tFriendlyName)
    aParentChilds[tFriendlyName] = {
       frameName = tFrameName,
@@ -111,7 +111,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 
    if _G["CraftFramePointsText"] then
       local tFrameName = "CraftFramePointsText"
-      local tFriendlyName = "Verfügbare punkte: "
+      local tFriendlyName = L["Verfügbare punkte: "]
       tFriendlyName = tFriendlyName..(_G["CraftFramePointsText"]:GetText() or "")
       table.insert(aParentChilds, tFriendlyName)
       aParentChilds[tFriendlyName] = {
@@ -128,7 +128,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
    local tFrameName = "CraftListScrollFrameScrollBarScrollUpButton"
    if _G[tFrameName] then
       if tFrame:IsVisible() == true  then --IsMouseClickEnabled()
-         local tFriendlyName = "Hoch blättern"
+         local tFriendlyName = L["Hoch blättern"]
          table.insert(aParentChilds, tFriendlyName)
          aParentChilds[tFriendlyName] = {
             frameName = tFrameName,
@@ -157,7 +157,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
                r, g, b = CraftHighlight:GetVertexColor()
             end
             if r < 0.51 and g < 0.51 and b < 0.51 then
-               tKnown = "bekannt"
+               tKnown = L["bekannt"]
             end
             local tFriendlyName = unescape(_G[tFrameName.."Text"]:GetText()).." ".. (unescape(_G[tFrameName.."SubText"]:GetText()) or "").." ".. (unescape(_G[tFrameName.."Cost"]:GetText()) or "").." "..tKnown
             local tText, tFullText = "", ""
@@ -182,7 +182,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
    local tFrameName = "CraftListScrollFrameScrollBarScrollDownButton"
    if _G[tFrameName] then
       if tFrame:IsVisible() == true then --IsMouseClickEnabled()
-         local tFriendlyName = "Runter blättern"
+         local tFriendlyName = L["Runter blättern"]
          table.insert(aParentChilds, tFriendlyName)
          aParentChilds[tFriendlyName] = {
             frameName = tFrameName,
@@ -220,7 +220,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 
    local tFrameName = "CraftDetailScrollChildFrame"
    if tName and tName ~= "" then
-      local tFriendlyName = "Ausgewählt: "..tName
+      local tFriendlyName = L["Ausgewählt: "]..tName
       table.insert(aParentChilds, tFriendlyName)
       aParentChilds[tFriendlyName] = {
          frameName = tFrameName,
@@ -257,7 +257,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
    end
 
    local tFrameName = "CraftFrameCloseButton"
-   local tFriendlyName = "Schließen"
+   local tFriendlyName = L["Schließen"]
    if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
       table.insert(aParentChilds, tFriendlyName)
       aParentChilds[tFriendlyName] = {
@@ -280,14 +280,14 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 
    local tFrame = _G["PetStableCurrentPet"]
    local tText, tFullText = GetButtonTooltipLines(tFrame)
-   table.insert(aParentChilds, "Derzeitiger Begleiter")
+   table.insert(aParentChilds, L["Derzeitiger Begleiter"])
    aParentChilds["Derzeitiger Begleiter"] = {
       frameName = "PetStableCurrentPet",
       RoC = "Child",
       type = "Button",
       obj = tFrame,
-      textFirstLine = "Derzeitiger Begleiter "..tText,
-      textFull = "Derzeitiger Begleiter "..tFullText,
+      textFirstLine = L["Derzeitiger Begleiter"].." "..tText,
+      textFull = L["Derzeitiger Begleiter"].." "..tFullText,
       childs = {},
       func = function(...)
          local tCursorInfo = GetCursorInfo() 
@@ -303,14 +303,14 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
    local tFrame = _G["PetStableStabledPet1"]
    if tFrame:IsEnabled() == true then --IsMouseClickEnabled()
       local tText, tFullText = GetButtonTooltipLines(tFrame)
-      table.insert(aParentChilds, "Stall 1")
+      table.insert(aParentChilds, L["Stall 1"])
       aParentChilds["Stall 1"] = {
          frameName = "PetStableStabledPet1",
          RoC = "Child",
          type = "Button",
          obj = tFrame,
-         textFirstLine = "Stall 1 "..tText,
-         textFull = "Stall 1 "..tFullText,
+         textFirstLine = L["Stall 1"].." "..tText,
+         textFull = L["Stall 1"].." "..tFullText,
          childs = {},
          func = function(...)
             local tCursorInfo = GetCursorInfo() 
@@ -327,14 +327,14 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
    local tFrame = _G["PetStableStabledPet2"]
    if tFrame:IsEnabled() == true then --IsMouseClickEnabled()
       local tText, tFullText = GetButtonTooltipLines(tFrame)
-      table.insert(aParentChilds, "Stall 2")
+      table.insert(aParentChilds, L["Stall 2"])
       aParentChilds["Stall 2"] = {
          frameName = "PetStableStabledPet2",
          RoC = "Child",
          type = "Button",
          obj = tFrame,
-         textFirstLine = "Stall 2 "..tText,
-         textFull = "Stall 2 "..tFullText,
+         textFirstLine = L["Stall 2"].." "..tText,
+         textFull = L["Stall 2"].." "..tFullText,
          childs = {},
          func = function(...)
             local tCursorInfo = GetCursorInfo() 
@@ -351,13 +351,13 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
    local tFrame = _G["PetStablePurchaseButton"]
    if tFrame:IsEnabled() == true then --IsMouseClickEnabled()
       if tFrame:IsShown() == true then --IsMouseClickEnabled()
-         table.insert(aParentChilds, "Weiteren Platz kaufen")
+         table.insert(aParentChilds, L["Weiteren Platz kaufen"])
          aParentChilds["Weiteren Platz kaufen"] = {
             frameName = "PetStablePurchaseButton",
             RoC = "Child",
             type = "Button",
             obj = tFrame,
-            textFirstLine = "Weiteren Platz kaufen",
+            textFirstLine = L["Weiteren Platz kaufen"],
             textFull = "",
             childs = {},
             func = tFrame:GetScript("OnClick"),
@@ -368,13 +368,13 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 
    local tFrame = _G["PetStableFrameCloseButton"]
    if tFrame:IsEnabled() == true then --IsMouseClickEnabled()
-      table.insert(aParentChilds, "Schließen")
+      table.insert(aParentChilds, L["Schließen"])
       aParentChilds["Schließen"] = {
          frameName = "PetStableFrameCloseButton",
          RoC = "Child",
          type = "Button",
          obj = tFrame,
-         textFirstLine = "Schließen",
+         textFirstLine = L["Schließen"],
          textFull = "",
          childs = {},
          func = tFrame:GetScript("OnClick"),

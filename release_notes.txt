@@ -2,6 +2,26 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Version 25
+
+	Alle
+		- Die Vorbereitung der Lokalisierung wurde mit weiteren internen Codeänderungen abgeschlossen.
+		  Vereinzelte Fehler sind möglich. Bitte alles gründlich durchtesten und auftretende Fehler melden. Danke!
+
+	SkuCore
+		Neuerungen
+			- Das Addon sollte jetzt die bekannten Fehlermeldungen wie "Ein Addon wurde geblockt ..." und "Du versuchst ein Script auszuführen ..." verhindern bzw. entsprechende Warnungen vollautomatisch mit "Ok" bestätigen.
+		
+		Fehlerkorrekturen
+			- Das Addon sollte jetzt endgültig beim ersten Öffnen des Klassentrainer-Fensters alle nicht verfügbaren Skills ausblenden.
+
+	SkuAuras
+		Fehlerkorrekturen
+			- Es wurde ein Fehler bei Auren mit dem Operator "gleich" bzw. "ungleich" behoben.
+
+
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Version 24.4
 

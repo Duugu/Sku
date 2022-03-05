@@ -255,7 +255,7 @@ function SkuChat:CHAT_MSG_WHISPER(aEvent, aMsgBody, aSenderName)
 			SkuChat.InvitePlayerName = string.sub(SkuChat.InvitePlayerName, 1, string.find(SkuChat.InvitePlayerName, "-") - 1)
 		end
 
-		local tSpeakText = aSenderName.." hat eine Einladung angefordert. Mit /sku invite einladen."
+		local tSpeakText = aSenderName..L[" hat eine Einladung angefordert. Mit /sku invite einladen."]
 		if IsMacClient() == true then
 			C_VoiceChat.StopSpeakingText()
 			C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tSpeakText, 4, SkuOptions.db.profile[MODULE_NAME].WowTtsSpeed, SkuOptions.db.profile[MODULE_NAME].WowTtsVolume)

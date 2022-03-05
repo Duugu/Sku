@@ -48,7 +48,7 @@ function SkuCore:RangeCheckUpdateRanges()
    if tFirstRangeUpdateSilent then
       tFirstRangeUpdateSilent = nil
    else
-      SkuOptions.Voice:OutputString("Neue Reichweite verfügbar", true, true, 0.2)
+      SkuOptions.Voice:OutputString(L["Neue Reichweite verfügbar"], true, true, 0.2)
    end
 
    SkuCore.RangeCheckValues.Ranges.Friendly = {}
@@ -119,7 +119,11 @@ function SkuCore:DoRangeCheck()
             local tSoundChannel = SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head"
             if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound == L["vocalized"] then
                --PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
-               PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
+               if Sku.Loc == "deDE" then
+                  PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
+               elseif Sku.Loc == "enUS" or Sku.Loc == "enGB"  or Sku.Loc == "enAU" then
+                  PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_en-us\\"..tRangeCheckLastTargetminRange..".mp3", tSoundChannel)
+               end
             else
                PlaySoundFile(SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType][tRangeCheckLastTargetminRange].sound, tSoundChannel)
             end

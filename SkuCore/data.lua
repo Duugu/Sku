@@ -907,11 +907,11 @@ SkuCore.RangeCheckSounds = {
 
 SKU_CONSTANTS = {
 	["SOUNDCHANNELS"] = {
-		["Master"] = "Gesamt",
-		["SFX"] = "Soundeffekte",
-		["Music"] = "Musik",
-		["Ambience"] = "Umgebung",
-		["Dialog"] = "Dialog",
-		["Talking Head"] = "Sku",
+		["Master"] = L["Gesamt"],
+		["SFX"] = L["Soundeffekte"],
+		["Music"] = L["Musik"],
+		["Ambience"] = L["Umgebung"],
+		["Dialog"] = L["Dialog"],
+		["Talking Head"] = L["Sku"],
 	},
 }

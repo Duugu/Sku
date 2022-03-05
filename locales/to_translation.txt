@@ -1,0 +1,1252 @@
+aura;sound
+aura
+typ
+wenn
+dann
+Minus
+Hochkomma
+Akzent
+Plus
+Komma
+Kanal
+Holzschlundfeste
+Der Tempel von Atal'Hakkar
+Onyxias Hort
+passiv
+agressiv
+Pre-Quest
+Sound
+Gesprochen
+Fehler;Sound
+Fehler Feedback
+Nicht in Reichweite
+Nicht in Bewegung
+Keine Sichtlinie
+Ziel ungültig
+In kampf
+ressource fehlt
+Objekt beschäftigt
+Richtung falsch
+gestunnt
+Unterbrochen
+Sound Kanal
+
+Reichweite
+Bewegung
+Sicht
+Ziel
+Kampf
+Ressource
+Beschäftigt
+Richtung
+Gestunnt
+Unterbrochen
+0,5s
+1s
+0,1s
+hinweis
+Trompete 1
+Trompete 2
+Trompete 3
+Trompete 4
+Trompete 5
+Glas 1
+Glas 2
+Glas 3
+Glas 4
+Glas 5
+Tropfen 1
+Tropfen 2
+Tropfen 3
+Tropfen 4
+Tropfen 5
+stumm
+brang
+bring
+dang
+drmm
+shhhup
+spoing
+swoosh
+tsching
+Empfänger fehlt
+Betreff fehlt
+Steinwerkpass
+Zone: unbekannt
+Handwerk
+Ausbildung
+Aktiviert
+Aktiviert/deaktiviert das Addon
+Optionen
+SkuOptions ein
+SkuOptions aus
+SkuOptions Audio ein
+SkuOptions Audio aus
+Größe 
+Klein 
+Groß 
+Quests 
+NPC Namen 
+Zonen Namen 
+Alle alphabetisch 
+Bedarf 
+Gier 
+Gepasst 
+gewürfelt Gepasst 
+gewürfelt Bedarf 
+gewürfelt Gier 
+Würfeln für 
+Lokal 
+Leer 
+Menü;geschlossen 
+Menü;geöffnet 
+short
+Schnellwahl 
+neu;belegt;mit 
+Nicht möglich. Menü ist nicht geöffnet 
+OBJEKT 
+Filter 
+Keine Ergebnisse 
+Filter angewendet 
+Filter entfernt 
+Momentan ist kein Spieler mit dem Namen
+Kein Ziel 
+plus
+Linksklick
+Rechtsklick
+Ein
+Aus
+Jetzt Import Daten einfügen 
+Schnellwegpunkt 
+schnellwegpunkt 
+Schnellwegpunkt 4 auf Leiche gesetzt 
+Meter 
+Genauigkeit drei Meter 
+Genauigkeit ein Meter 
+Fehler oder zu weit entfernt (maximal 50 Meter) 
+hinzugefügt 
+schon vorhanden 
+WP gesetzt 
+Bei Beenden festlegen 
+Manuell 
+Ende 
+Start 
+auto
+Nur Custom-Wegpunkte könnten gelöscht werden 
+Modul aktiviert 
+Nein 
+Ja 
+Unbekannt 
+Quest ID 
+Abgeschlossen 
+Abgeschlossen: Im Questlog 
+Zone
+Zone: Unbekannt 
+Level 
+Ziele 
+Rassen
+Klassen 
+Pre Quests 
+Pre Quest 
+Quests Gruppe
+Eigenschaften 
+Route
+Fehler
+Aufzeichnung läuft 
+Metaroute folgen 
+Nach Name 
+liste;leer 
+Nach Entfernung 
+Nahe Route 
+Keine Auswahl 
+Auswahl 
+backslash
+punkt
+fragezeichen
+ausrufungszeichen
+doppelpunkt
+und 
+prozent
+slash
+Komma
+Audiomeldung bei Chatnachricht  
+Enables / disables audio on new chat line  
+TTS Stimme  
+TTS Geschwindigkeit  
+TTS Lautstärke  
+Optionen  
+Unzufrieden
+Zufrieden 
+Glücklich 
+Tier
+Cursor   
+flug;gestartet  
+flug;beendet  
+cast
+Kampfbeginn  
+Kampfende  
+Quest;verfügbar  
+Quest;aktiv  
+Option  
+Zurück  
+Weiter  
+Kupfer
+Silber
+Gold
+K
+S
+G
+Registerkarte
+Alles zusammenklappen  
+Schließen  
+Würfeln
+Betrachten 
+Quest 
+Flugmeister 
+Dialog 
+Händler 
+Popup 1 
+Popup 2 
+Popup 3 
+Stallmeister 
+Post 
+Tasche 1 
+Tasche 2 
+Tasche 3 
+Tasche 4 
+Tasche 5 
+Tasche 6 
+Dropdown Liste 2
+Dropdown Liste 1
+Talente
+Postausgang
+Auktionshaus
+Lehrer
+Char
+Ruf
+Fertigkeiten
+Ehre
+Bagnon Taschen
+Zauberbuch
+Spieler Talente
+Geselligkeit
+Handeln
+Spielmenü
+Bagnon Bank
+Bagnon Gilde
+Bank
+Bank Gilde
+Fensterbereich
+Unterbereich
+Details
+Detail Bereich
+Unterbereich
+Belohnungen
+Geld
+Ausrüstung
+Werte
+Widerstände
+Gegenstände
+Fortschritt
+Container
+Text  
+Button  
+Gesendet  
+Senden Fehlgeschlagen  
+Jetzt Text eingeben und Enter drücken.  
+Empfänger fehlt  
+Betreff fehlt  
+Auto folgen  
+Jäger  
+Tier Hunger ansagen  
+Seiten Aktionsleiste 2  
+Seiten Aktionsleiste 1  
+Zusatz Aktionsleiste links  
+Zusatz Aktionsleiste rechts  
+Haupt Aktionsleiste  
+Begleiter Aktionsleiste  
+Haltungs Aktionsleiste  
+Makros  
+Menü leer  
+Nichts zuweisen  
+Makro  
+Taste  
+Taste;nicht;belegt  
+Tastenbelegung  
+Jetzt neue Taste drücken oder Escape zum Abbrechen  
+Neu belegt mit  
+Belegung abgebrochen  
+Neuer Brief  
+Empfänger  
+Betreff  
+Senden  
+Alle öffnen  
+Alle geöffnet  
+Kein Betreff  
+Achtung: Nachnahme  
+Antworten
+Gold nehmen  
+Alle nehmen  
+Löschen
+NACHNAME  
+Angehängt  
+Von  
+Anhänge  
+Aktionsleisten  
+stern  
+kreis  
+diamant  
+dreieck  
+mond  
+quadrat  
+kreuz  
+kopf  
+tot  
+Weltboss
+Rare Elite 
+Elite 
+Rare 
+Stufe
+Bei markierten Zielen nur Markierung ansagen  
+Ziel Menü  
+Wegpunktinfo  
+Die Tiefenbahn
+Wegpunkt oder Route folgen läuft oder Aufzeichnung läuft  
+Punkt A fehlt  
+Punkt B fehlt  
+nach  
+Aufzeichnung beginnt bei A  
+Aufzeichnung läuft bis B  
+Aufzeichnung läuft bis beenden  
+Punkt A erreicht  
+Punkt B erreicht  
+aufzeichnung;beginnt  
+Es läuft keine Aufzeichnung  
+aufzeichnung;beschädigt;route;gelöscht  
+Aufzeichnung beendet;route;erstellt  
+Welt Begrenzung verlassen  
+Welt Begrenzung betreten  
+Flug Zone verlassen  
+Flug Zone betreten  
+Allianz Zone verlassen  
+Allianz Zone betreten  
+Horde Zone verlassen  
+Horde Zone betreten
+Aldor Zone verlassen  
+Aldor Zone betreten
+Scyer Zone verlassen  
+Scyer Zone betreten
+Uhr  
+Wegpunkt;erreicht  
+Fehler  
+noch
+Ziel erreicht  
+Fehler in Route;folgen abgebrochen  
+aktuelles folgen beendet  
+Ausgewählt  
+aktualisiert  
+Achtung  
+ungültige Routen inklusive ihrer Wegpunkte wurden gelöscht  
+Beacon Lautstärke  
+Ausführliche Richtung und Entfernung  
+Zonennamen ansagen  
+Routen auf Minimap anzeigen  
+Extra Minimap anzeigen  
+Reichweite für nahe Routenstarts  
+Auto Signal bei Tom Tom Pfeil  
+Wegpunkte erreicht bei 
+Aufzeichnung abschließen  
+Punkt B
+Neu  
+nicht erstellt  
+name schon vorhanden  
+Letzte  
+Aktuelle Karte  
+Aktuelle Karte Entfernung
+Alle  
+Standardwegpunkte  
+Zonen  
+Briefkästen  
+Alle NPCs  
+Alle NPCs in Zone  
+Alles abwählen  
+Wegpunkt  
+Beruf  
+Hoch scrollen  
+Runter scrollen  
+Maraudon
+Düsterbruch
+
+ hat eine Einladung angefordert. Mit /sku invite einladen.
+def Microsoft Hedda Desktop - German
+Gruppen Chat automatisch lesen
+Gilden Chat automatisch lesen
+Flüster Chat automatisch lesen
+Chat von kreaturen automatisch lesen
+Sku Chat Channel beitreten
+Kaufpreis für 1 Gegenstand aufsteigend
+Kaufpreis für Auktionsmenge aufsteigend
+Gebotspreis für 1 Gegenstand aufsteigend
+Gebotspreis für Auktionsmenge aufsteigend
+Level absteigend
+Level aufsteigend
+Gebot akzeptiert.
+Gebot akzeptiert
+Ihr habt eine Auktion gewonnen für: 
+Ihr habt eine Auktion gewonnen für: 
+Auktion gewonnen: 
+Ihr habt nicht genug Geld.
+Nicht genug Geld
+Es liegt bereits ein höheres Gebot für diesen Gegenstand vor.
+Bereits höheres Gebot vorhanden
+Der Gegenstand wurde nicht gefunden.
+Aktion nicht mehr vorhanden
+Ihr wurdet bei 
+ Sekunden
+ Minuten
+ Stunden
+ Tage
+kein name
+ Level 
+ stück
+ Nur Kauf 
+Kauf 
+Gebot 
+Nur Gebot 
+ Du bist Höchstbieter
+Keine aktuellen Preisdaten vorhanden
+Aktuelle Preisdaten (für ein Stück)
+\r\nKeine Sofortkaufdaten vorhanden
+\r\nSofortkaufdaten: \r\nDatenpunkte 
+\r\nNiedrigster 
+\r\nHöchster 
+\r\nKeine Gebotsdaten vorhanden
+\r\nGebotsdaten: \r\nDatenpunkte 
+\r\nZuletzt vor 
+\r\nNiedrigstes 
+\r\nHöchstes 
+\r\nDurchschnitt 
+Keine historischen Preisdaten vorhanden
+Historische Preisdaten (für ein Stück)
+Sofortkauf Preis pro Stack
+Anzahl Auktionen
+Silber
+Gold
+Alle (
+ mal 
+)
+Erstellen: 12 Stunden
+Erstellen: 24 Stunden
+Erstellen: 48 Stunden
+Verkaufen
+Auktion erstellt
+ Auktionen erstellt
+Stack Größe
+ (
+Bieten
+ Auktionen
+Kaufen
+Warten 
+leer
+Auktionen
+Filter und Sortierung
+Alles zurücksetzen
+Filter - noun
+Level Minimum
+Level Max
+Qualität
+Nur benutzbare
+Ein 
+Aus 
+Sortierung
+Gebote
+Verkäufe
+Nicht möglich, volle Abfrage läuft
+Neue Auktion
+Auktion erstellt
+ Auktionen erstellt
+Stack Größe
+Offline Datenbank
+Offline Datenbank aktualisieren
+Scan noch nicht möglich
+,SkuCore,Auktionshaus 
+Gebot  
+ von  
+ stück wirklich 
+ bieten? Eingabe Ja, Escape Nein
+Keine weiteren passenden Auktionen verfügbar
+Fertig. Alle geboten
+fehler Nicht geboten
+abgebrochen Nicht geboten
+ stück wirklich für 
+ kaufen? Eingabe Ja, Escape Nein.
+Kauf 
+Fertig. Alle gekauft
+Keine passenden Auktionen verfügbar
+Standard profil Allgemein
+Standard profil Heiler
+Standard profil Caster
+Standard profil Nahkämpfer
+
+Schlachtzugszielsymbol
+Fokus setzen
+Freund hinzufügen
+Fenster verschieben
+Spieler melden wegen:
+Gesamt 
+Soundeffekte 
+Musik 
+Umgebung 
+Dialog 
+Sku 
+Druide
+Gleichgewicht
+Katze
+Bär
+Wiederherstellung
+Jäger
+Tierherrschaft
+Treffsicherheit
+Überleben
+Magie
+Arkan
+Feuer
+Frost
+Paladin
+Heilig
+Schutz
+Vergeltung
+Priester
+Disziplin
+Heilig
+Schatten
+Schuke
+Meucheln
+Kampf
+Täuschung
+Schamane
+Elementar
+Verstärkung
+Wiederherstellung
+Hexer
+Gebrechen
+Dämonologie
+Zerstörung
+Krieger
+Waffen
+Furor
+Schutz
+Wertung:
+Keine Bewertung möglich
+plus 
+minus 
+Keine Veränderung
+Keine Bewertung für neuen Gegenstand möglich
+Keine Bewertung für angelegter Gegenstand möglich
+Nicht genug Gold zum Reparieren
+Alles repariert
+Schrott verkauft
+Wildtierausbildung
+Verfügbare punkte: 
+Hoch blättern
+bekannt
+Runter blättern
+Ausgewählt: 
+Schließen
+Derzeitiger Begleiter
+Stall 1 
+Stall 2
+Weiteren Platz kaufen
+Schließen
+Folgen beim Zaubern temporär beenden
+Bei Interagieren zum Ziel laufen
+Entfernung
+Freundlich
+Feindlich
+Unbekannt
+Spiel Tastenbelegung
+Alles zurücksetzen
+Wirklich zurücksetzen? (keine weitere Warnung)
+Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt.
+Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen
+Taste zuweisen
+nichts
+ Taste 1: 
+ Taste 2: 
+Oder Rückschritt zum löschen
+Neu belegen
+Ungültig. Andere Taste drücken.
+Belegung löschen 
+Belegung gelöscht
+Auktionshaus
+Neue Reichweite verfügbar
+nah 
+weit
+Der Südstrom
+Die Höhlen des Wehklagens
+Höhle der Nebel
+Schmiedevaters Grabmal
+Schwarzfelsspitze
+Route folgen läuft
+Aufzeichnung läuft
+Wegpunkt folgen läuft
+Löschen beginnt
+Aufzeichnung beendet
+Löschen beendet
+Wer das hört ist doof verlassen
+Wer das hört ist doof betreten
+Zurück Metaroute folgen gestartet
+Route folgen beendet
+sichtbar
+nicht sichtbar
+Funktion erst nach Abschluss von Routen Umwandlung verfügbar
+Funktion erst nach Abschluss von Routen Umwandlung verfügbar
+Einheiten;Route;
+Routen Umwandlung auf neue Version gestartet
+Routen Umwandlung abgeschlossen
+Routen Umwandlung 
+10 Grad 10 Meter
+20 Grad 20 Meter
+20 Grad 30 Meter
+40 Grad 40 Meter
+Nichts
+Klick
+Ping
+1 Meter
+3 Meter
+Auto
+Klick bei Beacons
+Winkel für Klick bei Beacons
+Ton für Klick bei Beacons
+Auswählen
+Nahe Routen
+plus
+Nach Name
+nicht erstellt
+name schon vorhanden
+Wegpunkt erstellt
+Metaroute folgen gestartet
+Wegpunkt nicht ausgewählt
+Aktuelle Karte Entfernung
+Alle aktueller Kontinent
+Aktuelle Karte Entfernung mit Auto
+Abwählen
+Wegpunkt abgewählt
+Verwalten
+Löschen
+Wegpunkt gelöscht
+Wird in route verwendet;Erst die Route löschen
+Unbekannter Fehler
+Abbrechen
+Umbenennen
+
+nicht umbenannt
+name schon vorhanden
+Wegpunkt umbenannt
+Kommentar zuweisen
+Kommentar zugewiesen
+Kommentar leer
+Jetzt kommentar eingeben und mit ENTER abschließen oder mit ESC abbrechen
+Route folgen
+
+Einheiten;Route;
+Einheiten Route folgen gestartet
+Metaroute folgen gestartet
+Ziele Entfernung
+weit
+Einheiten Route
+Daten
+Import
+Export
+Alle Routen und Wegpunkte löschen
+Alles gelöscht
+
+Allianz
+Horde
+Keine
+Mensch
+Ork
+Zwerg
+Nachtelf
+Untoter
+Taure
+Gnom
+Troll
+Goblin
+Blutelf
+Draenei
+Keine
+Krieger
+Paladin
+Jäger
+Schurke
+Priester
+Shamane
+Magier
+Hexer
+Druide
+Teilbar
+Episch
+Raid
+Täglich
+
+Quest;geöffnet
+Quest;geschlossen
+quest;geteilt
+quest;nicht;teilbar
+quest;abgebrochen
+Nr: 
+Zone: 
+ Zone 
+Fehlgeschlagen
+Abgeschlossen
+Keine Informationen vorhanden
+Kein Gold
+ feste Gegenstände
+ Gegenstände zur Auswahl
+\r\nFeste Gegenstände\r\n
+\r\nGegenstände zur Auswahl\r\n
+Titel: 
+Level: 
+Level 
+Fortschritt:\r\n
+Fortschritt\r\n
+Belohnungen:\r\n
+Belohnungen\r\n
+Ziele:\r\n
+Ziele\r\n
+Questtext:\r\n
+Questtext\r\n
+
+SkuQuest
+Anderer Kontinent
+Object name missing
+Metaroute folgen gestartet
+Meter
+Nach Name
+Wegpunkt
+Wegpunkt nicht ausgewählt
+Pre Quests
+SkuQuest,Questdatenbank,Alle 
+Annahme
+Ziel
+Abgabe
+Aktuelle Quests
+(Fertig) 
+(Fehlgeschlagen) 
+(Daily) 
+Alle
+Questdatenbank
+Start in Zone
+ eingeladen
+Profil gewechselt
+Profil kopiert
+Profil zurückgesetzt
+online
+offline
+tot
+lebt
+
+
+Jeder gegen jeden
+Reihum
+Als Gruppe
+Bedarf bevor Gier
+Plündermeister
+Persönliche Beute
+Gruppe
+\r\nPlündern: 
+Allgemeines
+Gesundheit: 
+
+ rot 
+ gelb 
+ ok 
+Reparatur status: 
+Geld: 
+
+Freie Taschenplätze: 
+Zeit: 
+ Uhr
+keine
+Post: 
+
+Keiner vorhanden
+ bereit
+ Minuten
+Ruhestein: 
+
+XP: 
+ Prozent (
+ von 
+ für 
+)\r\nRuhebonus: 
+Buffs
+ Stunden
+ Minuten
+ Sekunden
+Keine
+Debuffs
+Fertigkeiten:\r\n
+Ruf:\r\n
+unbekannt
+Gilde:\r\n
+Tier XP: 
+Wertung:
+Markierung für Auto Verkaufen entfernen
+Für Auto Verkaufen markieren
+Import fehlgeschlagen. Falsche Version.
+Import fehlgeschlagen. Daten fehlerhaft.
+Import erfolgreich
+
+Links importiert:
+Wegpunkte importiert:
+Wegpunkte ignoriert:
+Links exportiert:
+Wegpunkte exportiert:
+Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken
+
+ungebunden
+BOP
+BOE
+BOU
+BOQ
+
+Nichts
+Benny Hill
+Chormusik 1
+Chormusik 2
+Chormusik 3
+Chormusik 4
+Entspannungsmusik
+Gewitter
+Nachts im Wald
+Vögel
+Walgesang
+Slow Reggae
+
+Menünummern ansagen
+Untermenüs ansagen
+Audio Dauer Pause
+Hintergrund Audio
+Lokal aktiv
+Audio Menü visuell
+Audio-Kanäle,
+Audio-Kanäle
+Gesamt Lautstärke
+Soundeffekte Lautstärke
+Musik Lautstärke
+Umgebung Lautstärke
+Dialog Lautstärke
+Sku Kanal
+Debug Optionen
+Sound bei Fehler
+Fehler anzeigen
+Schnellwahl
+Schnellwahl 1
+Schnellwahl 2
+Schnellwahl 3
+Schnellwahl 4
+SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung
+SkuNav,Route,Route folgen,Ziele Entfernung
+SkuCore,Aktionsleisten
+SkuNav,Alles abwählen
+fehler anzeigen default
+Profil
+Kopieren von
+Zurücksetzen
+Fehlende Audio Wörter kopieren
+Jetzt wort liste mit Steuerung plus C kopieren und Escape drücken
+
+;punkt;
+;fragezeichen;
+;ausrufungszeichen;
+;doppelpunkt;
+;und;
+;prozent;
+;slash;
+;klammer;
+;gleich;
+;spitze;klammer;
+Komma
+
+und;
+oder;
+dann;
+
+Aura Typ
+Attribut für Bedingung
+Operator für Bedingung
+Wert für Bedingung
+Beginn des Dann Teils der Aura
+Aktion für Aura
+Ausgabe von Aura
+Die Ausgaben werden als Audio ausgegeben
+audio ausgabe
+Die Ausgaben werden als Text im Chat ausgegeben
+chat ausgabe
+Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.
+audio ausgabe einmal
+Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.
+audio ausgabe einmal sofort
+Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat.
+chat ausgabe einmal
+Der Name des auslösenden Ereignisses der Aura
+ereignis
+Die Einheiten ID der Quelle für das ausgelöste Ereignis
+quell einheit
+Die Einheiten ID des Ziels für das ausgelöste Ereignis
+ziel einheit
+Dein Gesundheit in Prozent
+eigene Gesundheit
+Die Stapel Anzahl der Aura
+aura stapel
+Die Klasse der Einheit für das ausgelöste Ereignis
+klasse
+Deine Ressourcen Menge (Mana, Wut, Energie) für das ausgelöste Ereignis
+eigene Ressource
+Deine Gesundheits Menge für das ausgelöste Ereignis
+eigene gesundheit
+Der Name des Zaubers, der die Aura ausgelöst hat
+zauber name
+Der Name des Gegenstands, der die Aura ausgelöst hat
+gegenstand name
+Die Anzahl in deiner Tasche des Gegenstands, der die Aura ausgelöst hat
+gegenstand anzahl
+Aura, die in der Buff liste des Ziels gesucht oder ausgeschlossen wurde
+wert buff liste ziel
+Aura, die in der Debuff liste des Ziels gesucht oder ausgeschlossen wurde
+wert debuff liste ziel
+triff zu
+wahr
+Trifft nicht zu
+falsch
+Absorbiert
+Absorbiert
+Geblockt
+Geblockt
+Umgelenkt
+Umgelenkt
+Ausgewichen
+Ausgewichen
+Vermieden
+Vermieden
+Immun
+Immun
+Verfehlt
+Verfehlt
+Pariert
+Pariert
+Reflektiert
+Reflektiert
+Widerstanden
+Widerstanden
+Reagiert, wenn der Aura-Typ ein Buff ist
+buff
+Reagiert, wenn der Aura-Typ ein Debuff ist
+debuff
+dein aktuelles Ziel. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausgelaufen ist
+dein ziel
+du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde
+selbst
+dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde
+fokus
+ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist
+gruppenmitglieder ohne dich
+ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist
+gruppenmitglieder
+Gruppenmitglied 0 (du).
+gruppenmitglied 0
+Gruppenmitglied 1.
+gruppenmitglied 1
+Gruppenmitglied 2.
+gruppenmitglied 2
+Gruppenmitglied 3.
+gruppenmitglied 3
+Gruppenmitglied 4.
+gruppenmitglied 4
+eine beliebige Einheit. Beispiel: Irgendein Mob stirbt
+alle
+ziel deines Ziels
+ziel deines ziels
+ziel deines deines fokus
+ziel deines fokus
+ziel von Gruppenmitglied 0 (du).
+ziel von gruppenmitglied 0
+ziel von Gruppenmitglied 1.
+ziel von gruppenmitglied 1
+ziel von Gruppenmitglied 2.
+ziel von gruppenmitglied 2
+ziel von Gruppenmitglied 3.
+ziel von gruppenmitglied 3
+ziel von Gruppenmitglied 4.
+ziel von gruppenmitglied 4
+Reagiert, wenn die Zieleinheit die Klasse Krieger hat
+krieger
+Reagiert, wenn die Zieleinheit die Klasse Paladin hat
+paladin
+Reagiert, wenn die Zieleinheit die Klasse Jäger hat
+jäger
+Reagiert, wenn die Zieleinheit die Klasse Schurke hat
+schurke
+Reagiert, wenn die Zieleinheit die Klasse Priester hat
+priester
+Reagiert, wenn die Zieleinheit die Klasse Todesritter hat
+todesritter
+Reagiert, wenn die Zieleinheit die Klasse Schamane hat
+schamane
+Reagiert, wenn die Zieleinheit die Klasse Magier hat
+magier
+Reagiert, wenn die Zieleinheit die Klasse Hexer hat
+hexer
+Reagiert, wenn die Zieleinheit die Klasse Mönch hat
+mönch
+Reagiert, wenn die Zieleinheit die Klasse Druide hat
+druide
+Reagiert, wenn die Zieleinheit die Klasse Dämonenjäger hat
+dämonenjäger
+Eine Einheit hat das Ziel gewechselt. Quell Einheit ID ist die Einheit, die das Ziel gewechselt hat. Ziel Einheit ID ist das neue Ziel von Quell einheit.
+Ziel änderung
+ziel änderung
+Ressource hat sich verändert (Mana, Energie, Wut etc.
+Ressourcen änderung
+ressource
+Gesundheit hat sich verändert
+Gesundheit änderung
+gesundheit
+Buff oder Debuff erhalten oder erneuert
+aura erhalten
+erhalten
+Buff oder Debuff verloren
+aura verloren
+verloren
+Ein Zauber wurde begonnen
+zauber start
+Ein Zauber wurde erfolgreich gezaubert
+zauber erfolgreich
+Der Cooldown eines Zaubers hat begonnen
+zauber cooldown start
+cooldown
+zauber auf cd (L)
+Der Cooldown eines Zaubers ist beendet
+zauber cooldown ende
+bereit
+Der Cooldown eines Gegenstands hat begonnen
+gegenstand cooldown start
+cooldown
+Der Cooldown eines Gegenstands ist beendet
+gegenstand cooldown ende
+bereit
+Ein Nahkampfangriff hat Schaden verursacht
+nahkampf schaden
+Ein Nahkampfangriff hat verfehlt
+nahkampf verfehlt
+Ein Nahkampfangriff hat einen Extrangriff gewährt
+nahkampf zusatz angriff
+Ein Nahkampfangriff hat eine Ressource (Wut, Energie, Kombopunkt) gewährt
+nahkampf ressource
+Ein Fernkampfangriff hat Schaden verursacht
+fernkampf schaden
+Ein Fernkampfangriff hat verfehlt
+fernkampf verfehlt
+Ein Fernkampfangriff hat einen Extraangriff ausgelöst
+fernkampf zusatz angriff
+
+fernkampf ressource
+Ein Zauber hat Schaden verursacht
+zauber schaden
+Ein Zauber hat Schaden verfehlt
+zauber verfehlt
+Ein Zauber hat Heilung verursacht
+zauber heilung
+Ein Zauber hat eine Ressource (Mana) gewährt
+zauber ressource
+Ein Zauber wurde unterbrochen
+zauber unterbrochen
+Ein Zauber hat einen Extraangriff gewährt
+zauber zusatz angriff
+Ein Zauber ist fehlgeschlagen
+zauber fehlgeschlagen
+Etwas wurde durch einen Zauber hergestellt (z. B. Berufe-Skill)
+zauber erstellen
+erstellen
+Etwas wurde duch einen Zauber beschworen (z. B. Leerwandler beim Hexer
+zauber beschwören
+beschwören
+Ein Zauber hat etwas wiederbelebt
+zauber wiederbeleben
+wiederbeleben
+Eine Einheit (Spieler, NPC, Mob etc.) ist gestorben
+einheit tot
+tot
+Etwas wurde zerstört (z. B. ein Totem)
+einheit zerstört
+zerstört
+Ein Gegenstand wurde verwendet
+gegenstand verwenden
+verwenden
+Eine Taste wurde gedrückt
+Taste gedrückt
+Taste
+Die Anzahl der verbleibenden Gegenstände in deinen Taschen, vom Typ des Gegenstands, der das Ereignis ausgelöst hat
+gegenstand anzahl
+anzahl
+Du legst als nächstes die Aktion fest, die bei der Auslösung der Aura passieren soll
+aktion
+Die Ziel-Einheit, bei der die Aura ausgelöst werden soll
+ziel (L)
+Die Einheit des Ziels deines Ziels
+ziel deines ziels (L)
+Welche Taste das Ereignis ausgelöst hat
+Taste
+Ob das Event im Kampf auftritt
+Im Kampf
+Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist
+Quell Einheit angreifbar
+Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist
+Ziel Einheit angreifbar
+Die Quell Einheit, bei der die Aura ausgelöst werden soll
+Quelle (L)
+Das Ereignis, das die Aura auslösen soll
+ereignis
+Der Typ des Verfehlen Ereignisses
+Verfehlen Typ
+Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc.
+Eigene Ressource
+Dein gesundheits Level in Prozent, das die Aura auslösen soll
+Eigene Gesundheit
+Die Zauber-ID, die die Aura auslösen soll
+zauber nr
+Ob ein Zauber gerade auf CD ist
+Ob ein Zauber gerade nicht auf CD ist
+zauber nicht auf cd (L)
+Der Zauber-name, der die Aura auslösen soll
+zauber name
+Die Liste der Buffs des Ziels
+Buff Liste Ziel (L)
+Die Liste der Debuffs  des Ziels
+Debuff Liste Ziel (L)
+Der Gegenstandsname, der die Aura auslösen soll
+gegenstand name
+Die Gegenstands-ID, die die Aura auslösen soll
+gegenstand nr
+Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll
+gegenstand anzahl
+Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll
+buff/debuff
+Die Anzahl der Stacks einer Aura (Buff oder Debuff), bei der die Aura auslösen soll
+aura stacks
+Der Klasse, die die Aura auslösen soll
+klasse
+dann
+Gewähltes Attribut entspricht dem gewählten Wert
+gleich
+Gewähltes Attribut entspricht nicht dem gewählten Wert
+ungleich
+Gewähltes Attribut enthält den gewählten Wert
+enthält
+Gewähltes Attribut enthält nicht den gewählten Wert
+enthält nicht
+Gewähltes Attribut ist größer als der gewählte Wert
+größer
+Gewähltes Attribut ist kleiner als der gewählte Wert
+kleiner
+Wenn die Bedingungen dieser Aura zutreffen
+Wenn
+Wenn die Bedingungen dieser Aura nicht zutreffen
+Wenn nicht
+Ein Ereignis im Zusammenhang mit einem Buff oder Debuff löst die Aura aus
+Aura
+Ein Ereignis im Zusammenhang mit einem Zauber löst die Aura aus
+Zauber
+Ein Ereignis im Zusammenhang mit einem Gegenstand löst die Aura aus
+gegenstand
+Ein Ereignis im Zusammenhang mit einer Einheit (Spieler, NPC, Mob) löst die Aura aus
+Einheit
+
+nicht festgelegt
+Aktuelles Element: 
+\r\nAuswählter Wert: ]
+sound
+
+Aura Elemente\r\n
+Bisherige Aura Elemente\r\n
+Aura Typ: 
+Aura Bedingungen:\r\n
+Aura Aktion: 
+Aura Ausgaben:\r\n
+und;
+oder;
+sound;
+,SkuAuras,Auren,Auren verwalten,
+Aktualisiert
+Aktivierte
+Deaktivieren
+Bearbeiten
+Bedingungen
+Aktivieren
+Löschen
+Bedingung hinzufügen
+Ändern
+Löschen
+Ausgaben
+Ausgaben
+Duplizieren
+Kopie;
+Dupliziert
+,SkuAuras,Auren,Auren verwalten,
+Wirklich duplizieren?
+Löschen
+Exportieren
+Aura exportiert
+Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken
+Aura version zu alt
+Aura importiert:
+Aura importiert
+Aura daten defekt
+Auren
+Neue aura
+Aura erstellt
+Aura nicht erstellt
+Deaktivieren
+Auren verwalten
+Aktivieren
+
+deaktiviert
+aktiviert
+
+gelöscht
+Löschen
+Exportieren
+Aktivierte
+Deaktivierte
+
+Alle
+Aura importieren
+Alle Auren löschen
+Alle auren gelöscht
+Aura Sets verwalten
+Übernehmen überschreiben
+Set angewendet
+Übernehmen hinzufügen
+Set hinzugefügt
+Bearbeiten
+Exportieren
+Löschen
+
+noch nicht implementiert
+Aura Set importieren
+
+Schlachtzugszielsymbol
+Fokus setzen 
+Freund hinzufügen 
+Fenster verschieben 
+Spieler melden wegen: 
+
+Gesamt
+Soundeffekte
+Musik
+Umgebung
+Dialog
+Sku
+
