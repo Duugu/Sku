@@ -5,7 +5,7 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Addon-Update Downloads
 
 *Zuletzt aktualisiert Addons:* <br>
-[Sku 24.4](https://github.com/Duugu/Sku/releases/download/r24.4/Sku-r24.4-bcc.zip) (03.03.2022)<br>
+[Sku 25](https://github.com/Duugu/Sku/releases/download/r25/Sku-r25-bcc.zip) (05.03.2022)<br>
 
 *Nicht aktualisiert:*<br>
 [Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
@@ -15,6 +15,22 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 
 # Versionshinweise
+
+## Änderungen in Version 25
+
+### Alle
+- Die Vorbereitung der Lokalisierung wurde mit weiteren internen Codeänderungen abgeschlossen. Vereinzelte Fehler sind möglich. Bitte alles gründlich durchtesten und auftretende Fehler melden. Danke!
+
+### SkuCore
+*Neuerungen*
+- Das Addon sollte jetzt die bekannten Fehlermeldungen wie "Ein Addon wurde geblockt ..." und "Du versuchst ein Script auszuführen ..." verhindern bzw. entsprechende Warnungen vollautomatisch mit "Ok" bestätigen.
+
+*Fehlerkorrekturen*
+- Das Addon sollte jetzt endgültig beim ersten Öffnen des Klassentrainer-Fensters alle nicht verfügbaren Skills ausblenden.
+
+### SkuAuras
+*Fehlerkorrekturen*
+- Es wurde ein Fehler bei Auren mit dem Operator "gleich" bzw. "ungleich" behoben.
 
 ## Änderungen in Version 24.4
 
