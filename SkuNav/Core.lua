@@ -2306,13 +2306,16 @@ function SkuNav:PLAYER_LOGIN(...)
 	SkuOptions.db.global["SkuNav"] = SkuOptions.db.global["SkuNav"] or {}
 	local tLinksEmpty, tWpsEmpty = true, true
 	if SkuOptions.db.global["SkuNav"].Waypoints then
-		for i, v in pairs(SkuOptions.db.global["SkuNav"].Waypoints) do 
-			tWpsEmpty = false
-			break 
+		for i = 1, #SkuOptions.db.global["SkuNav"].Waypoints do 
+			if not string.find(SkuOptions.db.global["SkuNav"].Waypoints[i], L["Quick waypoint"]) then
+				tWpsEmpty = false
+				break 
+			end
 		end
 	end
 	if tWpsEmpty == true then
 		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
+		SkuOptions.db.global["SkuNav"].Links = nil
 		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata[Sku.Loc]["Waypoints"]
 	end
 
@@ -2375,14 +2378,16 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	--load default data if there isn't any
 	local tLinksEmpty, tWpsEmpty = true, true
 	if SkuOptions.db.global["SkuNav"].Waypoints then
-		for i, v in pairs(SkuOptions.db.global["SkuNav"].Waypoints) do 
-			tWpsEmpty = false
-			break 
+		for i = 1, #SkuOptions.db.global["SkuNav"].Waypoints do 
+			if not string.find(SkuOptions.db.global["SkuNav"].Waypoints[i], L["Quick waypoint"]) then
+				tWpsEmpty = false
+				break 
+			end
 		end
 	end
 	if tWpsEmpty == true then
-		SkuOptions.db.profile[MODULE_NAME].Waypoints = nil		
 		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
+		SkuOptions.db.global["SkuNav"].Links = nil
 		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata[Sku.Loc]["Waypoints"]
 	end
 
@@ -2393,7 +2398,6 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 		end
 	end
 	if tLinksEmpty == true then
-		SkuOptions.db.profile[MODULE_NAME].Links = nil
 		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
 		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata[Sku.Loc]["Links"]
 	end

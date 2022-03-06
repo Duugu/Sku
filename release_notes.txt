@@ -3,6 +3,14 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Version 25.2
+	
+	SkuNav
+		Bug fixes
+			- Fixed an issue with missing route data for first time users. Route data should be available on next login.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Version 25.1
 	
 	The localization is completed. The addon is ready to test with language set to "English" (in the Battle.Net client). Please report all missing words and issues!
