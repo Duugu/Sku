@@ -5,7 +5,8 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Addon-Update Downloads
 
 *Zuletzt aktualisiert Addons:* <br>
-[Sku 25](https://github.com/Duugu/Sku/releases/download/r25/Sku-r25-bcc.zip) (05.03.2022)<br>
+[Sku 25.1](https://github.com/Duugu/Sku/releases/download/r25.1/Sku-r25.1-bcc.zip) (06.03.2022)<br>
+[SkuAudioData_EN 3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
 
 *Nicht aktualisiert:*<br>
 [Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
