@@ -5,7 +5,7 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Addon-Update Downloads
 
 *Zuletzt aktualisiert Addons:* <br>
-[Sku 25.1](https://github.com/Duugu/Sku/releases/download/r25.1/Sku-r25.1-bcc.zip) (06.03.2022)<br>
+[Sku 25.2](https://github.com/Duugu/Sku/releases/download/r25.2/Sku-r25.2-bcc.zip) (06.03.2022)<br>
 [SkuAudioData_EN 3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022) Achtung! Das sind englische Audiodateien. Nur für Nutzer der englischen Version. Wer auf deutsch spielt lädt weiterhin ausschließlich "SkuAudioData" ohne "EN" dahinter runter.<br>
 
 *Nicht aktualisiert:*<br>
@@ -17,7 +17,14 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 
 # Versionshinweise
 
-## Changes in Version 25.1
+-------------------------------------------------------------------------------------------------------	
+## Changes in release 25.2
+	
+### SkuNav
+*Bug fixes*
+- Fixed an issue with missing route data for first time users. Route data should be available on next login.
+
+## Changes in release 25.1
 	
 The localization is completed. The addon is ready to test with language set to "English" (in the Battle.Net client). Please report all missing words and issues!<br>
 How to move from German to English:
