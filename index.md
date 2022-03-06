@@ -17,6 +17,14 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 
 # Versionshinweise
 
+## Changes in Version 25.1
+	
+The localization is completed. The addon is ready to test with language set to "English" (in the Battle.Net client). Please report all missing words and issues!<br>
+How to move from German to English:
+- You need to delete the "Account" folder in "World of Warcraft\_classic_\WTF\Account". You will lose all existing profiles, settings, etc. for all addons.
+- You need to download "SkuAudioData_en 3" via https://duugu.github.io/Sku/
+- You either need to deactivate "SkuAudioData 30" in the addon list ingame, or to delete the folder "SkuAudioData" from you addons folder.
+
 ## Änderungen in Version 25
 
 ### Alle
