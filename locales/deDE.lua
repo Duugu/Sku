@@ -10,6 +10,7 @@ local L = LibStub("AceLocale-3.0"):NewLocale("Sku", "deDE")
 if not L then return end
 L["locale"] = "deDE"
 
+L["Recent"] = "Letzte"
 L["aura;sound"] = "aura;sound"
 L["aura"] = "aura"
 L["type"] = "typ"

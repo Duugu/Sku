@@ -496,7 +496,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
 			--recent wps 
 			if #SkuOptions.db.profile[MODULE_NAME].RecentWPs > 0 then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Letzte"}, SkuGenericMenuItem)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Recent"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.filterable = true
 				tNewMenuEntry.BuildChildren = function(self)

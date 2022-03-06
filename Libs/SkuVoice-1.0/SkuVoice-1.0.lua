@@ -114,7 +114,9 @@ local function SplitString(aString)
 	aString = string.gsub(aString, "\n", ";")
 	aString = string.gsub(aString, "\"", ";")
 	--aString = string.gsub(aString, "\"", ";backslash;")
-	aString = string.gsub(aString, "'", ";")
+	if Sku.Loc == "deDE" then
+		aString = string.gsub(aString, "'", ";")
+	end
 	aString = string.gsub(aString, "%.", L[";punkt;"])
 	aString = string.gsub(aString, ",", ";")
 	aString = string.gsub(aString, "%?", L[";fragezeichen;"])
@@ -359,6 +361,8 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				local tModString = string.upper(string.sub(tostring(tStrings[x]),1,1))..string.sub(tostring(tStrings[x]),2)
 				tFile = SkuAudioFileIndex[tModString]
 			end
+			dprint(tStrings[x], "tFile", tFile)
+
 			if tFile == nil then
 				tFile = SkuAudioFileIndex["sound-audiofehltbeep"]
 				if SkuOptions.db then
@@ -374,7 +378,6 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 				end
 			end
-
 			if tFile then
 				if tFile ~= "" then
 					local tLength = SkuAudioDataLenIndex[tFile] or aLength
@@ -399,7 +402,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 						end]]
 					end
 
-					dprint(tStrings[x])
+					dprint(tFile)
 
 					if aInstant == true then
 						table.insert(mSkuVoiceQueue, 0 + x, {

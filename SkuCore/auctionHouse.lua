@@ -1859,7 +1859,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                         end
                      )
                      PlaySound(88)
-                     SkuOptions.Voice:OutputString("Gebot "..(SkuCore.IsBid.currentBids).." von "..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount.." stück wirklich "..SkuGetCoinText(tBidAmount, false, true).." bieten? Eingabe Ja, Escape Nein", false, true, 0.2, false)
+                     SkuOptions.Voice:OutputString("Gebot "..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount.." stück wirklich "..SkuGetCoinText(tBidAmount, false, true).." bieten? Eingabe Ja, Escape Nein", false, true, 0.2, false)
                      return
                   else
                      --buyout
@@ -1869,7 +1869,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                      local tItemName = SkuCore.IsBid[1]
                      local tItemCount = SkuCore.IsBid[3]
                      
-                     SkuCore:ConfirmButtonShow(L["Kauf "]..(SkuCore.IsBid.currentBids).." von "..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount..L[" stück wirklich für "]..SkuGetCoinText(tBidAmount, false, true)..L[" kaufen? Eingabe Ja, Escape Nein."], 
+                     SkuCore:ConfirmButtonShow(L["Kauf "]..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount..L[" stück wirklich für "]..SkuGetCoinText(tBidAmount, false, true)..L[" kaufen? Eingabe Ja, Escape Nein."], 
                         function(self)
                            PlaySound(89)
                            PlaceAuctionBid("list", tItemIndex, tBidAmount)
@@ -1925,7 +1925,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                         end
                      )
                      PlaySound(88)
-                     SkuOptions.Voice:OutputString("Kauf "..(SkuCore.IsBid.currentBids).." von "..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount.." stück wirklich für "..SkuGetCoinText(tBidAmount, false, true).." kaufen? Eingabe Ja, Escape Nein.", false, true, 0.2, false)
+                     SkuOptions.Voice:OutputString(L["Kauf "]..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount..L[" stück wirklich für "]..SkuGetCoinText(tBidAmount, false, true)..L[" kaufen? Eingabe Ja, Escape Nein."], false, true, 0.2, false)
                      return
                   end
                end
