@@ -5,7 +5,7 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Addon-Update Downloads
 
 *Zuletzt aktualisiert Addons:* <br>
-[Sku 25.2](https://github.com/Duugu/Sku/releases/download/r25.2/Sku-r25.2-bcc.zip) (06.03.2022)<br>
+[Sku 25.3](https://github.com/Duugu/Sku/releases/download/r25.3/Sku-r25.3-bcc.zip) (07.03.2022)<br>
 [SkuAudioData_EN 3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022) Achtung! Das sind englische Audiodateien. Nur für Nutzer der englischen Version. Wer auf deutsch spielt lädt weiterhin ausschließlich "SkuAudioData" ohne "EN" dahinter runter.<br>
 
 *Nicht aktualisiert:*<br>
@@ -18,6 +18,13 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Versionshinweise
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in release 25.3
+	
+### SkuNav
+*Bug fixes*
+- Fixed an issue with metaroute calculation that caused lag with "SkuNav > Route > Follow route" in Hellfire Peninsula. The range for available entry waypoint was lowered from 1000 to 300 yards. That means, if there isn't any waypoint in a range of 300 meters linked to the route network, then "SkuNav > Route > Follow route" will show an empty list (no entry point). Move closer to a linked waypoint in such cases.
+
 ## Changes in release 25.2
 	
 ### SkuNav
