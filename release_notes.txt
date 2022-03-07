@@ -3,7 +3,15 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
-Changes in Version 25.2
+Changes in release 25.3
+	
+	SkuNav
+		Bug fixes
+			- Fixed an issue with metaroute calculation that caused lag with "SkuNav > Route > Follow route" in Hellfire Peninsula. The range for available entry waypoint was lowered from 1000 to 300 meters/yards. That means, if there isn't any waypoint in a range of 300 meters linked to the route network, then "SkuNav > Route > Follow route" will show an empty list (no entry point). Move closer to a linked waypoint in such cases.
+
+
+-------------------------------------------------------------------------------------------------------	
+Changes in release 25.2
 	
 	SkuNav
 		Bug fixes
@@ -11,7 +19,7 @@ Changes in Version 25.2
 
 
 -------------------------------------------------------------------------------------------------------	
-Changes in Version 25.1
+Changes in release 25.1
 	
 	The localization is completed. The addon is ready to test with language set to "English" (in the Battle.Net client). Please report all missing words and issues!
 	How to move from German to English:

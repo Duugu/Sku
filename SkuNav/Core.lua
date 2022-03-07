@@ -51,7 +51,7 @@ SkuNav.WpTypes = {
 
 SkuNav.MaxMetaRange = 4000
 SkuNav.MaxMetaWPs = 200
-SkuNav.BestRouteWeightedLengthModForMetaDistance = 37
+SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
 
 local WaypointCache = {}
 local WaypointCacheLookupAll = {}
