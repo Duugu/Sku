@@ -607,7 +607,7 @@ function SkuNav:ListWaypoints2(aSort, aFilter, aAreaId, aContinentId, aExcludeRo
 		if tFilterTypes[WaypointCache[tIndex].typeId] then
 			if not UiMapId or UiMapId == WaypointCache[tIndex].uiMapId then
 				--tWpList[tIndex] = tName
-				if not string.find(tName, "[DND]") and not string.find(tName, "(DND)") then
+				if not string.find(tName, "%[DND%]") and not string.find(tName, "%(DND%)") then
 					tWpList[#tWpList + 1] = tName
 				end
 			end
