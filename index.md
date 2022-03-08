@@ -2,10 +2,10 @@ Wenn du Sku noch nie installiert hast, musst du zwingend erst der Einrichtungsan
 <a href="https://duugu.github.io/Sku/first_steps_de.html">https://duugu.github.io/Sku/first_steps_de.html</a><br>
 Erst dann kannst du hier Updates der Addons herunterladen.
 
-# Addon-Update Downloads
+# Updates
 
-*Zuletzt aktualisiert Addons:* <br>
-[Sku 25.3](https://github.com/Duugu/Sku/releases/download/r25.3/Sku-r25.3-bcc.zip) (07.03.2022)<br>
+*Recently updated:* <br>
+[Sku 25.4](https://github.com/Duugu/Sku/releases/download/r25.4/Sku-r25.4-bcc.zip) (08.03.2022)<br>
 [SkuAudioData_EN 3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022) Achtung! Das sind englische Audiodateien. Nur für Nutzer der englischen Version. Wer auf deutsch spielt lädt weiterhin ausschließlich "SkuAudioData" ohne "EN" dahinter runter.<br>
 
 *Nicht aktualisiert:*<br>
@@ -15,9 +15,22 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 [SkuFluegel 5.4](https://github.com/Duugu/SkuFluegel/releases/download/r5.4/SkuFluegel-r5.4-bcc.zip) <br>
 
-# Versionshinweise
+# Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in release 25.4
+
+### SkuChat
+*New features*
+- The default value for "SkuChat > Options > Automatically read whisper chat" now is On.
+- There is a new option: "Automatically read SkuChat channel". The default value is On.
+
+### SkuNav
+*Bug fixes*
+- EN only: Waypoints for herbs like "Silverleaf" and minining nodes like "Copper Veign" are now filtered from all lists, as intended.
+- Waypoints with "[DND]" in their names are now filtered from any lists and should not be visible anymore.
+- Additional fix for metaroute calculation via SkuQuest.
 
 ## Changes in release 25.3
 	
