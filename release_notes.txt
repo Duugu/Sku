@@ -2,6 +2,22 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Changes in release 25.4
+	
+	SkuChat:
+		New features
+			- The default value for "SkuChat > Options > Automatically read whisper chat" now is On.
+			- There is a new option: "Automatically read SkuChat channel". The default value is On.
+
+	SkuNav
+		Bug fixes
+			- EN only: Waypoints for herbs like "Silverleaf" and minining nodes like "Copper Veign" are now filtered from all lists, as intended.
+			- Waypoints with "[DND]" in their names are now filtered from any lists and should not be visible anymore.
+			- Additional fix for metaroute calculation via SkuQuest.
+
+
 -------------------------------------------------------------------------------------------------------	
 Changes in release 25.3
 	

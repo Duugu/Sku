@@ -119,6 +119,18 @@ SkuChat.options = {
 				return SkuOptions.db.profile[MODULE_NAME].autoPlayCreatureChat
 			end,
 		},
+		autoPlaySkuChannelChat = {
+			order = 6,
+			name = L["SkuChat automatisch lesen"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].autoPlaySkuChannelChat = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].autoPlaySkuChannelChat
+			end,
+		},		
 		joinSkuChannel = {
 			order = 7,
 			name = L["Sku Chat Channel beitreten"],
@@ -146,8 +158,9 @@ SkuChat.defaults = {
 	WowTtsVolume = 50,
 	autoPlayPartyChat = true,
 	autoPlayGuildChat = false,
-	autoPlayTellChat = false,
+	autoPlayTellChat = true,
 	autoPlayCreatureChat = false,
+	autoPlaySkuChannelChat = true,
 	joinSkuChannel = true,
 }
 

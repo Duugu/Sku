@@ -51,6 +51,7 @@ SkuNav.WpTypes = {
 
 SkuNav.MaxMetaRange = 4000
 SkuNav.MaxMetaWPs = 200
+SkuNav.MaxMetaEntryRange = 300
 SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
 
 local WaypointCache = {}
@@ -606,7 +607,9 @@ function SkuNav:ListWaypoints2(aSort, aFilter, aAreaId, aContinentId, aExcludeRo
 		if tFilterTypes[WaypointCache[tIndex].typeId] then
 			if not UiMapId or UiMapId == WaypointCache[tIndex].uiMapId then
 				--tWpList[tIndex] = tName
-				tWpList[#tWpList + 1] = tName
+				if not string.find(tName, "[DND]") and not string.find(tName, "(DND)") then
+					tWpList[#tWpList + 1] = tName
+				end
 			end
 		end
 	end

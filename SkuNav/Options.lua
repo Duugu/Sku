@@ -279,7 +279,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 			tNewMenuEntrySub.dynamic = true
 			tNewMenuEntrySub.BuildChildren = function(self)
 				local tPlayX, tPlayY = UnitPosition("player")
-				local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, 1000)--SkuOptions.db.profile["SkuNav"].nearbyWpRange)
+				local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)--SkuOptions.db.profile["SkuNav"].nearbyWpRange)
 				if string.find(SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC, "#") then
 					SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = string.sub(SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC, string.find(SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC, "#") + 1)
 				end
@@ -884,7 +884,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			SkuOptions.db.profile[MODULE_NAME].metapathFollowingStartTMP = nil
 			SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapathsTMP = nil
 			local tPlayX, tPlayY = UnitPosition("player")
-			local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, 300)--SkuOptions.db.profile[MODULE_NAME].nearbyWpRange)
+			local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)--SkuOptions.db.profile[MODULE_NAME].nearbyWpRange)
 
 			local tSortedWaypointList = {}
 			for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert

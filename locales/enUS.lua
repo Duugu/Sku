@@ -397,6 +397,7 @@ L["Gruppen Chat automatisch lesen"]  = "Automatically read group chat" --
 L["Gilden Chat automatisch lesen"]  = "Automatically read guild chat" --
 L["Flüster Chat automatisch lesen"]  = "Automatically read whisper chat" --
 L["Chat von kreaturen automatisch lesen"]  = "Automatically read chat from creatures" --
+L["SkuChat automatisch lesen"] = "Automatically read SkuChat channel"
 L["Sku Chat Channel beitreten"]  = "Join Sku Chat Channel" --
 L["Kaufpreis für 1 Gegenstand aufsteigend"]  = "Buy price for 1 item ascending" --
 L["Kaufpreis für Auktionsmenge aufsteigend"]  = "Buy price for auction quantity ascending" --
