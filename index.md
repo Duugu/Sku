@@ -5,7 +5,7 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Updates
 
 *Recently updated:* <br>
-[Sku 25.4a](https://github.com/Duugu/Sku/releases/download/r25.4a/Sku-r25.4a-bcc.zip) (08.03.2022)<br>
+[Sku 25.5](https://github.com/Duugu/Sku/releases/download/r25.5/Sku-r25.5-bcc.zip) (08.03.2022)<br>
 
 [SkuAudioData_EN 3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022) Achtung! Das sind englische Audiodateien. Nur für Nutzer der englischen Version. Wer auf deutsch spielt lädt weiterhin ausschließlich "SkuAudioData" ohne "EN" dahinter runter.<br>
 [Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
@@ -17,6 +17,12 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in release 25.5
+	
+### SkuNav
+*Bug fixes*
+- Fixed an issue with missing waypoints in Nagrand.
 
 ## Changes in release 25.4
 
