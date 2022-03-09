@@ -4,6 +4,22 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Changes in release 25.6
+	
+	SkuAuras
+		Bug fixes
+			- (Again) fixed an issue with "contains" operator.
+
+	SkuChat:
+		Bug fixes
+			- Fixed an issue with "Automatically read SkuChat channel". Should be read now.
+
+	SkuNav
+		Bug fixes
+			- Added Silvermoon to the list of words for waypoint names.
+			- Fixed the zone ID for Shadowfang Keep area.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in release 25.5
 	
 	SkuNav

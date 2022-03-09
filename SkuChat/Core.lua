@@ -114,29 +114,29 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 	end
 
 
+	SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
 
-
-	if infor and infog and infob then
-		infor, infog, infob = math.floor(infor * 100), math.floor(infog * 100), math.floor(infob * 100)
-		if ((infor == 66 and infog == 66 and infob == 100) or (infor == 46 and infog == 78 and infob == 100) and SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat == true) or
-			((infor == 25 and infog == 100 and infob == 25) and SkuOptions.db.profile[MODULE_NAME].autoPlayGuildChat == true) or
-			((infor == 100 and infog == 50 and infob == 100) and SkuOptions.db.profile[MODULE_NAME].autoPlayTellChat == true) or
-			(
+	if SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then
+		if infor and infog and infob then
+			infor, infog, infob = math.floor(infor * 100), math.floor(infog * 100), math.floor(infob * 100)
+			if ((infor == 66 and infog == 66 and infob == 100) or (infor == 46 and infog == 78 and infob == 100) and SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat == true) or
+				((infor == 25 and infog == 100 and infob == 25) and SkuOptions.db.profile[MODULE_NAME].autoPlayGuildChat == true) or
+				((infor == 100 and infog == 50 and infob == 100) and SkuOptions.db.profile[MODULE_NAME].autoPlayTellChat == true) or
+				(string.find(SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body, "SkuChat") and SkuOptions.db.profile[MODULE_NAME].autoPlaySkuChannelChat == true) or
 				(
-					(infor == 100 and infog == 100 and infob == 62) or 
-					(infor == 100 and infog == 50 and infob == 25) or 
-					(infor == 100 and infog == 25 and infob == 25) or 
-					(infor == 100 and infog == 70 and infob == 92) or 
-					(infor == 100 and infog == 85 and infob == 0) or 
-					(infor == 100 and infog == 85 and infob == 0)
-				) and 
-				SkuOptions.db.profile[MODULE_NAME].autoPlayCreatureChat == true
-			)
-		then
-			local tPlayerName = UnitName("player")
-			if not string.find(body, "%["..tPlayerName.."%]") then
-				SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
-				if SkuChatChatBuffer[SkuOptions.ChatCurrentLine] then
+					(
+						(infor == 100 and infog == 100 and infob == 62) or 
+						(infor == 100 and infog == 50 and infob == 25) or 
+						(infor == 100 and infog == 25 and infob == 25) or 
+						(infor == 100 and infog == 70 and infob == 92) or 
+						(infor == 100 and infog == 85 and infob == 0) or 
+						(infor == 100 and infog == 85 and infob == 0)
+					) and 
+					SkuOptions.db.profile[MODULE_NAME].autoPlayCreatureChat == true
+				)
+			then
+				local tPlayerName = UnitName("player")
+				if not string.find(body, "%["..tPlayerName.."%]") then
 					if SkuChatChatBuffer[SkuOptions.ChatCurrentLine].body then
 						if IsMacClient() == true then
 							--C_VoiceChat.StopSpeakingText()
@@ -148,7 +148,7 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 							end)
 						end
 					end
-				end		
+				end
 			end
 		end
 	end

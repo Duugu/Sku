@@ -110,6 +110,7 @@ SkuOptions.Glossary1 = {
 			"Immersangwald",
 			"Geisterlande",
 			"Käfig",
+			"Silbermond",
 		},
 		["Bindewörter"] = {
 			"auf",
@@ -358,6 +359,7 @@ SkuOptions.Glossary1 = {
 			"eversong woods",
 			"ghostlands",
 			"cage",
+			"Silvermoon",
 		},
 		["connective words"] = {
 			"on",

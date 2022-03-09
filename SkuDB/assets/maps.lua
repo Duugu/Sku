@@ -250,7 +250,7 @@ SkuDB.InternalAreaTable = {
     [206] = {ZoneName = "Westfall", AreaName_lang = {["deDE"] = "UNUSED Westfall", ["enUS"] = "UNUSED Westfall", }, ContinentID = 36, ParentAreaID = 0, Faction = 0, Flags = 65600,},
     [207] = {ZoneName = "TheGreatSea", AreaName_lang = {["deDE"] = "Das große Meer", ["enUS"] = "The Great Sea", }, ContinentID = 36, ParentAreaID = 1377, Faction = 0, Flags = 64,},
     [208] = {ZoneName = "UnusedIroncladcove", AreaName_lang = {["deDE"] = "Unused Ironcladcove", ["enUS"] = "Unused Ironcladcove", }, ContinentID = 36, ParentAreaID = 0, Faction = 0, Flags = 64,},
-    [209] = {ZoneName = "ShadowfangKeep", AreaName_lang = {["deDE"] = "Burg Schattenfang", ["enUS"] = "Shadowfang Keep", }, ContinentID = 33, ParentAreaID = 0, Faction = 4, Flags = 0,},
+    --[209] = {ZoneName = "ShadowfangKeep", AreaName_lang = {["deDE"] = "Burg Schattenfang", ["enUS"] = "Shadowfang Keep", }, ContinentID = 33, ParentAreaID = 0, Faction = 4, Flags = 0,},
     [210] = {ZoneName = "ReuseMe2", AreaName_lang = {["deDE"] = "Reuse Me 2", ["enUS"] = "Reuse Me 2", }, ContinentID = 451, ParentAreaID = 0, Faction = 0, Flags = 68,},
     [211] = {ZoneName = "IceflowLake", AreaName_lang = {["deDE"] = "Eiswellensee", ["enUS"] = "Iceflow Lake", }, ContinentID = 0, ParentAreaID = 1, Faction = 0, Flags = 1073741888,},
     [212] = {ZoneName = "Helm'sBedLake", AreaName_lang = {["deDE"] = "Helmsbettsee", ["enUS"] = "Helm's Bed Lake", }, ContinentID = 0, ParentAreaID = 1, Faction = 0, Flags = 1073741888,},

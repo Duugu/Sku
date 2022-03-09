@@ -182,7 +182,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant) -- for strings with lookup in string index
-	dprint(aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
+	--dprint(aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
 	if not aString then
 		return
 	end
@@ -361,7 +361,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				local tModString = string.upper(string.sub(tostring(tStrings[x]),1,1))..string.sub(tostring(tStrings[x]),2)
 				tFile = SkuAudioFileIndex[tModString]
 			end
-			dprint(tStrings[x], "tFile", tFile)
+			--dprint(tStrings[x], "tFile", tFile)
 
 			if tFile == nil then
 				tFile = SkuAudioFileIndex["sound-audiofehltbeep"]
@@ -402,7 +402,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 						end]]
 					end
 
-					dprint(tFile)
+					--dprint(tFile)
 
 					if aInstant == true then
 						table.insert(mSkuVoiceQueue, 0 + x, {

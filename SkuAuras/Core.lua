@@ -669,7 +669,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		end
 	end
 	tEventData[38] = tdebuffList
---[[
+
 	if tEventData[2] ~= "KEY_PRESS" then
 		dprint("---------------------------------------------------------------------")
 		dprint("--NEW EVENT:", tEventData[2] )
@@ -713,7 +713,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		dprint(SkuAuras.thingsNamesOnCd)
 		
 	end
-]]
+
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
