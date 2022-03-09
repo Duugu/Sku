@@ -5,7 +5,7 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 # Updates
 
 *Recently updated:* <br>
-[SkuFluegel 5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) <br>
+[SkuFluegel 5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022)<br>
 [Sku 25.6](https://github.com/Duugu/Sku/releases/download/r25.6/Sku-r25.6-bcc.zip) (09.03.2022)<br>
 
 [SkuAudioData_EN 3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022) Achtung! Das sind englische Audiodateien. Nur für Nutzer der englischen Version. Wer auf deutsch spielt lädt weiterhin ausschließlich "SkuAudioData" ohne "EN" dahinter runter.<br>
