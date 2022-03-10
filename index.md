@@ -8,9 +8,9 @@ Erst dann kannst du hier Updates der Addons herunterladen.
 [SkuFluegel 5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022)<br>
 [Sku 25.6](https://github.com/Duugu/Sku/releases/download/r25.6/Sku-r25.6-bcc.zip) (09.03.2022)<br>
 
-[SkuAudioData_EN 3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022) Achtung! Das sind englische Audiodateien. Nur für Nutzer der englischen Version. Wer auf deutsch spielt lädt weiterhin ausschließlich "SkuAudioData" ohne "EN" dahinter runter.<br>
+[SkuAudioData ENGLISH 3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
 [Sku-Maus Skript 1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
-[SkuAudioData 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
+[SkuAudioData DEUTSCH 30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 [SkuBeaconSoundsets 19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
