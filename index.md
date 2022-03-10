@@ -1,6 +1,6 @@
 <em>If you are a first time user of the Sku addon, you need to follow the installation / setup instructions before installing updates from this page:</em>
 ENGLISH - First Steps Guide<br>
-<a href="https://TBD">https://TBD</a><br>
+<a href="https://duugu.github.io/Sku/first_steps_en.html">https://duugu.github.io/Sku/first_steps_en.html</a><br>
 DEUTSCH/GERMAN - Erste Schritte<br>
 <a href="https://duugu.github.io/Sku/first_steps_de.html">https://duugu.github.io/Sku/first_steps_de.html</a><br>
 
