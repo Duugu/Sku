@@ -7,8 +7,8 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+[Sku r25.7](https://github.com/Duugu/Sku/releases/download/r25.7/Sku-r25.7-bcc.zip) (11.03.2022)<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
-[Sku r25.6](https://github.com/Duugu/Sku/releases/download/r25.6/Sku-r25.6-bcc.zip) (09.03.2022)<br>
 [SkuAudioData ENGLISH r3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
 [Sku-Maus Skript r1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcyl-kVsg6_VJA9w?e=0Dnayt) (20.02.2022)<br>
 [SkuAudioData DEUTSCH r30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
@@ -18,6 +18,25 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in release 25.7
+
+### SkuAuras
+*Bug fixes*
+- Next try to fix that issue with the "contains" operator. Tested with "target change with debuff" and "melee damage". Both working. But I am sure there's something else broken now. :D
+
+### SkuOptions
+*Bug fixes*
+- Fixed a bug with updating the money on the overview page.
+
+### SkuMob
+*New*
+- The addon now uses generic terms for player controlled units with unkown names, instead of playing the "beep" for missing words:
+	- "you" (targeting yourself)
+	- "your companion" (targeting your companion / pet)
+	- "friendly player" (targeting a player from your faction)
+	- "unfriendly player" (targeting a player from other faction)
+	- "other companion" (targeting a companion / pet of another player)
 
 ## Changes in SkuFluegel release 5.5
 
