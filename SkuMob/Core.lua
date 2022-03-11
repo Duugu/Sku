@@ -135,9 +135,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 		return
 	end
 
-	if UnitIsPlayer("target") == true then
-		return
-	end
+
 	
 	local tUnitName = GetUnitName("target", false)
 	local tUnitLevel = UnitLevel("target")
@@ -147,6 +145,32 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 	local tCreatureFamily = UnitCreatureFamily("target")
 	local tClassification = UnitClassification("target")
 	local tInteractDistance = CheckInteractDistance("target", 4)
+
+
+	local noSubText
+	if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName("target", false)) then
+		tUnitName = L["dein begleiter"]
+		noSubText = true
+	end
+
+	if UnitIsPlayer("target") then
+		if UnitIsFriend("player", "target") then
+			tUnitName = L["freundlicher spieler"]
+		else
+			tUnitName = L["feindlicher spieler"]
+		end
+		noSubText = true
+	end
+	if UnitPlayerControlled("target") == true and UnitIsPlayer("target") == false then
+		tUnitName = L["fremder begleiter"]
+		noSubText = true
+	end
+
+	if GetUnitName("target", false) == GetUnitName("player", false) then
+		tUnitName = L["du selbst"]
+		noSubText = true
+	end
+
 	local tUnitReaction = UnitReaction("player", "target")
 		--[[
 		1 Exceptionally hostile
@@ -273,21 +297,22 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 				SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
 			end
 		end
-		GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
-		GameTooltip:SetUnit("target")
-		GameTooltip:Show()
-		local left = _G["GameTooltipTextLeft" .. 2]
-		if left then
-			local tLineTwoText = left:GetText()
-			if tLineTwoText then
-				if tLineTwoText ~= "" then
-					if not string.find(tLineTwoText, L["level"]) then
-						SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
+		if noSubText ~= true then
+			GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
+			GameTooltip:SetUnit("target")
+			GameTooltip:Show()
+			local left = _G["GameTooltipTextLeft" .. 2]
+			if left then
+				local tLineTwoText = left:GetText()
+				if tLineTwoText then
+					if tLineTwoText ~= "" then
+						if not string.find(tLineTwoText, L["level"]) then
+							SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
+						end
 					end
 				end
 			end
 		end
-	--end
 	end
 end
 

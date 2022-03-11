@@ -1999,12 +1999,12 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut entspricht dem gewählten Wert"],
       friendlyName = L["gleich"],
       func = function(aValueA, aValueB) 
-      	--dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
+      	dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          --if type(aValueA) == "table" then return false end
          dprint("type", type(aValueA))
          if type(aValueA) == "table" then 
-            dprint("TABLE")
+            dprint("      ","TABLE")
             for tName, tValue in pairs(aValueA) do
                if type(aValueB) == "table" then
                   for tNameB, tValueB in pairs(aValueB) do
@@ -2023,7 +2023,7 @@ SkuAuras.Operators = {
                end
             end
          else
-            dprint("SINGLE")
+            dprint("      ","SINGLE")
             if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(aValueB) then 
                return true 
             end
@@ -2078,20 +2078,27 @@ SkuAuras.Operators = {
          dprint("      contains")
          dprint("      ","type(aValueA) type(aValueB)", type(aValueA), type(aValueB))
          if type(aValueA) == "table" then 
+            dprint("      TABLE")
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  dprint("      ", SkuAuras:RemoveTags(tValue))
-                  dprint("      ", SkuAuras:RemoveTags(tValueB))
-                  dprint("      ", SkuAuras:RemoveTags(tName))
-                  dprint("      ", SkuAuras:RemoveTags(tNameB))
-                  local tResult = SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB)
+                  dprint("      tValue", SkuAuras:RemoveTags(tValue))
+                  dprint("      tValueB", SkuAuras:RemoveTags(tValueB))
+                  dprint("      tName", SkuAuras:RemoveTags(tName))
+                  dprint("      tNameB", SkuAuras:RemoveTags(tNameB))
+                  dprint("       result", SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB))
+                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      return true
                   end
                end
             end
          else
+            dprint("      SINGLE")
             for tNameB, tValueB in pairs(aValueB) do
+               dprint("      ", SkuAuras:RemoveTags(tValueA))
+               dprint("      ", SkuAuras:RemoveTags(tValueB))
+               dprint("      ", SkuAuras:RemoveTags(tNameB))
+               dprint("        ", SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB))
                if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB) then 
                   return true 
                end
@@ -2117,7 +2124,7 @@ SkuAuras.Operators = {
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
                   dprint("    ","tName", tName, tValue, tNameB, tValueB)
-                  local tResult = SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB)
+                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      tFound = true
                   end

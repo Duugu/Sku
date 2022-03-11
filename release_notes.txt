@@ -4,6 +4,27 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Changes in release 25.7
+
+	SkuAuras
+		Bug fixes
+			- Next try to fix that issue with the "contains" operator. Tested with "target change with debuff" and "melee damage". Both working. But I am sure there's something else broken now. :D
+
+	SkuOptions
+		Bug fixes
+			- Fixed a bug with updating the money on the overview page.
+
+	SkuMob
+		New
+			- The addon now uses generic terms for player controlled units with unkown names, instead of playing the "beep" for missing words:
+				- "you" (targeting yourself)
+				- "your companion" (targeting your companion / pet)
+				- "friendly player" (targeting a player from your faction)
+				- "unfriendly player" (targeting a player from other faction)
+				- "other companion" (targeting a companion / pet of another player)
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in release 25.6
 	
 	SkuAuras
@@ -18,6 +39,7 @@ Changes in release 25.6
 		Bug fixes
 			- Added Silvermoon to the list of words for waypoint names.
 			- Fixed the zone ID for Shadowfang Keep area.
+
 
 -------------------------------------------------------------------------------------------------------	
 Changes in release 25.5

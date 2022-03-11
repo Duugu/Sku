@@ -473,14 +473,8 @@ function SkuOptions:UpdateOverviewText()
 	tGeneral = tGeneral.."\r\n"..L["Reparatur status: "]..tTmpText
 
 	--money
-	local tMoney = ContainerFrame1MoneyFrame.staticMoney
-	if BagnonMoneyFrame1 then
-		tMoney = BagnonMoneyFrame1.staticMoney
-	end
-	if tMoney then
-		local tTmpText = GetCoinText(tMoney)
-		tGeneral = tGeneral.."\r\n"..L["Geld: "]..tTmpText
-	end
+	local tTmpText = GetCoinText(GetMoney())
+	tGeneral = tGeneral.."\r\n"..L["Geld: "]..tTmpText
 
 	--bag space
 	local tFreeCount = 0

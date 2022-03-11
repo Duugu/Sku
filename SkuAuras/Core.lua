@@ -79,7 +79,7 @@ function SkuAuras:OnEnable()
 			for x = 1, 40  do
 				local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitBuff(tUnitID, x)
 				if name then
-					tBuffList[name] = true
+					tBuffList[name] = name
 				end
 			end
 			aEventData[37] = tBuffList
@@ -87,7 +87,7 @@ function SkuAuras:OnEnable()
 			for x = 1, 40  do
 				local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff(tUnitID, x)
 				if name then
-					tdebuffList[name] = true
+					tdebuffList[name] = name
 				end
 			end
 			aEventData[38] = tdebuffList
@@ -657,7 +657,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	for x = 1, 40  do
 		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitBuff(tUnitID, x)
 		if name then
-			tBuffList[name] = true
+			tBuffList[name] = name
 		end
 	end
 	tEventData[37] = tBuffList
@@ -665,7 +665,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	for x = 1, 40  do
 		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff(tUnitID, x)
 		if name then
-			tdebuffList[name] = true
+			tdebuffList[name] = name
 		end
 	end
 	tEventData[38] = tdebuffList

@@ -522,16 +522,19 @@ function SkuNav:MenuBuilder(aParentEntry)
 				tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
 
 				local tWaypointList = {}
-				for i, v in SkuNav:ListWaypoints2(true, nil, tCurrentAreaId) do
-					local tWayP = SkuNav:GetWaypointData2(v)
-					if tWayP then
-						if tSubAreaIds[tonumber(tWayP.areaId)] then
-							if not sfind(v, L["auto"]..";") then
-							--if not sfind(v, L["Quick waypoint"]) and not sfind(v, "auto;") then
-								local tWpX, tWpY = tWayP.worldX, tWayP.worldY
-								local tPlayX, tPlayY = UnitPosition("player")
-								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
-								tWaypointList[v] = tDistance
+				local tListWPs = SkuNav:ListWaypoints2(true, nil, tCurrentAreaId)
+				if tListWPs then
+					for i, v in SkuNav:ListWaypoints2(true, nil, tCurrentAreaId) do
+						local tWayP = SkuNav:GetWaypointData2(v)
+						if tWayP then
+							if tSubAreaIds[tonumber(tWayP.areaId)] then
+								if not sfind(v, L["auto"]..";") then
+								--if not sfind(v, L["Quick waypoint"]) and not sfind(v, "auto;") then
+									local tWpX, tWpY = tWayP.worldX, tWayP.worldY
+									local tPlayX, tPlayY = UnitPosition("player")
+									local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
+									tWaypointList[v] = tDistance
+								end
 							end
 						end
 					end

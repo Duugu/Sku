@@ -596,6 +596,7 @@ L["Belegung gelöscht"]  = "Binding deleted" --
 L["Auktionshaus"]  = "Auction house" --
 L["Neue Reichweite verfügbar"]  = "New range available" --
 L["nah "]  = "near " ---distances
+L["nah"]  = "near " ---distances
 L["weit"]  = "far" --
 L["Der Südstrom"]  = "Southfury River" ---tPlayerUIMap 
 L["Die Höhlen des Wehklagens"]  = "Wailing Caverns" ---tPlayerUIMap 
@@ -1258,3 +1259,9 @@ L["Musik"]  = "Music" --
 L["Umgebung"]  = "Environment" --
 L["Dialog"]  = "Dialogue" --
 L["Sku Head"]  = "Sku" --
+
+L["du selbst"] = "you"
+L["dein begleiter"] = "your companion"
+L["freundlicher spieler"] = "friendly player"
+L["feindlicher spieler"] = "unfriendly player"
+L["fremder begleiter"] = "other companion"
