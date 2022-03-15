@@ -1,12 +1,13 @@
 If you are a first time user of the Sku addon, you need to follow the installation / setup instructions before installing updates from this page:<br>
-<!--ENGLISH - First Steps Guide:<br>
-<a href="https://duugu.github.io/Sku/first_steps_en.html">https://duugu.github.io/Sku/first_steps_en.html</a><br>-->
+ENGLISH - First Steps Guide:<br>
+<a href="https://duugu.github.io/Sku/first_steps_en.html">https://duugu.github.io/Sku/first_steps_en.html</a><br>
 DEUTSCH/GERMAN - Erste Schritte:<br>
 <a href="https://duugu.github.io/Sku/first_steps_de.html">https://duugu.github.io/Sku/first_steps_de.html</a><br>
 
 # Updates
 
 *Recent updates:* <br>
+[Sku-Maus Skript r1.6](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVLPwM6aes725wkDg?e=X2FUPR) (15.03.2022)<br>
 [Sku r25.7](https://github.com/Duugu/Sku/releases/download/r25.7/Sku-r25.7-bcc.zip) (11.03.2022)<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
 [SkuAudioData ENGLISH r3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
@@ -19,7 +20,21 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 -------------------------------------------------------------------------------------------------------	
 
-## Changes in release 25.7
+## Changes in Sku-Maus Skript r1.6
+
+IMPORTANT: Instead of just on script there are now 3 scripts for different languages and regions. 
+Use the correct script for your region/language:
+U.S. realms in English: wow-menu_EN_US.ahk
+EU realms in English: wow-menu_EN_EU.ahk
+U.S. realms in German: wow-menu_DE_EU.ahk
+
+- Optimized the recognition of "Login" and "Game" mode
+- Fixed a bunch of issues with mode detection
+- Added support for English
+- Added EN EU and EN US region / realm lists
+- Splitted the script into separate script for EN_EU, EN_US, DE_EU.
+
+## Changes in Sku release 25.7
 
 ### SkuAuras
 *Bug fixes*
@@ -43,7 +58,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 New:
 - Added tooltips with descriptions to the unit panels.
 
-## Changes in release 25.6
+## Changes in Sku release 25.6
 	
 ### SkuAuras
 *Bug fixes*
@@ -64,7 +79,7 @@ New:
 *Bug fixes*
 - Fixed an issue with missing waypoints in Nagrand.
 
-## Changes in release 25.4
+## Changes in Sku release 25.4
 
 ### SkuChat
 *New features*
@@ -77,19 +92,19 @@ New:
 - Waypoints with "[DND]" in their names are now filtered from any lists and should not be visible anymore.
 - Additional fix for metaroute calculation via SkuQuest.
 
-## Changes in release 25.3
+## Changes in Sku release 25.3
 	
 ### SkuNav
 *Bug fixes*
 - Fixed an issue with metaroute calculation that caused lag with "SkuNav > Route > Follow route" in Hellfire Peninsula. The range for available entry waypoint was lowered from 1000 to 300 yards. That means, if there isn't any waypoint in a range of 300 meters linked to the route network, then "SkuNav > Route > Follow route" will show an empty list (no entry point). Move closer to a linked waypoint in such cases.
 
-## Changes in release 25.2
+## Changes in Sku release 25.2
 	
 ### SkuNav
 *Bug fixes*
 - Fixed an issue with missing route data for first time users. Route data should be available on next login.
 
-## Changes in release 25.1
+## Changes in Sku release 25.1
 	
 The localization is completed. The addon is ready to test with language set to "English" (in the Battle.Net client). Please report all missing words and issues!<br>
 How to move from German to English:
