@@ -19,10 +19,6 @@
       <p>
          Info für Mac-Nutzer: Die Anleitung ist auf Windows-Benutzer ausgerichtet. Als Mac-Benutzer kannst du ihr bis inklusive zum Abschnitt "Addons und Skript installieren" folgen. Alles ab "Server auswählen und Charakter erstellen" funktioniert nicht auf Macs. Die Schritte ab da musst du stattdessen mit sehender Unterstützung oder per OCR und Screenreader erledigen. 
       </p>
-      <h2>Anleitung als Word-Dokument</h2>
-      <p>
-         Hier findest du diese Seite als Word-Dokument:<br><a href="https://1drv.ms/w/s!Aqgp3J_s6MM7iKUxTSfa9DWhpW005w?e=ye6nNl">https://1drv.ms/w/s!Aqgp3J_s6MM7iKUxTSfa9DWhpW005w?e=ye6nNl</a>
-      </p>
      
    <article>
       <h2>Das erwartet dich</h2>
@@ -136,7 +132,10 @@
          <li><p>Öffne in diesem WoW-Installationsordner den Ordner "_classic_" und dort den Ordner "Interface" und dann "AddOns".</p></li>
          <li><p>Entpacke alle Ordner und Dateien aus unserem heruntergeladenen Starter-Paket in diesen Ordner namens "AddOns".<br>Das Starter-Paket enthält sehr, sehr, sehr viele Dateien. Daher kann das Entpacken, je nach Computer, sehr lange dauern. Das passiert nur bei der Ersteinrichtung und ist normal.</p></li>
          <li><p>Nach dem Entpacken findest du im Ordner "AddOns" viele neue Ordner. Einer davon heißt "wow_menu". Öffne den Ordner "wow_menu".</p></li>
-         <li><p>Im Ordner "wow_menu" findest du eine Skript-Datei namens "wow-menu.ahk". Dieses Skript musst du später vor jedem Spielstart starten. Es unterstützt dich bei der Charakterauswahl, beim Plündern und bei anderen Dingen im Spiel. <br>Daher dürfte es hilfreich sein, wenn du dir zum Beispiel eine neue Verknüpfung zu "wow-menu.ahk" auf den Desktop legst. <br>Achtung: Die eigentliche Datei "wow-menu.ahk" muss in ihrem Ordner bleiben. Du darfst sie nicht einfach auf den Desktop verschieben.</p></li>
+         <li><p>Im Ordner "wow_menu" findest du eine Skript-Datei namens "wow-menu_DE_EU.ahk". ACHTUNG: Es gibt drei Skript-Dateien in dem Ordner. Wenn du auf deutsch in Europa spielst, achte darauf, dass du auch wirklich die Datei wow-menu_DE_EU.ahk verwendest.<br>
+            Das Skript musst du später bei jedem Spielstart starten. Es unterstützt dich bei der Charakterauswahl, beim Plündern und bei anderen Dingen im Spiel. <br>
+            Daher dürfte es hilfreich sein, wenn du dir zum Beispiel eine neue Verknüpfung zu "wow-menu.ahk" auf den Desktop legst. <br>
+            Achtung: Die eigentliche Datei "wow-menu_DE_EU.ahk" muss in ihrem Ordner bleiben. Du darfst sie nicht einfach auf den Desktop verschieben.</p></li>
          <li><p>Geh zurück in den Ordner "AddOns" (vermutlich unter "C:\Programme (x86)\World of Warcraft\_classic_\Interface\"). Im Ordner "AddOns" findest du eine Datei Namens "Config.wtf". Kopiere diese Datei. </p></li>
          <li><p>Wechsel im WoW-Installationsverzeichnis in den Order namens "_classic_" (vermutlich unter "C:\Programme (x86)\World of Warcraft\". Wechsel dort in den Ordner namens "WTF". Füge die kopierte Datei "config.wtf" dort ein. Überschreibe dabei die schon vorhandene Datei.</p></li>
 
@@ -146,7 +145,7 @@
 
       <h3>Server auswählen und Charakter erstellen</h3>
       <h4>Maus-Skript starten</h4>
-      <p>Zur Serverauswahl und Charaktererstellung benötigst du jetzt das vorhin kopierte Skript "wow-menu.ahk". Starte das Skript mit einem Doppelklick bzw. über "Ausführen".</p>
+      <p>Zur Serverauswahl und Charaktererstellung benötigst du jetzt das vorhin kopierte Skript "wow-menu_DE_EU.ahk". Starte das Skript mit einem Doppelklick bzw. über "Ausführen".</p>
       <p>Das Skript hat eine Sprachausgabe. Es sagt nach seinem Start "Pausiert" und wartet im Hintergrund darauf, dass du das Spiel startest, um dich durch die Charaktererstellung und das Einloggen zu führen. Es meldet sich automatisch, wenn das Spiel gestartet ist und es losgehen kann.</p>
       
       <h4>>Spiel starten</h4>
@@ -154,7 +153,7 @@
       <ul>
          <li><p>Die Battlenet-App ist vermutlich nocht offen. Wenn nicht, starte sie.</p></li>
          <li><p>Überprüfen, ob in der Battlenet-App im Dropdown-Menü unter „Spielversion“ die Version „Burning Crusade Classic“ ausgewählt ist.</p></li>
-         <li><p>Wähle direkt darunter „Spielen“aus, und das Spiel wird gestartet.</p></li>
+         <li><p>Wähle direkt darunter „Spielen“ aus, und das Spiel wird gestartet.</p></li>
          <li><p>Das Maus-Skript wird aktiv, sobald sich das WoW-Spielfenster öffnet.</p></li>
          <li><p>Es sagt "Auf Login umgeschaltet". Das heißt, dass das Skript jetzt im Login-Modus ist, und dich bei der Anmeldung am Spiel, der Serverauswahl und der Charaktererstellung unterstützt.</p></li>
          <li><p>Achtung: Die nächsten Schritte in dieser Anleitung, bis du im Spiel bist, solltest du dir besser auf einem anderen Gerät ansehen/vorlesen lassen. Zum Beispiel auf deinem Smartphone. Das Maus-Skript wird jedes Mal aktiv, wenn das WoW-Fenster den Fokus erhält. Es pausiert immer dann, wenn das WoW-Fenster den Fokus verliert (beispielsweise, wenn du auf diese Seite wechselst, um dir den nächsten Schritt anzuhören). Bei jeder neuen Aktivierung (also beim Wechsel zum WoW-Fenster zurück) muss es neu initialisiert werden und startet neu mit dem Hauptmenü. Deine bisherigen Schritte gehen daher bei jedem Wechsel aus dem WoW-Fenster verloren. Wenn du die Schritte über ein anderes Gerät liest, passiert das nicht. Alternativ merk dir einfach alles Folgende. :)</p></li>
@@ -218,13 +217,15 @@
       </ul> 
       <p>Nun ist deine Tastenbelegung auf die Sku-Standardtasten eingestellt. Dazu erfährst du weiter unten unter dem Punkt "Spielen" mehr.</p>
       <p>Jetzt musst du das Addon AudioQS einstellen. Es sagt dir an, wie viel Gesundheit und Mana du hast.</p>
-      <p>Dafür sind einmalig folgende Befehle im Chat einzugeben. Du kannst mit Schrägstrich beginnen. Dann öffnet sich das Eingabefeld. Alternativ kannst du EINGABE drücken und dann mit Schrägstrich beginnen. Nach jedem Befehl wird das Interface neu geladen. Das dauert mehrere Sekunden. Warte nach jedem Befehl, bis du das Sku-Addon "Draußen" sagen hörst. Dann weiß du, dass das Neuladen abgeschlossen ist, und du den nächsten Befehl eingeben kannst. </p>
-      <p>Gib nacheinander die folgenden Befehle ein:</p>
+      <p>Dafür sind einmalig folgende Befehle im Chat einzugeben. Du kannst mit Schrägstrich beginnen. Dann öffnet sich das Eingabefeld. 
+         Alternativ kannst du EINGABE drücken und dann mit Schrägstrich beginnen. Nach den ersten drei Befehl wird jeweils das Interface neu geladen. Das dauert mehrere Sekunden. 
+         Warte nach jedem Befehl, bis du das Sku-Addon "Draußen" sagen hörst. Dann weiß du, dass das Neuladen abgeschlossen ist, und du den nächsten Befehl eingeben kannst. Beim vierten und letzten Befehl wird das Interface nicht mehr neu geladen. Es gibt keine hörbare Reaktion nachdem du ihn ausgeführt hast.</p>
+      <p>Gib nacheinander die folgenden vier Befehle ein:</p>
    <ul> 
       <li><p>/aq load healthmonitor</p></li>
       <li><p>/aq load manamonitor</p></li>
-      <li><p>/aq mm 10 30 50 70 90</p></li>
       <li><p>/aq load crowdcontrol</p></li>
+      <li><p>/aq mm 10 30 50 70 90</p></li>
    </ul> 
       <p>Abschließend kannst du Einstellungen im Sku-Addon personalisieren. Die wichtigste ist die Lautstärke:</p>
    <ul> 
@@ -238,65 +239,26 @@
       <li><p>Geh runter zu "Umgebung Lautstärke", "Musik Lautstärke" und "Dialog Lautstärke" und passe auch diese so an, dass du das Sku-Addon gut hören kannst. (Die Musik kannst du mit STRG + M ein- und ausschalten.)</p></li>
       <li><p>Schließe dann das Audiomenü mit ESCAPE.</p></li>
    </ul> 
-      <p>Geschafft, jetzt kannst du wirklich spielen. Im nächsten Kapitel geben wir dir eine kleine Einführung für deine ersten Schritte im Spiel.</p>
+      <p>Geschafft, jetzt kannst du wirklich spielen.</p>
       
       <h3>Spielen</h3>
-      <h4>So funktioniert der Chat</h4>
-         <p>Grundsätzlich öffnet sich der Chat mit der Taste EINGABE. Das Geschriebene sendest du mit EINGABE dann auch wieder ab. Du hast aber auch die Möglichkeit, Chat-Befehle über die Taste / zu nutzen. Du schreibst dann einfach einen /, dann einen Befehl, möglicherweise noch einen Parameter (wie einen namen) und dann ein Leerzeichen. Das Leerzeichen schließt den Chat-Befehl ab.</p>
-         <p>Folgende Chat-Befehle sind für dich wichtig:</p>
-         <p>
-         /s für "Sagen"<br>
-         /p für "Gruppe"<br>
-         /g für "gilde"<br>
-         /r für "zurückflüstern"<br>
-         /tell NAME für "jemanden anflüstern"
+         <p>Die ersten Schritte im Spiel und die Funktionen des Addons beim Spielen beschreibt Sku in einem Video-Tutorial. Dieses Tutorial findest du hier: <br>
+            <a href="https://www.youtube.com/playlist?list=PLOVqRfp5UchsQ4BWWl7PTLXIbC9N4JkHC">https://www.youtube.com/playlist?list=PLOVqRfp5UchsQ4BWWl7PTLXIbC9N4JkHC</a>
          </p>
-         <p>Du liest den Chat, indem du ihn mit SHIFT + F2 öffnest. Dann kannst du mit PFEIL HOCH und PFEIL RUNTER die Chat-Zeilen lesen. Du kannst ihn mit SHIFT + F2 wieder schließen.</p>
-         <p>Tipp: Eine Liste aller wichtigen Tastenkombinationen findest du unten im Abschnitt "Tastaturbelegung" dieser Anleitung.</p>
-         <p>Sollte dein Chat nicht vorgelesen werden, dann öffne mit SHIFT + F2 das Sku-Audiomenü und nimm eine Einstellung vor. Gehe runter zu "SkuChat" und dann dort weiter zu "Optionen" und "TTS-Stimme". Wähle eine andere Stimme aus. Dann sollte das Vorlesen funktionieren.</p>
-      <h4>Questgeber, Navigieren und Quests</h4>
-         <p>Dein Charakter ist frisch erstellt und du stehst am Startpunkt in der offenen Welt. Öffne mit L dein Questbuch und gehe dann einmal nach unten und dann nach rechts, bis dir die naheste Quest in deiner Umgebung angezeigt wird. Gehe weiter nach rechts, wähle "Annehmen" aus, und gehe dann weiter nach Rechts, bis du den Namen des Questgebers und die Entfernugnsangabe angesagt bekommst. Mit EINGABE startest du die Navigation zu diesem Questgeber. Folge nun dem Audio-Beacon. Es führt dich zum Questgeber. Die Richtung und die Entfernung zum nächsten Audio-Beacon kannst du jederzeit mit der Taste ALTGR (rechts neben der Leertaste) abfragen.</p>
-         <p>Achtung: Es gibt Quests in der Questdatenbank, die du nicht annehmen kannst. Es handelt sich dabei um Quests für bestimmte Berufe oder welchen, die nur zu bestimmten Zeiten aufgrund von Events zur Verfügung stehen.</p>
-      <h4>NPCs anvisieren</h4>
-         <p>Wenn du den Questgeber erreicht hast, musst du ihn ins Ziel nehmen. Du kannst NPCs (Nicht-Spieler-Charaktere) auf verschiedene Weisen ins Ziel nehmen, sie ansprechen und mit ihnen interagieren.</p>
-         <ol>
-            <li><p>Per Mausklick: Wenn du genau richtig beim NPC stehst, kannst du mit NUMMERNBLOCK 9 einen Rechtsklick vor dir auslösen. Das spricht den NPC an.</p></li>
-            <li><p>Per Target-Befehl. Mit /tar NAME kannst du den NPC ins Ziel nehmen. Es reichen meistens die ersten 2 Buchstaben wie z. B. /tar Au für "Aufseher Johan". Wenn du den NPC mit dem Befehl ins Ziel genommen hast, kannst du mit der Taste G mit ihm interagieren.</p></li>
-            <li><p>Mit der Tastenkombination STRG + Shift + TAB kannst du alle NPCs im Sichtfeld durchschalten. Wenn der richtige NPC im Ziel ist, kannst du G drücken. Dein Char läuft dann Luftlinie zum NPC und interagiert mit ihm.</p></li>
-         </ol>
-         <p>Achtung: Wenn du per Navigation zu einem NPC läufst und den letzten Wegpunkt erreicht hast, bist du möglicherweise durch den NPC gelaufen. Der Punkt ist exakt die Position des Questgebers. Oft reagiert man einen Bruchteil zu spät und macht einen Schritt weiter als beabsichtigt. Es hilft, beim Erreichen des Ziels einen kleinen Tippelschritt rückwärts zu machen.</p>
-      <h4>Mit NPCs interagieren</h4>
-         <p>Wenn du den NPC gefunden hast und mit ihm interagierst, öffnet sich das Audiomenü. Hier kannst du die erste Aufgabe annehmen. Das kannst du über die Struktur des Audiomenüs machen, oder dank des Addons "Dialog-Key" einfach per LEERTASTE.</p>
-         <p>Wenn du die Quest angenommen hast, kannst du das im Chat lesen. Dort steht "Ihr habt die Quest <xyz> angenommen. Du kannst die Quest durch Drücken der Taste L ansehen. Dein Questbuch öffnet sich. Wenn du nach rechts gehst, findest du deine Quests. Lesen kannst du die Quest dann mit SHIFT + PFEIL RUNTER. Dadurch öffnet sich ein Audio-Tooltip mit den Questinformationen. Halte dabei SHIFT so lange fest, wie du die Questinformationen lesen möchtest. Um abschnittsweise statt Zeilenweise zu lesen, kannst du STRG + SHIFT + PFEIL RUNTER/HOCH drücken. Wenn du die Quest erledigen möchtest, gehe im Menü nach rechts und dann entweder auf "Ziel", falls du etwas erledigen sollst (z. B. Wölfe töten) oder auf "Abgabe", falls du nur zu einem anderen NPC laufen sollst. Im Untermenü kannst du dann wieder eine Navigation zum jeweiligen Zielpunkt starten.</p>
-         <p>Wenn du eine Aufgabe bekommst, die von dir verlangt, dass du etwas sammeln sollst, dann kann es sein, dass es sich um Beute (Drops) von Kreaturen (Mobs) oder Objekte in der Spielwelt handelt.</p>
-         <p>Beute findest du beim Plündern toter Kreaturen. Du tötest einen Wolf und nachdem er gestorben ist, springt er aus deinem Ziel. Mit der Taste H bekommst du ihn wieder ins Ziel. Mit G läuft dein Char zur Leiche und entnimmt die Beute.</p>
-         <p>Objekte in der Spielwelt musst du mit Rechtsklick anklicken. Dafür musst du mit der Navigation sehr genau auf die Position des Objekts kommen, sodass der einzusammelnde Gegenstand unter dem Mauspfeil ist. Der Mauspfeil kann über das Addon an 3 Positionen platziert werden. Einmal direkt zu deinen Füßen (NUMMERNBLOCK 7), oder knapp vor deinen Füßen (NUMMERNBLOCK 8) und etwas weiter vor dir (NUMMERNBLOCK 9). NUMMERNBLOCK 9 ist auch geeignet, um Gegenstände von Tischen etc. zu nehmen.</p>
-      <h4>Klassenlehrer und Aktionsleistens</h4>
-         <p>Erledige nun Quests und nimm neue Quests an. Wenn du es auf Level 2 geschafft hast, führt dich eine Quest zu deinem Klassenlehrer. Dort kannst du bei jedem Levelaufstieg mit gerader Zahl, also 2, 4, 6 usw, neue Fähigkeiten erlernen. Eine Quest sollte dich irgendwann automatisch zu diesem Klassenlehrer führen.</p>
-         <p>Wenn du den Klassenlehrer ansprichst, kannst du mit LEERTASTE in das Unterfenster gelangen. Gehe einmal nach rechts. Nun findest du alle erlernbaren Fähigkeiten, wenn du nach unten gehst. Du kannst auf "Ausbilden" klicken und die ausgewählte Fähigkeit erlernen. Wenn du keine Fähigkeit ausgewählt hast, wird automatisch die oberste erlernt. Wenn es also 3 Dinge zu lernen gibt, kannst du dreimal auf "Ausbilden" klicken und alle lernen, ohne sie anwählen zu müssen.</p>
-         <p>Die neuen Fähigkeiten kannst du auf deine Aktionsleisten legen. Mit SHIFT + F11 öffnest du das Audiomenü bei den Aktionsleisten-Einstellungen. Geh nach rechts und wähle den Auktionsleisten-Button aus, den du belegen möchtest (am besten einen bisher leeren). Gehe bei diesem Button dann nach rechts. In der Unterstruktur findest du "Allgemeine Fähigkeiten, in denen du später auch deine Berufe findest, drei Spezialisierungen deiner Klasse, in die deine Zauber einsortiert werden, und Gegenstände sowie Makros. Außerdem kannst du in diesem Menü auch die Tastenbelegung für den Auktionsleisten-Button verändern.</p>
-      <h4>Taschen</h4>
-         <p>Deine Taschen kannst du mit der Taste B öffnen. Du musst im Menü nach rechts, dann einmal runter und dann wieder nach rechts. Dann bist du in der Tasche. Wenn du mehrere Taschen angelegt hast, findest du hier dann Untermenüs mit den einzelnen Behältern.</p>
-         <p>Den Tooltip eines Gegenstandes kannst du, wie überall im Audiomenü, mit SHIFT + PFEIL RUNTER lesen.</p>
-         <p>Auf Gegenstände in der Tasche kannst du mit links und rechts klicken. Mit einem Rechtsklick löst du das Interagieren aus. Gegenstände werden durch Interagieren gegessen, getrunken, angezogen, oder verkauft (falls gleichzeitig ein Händlerfenster offen ist). Wenn die Bank offen ist, verschiebst du den Gegenstand mit Interagieren in die Bank. </p>
-         <p>Mit linksklick heftest du den Gegenstand hingegen an den Mauspfeil. Du kannst dann ein neuen Platz in deinen Taschen suchen und den Gegenstand mit einem erneuten Linksklick dort ablegen.</p>
-      <h4>Händler</h4>
-         <p>Wenn du einen Händler ansprichst, befindest du dich in einem Audiomenü mit zwei Untermenüs. Oben ist der Händler. Wenn du nach rechts gehst, siehst du die Struktur mit dem, was er verkauft. Wenn du in der ersten Struktur nach unten gehst, findest du deine Taschen. Wenn du dann in den Taschen einen Rechtsklick auslöst, verkaufst du Gegenstände.</p>
-         <p>Das sollte fürs Erste reichen. Wir wünschen dir viel Spaß!</p>
 
       </article>
 
       <article>
          <h2>Hilfe, ich weiß nicht weiter</h2>
          <p>Es gibt sehr viele weitere Funktionen in WoW und im Sku-Addon und viele Lösungen für Herausforderungen im Spiel. </p>
+         <p>Das Video-Tutorial von Sku beschreibt für absolute Anfänger wie du WoW mit dem Sku-Addon spielst:<br>
+            <a href="https://www.youtube.com/playlist?list=PLOVqRfp5UchsQ4BWWl7PTLXIbC9N4JkHC">https://www.youtube.com/playlist?list=PLOVqRfp5UchsQ4BWWl7PTLXIbC9N4JkHC</a>
+         </p>
          <p>Du kannst außerdem jederzeit auf den Discord Server unserer "Fluegel an Fluegel"-Gilde kommen:<br>
             <a href="https://discord.gg/bDX9hgH39z">https://discord.gg/bDX9hgH39z</a><br>
             Dort ist fast immer jemand anwesend, der dir helfen und Fragen zum Spiel beantworten kann.</p>
          <p>Falls du Fragen oder Probleme mit dem Sku-Addon hast, findest du auf dem Discord-Server zum Sku-Addon Hilfe:<br><a href="https://discord.gg/AzFwTDmpbk">https://discord.gg/AzFwTDmpbk</a><br>
             Dort wirst du auch auf Updates hingewiesen.</p>
-         <p>Sie dir gern die Videos im Youtube-Kanal von Sku/Kai an:<br>
-            <a href="https://www.youtube.com/channel/UCXkjxEgdNQ6-BkH-XuBQOCQ">https://www.youtube.com/channel/UCXkjxEgdNQ6-BkH-XuBQOCQ</a><br>
-            Er zeigt dort viele Dinge im Spiel und im Sku-Addon.</p>
          
       </article>
       <article>
@@ -444,7 +406,7 @@
          <li><p>Sku-Downloadseite:<br><a href="https://duugu.github.io/Sku">https://duugu.github.io/Sku</a> <br>Dort findest du immer die neuen Versionen aller Sku-Addons sowie Informationen über Neuerungen und Fehlerkorrekturen</p></li>
       <li><p>Sku-Addon Discord:<br><a href="https://discord.gg/AzFwTDmpbk">https://discord.gg/AzFwTDmpbk</a> <br>Das ist der Discord-Server für alles rund um das Sku-Addon</p></li>
       <li><p>Fluegel an Fluegel Discord:<br><a href="https://discord.gg/bDX9hgH39z">https://discord.gg/bDX9hgH39z</a> <br>Das ist der Discord-Server unserer Gilde auf Lakeshire</p></li>
-      <li><p>Youtube-Kanal:<br><a href="https://www.youtube.com/channel/UCXkjxEgdNQ6-BkH-XuBQOCQ">https://www.youtube.com/channel/UCXkjxEgdNQ6-BkH-XuBQOCQ</a> <br>Das ist der Youtube-Kanal von Sku/Kai, auf dem er Tipps zum Spielen von WoW und zum Sku-Addon gibt</p></li>
+      <li><p>Video-Tutorial von Sku:<br><a href="https://www.youtube.com/playlist?list=PLOVqRfp5UchsQ4BWWl7PTLXIbC9N4JkHC">https://www.youtube.com/playlist?list=PLOVqRfp5UchsQ4BWWl7PTLXIbC9N4JkHC</a></p></li>
    </ul>
 </aside>
 
