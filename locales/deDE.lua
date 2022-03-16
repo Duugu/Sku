@@ -569,6 +569,7 @@ L["Ausgewählt: "] = "Ausgewählt: "
 L["Schließen"] = "Schließen"
 L["Derzeitiger Begleiter"] = "Derzeitiger Begleiter"
 L["Stall 1 "] = "Stall 1 "---stable slot
+L["Stall 1"] = "Stall 1"---stable slot
 L["Stall 2"] = "Stall 2"
 L["Weiteren Platz kaufen"] = "Weiteren Platz kaufen"
 L["Schließen"] = "Schließen"
@@ -595,6 +596,7 @@ L["Belegung gelöscht"] = "Belegung gelöscht"
 L["Auktionshaus"] = "Auktionshaus"
 L["Neue Reichweite verfügbar"] = "Neue Reichweite verfügbar"
 L["nah "] = "nah "---distances
+L["nah"] = "nah "---distances
 L["weit"] = "weit"
 L["Der Südstrom"] = "Der Südstrom"---tPlayerUIMap = 1413---> use exact zone names from game
 L["Die Höhlen des Wehklagens"] = "Die Höhlen des Wehklagens"---tPlayerUIMap = 1413---> use exact zone names from game

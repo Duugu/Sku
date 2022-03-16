@@ -148,10 +148,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 
 
 	local noSubText
-	if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName("target", false)) then
-		tUnitName = L["dein begleiter"]
-		noSubText = true
-	end
+
 
 	if UnitIsPlayer("target") then
 		if UnitIsFriend("player", "target") then
@@ -165,7 +162,10 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 		tUnitName = L["fremder begleiter"]
 		noSubText = true
 	end
-
+	if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName("target", false)) then
+		tUnitName = L["dein begleiter"]
+		noSubText = true
+	end
 	if GetUnitName("target", false) == GetUnitName("player", false) then
 		tUnitName = L["du selbst"]
 		noSubText = true

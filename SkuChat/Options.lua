@@ -152,7 +152,7 @@ SkuChat.options = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuChat.defaults = {
 	enable = true,
-	audio = false,
+	audio = true,
 	WowTtsVoice = 1,
 	WowTtsSpeed = 3,
 	WowTtsVolume = 50,

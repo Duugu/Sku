@@ -240,7 +240,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 6,
 		},
 		["TOGGLEAUTORUN"] = {
-			["key1"] = "NUMLOCK",
+			["key1"] = "ALT-W",
 			["index"] = 11,
 			["key2"] = "BUTTON4",
 		},

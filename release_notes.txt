@@ -2,6 +2,32 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Changes in release 25.8
+
+	SkuChat
+		- The addon now leaves the Looking For Group channel on first login.
+		- Changed the default value for "Sound on chat message" to "On".
+
+	SkuCore
+		- Fixed a bug with missing option to choose a reward for some quests with multiple rewards.
+		- Fixed a bug with missing "auto loot" and other default settings.
+		- Changed "toggle auto run" in Sku default key bindings from numlock to "ALT + W".
+		- Fixed a bug with constant "Pet happy" message spam. 
+		- Fixed an issue with new messages if the chat is open.
+
+	SkuMob
+		- Your pet / companion now should be read as "your companion" (instead of "other companion").
+
+	SkuNav:
+		- Added faction areas for Horde and Alliance to Kalimdor and Eastern Kingdoms.
+		- Added the newest map data for english and german.
+		- Fixed an issue with missing audio for "nah" (German only).
+		- Fixed an issue with zone "The Dead Scar" / "Die Todesschneise"
+
+	SkuOptions:
+		- Changed the default values for "Speak menu numbers" and "Announce submenus" in "SkuOptions > Options" to "On".
+		
 
 -------------------------------------------------------------------------------------------------------	
 Changes in release 25.7

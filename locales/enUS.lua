@@ -570,6 +570,7 @@ L["Ausgewählt: "]  = "Selected: " --
 L["Schließen"]  = "Close" --
 L["Derzeitiger Begleiter"]  = "Current pet" --
 L["Stall 1 "]  = "Stable 1 " ---stable slot
+L["Stall 1"]  = "Stable 1" ---stable slot
 L["Stall 2"]  = "Stable 2" --
 L["Weiteren Platz kaufen"]  = "Buy another slot" --
 L["Schließen"]  = "Close" --

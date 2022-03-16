@@ -634,7 +634,7 @@ function SkuCore:OnEnable()
 				SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
 				if SkuCoreOldPetHappinessCounter > 15 then
 					local happiness, damagePercentage, loyaltyRate = GetPetHappiness()
-					if happiness and happiness ~= 3 then
+					if happiness and (happiness == 1 or happiness == 2) then
 						SkuOptions.Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)
 						SkuCoreOldPetHappinessCounter = 0
 					end
@@ -1411,6 +1411,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				C_CVar.GetCVar("removeChatDelay", "1")
 	
 				SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+
+				LeaveChannelByName("LookingForGroup")
+				LeaveChannelByName("SucheNachGruppe")				
 			end)			
 
 			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
@@ -1504,6 +1507,24 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
 	end
 
+	C_Timer.After(6, function()
+		TRAINER_FILTER_AVAILABLE = 1 
+		TRAINER_FILTER_UNAVAILABLE = 0 
+		TRAINER_FILTER_USED = 0
+		SetActionBarToggles(1,1,1,1,1) 
+		SHOW_MULTI_ACTIONBAR_1 = 1 
+		SHOW_MULTI_ACTIONBAR_2 = 1 
+		SHOW_MULTI_ACTIONBAR_3 = 1 
+		SHOW_MULTI_ACTIONBAR_4 = 1 
+		MultiActionBar_Update() 
+		UIParent_ManageFramePositions() 
+
+		C_CVar.SetCVar("instantQuestText", "1")
+		C_CVar.SetCVar("autoLootDefault", "1")
+		C_CVar.SetCVar("alwaysShowActionBars", "1")
+		C_CVar.SetCVar("cameraSmoothStyle", "2")
+		C_CVar.GetCVar("removeChatDelay", "1")
+	end)			
 	
 end
 
@@ -1901,7 +1922,7 @@ end
 local function IterateChildren(t, tab)
 	local tResults = {}
 
-	--dprint(tab, "Regions of", GetTableID(t), t:GetName())
+	dprint(tab, "Regions of", GetTableID(t), t:GetName())
 	if t.GetRegions then
 		local dtc = { t:GetRegions() }
 		for x = 1, #dtc do
@@ -1930,7 +1951,7 @@ local function IterateChildren(t, tab)
 						end
 					end
 
-					local tChildsResult = IterateChildren(dtc[x], tab.."-")
+					local tChildsResult = IterateChildren(dtc[x], tab.."  ")
 					if #tChildsResult == 1 then
 						tResults[fName].childs = tChildsResult[tChildsResult[1]].childs
 					elseif #tChildsResult > 1 then
@@ -2072,18 +2093,20 @@ local function IterateChildren(t, tab)
 
 						--iterate children if there are any
 						if dtc[x] then
-							if (dtc[x]:GetNumRegions() + dtc[x]:GetNumChildren()) > 0 then
-								local tChildsResult = IterateChildren(dtc[x], tab.."-")
-								--if there is only one child, set its content directly to this item; except it's a money frame, then there may just one item
-								if #tChildsResult == 1 and not string.find(fName, "Money") then
-									--dprint("+++++ #tChildsResult == 1")
-									tResults[fName].childs = tChildsResult[tChildsResult[1]].childs
-								--otherwise add them to childs
-								elseif #tChildsResult > 1 or string.find(fName, "Money") then
-									--dprint("+++++ #tChildsResult > 1")
-									tResults[fName].childs = tChildsResult
+							if not tResults[fName].func then
+								if (dtc[x]:GetNumRegions() + dtc[x]:GetNumChildren()) > 0 then
+									local tChildsResult = IterateChildren(dtc[x], tab.."  ")
+									--if there is only one child, set its content directly to this item; except it's a money frame, then there may just one item
+									if #tChildsResult == 1 and not string.find(fName, "Money") then
+										dprint(tab, "+++++ #tChildsResult == 1")
+										tResults[fName].childs = tChildsResult[tChildsResult[1]].childs
+									--otherwise add them to childs
+									elseif #tChildsResult > 1 or string.find(fName, "Money") then
+										dprint(tab, "+++++ #tChildsResult > 1")
+										tResults[fName].childs = tChildsResult
+									end
 								end
-							end
+							end							
 						end
 
 						--check if there are buttons w/o text and childs with string in first item
@@ -2156,7 +2179,8 @@ local function IterateChildren(t, tab)
 								end
 							end
 						end
-						if string.find(fName, "ContainerFrame") or string.find(fName, "ItemButton") then
+
+						if string.find(fName, "ContainerFrame") or string.find(fName, "ItemButton") or string.find(fName, "QuestInfoItem")  then
 							if _G[fName.."Count"] and not _G[fName].info then
 								if tResults[fName] and _G[fName.."Count"]:GetText() then
 									if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") then

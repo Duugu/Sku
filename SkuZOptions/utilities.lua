@@ -392,6 +392,37 @@ local tAdditionalTranslations = {
 	["Jäger:Jäger haben den Vorteil, das sie aus der Ferne kämpfen können. Allerdings funktioniert die Fernwaffe erst bei einem Abstand von mindestens 8 Metern.Dazu braucht es noch die Munition. Am Anfang bis Level 10 sind daher die Jäger nicht einfach zu spielen. Erst mit einem gezähmten Tier, wird der Jäger zu einer einfachen Klasse.Mit seinem Tier auch gut alleine spielbar, Sie tragen Leder oder später auch KettenrsütungenSuche nun den \"Zentralpunkt Eisklammtal\""] = "",
 	["Zauberklassen: Diese verbrauchen Mana um die Zauber wirken zu lassen. Je nach dem brauchen sie mehrere Sekunden Zauberzeit.Der Schaden ist magisch. Daher entweder Feuer, Eis, Arkan, Schatten, Natur oder Heilig -Schaden.Manche Gegner haben gegen bestimmte Magiearten eine Resistenz, oder sind völlig immun dagegen. Ab lvl 5 umbedingt von einem Verzauberer einen Zauberstab machen lassen, um auch ohne Mana Schaden machen zu können. "] = "",
 	["Hexer:Hexer sind änlich wie Magier auf ihr Mana angewiesen, das sie später durch Aderlass auch aus dem Leben gewinnen können.Sie haben wie auch die Jäger einen Begleiter, der sie unterstützen kann.Suche nun den \"Zentralpunkt Eisklammtal\""] = "",
+
+	["Hier springen um rauf zu kommen !"] = "Jump here to get to the upper point",
+	["Warnung: Lifte können tödlich sein. Sicherer sind Gneis Wege!"] = " ",
+	["Zauberklassen: Diese verbrauchen Mana um die Zauber wirken zu lassen. Je nach dem brauchen sie mehrere Sekunden Zauberzeit.Der Schaden ist magisch. Daher entweder Feuer, Eis, Arkan, Schatten, Natur oder Heilig -Schaden.Manche Gegner haben gegen bestimmte Magiearten eine Resistenz, oder sind völlig immun dagegen. Ab lvl 5 umbedingt von einem Verzauberer einen Zauberstab machen lassen, um auch ohne Mana Schaden machen zu können.  "] = " ",
+	["Bitte die Translokationskugel benutzen um das Stockwerk zu wechseln"] = "Use the translocation sphere to be teleported.",
+	["Ab hier musst du extrem vorsichtig sein. Brücke, Schlucht und Tod lauern."] = "Be extremely careful from here on. There is a bridge. Don't fall down.",
+	["Ein- und Ausgang Schlucht"] = "Entrance and exit of the gorge",
+	["rettungspunkt unten schlucht 1"] = "Rescue point at the bottom of gorge 1",
+	["Fahrstuhleingang mitte unten. Bei Route in den Fahrstuhl: Ignoriere den Fahrstuhl einfach. Lauf von hier geradeaus weiter, egal ob der Fahrstuhl da ist. Du fällst eine Etage nach unten und erreichst dort den Fahrstuhleingang unten, von dem du normal die Route weiter läufst. "] = "Elevator entry lower middle. If you are on a route into the elevator: Just ignore the elevator. Run straight ahead from here, regardless of whether the elevator is there. You will fall down one floor and reach the elevator entrance at the bottom. Continue the route from there. ",
+	["Vorsicht! Nach Süden geht es über eine schmale Brücke. Nach Osten geh es am Rand einer Schlucht entlang. Nach Norden ist eine sichere Straße."] = "Caution. To the south you will cross a very narrow bridge. To the east you walk along the edge of a gorge. To the north is a safe road.",
+	["Vorsicht: Extrem schmale Brücke mit Schlucht!"] = "Caution: Extremely narrow bridge.",
+	["Um das Tor für die Zerschmetternden Hallen aufzumachen, brauchst du einen Schlüssel."] = " ",
+	["Vorsicht! Ab hier geht es auf diesem Weg im Uhrzeigersinn um eine Schlucht herum. Du läufst am Rand. Präzise laufen!"] = "Caution. From here on this route is a the edge of a gorge. Move very precisely!",
+	["Achtung: Ab hier zum nächsten Punkt springen!"] = "Attention: From here jump to the next point!",
+	["rettungspunkt unten schlucht"] = "rescue point at the bottom of the gorge",
+	["Vorsicht. Extrem schmale Brücke mit Schlucht."] = "Caution. Extremely narrow bridge. Don't fall down.",
+	["Hier ist der Höhleneingang"] = "Here is the cave entrance",
+	["Nächster Punkt ist der Fahrstuhleingang. Der Fahrstuhl hat vier Haltestellen: unten, mitte unten, mitte oben, oben. Er macht beim Ankommen ein lautes Knallgeräusch. Beim Abfahren ein Heulgeräusch. Im Fahrstuhl gibt es ein dauerhaftes Maschinengeräusch. Die Maschine befindet sich zwischen Mitte unten und Mitte oben. Lautstärke an den Haltestellen: unten leises Geräusch, mitte unten und mitte oben laut, oben kein Geräusch."] = "Next waypoint is the elevator entrance. The elevator has four stops: bottom, lower middle, upper middle, top. It makes a loud banging noise when arriving. When departing, it makes a howling noise. There is a constant machine noise in the elevator. The machine is between lower middle and upper middle. Volume at the stops: bottom quiet noise, lower middle and upper middle loud, top no noise.",
+	["Östlicher Ein- und Ausgang Schlucht"] = "Eastern entrance and exit of the gorge",
+	["Hier auf den Lift warten !"] = "Wait for the elevator here",
+	["Steinbruchtor. Klicken zum Öffnen."] = "Gate. Click to open.",
+	["Hier das Questitem einsetzen !"] = "Put the questitem here",
+	["Inneres Portal des Sanktums"] = "Inner portal of the sanctum",
+	["Hier auf den Zeppelin warten !"] = "Wait for the zeppelin here",
+	["Hier kommt der Teleportpunkt aus der Höhle zu Haleh. Einfach ab hier ein paar Schritte vorlaufen."] = "Next is the teleport waypoint to Haleh. Just walk a few steps forward from here.",
+	["Um den Schlüssel für dieses Tor zu bekommen, musst du Margol töten und das Horn holen."] = "To get the key for this gate you have to kill Margol and get the horn.",
+	["Unterer höhleneingang"] = "Lower cave entrance",
+	["Fahrstuhleingang unten. Bei Route in den Fahrstuhl: Warte, bis das Knallgeräusch vom ankommenden Fahrstuhl direkt vor dir zu hören ist (maximal laut). Geh zum nächsten Punkt, der im Fahrstuhl ist. Fahr nur eine Etage hoch bis mitte unten. Geh dann geradeaus wieder aus dem Fahrstuhl raus zum Fahrstuhleingang mitte unten."] = "Elevator entrance at the bottom. If you're on a route into elevator: wait until you hear the slamming sound from the arriving elevator right in front of you (maximum volume). Move to the next point, which is in the elevator. Ride one floor up to the lower middle floor. Then move straight out of the elevator to the waypoint elevator entrance lower middle.",
+	["Achtung, gleich springen!"] = "Be careful, you need to jump at next waypoint!",
+	["Vorsicht! Nach Norden geht es über eine enge Brücke. Nach Osten geht es gegen den Urhzeigersinn an einer einem Schluchtrand entlang. Nach Westen geht es im Uhrzeigersinn am Schluchtrand entlang."] = "Be careful! To the south you will cross a very narrow bridge. To the east you walk along the edge of a gorge. To the west you walk along the edge of a gorge too.",
+	
 }
 
 
@@ -701,6 +732,14 @@ function SkuObjectResourceNamesDeToEn()
 	end)	
 end
 
+
+
+
+
+
+
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- rt link data
 local tSkuCoroutineControlFrameOnUpdateTimer = 0
@@ -800,6 +839,7 @@ function SkuRtWpDataDeToEn()
 			if tCoCompleted == false then
 				print("completed")
 				tCoCompleted = true
+				--SkuRtLinkDataDeToEn()
 			end
 		end
 

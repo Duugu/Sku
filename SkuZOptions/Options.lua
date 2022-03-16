@@ -258,8 +258,8 @@ SkuOptions.options = {
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuOptions.defaults = {
-	vocalizeMenuNumbers = false,
-	vocalizeSubmenus = false,
+	vocalizeMenuNumbers = true,
+	vocalizeSubmenus = true,
 	TTSSepPause = 85,
 	backgroundSound = "silence.mp3",
 	localActive = true,
