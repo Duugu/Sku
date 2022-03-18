@@ -17,171 +17,171 @@
       <a href="https://discord.gg/AzFwTDmpbk">https://discord.gg/AzFwTDmpbk</a>
       </p>
 
- <nav>
-<ul>
-<li><a href="#c1">Known issues/bugs</a></li>
-<ul>
-<li><a href="#c1s1">Why did the addon suddenly stopped reading the chat?</a></li>
-</ul>
-<li><a href="#c2">Installation, setup, server selection, character creation</a></li>
-<ul>
-<li><a href="#c2s1">What game version we're playing?</a></li>
-<li><a href="#c2s2">Can I use a starter account to test the game for free?</a></li>
-<li><a href="#c2s3">Which server / realm should I choose to play on?</a></li>
-<li><a href="#c2s4">Is there a setup guide for Mac users?</a></li>
-<li><a href="#c2s5">Can I play on all servers / realms? Even spanish or brazil?</a></li>
-<li><a href="#c2s6">Why is the script constantly switching to Login mode?</a></li>
-<li><a href="#c2s7">Is the TTS speed adjustable?</a></li>
-<li><a href="#c2s8">Why is the Range menu empty?</a></li>
-<li><a href="#c2s9">What is the Skufluegel addon?</a></li>
-<li><a href="#c2s10">How do I end the login / gaming script?</a></li>
-<li><a href="#c2s11">How do I delete characters?</a></li>
-<li><a href="#c2s12">Where can I update the addons?</a></li>
-<li><a href="#c2s13">Do I need a numpad to use the addon / play the game?</a></li>
-<li><a href="#c2s14">Can I change the key bindings from NUMPAD 7-9 to something else?</a></li>
-</ul>
-<li><a href="#c3">General gameplay</a></li>
-<ul>
-<li><a href="#c3s1">Where do I get details on my current HP / mana?</a></li>
-<li><a href="#c3s2">How to I collect objects in the game world (like cactus apples)?</a></li>
-<li><a href="#c3s3">How / where do I repair my equipment?</a></li>
-<li><a href="#c3s4">How do I find available quests?</a></li>
-<li><a href="#c3s5">How to I get my current distance to an NPC / creature?</a></li>
-<li><a href="#c3s6">Where do I get details on what abilities are on my action bars and how to I customise that?</a></li>
-<li><a href="#c3s7">What is that "attack" ability on my action bar and how is it working?</a></li>
-<li><a href="#c3s8">How do I find a merchant to sell or buy stuff?</a></li>
-<li><a href="#c3s9">How do I leave a chat channel?</a></li>
-</ul>
-<li><a href="#c4">Navigation</a></li>
-<ul>
-<li><a href="#c4s1">How do I navigate using waypoints, routes and close routes?</a></li>
-<li><a href="#c4s2">I died. What now?</a></li>
-<li><a href="#c4s3">I've accidentally closed the "Resurrect" popup at my corpse. What now?</a></li>
-<li><a href="#c4s4">I've accidentally closed the "release spirit" popup after dying. What now?</a></li>
-<li><a href="#c4s5">I've navigated to a waypoint, but there isn't any NPC, creature, etc. I can't target anything.</a></li>
-</ul>
-<li><a href="#c5">Combat, looting</a></li>
-<ul>
-<li><a href="#c5s1">How do I loot creatures after killing them?</a></li>
-<li><a href="#c5s2">How do I know what I've just looted?</a></li>
-</ul>
-</ul>
- </nav>
-<article>
-<h1 id="c1">Known issues/bugs</h1>
-<h2 id="c1s1">Why did the addon suddenly stopped reading the chat?</h2>
-<p>There is a bug within the Blizzard TTS implementation (that one is used to read the chat). It should be solved by just leaving the WoW client window and get back to it again. You don't need to close the client. Just change the focus to something else (desktop, application, whataver) and back to wow.</p>
-<h1 id="c2">Installation, setup, server selection, character creation</h1>
-<h2 id="c2s1">What game version we're playing?</h2>
-<p>We're playing "WoW The Burning Crusade Classic". NOT "Warcraft Classic" or "Retail" (that is named just "World of Warcraft"). The addon is only for "WoW The Burning Crusade Classic". You can't use it with any other game version.</p>
-<h2 id="c2s2">Can I use a starter account to test the game for free?</h2>
-<p>No, you can't. With the free starter account you can play/test the Retail game version only. You can't access to what we're playing ("WoW The Burning Crusade Classic"). You need a payed subscription for that.</p>
-<h2 id="c2s3">Which server / realm should I choose to play on?</h2>
-<p>Most blind players are on "US East Pagle" (Horde)</p>
-<p>German EU players are on "Germany &gt; Lakeshire" (Alliance)</p>
-<h2 id="c2s4">Is there a setup guide for Mac users?</h2>
-<p>At the moment not, sorry. We're working on that. You need to use the guide for windows and adapt that for Mac.</p>
-<h2 id="c2s5">Can I play on all servers / realms? Even spanish or brazil?</h2>
-<p>Yes, if you set your client language to "English". The server language doesn't matter.</p>
-<h2 id="c2s6">Why is the script constantly switching to Login mode?</h2>
-<p>The script is quite complex and bascially has no information on what's actually happening in your wow game window. It is constantly testing a bunch of specific pixels and there colors in the game window, to get an idea on where you actually are in that window (login, character selection, in the game, etc.).</p>
-<p>There are numerous reasons why those checks could fail. There could be overlays from recording software or screenreaders, there could be unsupported screen resolutions, and many other things, that lead to scenarios where the script can't detect those pixels and fails to detect the game window or its state.</p>
-<p>First of all, please try to start the game first, and then the script. That often leads to better results.</p>
-<p>If that doesn't help, please try to disable everything that could block the game window from being fully visible. An example are those weather, time, etc. widgets in Windows 11. The are covering parts of the parts of the game that the scrpt is using to check for pixels. The script won't detect the pixels, assumes you're not in the game world, and swiches to login.</p>
-<h2 id="c2s7">Is the TTS speed adjustable?</h2>
-<p>There are two different TTS "engines" in the game. </p>
-<p>The first one is our internal TTS, which is used for almost everything. For example for the audio menu, for reading quest text, etc. To adjust the speed of that go to "SkuOptions &gt; Options &gt; TTS speed" and change the number there. That number is the length of the silent gap between words. The default value is 85. With 65 there will be almost no gap between words. Values below 65 most probably will end up in a big, fat mess. The TTS speed will change after you have selected a new value and pressed enter on it.</p>
-<p>The second TTS engine is the Blizzard engine. That one is used for Chat (SHIFT + F2) and the Overview page (SHIFT + DOWN). To change the speed of that engine go to "SkuChat &gt; Options &gt; TTS speed" and change that value. Higher values are faster.</p>
-<h2 id="c2s8">Why is the Range menu empty?</h2>
-<p>After login the addon needs up to one minute to calculate the available ranges. Until that is completed the menu is empty. The Range menu will show available range if the calculation is completed. You will here the addon saying "New range" if that happens. </p>
-<h2 id="c2s9">What is the Skufluegel addon?</h2>
-<p>Skufluegel is an addon for sighted players that supports them in playing with visually impaird / blind players. That addon shows the sighted player what you're doing (looting, following, interacting, etc.) and provides them an option to remotly set you on follow. Just let them download the addon. There is a readme.txt file in that download, explaining the features.</p>
-<h2 id="c2s10">How do I end the login / gaming script?</h2>
-<p>Press ALT + ESC. There's no audio feedback. The script task is just killed.</p>
-<h2 id="c2s11">How do I delete characters?</h2>
-<p>You can't delete characters at the moment. Adding an option to that that via the login script is on our to do list, but it may take a while until that feature is available.</p>
-<h2 id="c2s12">Where can I update the addons?</h2>
-<p>The update download page is: https://duugu.github.io/Sku </p>
-<p>There are automated notifications in the Discord channel "Sku updates" (https://discord.com/channels/944053322434879628/944061589420662825) on every new release.</p>
-<h2 id="c2s13">Do I need a numpad to use the addon / play the game?</h2>
-<p>Yes, you do. An example why that is mandatory is in "How to I collect objects in the game world (like cactus apples)?".</p>
-<h2 id="c2s14">Can I change the key bindings from NUMPAD 7-9 to something else?</h2>
-<p>You can't, sorry.</p>
-<h1 id="c3">General gameplay</h1>
-<h2 id="c3s1">Where do I get details on my current HP / mana?</h2>
-<p>You should have enabled the addon "audio qs" during setup. It should start saying "one, one, one" if you're losing HP. The faster that "one, one, one" is, the lower your HP. Mana should be announced by the same addon, in steps of 90, 70, 50, 30 and 10 percent.</p>
-<p>To manually check you HP / mana, press SHIFT + DOWN to open the overview page (you need to have the menu closed to have that working). Hold shift and repeatingly press DOWN to get to the "General" section. You HP and Mana should be in that section.</p>
-<h2 id="c3s2">How to I collect objects in the game world (like cactus apples)?</h2>
-<p>Collecting objects in the game world is a bit challenging. It's trial and error.
-<p>First, use a waypoint to that object (there are waypoints to all objects in the game) to navigate to its position. At the destination, press NUMPAD 7 to do a right click in front of your character in the game world. If you're lucky (and navigated carefully), that right click sould hit the object and start collecting it. If that happens, the addon will say "Cast" (collection objects in the game world are actually casts). Wait for the object to be collected (you hear the item being added to your bag).</p>
-<p>If you're not lucky (and that will usually be the case) the object isn't exactly at the point the script is clicking on with NUMPAD 7. It's probabyl slightly above, or below, or left, or right. Use NUMPAD 8 to click again. NUMPAD 8 just clicks a bit above the point of NUMPAD 7. If nothing happens, use NUMPAD 9. That again is a bit above the point of NUMPAD 8.</p>
-<p>Important: Do not spam NUMPAD 7-9. Those clicks do take a few milliseconds. If you're spamming those buttons you never will get that item. Press NUMPAD 7, wait a second, press NUMPAD 8, and so one.</p>
-<p>If neither of those clicks successfully you need to start turning around in very small steps, and try clicking with NUMPAD 7-9 again. Repeat that (turn a few degrees, click), until you hear "Cast".</p>
-<p>If you aren't successfully, no matter how you're turning and clicking, there most probably is no item to collect. The waypoints for those items are not showing the items. Those waypoints are just spawn points. That means, there COULD be an item at that points. But it doesen't have to be there. If someone else collected that item at that waypoint before you, then it may take a while until the items respawns. In those cases just open the audio menu and navigate to another waypoint for that object. Most objects do have many spawn points.</p>
-<h2 id="c3s3">How / where do I repair my equipment?</h2>
-<p>Most weapon/armor vendors do repair. Usually you don't need to do that manually. It enough to get to such a merchant and interact with it. The addon automatically repairs your stuff if you're interacting with a merchant who provides an option to repair. If you have enough money. </p>
-<p>To find such a merchant look for waypoints with "armor", "weapon", "smith", etc. added to the vendors name. Then follow the route to that merchant.</p>
-<p>If you would like to manually repair, interact with such a merchant, and find the "Repair" option in the audio menu. </p>
-<p>Important: There are some "fake" waypoints for merchants and trainers in the lists (long story, Blizzards fault in short 😊). Those waypoints are not real NPCs. However, they are easy to recognize. ALL real NPCs do have names. A first name and a last name, or just a first name. But there always is a name. Like "Cairne Bloodhoof, Weapon merchant". If you get a waypoint without a name in it (like just "Weapon merchant"), then that is a fake waypoint. Don't use it.</p>
-<h2 id="c3s4">How do I find available quests?</h2>
-<p>Open you questbook with L. The audio menu opens with your questlog selected. If you don't have any quest yet, go down to "Quest database", right to "Starts in zone", right again to "by distance" and right again. There you will find a comprehensive list of all quests you could accept on your current level, sorted by the distance to the quest giver.</p>
-<p>Select a quest, go right and choose "Quest start" to see the name of the quest giver. Go right again, and you will be able to start a route, close route or waypoint navigation to that questgiver. If you have no idea what a route is, read "How do I navigate using waypoints, routes and close routes?" first!</p>
-<h2 id="c3s5">How to I get my current distance to an NPC / creature?</h2>
-<p>There is a feature to have the distance to NPCs and creatures announced. But you do need to enable that. It's "Skucore &gt; Range". There are different settings for friendly, hostile and unkown targets. (Unkown are things like the corpse of a dead creature.)</p>
-<p>You can set up a lot of different alerts for different distances. Spoken, or just a sound. Go through those options, set sounds for the target types, and test that.</p>
-<h2 id="c3s6">Where do I get details on what abilities are on my action bars and how to I customise that?</h2>
-<p>Go to "SkuCore &gt; Action bars &gt; Main action bar". That's you first action bar (there are 6 of them). Go right to see the 12 slots of that bar and what's currently assigned to each slot.</p>
-<p>If you just started the game, there's the "attack" ability assigned to button 1. And that button 1 is bound to the keyboard key 1. What is on button 2-5 depends on your class. Just go down to see all buttons and their assigments. If you would like to know what that an action is, just read the tooltip for that button (press SHIFT + DOWN on that menu entry, hold SHIFT and repleatly press DOWN to read the text).</p>
-<p>If you would like to assign abilities to action bar slots, select the slot, and go right. Go down and you will find submenus with different categories for abilities. Choose an ability from one of the submenus, and press enter to assig that ability to the specific action bar slot.</p>
-<h2 id="c3s7">What is that "attack" ability on my action bar and how is it working?</h2>
-<p>The attack ability (default action button 1, which bound to the key 1), also named "auto attack", is a "toggle" ability for melee combat. </p>
-<p>All other abilities are single use. Press an action button with a spell, and you will cast one spell. Press an action button with food, an you will each exactly one food.</p>
-<p>"attack" is the only ability the will be toggled instead. Press the "attack" action button once to toggle melee combat on. You character will start attacking your target (if you are in melee range) and constantly keep attacking. Press the button again, to toggle "attack" to off, and your character will stop attacking.</p>
-<p>Due to that it makes no sense to "spam" that "attack" button. You just would constantly toggle the attack on and off, leading to no attacks at all. Instead, press is just once once at combat start, to enable auto attack, and just let your character do the rest.</p>
-<h2 id="c3s8">How do I find a merchant to sell or buy stuff?</h2>
-<p>Use waypoints or routes to waypoints with merchants (if you have no idea what that means, read "How to navigate using waypoints, routes and close routes" first). In waypoint lists filter for terms like "goods", "weapons", "armor", "merchant" to find merchants. </p>
-<p>Important: There are some "fake" waypoints for merchants and trainers in the lists (long story, Blizzards fault 😊). Those waypoints are not real NPCs. However, they are easy to recognize. ALL real NPCs do have names. A first name and a last name, or just a first name. But there always is a name. Like "Cairne Bloodhoof, Weapon merchant". If you get a waypoint without a name in it (like just "Weapon merchant"), then that is a fake waypoint. Don't use that.</p>
-<h2 id="c3s9">How do I leave a chat channel?</h2>
-<p>Type /leave theCannelsName. Alternatively type /leave TheChannelNumber. Use /chatinfo to list all channels and there names / numbers you're currently in.</p>
-<h1 id="c4">Navigation</h1>
-<h2 id="c4s1">How do I navigate using waypoints, routes and close routes?</h2>
-<p>There are basically tree options to navigate to destinations: routes, close routes, and waypoints.
-<h3>Waypoints</h3>
-<p>Waypoints (SHIFT + F9 or "SkuNav &gt; Waypoints &gt; Select") are just single locations. Every creature, NPC, object, etc. in the game has a waypoint with coordinates assigned to it. If you select a waypoint, a beacon will lead you in a straight line to that position. That can work, but in most cases it won't, because there are obstacles in your way and you get stuck. Buildings, fences, trees, walls and a millions of other structures. You even could be in the middle of a cave, and you destination waypoint is outside of that cave. You obvisiously can't move in a straigth line to the destination waypoint in such scenarios.</p>
-<h3>Routes</h3>
-<p>For such scenarios there are routes. Routes are paths over multiple linked waypoints. There is a very, very large network of such linked waypoints, that virtually links almost every waypoint with all other waypoints. Those routes (paths via many linked waypoints) are pre-build by sighted player with blind navigation in mind. That means they are always safe to follow. If you're using a route to you target destination, the addon leads you via those linked waypoints to that destination. There won't be any obstacles if you follow a route. The route will safely lead you around everything where you could get stuck. </p>
-<p>There are different ways start a route. Via the questlog. Or via "SkuNav &gt; Follow route &gt; Destinations by distance" (SHIFT + F10). Let's assume you're using "SkuNav &gt; Follow route &gt; Destinations by distance" to get a route to a specific destination. </p>
-<p>"SkuNav &gt; Follow route &gt; Destinations by distance" first shows an entry point. That usually is the closest waypoint to your current position that is linked to the routes network (not all waypoints are linked to the network). The menu entry could be something like "x meters, auto" or "x meters <name of some creature>". It doesn't really matter, because that's just the entry point where your route will start. Go right, and the addon shows a list of all destinations (sorted by distance) that could be reached via the network of linked waypoints from that entry point. Find your destionation in that list. Type the name of your target or a part of that name, to have the list filted, if you can't find it. Then choose the destination and press enter to start following a route to that destination.</p>
-<p>Doing that via the quest log basically is the same. Just choose a quest start, quest target, or quest end first. You will find the same thing there (an entry point and in its submenu the destinations that can be reached from there).</p>
-<p>Then the addon calculates a safe route over two or many linked waypoints to that destination. There won't be any obstacles, you won't be stuck in a cave, or whatever. Just follow the route from one waypoint to the next.</p>
-<h3>Close routes</h3>
-<p>The third option is "close routes". As stated, not all waypoints are conntected to the routes network. So, there are waypoints you can't directly get to via routes. An example for that is "Quick Waypoint 4". If you die, Quick Waypoint 4 is automatically set to the position of your corpse. It obvisiously won't be pre-linked to the network. That is what "close routes" is good for. A close route leads you via the routes network as close as possible to the unlinked destination waypoint. Then, in a last step, it leads you from there to the actual destination waypoint in a straight line. That means, it's like a route (safe to follow, no obstacles) except the very last step (one waypoint to your destionation left). That last step is just like following a waypoint. There could be obstacles if you're unlucky. However, in most cases it is doing the trick.</p>
-<p>Conclusion: Always try to use a route first. If there isn't any route to your destination, try to use a close route. If that doesn't work, OR if you are quite sure that there are no obstacles, try to use a waypoint.</p>
-<h2 id="c4s2">I died. What now?</h2>
-<p>If you're dying, and you will die a lot :D, you first need to release you spirit. The audio menu will open with a dialog to do that. ("Text: 6 Minutes until release", go down to "release spirit", got right to "left click", press enter). </p>
-<p>You then will be teleported to the next graveyard as a ghost and have two options: you can get back to your corpse to resurrect there, or you can talk to a spirit healer at the graveyard, to be resurrected right there at the graveyard.</p>
-<h3>1. Get back to your corpse</h3>
-<p>You usually will try to get back to your corpse as a ghost. For that the addon automatically sets a waypoint named "Quick waypoint 4" to the position of your corpse. You need to navigate to that waypoint. It is selected as default, and you already should hear the beacon. Do not try to follow that beacon, because it is a beacon directly to that waypoint (read "How to navigate using waypoints, routes and close routes" first if you have no idea what that means). You most probably will get stuck before you're reaching it.</p>
-<p>Use a close route to Quick Waypoint 4 instead. Press SHIFT + F9 to open the waypoint selection menu. Find "Quick waypoint 4" in that list (filter with "quick"). Move right. Do NOT select "Select", because that would start a navigation directly to that waypoint, which most probably won't work. Move down to "Close routes" instead. There move right twice to get a list of all routes that will lead you close to your corpse (Quick waypoint 4). Usually the first one is the best. Select that to start the naviation via that route to your corpse.</p>
-<p>Follow the route to your corpse. If you are getting at least 35 meter close to you corpse, the game will show a popup to resurrect. The audio menu opens, go down to "Accept", and right to "Left click". Then press enter, and you are resurrected.</p>
-<h3>2. Resurrect at the graveyard</h3>
-<p>If you die at a place with many mobs around, resurrecting at your corpse may be quite challening or even impossible. You probably will instantly be attacked by all mobs nearby and get killed again. Or you are probably died at a place where you just can't navigate back to your corpse.</p>
-<p>In such cases you can resurrect at the graveyard. However, that has some drawbacks: All of your items (even those in your bags) will take some damage (20%). That raises you repair costs. And, starting from level 11, you will get a 10 minute debuff on resurrecting at a graveyard. That debuff lowers all of your stats to a point where you basically can't fight anymore, and need to wait 10 minutes until you lost that debuff. </p>
-<p>There is an npc named "spirit healer" at each graveyard. Just target that npc (/tar spirit) and press G to interact. The audio menu opens, showing a dialog. Go right, down, right, down, right, down to "Return me to life.". Go right to "Left click" and press ENTER to use that. The game warns you twice that there are drawbacks. Go down to "Accept" and right to "Left click", to confirm that. Do that again to confirm the second warning, and you are resurrected.</p>
-<h2 id="c4s3">I've accidentally closed the "Resurrect" popup at my corpse. What now?</h2>
-<p>Move more than 35 meter away from your corpse (press CTRL + ALT to get the distance to it), and then move back to the corpse. The resurrect popup should appear again. Or, just use /reload. The popup should be there after the reload.</p>
-<h2 id="c4s4">I've accidentally closed the "release spirit" popup after dying. What now?</h2>
-<p>Open the chat, enter "/script RepopMe()" and press ENTER to automatically release you spirit. Alternatetively use /reload.</p>
-<h2 id="c4s5">I've navigated to a waypoint, but there isn't any NPC, creature, etc. I can't target anything.</h2>
-<p>There are some "fake" waypoints for merchants and trainers in the lists (long story, Blizzards fault in short 😊). Those waypoints are not real NPCs. However, they are easy to recognize. ALL real NPCs do have names. A first name and a last name, or just a first name. But there always is a name. Like "Cairne Bloodhoof, Weapon merchant". If you get a waypoint without a name in it (like just "Weapon merchant"), then that is a fake waypoint. Don't use it.</p>
-<h1 id="c5">Combat, looting</h1>
-<h2 id="c5s1">How do I loot creatures after killing them?</h2>
-<p>If a creature is dead you will lose target on it. Just press H to re-target the last hostily target (the dead creature). Then press G to interact with the corpse and get the loot.</p>
-<h2 id="c5s2">How do I know what I've just looted?</h2>
-<p>All loot, xp gains, and other stuff is listed in the chat. Press CTRL + SHIFT + F2 to open the chat. Then use DOWN / UP to read the chat lines. Press ESC or CTRL + SHIFT + F2 to close the chat if you're done.</p>
-</article>
+       <nav>
+            <ul>
+            <li><a href="#c1">Known issues/bugs</a></li>
+            <ul>
+            <li><a href="#c1s1">Why did the addon suddenly stopped reading the chat?</a></li>
+            </ul>
+            <li><a href="#c2">Installation, setup, server selection, character creation</a></li>
+            <ul>
+            <li><a href="#c2s1">What game version we're playing?</a></li>
+            <li><a href="#c2s2">Can I use a starter account to test the game for free?</a></li>
+            <li><a href="#c2s3">Which server / realm should I choose to play on?</a></li>
+            <li><a href="#c2s4">Is there a setup guide for Mac users?</a></li>
+            <li><a href="#c2s5">Can I play on all servers / realms? Even spanish or brazil?</a></li>
+            <li><a href="#c2s6">Why is the script constantly switching to Login mode?</a></li>
+            <li><a href="#c2s7">Is the TTS speed adjustable?</a></li>
+            <li><a href="#c2s8">Why is the Range menu empty?</a></li>
+            <li><a href="#c2s9">What is the Skufluegel addon?</a></li>
+            <li><a href="#c2s10">How do I end the login / gaming script?</a></li>
+            <li><a href="#c2s11">How do I delete characters?</a></li>
+            <li><a href="#c2s12">Where can I update the addons?</a></li>
+            <li><a href="#c2s13">Do I need a numpad to use the addon / play the game?</a></li>
+            <li><a href="#c2s14">Can I change the key bindings from NUMPAD 7-9 to something else?</a></li>
+            </ul>
+            <li><a href="#c3">General gameplay</a></li>
+            <ul>
+            <li><a href="#c3s1">Where do I get details on my current HP / mana?</a></li>
+            <li><a href="#c3s2">How to I collect objects in the game world (like cactus apples)?</a></li>
+            <li><a href="#c3s3">How / where do I repair my equipment?</a></li>
+            <li><a href="#c3s4">How do I find available quests?</a></li>
+            <li><a href="#c3s5">How to I get my current distance to an NPC / creature?</a></li>
+            <li><a href="#c3s6">Where do I get details on what abilities are on my action bars and how to I customise that?</a></li>
+            <li><a href="#c3s7">What is that "attack" ability on my action bar and how is it working?</a></li>
+            <li><a href="#c3s8">How do I find a merchant to sell or buy stuff?</a></li>
+            <li><a href="#c3s9">How do I leave a chat channel?</a></li>
+            </ul>
+            <li><a href="#c4">Navigation</a></li>
+            <ul>
+            <li><a href="#c4s1">How do I navigate using waypoints, routes and close routes?</a></li>
+            <li><a href="#c4s2">I died. What now?</a></li>
+            <li><a href="#c4s3">I've accidentally closed the "Resurrect" popup at my corpse. What now?</a></li>
+            <li><a href="#c4s4">I've accidentally closed the "release spirit" popup after dying. What now?</a></li>
+            <li><a href="#c4s5">I've navigated to a waypoint, but there isn't any NPC, creature, etc. I can't target anything.</a></li>
+            </ul>
+            <li><a href="#c5">Combat, looting</a></li>
+            <ul>
+            <li><a href="#c5s1">How do I loot creatures after killing them?</a></li>
+            <li><a href="#c5s2">How do I know what I've just looted?</a></li>
+            </ul>
+            </ul>
+       </nav>
 
-      
+         <article>
+         <h1 id="c1">Known issues/bugs</h1>
+         <h2 id="c1s1">Why did the addon suddenly stopped reading the chat?</h2>
+         <p>There is a bug within the Blizzard TTS implementation (that one is used to read the chat). It should be solved by just leaving the WoW client window and get back to it again. You don't need to close the client. Just change the focus to something else (desktop, application, whataver) and back to wow.</p>
+         <h1 id="c2">Installation, setup, server selection, character creation</h1>
+         <h2 id="c2s1">What game version we're playing?</h2>
+         <p>We're playing "WoW The Burning Crusade Classic". NOT "Warcraft Classic" or "Retail" (that is named just "World of Warcraft"). The addon is only for "WoW The Burning Crusade Classic". You can't use it with any other game version.</p>
+         <h2 id="c2s2">Can I use a starter account to test the game for free?</h2>
+         <p>No, you can't. With the free starter account you can play/test the Retail game version only. You can't access to what we're playing ("WoW The Burning Crusade Classic"). You need a payed subscription for that.</p>
+         <h2 id="c2s3">Which server / realm should I choose to play on?</h2>
+         <p>Most blind players are on "US East Pagle" (Horde)</p>
+         <p>German EU players are on "Germany &gt; Lakeshire" (Alliance)</p>
+         <h2 id="c2s4">Is there a setup guide for Mac users?</h2>
+         <p>At the moment not, sorry. We're working on that. You need to use the guide for windows and adapt that for Mac.</p>
+         <h2 id="c2s5">Can I play on all servers / realms? Even spanish or brazil?</h2>
+         <p>Yes, if you set your client language to "English". The server language doesn't matter.</p>
+         <h2 id="c2s6">Why is the script constantly switching to Login mode?</h2>
+         <p>The script is quite complex and bascially has no information on what's actually happening in your wow game window. It is constantly testing a bunch of specific pixels and there colors in the game window, to get an idea on where you actually are in that window (login, character selection, in the game, etc.).</p>
+         <p>There are numerous reasons why those checks could fail. There could be overlays from recording software or screenreaders, there could be unsupported screen resolutions, and many other things, that lead to scenarios where the script can't detect those pixels and fails to detect the game window or its state.</p>
+         <p>First of all, please try to start the game first, and then the script. That often leads to better results.</p>
+         <p>If that doesn't help, please try to disable everything that could block the game window from being fully visible. An example are those weather, time, etc. widgets in Windows 11. The are covering parts of the parts of the game that the scrpt is using to check for pixels. The script won't detect the pixels, assumes you're not in the game world, and swiches to login.</p>
+         <h2 id="c2s7">Is the TTS speed adjustable?</h2>
+         <p>There are two different TTS "engines" in the game. </p>
+         <p>The first one is our internal TTS, which is used for almost everything. For example for the audio menu, for reading quest text, etc. To adjust the speed of that go to "SkuOptions &gt; Options &gt; TTS speed" and change the number there. That number is the length of the silent gap between words. The default value is 85. With 65 there will be almost no gap between words. Values below 65 most probably will end up in a big, fat mess. The TTS speed will change after you have selected a new value and pressed enter on it.</p>
+         <p>The second TTS engine is the Blizzard engine. That one is used for Chat (SHIFT + F2) and the Overview page (SHIFT + DOWN). To change the speed of that engine go to "SkuChat &gt; Options &gt; TTS speed" and change that value. Higher values are faster.</p>
+         <h2 id="c2s8">Why is the Range menu empty?</h2>
+         <p>After login the addon needs up to one minute to calculate the available ranges. Until that is completed the menu is empty. The Range menu will show available range if the calculation is completed. You will here the addon saying "New range" if that happens. </p>
+         <h2 id="c2s9">What is the Skufluegel addon?</h2>
+         <p>Skufluegel is an addon for sighted players that supports them in playing with visually impaird / blind players. That addon shows the sighted player what you're doing (looting, following, interacting, etc.) and provides them an option to remotly set you on follow. Just let them download the addon. There is a readme.txt file in that download, explaining the features.</p>
+         <h2 id="c2s10">How do I end the login / gaming script?</h2>
+         <p>Press ALT + ESC. There's no audio feedback. The script task is just killed.</p>
+         <h2 id="c2s11">How do I delete characters?</h2>
+         <p>You can't delete characters at the moment. Adding an option to that that via the login script is on our to do list, but it may take a while until that feature is available.</p>
+         <h2 id="c2s12">Where can I update the addons?</h2>
+         <p>The update download page is: <a href="https://duugu.github.io/Sku">https://duugu.github.io/Sku</a></p>
+         <p>There are automated notifications in the Discord channel "Sku updates" (<a href="https://discord.com/channels/944053322434879628/944061589420662825">https://discord.com/channels/944053322434879628/944061589420662825</a>) on every new release.</p>
+         <h2 id="c2s13">Do I need a numpad to use the addon / play the game?</h2>
+         <p>Yes, you do. An example why that is mandatory is in "How to I collect objects in the game world (like cactus apples)?".</p>
+         <h2 id="c2s14">Can I change the key bindings from NUMPAD 7-9 to something else?</h2>
+         <p>You can't, sorry.</p>
+         <h1 id="c3">General gameplay</h1>
+         <h2 id="c3s1">Where do I get details on my current HP / mana?</h2>
+         <p>You should have enabled the addon "audio qs" during setup. It should start saying "one, one, one" if you're losing HP. The faster that "one, one, one" is, the lower your HP. Mana should be announced by the same addon, in steps of 90, 70, 50, 30 and 10 percent.</p>
+         <p>To manually check you HP / mana, press SHIFT + DOWN to open the overview page (you need to have the menu closed to have that working). Hold shift and repeatingly press DOWN to get to the "General" section. You HP and Mana should be in that section.</p>
+         <h2 id="c3s2">How to I collect objects in the game world (like cactus apples)?</h2>
+         <p>Collecting objects in the game world is a bit challenging. It's trial and error.
+         <p>First, use a waypoint to that object (there are waypoints to all objects in the game) to navigate to its position. At the destination, press NUMPAD 7 to do a right click in front of your character in the game world. If you're lucky (and navigated carefully), that right click sould hit the object and start collecting it. If that happens, the addon will say "Cast" (collection objects in the game world are actually casts). Wait for the object to be collected (you hear the item being added to your bag).</p>
+         <p>If you're not lucky (and that will usually be the case) the object isn't exactly at the point the script is clicking on with NUMPAD 7. It's probabyl slightly above, or below, or left, or right. Use NUMPAD 8 to click again. NUMPAD 8 just clicks a bit above the point of NUMPAD 7. If nothing happens, use NUMPAD 9. That again is a bit above the point of NUMPAD 8.</p>
+         <p>Important: Do not spam NUMPAD 7-9. Those clicks do take a few milliseconds. If you're spamming those buttons you never will get that item. Press NUMPAD 7, wait a second, press NUMPAD 8, and so one.</p>
+         <p>If neither of those clicks successfully you need to start turning around in very small steps, and try clicking with NUMPAD 7-9 again. Repeat that (turn a few degrees, click), until you hear "Cast".</p>
+         <p>If you aren't successfully, no matter how you're turning and clicking, there most probably is no item to collect. The waypoints for those items are not showing the items. Those waypoints are just spawn points. That means, there COULD be an item at that points. But it doesen't have to be there. If someone else collected that item at that waypoint before you, then it may take a while until the items respawns. In those cases just open the audio menu and navigate to another waypoint for that object. Most objects do have many spawn points.</p>
+         <h2 id="c3s3">How / where do I repair my equipment?</h2>
+         <p>Most weapon/armor vendors do repair. Usually you don't need to do that manually. It enough to get to such a merchant and interact with it. The addon automatically repairs your stuff if you're interacting with a merchant who provides an option to repair. If you have enough money. </p>
+         <p>To find such a merchant look for waypoints with "armor", "weapon", "smith", etc. added to the vendors name. Then follow the route to that merchant.</p>
+         <p>If you would like to manually repair, interact with such a merchant, and find the "Repair" option in the audio menu. </p>
+         <p>Important: There are some "fake" waypoints for merchants and trainers in the lists (long story, Blizzards fault in short 😊). Those waypoints are not real NPCs. However, they are easy to recognize. ALL real NPCs do have names. A first name and a last name, or just a first name. But there always is a name. Like "Cairne Bloodhoof, Weapon merchant". If you get a waypoint without a name in it (like just "Weapon merchant"), then that is a fake waypoint. Don't use it.</p>
+         <h2 id="c3s4">How do I find available quests?</h2>
+         <p>Open you questbook with L. The audio menu opens with your questlog selected. If you don't have any quest yet, go down to "Quest database", right to "Starts in zone", right again to "by distance" and right again. There you will find a comprehensive list of all quests you could accept on your current level, sorted by the distance to the quest giver.</p>
+         <p>Select a quest, go right and choose "Quest start" to see the name of the quest giver. Go right again, and you will be able to start a route, close route or waypoint navigation to that questgiver. If you have no idea what a route is, read "How do I navigate using waypoints, routes and close routes?" first!</p>
+         <h2 id="c3s5">How to I get my current distance to an NPC / creature?</h2>
+         <p>There is a feature to have the distance to NPCs and creatures announced. But you do need to enable that. It's "Skucore &gt; Range". There are different settings for friendly, hostile and unkown targets. (Unkown are things like the corpse of a dead creature.)</p>
+         <p>You can set up a lot of different alerts for different distances. Spoken, or just a sound. Go through those options, set sounds for the target types, and test that.</p>
+         <h2 id="c3s6">Where do I get details on what abilities are on my action bars and how to I customise that?</h2>
+         <p>Go to "SkuCore &gt; Action bars &gt; Main action bar". That's you first action bar (there are 6 of them). Go right to see the 12 slots of that bar and what's currently assigned to each slot.</p>
+         <p>If you just started the game, there's the "attack" ability assigned to button 1. And that button 1 is bound to the keyboard key 1. What is on button 2-5 depends on your class. Just go down to see all buttons and their assigments. If you would like to know what that an action is, just read the tooltip for that button (press SHIFT + DOWN on that menu entry, hold SHIFT and repleatly press DOWN to read the text).</p>
+         <p>If you would like to assign abilities to action bar slots, select the slot, and go right. Go down and you will find submenus with different categories for abilities. Choose an ability from one of the submenus, and press enter to assig that ability to the specific action bar slot.</p>
+         <h2 id="c3s7">What is that "attack" ability on my action bar and how is it working?</h2>
+         <p>The attack ability (default action button 1, which bound to the key 1), also named "auto attack", is a "toggle" ability for melee combat. </p>
+         <p>All other abilities are single use. Press an action button with a spell, and you will cast one spell. Press an action button with food, an you will each exactly one food.</p>
+         <p>"attack" is the only ability the will be toggled instead. Press the "attack" action button once to toggle melee combat on. You character will start attacking your target (if you are in melee range) and constantly keep attacking. Press the button again, to toggle "attack" to off, and your character will stop attacking.</p>
+         <p>Due to that it makes no sense to "spam" that "attack" button. You just would constantly toggle the attack on and off, leading to no attacks at all. Instead, press is just once once at combat start, to enable auto attack, and just let your character do the rest.</p>
+         <h2 id="c3s8">How do I find a merchant to sell or buy stuff?</h2>
+         <p>Use waypoints or routes to waypoints with merchants (if you have no idea what that means, read "How to navigate using waypoints, routes and close routes" first). In waypoint lists filter for terms like "goods", "weapons", "armor", "merchant" to find merchants. </p>
+         <p>Important: There are some "fake" waypoints for merchants and trainers in the lists (long story, Blizzards fault :)). Those waypoints are not real NPCs. However, they are easy to recognize. ALL real NPCs do have names. A first name and a last name, or just a first name. But there always is a name. Like "Cairne Bloodhoof, Weapon merchant". If you get a waypoint without a name in it (like just "Weapon merchant"), then that is a fake waypoint. Don't use that.</p>
+         <h2 id="c3s9">How do I leave a chat channel?</h2>
+         <p>Type /leave theCannelsName. Alternatively type /leave TheChannelNumber. Use /chatinfo to list all channels and there names / numbers you're currently in.</p>
+         <h1 id="c4">Navigation</h1>
+         <h2 id="c4s1">How do I navigate using waypoints, routes and close routes?</h2>
+         <p>There are basically tree options to navigate to destinations: routes, close routes, and waypoints.
+         <h3>Waypoints</h3>
+         <p>Waypoints (SHIFT + F9 or "SkuNav &gt; Waypoints &gt; Select") are just single locations. Every creature, NPC, object, etc. in the game has a waypoint with coordinates assigned to it. If you select a waypoint, a beacon will lead you in a straight line to that position. That can work, but in most cases it won't, because there are obstacles in your way and you get stuck. Buildings, fences, trees, walls and a millions of other structures. You even could be in the middle of a cave, and you destination waypoint is outside of that cave. You obvisiously can't move in a straigth line to the destination waypoint in such scenarios.</p>
+         <h3>Routes</h3>
+         <p>For such scenarios there are routes. Routes are paths over multiple linked waypoints. There is a very, very large network of such linked waypoints, that virtually links almost every waypoint with all other waypoints. Those routes (paths via many linked waypoints) are pre-build by sighted player with blind navigation in mind. That means they are always safe to follow. If you're using a route to you target destination, the addon leads you via those linked waypoints to that destination. There won't be any obstacles if you follow a route. The route will safely lead you around everything where you could get stuck. </p>
+         <p>There are different ways start a route. Via the questlog. Or via "SkuNav &gt; Follow route &gt; Destinations by distance" (SHIFT + F10). Let's assume you're using "SkuNav &gt; Follow route &gt; Destinations by distance" to get a route to a specific destination. </p>
+         <p>"SkuNav &gt; Follow route &gt; Destinations by distance" first shows an entry point. That usually is the closest waypoint to your current position that is linked to the routes network (not all waypoints are linked to the network). The menu entry could be something like "x meters, auto" or "x meters <name of some creature>". It doesn't really matter, because that's just the entry point where your route will start. Go right, and the addon shows a list of all destinations (sorted by distance) that could be reached via the network of linked waypoints from that entry point. Find your destionation in that list. Type the name of your target or a part of that name, to have the list filted, if you can't find it. Then choose the destination and press enter to start following a route to that destination.</p>
+         <p>Doing that via the quest log basically is the same. Just choose a quest start, quest target, or quest end first. You will find the same thing there (an entry point and in its submenu the destinations that can be reached from there).</p>
+         <p>Then the addon calculates a safe route over two or many linked waypoints to that destination. There won't be any obstacles, you won't be stuck in a cave, or whatever. Just follow the route from one waypoint to the next.</p>
+         <h3>Close routes</h3>
+         <p>The third option is "close routes". As stated, not all waypoints are conntected to the routes network. So, there are waypoints you can't directly get to via routes. An example for that is "Quick Waypoint 4". If you die, Quick Waypoint 4 is automatically set to the position of your corpse. It obvisiously won't be pre-linked to the network. That is what "close routes" is good for. A close route leads you via the routes network as close as possible to the unlinked destination waypoint. Then, in a last step, it leads you from there to the actual destination waypoint in a straight line. That means, it's like a route (safe to follow, no obstacles) except the very last step (one waypoint to your destionation left). That last step is just like following a waypoint. There could be obstacles if you're unlucky. However, in most cases it is doing the trick.</p>
+         <p>Conclusion: Always try to use a route first. If there isn't any route to your destination, try to use a close route. If that doesn't work, OR if you are quite sure that there are no obstacles, try to use a waypoint.</p>
+         <h2 id="c4s2">I died. What now?</h2>
+            <p>If you're dying, and you will die a lot :D, you first need to release you spirit. The audio menu will open with a dialog to do that. ("Text: 6 Minutes until release", go down to "release spirit", got right to "left click", press enter). </p>
+            <p>You then will be teleported to the next graveyard as a ghost and have two options: you can get back to your corpse to resurrect there, or you can talk to a spirit healer at the graveyard, to be resurrected right there at the graveyard.</p>
+            <h3>1. Get back to your corpse</h3>
+            <p>You usually will try to get back to your corpse as a ghost. For that the addon automatically sets a waypoint named "Quick waypoint 4" to the position of your corpse. You need to navigate to that waypoint. It is selected as default, and you already should hear the beacon. Do not try to follow that beacon, because it is a beacon directly to that waypoint (read "How to navigate using waypoints, routes and close routes" first if you have no idea what that means). You most probably will get stuck before you're reaching it.</p>
+            <p>Use a close route to Quick Waypoint 4 instead. Press SHIFT + F9 to open the waypoint selection menu. Find "Quick waypoint 4" in that list (filter with "quick"). Move right. Do NOT select "Select", because that would start a navigation directly to that waypoint, which most probably won't work. Move down to "Close routes" instead. There move right twice to get a list of all routes that will lead you close to your corpse (Quick waypoint 4). Usually the first one is the best. Select that to start the naviation via that route to your corpse.</p>
+            <p>Follow the route to your corpse. If you are getting at least 35 meter close to you corpse, the game will show a popup to resurrect. The audio menu opens, go down to "Accept", and right to "Left click". Then press enter, and you are resurrected.</p>
+            <h3>2. Resurrect at the graveyard</h3>
+            <p>If you die at a place with many mobs around, resurrecting at your corpse may be quite challening or even impossible. You probably will instantly be attacked by all mobs nearby and get killed again. Or you are probably died at a place where you just can't navigate back to your corpse.</p>
+            <p>In such cases you can resurrect at the graveyard. However, that has some drawbacks: All of your items (even those in your bags) will take some damage (20%). That raises you repair costs. And, starting from level 11, you will get a 10 minute debuff on resurrecting at a graveyard. That debuff lowers all of your stats to a point where you basically can't fight anymore, and need to wait 10 minutes until you lost that debuff. </p>
+            <p>There is an npc named "spirit healer" at each graveyard. Just target that npc (/tar spirit) and press G to interact. The audio menu opens, showing a dialog. Go right, down, right, down, right, down to "Return me to life.". Go right to "Left click" and press ENTER to use that. The game warns you twice that there are drawbacks. Go down to "Accept" and right to "Left click", to confirm that. Do that again to confirm the second warning, and you are resurrected.</p>
+            <h2 id="c4s3">I've accidentally closed the "Resurrect" popup at my corpse. What now?</h2>
+            <p>Move more than 35 meter away from your corpse (press CTRL + ALT to get the distance to it), and then move back to the corpse. The resurrect popup should appear again. Or, just use /reload. The popup should be there after the reload.</p>
+            <h2 id="c4s4">I've accidentally closed the "release spirit" popup after dying. What now?</h2>
+            <p>Open the chat, enter "/script RepopMe()" and press ENTER to automatically release you spirit. Alternatetively use /reload.</p>
+            <h2 id="c4s5">I've navigated to a waypoint, but there isn't any NPC, creature, etc. I can't target anything.</h2>
+            <p>There are some "fake" waypoints for merchants and trainers in the lists (long story, Blizzards fault in short :)). Those waypoints are not real NPCs. However, they are easy to recognize. ALL real NPCs do have names. A first name and a last name, or just a first name. But there always is a name. Like "Cairne Bloodhoof, Weapon merchant". If you get a waypoint without a name in it (like just "Weapon merchant"), then that is a fake waypoint. Don't use it.</p>
+            <h1 id="c5">Combat, looting</h1>
+            <h2 id="c5s1">How do I loot creatures after killing them?</h2>
+            <p>If a creature is dead you will lose target on it. Just press H to re-target the last hostily target (the dead creature). Then press G to interact with the corpse and get the loot.</p>
+            <h2 id="c5s2">How do I know what I've just looted?</h2>
+            <p>All loot, xp gains, and other stuff is listed in the chat. Press CTRL + SHIFT + F2 to open the chat. Then use DOWN / UP to read the chat lines. Press ESC or CTRL + SHIFT + F2 to close the chat if you're done.</p>
+         </article>
+
       
               <!-- the aside content can also be nested within the main content -->
          <aside>
