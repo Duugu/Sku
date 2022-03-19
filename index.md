@@ -7,11 +7,10 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+[Sku-Maus Script r1.7](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVWnPR7b6j42QFL4Q?e=Y7rRmd) (19.03.2022)<br>
 [Sku r25.8](https://github.com/Duugu/Sku/releases/download/r25.8/Sku-r25.8-bcc.zip) (18.03.2022)<br>
-[Sku-Maus Skript r1.6](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVLPwM6aes725wkDg?e=X2FUPR) (15.03.2022)<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
 [SkuAudioData ENGLISH r3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
-[Sku-Maus Skript r1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcBpU5QfF5B-BcOw?e=bcapTl) (20.02.2022)<br>
 [SkuAudioData DEUTSCH r30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 [SkuBeaconSoundsets r19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
@@ -20,29 +19,33 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 -------------------------------------------------------------------------------------------------------	
 
-Changes in release 25.8
+## Sku-Maus Skript (wow_menu) r1.7
+- Added addition gaming mode detection pixel at lower left corner of the screen, just in case that the upper left corner is covered by overlays from streaming software (requires Sku r25.9).
+- Optimized the detection. Script shouldn't unintentionally click on "Delete character" anymore.
 
-SkuChat
+## Sku r25.8
+
+### SkuChat
 - The addon now leaves the Looking For Group channel on first login.
 - Changed the default value for "Sound on chat message" to "On".
 
-SkuCore
+### SkuCore
 - Fixed a bug with missing option to choose a reward for some quests with multiple rewards.
 - Fixed a bug with missing "auto loot" and other default settings.
 - Changed "toggle auto run" in Sku default key bindings from numlock to "ALT + W".
 - Fixed a bug with constant "Pet happy" message spam. 
 - Fixed an issue with new messages if the chat is open.
 
-SkuMob
+### SkuMob
 - Your pet / companion now should be read as "your companion" (instead of "other companion").
 
-SkuNav:
+### SkuNav
 - Added faction areas for Horde and Alliance to Kalimdor and Eastern Kingdoms.
 - Added the newest map data for english and german.
 - Fixed an issue with missing audio for "nah" (German only).
 - Fixed an issue with zone "The Dead Scar" / "Die Todesschneise"
 
-SkuOptions:
+### SkuOptions
 - Changed the default values for "Speak menu numbers" and "Announce submenus" in "SkuOptions > Options" to "On".
 
 ## Changes in Sku-Maus Skript r1.6
