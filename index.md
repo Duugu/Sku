@@ -19,11 +19,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 -------------------------------------------------------------------------------------------------------	
 
-## Sku-Maus Skript (wow_menu) r1.7
+## Changes in Sku-Maus Skript (wow_menu) r1.7
 - Added addition gaming mode detection pixel at lower left corner of the screen, just in case that the upper left corner is covered by overlays from streaming software (requires Sku r25.9).
 - Optimized the detection. Script shouldn't unintentionally click on "Delete character" anymore.
 
-## Sku r25.8
+## Changes in Sku r25.8
 
 ### SkuChat
 - The addon now leaves the Looking For Group channel on first login.
