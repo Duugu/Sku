@@ -3,6 +3,13 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in release 25.9
+
+	- Updated the interface version to 2.5.4, to avoid the "outdated addons" notification on login.
+	- Added a visual tag to bottom left corner of UI. The Sku Maus script is using that to recognise the game windows. No effects on addon usage or gameplay, though.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in release 25.8
 
 	SkuChat

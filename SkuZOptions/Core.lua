@@ -1801,6 +1801,19 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 			tWidget:SetPoint("TOPLEFT")
 			tWidget:Show()
 		end
+		local tWidget = _G["SkuSkriptRecognizerBottomLeft"]
+		if not tWidget then
+			tWidget = CreateFrame("Frame", "SkuSkriptRecognizerBottomLeft", _G["UIParent"])
+			tWidget:SetFrameStrata("TOOLTIP")
+			tWidget:SetFrameLevel(10000)
+			tWidget:SetWidth(10)  
+			tWidget:SetHeight(10) 
+			local tex = tWidget:CreateTexture(nil, "OVERLAY")
+			tex:SetAllPoints()
+			tex:SetColorTexture(0, 0, 1, 1)
+			tWidget:SetPoint("BOTTOMLEFT")
+			tWidget:Show()
+		end
 	end
 end
 
