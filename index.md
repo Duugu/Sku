@@ -12,8 +12,8 @@ IMPORTANT:<br>
 Below are two download packages with updates of all addons that are included in our standard installation package for the new WoW patch 2.5.4 (on 22nd). That are all Sku addons and others like Buggrabber, Bagnon, DialogKey, AudioQs, etc.<br>
 You shouldn't get any errors if you have updated your addons with that package.<br>
 If you are still getting errors or "outdated addons" messages in the game, then you've most probably intentionally have installed additional addons that are not covered and fixed by our addon package. Either update those additional addons manually, delete them, or live with those errors. ;)<br>
-[EN - Updated Addon Package for Patch 2.5.4]() (23.03.2022)<br>
-[DE - Updated Addon Package for Patch 2.5.4]() (23.03.2022)<br>
+[EN - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVdzzG1v7vKniA6cQ?e=8JMT9b) (23.03.2022)<br>
+[DE - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVc2QGEqgCjBitP-w?e=zZgDCR) (23.03.2022)<br>
 
 *Old updates:* <br>
 [Sku-Maus Script r1.7](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVWnPR7b6j42QFL4Q?e=Y7rRmd) (19.03.2022)<br>
