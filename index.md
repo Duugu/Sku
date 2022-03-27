@@ -7,10 +7,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[EN - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVdzzG1v7vKniA6cQ?e=8JMT9b) (23.03.2022)<br>
-[DE - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVc2QGEqgCjBitP-w?e=zZgDCR) (23.03.2022)<br>
+[Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
 
 *Old updates:* <br>
+[EN - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVdzzG1v7vKniA6cQ?e=8JMT9b) (23.03.2022)<br>
+[DE - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVc2QGEqgCjBitP-w?e=zZgDCR) (23.03.2022)<br>
 [Sku r25.8](https://github.com/Duugu/Sku/releases/download/r25.8/Sku-r25.8-bcc.zip) (18.03.2022)<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
 [SkuAudioData ENGLISH r3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
