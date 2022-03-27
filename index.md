@@ -7,8 +7,8 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-IMPORTANT: Read the readme.txt in the Sku-Maus Script r2.1 download to correctly install the new script!
-[Sku-Maus Script r2.1]() (27.03.2022)<br>
+IMPORTANT: Read the readme.txt in the "Sku-Maus Script r2.1" download to correctly install the new script!<br>
+[Sku-Maus Script r2.1](https://github.com/Duugu/wow_menu/releases/download/1.7.3/wow_menu-1.7.3-bcc.zip) (27.03.2022)<br>
 
 *Old updates:* <br>
 [EN - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVdzzG1v7vKniA6cQ?e=8JMT9b) (23.03.2022)<br>
