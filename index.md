@@ -24,7 +24,15 @@ IMPORTANT: Read the readme.txt in the "Sku-Maus Script r2.1" download to correct
 
 -------------------------------------------------------------------------------------------------------	
 
+## Changes in Sku-Maus Skript (wow_menu) r2.1
+
+- Re-designed the script to be more reliable and much faster.
+- The script stops auto switching between gaming/login mode if you do use ALT + F1 to manually switch the mode. You need to restart the script to turn auto switching on again.
+- Changed the "script is processing" sound to something (water drop) that is better to hear is there's ingame music playing.
+- The script now is replacing a lot of textures on login and char selection screens. If a sighted person asks why the UI looks that "broken", that is the reason. It's a feature, not a bug.
+
 ## Changes in Sku-Maus Skript (wow_menu) r1.7
+
 - Added addition gaming mode detection pixel at lower left corner of the screen, just in case that the upper left corner is covered by overlays from streaming software (requires Sku r25.9).
 - Optimized the detection. Script shouldn't unintentionally click on "Delete character" anymore.
 
