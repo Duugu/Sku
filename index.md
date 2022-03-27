@@ -7,12 +7,10 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-IMPORTANT: Read the readme.txt in the "Sku-Maus Script r2.1" download to correctly install the new script!<br>
-[Sku-Maus Script r2.1](https://github.com/Duugu/wow_menu/releases/download/1.7.3/wow_menu-1.7.3-bcc.zip) (27.03.2022)<br>
-
-*Old updates:* <br>
 [EN - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVdzzG1v7vKniA6cQ?e=8JMT9b) (23.03.2022)<br>
 [DE - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVc2QGEqgCjBitP-w?e=zZgDCR) (23.03.2022)<br>
+
+*Old updates:* <br>
 [Sku r25.8](https://github.com/Duugu/Sku/releases/download/r25.8/Sku-r25.8-bcc.zip) (18.03.2022)<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
 [SkuAudioData ENGLISH r3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
@@ -23,13 +21,6 @@ IMPORTANT: Read the readme.txt in the "Sku-Maus Script r2.1" download to correct
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
-
-## Changes in Sku-Maus Skript (wow_menu) r2.1
-
-- Re-designed the script to be more reliable and much faster.
-- The script stops auto switching between gaming/login mode if you do use ALT + F1 to manually switch the mode. You need to restart the script to turn auto switching on again.
-- Changed the "script is processing" sound to something (water drop) that is better to hear is there's ingame music playing.
-- The script now is replacing a lot of textures on login and char selection screens. If a sighted person asks why the UI looks that "broken", that is the reason. It's a feature, not a bug.
 
 ## Changes in Sku-Maus Skript (wow_menu) r1.7
 
