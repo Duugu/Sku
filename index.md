@@ -24,6 +24,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 -------------------------------------------------------------------------------------------------------	
 
+## Changes in release 25.12
+
+### SkuCore
+- Fixed a bug with the key ring in bags. (Don't care if you hadn't any issues with bags in r25.11)
+
 ## Changes in release 25.11
 
 ### SkuCore
