@@ -212,6 +212,18 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].clickClackSoundset
 			end
 		},
+		autoGlobalDirection = {
+			order = 4,
+			name = L["Auto announce global direction"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].autoGlobalDirection = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].autoGlobalDirection
+			end
+		},
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -233,7 +245,8 @@ SkuNav.defaults = {
 	standardWpReachedRange = 3,
 	clickClackEnabled = true,
 	clickClackRange = 5,
-	clickClackSoundset = "click",
+	clickClackSoundset = "beep",
+	autoGlobalDirection = false,
 }
 
 local slower = string.lower

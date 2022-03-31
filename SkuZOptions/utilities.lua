@@ -422,7 +422,13 @@ local tAdditionalTranslations = {
 	["Fahrstuhleingang unten. Bei Route in den Fahrstuhl: Warte, bis das Knallgeräusch vom ankommenden Fahrstuhl direkt vor dir zu hören ist (maximal laut). Geh zum nächsten Punkt, der im Fahrstuhl ist. Fahr nur eine Etage hoch bis mitte unten. Geh dann geradeaus wieder aus dem Fahrstuhl raus zum Fahrstuhleingang mitte unten."] = "Elevator entrance at the bottom. If you're on a route into elevator: wait until you hear the slamming sound from the arriving elevator right in front of you (maximum volume). Move to the next point, which is in the elevator. Ride one floor up to the lower middle floor. Then move straight out of the elevator to the waypoint elevator entrance lower middle.",
 	["Achtung, gleich springen!"] = "Be careful, you need to jump at next waypoint!",
 	["Vorsicht! Nach Norden geht es über eine enge Brücke. Nach Osten geht es gegen den Urhzeigersinn an einer einem Schluchtrand entlang. Nach Westen geht es im Uhrzeigersinn am Schluchtrand entlang."] = "Be careful! To the south you will cross a very narrow bridge. To the east you walk along the edge of a gorge. To the west you walk along the edge of a gorge too.",
-	
+	["Tapoke \"Slim\" Jahn"] = 'Tapoke "Slim" Jahn',	
+	["Überprüfe nochmals ob du wirklich alle Quests im Eisklamm-Tal erledigt hast, bevor du in die nächste Stadt aufbrichst."] = "",
+	["Benutze hier die Translokationskugel, um wieder nach unten zu kommen."] = "Use the translocation sphere here to get back down.",
+	["Benutze die Translokationskugel beim nächsten Wegpunkt um nach oben zu kommen."] = "Use the translocation sphere at the next waypoint to get back up.",
+	["Für die Rückkehr nach unten, mache eine neue Route auf, mit dem Ziel das Portal Oben."] = "To get back down, start a new route to the upper portal.",
+	["Töte die beiden Kerkermeister und öffne mit den Schlüsseln die Schlösser zu den Füssen der Gefangenen mit rechtklick. "] = "Kill the two jailers and use the keys to open the locks at the feet of the prisoners via right click. ",
+	["Im Fahrstuhl"] = "in the elevator",
 }
 
 
@@ -432,9 +438,11 @@ function SkuTranslateStringDeToEn(aString)
 	local tTranslation
 
 	--split by semicolon
+	local tInd = 0
 	for str in string.gmatch(aString, "([^;]+)") do
 		local tTarget = str
-		if not tonumber(str) and str ~= "auto" then
+		tInd = tInd + 1
+		if not tonumber(str) and str ~= "auto" and (tInd == 1 and str == "Tal") == false then
 			local tstrlower = slower(str)
 			local tFound = false
 
@@ -451,7 +459,8 @@ function SkuTranslateStringDeToEn(aString)
 			--maps.lua
 			if tFound == false then
 				for i, v in pairs(SkuDB.ExternalMapID) do
-					if slower(v.Name_lang.deDE) == tstrlower then
+					local tToTest = slower(v.Name_lang.deDE)
+					if tToTest == tstrlower then
 						tTarget = v.Name_lang.enUS
 						tFound = true
 						break
@@ -459,7 +468,8 @@ function SkuTranslateStringDeToEn(aString)
 				end
 				if tFound == false then
 					for i, v in pairs(SkuDB.InternalAreaTable) do
-						if slower(v.AreaName_lang.deDE) == tstrlower then
+						local tToTest = slower(v.AreaName_lang.deDE)
+						if tToTest == tstrlower then
 							tTarget = v.AreaName_lang.enUS
 							tFound = true
 							break
@@ -473,7 +483,8 @@ function SkuTranslateStringDeToEn(aString)
 				for i, v in pairs(SkuDB.NpcData.Names.deDE) do
 					if SkuDB.NpcData.Names.enUS[i] then
 						if v[1] then
-							if slower(v[1]) == tstrlower then
+							local tToTest = slower(v[1])
+							if tToTest == tstrlower then
 								tTarget = SkuDB.NpcData.Names.enUS[i][1]
 								tFound = true
 								break
@@ -481,7 +492,8 @@ function SkuTranslateStringDeToEn(aString)
 						end
 						if tFound == false then
 							if v[2] then
-								if slower(v[2]) == tstrlower then
+								local tToTest = slower(v[2])
+								if tToTest == tstrlower then
 									tTarget = SkuDB.NpcData.Names.enUS[i][2]
 									tFound = true
 									break
@@ -489,6 +501,29 @@ function SkuTranslateStringDeToEn(aString)
 							end
 						end
 					end
+					--[[
+					local tI = string.gsub(i, "'", "\'")
+					if SkuDB.NpcData.Names.enUS[tI] then
+						if v[1] then
+							local tToTest = slower(v[1])
+							if tToTest == tstrlower then
+								tTarget = SkuDB.NpcData.Names.enUS[tI][1]
+								tFound = true
+								break
+							end
+						end
+						if tFound == false then
+							if v[2] then
+								local tToTest = slower(v[2])
+								if tToTest == tstrlower then
+									tTarget = SkuDB.NpcData.Names.enUS[tI][2]
+									tFound = true
+									break
+								end
+							end
+						end
+					end
+					]]
 				end
 			end
 
@@ -497,13 +532,27 @@ function SkuTranslateStringDeToEn(aString)
 				for i, v in pairs(SkuDB.objectLookup.deDE) do
 					if SkuDB.objectLookup.enUS[i] then
 						if v then
-							if slower(v) == tstrlower then
+							local tToTest = slower(v)
+							if tToTest == tstrlower then
 								tTarget = SkuDB.objectLookup.enUS[i]
 								tFound = true
 								break
 							end
 						end
 					end
+					--[[
+					local tI = string.gsub(i, "'", "\'")
+					if SkuDB.objectLookup.enUS[tI] then
+						if v then
+							local tToTest = slower(v)
+							if tToTest == tstrlower then
+								tTarget = SkuDB.objectLookup.enUS[tI]
+								tFound = true
+								break
+							end
+						end
+					end
+					]]
 				end	
 			end
 
@@ -525,7 +574,8 @@ function SkuTranslateStringDeToEn(aString)
 				}
 				for i, v in pairs(SkuOptions.Glossary1.deDE) do
 					for y = 1, #SkuOptions.Glossary1.deDE[i] do
-						if slower(SkuOptions.Glossary1.deDE[i][y]) == tstrlower then
+						local tToTest = slower(SkuOptions.Glossary1.deDE[i][y])
+						if tToTest == tstrlower then
 							tTarget = slower(SkuOptions.Glossary1.enUS[tDeToEnIndex[i]][y])
 							tFound = true
 							break
@@ -539,20 +589,35 @@ function SkuTranslateStringDeToEn(aString)
 				for i, v in pairs(SkuDB.itemLookup.deDE) do
 					if SkuDB.itemLookup.enUS[i] then
 						if v then
-							if slower(v) == tstrlower then
+							local tToTest = slower(v)
+							if tToTest == tstrlower then
 								tTarget = SkuDB.itemLookup.enUS[i]
 								tFound = true
 								break
 							end
 						end
 					end
+					--[[
+					local tI = string.gsub(i, "'", "\'")
+					if SkuDB.itemLookup.enUS[tI] then
+						if v then
+							local tToTest = slower(v)
+							if tToTest == tstrlower then
+								tTarget = SkuDB.itemLookup.enUS[tI]
+								tFound = true
+								break
+							end
+						end
+					end	
+					]]				
 				end
 			end
 
 			--spells.lua
 			if tFound == false then
 				for i, v in pairs(SkuDB.SpellDataTBC) do
-					if slower(v.deDE[1]) == tstrlower then
+					local tToTest = slower(v.deDE[1])
+					if tToTest == tstrlower then
 						tTarget = v.enUS[1]
 						tFound = true
 						break
@@ -566,7 +631,8 @@ function SkuTranslateStringDeToEn(aString)
 					if SkuDB.questLookup.enUS[i] then
 						if SkuDB.questLookup.enUS[i][1] then
 							if v[1] then
-								if slower(v[1]) == tstrlower then
+								local tToTest = slower(v[1])
+								if tToTest == tstrlower then
 									tTarget = SkuDB.questLookup.enUS[i][1]
 									tFound = true
 									break
@@ -574,10 +640,25 @@ function SkuTranslateStringDeToEn(aString)
 							end
 						end
 					end
+					--[[
+					local tI = string.gsub(i, "'", "\'")
+					if SkuDB.questLookup.enUS[tI] then
+						if SkuDB.questLookup.enUS[tI][1] then
+							if v[1] then
+								local tToTest = slower(v[1])
+								if tToTest == tstrlower then
+									tTarget = SkuDB.questLookup.enUS[tI][1]
+									tFound = true
+									break
+								end
+							end
+						end
+					end	
+					]]				
 				end	
 			end
 
-			if tTarget == str then
+			if tFound == false then
 				SkuTranslatedData.untranslatedTerms = SkuTranslatedData.untranslatedTerms or {}
 				if not SkuTranslatedData.untranslatedTerms[str] then
 					SkuTranslatedData.untranslatedTerms[str] = true
@@ -750,7 +831,7 @@ function SkuRtLinkDataDeToEn()
 	SkuTranslatedData.Links = {}
 
 	local co = coroutine.create(function ()
-
+		local tNumberDone = 0
 		for i, v in pairs(SkuDB.routedata[Sku.Loc].Links) do
 			local tIndex = i
 			local tIndexEN = SkuTranslateStringDeToEn(i)
@@ -767,8 +848,14 @@ function SkuRtLinkDataDeToEn()
 				SkuTranslatedData.Links[tIndexEN][tIndex1EN] = v1
 			end
 			tCounter = tCounter + 1
-			print(tCounter)
-			coroutine.yield()
+			--print(tCounter)
+			tNumberDone = tNumberDone + 1
+			if tNumberDone > 100 then
+				tNumberDone = 0
+				print(tCounter)
+				coroutine.yield()
+			end
+
 		end
 	end)
 
@@ -781,6 +868,7 @@ function SkuRtLinkDataDeToEn()
 		if tSkuCoroutineControlFrameOnUpdateTimer < 0.01 then return end
 
 		if coroutine.status(co) == "suspended" then
+			print("res")
 			coroutine.resume(co)
 		else
 			if tCoCompleted == false then
@@ -797,7 +885,7 @@ end
 -- rt link data
 local tSkuCoroutineControlFrameOnUpdateTimer = 0
 local tCounter = 0
-function SkuRtWpDataDeToEn()
+function SkuRtWpDataDeToEn()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	tCounter = 0
 	SkuTranslatedData.Waypoints = SkuTranslatedData.Waypoints or {}
 	SkuTranslatedData.Waypoints = {}
@@ -806,11 +894,12 @@ function SkuRtWpDataDeToEn()
 
 	local co = coroutine.create(function ()
 
+		local tNumberDone = 0
 		for q = 1, #SkuDB.routedata[Sku.Loc].Waypoints do
 			local tIndex = SkuDB.routedata[Sku.Loc].Waypoints[q]
 			local tIndexEN = SkuTranslateStringDeToEn(tIndex)
 			local tValue = SkuDB.routedata[Sku.Loc].Waypoints[SkuDB.routedata[Sku.Loc].Waypoints[q]]
-			print(1, tIndex, tValue)
+			--print(1, tIndex, tValue)
 			table.insert(SkuTranslatedData.Waypoints, #SkuTranslatedData.Waypoints + 1, tIndexEN)
 			SkuTranslatedData.Waypoints[tIndexEN] = SkuDB.routedata[Sku.Loc].Waypoints[SkuDB.routedata[Sku.Loc].Waypoints[q]]
 			if SkuDB.routedata[Sku.Loc].Waypoints[SkuDB.routedata[Sku.Loc].Waypoints[q]].comments then
@@ -820,8 +909,12 @@ function SkuRtWpDataDeToEn()
 				end
 			end
 			tCounter = tCounter + 1
-			print(tCounter)
-			coroutine.yield()
+			tNumberDone = tNumberDone + 1
+			if tNumberDone > 500 then
+				tNumberDone = 0
+				print(tCounter)
+				coroutine.yield()
+			end
 		end
 	end)
 
@@ -834,6 +927,7 @@ function SkuRtWpDataDeToEn()
 		if tSkuCoroutineControlFrameOnUpdateTimer < 0.01 then return end
 
 		if coroutine.status(co) == "suspended" then
+			print("res")
 			coroutine.resume(co)
 		else
 			if tCoCompleted == false then
@@ -846,3 +940,4 @@ function SkuRtWpDataDeToEn()
 	end)
 
 end
+

@@ -38,11 +38,93 @@ function SkuCore:RangeCheckUpdateRanges()
    end
 
    if not SkuOptions.db.char[MODULE_NAME].RangeChecks then
+      --[[
       SkuOptions.db.char[MODULE_NAME].RangeChecks = {
          Friendly = {},
          Hostile = {},
          Misc = {},
       }
+      ]]
+      SkuOptions.db.char[MODULE_NAME].RangeChecks= {
+         ["Misc"] = {
+            [8] = {
+               ["sound"] = L["vocalized"],
+            },
+            [28] = {
+               ["sound"] = L["vocalized"],
+            },
+         },
+         ["Friendly"] = {
+            [25] = {
+               ["sound"] = L["vocalized"],
+            },
+            [35] = {
+               ["sound"] = L["vocalized"],
+            },
+            [15] = {
+               ["sound"] = L["vocalized"],
+            },
+            [8] = {
+               ["sound"] = L["vocalized"],
+            },
+            [45] = {
+               ["sound"] = L["vocalized"],
+            },
+            [5] = {
+               ["sound"] = L["vocalized"],
+            },
+            [10] = {
+               ["sound"] = L["vocalized"],
+            },
+            [20] = {
+               ["sound"] = L["vocalized"],
+            },
+            [40] = {
+               ["sound"] = L["vocalized"],
+            },
+            [30] = {
+               ["sound"] = L["vocalized"],
+            },
+            [60] = {
+               ["sound"] = L["vocalized"],
+            },
+         },
+         ["Hostile"] = {
+            [25] = {
+               ["sound"] = L["vocalized"],
+            },
+            [35] = {
+               ["sound"] = L["vocalized"],
+            },
+            [15] = {
+               ["sound"] = L["vocalized"],
+            },
+            [8] = {
+               ["sound"] = L["vocalized"],
+            },
+            [45] = {
+               ["sound"] = L["vocalized"],
+            },
+            [5] = {
+               ["sound"] = L["vocalized"],
+            },
+            [10] = {
+               ["sound"] = L["vocalized"],
+            },
+            [20] = {
+               ["sound"] = L["vocalized"],
+            },
+            [40] = {
+               ["sound"] = L["vocalized"],
+            },
+            [30] = {
+               ["sound"] = L["vocalized"],
+            },
+            [60] = {
+               ["sound"] = L["vocalized"],
+            },
+         },
+      }      
    end
 
    if tFirstRangeUpdateSilent then
@@ -93,8 +175,8 @@ function SkuCore:DoRangeCheck()
 
    local tCheckRequired = false
    local tMaxRange, tMinRange = SkuOptions.RangeCheck:GetRange("target")
-   if tRangeCheckLastTarget ~= UnitName("target") then
-      tRangeCheckLastTarget = UnitName("target")
+   if tRangeCheckLastTarget ~= UnitGUID("target") then
+      tRangeCheckLastTarget = UnitGUID("target")
       tRangeCheckLastTargetminRange = tMinRange
       tCheckRequired = true
    else

@@ -1582,6 +1582,7 @@ function SkuOptions:OnInitialize()
 
 	SkuOptions:RegisterChatCommand("Sku", "SlashFunc")
 	SkuOptions:RegisterChatCommand("Skuchat", "SlashFuncSkuChat")
+	SkuOptions:RegisterChatCommand("Sc", "SlashFuncSkuChat")
 	SkuOptions.AceConfig = LibStub("AceConfig-3.0")
 	SkuOptions.AceConfig:RegisterOptionsTable("Sku", options, {"taop"})
 	SkuOptions.AceConfigDialog = LibStub("AceConfigDialog-3.0")
@@ -2072,86 +2073,110 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 
 					tNewMenuEntry.BuildChildren = function(self)
-						self.children = {}
-						local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
-						if aGossipListTable[index].containerFrameName then
-							tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames()"
-							if aGossipListTable[index].obj.GetParent then
-								if aGossipListTable[index].obj:GetParent() then
-									if aGossipListTable[index].obj:GetParent().rollID then
-										tNewSubMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()"
+						if (aGossipListTable[index].isBag and CursorHasItem()) or not aGossipListTable[index].isBag then
+							self.children = {}
+							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
+							if aGossipListTable[index].containerFrameName then
+								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames()"
+								if aGossipListTable[index].obj.GetParent then
+									if aGossipListTable[index].obj:GetParent() then
+										if aGossipListTable[index].obj:GetParent().rollID then
+											tNewSubMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()"
+										end
+										if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
+											tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button1\"]) SkuCore:CheckFrames()"
+										end
 									end
-									if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
-										tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button1\"]) SkuCore:CheckFrames()"
-									end
-								end
-							end
-						else
-							tNewSubMenuEntry.OnAction = function()
-								--dprint("links func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
-								aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
-								--dprint("2L")
-								--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
-								if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
-									SkuCore:CheckFrames(true)
-								else
-									SkuCore:CheckFrames()
-								end
-							end
-						end
-						local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
-						if aGossipListTable[index].containerFrameName then
-							tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
-							--dprint("rechts mac", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
-						else
-							tNewSubMenuEntry.OnAction = function()
-								aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
-								--dprint("rechts func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
-								--dprint("2R")
-								--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
-								if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
-									SkuCore:CheckFrames(true)
-								else
-									SkuCore:CheckFrames()
-								end
-							end
-						end
-
-						if SkuCore.AuctionHouseOpen == true then
-							if aGossipListTable[index].obj:GetParent() then
-								if string.find(aGossipListTable[index].obj:GetName() or "", "ContainerFrame") or string.find(aGossipListTable[index].obj:GetParent():GetName() or "", "ContainerFrame") then									
-									SkuCore:AuctionHouseBuildItemSellMenu(tNewMenuEntry, aGossipListTable[index])
-								end
-							end
-						end
-
-						local tItemId
-						if aGossipListTable[index].obj.info then
-							tItemId = aGossipListTable[index].obj.info.id
-						end
-						if not tItemId then
-							tItemId = aGossipListTable.itemId
-						end
-						if tItemId then
-							aGossipListTable[index].itemId = tItemId
-
-							if not SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds then
-								SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = {}
-							end
-							if SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] then
-								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Markierung für Auto Verkaufen entfernen"]}, SkuGenericMenuItem)
-								tNewSubMenuEntry.OnAction = function(self, a, b)
-									local tItemId
-									if aGossipListTable[index].obj.info then
-										tItemId = aGossipListTable[index].obj.info.id
-									end
-									if not tItemId then
-										tItemId = aGossipListTable.itemId
-									end
-									SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = nil
 								end
 							else
-								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Für Auto Verkaufen markieren"]}, SkuGenericMenuItem)
+								tNewSubMenuEntry.OnAction = function()
+									--dprint("links func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
+									aGossipListTable[index].func(aGossipListTable[index].obj, "LeftButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
+									--dprint("2L")
+									--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
+									if not aGossipListTable[index].obj:GetName() then
+										SkuCore:CheckFrames()
+									else
+										if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
+											SkuCore:CheckFrames(true)
+										else
+											SkuCore:CheckFrames()
+										end
+									end
+								end
+							end
+							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
+							if aGossipListTable[index].containerFrameName then
+								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
+								--dprint("rechts mac", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
+							else
+								tNewSubMenuEntry.OnAction = function()
+									aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
+									--dprint("rechts func", aGossipListTable[index].containerFrameName, aGossipListTable[index].obj)
+									--dprint("2R")
+									--dprint(aGossipListTable[index].obj:GetName(), string.find(aGossipListTable[index].obj:GetName(), "Tab"))
+									if not aGossipListTable[index].obj:GetName() then
+										SkuCore:CheckFrames()
+									else
+										if string.find(aGossipListTable[index].obj:GetName(), "Tab") then
+											SkuCore:CheckFrames(true)
+										else
+											SkuCore:CheckFrames()
+										end
+									end
+								end
+							end
+
+							if SkuCore.AuctionHouseOpen == true then
+								if aGossipListTable[index].obj:GetParent() then
+									if string.find(aGossipListTable[index].obj:GetName() or "", "ContainerFrame") or string.find(aGossipListTable[index].obj:GetParent():GetName() or "", "ContainerFrame") then									
+										SkuCore:AuctionHouseBuildItemSellMenu(tNewMenuEntry, aGossipListTable[index])
+									end
+								end
+							end
+
+							local tItemId
+							if aGossipListTable[index].obj.info then
+								tItemId = aGossipListTable[index].obj.info.id
+							end
+							if not tItemId then
+								tItemId = aGossipListTable.itemId
+							end
+							if tItemId then
+								aGossipListTable[index].itemId = tItemId
+
+								if not SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds then
+									SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = {}
+								end
+								if SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] then
+									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Markierung für Auto Verkaufen entfernen"]}, SkuGenericMenuItem)
+									tNewSubMenuEntry.OnAction = function(self, a, b)
+										local tItemId
+										if aGossipListTable[index].obj.info then
+											tItemId = aGossipListTable[index].obj.info.id
+										end
+										if not tItemId then
+											tItemId = aGossipListTable.itemId
+										end
+										SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = nil
+									end
+								else
+									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Für Auto Verkaufen markieren"]}, SkuGenericMenuItem)
+									tNewSubMenuEntry.OnAction = function(self, a, b)
+										local tItemId
+										if aGossipListTable[index].obj.info then
+											tItemId = aGossipListTable[index].obj.info.id
+										end
+										if not tItemId then
+											tItemId = aGossipListTable.itemId
+										end
+										SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = true
+									end
+								end
+							end
+
+							if tItemId then
+								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zerstören"]}, SkuGenericMenuItem)
 								tNewSubMenuEntry.OnAction = function(self, a, b)
 									local tItemId
 									if aGossipListTable[index].obj.info then
@@ -2160,7 +2185,27 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									if not tItemId then
 										tItemId = aGossipListTable.itemId
 									end
-									SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = true
+
+									--print(aGossipListTable[index].containerFrameName, tItemId, _G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID())
+									if tItemId then
+										aGossipListTable[index].obj:GetScript("OnDragStart")(aGossipListTable[index].obj, "LeftButton") 
+										DeleteCursorItem()
+										SkuCore:CheckFrames()
+
+										--[[
+										SkuCore:ConfirmButtonShow("Wirklich zerstören? Eingabe Ja, Escape Nein", 
+										function(self)
+											DeleteCursorItem()
+											PlaySound(89)
+											print("kill")
+										end,
+										function()
+											print("abb")
+											SkuOptions.Voice:OutputString("abgebrochen", true, true, 0.2, false)
+										end
+										)
+										]]
+									end
 								end
 							end
 						end

@@ -289,6 +289,23 @@ function SkuChat:JoinOrLeaveSkuChatChannel()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local ChatFrame1EditBoxIsShown = false
+function SkuChat:ChatFrame1EditBoxOnShow()
+	if ChatFrame1EditBoxIsShown == false  then
+		ChatFrame1EditBoxIsShown = true
+		PlaySoundFile("Interface\\AddOns\\Sku\\SkuChat\\assets\\audio\\chateditbox_open.mp3", "Talking Head")
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:ChatFrame1EditBoxOnHide()
+	if ChatFrame1EditBoxIsShown == true  then
+		ChatFrame1EditBoxIsShown = false
+		PlaySoundFile("Interface\\AddOns\\Sku\\SkuChat\\assets\\audio\\chateditbox_close.mp3", "Talking Head")
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local SkuChatEditboxHookFlag = false
 function SkuChat:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
@@ -308,6 +325,10 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 			end
 		end
 	end)
+
+	hooksecurefunc(ChatFrame1EditBox, "Show", SkuChat.ChatFrame1EditBoxOnShow)
+	hooksecurefunc(ChatFrame1EditBox, "Hide", SkuChat.ChatFrame1EditBoxOnHide)
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

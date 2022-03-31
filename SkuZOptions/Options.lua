@@ -67,6 +67,7 @@ SkuOptions.options = {
 				return SkuOptions.db.profile[MODULE_NAME].localActive
 			end
 		},
+		--[[
 		visualAudioMenu = {
 			order = 6,
 			name = L["Audio Menü visuell"] ,
@@ -79,6 +80,7 @@ SkuOptions.options = {
 				return SkuOptions.db.profile[MODULE_NAME].visualAudioMenu
 			end
 		},
+		]]
 		soundChannels={
 			name = L["Audio-Kanäle"],
 			type = "group",
