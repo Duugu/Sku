@@ -1,7 +1,8 @@
 local MODULE_NAME = "SkuChat"
-local L = Sku.L
 
-SkuChat.WowTtsVoices = {
+	local L = Sku.L
+	
+	SkuChat.WowTtsVoices = {
 	[1] = L["def Microsoft Hedda Desktop - German"],
 }
 
@@ -23,17 +24,40 @@ SkuChat.options = {
 			end,
 		},
 		audio = {
+			name = L["Audio-Settings"],
 			order = 2,
-			name = L["Audio notification on chat message"],
-			desc = L["Enables / disables audio on new chat line"],
-			type = "toggle",
-			set = function(info,val) 
-				SkuOptions.db.profile[MODULE_NAME].audio = val
-			end,
-			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].audio
-			end,
+			type = "group",
+			args = {
+				audioOnNewMessage = {
+					name = L["Audio notification on chat message"],
+					order = 1,
+					type = "toggle",
+					desc = L["Enables / disables audio on new line"],
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].audio.audioOnNewMessage = val
+					end,
+					get = function(info) 
+						return SkuOptions.db.profile[MODULE_NAME].audio.audioOnNewMessage
+					end,
+				},
+				audioOnMessageEnd = {
+					name = L["Audio notification on the end of chat messages"],
+					desc = L["Controls whether a sound is played at the end of a chat message."],
+					order = 2,
+					type = "toggle",
+					set = function(info,val)
+						--print("val:", SkuOptions.db.profile[MODULE_NAME].audio.audioOnNewMessage, "tts-setting:", C_TTSSettings.GetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks))
+						C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, val)
+					end,
+					get = function(info) 
+						return C_TTSSettings.GetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks)
+					end,
+					OnAction = function() 
+							C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuOptions.db.profile[MODULE_NAME].audio.audioOnMessageEnd)
+					end,
+				},
 			},
+		},
 		WowTtsVoice = {
 			order = 3,
 			name = L["TTS voice"],
@@ -152,7 +176,10 @@ SkuChat.options = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuChat.defaults = {
 	enable = true,
-	audio = true,
+	audio  = {
+		audioOnNewMessage = true,
+		audioOnMessageEnd = false,
+	},
 	WowTtsVoice = 1,
 	WowTtsSpeed = 3,
 	WowTtsVolume = 50,

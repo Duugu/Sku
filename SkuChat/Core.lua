@@ -156,7 +156,7 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 		end
 	end
 
-	if SkuOptions.db.profile[MODULE_NAME].audio == true then
+	if SkuOptions.db.profile[MODULE_NAME].audio.audioOnNewMessage == true then
 		if SkuChat.inCombat == true then
 			SkuChatNewLineInCombat = true
 		else
