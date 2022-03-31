@@ -9233,6 +9233,7 @@ SkuDB.objectDataTBC = {
    [300156] = {"TEMP Legion Teleporter",nil,nil,nil,0,},
    [300157] = {"TEMP Shattered Sun Portal",nil,nil,nil,0,},
    [300158] = {"TEMP Elrendar Falls",nil,nil,nil,0,},
+   [1000000] = {"Guild Vault",nil,nil,nil,0,},
 }
 
 SkuDB.objectLookup = {
@@ -11371,6 +11372,8 @@ SkuDB.objectLookup = {
       [211021] = "Süßwasserauster",
       [211022] = "Yoons Kranichbeeren",
       [211023] = "Gusseiserner Topf",
+      [1000000] = "Gildentresor",
+
    },
    ["enUS"] = {
       [187882] = "Ice Stone",
@@ -13507,6 +13510,7 @@ SkuDB.objectLookup = {
       [17183] = "Buzzbox 411",
       [175085] = "The Sparklematic 5200",
       [2843] = "Battered Chest",
+      [1000000] = "Guild Vault",
    },
 }
       

@@ -937,7 +937,7 @@ function SkuNav:GetSubAreaIds(aAreaId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:GetCurrentAreaId()
+function SkuNav:GetCurrentAreaId(aUnitId)
 	--dprint("GetCurrentAreaId")
 	local tMinimapZoneText = GetMinimapZoneText()
 	local tAreaId
@@ -949,6 +949,9 @@ function SkuNav:GetCurrentAreaId()
 	end
 	if not tAreaId then
 		local tExtMapId = SkuDB.ExternalMapID[SkuNav:GetBestMapForUnit("player")]
+		if aUnitId then
+			tExtMapId = SkuDB.ExternalMapID[SkuNav:GetBestMapForUnit(aUnitId)]
+		end
 		if tExtMapId then
 			for i, v in pairs(SkuDB.InternalAreaTable) do
 				if v.AreaName_lang[Sku.Loc] == tExtMapId.Name_lang[Sku.Loc] then
@@ -1252,13 +1255,104 @@ function SkuNav:ProcessPlayerDead()
 	local tPlayerx, tPlayery = UnitPosition("player")
 	local distance = SkuNav:Distance(tPlayerx, tPlayery, tX, tY)
 
+	if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+		SkuNav:EndFollowingWpOrRt()
+	end
+
 	if distance > 10 then
 		if SkuNav:GetWaypointData2(L["Quick waypoint"]..";4") then
 			SkuNav:GetWaypointData2(L["Quick waypoint"]..";4").worldX = tX
 			SkuNav:GetWaypointData2(L["Quick waypoint"]..";4").worldY = tY								
 			local tAreaId = SkuNav:GetCurrentAreaId()
 			SkuNav:GetWaypointData2(L["Quick waypoint"]..";4").areaId = tAreaId
-			SkuNav:SelectWP(L["Quick waypoint"]..";4", true)
+			--SkuNav:SelectWP(L["Quick waypoint"]..";4", true)
+
+			local tPlayX, tPlayY = UnitPosition("player")
+			local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(tPlayX, tPlayY, SkuNav.MaxMetaEntryRange)--SkuOptions.db.profile["SkuNav"].nearbyWpRange)
+			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = L["Quick waypoint"]..";4"
+			
+			local wpTable = {SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC}
+			local tCoveredWps = {}
+			local tMaxAllowedDistanceToTargetWp = 500
+			local tSortedWaypointList = {}
+			for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
+				local tFnd = false
+				for tK, tV in pairs(tSortedWaypointList) do
+					if tV == v.nearestWpRange..";"..L["Meter"].."#"..v.nearestWP then
+						tFnd = true
+					end
+				end
+				if tFnd == false then
+					table.insert(tSortedWaypointList, v.nearestWpRange..";"..L["Meter"].."#"..v.nearestWP)
+				end
+			end
+			if #tSortedWaypointList == 0 then
+				SkuNav:SelectWP(L["Quick waypoint"]..";4", true)
+			else
+				local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, nil, true)
+				SkuOptions.db.profile["SkuNav"].metapathFollowingStart = SkuNav:GetCleanWpName(tSortedWaypointList[1])
+				SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
+
+				local tResults = {}
+				for wpIndex, wpName in pairs(wpTable) do
+					local tNearWps = SkuNav:GetNearestWpsWithLinksToWp(wpName, 10, tMaxAllowedDistanceToTargetWp)
+					local tBestRouteWeightedLength = 100000
+					for x = 1, #tNearWps do
+						if tMetapaths[tNearWps[x].wpName] then
+							local EndMetapathWpObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
+							local tEndTargetWpObj = SkuNav:GetWaypointData2(wpName)
+							local tDistToEndTargetWp = SkuNav:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+							if (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp < tBestRouteWeightedLength then
+								tBestRouteWeightedLength = (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp
+								tResults[wpName] = {
+									metarouteIndex = tNearWps[x].wpName, 
+									metapathLength = tMetapaths[tNearWps[x].wpName].distance, 
+									distanceTargetWp = tNearWps[x].distance,
+									targetWpName = wpName,
+									weightedDistance = tBestRouteWeightedLength,
+								}
+							end
+						end
+					end
+				end
+
+				local tSortedList = {}
+				for k,v in SkuSpairs(tResults, function(t,a,b) return t[b].weightedDistance > t[a].weightedDistance end) do
+					table.insert(tSortedList, k)
+				end
+				if #tSortedList == 0 then
+					SkuNav:SelectWP(L["Quick waypoint"]..";4", true)
+				else
+					for tK, tV in ipairs(tSortedList) do
+						if string.find(tResults[tV].targetWpName, L["Quick waypoint"]..";4") and tV then
+							SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
+							SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
+							SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = true
+							break
+						end
+					end
+				end
+				if SkuOptions.db.profile["SkuNav"].metapathFollowingTarget and (SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC ~= SkuOptions.db.profile["SkuNav"].metapathFollowingTarget) then
+					SkuOptions.db.profile["SkuNav"].metapathFollowing = false
+					if SkuOptions.db.profile["SkuNav"].metapathFollowingStart then
+						if SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths then
+							if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") then
+								SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") + 1)
+							end
+							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
+							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[#SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths+1] = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
+							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget] = SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingTarget]
+							table.insert(SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget].pathWps, SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget)
+							SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
+							SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
+							SkuOptions.db.profile["SkuNav"].metapathFollowing = true
+							SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
+						end
+					end
+				else
+					SkuNav:SelectWP(L["Quick waypoint"]..";4", true)
+				end
+			end
 
 			SkuOptions.Voice:OutputString(L["Quick waypoint 4 set to corpse"], false, true, 0.2)
 		end
@@ -1266,18 +1360,18 @@ function SkuNav:ProcessPlayerDead()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:ProcessGlobalDirection(ttimeDistanceOutput)
+local ttimeDistanceOutput = 0
+local tPrevGlobalDeg
+function SkuNav:ProcessGlobalDirection()
 	local tText = UnitPosition("player")
 	if not tText then
 		return
 	end
-	if (IsShiftKeyDown() and IsAltKeyDown()) then
-		if GetServerTime() - ttimeDistanceOutput > 0.5 then
+	if (IsShiftKeyDown() and IsAltKeyDown()) or SkuOptions.db.profile[MODULE_NAME].autoGlobalDirection == true then
+		if GetServerTime() - ttimeDistanceOutput > 0.5 or SkuOptions.db.profile[MODULE_NAME].autoGlobalDirection == true then
 			local x, y = UnitPosition("player")
-			ttimeDistanceOutput = GetServerTime()
 			local tDirection = SkuNav:GetDirectionTo(x, y, 30000, y)
 			tDirection = 12 - tDirection if tDirection == 0 then tDirection = 12 end
-			--SkuOptions.Voice:Output("nod-"..string.format("%02d", tDirection)..".mp3", true, true, 0.3)
 
 			local _, _, afinal = SkuNav:GetDirectionTo(x, y, 30000, y)
 			local tDeg = {
@@ -1294,7 +1388,11 @@ function SkuNav:ProcessGlobalDirection(ttimeDistanceOutput)
 			}
 			for x = 1, #tDeg do
 				if afinal < tDeg[x].deg and afinal > tDeg[x + 1].deg then
-					SkuOptions.Voice:OutputString(tDeg[x].file, false, true, 0.2)
+					if ((IsShiftKeyDown() and IsAltKeyDown()) and (GetServerTime() - ttimeDistanceOutput > 0.5)) or ( tPrevGlobalDeg ~= x and (tPrevGlobalDeg ~= x and ((tPrevGlobalDeg == 9 and x == 1) or (tPrevGlobalDeg == 1 and x == 9)) == false)) then
+						tPrevGlobalDeg = x
+						ttimeDistanceOutput = GetServerTime()
+						SkuOptions.Voice:OutputString(tDeg[x].file, false, true, 0.2)
+					end
 				end
 			end
 		end
@@ -1302,14 +1400,14 @@ function SkuNav:ProcessGlobalDirection(ttimeDistanceOutput)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:ProcessDirAndDistWithWpSelected(ttimeDistanceOutput)
+function SkuNav:ProcessDirAndDistWithWpSelected()
 	--output direction and distance to wp if wp selected
 	if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 		if SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 			local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 			if distance then
 				if IsControlKeyDown() and IsAltKeyDown() then
-					if GetServerTime() - ttimeDistanceOutput > 0.2 then
+					if GetServerTime() - ttimeDistanceOutput > 0.5 then
 						ttimeDistanceOutput = GetServerTime()
 						local tDirection = SkuNav:GetDirectionToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 						if SkuOptions.db.profile[MODULE_NAME].vocalizeFullDirectionDistance == true then
@@ -1591,7 +1689,6 @@ local metapathFollowingTargetNameAnnounced = false
 SkuNavMmDrawTimer = 0.2
 function SkuNav:CreateSkuNavControl()
 	local ttimeDegreesChangeInitial = nil
-	local ttimeDistanceOutput = 0
 	local ttime = GetServerTime()
 	local ttimeDraw = GetServerTime()
 
@@ -1693,8 +1790,8 @@ function SkuNav:CreateSkuNavControl()
 			if ttime > 0.1 then
 				SkuNav:ProcessPolyZones()
 				SkuNav:ProcessPlayerDead()
-				SkuNav:ProcessGlobalDirection(ttimeDistanceOutput)
-				SkuNav:ProcessDirAndDistWithWpSelected(ttimeDistanceOutput)
+				SkuNav:ProcessGlobalDirection()
+				SkuNav:ProcessDirAndDistWithWpSelected()
 				SkuNav:ProcessCheckReachingWp()
 
 				if SkuOptions.db.profile[MODULE_NAME].metapathFollowing ~= true then
@@ -1736,11 +1833,6 @@ function SkuNav:CreateSkuNavMain()
 	tFrame:SetPoint("CENTER")
 
 	tFrame:SetScript("OnClick", function(self, a, b)
-		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
-			print(L["Funktion erst nach Abschluss von Routen Umwandlung verfügbar"])
-			SkuOptions.Voice:OutputString(L["Funktion erst nach Abschluss von Routen Umwandlung verfügbar"], true, true, 0.3, true)
-			return
-		end
 
 		if a == "CTRL-SHIFT-R" then
 			SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap = SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true
@@ -2252,6 +2344,39 @@ function SkuNav:UpdateQuickWP(aWpName, aSilent)
 	local worldx, worldy = UnitPosition("player")
 	local tPName = UnitName("player")
 	local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())) or -1
+	local tInitialPlayerContintentId = tPlayerContintentId
+
+	if IsAltKeyDown() == true then
+		worldx, worldy = UnitPosition("target")
+
+		if not worldx then 
+			SkuOptions.Voice:OutputString(L["Error"], true, true, 0.2)
+			return
+		end
+
+		tPName = UnitName("target")
+		if not SkuNav:GetBestMapForUnit("target") then
+			SkuOptions.Voice:OutputString(L["Error"], true, true, 0.2)
+			return
+		end
+		tAreaId = SkuNav:GetCurrentAreaId("target")
+		if not tAreaId then
+			SkuOptions.Voice:OutputString(L["Error"], true, true, 0.2)
+			return
+		end
+
+		tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId("target"))) or -1
+		if not tPlayerContintentId then
+			SkuOptions.Voice:OutputString(L["Error"], true, true, 0.2)
+			return
+		end
+
+		if not tInitialPlayerContintentId or (tInitialPlayerContintentId ~= tPlayerContintentId) then
+			SkuOptions.Voice:OutputString(L["Error"], true, true, 0.2)
+			return
+		end			
+	end
+
 	local tTime = GetTime()
 	SkuNav:SetWaypoint(aWpName, {
 		["contintentId"] = tPlayerContintentId,

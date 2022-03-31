@@ -89,6 +89,9 @@ SkuStatus = {
 
 SkuCore.interactFramesListHooked = {}
 SkuCore.interactFramesListManual = {
+	["BagnonInventoryFrame1"] = function(...) SkuCore:Build_BagnonInventoryFrame(...) end,
+	--["BagnonBankFrame1"] = function(...) SkuCore:Build_BagnonBankFrame(...) end,
+	--["BagnonGuildFrame1"] = function(...) SkuCore:Build_BagnonGuildFrame1(...) end,
 	["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
 	["PetStableFrame"] = function(...) SkuCore:Build_PetStableFrame(...) end,
 }
@@ -1331,6 +1334,51 @@ function SkuCore:UNIT_HAPPINESS(unitTarget)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function TooltipLines_helper(...)
+	local rText = ""
+   for i = 1, select("#", ...) do
+		local region = select(i, ...)
+		if region and region:GetObjectType() == "FontString" then
+			local text = region:GetText() -- string or nil
+			if text then
+				rText = rText..text.."\r\n"
+			end
+		end
+	end
+	return rText
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+--local tSkuCoreTooltipCheckerControlPrevOpac = 1
+--SkuCore.CheckInteractObjectShowIsShown = false
+function SkuCore:CheckInteractObjectShow()
+	--tSkuCoreTooltipCheckerControlPrevOpac = 1
+	if not GameTooltipTextLeft1.GetText then
+		return
+	end
+	local tFirstLine = GameTooltipTextLeft1:GetText()
+	if not tFirstLine or tFirstLine == "" then
+		return
+	end
+	for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
+		if v == tFirstLine then
+			--SkuCore.CheckInteractObjectShowIsShown = true
+			--print("show", tFirstLine)
+			SkuOptions.Voice:OutputString(tFirstLine..";"..L["cursor;on"]..";"..L["OBJECT"], true, true, 0.2)
+			break
+		end
+	end
+end
+--[[
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:CheckInteractObjectHide()
+	if SkuCore.CheckInteractObjectShowIsShown == true then
+		SkuCore.CheckInteractObjectShowIsShown = false
+		--print("hide")
+	end
+end
+]]
+---------------------------------------------------------------------------------------------------------------------------------------
 local SkuDropdownlistGenericFlag = false
 function SkuCore:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
@@ -1525,7 +1573,26 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		C_CVar.SetCVar("cameraSmoothStyle", "2")
 		C_CVar.GetCVar("removeChatDelay", "1")
 	end)			
-	
+
+	hooksecurefunc(GameTooltip, "Show", SkuCore.CheckInteractObjectShow)
+	hooksecurefunc(GameMenuFrame, "Show", SkuCore.StartStopGameMenuBackgroundSound)
+	hooksecurefunc(GameMenuFrame, "Hide", SkuCore.StartStopGameMenuBackgroundSound)
+	--[[
+	--hooksecurefunc(GameTooltip, "Hide", SkuCore.CheckInteractObjectHide)
+	--hooksecurefunc("GameTooltip_OnHide", SkuCore.CheckInteractObjectHide)
+
+	local tSkuCoreTooltipCheckerControlTime = 0
+	local f = _G["SkuCoreTooltipCheckerControl"] or CreateFrame("Frame", "SkuCoreTooltipCheckerControl", UIParent)
+	f:SetScript("OnUpdate", function(self, time)
+		tSkuCoreTooltipCheckerControlTime = tSkuCoreTooltipCheckerControlTime + time
+		if tSkuCoreTooltipCheckerControlPrevOpac == 1 then
+			if GameTooltip:GetAlpha() < 1 then
+				tSkuCoreTooltipCheckerControlPrevOpac = 0
+				SkuCore:CheckInteractObjectHide()
+			end
+		end
+	end)
+	]]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1904,21 +1971,6 @@ local function ItemName_helper(aText)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function TooltipLines_helper(...)
-	local rText = ""
-   for i = 1, select("#", ...) do
-		local region = select(i, ...)
-		if region and region:GetObjectType() == "FontString" then
-			local text = region:GetText() -- string or nil
-			if text then
-				rText = rText..text.."\r\n"
-			end
-		end
-	end
-	return rText
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
 local function IterateChildren(t, tab)
 	local tResults = {}
 
@@ -1975,7 +2027,7 @@ local function IterateChildren(t, tab)
 		end
 	end
 
-	--dprint(tab, "Children of", GetTableID(t), t:GetName())
+	dprint(tab, "Children of", GetTableID(t), t:GetName())
 	if t.GetChildren then
 		local dtc = { t:GetChildren() }
 
@@ -1983,6 +2035,7 @@ local function IterateChildren(t, tab)
 			--dprint(tab.."   ", t:GetName(), t.NeedButton, t.NeedButton:GetObjectType())
 			dtc = { t.IconFrame, t.NeedButton, t.GreedButton, t.PassButton }
 		end
+		
 		local tEmptyCounter = 1
 		for x = 1, #dtc do
 			if validTypes[dtc[x]:GetObjectType()] then
@@ -2516,6 +2569,56 @@ function SkuCore:ResetBindings(aToWowDefaults)
 	end
 	
 	SkuCore:SaveBindings()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:StartStopGameMenuBackgroundSound()
+	if not GameMenuFrame then
+		return
+	end
+	if GameMenuFrame:IsVisible() == true then
+		if SkuCore.currentBackgroundSoundHandle == nil then
+			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuZOptions\\assets\\audio\\background\\walgesang.mp3", "Talking Head")
+			if soundHandle then
+				SkuCore.currentBackgroundSoundHandle = soundHandle
+				if SkuCore.currentBackgroundSoundTimerHandle then
+					SkuCore.currentBackgroundSoundTimerHandle:Cancel()
+					SkuCore.currentBackgroundSoundTimerHandle = nil
+				end
+				if SkuCore.currentBackgroundSoundTimerHandle == nil then
+					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuOptions.BackgroundSoundFilesLen["walgesang.mp3"], function()
+						--StopSound(SkuCore.currentBackgroundSoundHandle, 0)
+						SkuCore.currentBackgroundSoundTimerHandle = nil
+						SkuCore.currentBackgroundSoundHandle = nil
+						SkuCore:StartStopBackgroundSound(true)
+					end)
+				else
+					if SkuCore.currentBackgroundSoundTimerHandle then
+						SkuCore.currentBackgroundSoundTimerHandle:Cancel()
+						SkuCore.currentBackgroundSoundTimerHandle = nil
+					end
+					SkuCore.currentBackgroundSoundTimerHandle = nil
+					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuOptions.BackgroundSoundFilesLen["walgesang.mp3"], function()
+						SkuCore.currentBackgroundSoundTimerHandle = nil
+						SkuCore.currentBackgroundSoundHandle = nil
+						SkuCore:StartStopBackgroundSound(true)
+					end)
+				end
+			end
+		else
+			StopSound(SkuCore.currentBackgroundSoundHandle, 0)
+			SkuCore.currentBackgroundSoundHandle = nil
+		end
+	else --if aStartStop == false then
+		if SkuCore.currentBackgroundSoundHandle ~= nil then
+			StopSound(SkuCore.currentBackgroundSoundHandle, 0)
+			SkuCore.currentBackgroundSoundHandle = nil
+		end
+		if SkuCore.currentBackgroundSoundTimerHandle then
+			SkuCore.currentBackgroundSoundTimerHandle:Cancel()
+			SkuCore.currentBackgroundSoundTimerHandle = nil
+		end
+	end
 end
 
 function test()
