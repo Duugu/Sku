@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r25.10](https://github.com/Duugu/Sku/releases/download/r25.10/Sku-r25.10-bcc.zip) (31.03.2022)<br>
+[Sku r25.11](https://github.com/Duugu/Sku/releases/download/r25.11/Sku-r25.11-bcc.zip) (31.03.2022)<br>
 [Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
 
 *Old updates:* <br>
@@ -23,6 +23,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in release 25.11
+
+### SkuCore
+- Fixed a bug with right click on items in bags.
 
 ## Changes in release 25.10
 
