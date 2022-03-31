@@ -139,8 +139,8 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                         textFirstLine = tFriendlyName,
                         textFull = "",
                         childs = {},
-                        func = nil,--_G[tFrameName]:GetScript("OnClick"),
-                        click = true,
+                        --func = nil,--_G[tFrameName]:GetScript("OnClick"),
+                        --click = true,
                      }   
 
                      tBagResults[bagId] = {obj = aParentChilds[tFriendlyName], childs = {}}
@@ -160,9 +160,23 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                      textFirstLine = tFriendlyName,
                      textFull = "",
                      childs = {},
-                     func = _G[tFrameName]:GetScript("OnClick"),
-                     click = true,
+                     --func = _G[tFrameName]:GetScript("OnClick"),
+                     --click = true,
                   }   
+						--get the onclick func if there is one
+						if aParentChilds[tFriendlyName].obj:IsMouseClickEnabled() == true then
+							if aParentChilds[tFriendlyName].obj:GetObjectType() == "Button" then
+								aParentChilds[tFriendlyName].func = aParentChilds[tFriendlyName].obj:GetScript("OnClick")
+							end
+							aParentChilds[tFriendlyName].containerFrameName = tFrameName
+							aParentChilds[tFriendlyName].onActionFunc = function(self, aTable, aChildName)
+								--empty
+							end
+							if aParentChilds[tFriendlyName].func then
+								aParentChilds[tFriendlyName].click = true
+							end
+						end
+
 
                   _G["SkuScanningTooltip"]:ClearLines()
                   local hsd, rc = _G["SkuScanningTooltip"]:SetBagItem(aParentChilds[tFriendlyName].obj:GetParent():GetID(), aParentChilds[tFriendlyName].obj:GetID())
