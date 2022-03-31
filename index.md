@@ -7,6 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+[Sku r25.10](https://github.com/Duugu/Sku/releases/download/r25.10/Sku-r25.10-bcc.zip) (31.03.2022)<br>
 [Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
 
 *Old updates:* <br>
@@ -22,6 +23,43 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in release 25.10
+
+### SkuCore
+- Added a new feature for collecting objects (like the well known cactus apples) via mouse click / numpad: The addon now outputs the objects name if the mouse cursor is over such an collectible object.
+- The addon now is playing a background sound (whale song) if the game menu is open. That is, because the game menu easily can be opended unintentionally with Escape, and is blocking almost all other things. So, if you are suddenly hearing whales, press Escape to close that stupid game menu. :)
+- The stable masters union strike has come to an end. All their demands were accepted. As a result, starting from today, hunters will get the pet and the pets poop in a plastic bag on unstabling a pet.
+- Updated the bag menu. The bag menu now has much less confusing sub menus and buttons and is a lot clearer and easier to use.
+- The bag menu now has an additional sub menu "Bags" to manage your bag-item slots. This is how to replace an existing bag:
+	- Pick up the new bag-item from one of you bags with left click, to get that new bag-item to the cursor.
+	- Go to "Bags" and to the target bag-item slot for that new bag-item.
+	- Go right and do a left click, to place the new bag-item in the bag-item slot. The new bag-item and the existing bag-item will swap places.<br>
+	Replacing bags will only work if the existing bag is empty or the new bag-item has at least the same number of item-slots.
+- Items in bags now have an additional submenu "Destroy". CAUTION: The item will be destroyed without any additional confirmation!
+
+### SkuNav
+- On death and release the spirit the addon now starts a close route to your corpse (quick waypoint 4), instead of just selecting the quick waypoint 4.
+- Fixed a bug in the English map data that caused some routes to be broken. Rabbits are the root of all evil. Trust me on this one! Just kill'em on sight!
+- Map data updated for English and German (current version: V22Plus-21c-AlleKarten-2022-03-26)
+	- Silverpine Forest: completed
+	- Eversong Woods: completed
+	- Barrens and Azuremyst Isle: fixes
+- The default sound (for new characters) on entering/leaving the 5 degree range of beacons was changed from "click" to "beep".
+- The default values (for new characters) for all range check distances and target type are now set to "vocalized".
+- The range check now should be instantly triggered on every target change (even on mobs with same names). There's still that 45 seconds delay after login, where no range checks are available.
+- Additionally to CTRL + SHIFT + F5-F8 to set the quick waypoints 1-4 to your own current position, you can now use CTRL + SHIFT + ALT + F5-F8 to set the quick waypoints to the position of your current target.<br>
+  You can use that to navigate to party members. Just target the party member, use CTRL + SHIFT + F5 to set quick waypoint 1 to that party member, and the start a close route to quick waypoint 1.<br>
+  That feature is only working if you're targeting party members, as the addon hasn't any access to the coordinates of non-party members.
+- There is a new option: SkuNav > Options > Auto announce global direction (default: off). With that enabled the addon automatically is announcing the global direction if you're turning.
+
+### SkuChat
+- Added a sound for open/close of the chat input box.
+- Added the new command /sc to write to the SkuChat channel (additionally to the existing /skuchat).
+
+### SkuOptions
+- Removed the option "SkuOptions > Options > Visual audio menu".
+
 ## Changes in Sku-Maus Skript (wow_menu) r2.7
 
 - Follow the installation steps in the readme.txt file!
