@@ -49,7 +49,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - The default values (for new characters) for all range check distances and target type are now set to "vocalized".
 - The range check now should be instantly triggered on every target change (even on mobs with same names). There's still that 45 seconds delay after login, where no range checks are available.
 - Additionally to CTRL + SHIFT + F5-F8 to set the quick waypoints 1-4 to your own current position, you can now use CTRL + SHIFT + ALT + F5-F8 to set the quick waypoints to the position of your current target.<br>
-  You can use that to navigate to party members. Just target the party member, use CTRL + SHIFT + F5 to set quick waypoint 1 to that party member, and the start a close route to quick waypoint 1.<br>
+  You can use that to navigate to party members. Just target the party member, use CTRL + SHIFT + ALT + F5 to set quick waypoint 1 to that party member, and the start a close route to quick waypoint 1.<br>
   That feature is only working if you're targeting party members, as the addon hasn't any access to the coordinates of non-party members.
 - There is a new option: SkuNav > Options > Auto announce global direction (default: off). With that enabled the addon automatically is announcing the global direction if you're turning.
 
