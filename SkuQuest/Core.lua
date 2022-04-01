@@ -1003,13 +1003,11 @@ function SkuQuest:PLAYER_ENTERING_WORLD(...)
 
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
-	--[[ Questie integration test
-	if Questie then
-		QuestieQuest = QuestieLoader:CreateModule("QuestieQuest")
-		QuestieDB = QuestieLoader:ImportModule("QuestieDB")
-		QuestiePlayer = QuestieLoader:ImportModule("QuestiePlayer")
-	end
-	]]
+
+	C_Timer.After(20, function()
+		SkuQuest:LoadEventHandler()
+	end)
+	
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

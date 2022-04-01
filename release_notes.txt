@@ -3,16 +3,27 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in release 25.13
+
+	SkuQuest
+		- Event/seasonal/holiday quest are now filtered from the "Available Quests" list if the event/season isn't currenlty active.
+		- Fixed a bug with filtering the available quests by the players class and race.
+		- Stumbled upon a lot of AQ war efforts quests (not available anymore) and removed them from the quest db.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in release 25.12
 
 	SkuCore
 		- Fixed a bug with the key ring in bags. (Don't care if you hadn't any issues with bags in r25.11)
+
 
 -------------------------------------------------------------------------------------------------------	
 Changes in release 25.11
 
 	SkuCore
 		- Fixed a bug with right click on items in bags.
+
 
 -------------------------------------------------------------------------------------------------------	
 Changes in release 25.10
