@@ -1066,7 +1066,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 							and not tCurrentQuestLogQuestsTable[i]
 							and tOutFlag ~= true
 						then
-
 							local rRaces = {}
 							local tFlagH = nil
 							local tFlagA = nil
@@ -1086,7 +1085,8 @@ function SkuQuest:MenuBuilder(aParentEntry)
 										tFlagA = true
 									end
 									if iR ~= "ALL_HORDE" and iR ~= "ALL_ALLIANCE" then
-										rRaces[iR] = true
+										local tCleanRaceName = string.upper(string.gsub(iR, "_", ""))
+										rRaces[tCleanRaceName] = true
 										tCount = tCount + 1
 									end
 
@@ -1094,7 +1094,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 							end
 
 							if tRaceName then
-								if rRaces[string.upper(tRaceName.raceName)] then
+								if rRaces[string.upper(tRaceName.clientFileString)] then
 									tFlagR = true
 								end
 							end
