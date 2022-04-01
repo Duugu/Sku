@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r25.12](https://github.com/Duugu/Sku/releases/download/r25.12/Sku-r25.12-bcc.zip) (31.03.2022)<br>
+[Sku r25.13](https://github.com/Duugu/Sku/releases/download/r25.13/Sku-r25.13-bcc.zip) (01.04.2022)<br>
 [Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
 
 *Old updates:* <br>
@@ -23,6 +23,13 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in release 25.13
+
+### SkuQuest
+- Event / seasonal / holiday quest are now filtered from the "Available Quests" list if the event isn't active.
+- Fixed a bug with filtering the available quests by the players class and race.
+- Stumbled upon a lot of AQ war efforts quests (not available anymore) and removed them from the quest db.
 
 ## Changes in release 25.12
 
