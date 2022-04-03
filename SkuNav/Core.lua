@@ -1360,8 +1360,47 @@ function SkuNav:ProcessPlayerDead()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
+local tDeg = {
+	[1] = {a = 0, f = L["north"],},
+	[2] = {a = 22.5, f = L["north-west"],},
+	[3] = {a = 67.5, f = L["west"],},
+	[4] = {a = 112.5, f = L["south-west"],},
+	[5] = {a = 157.5, f = L["south"],},
+	[6] = {a = 202.5, f = L["south-east"],},
+	[7] = {a = 247.5, f = L["east"],},
+	[8] = {a = 292.5, f = L["north-east"],},
+	[9] = {a = 337.5, f = L["north"],},
+	[10] = {a = 360, f = L["north"],},
+}
+function SkuNav:GetDirectionToAsString(tx, ty)
+	local xa, ya = UnitPosition("player")
+	if not xa or not ya or not tx or not ty then
+		return 0
+	end
+	
+	local xa2, ya2 = tx - xa, ty - ya
+	local angle = atan2(xa, ya) - atan2(xa2, ya2)
+	angle = (angle + 13) - 90
+
+	if angle < 0 then
+		angle = 270 + (90 + angle)
+	end
+
+	local tResult --= ""--tDeg[1].f
+	for x = 1, #tDeg do
+		if (angle) > tDeg[x].a then
+			tResult = tDeg[x].f
+		end
+	end
+
+	--print("tResult", tResult)
+	return tResult
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
 local ttimeDistanceOutput = 0
 local tPrevGlobalDeg
+local tCurrentGlobalDirectionSoundHandle
 function SkuNav:ProcessGlobalDirection()
 	local tText = UnitPosition("player")
 	if not tText then
@@ -1391,7 +1430,7 @@ function SkuNav:ProcessGlobalDirection()
 					if ((IsShiftKeyDown() and IsAltKeyDown()) and (GetServerTime() - ttimeDistanceOutput > 0.5)) or ( tPrevGlobalDeg ~= x and (tPrevGlobalDeg ~= x and ((tPrevGlobalDeg == 9 and x == 1) or (tPrevGlobalDeg == 1 and x == 9)) == false)) then
 						tPrevGlobalDeg = x
 						ttimeDistanceOutput = GetServerTime()
-						SkuOptions.Voice:OutputString(tDeg[x].file, false, true, 0.2)
+						SkuOptions.Voice:OutputString(tDeg[x].file, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true)
 					end
 				end
 			end

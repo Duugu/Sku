@@ -70,10 +70,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param input string
 function SkuOptions:SlashFuncSkuChat(input)
-	print("SlashFuncSkuChat", input)
+	--print("SlashFuncSkuChat", input)
 	SkuChat:SetEditboxToSkuChat(input)
+end
 
-	
+---------------------------------------------------------------------------------------------------------------------------------------
+---@param input string
+function SkuOptions:SlashFuncPquit(input)
+	--print("SlashFuncPquit", input)
+	LeaveParty()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -81,6 +86,11 @@ end
 function SkuOptions:SlashFunc(input)
 	--print("SkuOptions:SlashFunc(input)", input)
 	--SkuOptions.AceConfigDialog:Open("SkuOptions")
+
+	if not input then
+		return
+	end
+
 	input = input:gsub( ", ", ",")
 	input = input:gsub( " ,", ",")
 
@@ -89,6 +99,7 @@ function SkuOptions:SlashFunc(input)
 	local sep, fields = ",", {}
 	local pattern = string.format("([^%s]+)", sep)
 	input:gsub(pattern, function(c) fields[#fields+1] = c end)
+
 	if fields then
 
 		--[[
@@ -1580,6 +1591,7 @@ function SkuOptions:OnInitialize()
 		defaults.profile["SkuQuest"] = SkuQuest.defaults
 	end
 
+	SkuOptions:RegisterChatCommand("pquit", "SlashFuncPquit")
 	SkuOptions:RegisterChatCommand("Sku", "SlashFunc")
 	SkuOptions:RegisterChatCommand("Skuchat", "SlashFuncSkuChat")
 	SkuOptions:RegisterChatCommand("Sc", "SlashFuncSkuChat")
@@ -1587,8 +1599,11 @@ function SkuOptions:OnInitialize()
 	SkuOptions.AceConfig:RegisterOptionsTable("Sku", options, {"taop"})
 	SkuOptions.AceConfigDialog = LibStub("AceConfigDialog-3.0")
 	SkuOptions.AceConfigDialog:AddToBlizOptions("Sku")
-	SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults, true) -- TODO: fix default values for subgroups
+	SkuOptions.db = LibStub("AceDB-3.0"):New("SkuOptionsDB", defaults, true)
 	options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(SkuOptions.db)
+
+	SkuOptions:UpdateMovedAceDbProfileValues()
+	
 	SkuOptions.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	SkuOptions.db.RegisterCallback(self, "OnProfileCopied", "OnProfileCopied")
 	SkuOptions.db.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
@@ -1604,8 +1619,22 @@ function SkuOptions:OnInitialize()
 	SkuOptions:CreateMenuFrame()
 end
 
-local tOldChildren = false
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:UpdateMovedAceDbProfileValues()
+--[[
+	if SkuChat.options.args.audio.args then
+		if SkuChat.options.args.audio.args.audioOnNewMessage then
+			if SkuOptions.db.profile["SkuChat"].audio then
+				SkuOptions.db.profile["SkuChat"].audio.audioOnNewMessage = SkuOptions.db.profile["SkuChat"].audio
+				SkuOptions.db.profile["SkuChat"].audio = nil
+			end
+		end
+	end
+]]
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tOldChildren = false
 function SkuOptions:ClearFilter()
 	if tOldChildren ~= false then
 		tOldChildren = false

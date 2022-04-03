@@ -213,7 +213,7 @@ SkuNav.options = {
 			end
 		},
 		autoGlobalDirection = {
-			order = 4,
+			order = 10,
 			name = L["Auto announce global direction"],
 			desc = "",
 			type = "toggle",
@@ -222,6 +222,18 @@ SkuNav.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].autoGlobalDirection
+			end
+		},
+		showGlobalDirectionInWaypointLists = {
+			order = 11,
+			name = L["Show global direction in waypoint lists"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].showGlobalDirectionInWaypointLists = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].showGlobalDirectionInWaypointLists
 			end
 		},
 	}
@@ -247,6 +259,7 @@ SkuNav.defaults = {
 	clickClackRange = 5,
 	clickClackSoundset = "beep",
 	autoGlobalDirection = false,
+	showGlobalDirectionInWaypointLists = false,
 }
 
 local slower = string.lower
@@ -327,6 +340,16 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 								local EndMetapathWpObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
 								local tEndTargetWpObj = SkuNav:GetWaypointData2(wpName)
 								local tDistToEndTargetWp = SkuNav:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+
+								-- add direction to wp
+								local tDirectionTargetWp = ""
+								if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+									local tDirectionString = SkuNav:GetDirectionToAsString(tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+									if tDirectionString then
+										tDirectionTargetWp = ";"..tDirectionString
+									end
+								end	
+																
 								if (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp < tBestRouteWeightedLength then
 									tBestRouteWeightedLength = (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp
 									tResults[wpName] = {
@@ -335,6 +358,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 										distanceTargetWp = tNearWps[x].distance,
 										targetWpName = wpName,
 										weightedDistance = tBestRouteWeightedLength,
+										direction = tDirectionTargetWp,
 									}
 								end
 							end
@@ -353,7 +377,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 						else
 							for tK, tV in ipairs(tSortedList) do
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"].."#"..tV}, SkuGenericMenuItem)
+								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"]..tResults[tV].direction.."#"..tV}, SkuGenericMenuItem)
 								tNewMenuEntry.OnEnter = function(self, aValue, aName)
 									SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 									SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
@@ -377,7 +401,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 						else
 							for tK, tV in ipairs(tSortedWaypointList) do
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"]}, SkuGenericMenuItem)
+								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"]..tResults[tV].direction}, SkuGenericMenuItem)
 								tNewMenuEntry.OnEnter = function(self, aValue, aName)
 									SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 									SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
@@ -546,7 +570,15 @@ function SkuNav:MenuBuilder(aParentEntry)
 									local tWpX, tWpY = tWayP.worldX, tWayP.worldY
 									local tPlayX, tPlayY = UnitPosition("player")
 									local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
-									tWaypointList[v] = tDistance
+									-- add direction to wp
+									local tDirectionTargetWp = ""
+									if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+										local tDirectionString = SkuNav:GetDirectionToAsString(tWpX, tWpY)
+										if tDirectionString then
+											tDirectionTargetWp = ";"..tDirectionString
+										end
+									end									
+									tWaypointList[v] = {distance = tDistance, direction = tDirectionTargetWp,}
 								end
 							end
 						end
@@ -559,14 +591,22 @@ function SkuNav:MenuBuilder(aParentEntry)
 							local tWpX, tWpY = tWayP.worldX, tWayP.worldY
 							local tPlayX, tPlayY = UnitPosition("player")
 							local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
-							tWaypointList[L["Quick waypoint"]..";"..q] = tDistance
+							-- add direction to wp
+							local tDirectionTargetWp = ""
+							if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+								local tDirectionString = SkuNav:GetDirectionToAsString(tWpX, tWpY)
+								if tDirectionString then
+									tDirectionTargetWp = ";"..tDirectionString
+								end
+							end									
+							tWaypointList[L["Quick waypoint"]..";"..q] = {distance = tDistance, direction = tDirectionTargetWp,}
 						end
 					end
 				end
 
 				local tSortedWaypointList = {}
-				for k,v in SkuSpairs(tWaypointList, function(t,a,b) return t[b] > t[a] end) do --nach wert
-					table.insert(tSortedWaypointList, v..";"..L["Meter"].."#"..k)
+				for k,v in SkuSpairs(tWaypointList, function(t,a,b) return t[b].distance > t[a].distance end) do --nach wert
+					table.insert(tSortedWaypointList, v.distance..";"..L["Meter"]..v.direction.."#"..k)
 				end
 				if #tSortedWaypointList == 0 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
@@ -951,6 +991,18 @@ function SkuNav:MenuBuilder(aParentEntry)
 									if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
 										tDistText = L["weit"]
 									end
+
+									-- add direction to wp
+									local tDirectionTargetWp = ""
+									if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+										local tWpData = SkuNav:GetWaypointData2(tV)
+										local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
+										if tDirectionString then
+											tDirectionTargetWp = ";"..tDirectionString
+										end
+									end
+									tDistText = tDistText..tDirectionTargetWp									
+
 									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, SkuGenericMenuItem)--
 									tNewMenuEntry.OnEnter = function(self)
 										SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint = nil

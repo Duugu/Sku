@@ -486,6 +486,18 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 											if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
 												tDistText = L["weit"]
 											end
+
+											-- add direction to wp
+											local tDirectionTargetWp = ""
+											if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+												local tWpData = SkuNav:GetWaypointData2(tV)
+												local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
+												if tDirectionString then
+													tDirectionTargetWp = ";"..tDirectionString
+												end
+											end
+											tDistText = tDistText..tDirectionTargetWp
+
 											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, SkuGenericMenuItem)
 											tNewMenuEntry.OnEnter = function(self, aValue, aName)
 												SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
@@ -524,6 +536,18 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 									if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
 										tDistText = L["weit"]
 									end
+									
+									-- add direction to wp
+									local tDirectionTargetWp = ""
+									if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+										local tWpData = SkuNav:GetWaypointData2(tV)
+										local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
+										if tDirectionString then
+											tDirectionTargetWp = ";"..tDirectionString
+										end
+									end
+									tDistText = tDistText..tDirectionTargetWp
+
 									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
@@ -599,6 +623,16 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 									local EndMetapathWpObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
 									local tEndTargetWpObj = SkuNav:GetWaypointData2(wpName)
 									local tDistToEndTargetWp = SkuNav:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+
+									-- add direction to wp
+									local tDirectionTargetWp = ""
+									if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+										local tDirectionString = SkuNav:GetDirectionToAsString(tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+										if tDirectionString then
+											tDirectionTargetWp = ";"..tDirectionString
+										end
+									end					
+
 									if (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp < tBestRouteWeightedLength then
 										tBestRouteWeightedLength = (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp
 										tResults[wpName] = {
@@ -607,6 +641,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 											distanceTargetWp = tNearWps[x].distance,
 											targetWpName = wpName,
 											weightedDistance = tBestRouteWeightedLength,
+											direction = tDirectionTargetWp,
 										}
 									end
 								end
@@ -625,7 +660,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 							else
 								for tK, tV in ipairs(tSortedList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"].."#"..tV}, SkuGenericMenuItem)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"]..tResults[tV].direction.."#"..tV}, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
@@ -648,7 +683,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 							else
 								for tK, tV in ipairs(tSortedWaypointList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"]}, SkuGenericMenuItem)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..";"..L["Meter"]..tResults[tV].direction}, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
@@ -696,7 +731,17 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						for wpIndex, wpName in pairs(wpTable) do
 							local tWpObj = SkuNav:GetWaypointData2(wpName)
 							local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
-							tResults[wpName] = {wpName = wpName, distance = tDistanceTargetWp}
+
+							-- add direction to wp
+							local tDirectionTargetWp = ""
+							if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+								local tDirectionString = SkuNav:GetDirectionToAsString(tWpObj.worldX, tWpObj.worldY)
+								if tDirectionString then
+									tDirectionTargetWp = ";"..tDirectionString
+								end
+							end
+
+							tResults[wpName] = {wpName = wpName, distance = tDistanceTargetWp, direction = tDirectionTargetWp,}
 						end
 
 						local tSortedList = {}
@@ -707,7 +752,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 						else
 							for tK, tV in ipairs(tSortedList) do
-								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {tResults[tV].distance..";"..L["Meter"].."#"..tV}, SkuGenericMenuItem)
+								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {tResults[tV].distance..";"..L["Meter"]..tResults[tV].direction.."#"..tV}, SkuGenericMenuItem)
 								tNewMenuGeneralSp.OnEnter = function(self, aValue, aName)
 									SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint = tV
 								end
@@ -726,7 +771,17 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						for wpIndex, wpName in pairs(wpTable) do
 							local tWpObj = SkuNav:GetWaypointData2(wpName)
 							local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
-							tResults[wpName] = {wpName = wpName, distance = tDistanceTargetWp}
+
+							-- add direction to wp
+							local tDirectionTargetWp = ""
+							if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+								local tDirectionString = SkuNav:GetDirectionToAsString(tWpObj.worldX, tWpObj.worldY)
+								if tDirectionString then
+									tDirectionTargetWp = ";"..tDirectionString
+								end
+							end
+
+							tResults[wpName] = {wpName = wpName, distance = tDistanceTargetWp, direction = tDirectionTargetWp,}							
 						end
 
 						local tSortedList = {}
@@ -737,7 +792,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 						else
 							for tK, tV in ipairs(tSortedList) do
-								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].distance..";"..L["Meter"]}, SkuGenericMenuItem)
+								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].distance..";"..L["Meter"]..tResults[tV].direction}, SkuGenericMenuItem)
 								tNewMenuGeneralSp.OnEnter = function(self, aValue, aName)
 									SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint = tV
 								end
@@ -1089,7 +1144,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 										rRaces[tCleanRaceName] = true
 										tCount = tCount + 1
 									end
-
 								end
 							end
 
@@ -1125,26 +1179,31 @@ function SkuQuest:MenuBuilder(aParentEntry)
 								end
 																
 								if tFlagClass == true then
-
 									local tPreQuestsTable = {}
 									if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
 										for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]]) do
 											tPreQuestsTable[vR] = vR
 										end
 									end
+
+									local tPreQuestSingleOk = false
 									if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
 										for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]]) do
-											tPreQuestsTable[vR] = vR
+											if C_QuestLog.IsQuestFlaggedCompleted(tonumber(vR)) == true then
+												tPreQuestSingleOk = true
+											end
 										end
 									end
-										
-									local tAllCompletedFlag = true
+
+									local tAllCompletedFlag = tPreQuestSingleOk
 									for iPQ, vPQ in pairs(tPreQuestsTable) do
 										if C_QuestLog.IsQuestFlaggedCompleted(tonumber(vPQ)) == false then
 											tAllCompletedFlag = false
 										end
 									end
+
 									if tAllCompletedFlag == true then
+										
 										local tIsOk = true
 										--dprint(i, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]])
 										if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]] then
@@ -1189,7 +1248,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 										end
 
 										if tIsOk == true then
-											
 											local tIsEventOk = true
 											if SkuQuest:IsEventQuest(i) == true then
 												local tEventName = SkuQuest:GetEventNameFor(i)

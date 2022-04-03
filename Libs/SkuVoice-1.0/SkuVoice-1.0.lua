@@ -30,6 +30,18 @@ function SkuVoice:Create()
 				end
 			end
 
+			--play everything that is flagged for dnq
+			for i = 1, table.getn(mSkuVoiceQueue) do
+				if mSkuVoiceQueue[i].dnq == true and not mSkuVoiceQueue[i].soundHandle then
+					local willPlay, soundHandle = PlaySoundFile(mSkuVoiceQueue[i].file, mSkuVoiceQueue[i].soundChannel)
+					if willPlay then
+						SkuVoice.LastPlayedString = mSkuVoiceQueue[i].text
+						mSkuVoiceQueue[i].soundHandle = soundHandle
+						mSkuVoiceQueue[i].endTimestamp = GetTime() + mSkuVoiceQueue[i].length
+					end
+				end
+			end		
+
 			--check if there is something finished and should be tombstoned
 			for i = 1, table.getn(mSkuVoiceQueue) do
 				if mSkuVoiceQueue[i].soundHandle then
@@ -58,7 +70,7 @@ function SkuVoice:Create()
 			--check if next could be played
 			local tPlayNext = true
 			for i = 1, table.getn(mSkuVoiceQueue) do
-				if mSkuVoiceQueue[i].soundHandle then
+				if mSkuVoiceQueue[i].soundHandle and mSkuVoiceQueue[i].dnq ~= true then
 					--is playing; check remaining time modifyed  by pause setting
 					local tRemainingTime = (GetTime() - mSkuVoiceQueue[i].endTimestamp) + (mSkuVoiceQueue[i].length - (mSkuVoiceQueue[i].length * (SkuOptions.db.profile["SkuOptions"].TTSSepPause / 100)))
 					if tRemainingTime < 0 then
@@ -181,12 +193,17 @@ function SkuVoice:StopAllOutputs()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant) -- for strings with lookup in string index
+---@param aString string
+---@param aOverwrite boolean
+---@param aWait boolean
+function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ) -- for strings with lookup in string index
 	--dprint(aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
 	if not aString then
 		return
 	end
 	
+	aDnQ = aDnQ or false
+
 	local tString = ""
 	if aSpell == true then
 		aString = string.lower(aString)
@@ -414,6 +431,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 							["soundHandle"] = nil,
 							["doNotOverwrite"] = aDoNotOverwrite or false,
 							["soundChannel"] = aSoundChannel,
+							["dnq"] = aDnQ,
 						})
 					else
 						table.insert(mSkuVoiceQueue, {
@@ -425,6 +443,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 							["soundHandle"] = nil,
 							["doNotOverwrite"] = aDoNotOverwrite or false,
 							["soundChannel"] = aSoundChannel,
+							["dnq"] = aDnQ,
 						})
 					end
 				end
