@@ -6,6 +6,9 @@
 -------------------------------------------------------------------------------------------------------	
 Changes in release 25.15
 
+	SkuChat
+		- New option "SkuChat > Options > Audio Setting > Audio notification on the end of chat messages". Contributed by chpross. Thanks a lot! :)
+
 	SkuQuest
 		- Fixed another bug with the list of available quests. Quests with multiple pre-quests, where only one of those pre-quests needs to be completed, are now correctly shown.
 

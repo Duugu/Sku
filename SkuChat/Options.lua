@@ -23,7 +23,7 @@ SkuChat.options = {
 				return SkuOptions.db.profile[MODULE_NAME].enable
 			end,
 		},
-		audio = {
+		audioSettings = {
 			name = L["Audio-Settings"],
 			order = 2,
 			type = "group",
@@ -34,10 +34,10 @@ SkuChat.options = {
 					type = "toggle",
 					desc = L["Enables / disables audio on new line"],
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].audio.audioOnNewMessage = val
+						SkuOptions.db.profile[MODULE_NAME].audioSettings.audioOnNewMessage = val
 					end,
 					get = function(info) 
-						return SkuOptions.db.profile[MODULE_NAME].audio.audioOnNewMessage
+						return SkuOptions.db.profile[MODULE_NAME].audioSettings.audioOnNewMessage
 					end,
 				},
 				audioOnMessageEnd = {
@@ -53,7 +53,7 @@ SkuChat.options = {
 						return C_TTSSettings.GetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks)
 					end,
 					OnAction = function() 
-							C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuOptions.db.profile[MODULE_NAME].audio.audioOnMessageEnd)
+							C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuOptions.db.profile[MODULE_NAME].audioSettings.audioOnMessageEnd)
 					end,
 				},
 			},
@@ -176,7 +176,7 @@ SkuChat.options = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuChat.defaults = {
 	enable = true,
-	audio  = {
+	audioSettings  = {
 		audioOnNewMessage = true,
 		audioOnMessageEnd = false,
 	},

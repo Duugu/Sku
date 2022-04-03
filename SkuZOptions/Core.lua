@@ -1621,16 +1621,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:UpdateMovedAceDbProfileValues()
---[[
-	if SkuChat.options.args.audio.args then
-		if SkuChat.options.args.audio.args.audioOnNewMessage then
+
+	if SkuChat.options.args.audioSettings then
+		if SkuChat.options.args.audioSettings.args.audioOnNewMessage then
 			if SkuOptions.db.profile["SkuChat"].audio then
-				SkuOptions.db.profile["SkuChat"].audio.audioOnNewMessage = SkuOptions.db.profile["SkuChat"].audio
+				SkuOptions.db.profile["SkuChat"].audioSettings.audioOnNewMessage = SkuOptions.db.profile["SkuChat"].audio
 				SkuOptions.db.profile["SkuChat"].audio = nil
 			end
 		end
 	end
-]]
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
