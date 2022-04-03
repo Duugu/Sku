@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r25.14](https://github.com/Duugu/Sku/releases/download/r25.14/Sku-r25.14-bcc.zip) (02.04.2022)<br>
+[Sku r25.16](https://github.com/Duugu/Sku/releases/download/r25.16/Sku-r25.16-bcc.zip) (03.04.2022)<br>
 
 *Old updates:* <br>
 [Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
@@ -23,6 +23,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in release 25.16
+
+### SkuQuest
+- Another bug fix for the list of available quests.
 
 ## Changes in release 25.15
 
