@@ -1187,22 +1187,24 @@ function SkuQuest:MenuBuilder(aParentEntry)
 									end
 
 									local tPreQuestSingleOk = false
+									local tHasPreQuestSingle = false
 									if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
 										for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]]) do
+											tHasPreQuestSingle = true
 											if C_QuestLog.IsQuestFlaggedCompleted(tonumber(vR)) == true then
 												tPreQuestSingleOk = true
 											end
 										end
 									end
 
-									local tAllCompletedFlag = tPreQuestSingleOk
+									local tAllCompletedFlag = true
 									for iPQ, vPQ in pairs(tPreQuestsTable) do
 										if C_QuestLog.IsQuestFlaggedCompleted(tonumber(vPQ)) == false then
 											tAllCompletedFlag = false
 										end
 									end
 
-									if tAllCompletedFlag == true then
+									if tAllCompletedFlag == true and (tHasPreQuestSingle == false or (tHasPreQuestSingle == true and  tPreQuestSingleOk == true)) then
 										
 										local tIsOk = true
 										--dprint(i, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]])
