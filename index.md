@@ -24,6 +24,22 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 -------------------------------------------------------------------------------------------------------	
 
+## Changes in release 25.15
+
+### SkuChat
+- New option "SkuChat > Options > Audio Setting > Audio notification on the end of chat messages". Contributed by chpross. Thanks a lot! :)
+
+### SkuQuest
+- Fixed another bug with the list of available quests. Quests with multiple pre-quests, where only one of those pre-quests needs to be completed, are now correctly shown.
+
+### SkuNav
+- Added an option "Show global direction in waypoint lists" to "SkuNav > Options" (default: off). With that option enabled the global direction to the target will be added to all lists with waypoints or routes. (Example: "147 meter north Corrupted Scorpid...")
+- Fixed the "Auto announce global direction". The outputs are not queued anymore and will play in parallel to the queued outputs.
+
+### SkuOptions
+- Added a new slash command /pquit to leave a group.
+
+
 ## Changes in release 25.14
 
 ### SkuQuest
