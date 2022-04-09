@@ -113,6 +113,35 @@ function SkuOptions:SlashFunc(input)
 			--dprint("SkuOptions off")
 		end
 		]]
+
+		-- NAMEPLATE TEST -->
+		if fields[1] == "test" then
+			if Sku.testMode == true then
+				SetCVar("nameplateMaxDistance", 21)
+				Sku.testMode = false
+			else
+				SetCVar("cameraDistanceC", 13.880000)
+				SetCVar("cameraPitchC", 34.249973)
+				SetCVar("cameraYawC", 359.550049)
+				SetCVar("nameplateShowEnemies", 1)
+				SetCVar("nameplateShowEnemyMinions", 1)
+				SetCVar("nameplateShowEnemyPets", 1)
+				SetCVar("nameplateShowEnemyGuardians", 1)
+				SetCVar("nameplateShowEnemyTotems", 0)
+				SetCVar("nameplateShowFriends", 1)
+				SetCVar("nameplateShowFriendlyPets", 1)
+				SetCVar("nameplateMaxDistance", 41)
+				SetCVar("nameplateMotion", 1)
+				SetCVar("nameplateMinScale", 1)				
+
+				--SetCVar("cameraView", 3)
+				SetView(3)
+				Sku.testMode = true
+				SkuCore:PLAYER_TARGET_CHANGED()
+			end
+		end
+		-- <-- NAMEPLATE TEST
+
 		if fields[1] == "invite" then
 			if SkuChat.InvitePlayerName then
 				InviteToGroup(SkuChat.InvitePlayerName)

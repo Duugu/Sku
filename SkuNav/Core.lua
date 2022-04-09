@@ -1874,7 +1874,14 @@ function SkuNav:CreateSkuNavMain()
 	tFrame:SetScript("OnClick", function(self, a, b)
 
 		if a == "CTRL-SHIFT-R" then
-			SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap = SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true
+			if Sku.testMode == true then
+				-- NAMEPLATE TEST -->
+				SkuCore:PingNameplates()
+				-- <-- NAMEPLATE TEST
+			else
+				SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap = SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap ~= true
+			end
+
 		end
 		if a == "CTRL-SHIFT-F" then
 			SkuOptions.db.profile[MODULE_NAME].showSkuMM = SkuOptions.db.profile[MODULE_NAME].showSkuMM == false

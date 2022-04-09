@@ -179,6 +179,8 @@ function SkuCore:OnInitialize()
 	SkuCore:RegisterEvent("UNIT_POWER_UPDATE")
 	SkuCore:RegisterEvent("UNIT_HAPPINESS")
 
+	SkuCore:RegisterEvent("PLAYER_TARGET_CHANGED")
+
 	SkuCore:RegisterEvent("CURRENT_SPELL_CAST_CHANGED")
 
 	SkuCore:RegisterEvent("UNIT_SPELLCAST_START")
@@ -479,20 +481,179 @@ local tSkuCoreNamePlateRepo = {}
 function SkuCore:NAME_PLATE_CREATED(...)
 	--dprint("NAME_PLATE_CREATED", ...)
 end
+
+-- NAMEPLATE TEST -->
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:NAME_PLATE_UNIT_ADDED(aEvent, aPlateName)
-	--dprint("NAME_PLATE_UNIT_ADDED", aPlateName, UnitName(aPlateName))
+local tSkuCoreNamePlateBeaconRepo = {}
+function SkuCore:PingNameplates()
+	if Sku.testMode == true then
+		for i, v in pairs(tSkuCoreNamePlateBeaconRepo) do
+			if i.UnitFrame then
+				if i.UnitFrame.SkuPlate then
+					i.UnitFrame.SkuPlate.tex:SetVertexColor(0, 0, 0, 0)
+				end
+			end
+		end
+		--C_Timer.After(0.05, function()
+			SkuCore:PLAYER_TARGET_CHANGED()
+		--end)
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:PLAYER_TARGET_CHANGED()
+	if Sku.testMode == true then
+		for i, v in pairs(tSkuCoreNamePlateBeaconRepo) do
+			if i.UnitFrame then
+				if i.UnitFrame.SkuPlate then
+					if v.unitGUID == UnitGUID("target") then
+						C_Timer.After(0.150, function()
+							local tMaxRange, tMinRange = SkuOptions.RangeCheck:GetRange("target")
+							local tColor = 0
+							if tMinRange then
+								if tMinRange >= 35 then
+									tColor = (1/255) * 235
+								elseif tMinRange >= 30 then
+									tColor = (1/255) * 240
+								elseif tMinRange >= 20 then
+									tColor = (1/255) * 245
+								elseif tMinRange >= 10 then
+									tColor = (1/255) * 250
+								elseif tMinRange >= 0 then
+									tColor = (1/255) * 255
+								end
+							end
+							i.UnitFrame.SkuPlate.tex:SetVertexColor(tColor, 0, tColor, 1)
+						end)
+					else
+						i.UnitFrame.SkuPlate.tex:SetVertexColor(0, 0, 0, 0)
+					end
+				end
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:GetNamePlateFrameForUnit(aUnitId)
+	local tFramePlatename
+	if not UnitGUID(aUnitId) then
+		return
+	end
+	for x = 1, 100 do
+		if _G["NamePlate"..x] then
+			local tPlateFrame = _G["NamePlate"..x]
+			if tPlateFrame.namePlateUnitToken then
+				if UnitGUID(tPlateFrame.namePlateUnitToken) == UnitGUID(aUnitId) then
+					return tPlateFrame
+				end
+			end
+		end
+	end
+end
+-- <-- NAMEPLATE TEST
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:NAME_PLATE_UNIT_ADDED(aEvent, aPlateName) --aPlateName is the unitid; not the same as the plate frame name
+	-- NAMEPLATE TEST -->
+	if Sku.testMode == true then
+		C_Timer.After(0.01, function()
+			--print("NAME_PLATE_UNIT_ADDED", aEvent, aPlateName, UnitName(aPlateName), tMaxRange, tMinRange)
+
+			local tName = UnitName(aPlateName)
+			if tName then
+				local tFramePlateFrame = SkuCore:GetNamePlateFrameForUnit(aPlateName)
+				if tFramePlateFrame then
+					--SkuOptions.Voice:OutputString(string.sub(aPlateName, 10, string.len(aPlateName))..";"..tMaxRange, false, true, 0.2)
+					--local tFile = SkuAudioFileIndex[string.sub(aPlateName, 10, string.len(aPlateName))]
+					--local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..tFile, SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+					--local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\plate_in.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+
+					if tFramePlateFrame.UnitFrame then
+						if not tFramePlateFrame.UnitFrame.SkuPlate then
+							tFramePlateFrame.UnitFrame.SkuPlate = CreateFrame("Frame", tFramePlateFrame:GetName().."SkuPlate", tFramePlateFrame.UnitFrame)
+							tFramePlateFrame.UnitFrame.SkuPlate:SetPoint("CENTER", tFramePlateFrame.UnitFrame, "CENTER")
+							tFramePlateFrame.UnitFrame.SkuPlate:SetSize(50, 50) --tFrame:SetFrameLevel(level)
+							tFramePlateFrame.UnitFrame.SkuPlate:SetFrameStrata("TOOLTIP")
+							tFramePlateFrame.UnitFrame.SkuPlate:Show()
+							
+							tFramePlateFrame.UnitFrame.SkuPlate.tex = tFramePlateFrame.UnitFrame.SkuPlate:CreateTexture(nil, "ARTWORK")
+							tFramePlateFrame.UnitFrame.SkuPlate.tex:SetTexture("Interface\\AddOns\\Sku\\SkuCore\\textures\\solid.tga")
+							tFramePlateFrame.UnitFrame.SkuPlate.tex:SetPoint("TOP", tFramePlateFrame.UnitFrame.SkuPlate, "BOTTOM")
+							tFramePlateFrame.UnitFrame.SkuPlate.tex:SetSize(50, 50)
+							tFramePlateFrame.UnitFrame.SkuPlate.tex:SetVertexColor(0, 0, 0, 0)
+							tFramePlateFrame.UnitFrame.SkuPlate.tex:Show()
+						end
+						tFramePlateFrame.UnitFrame.SkuPlate.tex:SetVertexColor(0, 0, 0, 0)
+						tSkuCoreNamePlateBeaconRepo[tFramePlateFrame] = {name = tName, plate = aPlateName, plateFrame = tFramePlateFrame, unitGUID = UnitGUID(tFramePlateFrame.namePlateUnitToken)}
+					end
+				end
+			end
+
+			for i, v in pairs(tSkuCoreNamePlateBeaconRepo) do
+				if i.UnitFrame then
+					if i.UnitFrame.SkuPlate then
+						if v.unitGUID == UnitGUID("target") then
+							C_Timer.After(0.150, function()
+								if i.UnitFrame then
+									local tMaxRange, tMinRange = SkuOptions.RangeCheck:GetRange("target")
+									local tColor = 0
+									if tMinRange then
+										if tMinRange >= 35 then
+											tColor = (1/255) * 235
+										elseif tMinRange >= 30 then
+											tColor = (1/255) * 240
+										elseif tMinRange >= 20 then
+											tColor = (1/255) * 245
+										elseif tMinRange >= 10 then
+											tColor = (1/255) * 250
+										elseif tMinRange >= 0 then
+											tColor = (1/255) * 255
+										end
+									end
+									i.UnitFrame.SkuPlate.tex:SetVertexColor(tColor, 0, tColor, 1)
+								end
+							end)
+						else
+							i.UnitFrame.SkuPlate.tex:SetVertexColor(0, 0, 0, 0)
+						end
+					end
+				end
+			end
+		end)
+	end
+	-- <-- NAMEPLATE TEST
+
 	local tName = UnitName(aPlateName)
 	if not tName then return end
 
 	local tReaction = UnitReaction("player", aPlateName)
 	if tReaction > 3 then --https://wowpedia.fandom.com/wiki/API_UnitReaction
 		table.insert(tSkuCoreNamePlateRepo, {name = tName, plate = aPlateName})
-	end
+	end	
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:NAME_PLATE_UNIT_REMOVED(aEvent, aPlateName)
-	--dprint("NAME_PLATE_UNIT_REMOVED", aPlateName)
+	
+	-- NAMEPLATE TEST -->
+	if Sku.testMode == true then
+		--print("NAME_PLATE_UNIT_REMOVED", aPlateName, UnitName(aPlateName))
+		--local tFile = SkuAudioFileIndex[string.sub(aPlateName, 10, string.len(aPlateName))]
+		--local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..tFile, SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+		--local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\plate_out.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+
+		local tName = UnitName(aPlateName)
+		if tName then
+			local tFramePlateFrame = SkuCore:GetNamePlateFrameForUnit(aPlateName)
+			if tFramePlateFrame then
+				tFramePlateFrame.UnitFrame.SkuPlate.tex:SetVertexColor(0, 0, 0, 0)
+				tSkuCoreNamePlateBeaconRepo[tFramePlateFrame] = nil
+			end
+		end
+	end
+	-- <--NAMEPLATE TEST
+
 	tSkuCoreNamePlateRepo[aPlateName] = nil
 	for x = 1, #tSkuCoreNamePlateRepo do
 		if tSkuCoreNamePlateRepo[x].plate ==aPlateName then
@@ -560,6 +721,9 @@ function SkuCore:OnEnable()
 	tFrame:SetAttribute("type1", "macro") 
 	tFrame:SetAttribute("macrotext1", "")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-TAB", "SkuCoreSecureTabButton")
+
+	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-T", "SkuCoreSecureTabButton")
+
 	--tFrame:RegisterEvent("CURSOR_CHANGED")
 	--tFrame:SetScript("OnUpdate", function(self, time)
 	local tLastPlayerTargetNr = 0
