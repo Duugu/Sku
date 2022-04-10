@@ -38,7 +38,7 @@ SkuQuest
 - Fixed a bug with available quests for Undead characters. The list shouldn't be empty anymore.
 
 SkuAuras
-- Fixed an issues with "item use"/"item count" and "output once". Should work as expected now.
+- Fixed an issue with "item use"/"item count" and "output once". Should work as expected now.
 
 SkuNav
 - Fixed an issue with english localization of mailboxes. All mailboxes should now be available in waypoint and route lists.
@@ -48,7 +48,7 @@ SkuChat
 - Fixed an issue with the click sound at the end of audio messages via the Blizzard TTS. If you've disabled that, it won't get re-enabled on reload/login anymore.
 
 SkuMob
-- New option SkuMob > Options > Announce player controled units with generic descriptions. The default value is On. With this option set to Off the addon won't speak generic descriptions for players, pets, etc. (Example: "friendly player" on targeting a friendlich player.)
+- New option SkuMob > Options > Announce player controled units with generic descriptions. The default value is On. With this option set to Off the addon won't speak generic descriptions for players. (Example: "friendly player" on targeting a friendly player.)
 - New option SkuMob > Options > Repeat target markers on units. The default value is Off. With that option set to On each raid target marker will be repeated. (Example: "Skull, Skull, Level 60")
 
 SkuAuras
