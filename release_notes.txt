@@ -2,6 +2,17 @@
 - VERSIONSHINWEISE
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Changes in release 26.1
+
+
+	SkuOptions
+		- The "Use Blizzard TTS for audio menu" should now respect the settings from "Chat > Options > TTS voice" and "> TTS speed".
+
+	SkuMob
+		- Removed all outputs for players with "Announce player controled units with generic descriptions" set to Off.
+		- Removed the in-combat-sound for player controlled units.
+
 
 -------------------------------------------------------------------------------------------------------	
 Changes in release 26

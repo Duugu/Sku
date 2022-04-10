@@ -149,28 +149,34 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 
 	local noSubText
 
+	local tIsPlayerControled = false
 	if UnitIsPlayer("target") then
 		if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders == true then
 			if UnitIsFriend("player", "target") then
 				tUnitName = L["freundlicher spieler"]
+				tIsPlayerControled = true
 			else
 				tUnitName = L["feindlicher spieler"]
+				tIsPlayerControled = true
 			end
 			noSubText = true
 		else
-			tUnitName = ""
+			return
 		end
 	end
 	if UnitPlayerControlled("target") == true and UnitIsPlayer("target") == false then
 		tUnitName = L["fremder begleiter"]
+		tIsPlayerControled = true
 		noSubText = true
 	end
 	if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName("target", false)) then
 		tUnitName = L["dein begleiter"]
+		tIsPlayerControled = true
 		noSubText = true
 	end
 	if GetUnitName("target", false) == GetUnitName("player", false) then
 		tUnitName = L["du selbst"]
+		tIsPlayerControled = true
 		noSubText = true
 	end
 
@@ -241,7 +247,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 		end
 	end
 
-	if status then
+	if status and tIsPlayerControled == false then
 		--creature in combat indicator
 		local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 	end

@@ -431,8 +431,9 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		]]
 	end
 
-		
-	tFinalStringForBTts = '<LANG LANGID="'..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
+	--tFinalStringForBTts = '<voice required="Language='..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
+	--tFinalStringForBTts = '<LANG LANGID="'..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
+	tFinalStringForBTts = '<pitch middle="0">'..tFinalStringForBTts..'</pitch>'
 	tFinalStringForBTtsMac = tFinalStringForBTtsMac
 
 	if IsMacClient() == true then

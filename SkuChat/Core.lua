@@ -260,7 +260,9 @@ end
 function SkuChat:PLAYER_LOGIN(...)
 	SkuChat.WowTtsVoices = {}
 	for i, v in pairs(C_VoiceChat.GetTtsVoices()) do
-		SkuChat.WowTtsVoices[i] = v.name
+		if not string.find(v.name, "Polly") then
+			SkuChat.WowTtsVoices[i] = v.name
+		end
 	end
 	SkuChat.options.args.WowTtsVoice.values = SkuChat.WowTtsVoices
 
