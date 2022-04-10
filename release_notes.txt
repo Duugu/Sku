@@ -4,9 +4,35 @@
 
 
 -------------------------------------------------------------------------------------------------------	
-Changes in release 25.17
-	SkuCore
+Changes in release 26
+
+	SkuOptions
+		- New option: SkuOptions > Options > Use Blizzard TTS for audio menu. The default value is Off.
+		  With that option the audio menu will use the Blizzard TTS engine for everything, instead of the usual custom Sku TTS engine. (Using settings in "Chat > Options > TTS voice and TTS speed".)
+		  Please enable the new option, and test that carefully. Feedback on how useful that is would be appreciated. If it turns out to be better, I could set that option to On as default.
+		- I've changed the names of the top level menu items and removed the "Sku" part from each name. The new menu item names are: Navigation, Mob, Chat, Quest, Core, Auras, Options, Local
+		  Because of that names change, all menu shortcuts (Shift + F9-F12) are resetted to their defaults. If you had other menu items assigned to those shortcuts, you need to do that again.
+		- Added the realm/server name to the line with the player name on the overview page.
+
+	SkuQuest
+		- Fixed a bug with available quests for Undead characters. The list shouldn't be empty anymore.
+
+	SkuAuras
+		- Fixed an issues with "item use"/"item count" and "output once". Should work as expected now.
 		
+	SkuNav
+		- Fixed an issue with english localization of mailboxes. All mailboxes should now be available in waypoint and route lists.
+
+	SkuChat
+		- New option: while reading the chat you now can use Arrow Right to to tell/whisper the sender of the current chat line. You don't need to type the recipients name. Just press Arrow Right on any chat line and start typing your message + Enter to send. This feature needs to be tested carefully!
+		- Fixed an issue with the click sound at the end of audio messages via the Blizzard TTS. If you've disabled that, it won't get re-enabled on reload/login anymore.
+
+	SkuMob
+		- New option SkuMob > Options > Announce player controled units with generic descriptions. The default value is On. With this option set to Off the addon won't speak generic descriptions for players, pets, etc. (Example: "friendly player" on targeting a friendlich player.)
+		- New option SkuMob > Options > Repeat target markers on units. The default value is Off. With that option set to On each raid target marker will be repeated. (Example: "Skull, Skull, Level 60")
+
+	SkuAuras
+		- Added more number values to the "Item count" attribute (110, 120, 130, 140, 150, 200, 300, 400, 500).
 
 
 -------------------------------------------------------------------------------------------------------	

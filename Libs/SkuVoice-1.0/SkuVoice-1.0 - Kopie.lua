@@ -6,12 +6,6 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 
 if not SkuVoice then return end -- No upgrade needed
 
-local SapiLangIds = {
-	["deDE"] = 407,
-	["enUS"] = 409,
-	["enAU"] = 409,
-	}
-
 local mSkuVoiceQueue = {}
 SkuVoice.LastPlayedString = ""
 --setmetatable(mSkuVoiceQueue, SkuNav.PrintMT)
@@ -115,59 +109,6 @@ function SkuVoice:UtilRound(aNumber, aInterval)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function SplitStringBTTS(aString)
-	--dprint("split:", aString, SkuAudioFileIndex[aString])
-	if SkuAudioFileIndex[aString] then
-		return aString
-	end
-	if aString == nil then
-		return ""
-	end
-
-	if aString == "" then
-		return aString
-	end
-	aString = string.gsub(aString, "\r\n", ";")
-	aString = string.gsub(aString, "\r", ";")
-	aString = string.gsub(aString, "\n", ";")
-	aString = string.gsub(aString, "\"", ";")
-	--aString = string.gsub(aString, "\"", ";backslash;")
-	if Sku.Loc == "deDE" then
-		aString = string.gsub(aString, "'", ";")
-	end
-	--aString = string.gsub(aString, "%.", L[";punkt;"])
-	aString = string.gsub(aString, ",", ";")
-	--aString = string.gsub(aString, "%?", L[";fragezeichen;"])
-	--aString = string.gsub(aString, "!", L[";ausrufungszeichen;"])
-	aString = string.gsub(aString, "|", ";")
-	aString = string.gsub(aString, "%[", ";")
-	aString = string.gsub(aString, "%]", ";")
-	aString = string.gsub(aString, "%+", ";")
-	aString = string.gsub(aString, "%*", ";")
-	aString = string.gsub(aString, "#", ";")
-	aString = string.gsub(aString, "%-", ";")
-	--aString = string.gsub(aString, ":", L[";doppelpunkt;"])
-	--aString = string.gsub(aString, "&", ";und;")
-	--aString = string.gsub(aString, "%%", L[";prozent;"])
-	aString = string.gsub(aString, "/", L[";slash;"])
-	aString = string.gsub(aString, "\\", ";\\;")
-	--aString = string.gsub(aString, "%(", L[";klammer;"])
-	--aString = string.gsub(aString, "%)", L[";klammer;"])
-	--aString = string.gsub(aString, "=", L[";gleich;"])
-	aString = string.gsub(aString, "<", L[";spitze;klammer;"])
-	aString = string.gsub(aString, ">", L[";spitze;klammer;"])
-	aString = string.gsub(aString, "	", ";")
-	aString = string.gsub(aString, "  ", " ")
-	aString = string.gsub(aString, " ", " ")
-	aString = string.gsub(aString, ";;", ";")
-	aString = string.lower(aString)
-
-	if string.sub(aString, string.len(aString)) == ";" then
-		aString = string.sub(aString, 1, string.len(aString)-1)
-	end
-	return aString
-end
-
 local function SplitString(aString)
 	--dprint("split:", aString, SkuAudioFileIndex[aString])
 	if SkuAudioFileIndex[aString] then
@@ -249,202 +190,6 @@ function SkuVoice:StopAllOutputs()
 		end
 	end
 	mSkuVoiceQueue = {}
-	if IsMacClient() == true then
-		C_VoiceChat.StopSpeakingText()
-	else
-		C_VoiceChat.StopSpeakingText()
-	end	
-end
-
----------------------------------------------------------------------------------------------------------
-function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ)
-	dprint("OutputStringBTtts(aString", aString)
-	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true then
-		SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ)
-		return
-	end
-
-	if not aString then
-		return
-	end
-
-	aDnQ = aDnQ or false
-
-	local tString = ""
-	if aSpell == true then
-		aString = string.lower(aString)
-		for tChr in aString:gmatch("[\33-\127\192-\255]?[\128-\191]*") do
-			tString = tString..tChr..";"
-		end
-		while string.find(tString, ";;") do
-			tString = string.gsub(tString, ";;", ";")
-		end
-		aString = tString
-	end
-
-
-	-- don't vocalize numbers > 20000 or floats
-	-- that is for the unique auto wp ids and the coords; we don't want hear them, but we still need them in the wp names
-	if not aVocalizeAsIs then
-		local tNumberTest = tonumber(aString)
-		if tNumberTest then
-			local tFloat = math.floor(tNumberTest)
-			if (tNumberTest > 20000) or (tNumberTest - tFloat > 0) then
-				return
-			end
-		end
-	end
-
-	--empty the queue
-	if aOverwrite == true then
-		local tIt = true
-		while tIt == true do
-			tIt = false
-			for i, v in pairs(mSkuVoiceQueue) do
-				if v.doNotOverwrite ~= true then
-					--stop it first; just to be sure
-					if v.soundHandle then
-						StopSound(v.soundHandle, 0)
-					end
-					table.remove(mSkuVoiceQueue, i)
-					tIt = true
-				end
-			end
-			if IsMacClient() == true then
-				C_VoiceChat.StopSpeakingText()
-			else
-				C_VoiceChat.StopSpeakingText()
-			end
-		end
-	end
-
-	--remove escape markup
-	while string.find(aString, "|n") do
-		aString = string.gsub(aString, "|n", ";")
-	end
-	while string.find(aString, "|") do
-		aString = string.gsub(aString, "|", " ")
-	end
-
-	aString = Unescape(aString)
-	aString = aString:gsub("\"", "")
-
-	local tStrings = {}
-	if (string.find(aString, "sound-") or string.find(aString, "male%-")) then
-		table.insert(tStrings, aString)
-	else
-		aString = string.lower(aString)
-		aString= SplitStringBTTS(aString)
-
-		local sep, tSplittedString = ";", {}
-		if type(aString) == "string" then
-			local pattern = string.format("([^%s]+)", sep)
-			aString:gsub(pattern, function(c) tSplittedString[#tSplittedString+1] = c end)
-		else
-			tSplittedString = {aString}
-		end
-
-		for x = 1, #tSplittedString do
-			if tonumber(tSplittedString[x]) then
-				dprint(x, "  NUMBER", tSplittedString[x])
-				if not aVocalizeAsIs then
-					if not string.find(tostring(tSplittedString[x]), "%.") and not string.find(tostring(tSplittedString[x]), ",") then
-						local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
-						dprint("tFloatNumber", tFloatNumber)
-						if tonumber(tFloatNumber) < 1000000 then
-							if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
-								--float
-								local tIVal = string.format("%d", tFloatNumber)
-								local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
-								dprint("tIVal, tFVal", tIVal, tFVal)
-								--table.insert(tStrings, tIVal)
-								--table.insert(tStrings, L["KommaNumbers"])
-								--table.insert(tStrings, tFVal)
-							else
-								--int
-								local tNumber = math.floor(tonumber(tSplittedString[x]))
-								if tNumber == 0 then
-									table.insert(tStrings, 0)
-								else
-									local tRemaining = tNumber
-									if tNumber > 13000 then
-										--no audio available
-									end
-									if tNumber > 999 then
-										local tRound = SkuVoice:UtilRound(tRemaining, 10000)
-										table.insert(tStrings, tRound)
-										tRemaining = tRemaining - tRound
-									end
-									if tRemaining > 99 then
-										local tRound = SkuVoice:UtilRound(tRemaining, 1000)
-										table.insert(tStrings, tRound)
-										tRemaining = tRemaining - tRound
-									end
-									if tRemaining > 0 then
-										table.insert(tStrings, tRemaining)
-									end
-								end
-							end
-						end
-					end
-				else
-					for z = 1, string.len(tSplittedString[x]) do
-						table.insert(tStrings, string.sub(tSplittedString[x], z, z))
-					end
-				end
-			else
-				table.insert(tStrings, tSplittedString[x])
-			end
-		end
-	end
-
-
-	local tFinalStringForBTts = ""
-	local tFinalStringForBTtsMac = ""
-
-	for x = 1, #tStrings do
-		if tStrings[x] == "§01" then
-			tStrings[x] = '<silence msec="100"/>'
-		end
-
-		dprint(" final",x, tStrings[x])
-
-		if (string.find(tStrings[x], "sound%-") or string.find(tStrings[x], "male%-")) then
-			dprint("  FIND SOUND", tStrings[x])
-			SkuVoice:OutputString(tStrings[x], aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ) -- for strings with lookup in string index
-		else
-			if (string.find(tStrings[x], "aura;sound")) then
-				--tFinalStringForBTts = tFinalStringForBTts..'<silence msec="500"/>'..tStrings[x]
-			end
-
-			tFinalStringForBTts = tFinalStringForBTts..'<silence msec="100"/>'..tStrings[x]
-			tFinalStringForBTtsMac = tFinalStringForBTtsMac..", "..tStrings[x]
-
-		end
-
-		--[[
-		aOverwrite = aOverwrite or false
-		aWait = aWait or false
-		aDoNotOverwrite = aDoNotOverwrite or false
-		aSoundChannel
-		aDnQ
-		]]
-	end
-
-		
-	tFinalStringForBTts = '<LANG LANGID="'..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
-	tFinalStringForBTtsMac = tFinalStringForBTtsMac
-
-	if IsMacClient() == true then
-		C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tFinalStringForBTtsMac, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
-	else
-		C_Timer.After(0.01, function() 
-			C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tFinalStringForBTts, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
-		end)
-	end
-
-
-
 end
 
 ---------------------------------------------------------------------------------------------------------
@@ -452,7 +197,7 @@ end
 ---@param aOverwrite boolean
 ---@param aWait boolean
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ) -- for strings with lookup in string index
-	dprint("OutputString", aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
+	--dprint(aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
 	if not aString then
 		return
 	end
@@ -620,7 +365,6 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 
 		for x = 1, #tStrings do
-			dprint("tStrings[x] sku", tStrings[x])
 			if tStrings[x] == "§01" then
 				tStrings[x] = "sound-silence0.1"
 			end
@@ -841,6 +585,54 @@ function SkuVoice:StopOutputEmptyQueue()
 end
 
 ---------------------------------------------------------------------------------------------------------
+function SkuVoice:Output(file, overwrite, wait, length, doNotOverwrite, isMulti, soundChannel) -- for audio file names
+	--dprint("SV OUTPUT")
+	soundChannel = soundChannel or SkuOptions.db.profiles["SkuOptions"].soundChannels.SkuChannel or "Talking Head"
+	
+	isMulti = isMulti or false
+
+	if not file or not SkuAudioDataLenIndex then
+		return
+	end
+
+	if not SkuAudioDataLenIndex[file] then --element is in string index
+		if SkuCore and file then
+			--SkuCore:Debug("SkuVoice:Output - missing audio file: "..file)
+		end
+	end
+
+	local length = SkuAudioDataLenIndex[file] or length
+
+	file = "Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..file
+
+	overwrite = overwrite or false
+	wait = wait or false
+	length = length or 0
+
+	if overwrite == true then
+		-- fade all in SkuVoiceQueue
+		for i = 1, table.getn(mSkuVoiceQueue) do
+			if mSkuVoiceQueue[i] then
+				if mSkuVoiceQueue[i].soundHandle then
+					StopSound(mSkuVoiceQueue[i].soundHandle)
+				end
+			end
+		end
+		mSkuVoiceQueue = {}
+	end
+
+	table.insert(mSkuVoiceQueue, {
+		["file"] = file,
+		["wait"] = wait,
+		["length"] = length,
+		["endTimestamp"] = 0,
+		["soundHandle"] = nil,
+		["doNotOverwrite"] = doNotOverwrite or false,
+		["soundChannel"] = soundChannel,
+		["tombstone"] = false,
+})
+end
+
 function SkuVoice:Release()
 
 end

@@ -547,7 +547,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					PlaceAction(self.buttonObj.action)
 					ClearCursor()
 				elseif aName == L["Bind key"] then
-					SkuOptions.Voice:OutputString(L["Press new key or Escape to cancel"], true, true, 0.2)						
+					SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2)						
 					local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
 					f.menuTarget = self
 					f:SetSize(80, 22)
@@ -594,9 +594,9 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 							self.menuTarget.name = L["Button"].." "..x..";"..ButtonContentNameHelper(actionType, id, subType, aActionBarName, x)
 							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-							SkuOptions.Voice:OutputString(L["New key"]..";"..aKey, true, true, 0.2)						
+							SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..aKey, true, true, 0.2)						
 						else
-							SkuOptions.Voice:OutputString(L["Binding canceled"], true, true, 0.2)						
+							SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2)						
 						end
 						ClearOverrideBindings(self)
 					end)
@@ -743,10 +743,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 					self.TmpItemsLock = nil
 				else
 					if not self.TmpTo then
-						SkuOptions.Voice:OutputString(L["No Recipient"], false, true, 0.2)
+						SkuOptions.Voice:OutputStringBTtts(L["No Recipient"], false, true, 0.2)
 					end
 					if not self.TmpSubject then
-						SkuOptions.Voice:OutputString(L["No topic"], false, true, 0.2)
+						SkuOptions.Voice:OutputStringBTtts(L["No topic"], false, true, 0.2)
 					end
 				end
 			elseif tonumber(aName) then
@@ -829,7 +829,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					if totalItems > 0 then
 						C_Timer.After(1, bootlegRepeatingTimer)
 					else
-						SkuOptions.Voice:OutputString(L["All opened"], false, true, 0.2)						
+						SkuOptions.Voice:OutputStringBTtts(L["All opened"], false, true, 0.2)						
 					end
 				end
 				bootlegRepeatingTimer()
@@ -1111,7 +1111,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
 			tNewMenuEntry1.OnAction = function(self, aValue, aName)
 				SkuCore:ResetBindings()
-				SkuOptions.Voice:OutputString(L["Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt."], true, true, 0.2)						
+				SkuOptions.Voice:OutputStringBTtts(L["Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt."], true, true, 0.2)						
 			end
 			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
 		end
@@ -1198,7 +1198,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 									tNewMenuEntryKey.OnAction = function(self, aValue, aName)
 										--dprint("cat OnAction 2", aValue, aName, self.name)
 										if aName == L["Neu belegen"] then
-											SkuOptions.Voice:OutputString(L["Press new key or Escape to cancel"].." "..L["Oder Rückschritt zum löschen"], true, true, 0.2)						
+											SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"].." "..L["Oder Rückschritt zum löschen"], true, true, 0.2)						
 
 											local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
 											f.menuTarget = self
@@ -1225,13 +1225,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 												}
 						
 												if tBlockedKeys[aKey] or tBlockedKeys[string.lower(aKey)] then 
-													SkuOptions.Voice:OutputString(L["Ungültig. Andere Taste drücken."], true, true, 0.2)						
+													SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2)						
 													return 
 												end
 						
 												for z = 1, #tBlockedKeysParts do
 													if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
-														SkuOptions.Voice:OutputString(L["Ungültig. Andere Taste drücken."], true, true, 0.2)						
+														SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2)						
 														return 
 													end
 												end
@@ -1252,9 +1252,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 													self.menuTarget.name = _G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(tFriendlyKey1)..L[" Taste 2: "]..(tFriendlyKey2)
 													_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 													_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-													SkuOptions.Voice:OutputString(L["New key"]..";"..tFriendlyKey1, true, true, 0.2)						
+													SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey1, true, true, 0.2)						
 												elseif aKey == "ESCAPE" then
-													SkuOptions.Voice:OutputString(L["Binding canceled"], true, true, 0.2)						
+													SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2)						
 												end
 												ClearOverrideBindings(self)
 											end)
@@ -1301,7 +1301,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 											self.name = _G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])
 											_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 											_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-											SkuOptions.Voice:OutputString(L["Belegung gelöscht"], true, true, 0.2)						
+											SkuOptions.Voice:OutputStringBTtts(L["Belegung gelöscht"], true, true, 0.2)						
 										end					
 									end
 									tNewMenuEntryKey.command = commandConst2

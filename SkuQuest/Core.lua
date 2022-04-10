@@ -32,6 +32,7 @@ SkuQuest.racesFriendly = {
 	DWARF = L["Zwerg"],
 	NIGHT_ELF = L["Nachtelf"],
 	UNDEAD = L["Untoter"],
+	SCOURGE = L["Scourge"],
 	TAUREN = L["Taure"],
 	GNOME = L["Gnom"],
 	TROLL = L["Troll"],
@@ -193,7 +194,7 @@ function SkuQuest:OnEnable()
 		end
 		
 		PlaySound(88)
-		SkuOptions.Voice:OutputString(L["Quest;geöffnet"], true, true, 0.3)
+		SkuOptions.Voice:OutputStringBTtts(L["Quest;geöffnet"], true, true, 0.3)
 		--[[
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "SkuQuestMainOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "SkuQuestMainOption1", "CTRL-SHIFT-DOWN")
@@ -217,7 +218,7 @@ function SkuQuest:OnEnable()
 			return
 		end
 		
-		SkuOptions.Voice:OutputString(L["Quest;geschlossen"], true, true, 0.3)
+		SkuOptions.Voice:OutputStringBTtts(L["Quest;geschlossen"], true, true, 0.3)
 		--SkuOptions.TTS:Output("", -1)
 		ClearOverrideBindings(self)
 		PlaySound(89)
@@ -238,9 +239,9 @@ end
 function SkuQuest:OnSkuQuestPush()
 	if (GetQuestLogPushable()) then
 		QuestLogPushQuest()
-		SkuOptions.Voice:OutputString(L["quest;geteilt"], true, true, 0.2, true)
+		SkuOptions.Voice:OutputStringBTtts(L["quest;geteilt"], true, true, 0.2, true)
 	else
-		SkuOptions.Voice:OutputString(L["quest;nicht;teilbar"], true, true, 0.2, true)
+		SkuOptions.Voice:OutputStringBTtts(L["quest;nicht;teilbar"], true, true, 0.2, true)
 	end
 end
 
@@ -251,7 +252,7 @@ function SkuQuest:OnSkuQuestAbandon()
 	--SkuQuest:ToggleQuestLogHook()
 	HideUIPanel(QuestLogFrame)
 	--SkuOptions.TTS:Output("", -1)
-	SkuOptions.Voice:OutputString(L["quest;abgebrochen"], true, true, 0.2, true)
+	SkuOptions.Voice:OutputStringBTtts(L["quest;abgebrochen"], true, true, 0.2, true)
 	SkuOptions:CloseMenu()
 end
 
@@ -332,6 +333,7 @@ function SkuQuest:CheckQuestProgress(aSilent)
 	end
 	if not SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList then
 		SkuOptions.db.char["SkuQuest"].CheckQuestProgressList  = {}
+		aSilent = true
 	end
 
 	local numEntries, numQuests = GetNumQuestLogEntries()
@@ -892,25 +894,25 @@ function SkuQuest:ShowForTTS(aQuestID)
 	end
 
 	SkuOptions.TTS:Output(tSections, 10000)
-	--SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest), false, true, 0.3)
+	--SkuOptions.Voice:OutputStringBTtts(string.format("%02d", SkuQuest.SelectedQuest), false, true, 0.3)
 
 	if isHeader then
-		SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest)..L[" Zone "]..questLogTitleText, true, true)
-		--SkuOptions.Voice:OutputString(questLogTitleText, false, true)
+		SkuOptions.Voice:OutputStringBTtts(string.format("%02d", SkuQuest.SelectedQuest)..L[" Zone "]..questLogTitleText, true, true)
+		--SkuOptions.Voice:OutputStringBTtts(questLogTitleText, false, true)
 	--elseif SkuQuest_QuestTitlesAudioIndex[questID] then
 	else
 		if tTextFailedCompleted then
 			if tTextFailedCompleted == L["Abgeschlossen"] then
-				--SkuOptions.Voice:OutputString("abgeschlossen", false, true, 0.8)
+				--SkuOptions.Voice:OutputStringBTtts("abgeschlossen", false, true, 0.8)
 			elseif tTextFailedCompleted == L["Fehlgeschlagen"] then
-				--SkuOptions.Voice:OutputString("fehlgeschlagen", false, true, 0.8)
+				--SkuOptions.Voice:OutputStringBTtts("fehlgeschlagen", false, true, 0.8)
 			end
 		else
 			tTextFailedCompleted = ""
 		end
 	
 		--SkuOptions.Voice:Output(SkuQuest_QuestTitlesAudioIndex[questID])
-		SkuOptions.Voice:OutputString(string.format("%02d", SkuQuest.SelectedQuest).." "..tTextFailedCompleted.." "..questLogTitleText, true, true)
+		SkuOptions.Voice:OutputStringBTtts(string.format("%02d", SkuQuest.SelectedQuest).." "..tTextFailedCompleted.." "..questLogTitleText, true, true)
 	end
 	
 	--SkuOptions.TTS:Output(tText, 10000)
@@ -937,8 +939,8 @@ function SkuQuest:ToggleQuestLogHook(...)
 	if ( QuestLogFrame:IsVisible() ) then
 		--SkuOptions.TTS:Output("", 10000)--HideUIPanel(QuestLogFrame)
 		C_Timer.NewTimer(0.1, function()
-			SkuOptions:SlashFunc("short,"..L["SkuQuest"])
-			--SkuOptions.Voice:OutputString(self.name, true, true, 0.3, true)
+			SkuOptions:SlashFunc("short,"..L["SkuQuestMenuEntry"])
+			--SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
 		end)
 
 		--[[

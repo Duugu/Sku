@@ -149,14 +149,17 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 
 	local noSubText
 
-
 	if UnitIsPlayer("target") then
-		if UnitIsFriend("player", "target") then
-			tUnitName = L["freundlicher spieler"]
+		if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders == true then
+			if UnitIsFriend("player", "target") then
+				tUnitName = L["freundlicher spieler"]
+			else
+				tUnitName = L["feindlicher spieler"]
+			end
+			noSubText = true
 		else
-			tUnitName = L["feindlicher spieler"]
+			tUnitName = ""
 		end
-		noSubText = true
 	end
 	if UnitPlayerControlled("target") == true and UnitIsPlayer("target") == false then
 		tUnitName = L["fremder begleiter"]
@@ -248,7 +251,11 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 	local tRaidTargetString = ""
 	if tRaidtarget then
 		if SkuMobRaidTargetStrings[tRaidtarget] then
-			tRaidTargetString = SkuMobRaidTargetStrings[tRaidtarget]..";"
+			if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
+				tRaidTargetString = SkuMobRaidTargetStrings[tRaidtarget]..";"..SkuMobRaidTargetStrings[tRaidtarget]..";"
+			else
+				tRaidTargetString = SkuMobRaidTargetStrings[tRaidtarget]..";"
+			end
 		end
 	end
 	

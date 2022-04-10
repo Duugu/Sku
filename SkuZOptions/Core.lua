@@ -232,10 +232,10 @@ function SkuOptions:SlashFunc(input)
 				end
 				if tWidget:IsShown() then
 					tWidget:Hide()
-					SkuOptions.Voice:OutputString("Chat sichtbar", false, true, 0.2)
+					SkuOptions.Voice:OutputStringBTtts("Chat sichtbar", false, true, 0.2)
 				else
 					tWidget:Show()
-					SkuOptions.Voice:OutputString("Chat verdeckt", false, true, 0.2)
+					SkuOptions.Voice:OutputStringBTtts("Chat verdeckt", false, true, 0.2)
 				end
 			end
 
@@ -278,7 +278,7 @@ function SkuOptions:OnProfileChanged()
 		SkuOptions:OnEnable()
 	end
 
-	SkuOptions.Voice:OutputString(L["Profil gewechselt"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Profil gewechselt"], false, true, 0.2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -308,7 +308,7 @@ function SkuOptions:OnProfileCopied()
 		SkuOptions:OnEnable()
 	end
 
-	SkuOptions.Voice:OutputString(L["Profil kopiert"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Profil kopiert"], false, true, 0.2)
 
 end
 
@@ -349,7 +349,7 @@ function SkuOptions:OnProfileReset()
 		SkuOptions:OnEnable()
 	end
 
-	SkuOptions.Voice:OutputString(L["Profil zurückgesetzt"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Profil zurückgesetzt"], false, true, 0.2)
 
 end
 
@@ -441,7 +441,8 @@ function SkuOptions:UpdateOverviewText()
 	if C_Map.GetBestMapForUnit("player") and C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player") then
 		tPosX, tPosY = C_Map.GetPlayerMapPosition(C_Map.GetBestMapForUnit("player"), "player"):GetXY()
 	end
-	tTmpText = tCount.." "..UnitName("player")..", "..GetMinimapZoneText()..", "..math.floor(tPosX * 100).." "..math.floor(tPosY * 100).."\r\n"
+	local tRealm = SelectedRealmName()
+	tTmpText = tCount.." "..UnitName("player")..", "..GetMinimapZoneText()..", "..math.floor(tPosX * 100).." "..math.floor(tPosY * 100)..", "..tRealm.."\r\n"
 
 	local tPlayersSubgroup 
 	for x = 1, 40 do
@@ -736,7 +737,7 @@ function SkuOptions:CreateMainFrame()
 		--[[
 		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
 			print("Funktion erst nach Abschluss von Routen Umwandlung verfügbar")
-			SkuOptions.Voice:OutputString("Funktion erst nach Abschluss von Routen Umwandlung verfügbar", true, true, 0.3, true)
+			SkuOptions.Voice:OutputStringBTtts("Funktion erst nach Abschluss von Routen Umwandlung verfügbar", true, true, 0.3, true)
 			return
 		end
 		]]
@@ -911,42 +912,42 @@ function SkuOptions:CreateMainFrame()
 		--dprint("SkuCore.isMoving1", SkuCore.isMoving)
 		if a == "SHIFT-F1" or a == nil then
 			if #SkuOptions.Menu == 0 then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuNav"}, SkuGenericMenuItem)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuNavMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuNav:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuMob"}, SkuGenericMenuItem)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuMobMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuMob:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuChat"}, SkuGenericMenuItem)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuChatMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuChat:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuQuest"}, SkuGenericMenuItem)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuQuestMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuQuest:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuCore"}, SkuGenericMenuItem)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuCoreMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuCore:MenuBuilder(tNewMenuEntry)
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuAuras"}, SkuGenericMenuItem)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuAurasMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuAuras:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {"SkuOptions"}, SkuGenericMenuItem)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuOptionsMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuOptions:MenuBuilder(tNewMenuEntry)
@@ -1020,15 +1021,15 @@ function SkuOptions:CreateMainFrame()
 				end
 				
 
-				SkuOptions.Voice:OutputString(L["Menu;closed"], false, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts(L["Menu;closed"], false, true, 0.3, true)
 				SkuCore.Debug("", L["Menu;closed"], true)
 
 			else
 				self:Show()
 				SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
 				PlaySound(811)
-				SkuOptions.Voice:OutputString(L["Menu;open"], true, true, 0.3, true)
-				SkuOptions.Voice:OutputString(SkuOptions.Menu[1].name, false, true, 0.3)
+				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3)
 				SkuCore.Debug("", SkuOptions.currentMenuPosition.name, true)
 			end
 		end
@@ -1057,22 +1058,22 @@ function SkuOptions:CreateMainFrame()
 
 				if a == "CTRL-SHIFT-F9" then
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1 = tBread
-					SkuOptions.Voice:OutputString(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3)
+					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 				end
 				if a == "CTRL-SHIFT-F10" then
-					SkuOptions.Voice:OutputString(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3)
+					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2 = tBread
 				end
 				if a == "CTRL-SHIFT-F11" then
-					SkuOptions.Voice:OutputString(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3)
+					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3 = tBread
 				end
 				if a == "CTRL-SHIFT-F12" then
-					SkuOptions.Voice:OutputString(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3)
+					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4 = tBread
 				end
 			else
-				SkuOptions.Voice:OutputString(L["Impossible. Menu is not open."], true, true, 0.3)
+				SkuOptions.Voice:OutputStringBTtts(L["Impossible. Menu is not open."], true, true, 0.3)
 			end
 		end
 
@@ -1240,7 +1241,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "SHIFT-RIGHT" then
 			if SkuOptions.currentMenuPosition then
 				if SkuOptions.currentMenuPosition.name ~= "" then
-					SkuOptions.Voice:OutputString(SkuOptions.currentMenuPosition.name, false, true, 0, false, nil, nil, nil, true) -- for strings with lookup in string index
+					SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, false, true, 0, false, nil, nil, nil, true) -- for strings with lookup in string index
 				end
 			end
 			return
@@ -1380,10 +1381,10 @@ function SkuOptions:CreateMenuFrame()
 		end
 		PlaySound(811)
 
-		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" then
+		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true then
 			SkuOptions:VocalizeCurrentMenuName(tVocalizeReset)
 			if string.len(SkuOptions.Filterstring) > 1  then
-				--SkuOptions.Voice:OutputString("Filter", false, true, 0.3)
+				--SkuOptions.Voice:OutputStringBTtts("Filter", false, true, 0.3)
 			end
 		end
 
@@ -1474,7 +1475,6 @@ function SkuOptions:CreateMenuFrame()
 		SkuCore.openMenuAfterCombat = false
 		SkuCore.openMenuAfterMoving = false	
 		PlaySound(88)
-		--SkuOptions.Voice:OutputString("Navi geöffnet", true, true, 0.3)
 		SetOverrideBindingClick(self, true, "PAGEUP", "OnSkuOptionsMainOption1", "PAGEUP")
 		SetOverrideBindingClick(self, true, "PAGEDOWN", "OnSkuOptionsMainOption1", "PAGEDOWN")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-D", "SkuQuestMainOption1", "CTRL-SHIFT-D")
@@ -1524,7 +1524,7 @@ function SkuOptions:CreateMenuFrame()
 		if SkuCore.inCombat == true then
 			return
 		end
-		--SkuOptions.Voice:OutputString("Navi geschlossen", true, true, 0.3)
+
 		ClearOverrideBindings(self)
 		ClearOverrideBindings(UIParent)
 		PlaySound(89)
@@ -1722,7 +1722,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		if #tChildrenFiltered == 0 then
 			table.insert(tChildrenFiltered, tOldChildren[1])
 			--SkuCore:Debug("ApplyFilter: keine Ergebnisse f�r filter, element 1 wird angezeigt")
-			SkuOptions.Voice:OutputString(L["No results"], true, true, 0.2)
+			SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.2)
 		end
 
 		for x = 1, #tChildrenFiltered do
@@ -1741,7 +1741,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		SkuOptions.currentMenuPosition.parent.children = tChildrenFiltered--tOldChildren)
 		SkuOptions.currentMenuPosition:OnFirst()
 
-		SkuOptions.Voice:OutputString(L["Filter applied"], true, true, 0.3)
+		SkuOptions.Voice:OutputStringBTtts(L["Filter applied"], true, true, 0.3)
 		--SkuCore:Debug("ApplyFilter: filter applied, menu updated")
 	end
 	if aFilterstring == "" then
@@ -1762,7 +1762,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 			SkuOptions.currentMenuPosition:OnFirst()
 			tOldChildren = false
 
-			SkuOptions.Voice:OutputString(L["Filter removed"], true, true, 0.3)
+			SkuOptions.Voice:OutputStringBTtts(L["Filter removed"], true, true, 0.3)
 			--SkuCore:Debug("ApplyFilter: filter cleared, menu updated")
 		else
 			--SkuCore:Debug("ApplyFilter: error: no old child data. this should not happen!")
@@ -1930,10 +1930,16 @@ end
 ---@param aDuration number duration of the audio
 ---@param aDoNotOverride bool if this audio could be reseted by others
 function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs)
-	--dprint("VocalizeMultipartString", aStr)
+	dprint("VocalizeMultipartString", aStr)
+
 	-- don't vocalize object numbers
 	local tTempHayStack = string.gsub(aStr, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
 	aStr = tTempHayStack
+
+	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu == true then
+		SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, engine, nil, aVocalizeAsIs)
+		return
+	end
 
 	if not engine then
 		local sep, fields = ";", {}
@@ -1965,9 +1971,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aReset bool reset queue
 function SkuOptions:VocalizeCurrentMenuName(aReset)
-	--dprint("VocalizeCurrentMenuName", aReset)
+	dprint("VocalizeCurrentMenuName", aReset)
 	if aReset == nil then aReset = true end
---dprint(aReset)
+
 	local tTable = SkuOptions.currentMenuPosition
 
 	--get menu pos
@@ -2259,7 +2265,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										end,
 										function()
 											print("abb")
-											SkuOptions.Voice:OutputString("abgebrochen", true, true, 0.2, false)
+											SkuOptions.Voice:OutputStringBTtts("abgebrochen", true, true, 0.2, false)
 										end
 										)
 										]]
@@ -2914,7 +2920,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ImportWpAndLinkData()
 	PlaySound(88)
-	SkuOptions.Voice:OutputString(L["Paste data to import now"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2)
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)
@@ -2928,15 +2934,15 @@ function SkuOptions:ImportWpAndLinkData()
 			local tSuccess, tVersion, tLinks, tWaypoints = SkuOptions:Deserialize(tSerializedData)
 
 			if tVersion ~= 22 then
-				SkuOptions.Voice:OutputString(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2)										
+				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2)										
 				return
 			end
 			if tSuccess ~= true then
-				SkuOptions.Voice:OutputString(L["Import fehlgeschlagen. Daten fehlerhaft."], false, true, 0.2)										
+				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Daten fehlerhaft."], false, true, 0.2)										
 				return
 			end
 
-			SkuOptions.Voice:OutputString(L["Import erfolgreich"], true, true, 0.2, true)			
+			SkuOptions.Voice:OutputStringBTtts(L["Import erfolgreich"], true, true, 0.2, true)			
 
 			--do tWaypoints 
 			local tFullCounterWps = 0
@@ -3010,7 +3016,7 @@ function SkuOptions:ExportWpAndLinkData()
 	end
 	print(L["Wegpunkte exportiert:"], tCount)
 
-	SkuOptions.Voice:OutputString(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], false, true, 0.3)		
+	SkuOptions.Voice:OutputStringBTtts(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], false, true, 0.3)		
 
 	--setmetatable(tExportDataTable, SkuPrintMT)
 	--SkuOptions:EditBoxShow(tostring(tExportDataTable), function(self) PlaySound(89) end)
@@ -3020,7 +3026,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ImportPre22WpAndRouteData()
 	PlaySound(88)
-	SkuOptions.Voice:OutputString(L["Paste data to import now"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2)
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)
@@ -3251,9 +3257,9 @@ function SkuOptions:ImportPre22WpAndRouteData()
 
 				end
 
-				SkuOptions.Voice:OutputString("Import erfolgreich", true, true, 0.2)			
-				SkuOptions.Voice:OutputString(tImportCounterRts.." von "..#tRoutes.." Routen", false, true, 0.3, true)
-				SkuOptions.Voice:OutputString(tImportCounterWps.." von "..#tWaypoints.." Wegpunkt", false, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts("Import erfolgreich", true, true, 0.2)			
+				SkuOptions.Voice:OutputStringBTtts(tImportCounterRts.." von "..#tRoutes.." Routen", false, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts(tImportCounterWps.." von "..#tWaypoints.." Wegpunkt", false, true, 0.3, true)
 
 				print("Routen ("..#tRoutes..")")
 				print("  Importiert: ", tImportCounterRts)
@@ -3280,7 +3286,7 @@ function SkuOptions:ImportPre22WpAndRouteData()
 
 
 			else
-				SkuOptions.Voice:OutputString("Import fehlgeschlagen", false, true, 0.2)										
+				SkuOptions.Voice:OutputStringBTtts("Import fehlgeschlagen", false, true, 0.2)										
 			end
 			--_G["SkuOptionsEditBoxPaste"]:Hide()
 		end
@@ -3297,7 +3303,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ImportAddWpAndLinkData()
 	PlaySound(88)
-	SkuOptions.Voice:OutputString(L["Paste data to import now"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2)
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)

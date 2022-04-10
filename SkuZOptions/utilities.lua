@@ -687,10 +687,11 @@ function SkuDefaultWp2DeToEn()
 	local co = coroutine.create(function ()
 		print("test")
 		--for q = 1, #SkuDB.DefaultWaypoints["deDE"] do
-			local tIndex = SkuDB.DefaultWaypoints["deDE"][4]
+			local tIndex = SkuDB.DefaultWaypoints["deDE"][3]
 			local tIndexEN = SkuTranslateStringDeToEn(tIndex)
-			local tValue = SkuDB.DefaultWaypoints["deDE"][SkuDB.DefaultWaypoints["deDE"][4]]
-			print(4, tIndex, tValue)
+			local tValue = SkuDB.DefaultWaypoints["deDE"][SkuDB.DefaultWaypoints["deDE"][3]]
+			print(3, tIndex, tValue)
+			print("TEST 1", tIndex, #SkuTranslatedData.DefaultWaypoints2, tIndexEN)
 			table.insert(SkuTranslatedData.DefaultWaypoints2, #SkuTranslatedData.DefaultWaypoints2 + 1, tIndexEN)
 			SkuTranslatedData.DefaultWaypoints2[tIndexEN] = {}
 
@@ -698,49 +699,55 @@ function SkuDefaultWp2DeToEn()
 				local tIndex1 = tValue[x]
 				local tIndex1EN = SkuTranslateStringDeToEn(tIndex1)
 				local tValue1 = tValue[tValue[x]]
-				print("  ", 2, tIndex1, tValue1)
-				table.insert(SkuTranslatedData.DefaultWaypoints2[tIndex], #SkuTranslatedData.DefaultWaypoints2[tIndex] + 1, tIndex1EN)
-				SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN] = {}			
+				print("  ", 2, tIndex1, tValue1, #tValue1)
+				print("TEST 1 1", tIndex)
+				print("TEST 1 2", #SkuTranslatedData.DefaultWaypoints2[tIndexEN])
+				print("TEST 1 3", tIndex1EN)
+				table.insert(SkuTranslatedData.DefaultWaypoints2[tIndexEN], #SkuTranslatedData.DefaultWaypoints2[tIndexEN] + 1, tIndex1EN)
+				print("TEST 2")
+				SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN] = {}			
+				print("TEST 3", tValue1)
 				if tValue1.createdAt then
-					SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN] = tValue1
-					--setmetatable(tValue1, SkuPrintMTWo)
-					--print(tValue1)	
+					SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN] = tValue1
+					setmetatable(tValue1, SkuPrintMTWo)
+					print("tValue1.createdAt", tValue1)	
 				else
+					print("NOT tValue1.createdAt")
 					for y = 1, #tValue1 do
 						local tIndex2 = tValue1[y]
 						local tIndex2EN = SkuTranslateStringDeToEn(tIndex2)
 						local tValue2 = tValue1[tValue1[y]]
-						--print("    ",3 , tIndex2, tValue2)
-						table.insert(SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN], #SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN] + 1, tIndex2EN)
-						SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN] = {}			
+						print("    ",3 , tIndex2, tValue2)
+						table.insert(SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN], #SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN] + 1, tIndex2EN)
+						SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN] = {}			
 						if tValue2.createdAt then
-							SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN] = tValue2
-							--setmetatable(tValue2, SkuPrintMTWo)
-							--print(tValue2)	
+							SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN] = tValue2
+							setmetatable(tValue2, SkuPrintMTWo)
+							print(tValue2)	
 						else
 							for z = 1, #tValue2 do
 								local tIndex3 = tValue2[z]
 								local tIndex3EN = SkuTranslateStringDeToEn(tIndex3)
 								local tValue3 = tValue2[tValue2[z]]
-								--print("      ", 4 , tIndex3, tValue3)
-								table.insert(SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN], #SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN] + 1, tIndex3EN)
-								SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN][tIndex3EN] = {}										
+								print("      ", 4 , tIndex3, tValue3)
+								table.insert(SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN], #SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN] + 1, tIndex3EN)
+								SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN][tIndex3EN] = {}										
 								if tValue3.createdAt then
-									SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN][tIndex3EN] = tValue3
-									--setmetatable(tValue3, SkuPrintMTWo)
-									--print(tValue3)	
+									SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN][tIndex3EN] = tValue3
+									setmetatable(tValue3, SkuPrintMTWo)
+									print(tValue3)	
 								else
 									for i = 1, #tValue3 do
 										local tIndex4 = tValue3[i]
 										local tIndex4EN = SkuTranslateStringDeToEn(tIndex4)
 										local tValue4 = tValue3[tValue3[i]]
-										--print("        ", 5 , tIndex4, tValue4)
-										table.insert(SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN][tIndex3EN], #SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN][tIndex3EN] + 1, tIndex4EN)
-										SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN][tIndex3EN][tIndex4EN] = {}									
+										print("        ", 5 , tIndex4, tValue4)
+										table.insert(SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN][tIndex3EN], #SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN][tIndex3EN] + 1, tIndex4EN)
+										SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN][tIndex3EN][tIndex4EN] = {}									
 										if tValue4.createdAt then
-											SkuTranslatedData.DefaultWaypoints2[tIndex][tIndex1EN][tIndex2EN][tIndex3EN][tIndex4EN] = tValue4
-											--setmetatable(tValue3, SkuPrintMTWo)
-											--print(tValue3)											
+											SkuTranslatedData.DefaultWaypoints2[tIndexEN][tIndex1EN][tIndex2EN][tIndex3EN][tIndex4EN] = tValue4
+											setmetatable(tValue3, SkuPrintMTWo)
+											print(tValue3)											
 										else
 											print("          WTF??")
 										end
@@ -752,6 +759,7 @@ function SkuDefaultWp2DeToEn()
 						coroutine.yield()
 					end
 				end
+				print("TEST 4")
 			end
 		--end
 	end)

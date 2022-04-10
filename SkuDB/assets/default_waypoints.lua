@@ -457,6 +457,551 @@ SkuDB.DefaultWaypoints = {
          },
       },
       ["Postbox"] = {
+			"alliance", -- [1]
+			"horde", -- [2]
+			"unknown", -- [3]
+			["horde"] = {
+				"s;h;Mailbox;Durotar", -- [1]
+				"s;h;Mailbox;Mulgore", -- [2]
+				"s;h;Mailbox;Badlands", -- [3]
+				"s;h;Mailbox;1;Orgrimmar", -- [4]
+				"s;h;Mailbox;2;Orgrimmar", -- [5]
+				"s;h;Mailbox;1;Silverpine Forest", -- [6]
+				"s;h;Mailbox;2;Silverpine Forest", -- [7]
+				"s;h;Mailbox;Thunder Bluff", -- [8]
+				"s;h;Mailbox;Tirisfal Glades", -- [9]
+				"s;h;Mailbox;Undercity", -- [10]
+				["s;h;Mailbox;2;Silverpine Forest"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 130,
+					["worldY"] = 1627.199829101563,
+					["worldX"] = 507.4665832519531,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;Undercity"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1497,
+					["worldY"] = 221.7769775390625,
+					["worldX"] = 1632.145385742188,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;Thunder Bluff"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 1638,
+					["worldY"] = 46.97917175292969,
+					["worldX"] = -1261.933227539063,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;2;Orgrimmar"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 1637,
+					["worldY"] = -4551.61865234375,
+					["worldX"] = 1895.033569335938,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;Badlands"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 3,
+					["worldY"] = -2176.17919921875,
+					["worldX"] = -6673.974609375,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;1;Orgrimmar"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 1637,
+					["worldY"] = -4387.513671875,
+					["worldX"] = 1612.53759765625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;Durotar"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 14,
+					["worldY"] = -4706.71240234375,
+					["worldX"] = 324.3082275390625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;Tirisfal Glades"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 85,
+					["worldY"] = 258.8207397460938,
+					["worldX"] = 2237.8623046875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;1;Silverpine Forest"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 130,
+					["worldY"] = 1517.999755859375,
+					["worldX"] = 490.666748046875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;h;Mailbox;Mulgore"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 215,
+					["worldY"] = -366.7083740234375,
+					["worldX"] = -2338.19140625,
+					["createdBy"] = "SkuNav",
+				},
+			},
+			["alliance"] = {
+				"s;A;Mailbox;1;Darnassus", -- [1]
+				"s;A;Mailbox;2;Darnassus", -- [2]
+				"s;A;Mailbox;Dun Morogh", -- [3]
+				"s;A;Mailbox;1;Ironforge", -- [4]
+				"s;A;Mailbox;2;Ironforge", -- [5]
+				"s;A;Mailbox;3;Ironforge", -- [6]
+				"s;A;Mailbox;4;Ironforge", -- [7]
+				"s;A;Mailbox;Loch Modan", -- [8]
+				"s;A;Mailbox;1;Stormwind", -- [9]
+				"s;A;Mailbox;2;Stormwind", -- [10]
+				"s;A;Mailbox;3;Stormwind", -- [11]
+				"s;A;Mailbox;4;Stormwind", -- [12]
+				"s;A;Mailbox;Elwynn Forest", -- [13]
+				"s;A;Mailbox;Westfall", -- [14]
+				["s;A;Mailbox;2;Stormwind"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1519,
+					["worldY"] = 845.95166015625,
+					["worldX"] = -9036.26953125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;1;Ironforge"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1537,
+					["worldY"] = -880.4132690429688,
+					["worldX"] = -4848.34375,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;1;Stormwind"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1519,
+					["worldY"] = 1083.887573242188,
+					["worldX"] = -8793.3583984375,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;2;Darnassus"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 1657,
+					["worldY"] = 2227.37451171875,
+					["worldX"] = 10122.08203125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;1;Darnassus"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 1657,
+					["worldY"] = 2500.212646484375,
+					["worldX"] = 9941.205078125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;4;Ironforge"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1537,
+					["worldY"] = -1282.841430664063,
+					["worldX"] = -4824.6015625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;Westfall"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 40,
+					["worldY"] = 1161.666748046875,
+					["worldX"] = -10648.3330078125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;Elwynn Forest"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 12,
+					["worldY"] = 46.42913818359375,
+					["worldX"] = -9453.3203125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;Dun Morogh"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1,
+					["worldY"] = -512.6666870117188,
+					["worldX"] = -5597.5498046875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;Loch Modan"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 38,
+					["worldY"] = -2953.64990234375,
+					["worldX"] = -5364.98095703125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;3;Stormwind"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1519,
+					["worldY"] = 648.3438110351562,
+					["worldX"] = -8875.822265625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;2;Ironforge"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1537,
+					["worldY"] = -973.70703125,
+					["worldX"] = -4911.65625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;3;Ironforge"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1537,
+					["worldY"] = -1274.14453125,
+					["worldX"] = -4950.69921875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;A;Mailbox;4;Stormwind"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 1519,
+					["worldY"] = 427.8834533691406,
+					["worldX"] = -8640.0810546875,
+					["createdBy"] = "SkuNav",
+				},
+			},
+			["unknown"] = {
+				"s;u;Mailbox;Arathi Highlands", -- [1]
+				"s;u;Mailbox;1;Ashenvale", -- [2]
+				"s;u;Mailbox;2;Ashenvale", -- [3]
+				"s;u;Mailbox;1;The Barrens", -- [4]
+				"s;u;Mailbox;2;The Barrens", -- [5]
+				"s;u;Mailbox;3;The Barrens", -- [6]
+				"s;u;Mailbox;Duskwood", -- [7]
+				"s;u;Mailbox;1;Desolace", -- [8]
+				"s;u;Mailbox;2;Desolace", -- [9]
+				"s;u;Mailbox;Darkshore", -- [10]
+				"s;u;Mailbox;1;Feralas", -- [11]
+				"s;u;Mailbox;2;Feralas", -- [12]
+				"s;u;Mailbox;1;The Hinterlands", -- [13]
+				"s;u;Mailbox;2;The Hinterlands", -- [14]
+				"s;u;Mailbox;Dustwallow Marsh", -- [15]
+				"s;u;Mailbox;1;Eastern Plaguelands", -- [16]
+				"s;u;Mailbox;2;Eastern Plaguelands", -- [17]
+				"s;u;Mailbox;1;Redridge Mountains", -- [18]
+				"s;u;Mailbox;2;Redridge Mountains", -- [19]
+				"s;u;Mailbox;1;Stranglethorn Vale", -- [20]
+				"s;u;Mailbox;2;Stranglethorn Vale", -- [21]
+				"s;u;Mailbox;3;Stranglethorn Vale", -- [22]
+				"s;u;Mailbox;Silithus", -- [23]
+				"s;u;Mailbox;1;Stonetalon Mountains", -- [24]
+				"s;u;Mailbox;2;Stonetalon Mountains", -- [25]
+				"s;u;Mailbox;Swamp of Sorrows", -- [26]
+				"s;u;Mailbox;Wetlands", -- [27]
+				"s;u;Mailbox;Tanaris", -- [28]
+				"s;u;Mailbox;Thousand Needles", -- [29]
+				"s;u;Mailbox;Teldrassil", -- [30]
+				"s;u;Mailbox;Felwood", -- [31]
+				"s;u;Mailbox;Blasted Lands", -- [32]
+				"s;u;Mailbox;1;Hillsbrad Foothills", -- [33]
+				"s;u;Mailbox;2;Hillsbrad Foothills", -- [34]
+				"s;u;Mailbox;Winterspring", -- [35]
+				["s;u;Mailbox;Duskwood"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 10,
+					["worldY"] = -1159.2666015625,
+					["worldX"] = -10548.265625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;Eastern Plaguelands"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 139,
+					["worldY"] = -5088.54150390625,
+					["worldX"] = 2457.75,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;The Hinterlands"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 47,
+					["worldY"] = -2117.849853515625,
+					["worldX"] = 293.6999816894531,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;Ashenvale"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 331,
+					["worldY"] = -393.300048828125,
+					["worldX"] = 2739.51025390625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Winterspring"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 618,
+					["worldY"] = -4668.96630859375,
+					["worldX"] = 6706.26611328125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;Desolace"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 405,
+					["worldY"] = 3118.3662109375,
+					["worldX"] = -1610.4833984375,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;Hillsbrad Foothills"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 267,
+					["worldY"] = -546.13330078125,
+					["worldX"] = -850.1333618164062,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;The Hinterlands"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 47,
+					["worldY"] = -4612.64990234375,
+					["worldX"] = -599.5,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;Desolace"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 405,
+					["worldY"] = 1293.058227539063,
+					["worldX"] = 245.2270660400391,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Arathi Highlands"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 45,
+					["worldY"] = -3523.46630859375,
+					["worldX"] = -927.7333374023438,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Swamp of Sorrows"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 8,
+					["worldY"] = -3264.279052734375,
+					["worldX"] = -10461.875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Darkshore"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 148,
+					["worldY"] = 498.5164794921875,
+					["worldX"] = 6420.7333984375,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;Redridge Mountains"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 44,
+					["worldY"] = -2243.79150390625,
+					["worldX"] = -9270,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Tanaris"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 440,
+					["worldY"] = -3827.44970703125,
+					["worldX"] = -7153.7998046875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;3;Stranglethorn Vale"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 33,
+					["worldY"] = 480.0283203125,
+					["worldX"] = -14461.8994140625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;Eastern Plaguelands"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 139,
+					["worldY"] = -5316.9208984375,
+					["worldX"] = 2292.5498046875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;Hillsbrad Foothills"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 267,
+					["worldY"] = -930.13330078125,
+					["worldX"] = -22.39999389648438,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;Stranglethorn Vale"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 33,
+					["worldY"] = 517.0396728515625,
+					["worldX"] = -14418.9326171875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Felwood"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 361,
+					["worldY"] = -360.483154296875,
+					["worldX"] = 5103.5830078125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;Redridge Mountains"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 44,
+					["worldY"] = -2143.93310546875,
+					["worldX"] = -9249.728515625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Wetlands"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 11,
+					["worldY"] = -836.2083740234375,
+					["worldX"] = -3793.397705078125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;Feralas"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 357,
+					["worldY"] = 236.11669921875,
+					["worldX"] = -4405.3330078125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Teldrassil"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 141,
+					["worldY"] = 958.1583862304688,
+					["worldX"] = 9849.30078125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;Stranglethorn Vale"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 33,
+					["worldY"] = 153.308349609375,
+					["worldX"] = -12389.6953125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;Ashenvale"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 331,
+					["worldY"] = -2544.2666015625,
+					["worldX"] = 2332.07275390625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Silithus"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 1377,
+					["worldY"] = 736.6162109375,
+					["worldX"] = -6838.71875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Thousand Needles"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 400,
+					["worldY"] = -2452.93310546875,
+					["worldX"] = -5462.66650390625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Blasted Lands"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 0,
+					["areaId"] = 4,
+					["worldY"] = -3389.016357421875,
+					["worldX"] = -10997.69921875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;Stonetalon Mountains"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 406,
+					["worldY"] = 901.8333129882812,
+					["worldX"] = 927.0978393554688,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;Stonetalon Mountains"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 406,
+					["worldY"] = 1487.833251953125,
+					["worldX"] = 2678.960205078125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;The Barrens"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 17,
+					["worldY"] = -1947.216796875,
+					["worldX"] = -2353.4189453125,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;2;The Barrens"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 17,
+					["worldY"] = -2646.41650390625,
+					["worldX"] = -441.4000244140625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;1;Feralas"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 357,
+					["worldY"] = 3273.2666015625,
+					["worldX"] = -4396.06640625,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;3;The Barrens"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 17,
+					["worldY"] = -3680.0166015625,
+					["worldX"] = -1035.949951171875,
+					["createdBy"] = "SkuNav",
+				},
+				["s;u;Mailbox;Dustwallow Marsh"] = {
+					["createdAt"] = "Sun Apr 25 23:32:35 2021",
+					["contintentId"] = 1,
+					["areaId"] = 15,
+					["worldY"] = -4434.75,
+					["worldX"] = -3618.8330078125,
+					["createdBy"] = "SkuNav",
+				},
+
+         },
+
+
+
+
       },
       ["Taxi"] = {
          "horde", -- [1]

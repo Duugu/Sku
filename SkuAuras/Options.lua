@@ -538,7 +538,7 @@ function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttribut
 			outputs = aNewOutputs,
 		}
 
-		SkuOptions.Voice:OutputString(L["Aktualisiert"], true, true, 0.3, true)		
+		SkuOptions.Voice:OutputStringBTtts(L["Aktualisiert"], true, true, 0.3, true)		
 
 		C_Timer.After(0.01, function()
 			SkuOptions:SlashFunc(L["short"]..L[",SkuAuras,Auren,Auren verwalten,"]..SkuOptions.currentMenuPosition.parent.parent.parent.name..","..tAuraName)
@@ -735,7 +735,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 				tTestNewName = L["Kopie;"]..tCopyCounter..";"..self.parent.name
 			end
 			SkuOptions.db.char[MODULE_NAME].Auras[tTestNewName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[self.parent.name], true)
-			SkuOptions.Voice:OutputString(L["Dupliziert"], true, true, 0.3, true)		
+			SkuOptions.Voice:OutputStringBTtts(L["Dupliziert"], true, true, 0.3, true)		
 
 			C_Timer.After(0.01, function()
 				SkuOptions:SlashFunc(L["short"]..L[",SkuAuras,Auren,Auren verwalten,"]..self.parent.parent.name..","..tTestNewName)
@@ -766,14 +766,14 @@ function SkuAuras:ExportAuraData(aAuraName)
 	
 	PlaySound(88)
 	print(L["Aura exportiert"])
-	SkuOptions.Voice:OutputString(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], false, true, 0.3)		
+	SkuOptions.Voice:OutputStringBTtts(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], false, true, 0.3)		
 	SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.version, tExportDataTable.auraName, tExportDataTable.auraData), function(self) PlaySound(89) end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:ImportAuraData()
 	PlaySound(88)
-	SkuOptions.Voice:OutputString(L["Paste data to import now"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2)
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)
@@ -783,16 +783,16 @@ function SkuAuras:ImportAuraData()
 			local tSuccess, version, auraName, auraData = SkuOptions:Deserialize(tSerializedData)
 			if auraName and auraData and version then
 				if version < 22.8 then
-					SkuOptions.Voice:OutputString(L["Aura version zu alt"], false, true, 0.3)		
+					SkuOptions.Voice:OutputStringBTtts(L["Aura version zu alt"], false, true, 0.3)		
 					return
 				end
 				auraData.enabled = true
 				SkuOptions.db.char[MODULE_NAME].Auras[auraName] = auraData
 				print(L["Aura importiert:"])
 				print(auraName)
-				SkuOptions.Voice:OutputString(L["Aura importiert"], false, true, 0.3)		
+				SkuOptions.Voice:OutputStringBTtts(L["Aura importiert"], false, true, 0.3)		
 			else
-				SkuOptions.Voice:OutputString(L["Aura daten defekt"], false, true, 0.3)		
+				SkuOptions.Voice:OutputStringBTtts(L["Aura daten defekt"], false, true, 0.3)		
 				return
 			end
 		end
@@ -832,9 +832,9 @@ function SkuAuras:MenuBuilder(aParentEntry)
 					end
 
 					if SkuAuras:CreateAura(self.internalName, tFinalAttributes) == true then
-						SkuOptions.Voice:OutputString(L["Aura erstellt"], false, true, 0.1, true)
+						SkuOptions.Voice:OutputStringBTtts(L["Aura erstellt"], false, true, 0.1, true)
 					else
-						SkuOptions.Voice:OutputString(L["Aura nicht erstellt"], false, true, 0.1, true)
+						SkuOptions.Voice:OutputStringBTtts(L["Aura nicht erstellt"], false, true, 0.1, true)
 					end
 										
 				end
@@ -867,14 +867,14 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			if aName == L["Deaktivieren"] or aName == L["Aktivieren"] then
 				if SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName].enabled == true then
 					SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName].enabled = false
-					SkuOptions.Voice:OutputString(L["deaktiviert"], false, true, 0.1, true)
+					SkuOptions.Voice:OutputStringBTtts(L["deaktiviert"], false, true, 0.1, true)
 				else
 					SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName].enabled = true
-					SkuOptions.Voice:OutputString(L["aktiviert"], false, true, 0.1, true)
+					SkuOptions.Voice:OutputStringBTtts(L["aktiviert"], false, true, 0.1, true)
 				end			
 			elseif aName == L["Löschen"] then
 				SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] = nil
-				SkuOptions.Voice:OutputString(L["gelöscht"], false, true, 0.1, true)
+				SkuOptions.Voice:OutputStringBTtts(L["gelöscht"], false, true, 0.1, true)
 			elseif aName == L["Exportieren"] then				
 				SkuAuras:ExportAuraData(self.targetAuraName)
 			end
@@ -937,7 +937,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tdel.isSelect = true
 		tdel.OnAction = function(self, aValue, aName)
 			SkuOptions.db.char[MODULE_NAME].Auras = {}
-			SkuOptions.Voice:OutputString(L["Alle auren gelöscht"], true, true, 0.1, true)
+			SkuOptions.Voice:OutputStringBTtts(L["Alle auren gelöscht"], true, true, 0.1, true)
 		end
 
 		local tTypeItem = SkuOptions:InjectMenuItems(self, {L["Aura Sets verwalten"]}, SkuGenericMenuItem)
@@ -952,18 +952,18 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				for tAuraName, tAuraData in pairs(tSetData.auras) do
 					SkuOptions.db.char[MODULE_NAME].Auras[tAuraData.friendlyNameShort] = tAuraData
 				end
-				SkuOptions.Voice:OutputString(L["Set angewendet"], false, true, 0.3, true)	
+				SkuOptions.Voice:OutputStringBTtts(L["Set angewendet"], false, true, 0.3, true)	
 			elseif aName == L["Übernehmen hinzufügen"] then
 				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
 				for tAuraName, tAuraData in pairs(tSetData.auras) do
 					SkuOptions.db.char[MODULE_NAME].Auras[tAuraData.friendlyNameShort] = tAuraData
 				end
-				SkuOptions.Voice:OutputString(L["Set hinzugefügt"], false, true, 0.3, true)	
+				SkuOptions.Voice:OutputStringBTtts(L["Set hinzugefügt"], false, true, 0.3, true)	
 			elseif aName == L["Bearbeiten"] then
-				SkuOptions.Voice:OutputString(L["noch nicht implementiert"], false, true, 0.1, true)
+				SkuOptions.Voice:OutputStringBTtts(L["noch nicht implementiert"], false, true, 0.1, true)
 
 			elseif aName == L["Exportieren"] then
-				SkuOptions.Voice:OutputString(L["noch nicht implementiert"], false, true, 0.1, true)
+				SkuOptions.Voice:OutputStringBTtts(L["noch nicht implementiert"], false, true, 0.1, true)
 
 			elseif aName == L["Löschen"] then
 				SkuAuras.AuraSets[self.selectedSetInternalName] = nil
@@ -1000,7 +1000,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tTypeItem.isSelect = true
 		tTypeItem.OnAction = function(self, aValue, aName)
 			dprint("OnAction Set importieren")
-			SkuOptions.Voice:OutputString(L["noch nicht implementiert"], false, true, 0.1, true)
+			SkuOptions.Voice:OutputStringBTtts(L["noch nicht implementiert"], false, true, 0.1, true)
 		end
 		
 	end

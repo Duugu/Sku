@@ -1278,12 +1278,12 @@ function SkuNav:ProcessPlayerDead()
 			for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
 				local tFnd = false
 				for tK, tV in pairs(tSortedWaypointList) do
-					if tV == v.nearestWpRange..";"..L["Meter"].."#"..v.nearestWP then
+					if tV == v.nearestWpRange..L[";Meter"].."#"..v.nearestWP then
 						tFnd = true
 					end
 				end
 				if tFnd == false then
-					table.insert(tSortedWaypointList, v.nearestWpRange..";"..L["Meter"].."#"..v.nearestWP)
+					table.insert(tSortedWaypointList, v.nearestWpRange..L[";Meter"].."#"..v.nearestWP)
 				end
 			end
 			if #tSortedWaypointList == 0 then
@@ -1406,6 +1406,9 @@ function SkuNav:ProcessGlobalDirection()
 	if not tText then
 		return
 	end
+	if SkuOptions.TTS.MainFrame:IsVisible() == true or SkuOptions:IsMenuOpen() == true then
+		return
+	end
 	if (IsShiftKeyDown() and IsAltKeyDown()) or SkuOptions.db.profile[MODULE_NAME].autoGlobalDirection == true then
 		if GetServerTime() - ttimeDistanceOutput > 0.5 or SkuOptions.db.profile[MODULE_NAME].autoGlobalDirection == true then
 			local x, y = UnitPosition("player")
@@ -1441,6 +1444,9 @@ end
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:ProcessDirAndDistWithWpSelected()
 	--output direction and distance to wp if wp selected
+	if SkuOptions.TTS.MainFrame:IsVisible() == true or SkuOptions:IsMenuOpen() == true then
+		return
+	end	
 	if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 		if SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 			local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
@@ -1451,7 +1457,7 @@ function SkuNav:ProcessDirAndDistWithWpSelected()
 						local tDirection = SkuNav:GetDirectionToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 						if SkuOptions.db.profile[MODULE_NAME].vocalizeFullDirectionDistance == true then
 							SkuOptions.Voice:OutputString(string.format("%02d", tDirection)..";"..L["Clock"], true, true, 0.3)
-							SkuOptions.Voice:OutputString(distance..";"..L["Meter"], false, true, 0.2)
+							SkuOptions.Voice:OutputString(distance..L[";Meter"], false, true, 0.2)
 						else
 							SkuOptions.Voice:OutputString(string.format("%02d", tDirection), true, true, 0.3)
 							SkuOptions.Voice:OutputString(distance, false, true, 0.2)
@@ -2475,8 +2481,20 @@ function SkuNav:PLAYER_LOGIN(...)
 	SkuOptions.db.profile["SkuNav"].Links = nil
 	SkuOptions.db.profile["SkuNav"].Waypoints = nil
 
-	--load default data if there isn't any
-	--post r24 the waypoint/link data is account wide
+	if SkuOptions.db.profile["SkuNav"].NavDataUpdateWith2517Done ~= true then
+		--reset menu quick access buttons to default because of the menu name changes
+		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect1 = SkuOptions.defaults.allModules.MenuQuickSelect1
+		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect2 = SkuOptions.defaults.allModules.MenuQuickSelect2
+		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect3 = SkuOptions.defaults.allModules.MenuQuickSelect3
+		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect4 = SkuOptions.defaults.allModules.MenuQuickSelect4
+
+		--reset nav data to default data with first load of r25.17 to include the update default waypoint data for mailboxes
+		SkuOptions.db.global["SkuNav"].Waypoints = nil
+		SkuOptions.db.global["SkuNav"].Links = nil
+		SkuOptions.db.profile["SkuNav"].NavDataUpdateWith2517Done = true
+	end
+
+	--load default data if there aren't any nav data
 	SkuOptions.db.global["SkuNav"] = SkuOptions.db.global["SkuNav"] or {}
 	local tLinksEmpty, tWpsEmpty = true, true
 	if SkuOptions.db.global["SkuNav"].Waypoints then
@@ -2543,6 +2561,8 @@ function SkuNav:PLAYER_LOGIN(...)
 	end
 
 	SkuNav:SkuNavMMOpen()
+
+
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_ENTERING_WORLD(...)

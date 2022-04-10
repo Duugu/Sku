@@ -670,7 +670,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	end
 	tEventData[38] = tdebuffList
 
-	if tEventData[2] ~= "KEY_PRESS" then
+if tEventData[2] ~= "KEY_PRESS" then
 		dprint("---------------------------------------------------------------------")
 		dprint("--NEW EVENT:", tEventData[2] )
 		dprint("---------------------------------------------------------------------")
@@ -825,15 +825,31 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			local tSingleBuffListTargetValue
 			local tSingleDebuffListTargetValue
 
+			local tHasCountCondition_NumConditions = 0
+			local tHasCountCondition_NumCountConditions = 0
+			local tHasCountCondition_NumCountConditionsTrue = 0
+			local tHasCountCondition_NumConditionsWoCountIsTrue = 0
+
 			for tAttributeName, tAttributeValue in pairs(tAuraData.attributes) do
+				dprint("tAttributeName, tAttributeValue", tAttributeName, tAttributeValue[1][1], tAttributeValue[1][2])
+				if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
+					tHasCountCondition_NumCountConditions = tHasCountCondition_NumCountConditions + 1
+				end
+				tHasCountCondition_NumConditions = tHasCountCondition_NumConditions + 1
+
 				tHasApplicableAttributes = true
 				if #tAttributeValue > 1 then
 					local tLocalResult = false
 					for tInd, tLocalValue in pairs(tAttributeValue) do
 						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2])
-						dprint("  ","RESULT:", tResult)
+						dprint("  ","RESULT:", tEvaluateData, tLocalValue[1], tLocalValue[2], tResult)
 						if tResult == true then
 							tLocalResult = true
+							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
+								tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
+							else
+								tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
+							end							
 						end
 					end
 					if tLocalResult ~= true then
@@ -841,7 +857,19 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 					end
 				else
 					local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2])
-					dprint("  ","RESULT:", tResult)
+					for tInd, tLocalValue in pairs(tAttributeValue) do
+						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2])
+						dprint("  ","RESULT:", tEvaluateData, tLocalValue[1], tLocalValue[2], tResult)
+						if tResult == true then
+							tLocalResult = true
+							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
+								tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
+							else
+								tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
+							end							
+						end
+					end
+
 					if tResult ~= true then
 						tOverallResult = false
 					end
@@ -894,8 +922,17 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 					end
 				else
 					--set aura to unused
-					dprint("   USED = false")
-					tAuraData.used = false
+
+					dprint("NumConditions", tHasCountCondition_NumConditions, "NumCountConditions", tHasCountCondition_NumCountConditions, "NumCountConditionsTrue", tHasCountCondition_NumCountConditionsTrue, "NumConditionsWoCountIsTrue", tHasCountCondition_NumConditionsWoCountIsTrue)
+					if tHasCountCondition_NumCountConditions > 0 then --es großer oder kleiner hat 
+						if (tHasCountCondition_NumConditionsWoCountIsTrue - tHasCountCondition_NumCountConditionsTrue == tHasCountCondition_NumConditions - tHasCountCondition_NumCountConditions) and ( tHasCountCondition_NumCountConditionsTrue < tHasCountCondition_NumCountConditions) then--alles außer größer oder kleiner = true und größer kleiner = false
+							dprint("   USED 1 = false")
+							tAuraData.used = false
+						end
+					else
+						dprint("   USED 2 = false")
+						tAuraData.used = false
+					end
 
 				end		
 			else

@@ -553,6 +553,15 @@ SkuAuras.valuesDefault = {
       ["98"] = {friendlyName = "98"},
       ["99"] = {friendlyName = "99"},
       ["100"] = {friendlyName = "100"},
+      ["110"] = {friendlyName = "110"},
+      ["120"] = {friendlyName = "120"},
+      ["130"] = {friendlyName = "130"},
+      ["140"] = {friendlyName = "140"},
+      ["150"] = {friendlyName = "150"},
+      ["200"] = {friendlyName = "200"},
+      ["300"] = {friendlyName = "300"},
+      ["400"] = {friendlyName = "400"},
+      ["500"] = {friendlyName = "500"},
 
    
       ["true"] = {
@@ -1808,6 +1817,15 @@ SkuAuras.attributes = {
          "98",
          "99",
          "100",
+         "110",
+         "120",
+         "130",
+         "140",
+         "150",
+         "200",
+         "300",
+         "400",
+         "500",
          
       },      
    },

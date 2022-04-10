@@ -105,7 +105,9 @@ SkuGenericMenuItem = {
 		end
 
 		SkuOptions.currentMenuPosition:OnEnter()
-		SkuOptions:VocalizeCurrentMenuName()
+		if SkuOptions.TTS.MainFrame:IsVisible() ~= true then
+			SkuOptions:VocalizeCurrentMenuName()
+		end
 	end,
 	OnKey = function(self, aKey)
 		--dprint("OnKey", aKey)
@@ -214,7 +216,7 @@ SkuGenericMenuItem = {
 		elseif string.find(self.name, L["aura;sound"].."#") then
 			for i, v in pairs(SkuAuras.outputs) do
 				if self.name == v.friendlyName then
-					SkuOptions.Voice:OutputString(v.outputString, false, false, 0.3, true)
+					SkuOptions.Voice:OutputStringBTtts(v.outputString, false, false, 0.3, true)
 				end
 			end
 		elseif string.find(self.name, L["sound"].."#") then
@@ -359,7 +361,10 @@ SkuGenericMenuItem = {
 
 						SkuOptions.currentMenuPosition = self.selectTarget
 					else
-						SkuOptions:VocalizeCurrentMenuName()
+						if SkuOptions.TTS.MainFrame:IsVisible() ~= true then
+							SkuOptions:VocalizeCurrentMenuName()
+						end
+				
 					end					
 				end
 			else

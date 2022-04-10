@@ -67,20 +67,18 @@ SkuOptions.options = {
 				return SkuOptions.db.profile[MODULE_NAME].localActive
 			end
 		},
-		--[[
-		visualAudioMenu = {
+		useBlizzTtsInMenu = {
 			order = 6,
-			name = L["Audio Menü visuell"] ,
+			name = L["Use Blizzard TTS for audio menu"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile["SkuOptions"].visualAudioMenu = val
+				SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].visualAudioMenu
+				return SkuOptions.db.profile[MODULE_NAME].useBlizzTtsInMenu
 			end
 		},
-		]]
 		soundChannels={
 			name = L["Audio-Kanäle"],
 			type = "group",
@@ -166,40 +164,40 @@ SkuOptions.options = {
 					},
 				},
 			},
-			debugOptions={
-				name = L["Debug Optionen"],
-				type = "group",
-				order = 4,
-				args= {
-					soundOnError = {
-						order = 2,
-						name = L["Sound bei Fehler"] ,
-						desc = "",
-						type = "toggle",
-						set = function(info,val)
-							SkuOptions.db.profile[MODULE_NAME].debugOptions.soundOnError = val
-						end,
-						get = function(info)
-							return SkuOptions.db.profile[MODULE_NAME].debugOptions.soundOnError
-						end
-					},
-					showError = {
-						order = 2,
-						name = L["Fehler anzeigen"] ,
-						desc = "",
-						type = "execute",
-						set = function(info,val)
-							--SkuOptions.db.profile[MODULE_NAME].debugOptions.showError = val
-						end,
-						get = function(info)
-							--return SkuOptions.db.profile[MODULE_NAME].debugOptions.showError
-						end,
-						func = function(info,val)
-							SkuOpenSack()
-						end,
-					},
+		debugOptions={
+			name = L["Debug Optionen"],
+			type = "group",
+			order = 4,
+			args= {
+				soundOnError = {
+					order = 2,
+					name = L["Sound bei Fehler"] ,
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].debugOptions.soundOnError = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].debugOptions.soundOnError
+					end
+				},
+				showError = {
+					order = 2,
+					name = L["Fehler anzeigen"] ,
+					desc = "",
+					type = "execute",
+					set = function(info,val)
+						--SkuOptions.db.profile[MODULE_NAME].debugOptions.showError = val
+					end,
+					get = function(info)
+						--return SkuOptions.db.profile[MODULE_NAME].debugOptions.showError
+					end,
+					func = function(info,val)
+						SkuOpenSack()
+					end,
 				},
 			},
+		},
 	
 		allModules={
 			name = L["Schnellwahl"],
@@ -266,6 +264,7 @@ SkuOptions.defaults = {
 	backgroundSound = "silence.mp3",
 	localActive = true,
 	visualAudioMenu = false,
+	useBlizzTtsInMenu = false,
 	allModules  = {
 		MenuQuickSelect1 = L["SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung"],
 		MenuQuickSelect2 = L["SkuNav,Route,Route folgen,Ziele Entfernung"],

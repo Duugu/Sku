@@ -125,10 +125,10 @@ function SkuTTS:ReadLineNumber(aSectionNumber, aLineNumber, aNoReset, aEngine)
 		if (sections[aSectionNumber]) then
 			if sections[aSectionNumber][aLineNumber] then
 				if not aEngine then
-					SkuOptions.Voice:OutputString(sections[aSectionNumber][aLineNumber], aNoReset, true)
+					SkuOptions.Voice:OutputStringBTtts(sections[aSectionNumber][aLineNumber], aNoReset, true)
 				else
-					--SkuOptions.Voice:OutputString(" ", true)
-					SkuOptions.Voice:OutputString(sections[aSectionNumber][aLineNumber], aNoReset, true, nil, nil, false, nil, aEngine)
+					--SkuOptions.Voice:OutputStringBTtts(" ", true)
+					SkuOptions.Voice:OutputStringBTtts(sections[aSectionNumber][aLineNumber], aNoReset, true, nil, nil, false, nil, aEngine)
 				end
 			end
 		end

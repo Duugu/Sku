@@ -51,6 +51,14 @@ function SkuChat:OnEnable()
 			if SkuOptions.ChatCurrentLine > table.getn(SkuChatChatBuffer) then
 				SkuOptions.ChatCurrentLine = table.getn(SkuChatChatBuffer)
 			end
+		elseif a == "Right" then
+			if SkuChatChatBuffer[SkuOptions.ChatCurrentLine].senderName then
+				if SkuChatChatBuffer[SkuOptions.ChatCurrentLine].senderName ~= "" then
+					ChatFrame1EditBox:Show()
+					ChatFrame1EditBox:SetFocus()
+					ChatFrame1EditBox:SetText("/w "..SkuChatChatBuffer[SkuOptions.ChatCurrentLine].senderName.." ")
+				end
+			end
 		end
 
 		if IsMacClient() == true then
@@ -97,7 +105,19 @@ SkuChat.inCombat = false
 function SkuChat:ChatFrame1AddMessageHook(...)
 	local body, infor, infog, infob, infoid, accessID, typeID = ...
 	if body then
+		local tUnmodifiedBody = body
 		body = unescape(body)
+
+		local tSenderName
+		if string.find(body, "%[%w+%]") then		
+			for k, v in body:gmatch("%[%w+%]") do 
+				local tName = string.sub(k, 2, string.len(k) - 1)
+				if tName then
+					tSenderName = tName
+					SkuCore.Debug(tName, tName)
+				end
+			end
+		end
 
 		if string.sub(body, 3, 3) == "." then
 			body = string.sub(body, 1,2).." "..string.sub(body, 4)
@@ -110,6 +130,8 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 			["timestamp"] = string.format("%02d:%02d",h,m),
 			["body"] = body,
 			["data"] = ...,
+			["unmodifiedBody"] = tUnmodifiedBody,
+			["senderName"] = tSenderName,
 		})
 
 		if table.getn(SkuChatChatBuffer) > 100 then
@@ -230,6 +252,7 @@ function SkuChat:OnSkuChatToggle(a, b, c)
 	SetOverrideBindingClick(_G["OnSkuChatToggle"], true, "ESCAPE", "OnSkuChatToggle", "ESCAPE")
 	SetOverrideBindingClick(_G["OnSkuChatToggle"], true, "Down", "OnSkuChatToggle", "Down")
 	SetOverrideBindingClick(_G["OnSkuChatToggle"], true, "Up", "OnSkuChatToggle", "Up")
+	SetOverrideBindingClick(_G["OnSkuChatToggle"], true, "Right", "OnSkuChatToggle", "Right")
 	
 end
 
@@ -329,6 +352,7 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	hooksecurefunc(ChatFrame1EditBox, "Show", SkuChat.ChatFrame1EditBoxOnShow)
 	hooksecurefunc(ChatFrame1EditBox, "Hide", SkuChat.ChatFrame1EditBoxOnHide)
 
+	C_TTSSettings.SetSetting(Enum.TtsBoolSetting.PlaySoundSeparatingChatLineBreaks, SkuOptions.db.profile[MODULE_NAME].audioSettings.audioOnMessageEnd)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

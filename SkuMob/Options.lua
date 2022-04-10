@@ -27,12 +27,37 @@ SkuMob.options = {
 				return SkuOptions.db.profile[MODULE_NAME].vocalizeRaidTargetOnly
 			end
 		},
+		vocalizePlayerNamePlaceholders = {
+			name = L["Announce player controled units with generic descriptions"],
+			desc = "",
+			type = "toggle",
+			set = function(info, val) 
+				SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders = val
+			end,
+			get = function(info) 
+				return SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders
+			end
+		},
+		repeatRaidTargetMarkers = {
+			name = L["Repeat raid target markers on units"],
+			desc = "",
+			type = "toggle",
+			set = function(info, val) 
+				SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers = val
+			end,
+			get = function(info) 
+				return SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers
+			end
+		},
+
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuMob.defaults = {
 	enable = true,
 	vocalizeRaidTargetOnly = false,
+	vocalizePlayerNamePlaceholders = true,
+	repeatRaidTargetMarkers = false,
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:MenuBuilder(aParentEntry)

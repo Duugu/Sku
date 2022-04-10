@@ -142,19 +142,19 @@ function SkuCore:AuctionChatAddMessageHook(aMessage, aR, aG, aB, aA, aMessageTyp
    end
 
    if aMessage == L["Gebot akzeptiert."] then
-      SkuOptions.Voice:OutputString(L["Gebot akzeptiert"], true, true, 1, false)
+      SkuOptions.Voice:OutputStringBTtts(L["Gebot akzeptiert"], true, true, 1, false)
    elseif string.find(aMessage, L["Ihr habt eine Auktion gewonnen für: "]) then
       local tItemName = string.sub(aMessage, select(2, string.find(aMessage, L["Ihr habt eine Auktion gewonnen für: "])))
-      SkuOptions.Voice:OutputString(L["Auktion gewonnen: "]..(tItemName or ""), false, true, 1, false)
+      SkuOptions.Voice:OutputStringBTtts(L["Auktion gewonnen: "]..(tItemName or ""), false, true, 1, false)
    elseif string.find(aMessage, L["Ihr habt nicht genug Geld."]) then
       SkuCore.AuctionChatMessageFailFlag = true
-      SkuOptions.Voice:OutputString(L["Nicht genug Geld"], true, true, 1, false)
+      SkuOptions.Voice:OutputStringBTtts(L["Nicht genug Geld"], true, true, 1, false)
    elseif string.find(aMessage, L["Es liegt bereits ein höheres Gebot für diesen Gegenstand vor."]) then
       SkuCore.AuctionChatMessageFailFlag = true
-      SkuOptions.Voice:OutputString(L["Bereits höheres Gebot vorhanden"], true, true, 1, false)
+      SkuOptions.Voice:OutputStringBTtts(L["Bereits höheres Gebot vorhanden"], true, true, 1, false)
    elseif string.find(aMessage, L["Der Gegenstand wurde nicht gefunden."]) then
       SkuCore.AuctionChatMessageFailFlag = true
-      SkuOptions.Voice:OutputString(L["Aktion nicht mehr vorhanden"], true, true, 1, false)
+      SkuOptions.Voice:OutputStringBTtts(L["Aktion nicht mehr vorhanden"], true, true, 1, false)
    elseif string.find(aMessage, L["Ihr wurdet bei "]) then
       --"Ihr wurdet bei Leinenstoff überboten.""
       
@@ -670,9 +670,9 @@ function SkuCore:AuctionHouseBuildItemSellMenu(aParent, aGossipItemTable)
       PostAuction(tCopperStartBid, tCopperBuyout, tDuration, tAmount, tNumAuctions)
 
       if tNumAuctions == 1 then
-         SkuOptions.Voice:OutputString(L["Auktion erstellt"], false, true, 1, true)
+         SkuOptions.Voice:OutputStringBTtts(L["Auktion erstellt"], false, true, 1, true)
       else
-         SkuOptions.Voice:OutputString(tNumAuctions..L[" Auktionen erstellt"], false, true, 1, true)
+         SkuOptions.Voice:OutputStringBTtts(tNumAuctions..L[" Auktionen erstellt"], false, true, 1, true)
       end
 
       GetOwnerAuctionItems()
@@ -928,7 +928,7 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
                                     ["exactMatch"] = tData.query.exactMatch, 
                                     ["filterData"] = tData.query.filterData,
                                  }, true)
-                                 C_Timer.After(0.01, function() SkuOptions.Voice:OutputString("sound-silence0.1", true, false) end)
+                                 C_Timer.After(0.01, function() SkuOptions.Voice:OutputStringBTtts("sound-silence0.1", true, false) end)
                               end
                            end
                         end
@@ -963,7 +963,7 @@ function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
                                     ["exactMatch"] = tData.query.exactMatch, 
                                     ["filterData"] = tData.query.filterData,
                                  }, true)
-                                 C_Timer.After(0.01, function() SkuOptions.Voice:OutputString("sound-silence0.1", true, false) end)
+                                 C_Timer.After(0.01, function() SkuOptions.Voice:OutputStringBTtts("sound-silence0.1", true, false) end)
                               end
                            end
                         end
@@ -1315,9 +1315,9 @@ function SkuCore:AuctionHouseMenuBuilder()
                            PostAuction(tCopperStartBid, tCopperBuyout, tDuration, tAmount, tNumAuctions)
                      
                            if tNumAuctions == 1 then
-                              SkuOptions.Voice:OutputString(L["Auktion erstellt"], false, true, 1, true)
+                              SkuOptions.Voice:OutputStringBTtts(L["Auktion erstellt"], false, true, 1, true)
                            else
-                              SkuOptions.Voice:OutputString(tNumAuctions..L[" Auktionen erstellt"], false, true, 1, true)
+                              SkuOptions.Voice:OutputStringBTtts(tNumAuctions..L[" Auktionen erstellt"], false, true, 1, true)
                            end
 
                            GetOwnerAuctionItems()
@@ -1421,7 +1421,7 @@ function SkuCore:AuctionHouseMenuBuilder()
             })
          else  
             print(L["Scan noch nicht möglich"])
-            SkuOptions.Voice:OutputString(L["Scan noch nicht möglich"], true, true, 1, true)
+            SkuOptions.Voice:OutputStringBTtts(L["Scan noch nicht möglich"], true, true, 1, true)
          end
       end
    end
@@ -1758,7 +1758,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
          if tNew then
             SkuCore:AUCTION_ITEM_LIST_UPDATE("AUCTION_ITEM_LIST_UPDATE", true)
          else
-            --SkuOptions.Voice:OutputString("Scan abgeschlossen", false, true, 1, true)
+            --SkuOptions.Voice:OutputStringBTtts("Scan abgeschlossen", false, true, 1, true)
             SkuCore.AuctionIsScanning = false
             SkuCore.AuctionIsFullScanning = false
             SkuCore:AuctionScanQueueRemove()
@@ -1778,7 +1778,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
          local tBatch, tCount = GetNumAuctionItems("list")
          local tFound = false
          if tBatch > 0 then
-            SkuOptions.Voice:OutputString("sound-notification6", false, true)--24
+            SkuOptions.Voice:OutputStringBTtts("sound-notification6", false, true)--24
 
             for x = 1, tBatch do
                local tItem = {GetAuctionItemInfo("list", x)}
@@ -1828,11 +1828,11 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                                  }, true)
                               else
                                  SkuCore.IsBid = nil
-                                 SkuOptions.Voice:OutputString(L["Keine weiteren passenden Auktionen verfügbar"], true, true, 0.2, false)
+                                 SkuOptions.Voice:OutputStringBTtts(L["Keine weiteren passenden Auktionen verfügbar"], true, true, 0.2, false)
                                  --SkuOptions:VocalizeCurrentMenuName()
                               end
                            else
-                              SkuOptions.Voice:OutputString(L["Fertig. Alle geboten"], true, true, 0.2, true)
+                              SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle geboten"], true, true, 0.2, true)
                               SkuCore.IsBid = nil
                               SkuOptions:ClearFilter()
                               --SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
@@ -1842,7 +1842,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                               if SkuCore.AuctionChatMessageFailFlag == true then
                                  SkuCore.AuctionChatMessageFailFlag = false
                                  dprint("fehler Nicht geboten", tItemIndex, tBidAmount)
-                                 SkuOptions.Voice:OutputString(L["fehler Nicht geboten"], true, true, 0.2, false)
+                                 SkuOptions.Voice:OutputStringBTtts(L["fehler Nicht geboten"], true, true, 0.2, false)
                               end
                               SkuOptions:ClearFilter()
                               SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
@@ -1851,7 +1851,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                         end,
                         function()
                            dprint("abgebrochen Nicht geboten", tItemIndex, tBidAmount)
-                           SkuOptions.Voice:OutputString(L["abgebrochen Nicht geboten"], true, true, 0.2, false)
+                           SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.2, false)
                            SkuCore.IsBid = nil
                            SkuOptions:ClearFilter()
                            SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
@@ -1859,7 +1859,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                         end
                      )
                      PlaySound(88)
-                     SkuOptions.Voice:OutputString("Gebot "..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount.." stück wirklich "..SkuGetCoinText(tBidAmount, false, true).." bieten? Eingabe Ja, Escape Nein", false, true, 0.2, false)
+                     SkuOptions.Voice:OutputStringBTtts("Gebot "..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount.." stück wirklich "..SkuGetCoinText(tBidAmount, false, true).." bieten? Eingabe Ja, Escape Nein", false, true, 0.2, false)
                      return
                   else
                      --buyout
@@ -1893,11 +1893,11 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                               else
                                  SkuCore.IsBid = nil
                                  dprint("Keine weiteren passenden Auktionen verfügbar")
-                                 SkuOptions.Voice:OutputString(L["Keine weiteren passenden Auktionen verfügbar"], true, true, 0.2, true)
+                                 SkuOptions.Voice:OutputStringBTtts(L["Keine weiteren passenden Auktionen verfügbar"], true, true, 0.2, true)
                                  --SkuOptions:VocalizeCurrentMenuName()
                               end
                            else
-                              SkuOptions.Voice:OutputString(L["Fertig. Alle gekauft"], true, true, 0.2, true)
+                              SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], true, true, 0.2, true)
                               SkuOptions:ClearFilter()
                               --SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
                               SkuOptions:VocalizeCurrentMenuName()
@@ -1908,7 +1908,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                               if SkuCore.AuctionChatMessageFailFlag == true then
                                  SkuCore.AuctionChatMessageFailFlag = false
                                  dprint("fehler Nicht geboten", tItemIndex, tBidAmount)
-                                 SkuOptions.Voice:OutputString(L["fehler Nicht geboten"], true, true, 0.2, true)
+                                 SkuOptions.Voice:OutputStringBTtts(L["fehler Nicht geboten"], true, true, 0.2, true)
                               end
                               SkuOptions:ClearFilter()
                               SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
@@ -1917,7 +1917,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                         end,
                         function()
                            dprint("abgebrochen Nicht geboten", tItemIndex, tBidAmount)
-                           SkuOptions.Voice:OutputString(L["abgebrochen Nicht geboten"], true, true, 0.2, true)
+                           SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.2, true)
                            SkuCore.IsBid = nil
                            SkuOptions:ClearFilter()
                            SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
@@ -1925,7 +1925,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                         end
                      )
                      PlaySound(88)
-                     SkuOptions.Voice:OutputString(L["Kauf "]..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount..L[" stück wirklich für "]..SkuGetCoinText(tBidAmount, false, true)..L[" kaufen? Eingabe Ja, Escape Nein."], false, true, 0.2, false)
+                     SkuOptions.Voice:OutputStringBTtts(L["Kauf "]..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount..L[" stück wirklich für "]..SkuGetCoinText(tBidAmount, false, true)..L[" kaufen? Eingabe Ja, Escape Nein."], false, true, 0.2, false)
                      return
                   end
                end
@@ -1951,7 +1951,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
          else
             SkuCore.IsBid = nil
             dprint("Keine passenden Auktionen verfügbar", true, true, 1, true)
-            SkuOptions.Voice:OutputString(L["Keine passenden Auktionen verfügbar"], true, true, 0.2, true)
+            SkuOptions.Voice:OutputStringBTtts(L["Keine passenden Auktionen verfügbar"], true, true, 0.2, true)
             SkuOptions:ClearFilter()
             SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
             SkuOptions:VocalizeCurrentMenuName()            
@@ -1966,7 +1966,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
       else
          --this is just a usual query
          if SkuOptions.currentMenuPosition.name == L["Warten"] then
-            SkuOptions.Voice:OutputString("sound-notification6", false, false)--24
+            SkuOptions.Voice:OutputStringBTtts("sound-notification6", false, false)--24
          end
 
          local tBatch, tCount = GetNumAuctionItems("list")
@@ -2047,7 +2047,7 @@ function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName, aRed)
       if tNew then
          SkuCore:AUCTION_BIDDER_LIST_UPDATE("AUCTION_BIDDER_LIST_UPDATE", true)
       else
-         --SkuOptions.Voice:OutputString("Gebote Scan abgeschlossen", false, true, 1, true)
+         --SkuOptions.Voice:OutputStringBTtts("Gebote Scan abgeschlossen", false, true, 1, true)
          dprint("Gebote Scan abgeschlossen")
       end
    end)
@@ -2086,7 +2086,7 @@ function SkuCore:AUCTION_OWNED_LIST_UPDATE(aEventName, aRed)
       if tNew then
          SkuCore:AUCTION_OWNED_LIST_UPDATE("AUCTION_OWNED_LIST_UPDATE", true)
       else
-         --SkuOptions.Voice:OutputString("Eigene Scan abgeschlossen", false, true, 1, true)
+         --SkuOptions.Voice:OutputStringBTtts("Eigene Scan abgeschlossen", false, true, 1, true)
          dprint("Eigene Scan abgeschlossen")
       end
    end)
