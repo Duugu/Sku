@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r26.1](https://github.com/Duugu/Sku/releases/download/r26.1/Sku-r26.1-bcc.zip) (10.04.2022)<br>
+[Sku r26.2](https://github.com/Duugu/Sku/releases/download/r26.2/Sku-r26.2-bcc.zip) (12.04.2022)<br>
 
 *Old updates:* <br>
 [Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
@@ -23,6 +23,25 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+Changes in release 26.2
+
+Navigation
+- Fixed an issue that lead to incorrect compass directions with "Show global direction in waypoint lists" enabled in some regions.
+
+DB
+- Added coordinates to npc Lillith Nefara in Tirisfal Glades.
+- Added a Start to the Quest Demon Scarred Cloak. (Not that useful, as that creature is wandering around.)
+
+Quest
+- Fixed a bug with quest start/target/end for objects and items that are on other continents (example: "Until Death Do Us Part", starts in Kalimdor, ends in Eastern Kingdoms). List was shown as Empty. Now there is an entry, letting you know the continent and zone name. You can't navigate there, tough, as one can't directly navigate from one continent to another. But you at least know what continent you need to  go to use a route to that waypoint.
+
+Core
+- Fixed CTRL + SHIFT + T to read tooltips of items you're currently rolling on.
+- Fixed missing en translations for "On" and "Off" for "Usable only" in action filters.
+- Fixed a bug with popup windows (like someone is inviting you to a group or guild). The addon was always selecting "Accept", not matter if you did a left click on "Accept" or "Decline". Now "Decline" is working as intended.
+- New option: "Auto sell junk at vendors" (default: On)
+- New option: "Auto repair at vendors" (default: On)
 
 Changes in release 26.1
 
