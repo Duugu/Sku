@@ -777,6 +777,11 @@ local SkuCreaturesFixes = {
             }
         },
     },
+    
+    [1946] = {
+        [npcKeys.spawns] = {[zoneIDs.TIRISFAL_GLADES] = {{66.6,44.8}}},
+        [npcKeys.zoneID] = zoneIDs.TIRISFAL_GLADES,
+    },
 
     -- Below are fake IDs to show specific quest starts/ends only at one specific location even though the
     -- corresponding real NPC has multiple spawns (e.g. "The Kessel Run" requires you to run to Azure Watch even

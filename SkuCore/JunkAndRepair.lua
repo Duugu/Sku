@@ -90,35 +90,43 @@ function SkuCore:JunkAndRepairInitialize()
             local RepairCost, CanRepair = GetRepairAllCost()
             dprint("RepairCost, CanRepair", RepairCost, CanRepair)
             if CanRepair then -- If merchant is offering repair
-               dprint("RepairAllItems")
-               if RepairCost > GetMoney() then
-                  SkuOptions.Voice:OutputString(L["Nicht genug Gold zum Reparieren"], false, true, 1, true)
-               else
-                  RepairAllItems()
-                  SkuOptions.Voice:OutputString(L["Alles repariert"], false, true, 1, true)
+               if SkuOptions.db.profile[MODULE_NAME].autoRepair == true then
+                  dprint("RepairAllItems")
+                  if RepairCost > GetMoney() then
+                     SkuOptions.Voice:OutputString(L["Nicht genug Gold zum Reparieren"], false, true, 1, true)
+                  else
+                     RepairAllItems()
+                     SkuOptions.Voice:OutputString(L["Alles repariert"], false, true, 1, true)
+                  end
                end
             end
          end
 
-         -- Reset variables
-         totalPrice, mBagID, mBagSlot = 0, -1, -1
-         -- Cancel existing ticker if present
-         if SellJunkTicker then SellJunkTicker:Cancel() end
-         -- Sell grey items using ticker (ends when all grey items are sold or iteration count reached)
-         SkuOptions.Voice:OutputString(L["Schrott verkauft"], false, true, 1, true)
-         SellJunkTicker = C_Timer.NewTicker(0.2, SellJunkFunc, IterationCount)
-         SellJunkFrame:RegisterEvent("ITEM_LOCKED")
-         SellJunkFrame:RegisterEvent("ITEM_UNLOCKED")
+         if SkuOptions.db.profile[MODULE_NAME].autoSellJunk == true then
+            -- Reset variables
+            totalPrice, mBagID, mBagSlot = 0, -1, -1
+            -- Cancel existing ticker if present
+            if SellJunkTicker then SellJunkTicker:Cancel() end
+            -- Sell grey items using ticker (ends when all grey items are sold or iteration count reached)
+            SkuOptions.Voice:OutputString(L["Schrott verkauft"], false, true, 1, true)
+            SellJunkTicker = C_Timer.NewTicker(0.2, SellJunkFunc, IterationCount)
+            SellJunkFrame:RegisterEvent("ITEM_LOCKED")
+            SellJunkFrame:RegisterEvent("ITEM_UNLOCKED")
+         end
       elseif event == "ITEM_LOCKED" then
-         SellJunkFrame:UnregisterEvent("ITEM_LOCKED")
+         if SkuOptions.db.profile[MODULE_NAME].autoSellJunk == true then
+            SellJunkFrame:UnregisterEvent("ITEM_LOCKED")
+         end
       elseif event == "ITEM_UNLOCKED" then
-         SellJunkFrame:UnregisterEvent("ITEM_UNLOCKED")
-         -- Check whether vendor refuses to buy items
-         if mBagID and mBagSlot and mBagID ~= -1 and mBagSlot ~= -1 then
-            local texture, count, locked = GetContainerItemInfo(mBagID, mBagSlot)
-            if count and not locked then
-               -- Item has been unlocked but still not sold so stop selling
-               StopSelling()
+         if SkuOptions.db.profile[MODULE_NAME].autoSellJunk == true then
+            SellJunkFrame:UnregisterEvent("ITEM_UNLOCKED")
+            -- Check whether vendor refuses to buy items
+            if mBagID and mBagSlot and mBagID ~= -1 and mBagSlot ~= -1 then
+               local texture, count, locked = GetContainerItemInfo(mBagID, mBagSlot)
+               if count and not locked then
+                  -- Item has been unlocked but still not sold so stop selling
+                  StopSelling()
+               end
             end
          end
       elseif event == "MERCHANT_CLOSED" then

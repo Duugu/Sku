@@ -1305,3 +1305,8 @@ L[";Meter"] = " Meter"
 L["Announce player controled units with generic descriptions"] = "Freundliche und feindliche Spieler ansagen"
 
 L["Repeat raid target markers on units"] = "Ziel symbole wiederholen"
+L["Ein"] = "Ein"
+L["Aus"] = "Aus"
+
+L["Auto sell junk at vendors"] = "Schrott automatisch bei Händlern verkaufen"
+L["Auto repair at vendors"] = "Automatisch bei Händlern reparieren"

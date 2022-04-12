@@ -49,6 +49,28 @@ SkuCore.options = {
 				return SkuOptions.db.profile[MODULE_NAME].interactMove
 			end
 		},
+		autoSellJunk = {
+			name = L["Auto sell junk at vendors"],
+			desc = "",
+			type = "toggle",
+			set = function(info, val)
+				SkuOptions.db.profile[MODULE_NAME].autoSellJunk = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].autoSellJunk
+			end
+		},
+		autoRepair = {
+			name = L["Auto repair at vendors"],
+			desc = "",
+			type = "toggle",
+			set = function(info, val)
+				SkuOptions.db.profile[MODULE_NAME].autoRepair = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].autoRepair
+			end
+		},
 		classes={
 			name = L["Classes"],
 			type = "group",
@@ -234,6 +256,8 @@ SkuCore.defaults = {
 	autoFollow = false,
 	endFollowOnCast = false,
 	interactMove = true,
+	autoSellJunk = true,
+	autoRepair = true,
 	classes = {
 		hunter = {
 			petHappyness = true,

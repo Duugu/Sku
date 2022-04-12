@@ -722,8 +722,6 @@ function SkuCore:OnEnable()
 	tFrame:SetAttribute("macrotext1", "")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-TAB", "SkuCoreSecureTabButton")
 
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-T", "SkuCoreSecureTabButton")
-
 	--tFrame:RegisterEvent("CURSOR_CHANGED")
 	--tFrame:SetScript("OnUpdate", function(self, time)
 	local tLastPlayerTargetNr = 0

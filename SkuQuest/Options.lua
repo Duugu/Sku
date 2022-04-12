@@ -322,6 +322,17 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 													end
 													table.insert(tResultWPs[tObjectName], L["OBJECT"]..";"..tObjectId..";"..tObjectName..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
 												end
+											else
+												local tNumberOfSpawns = #vs
+												if tNumberOfSpawns > 3 and aOnly3 == true then
+													tNumberOfSpawns = 3
+												end
+												for sp = 1, tNumberOfSpawns do
+													if not tResultWPs[tObjectName] then
+														tResultWPs[tObjectName] = {}
+													end
+													table.insert(tResultWPs[tObjectName], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
+												end
 											end
 										end
 									--end
@@ -369,6 +380,21 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 
 										end
 									end
+								else
+									if (not aAreaId) or aAreaId == isUiMap then
+										local tNumberOfSpawns = #vs
+										if tNumberOfSpawns > 3 and aOnly3 == true then
+											tNumberOfSpawns = 3
+										end
+										for sp = 1, tNumberOfSpawns do
+											local tObjectName = SkuDB.objectLookup[Sku.Loc][tObjectId] or SkuDB.objectDataTBC[tObjectId][1] or L["Object name missing"]
+											if not tResultWPs[tObjectName] then
+												tResultWPs[tObjectName] = {}
+											end
+											table.insert(tResultWPs[tObjectName], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
+
+										end
+									end
 								end
 							end
 						end
@@ -385,7 +411,6 @@ end
 local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 	dprint("CreateRtWpSubmenu aSubIDTable ", aSubIDTable, " - aSubType ", aSubType, " - aQuestID ", aQuestID)
 	local tResultWPs = {}
-
 	SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs)
 
 	local tPlayX, tPlayY = UnitPosition("player")

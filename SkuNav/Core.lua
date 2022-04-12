@@ -1361,16 +1361,17 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------------
 local tDeg = {
-	[1] = {a = 0, f = L["north"],},
-	[2] = {a = 22.5, f = L["north-west"],},
-	[3] = {a = 67.5, f = L["west"],},
-	[4] = {a = 112.5, f = L["south-west"],},
-	[5] = {a = 157.5, f = L["south"],},
-	[6] = {a = 202.5, f = L["south-east"],},
-	[7] = {a = 247.5, f = L["east"],},
-	[8] = {a = 292.5, f = L["north-east"],},
-	[9] = {a = 337.5, f = L["north"],},
-	[10] = {a = 360, f = L["north"],},
+	[1] = {a = -202.5, f = L["south-east"],},
+	[2] = {a = -180, f = L["south"],},
+	[3] = {a = -157.5, f = L["south-west"],},
+	[4] = {a = -112.5, f = L["west"],},
+	[5] = {a = -67.5, f = L["north-west"],},
+	[6] = {a = -22.5, f = L["north"],},
+	[7] = {a = 22.5, f = L["north-east"],},
+	[8] = {a = 67.5, f = L["east"],},
+	[9] = {a = 112.5, f = L["south-east"],},
+	[10] = {a = 157.5, f = L["south"],},
+	[11] = {a = 180, f = L["south-west"],},
 }
 function SkuNav:GetDirectionToAsString(tx, ty)
 	local xa, ya = UnitPosition("player")
@@ -1378,22 +1379,27 @@ function SkuNav:GetDirectionToAsString(tx, ty)
 		return 0
 	end
 	
-	local xa2, ya2 = tx - xa, ty - ya
-	local angle = atan2(xa, ya) - atan2(xa2, ya2)
-	angle = (angle + 13) - 90
-
-	if angle < 0 then
-		angle = 270 + (90 + angle)
+	aP1x, aP1y, aP2x, aP2y = xa, ya, tx, ty
+	
+	if aP2x == 0 and aP2y == 0 then
+		return 0
+	end
+		
+	local ep2x = (aP2x - aP1x)
+	local ep2y = (aP2y - aP1y)
+	local Wa = math.acos(ep2x / math.sqrt(ep2x^2 + ep2y^2)) * (180 / math.pi)
+	
+	if ep2y > 0 then
+		Wa = Wa * -1
 	end
 
-	local tResult --= ""--tDeg[1].f
+	local tResult 
 	for x = 1, #tDeg do
-		if (angle) > tDeg[x].a then
+		if (Wa) > tDeg[x].a then
 			tResult = tDeg[x].f
 		end
 	end
 
-	--print("tResult", tResult)
 	return tResult
 end
 
