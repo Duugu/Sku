@@ -288,7 +288,7 @@ end
 local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypointList)
 	--dprint("SkuNav_MenuBuilder_WaypointSelectionMenu")
 	for i, waypointName in pairs(aSortedWaypointList) do
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {waypointName}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {"visited" .. waypointName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = nil
@@ -297,7 +297,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 			--select wp
 			local tNewMenuEntrySub = SkuOptions:InjectMenuItems(self, {L["Auswählen"]}, SkuGenericMenuItem)
 			tNewMenuEntrySub.OnEnter = function(self)
-				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = self.parent.name
+				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = waypointName
 			end
 
 			--close rts
