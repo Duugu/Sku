@@ -284,7 +284,7 @@ local function SkuSpairs(t, order)
 	end
 end
 
-local function getAnnotatedWaypointLabel(originalLabel)
+function SkuNav:getAnnotatedWaypointLabel(originalLabel)
 	-- annotate with "visited" if visited
 	local wpID = string.sub(originalLabel, string.find(originalLabel, "#") + 1)
 	if SkuNav:waypointWasVisited(wpID) then
@@ -297,7 +297,7 @@ end
 local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypointList)
 	--dprint("SkuNav_MenuBuilder_WaypointSelectionMenu")
 	for i, waypointName in pairs(aSortedWaypointList) do
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {getAnnotatedWaypointLabel(waypointName)}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuNav:getAnnotatedWaypointLabel(waypointName)}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = nil
@@ -1012,7 +1012,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 									end
 									tDistText = tDistText..tDirectionTargetWp									
 
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { getAnnotatedWaypointLabel(tDistText .. "#" .. tV) }, SkuGenericMenuItem) --
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV) }, SkuGenericMenuItem) --
 									tNewMenuEntry.OnEnter = function(self)
 										SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint = nil
 										SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData = nil

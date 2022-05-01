@@ -523,7 +523,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 											end
 											tDistText = tDistText..tDirectionTargetWp
 
-											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, SkuGenericMenuItem)
+											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV) }, SkuGenericMenuItem)
 											tNewMenuEntry.OnEnter = function(self, aValue, aName)
 												SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
 											end
@@ -573,7 +573,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 									end
 									tDistText = tDistText..tDirectionTargetWp
 
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, SkuGenericMenuItem)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV) }, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
 									end
