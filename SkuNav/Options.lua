@@ -287,8 +287,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypointList)
 	--dprint("SkuNav_MenuBuilder_WaypointSelectionMenu")
-	for i, waypointName in pairs(aSortedWaypointList) do
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {"visited" .. waypointName}, SkuGenericMenuItem)
+	for i, waypointInfo in pairs(aSortedWaypointList) do
+		local wpLabel = waypointInfo.name
+		if SkuNav:waypointWasVisited(waypointInfo.id) then wpLabel = "visited"..wpLabel end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {wpLabel}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = nil
@@ -297,7 +300,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 			--select wp
 			local tNewMenuEntrySub = SkuOptions:InjectMenuItems(self, {L["Auswählen"]}, SkuGenericMenuItem)
 			tNewMenuEntrySub.OnEnter = function(self)
-				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = waypointName
+				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = waypointInfo.name
 			end
 
 			--close rts
@@ -349,7 +352,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 										tDirectionTargetWp = ";"..tDirectionString
 									end
 								end	
-																
+
 								if (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp < tBestRouteWeightedLength then
 									tBestRouteWeightedLength = (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp
 									tResults[wpName] = {
@@ -606,7 +609,13 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 				local tSortedWaypointList = {}
 				for k,v in SkuSpairs(tWaypointList, function(t,a,b) return t[b].distance > t[a].distance end) do --nach wert
-					table.insert(tSortedWaypointList, v.distance..L[";Meter"]..v.direction.."#"..k)
+					table.insert(
+						tSortedWaypointList, 
+						{
+							id = k,
+							name = v.distance..L[";Meter"]..v.direction.."#"..k,
+						}
+					)
 				end
 				if #tSortedWaypointList == 0 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)

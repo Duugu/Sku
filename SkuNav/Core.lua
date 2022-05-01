@@ -307,6 +307,15 @@ function SkuNav:CreateWaypointCache()
 
 end
 
+local visitedWaypointsSet = {}
+function SkuNav:setWaypointVisited(wpName)
+	visitedWaypointsSet[wpName] = true
+end
+
+function SkuNav:waypointWasVisited(wpName)
+	return visitedWaypointsSet[wpName]
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:LoadLinkDataFromProfile()
 	dprint("LoadLinkDataFromProfile")
@@ -1616,6 +1625,9 @@ function SkuNav:ProcessCheckReachingWp()
 									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 								end
 								SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
+
+								local selectedWaypoint = SkuOptions.db.profile[MODULE_NAME].selectedWaypoint
+								SkuNav:setWaypointVisited(selectedWaypoint)
 
 								SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
 								SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
