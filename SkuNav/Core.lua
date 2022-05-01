@@ -309,7 +309,19 @@ end
 
 local visitedWaypointsSet = {}
 function SkuNav:setWaypointVisited(wpName)
-	visitedWaypointsSet[wpName] = true
+	-- only track visited for things players would be interested in farming, like hostile NPCs and objects
+	-- assuming if NPC has no role, then hostile, but some friendly NPCs also don't have a role, like guards
+	-- could identify hostile creatures accurately if had access to "friendlyMask", but in SkuDB.NpcData only have access to "hostileMask" (as "factionID")
+	-- reference: https://github.com/cmangos/issues/wiki/FactionTemplate.dbc
+	local wp = SkuNav:GetWaypointData2(wpName)
+	if wp and (
+		-- is object
+		wp.typeId == 3
+			-- is hostile NPC
+			or (wp.typeId == 2 and wp.role == "")
+		) then
+		visitedWaypointsSet[wpName] = true
+	end
 end
 
 function SkuNav:waypointWasVisited(wpName)
