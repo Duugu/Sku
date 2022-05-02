@@ -523,7 +523,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 											end
 											tDistText = tDistText..tDirectionTargetWp
 
-											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV) }, SkuGenericMenuItem)
+											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem)
 											tNewMenuEntry.OnEnter = function(self, aValue, aName)
 												SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
 											end
@@ -573,7 +573,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 									end
 									tDistText = tDistText..tDirectionTargetWp
 
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV) }, SkuGenericMenuItem)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
 									end
@@ -685,7 +685,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 							else
 								for tK, tV in ipairs(tSortedList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..L[";Meter"]..tResults[tV].direction.."#"..tV}, SkuGenericMenuItem)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tResults[tV].metapathLength .. ";" .. L["plus"] .. ";" .. tResults[tV].distanceTargetWp .. L[";Meter"] .. tResults[tV].direction .. "#" .. tV, tV) }, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
@@ -708,7 +708,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 							else
 								for tK, tV in ipairs(tSortedWaypointList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..L[";Meter"]..tResults[tV].direction}, SkuGenericMenuItem)
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuNav:getAnnotatedWaypointLabel(tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..L[";Meter"]..tResults[tV].direction, tV)}, SkuGenericMenuItem)
 									tNewMenuEntry.OnEnter = function(self, aValue, aName)
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
 										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
@@ -777,7 +777,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 						else
 							for tK, tV in ipairs(tSortedList) do
-								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {tResults[tV].distance..L[";Meter"]..tResults[tV].direction.."#"..tV}, SkuGenericMenuItem)
+								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {SkuNav:getAnnotatedWaypointLabel(tResults[tV].distance..L[";Meter"]..tResults[tV].direction.."#"..tV, tV)}, SkuGenericMenuItem)
 								tNewMenuGeneralSp.OnEnter = function(self, aValue, aName)
 									SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint = tV
 								end
@@ -817,7 +817,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 						else
 							for tK, tV in ipairs(tSortedList) do
-								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].distance..L[";Meter"]..tResults[tV].direction}, SkuGenericMenuItem)
+								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {SkuNav:getAnnotatedWaypointLabel(tV.."#"..tResults[tV].distance..L[";Meter"]..tResults[tV].direction, tV)}, SkuGenericMenuItem)
 								tNewMenuGeneralSp.OnEnter = function(self, aValue, aName)
 									SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint = tV
 								end

@@ -284,9 +284,9 @@ local function SkuSpairs(t, order)
 	end
 end
 
-function SkuNav:getAnnotatedWaypointLabel(originalLabel)
+function SkuNav:getAnnotatedWaypointLabel(originalLabel, id)
 	-- annotate with "visited" if visited
-	local wpID = string.sub(originalLabel, string.find(originalLabel, "#") + 1)
+	local wpID = id or string.sub(originalLabel, string.find(originalLabel, "#") + 1)
 	if SkuNav:waypointWasVisited(wpID) then
 		return "visited " .. originalLabel
 	else return originalLabel
@@ -1012,7 +1012,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 									end
 									tDistText = tDistText..tDirectionTargetWp									
 
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV) }, SkuGenericMenuItem) --
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem) --
 									tNewMenuEntry.OnEnter = function(self)
 										SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint = nil
 										SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData = nil
