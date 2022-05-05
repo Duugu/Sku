@@ -533,11 +533,24 @@ function SkuNavDrawWaypointsMM(aFrame)
 							tWpFrames[v].hasLine = false
 						end
 
+						local tFinalSize = tSize
+						if tSkuNavMMZoom <= 1 then
+							tFinalSize = tSize * (tSkuNavMMZoom)
+							if tFinalSize < 2 then
+								tFinalSize = 2
+							end
+						else
+							tFinalSize = 4 + (tSkuNavMMZoom / 12)
+							if tFinalSize > 10 then
+								tFinalSize = 10
+							end
+						end
+
 						if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint == v then
-							tWpFrames[v]:SetSize(5 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), (tSize + 2) * (tSkuNavMMZoom) - tSkuNavMMZoom * 2  + (3 - tSkuNavMMZoom))
+							tWpFrames[v]:SetSize(tFinalSize * 1.5, tFinalSize * 1.5)--5 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), (tSize + 2) * (tSkuNavMMZoom) - tSkuNavMMZoom * 2  + (3 - tSkuNavMMZoom))
 							--tWidgetTexture:SetColorTexture(0, 1, 0)
 						else
-							tWpFrames[v]:SetSize(4 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), tSize * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom))
+							tWpFrames[v]:SetSize(tFinalSize, tFinalSize)--4 * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom), tSize * (tSkuNavMMZoom) - tSkuNavMMZoom * 2 + (3 - tSkuNavMMZoom))
 							--tWidgetTexture:SetColorTexture(1, 0, 0)
 						end
 

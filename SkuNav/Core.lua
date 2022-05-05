@@ -1919,6 +1919,7 @@ function SkuNav:CreateSkuNavMain()
 			SkuNav.MoveToWp = 1
 		end
 		if a == "CTRL-SHIFT-S" then
+			print("!!!!!!!!!!!!!")
 			SkuNav.MoveToWp = -1
 		end
 
@@ -2495,8 +2496,10 @@ function SkuNav:PLAYER_LOGIN(...)
 		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect4 = SkuOptions.defaults.allModules.MenuQuickSelect4
 
 		--reset nav data to default data with first load of r25.17 to include the update default waypoint data for mailboxes
-		SkuOptions.db.global["SkuNav"].Waypoints = nil
-		SkuOptions.db.global["SkuNav"].Links = nil
+		if SkuOptions.db.global["SkuNav"] then
+			SkuOptions.db.global["SkuNav"].Waypoints = nil
+			SkuOptions.db.global["SkuNav"].Links = nil
+		end
 		SkuOptions.db.profile["SkuNav"].NavDataUpdateWith2517Done = true
 	end
 

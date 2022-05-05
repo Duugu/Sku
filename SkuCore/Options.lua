@@ -49,26 +49,15 @@ SkuCore.options = {
 				return SkuOptions.db.profile[MODULE_NAME].interactMove
 			end
 		},
-		autoSellJunk = {
-			name = L["Auto sell junk at vendors"],
+		playNPCGreetings = {
+			name = L["Play NPC greetings"],
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].autoSellJunk = val
+				SkuOptions.db.profile[MODULE_NAME].playNPCGreetings = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].autoSellJunk
-			end
-		},
-		autoRepair = {
-			name = L["Auto repair at vendors"],
-			desc = "",
-			type = "toggle",
-			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].autoRepair = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].autoRepair
+				return SkuOptions.db.profile[MODULE_NAME].playNPCGreetings
 			end
 		},
 		classes={
@@ -97,10 +86,55 @@ SkuCore.options = {
 				},
 			},
 		},
+		itemSettings={
+			name = L["item settings"],
+			type = "group",
+			order = 2,
+			args= {
+				ShowItemQality = {
+					name = L["show item quality"],
+					order = 1,
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].itemSettings.ShowItemQality = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].itemSettings.ShowItemQality
+					end
+				},
+				autoSellJunk = {
+					name = L["Auto sell junk at vendors"],
+					order = 2,
+					desc = "",
+					type = "toggle",
+					set = function(info, val)
+						SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk
+					end
+				},
+				autoRepair = {
+					name = L["Auto repair at vendors"],
+					order = 3,
+					desc = "",
+					type = "toggle",
+					set = function(info, val)
+						SkuOptions.db.profile[MODULE_NAME].itemSettings.autoRepair = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].itemSettings.autoRepair
+					end
+				},
+	
+			},
+		},
+
 		UIErrors={
 			name = L["Error feedback"],
 			type = "group",
-			order = 1,
+			order = 3,
 			args= {
 				ErrorSoundChannel={
 					name = L["sound channel"],
@@ -256,12 +290,16 @@ SkuCore.defaults = {
 	autoFollow = false,
 	endFollowOnCast = false,
 	interactMove = true,
-	autoSellJunk = true,
-	autoRepair = true,
+	playNPCGreetings = false,
 	classes = {
 		hunter = {
 			petHappyness = true,
 		},
+	},
+	itemSettings = {
+		ShowItemQality = false,
+		autoSellJunk = true,
+		autoRepair = true,
 	},
 	UIErrors = {
 		ErrorSoundChannel = "Talking Head",
@@ -291,19 +329,47 @@ local function unescape(str)
 	end
 	return str
 end
+
+--[[
 local function TooltipLines_helper(...)
+   local tQualityString = nil
+
+	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
+	if not ItemLink then
+		itemName, ItemLink = GameTooltip:GetItem()
+	end
+
+	if ItemLink then
+      for x = 0, #ITEM_QUALITY_COLORS do
+         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
+         if tItemCol == "ffa334ee" then 
+            tItemCol = "ffa335ee"
+         end
+         if string.find(ItemLink, tItemCol) then
+            if _G["ITEM_QUALITY"..x.."_DESC"] then
+               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
+            end
+         end
+      end
+   end
+
 	local rText = ""
    for i = 1, select("#", ...) do
 		local region = select(i, ...)
 		if region and region:GetObjectType() == "FontString" then
 			local text = region:GetText() -- string or nil
 			if text then
-				rText = rText..text.."\r\n"
+            if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+               rText = rText..text.." ("..tQualityString..")\r\n"
+            else
+				   rText = rText..text.."\r\n"
+            end
 			end
 		end
 	end
 	return rText
 end
+]]
 local maxItemNameLength = 40
 local function ItemName_helper(aText)
 	aText = unescape(aText)
@@ -749,6 +815,16 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--dprint(aName)
 			--open the specific edit box for aname and write result to current mi.tmpx
+			
+			
+			if string.find(aName, L["KommaNumbers"]) and tonumber(string.sub(aName, 0, 1)) == 0 then
+				local tFormatted = string.gsub(aName, ";"..L["KommaNumbers"]..";", ".")
+				tFormatted = string.gsub(tFormatted, ";", "")
+				if tonumber(tFormatted) then
+					aName = tonumber(tFormatted)
+				end
+			end
+
 			if aName == L["Recepient"] then
 				SkuCore:MailEditor("TmpTo")
 			elseif aName == L["Topic"] then
@@ -795,20 +871,33 @@ function SkuCore:MenuBuilder(aParentEntry)
 			--tNewMenuParentEntrySubSub.ttsEngine = 2
 			tNewMenuParentEntrySubSub.dynamic = true
 			tNewMenuParentEntrySubSub.BuildChildren = function(self)
+				for x = 1, 9 do
+					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {"0;"..L["KommaNumbers"]..";0;"..(x * 1)}, SkuGenericMenuItem)
+					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
+				end
+				for x = 1, 9 do
+					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {"0;"..L["KommaNumbers"]..";"..(x * 1)}, SkuGenericMenuItem)
+					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
+				end
 				for x = 1, 25 do
 					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 15 do
 					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*5 + 25}, SkuGenericMenuItem)
+					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 20 do
 					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*10 + 100}, SkuGenericMenuItem)
+					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 20 do
 					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*20 + 300}, SkuGenericMenuItem)
+					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 23 do
 					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*50 + 700}, SkuGenericMenuItem)
+					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 			end
 			local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Items"]}, SkuGenericMenuItem)

@@ -53,21 +53,48 @@ local function ItemName_helper(aText)
 	return string.gsub(tShort, "\r\n", " "), tLong
 end
 
+--[[
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function TooltipLines_helper(...)
+
+   local tQualityString = nil
+
+	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
+	if not ItemLink then
+		itemName, ItemLink = GameTooltip:GetItem()
+	end
+
+	if ItemLink then
+      for x = 0, #ITEM_QUALITY_COLORS do
+         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
+         if tItemCol == "ffa334ee" then 
+            tItemCol = "ffa335ee"
+         end
+         if string.find(ItemLink, tItemCol) then
+            if _G["ITEM_QUALITY"..x.."_DESC"] then
+               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
+            end
+         end
+      end
+   end
+
 	local rText = ""
    for i = 1, select("#", ...) do
 		local region = select(i, ...)
 		if region and region:GetObjectType() == "FontString" then
 			local text = region:GetText() -- string or nil
 			if text then
-				rText = rText..text.."\r\n"
+            if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+               rText = rText..text.." ("..tQualityString..")\r\n"
+            else
+				   rText = rText..text.."\r\n"
+            end
 			end
 		end
 	end
 	return rText
 end
-
+]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function GetButtonTooltipLines(aButtonObj)
    GameTooltip:ClearLines()
@@ -75,13 +102,35 @@ local function GetButtonTooltipLines(aButtonObj)
       aButtonObj:GetScript("OnEnter")(aButtonObj)
    end
 
+   local tQualityString = nil
+	local itemName, ItemLink = GameTooltip:GetItem()
+	if ItemLink then
+      for x = 0, #ITEM_QUALITY_COLORS do
+         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
+         if tItemCol == "ffa334ee" then 
+            tItemCol = "ffa335ee"
+         end
+         if string.find(ItemLink, tItemCol) then
+            if _G["ITEM_QUALITY"..x.."_DESC"] then
+               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
+            end
+         end
+      end
+   end
+
+
 	local tTooltipText = ""
    for i = 1, select("#", GameTooltip:GetRegions()) do
 		local region = select(i, GameTooltip:GetRegions())
 		if region and region:GetObjectType() == "FontString" then
 			local text = region:GetText() -- string or nil
 			if text then
-				tTooltipText = tTooltipText..text.."\r\n"
+            if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+               tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
+            else
+				   tTooltipText = tTooltipText..text.."\r\n"
+            end
+
 			end
 		end
 	end
@@ -150,6 +199,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                            obj = _G[tFrameName],
                            textFirstLine = tFriendlyName,
                            textFull = "",
+                           noMenuNumbers = true,
                            childs = {},
                         }   
 
@@ -167,6 +217,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                         obj = _G[tFrameName],
                         textFirstLine = tText,
                         textFull = "",
+                        noMenuNumbers = true,
                         childs = {},
                      }   
                      --get the onclick func if there is one
@@ -281,6 +332,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
       obj = _G[tFrameName],
       textFirstLine = tFriendlyName,
       textFull = "",
+      noMenuNumbers = true,
       childs = {},
       func = nil,
       click = true,
@@ -302,6 +354,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                obj = dtc[x],
                textFirstLine = tFriendlyName,
                textFull = "",
+               noMenuNumbers = true,
                childs = {},
                func = dtc[x]:GetScript("OnClick"),
                click = true,

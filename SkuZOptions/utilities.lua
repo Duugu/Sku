@@ -2,6 +2,48 @@ local MODULE_NAME = "SkuOptions"
 local L = Sku.L
 local _G = _G
 
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function TooltipLines_helper(...)
+   local tQualityString = nil
+
+	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
+	if not ItemLink then
+		itemName, ItemLink = GameTooltip:GetItem()
+	end
+	if ItemLink then
+      for x = 0, #ITEM_QUALITY_COLORS do
+         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
+         if tItemCol == "ffa334ee" then 
+            tItemCol = "ffa335ee"
+         end
+         if string.find(ItemLink, tItemCol) then
+            if _G["ITEM_QUALITY"..x.."_DESC"] then
+               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
+            end
+         end
+      end
+   end
+
+	local tHasTextFlag = false
+	local rText = ""
+   for i = 1, select("#", ...) do
+		local region = select(i, ...)
+		if region and region:GetObjectType() == "FontString" then
+			local text = region:GetText() -- string or nil
+			if text then
+            if tHasTextFlag == false and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+               rText = rText..text.." ("..tQualityString..")\r\n"
+            else
+				   rText = rText..text.."\r\n"
+            end
+				tHasTextFlag = true
+			end
+		end
+	end
+	return rText
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuSpairs(t, order)
 	local keys = {}
@@ -429,6 +471,25 @@ local tAdditionalTranslations = {
 	["Für die Rückkehr nach unten, mache eine neue Route auf, mit dem Ziel das Portal Oben."] = "To get back down, start a new route to the upper portal.",
 	["Töte die beiden Kerkermeister und öffne mit den Schlüsseln die Schlösser zu den Füssen der Gefangenen mit rechtklick. "] = "Kill the two jailers and use the keys to open the locks at the feet of the prisoners via right click. ",
 	["Im Fahrstuhl"] = "in the elevator",
+	["Moonglade"] = "Moonglade",
+	["Winterspring"] = "Winterspring",
+	["Sonnenhof"] = "Court of the Sun",
+	["h"] = "h",
+	["Ironforge"] = "Ironforge",
+	["Undercity"] = "Undercity",
+	["s"] = "s",
+	["u"] = "u",
+	["Slaughter Hollow"] = "Slaughter Hollow",
+	["Everlook"] = "Everlook",
+	["Der Basar"] = "The Bazaar",
+	["Mördergasse"] = "Murder Row",
+	["Stormwind"] = "Stormwind",
+	["Fungal Rock"] = "Fungal Rock",
+	["moonglade"] = "moonglade",
+	["Sonnenzornturm"] = "Sunfury Spire",
+	["Avelina Lilly"] = "Avelina Lilly",
+	["Gneis"] = "Gneis",
+	["Kotka"] = "Kotka",		
 }
 
 
@@ -687,9 +748,9 @@ function SkuDefaultWp2DeToEn()
 	local co = coroutine.create(function ()
 		print("test")
 		--for q = 1, #SkuDB.DefaultWaypoints["deDE"] do
-			local tIndex = SkuDB.DefaultWaypoints["deDE"][3]
+			local tIndex = SkuDB.DefaultWaypoints["deDE"][4]
 			local tIndexEN = SkuTranslateStringDeToEn(tIndex)
-			local tValue = SkuDB.DefaultWaypoints["deDE"][SkuDB.DefaultWaypoints["deDE"][3]]
+			local tValue = SkuDB.DefaultWaypoints["deDE"][SkuDB.DefaultWaypoints["deDE"][4]]
 			print(3, tIndex, tValue)
 			print("TEST 1", tIndex, #SkuTranslatedData.DefaultWaypoints2, tIndexEN)
 			table.insert(SkuTranslatedData.DefaultWaypoints2, #SkuTranslatedData.DefaultWaypoints2 + 1, tIndexEN)

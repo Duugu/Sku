@@ -1,0 +1,14 @@
+{
+    "Lua.diagnostics.globals": [
+        "SkuCore",
+        "LibStub",
+        "SkuOptions",
+        "SkuCore",
+        "TTS",
+        "SkuOptions",
+        "SkuGenericMenuItem",
+        "LibStub",
+        "Voice",
+        "ChatFrame1"
+    ]
+}

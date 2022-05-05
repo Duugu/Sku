@@ -1494,22 +1494,48 @@ end
 function SkuCore:UNIT_HAPPINESS(unitTarget)
 
 end
-
+--[[
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function TooltipLines_helper(...)
+
+   local tQualityString = nil
+
+	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
+	if not ItemLink then
+		itemName, ItemLink = GameTooltip:GetItem()
+	end
+
+	if ItemLink then
+      for x = 0, #ITEM_QUALITY_COLORS do
+         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
+         if tItemCol == "ffa334ee" then 
+            tItemCol = "ffa335ee"
+         end
+         if string.find(ItemLink, tItemCol) then
+            if _G["ITEM_QUALITY"..x.."_DESC"] then
+               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
+            end
+         end
+      end
+   end
+
 	local rText = ""
    for i = 1, select("#", ...) do
 		local region = select(i, ...)
 		if region and region:GetObjectType() == "FontString" then
 			local text = region:GetText() -- string or nil
 			if text then
-				rText = rText..text.."\r\n"
+            if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+               rText = rText..text.." ("..tQualityString..")\r\n"
+            else
+				   rText = rText..text.."\r\n"
+            end
 			end
 		end
 	end
 	return rText
 end
-
+]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 --local tSkuCoreTooltipCheckerControlPrevOpac = 1
 --SkuCore.CheckInteractObjectShowIsShown = false
@@ -1791,7 +1817,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GOSSIP_SHOW(self, event, ...)
-	--dprint("GOSSIP_SHOW", self, event, ...)
+	print("GOSSIP_SHOW", self, event, ...)
 	SkuOptions:StopSounds(5)
 	SkuCore:CheckFrames()
 end
@@ -2752,7 +2778,7 @@ function SkuCore:StartStopGameMenuBackgroundSound()
 						--StopSound(SkuCore.currentBackgroundSoundHandle, 0)
 						SkuCore.currentBackgroundSoundTimerHandle = nil
 						SkuCore.currentBackgroundSoundHandle = nil
-						SkuCore:StartStopBackgroundSound(true)
+						SkuCore:StartStopGameMenuBackgroundSound(true)
 					end)
 				else
 					if SkuCore.currentBackgroundSoundTimerHandle then
@@ -2763,7 +2789,7 @@ function SkuCore:StartStopGameMenuBackgroundSound()
 					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuOptions.BackgroundSoundFilesLen["walgesang.mp3"], function()
 						SkuCore.currentBackgroundSoundTimerHandle = nil
 						SkuCore.currentBackgroundSoundHandle = nil
-						SkuCore:StartStopBackgroundSound(true)
+						SkuCore:StartStopGameMenuBackgroundSound(true)
 					end)
 				end
 			end

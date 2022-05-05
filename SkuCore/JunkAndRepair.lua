@@ -90,7 +90,7 @@ function SkuCore:JunkAndRepairInitialize()
             local RepairCost, CanRepair = GetRepairAllCost()
             dprint("RepairCost, CanRepair", RepairCost, CanRepair)
             if CanRepair then -- If merchant is offering repair
-               if SkuOptions.db.profile[MODULE_NAME].autoRepair == true then
+               if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoRepair == true then
                   dprint("RepairAllItems")
                   if RepairCost > GetMoney() then
                      SkuOptions.Voice:OutputString(L["Nicht genug Gold zum Reparieren"], false, true, 1, true)
@@ -102,7 +102,7 @@ function SkuCore:JunkAndRepairInitialize()
             end
          end
 
-         if SkuOptions.db.profile[MODULE_NAME].autoSellJunk == true then
+         if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk == true then
             -- Reset variables
             totalPrice, mBagID, mBagSlot = 0, -1, -1
             -- Cancel existing ticker if present
@@ -114,11 +114,11 @@ function SkuCore:JunkAndRepairInitialize()
             SellJunkFrame:RegisterEvent("ITEM_UNLOCKED")
          end
       elseif event == "ITEM_LOCKED" then
-         if SkuOptions.db.profile[MODULE_NAME].autoSellJunk == true then
+         if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk == true then
             SellJunkFrame:UnregisterEvent("ITEM_LOCKED")
          end
       elseif event == "ITEM_UNLOCKED" then
-         if SkuOptions.db.profile[MODULE_NAME].autoSellJunk == true then
+         if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoSellJunk == true then
             SellJunkFrame:UnregisterEvent("ITEM_UNLOCKED")
             -- Check whether vendor refuses to buy items
             if mBagID and mBagSlot and mBagID ~= -1 and mBagSlot ~= -1 then

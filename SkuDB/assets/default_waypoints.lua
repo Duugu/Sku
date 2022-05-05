@@ -1579,1947 +1579,1936 @@ SkuDB.DefaultWaypoints = {
          },
       },
 		["Zones"] = {
-			"kalimdor", -- [1]
-			"eastern kingdoms", -- [2]
-			["kalimdor"] = {
-				"ashenvale", -- [1]
-				"azshara", -- [2]
-				"The Barrens", -- [3]
-				"desolace", -- [4]
-				"darkshore", -- [5]
-				"durotar", -- [6]
-				"dustwallow marsh", -- [7]
-				"feralas", -- [8]
-				"capital", -- [9]
-				"Dustwallow Marsh", -- [10]
-				"Moonglade", -- [11]
-				"mulgore", -- [12]
-				"silithus", -- [13]
-				"stonetalon mountains", -- [14]
-				"tanaris", -- [15]
-				"thousand needles", -- [16]
-				"teldrassil", -- [17]
-				"felwood", -- [18]
-				"Un'Goro Crater", -- [19]
-				"Winterspring", -- [20]
-				"darnassus", -- [21]
-				"orgrimmar", -- [22]
-				"thunder bluff", -- [23]
-				["stonetalon mountains"] = {
-					"s;kalimdor;stonetalon mountains;stonetalon peak;the talon den", -- [1]
-					"s;kalimdor;stonetalon mountains;stonetalon peak", -- [2]
-					"s;kalimdor;stonetalon mountains;windshear crag;Talondeep Path B", -- [3]
-					"s;kalimdor;stonetalon mountains;windshear crag;cragpool lake", -- [4]
-					"s;kalimdor;stonetalon mountains;windshear crag;windshear mine", -- [5]
-					"s;kalimdor;stonetalon mountains;sishir canyon;sishir canyon", -- [6]
-					"s;kalimdor;stonetalon mountains;sun rock retreat", -- [7]
-					["s;kalimdor;stonetalon mountains;sun rock retreat"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 460,
-						["worldY"] = -910.974,
-						["worldX"] = 936.308,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;stonetalon mountains;stonetalon peak;the talon den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 468,
-						["worldY"] = -1792.39,
-						["worldX"] = 2416.89,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;stonetalon mountains;stonetalon peak"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 467,
-						["worldY"] = -1449.71,
-						["worldX"] = 2658.78,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;stonetalon mountains;windshear crag;Talondeep Path B"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1277,
-						["worldY"] = -576.57,
-						["worldX"] = 1531.94,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;stonetalon mountains;windshear crag;cragpool lake"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 463,
-						["worldY"] = -70.1338,
-						["worldX"] = 1543.57,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;stonetalon mountains;sishir canyon;sishir canyon"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2541,
-						["worldY"] = -624.05,
-						["worldX"] = 515.845,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;stonetalon mountains;windshear crag;windshear mine"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2160,
-						["worldY"] = -358.9,
-						["worldX"] = 981.949,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["Moonglade"] = {
-					"s;kalimdor;Moonglade;Lake Elune'ara;Stormrage Barrow Dens", -- [1]
-					"s;kalimdor;Moonglade;Lake Elune'ara;Nighthaven", -- [2]
-					"s;kalimdor;Moonglade;Lake Elune'ara;Shrine of Remulos", -- [3]
-					["s;kalimdor;Moonglade;Lake Elune'ara;Nighthaven"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2361,
-						["worldY"] = -2491.77,
-						["worldX"] = 7961.75,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Moonglade;Lake Elune'ara;Stormrage Barrow Dens"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2363,
-						["worldY"] = -2951.72,
-						["worldX"] = 7564.51,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Moonglade;Lake Elune'ara;Shrine of Remulos"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2362,
-						["worldY"] = -2215.45,
-						["worldX"] = 7856.18,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["Winterspring"] = {
-					"s;kalimdor;Winterspring;Frostfire Hot Springs;Holzschlundfeste B", -- [1]
-					"s;kalimdor;Winterspring;Everlook;moon horror den", -- [2]
-					"s;kalimdor;Winterspring;Everlook", -- [3]
-					"s;kalimdor;Winterspring;lake kel'theril;the ruins of kel'theril", -- [4]
-					"s;kalimdor;Winterspring;Mazthoril;dun mandarr", -- [5]
-					["s;kalimdor;Winterspring;Mazthoril;dun mandarr"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2248,
-						["worldY"] = -4507.31,
-						["worldX"] = 5718.83,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Winterspring;Everlook;moon horror den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3139,
-						["worldY"] = -4631.57,
-						["worldX"] = 7123.02,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Winterspring;Everlook"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2255,
-						["worldY"] = -4662.5,
-						["worldX"] = 6723.46,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Winterspring;lake kel'theril;the ruins of kel'theril"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2252,
-						["worldY"] = -4304.99,
-						["worldX"] = 6426.76,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Winterspring;Frostfire Hot Springs;Holzschlundfeste B"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1769,
-						["worldY"] = -2298.18,
-						["worldX"] = 6900.63,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["ashenvale"] = {
-					"s;kalimdor;ashenvale;astranaar", -- [1]
-					"s;kalimdor;ashenvale;the zoram strand;Zoram'gar Outpost", -- [2]
-					"s;kalimdor;ashenvale;Fallen Sky Lake;Silverwing Outpost", -- [3]
-					"s;kalimdor;ashenvale;Fallen Sky Lake;The Dor'Danil Barrow Den", -- [4]
-					"s;kalimdor;ashenvale;Fallen Sky Lake;Silverwing Grove", -- [5]
-					"s;kalimdor;ashenvale;Fallen Sky Lake;Warsong Labor Camp", -- [6]
-					"s;kalimdor;ashenvale;Felfire Hill;Demon Fall Canyon", -- [7]
-					"s;kalimdor;ashenvale;maestra's post;bathran's haunt", -- [8]
-					"s;kalimdor;ashenvale;maestra's post;the ruins of ordil'aran", -- [9]
-					"s;kalimdor;ashenvale;mystral lake;bloodtooth camp", -- [10]
-					"s;kalimdor;ashenvale;mystral lake;Talondeep Path A", -- [11]
-					"s;kalimdor;ashenvale;mystral lake;greenpaw village", -- [12]
-					"s;kalimdor;ashenvale;mystral lake;silverwind refuge", -- [13]
-					"s;kalimdor;ashenvale;Night Run;falfarren river", -- [14]
-					"s;kalimdor;ashenvale;satyrnaar;Forest Song", -- [15]
-					"s;kalimdor;ashenvale;satyrnaar;xavian", -- [16]
-					"s;kalimdor;ashenvale;Splintertree Post", -- [17]
-					["s;kalimdor;ashenvale;Fallen Sky Lake;Warsong Labor Camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3177,
-						["worldY"] = -2463.94,
-						["worldX"] = 1575.91,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;astranaar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 415,
-						["worldY"] = -382.391,
-						["worldX"] = 2720.43,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;maestra's post;the ruins of ordil'aran"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 412,
-						["worldY"] = -119.601,
-						["worldX"] = 3493.89,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;Felfire Hill;Demon Fall Canyon"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 435,
-						["worldY"] = -3150.99,
-						["worldX"] = 1702.45,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;Fallen Sky Lake;Silverwing Outpost"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2360,
-						["worldY"] = -2065.15,
-						["worldX"] = 1776.64,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;satyrnaar;xavian"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 429,
-						["worldY"] = -2822.67,
-						["worldX"] = 2936.56,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;maestra's post;bathran's haunt"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 411,
-						["worldY"] = -161.305,
-						["worldX"] = 3827.37,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;Night Run;falfarren river"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 433,
-						["worldY"] = -2222.91,
-						["worldX"] = 2231.21,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;satyrnaar;Forest Song"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2358,
-						["worldY"] = -3287.54,
-						["worldX"] = 2880.33,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;the zoram strand;Zoram'gar Outpost"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2897,
-						["worldY"] = -1010.16,
-						["worldX"] = 3362.22,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;mystral lake;greenpaw village"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2359,
-						["worldY"] = -1444.96,
-						["worldX"] = 2291.29,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;Fallen Sky Lake;The Dor'Danil Barrow Den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 432,
-						["worldY"] = -2678.36,
-						["worldX"] = 1776.23,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;mystral lake;Talondeep Path A"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1276,
-						["worldY"] = -732.677,
-						["worldX"] = 1930.26,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;mystral lake;bloodtooth camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2357,
-						["worldY"] = -1465.1,
-						["worldX"] = 1612.52,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;Splintertree Post"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 431,
-						["worldY"] = -2564.67,
-						["worldX"] = 2286.41,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;mystral lake;silverwind refuge"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 420,
-						["worldY"] = -1190.25,
-						["worldX"] = 2130.27,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;ashenvale;Fallen Sky Lake;Silverwing Grove"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3319,
-						["worldY"] = -1858.93,
-						["worldX"] = 1462.48,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["teldrassil"] = {
-					"s;kalimdor;teldrassil;Ban'ethil Hollow;ban'ethil barrow den", -- [1]
-					"s;kalimdor;teldrassil;dolanaar;fel rock", -- [2]
-					"s;kalimdor;teldrassil;dolanaar", -- [3]
-					"s;kalimdor;teldrassil;Shadowglen;Aldrassil A", -- [4]
-					"s;kalimdor;teldrassil;Shadowglen;shadowthread cave", -- [5]
-					"s;kalimdor;teldrassil;Wellspring Lake;the cleft", -- [6]
-					["s;kalimdor;teldrassil;Shadowglen;Aldrassil A"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 256,
-						["worldY"] = -805.993,
-						["worldX"] = 10462.7,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;teldrassil;Ban'ethil Hollow;ban'ethil barrow den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 262,
-						["worldY"] = -1557.41,
-						["worldX"] = 9864.17,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;teldrassil;Wellspring Lake;the cleft"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 263,
-						["worldY"] = -1200.62,
-						["worldX"] = 10316.4,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;teldrassil;dolanaar;fel rock"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 258,
-						["worldY"] = -1031.2,
-						["worldX"] = 10050.6,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;teldrassil;Shadowglen;shadowthread cave"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 257,
-						["worldY"] = -921.301,
-						["worldX"] = 10756.2,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;teldrassil;dolanaar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 186,
-						["worldY"] = -949.897,
-						["worldX"] = 9787.99,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["Un'Goro Crater"] = {
-					"s;kalimdor;Un'Goro Crater;lakkari tar pits;Fungal Rock", -- [1]
-					"s;kalimdor;Un'Goro Crater;lakkari tar pits;Marshal's Refuge", -- [2]
-					["s;kalimdor;Un'Goro Crater;lakkari tar pits;Marshal's Refuge"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 541,
-						["worldY"] = -1078.89,
-						["worldX"] = -6143.21,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Un'Goro Crater;lakkari tar pits;Fungal Rock"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 542,
-						["worldY"] = -1836.52,
-						["worldX"] = -6370.15,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["dustwallow marsh"] = {
-					"s;kalimdor;dustwallow marsh;theramore isle", -- [1]
-					["s;kalimdor;dustwallow marsh;theramore isle"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 513,
-						["worldY"] = -4388.51,
-						["worldX"] = -3680.17,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["Dustwallow Marsh"] = {
-					"s;kalimdor;Dustwallow Marsh;brackenwall village;bluefen", -- [1]
-					"s;kalimdor;Dustwallow Marsh;brackenwall village;brackenwall village", -- [2]
-					"s;kalimdor;Dustwallow Marsh;brackenwall village;darkmist cavern", -- [3]
-					"s;kalimdor;Dustwallow Marsh;brackenwall village;north point tower", -- [4]
-					"s;kalimdor;Dustwallow Marsh;the dragonmurk;Stonemaul Ruins", -- [5]
-					"s;kalimdor;Dustwallow Marsh;wyrmbog;Emberstrife's Den", -- [6]
-					"s;kalimdor;Dustwallow Marsh;wyrmbog;onyxia's lair", -- [7]
-					"s;kalimdor;Dustwallow Marsh;wyrmbog;Tidefury Cove", -- [8]
-					"s;kalimdor;Dustwallow Marsh;the den of flame;bloodfen burrow", -- [9]
-					"s;kalimdor;Dustwallow Marsh;the quagmire;lost point", -- [10]
-					"s;kalimdor;Dustwallow Marsh;the quagmire;shady rest inn", -- [11]
-					"s;kalimdor;Dustwallow Marsh;nijel's point", -- [12]
-					"s;kalimdor;Dustwallow Marsh;witch hill;sentry point", -- [13]
-					"s;kalimdor;Dustwallow Marsh;witch hill;Swamplight Manor", -- [14]
-					["s;kalimdor;Dustwallow Marsh;the dragonmurk;Stonemaul Ruins"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 508,
-						["worldY"] = -3321.15,
-						["worldX"] = -4346.02,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;brackenwall village;north point tower"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 504,
-						["worldY"] = -3429.99,
-						["worldX"] = -2884.79,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;witch hill;Swamplight Manor"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 497,
-						["worldY"] = -3893.5,
-						["worldX"] = -2949.47,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;wyrmbog;Tidefury Cove"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 517,
-						["worldY"] = -4062.71,
-						["worldX"] = -4300.98,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;brackenwall village;brackenwall village"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 496,
-						["worldY"] = -2880.71,
-						["worldX"] = -3132.98,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;the quagmire;lost point"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 506,
-						["worldY"] = -2862.15,
-						["worldX"] = -3925.5,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;wyrmbog;Emberstrife's Den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2158,
-						["worldY"] = -3832.99,
-						["worldX"] = -4987.73,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;nijel's point"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 608,
-						["worldY"] = -1308.24,
-						["worldX"] = 202.521,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;the quagmire;shady rest inn"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 403,
-						["worldY"] = -2535.18,
-						["worldX"] = -3723.63,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;brackenwall village;darkmist cavern"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 499,
-						["worldY"] = -2722.81,
-						["worldX"] = -2829.79,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;the den of flame;bloodfen burrow"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 498,
-						["worldY"] = -2639.53,
-						["worldX"] = -4335.04,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;wyrmbog;onyxia's lair"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2159,
-						["worldY"] = -3720.58,
-						["worldX"] = -4698.06,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;witch hill;sentry point"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 503,
-						["worldY"] = -4109.08,
-						["worldX"] = -3476.59,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;Dustwallow Marsh;brackenwall village;bluefen"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 507,
-						["worldY"] = -3087.58,
-						["worldX"] = -2685.32,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["felwood"] = {
-					"s;kalimdor;felwood;irontree woods;irontree cavern", -- [1]
-					"s;kalimdor;felwood;bloodvenom falls;bloodvenom post ", -- [2]
-					"s;kalimdor;felwood;felpaw village;Timbermaw Hold A", -- [3]
-					["s;kalimdor;felwood;felpaw village;Timbermaw Hold A"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1216,
-						["worldY"] = -2097.68,
-						["worldX"] = 6817.78,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;felwood;bloodvenom falls;bloodvenom post "] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1997,
-						["worldY"] = -353.403,
-						["worldX"] = 5111.98,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;felwood;irontree woods;irontree cavern"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1768,
-						["worldY"] = -1571,
-						["worldX"] = 6481.87,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["capital"] = {
-					"s;kalimdor;capital;darnassus", -- [1]
-					"s;kalimdor;capital;orgrimmar", -- [2]
-					"s;kalimdor;capital;Thunder Bluff", -- [3]
-					["s;kalimdor;capital;darnassus"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1657,
-						["worldY"] = -2254.5,
-						["worldX"] = 9951.75,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;capital;Thunder Bluff"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1638,
-						["worldY"] = -29.4214,
-						["worldX"] = -1205.41,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;capital;orgrimmar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1637,
-						["worldY"] = -4371.16,
-						["worldX"] = 1381.77,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["orgrimmar"] = {
-					"s;kalimdor;capital;orgrimmar", -- [1]
-					["s;kalimdor;capital;orgrimmar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1637,
-						["worldY"] = -4371.16,
-						["worldX"] = 1381.77,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["desolace"] = {
-					"s;kalimdor;desolace;valley of spears;Maraudon", -- [1]
-					"s;kalimdor;desolace;kodo graveyard;ghost walker post", -- [2]
-					"s;kalimdor;desolace;gelkis village;bolgan's hole", -- [3]
-					"s;kalimdor;desolace;Mannoroc Coven;Scrabblescrew's Camp", -- [4]
-					"s;kalimdor;desolace;Mannoroc Coven;valley of bones", -- [5]
-					"s;kalimdor;desolace;Shadowprey", -- [6]
-					["s;kalimdor;desolace;Mannoroc Coven;valley of bones"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2657,
-						["worldY"] = -1513.55,
-						["worldX"] = -2251.19,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;desolace;gelkis village;bolgan's hole"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 600,
-						["worldY"] = -2499.6,
-						["worldX"] = -2281.95,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;desolace;Shadowprey"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2408,
-						["worldY"] = -3097.92,
-						["worldX"] = -1657.85,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;desolace;kodo graveyard;ghost walker post"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 597,
-						["worldY"] = -1736.67,
-						["worldX"] = -1224.06,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;desolace;Mannoroc Coven;Scrabblescrew's Camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2617,
-						["worldY"] = -1493.13,
-						["worldX"] = -1407.87,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;desolace;valley of spears;Maraudon"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 349,
-						["areaId"] = 2100,
-						["worldY"] = -2918.45,
-						["worldX"] = -1422.62,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["thunder bluff"] = {
-					"s;kalimdor;capital;Thunder Bluff", -- [1]
-					["s;kalimdor;capital;Thunder Bluff"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1638,
-						["worldY"] = -29.4214,
-						["worldX"] = -1205.41,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["tanaris"] = {
-					"s;kalimdor;tanaris;gadgetzan", -- [1]
-					"s;kalimdor;tanaris;Lost Rigger Cove;wavestrider beach", -- [2]
-					"s;kalimdor;tanaris;valley of the watchers;Uldum", -- [3]
-					["s;kalimdor;tanaris;Lost Rigger Cove;wavestrider beach"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 988,
-						["worldY"] = -4878.96,
-						["worldX"] = -7693.45,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;tanaris;valley of the watchers;Uldum"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 989,
-						["worldY"] = -2787.2,
-						["worldX"] = -9635.41,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;tanaris;gadgetzan"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 976,
-						["worldY"] = -3752.11,
-						["worldX"] = -7139.15,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["darkshore"] = {
-					"s;kalimdor;darkshore;auberdine", -- [1]
-					"s;kalimdor;darkshore;Cliffspring;Cliffspring Falls", -- [2]
-					"s;kalimdor;darkshore;grove of the ancients;Wildbend River", -- [3]
-					"s;kalimdor;darkshore;the master's glaive;blackwood den", -- [4]
-					["s;kalimdor;darkshore;the master's glaive;blackwood den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 455,
-						["worldY"] = -25.6126,
-						["worldX"] = 4619.42,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;darkshore;Cliffspring;Cliffspring Falls"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 445,
-						["worldY"] = -662.396,
-						["worldX"] = 6870.57,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;darkshore;grove of the ancients;Wildbend River"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 454,
-						["worldY"] = -220.755,
-						["worldX"] = 5056.04,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;darkshore;auberdine"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 442,
-						["worldY"] = -411.951,
-						["worldX"] = 6439.33,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["azshara"] = {
-					"s;kalimdor;azshara;bay of storms;hetaera's clutch", -- [1]
-					"s;kalimdor;azshara;bay of storms;scalebeard's cave", -- [2]
-					"s;kalimdor;azshara;ruins of eldarath ;temple of zin-malor", -- [3]
-					"s;kalimdor;azshara;the ruined reaches;rethress sanctum", -- [4]
-					"s;kalimdor;azshara;Shadowsong Shrine;talrendis point", -- [5]
-					["s;kalimdor;azshara;the ruined reaches;rethress sanctum"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3138,
-						["worldY"] = -6438.33,
-						["worldX"] = 2195.67,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;azshara;bay of storms;hetaera's clutch"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1222,
-						["worldY"] = -6232.79,
-						["worldX"] = 3556.64,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;azshara;bay of storms;scalebeard's cave"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3140,
-						["worldY"] = -6043.45,
-						["worldX"] = 3705.1,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;azshara;Shadowsong Shrine;talrendis point"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3137,
-						["worldY"] = -3869.25,
-						["worldX"] = 2707.72,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;azshara;ruins of eldarath ;temple of zin-malor"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1223,
-						["worldY"] = -5359.12,
-						["worldX"] = 3549.15,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["feralas"] = {
-				},
-				["The Barrens"] = {
-					"s;kalimdor;The Barrens;The Mor'shan Rampart;Mor'shan Base Camp", -- [1]
-					"s;kalimdor;The Barrens;lushwater oasis;Wailing Caverns", -- [2]
-					"s;kalimdor;The Barrens;Fray Island", -- [3]
-					"s;kalimdor;The Barrens;camp mojache", -- [4]
-					"s;kalimdor;The Barrens;camp taurajo", -- [5]
-					"s;kalimdor;The Barrens;Crossroads", -- [6]
-					"s;kalimdor;The Barrens;Ratchet", -- [7]
-					["s;kalimdor;The Barrens;Fray Island"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 720,
-						["worldY"] = -4329.2,
-						["worldX"] = -1668.51,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;The Barrens;camp taurajo"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 378,
-						["worldY"] = -1921.67,
-						["worldX"] = -2352.66,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;The Barrens;camp mojache"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1099,
-						["worldY"] = -215.611,
-						["worldX"] = -4394.98,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;The Barrens;Crossroads"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 380,
-						["worldY"] = -2652.15,
-						["worldX"] = -455.9,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;The Barrens;lushwater oasis;Wailing Caverns"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 43,
-						["areaId"] = 718,
-						["worldY"] = -2037,
-						["worldX"] = -837.968,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;The Barrens;The Mor'shan Rampart;Mor'shan Base Camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1599,
-						["worldY"] = -2113.34,
-						["worldX"] = 1035.13,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;The Barrens;Ratchet"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 392,
-						["worldY"] = -3680.07,
-						["worldX"] = -951.364,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["thousand needles"] = {
-					"s;kalimdor;thousand needles;camp e'thok;whitereach post", -- [1]
-					"s;kalimdor;thousand needles;the screeching canyon;roguefeather den", -- [2]
-					"s;kalimdor;thousand needles;the shimmering flats;The Rustmaul Dig Site", -- [3]
-					"s;kalimdor;thousand needles;the shimmering flats;mirage raceway", -- [4]
-					"s;kalimdor;thousand needles;the shimmering flats;tahonda ruins", -- [5]
-					"s;kalimdor;thousand needles;the shimmering flats;weazel's crater", -- [6]
-					"s;kalimdor;thousand needles;darkcloud pinnacle;darkcloud pinnacle", -- [7]
-					"s;kalimdor;thousand needles;freewind post", -- [8]
-					"s;kalimdor;thousand needles;windbreak canyon;ironstone camp", -- [9]
-					"s;kalimdor;thousand needles;splithoof crag;the weathered nook", -- [10]
-					"s;kalimdor;thousand needles;splithoof crag;splithoof hold", -- [11]
-					["s;kalimdor;thousand needles;freewind post"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 484,
-						["worldY"] = -2445.5,
-						["worldX"] = -5454.07,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;camp e'thok;whitereach post"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2237,
-						["worldY"] = -1375.5,
-						["worldX"] = -4917.35,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;the shimmering flats;tahonda ruins"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3039,
-						["worldY"] = -3894.97,
-						["worldX"] = -6569.91,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;the shimmering flats;weazel's crater"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3038,
-						["worldY"] = -3899.53,
-						["worldX"] = -5799.94,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;the screeching canyon;roguefeather den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 487,
-						["worldY"] = -1636.27,
-						["worldX"] = -5466.71,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;the shimmering flats;mirage raceway"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2240,
-						["worldY"] = -3973.12,
-						["worldX"] = -6239.42,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;windbreak canyon;ironstone camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3037,
-						["worldY"] = -3412.38,
-						["worldX"] = -5848.05,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;splithoof crag;splithoof hold"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1557,
-						["worldY"] = -2367.61,
-						["worldX"] = -5065.61,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;splithoof crag;the weathered nook"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 488,
-						["worldY"] = -2794.53,
-						["worldX"] = -5213.85,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;the shimmering flats;The Rustmaul Dig Site"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 479,
-						["worldY"] = -3449.15,
-						["worldX"] = -6490.61,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;thousand needles;darkcloud pinnacle;darkcloud pinnacle"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2097,
-						["worldY"] = -1919.44,
-						["worldX"] = -5086.21,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["silithus"] = {
-					"s;kalimdor;silithus;Twilight Base Camp;Twilight Base Camp", -- [1]
-					"s;kalimdor;silithus;hive'regal;ortell's hideout", -- [2]
-					"s;kalimdor;silithus;hive'zora;Twilight Post", -- [3]
-					"s;kalimdor;silithus;Bronzebeard Encampment;Bronzebeard Encampment", -- [4]
-					"s;kalimdor;silithus;cenarion hold;the swarming pillar", -- [5]
-					"s;kalimdor;silithus;cenarion hold;bones of grakkarond", -- [6]
-					"s;kalimdor;silithus;cenarion hold", -- [7]
-					"s;kalimdor;silithus;the crystal vale;Ravaged Twilight Camp", -- [8]
-					"s;kalimdor;silithus;Staghelm Point;Twilight's Run", -- [9]
-					"s;kalimdor;silithus;Staghelm Point;Staghelm Point", -- [10]
-					"s;kalimdor;silithus;southwind village;valor's rest", -- [11]
-					"s;kalimdor;silithus;Twilight Post;Twilight Post", -- [12]
-					["s;kalimdor;silithus;Twilight Base Camp;Twilight Base Camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2739,
-						["worldY"] = -1195.01,
-						["worldX"] = -6996.15,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;Twilight Post;Twilight Post"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3098,
-						["worldY"] = -1636.32,
-						["worldX"] = -6740.04,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;cenarion hold"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3425,
-						["worldY"] = -718.398,
-						["worldX"] = -6886.15,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;hive'regal;ortell's hideout"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3447,
-						["worldY"] = -226.396,
-						["worldX"] = -7586.17,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;Staghelm Point;Staghelm Point"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3426,
-						["worldY"] = -97.5554,
-						["worldX"] = -6517.49,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;cenarion hold;the swarming pillar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3097,
-						["worldY"] = -731.852,
-						["worldX"] = -7066.79,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;Staghelm Point;Twilight's Run"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3446,
-						["worldY"] = -136.591,
-						["worldX"] = -6310.14,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;the crystal vale;Ravaged Twilight Camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3100,
-						["worldY"] = -1766.95,
-						["worldX"] = -6206.25,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;southwind village;valor's rest"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3077,
-						["worldY"] = -292.647,
-						["worldX"] = -6404.33,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;cenarion hold;bones of grakkarond"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3257,
-						["worldY"] = -874.224,
-						["worldX"] = -7234.61,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;hive'zora;Twilight Post"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3099,
-						["worldY"] = -1833.28,
-						["worldX"] = -7929.11,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;silithus;Bronzebeard Encampment;Bronzebeard Encampment"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 3427,
-						["worldY"] = -1105.84,
-						["worldX"] = -8021.76,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["mulgore"] = {
-					"s;kalimdor;mulgore;Bloodhoof", -- [1]
-					"s;kalimdor;mulgore;camp narache", -- [2]
-					"s;kalimdor;mulgore;the golden plains;The Venture Co. Mine", -- [3]
-					["s;kalimdor;mulgore;camp narache"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 221,
-						["worldY"] = -253.607,
-						["worldX"] = -2906.49,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;mulgore;the golden plains;The Venture Co. Mine"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 360,
-						["worldY"] = -1036.19,
-						["worldX"] = -1501.49,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;mulgore;Bloodhoof"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 222,
-						["worldY"] = -394.981,
-						["worldX"] = -2323.92,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["durotar"] = {
-					"s;kalimdor;durotar;the den", -- [1]
-					"s;kalimdor;durotar;thunder ridge;tor'kren farm", -- [2]
-					"s;kalimdor;durotar;razor hill;razor hill", -- [3]
-					"s;kalimdor;durotar;razorwind canyon;razorwind canyon", -- [4]
-					"s;kalimdor;durotar;sen'jin village;sen'jin village", -- [5]
-					["s;kalimdor;durotar;the den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 364,
-						["worldY"] = -4202.92,
-						["worldX"] = -604.098,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;durotar;thunder ridge;tor'kren farm"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 2979,
-						["worldY"] = -4242.41,
-						["worldX"] = 726.297,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;durotar;sen'jin village;sen'jin village"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 367,
-						["worldY"] = -4918.24,
-						["worldX"] = -819.492,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;durotar;razorwind canyon;razorwind canyon"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 410,
-						["worldY"] = -4534.04,
-						["worldX"] = 636.963,
-						["createdBy"] = "SkuNav",
-					},
-					["s;kalimdor;durotar;razor hill;razor hill"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 362,
-						["worldY"] = -4745.52,
-						["worldX"] = 312.659,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["darnassus"] = {
-					"s;kalimdor;capital;darnassus", -- [1]
-					["s;kalimdor;capital;darnassus"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 1,
-						["areaId"] = 1657,
-						["worldY"] = -2254.5,
-						["worldX"] = 9951.75,
-						["createdBy"] = "SkuNav",
-					},
-				},
-			},
-			["eastern kingdoms"] = {
-				"alterac mountains", -- [1]
-				"arathi highlands", -- [2]
-				"burning steppes", -- [3]
-				"duskwood", -- [4]
-				"dun morogh", -- [5]
-				"deadwind pass", -- [6]
-				"capital", -- [7]
-				"the hinterlands", -- [8]
-				"loch modan", -- [9]
-				"badlands", -- [10]
-				"eastern plaguelands", -- [11]
-				"redridge mountains", -- [12]
-				"stranglethorn vale", -- [13]
-				"searing gorge", -- [14]
-				"silverpine forest", -- [15]
-				"swamp of sorrows", -- [16]
-				"wetlands", -- [17]
-				"tirisfal glades", -- [18]
-				"Hillsbrad Foothills", -- [19]
-				"elwynn forest", -- [20]
-				"westfall", -- [21]
-				"western plaguelands", -- [22]
-				"ironforge", -- [23]
-				"stormwind city", -- [24]
-				"undercity", -- [25]
-				"blasted lands", -- [26]
-				["duskwood"] = {
-					"s;eastern kingdoms;duskwood;the rotting orchard;roland's doom", -- [1]
-					"s;eastern kingdoms;duskwood;darkshire;beggar's haunt", -- [2]
-					"s;eastern kingdoms;duskwood;darkshire;darkshire", -- [3]
-					"s;eastern kingdoms;duskwood;raven hill", -- [4]
-					["s;eastern kingdoms;duskwood;raven hill"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 94,
-						["worldY"] = -310.43338,
-						["worldX"] = -10752.526,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;duskwood;darkshire;beggar's haunt"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 576,
-						["worldY"] = -1538.8,
-						["worldX"] = -10349.7,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;duskwood;the rotting orchard;roland's doom"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2161,
-						["worldY"] = -1139.98,
-						["worldX"] = -11076,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;duskwood;darkshire;darkshire"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 42,
-						["worldY"] = -1170.65,
-						["worldX"] = -10564.7,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["searing gorge"] = {
-					"s;eastern kingdoms;searing gorge;Firewatch Ridge;thorium point", -- [1]
-					["s;eastern kingdoms;searing gorge;Firewatch Ridge;thorium point"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1446,
-						["worldY"] = -1142.76,
-						["worldX"] = -6513.68,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["blasted lands"] = {
-					["createdAt"] = "Sun Apr 25 23:32:35 2021",
-					["contintentId"] = 0,
-					["areaId"] = 4,
-					["worldY"] = -3389.016357421875,
-					["worldX"] = -10997.69921875,
-					["createdBy"] = "SkuNav",
-				},
-				["western plaguelands"] = {
-					"s;eastern kingdoms;western plaguelands;the weeping cave;the weeping cave", -- [1]
-					"s;eastern kingdoms;western plaguelands;scholomance", -- [2]
-					"s;eastern kingdoms;western plaguelands;Sorrow Hill;Chillwind Camp", -- [3]
-					"s;eastern kingdoms;western plaguelands;Sorrow Hill;uther's tomb", -- [4]
-					["s;eastern kingdoms;western plaguelands;Sorrow Hill;uther's tomb"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 196,
-						["worldY"] = -1825.52,
-						["worldX"] = 969.176,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;western plaguelands;Sorrow Hill;Chillwind Camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 3197,
-						["worldY"] = -1421.46,
-						["worldX"] = 921.054,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;western plaguelands;the weeping cave;the weeping cave"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 198,
-						["worldY"] = -2389.63,
-						["worldX"] = 2249.61,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;western plaguelands;scholomance"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 289,
-						["areaId"] = 2057,
-						["worldY"] = -2579.41,
-						["worldX"] = 1262.19,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["the hinterlands"] = {
-					"s;eastern kingdoms;the hinterlands;Aerie Peak;wildhammer keep", -- [1]
-					"s;eastern kingdoms;the hinterlands;Aerie Peak", -- [2]
-					"s;eastern kingdoms;the hinterlands;the overlook cliffs;Revantusk", -- [3]
-					["s;eastern kingdoms;the hinterlands;Aerie Peak"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 348,
-						["worldY"] = -2127.76,
-						["worldX"] = 234.85,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;the hinterlands;Aerie Peak;wildhammer keep"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 349,
-						["worldY"] = -2119.3,
-						["worldX"] = 316.946,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;the hinterlands;the overlook cliffs;Revantusk"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 3317,
-						["worldY"] = -4590.51,
-						["worldX"] = -573.459,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["stormwind city"] = {
-					"s;eastern kingdoms;capital;Stormwind", -- [1]
-					["s;eastern kingdoms;capital;Stormwind"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1519,
-						["worldY"] = -364.057,
-						["worldX"] = -9153.77,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["dun morogh"] = {
-					"s;eastern kingdoms;dun morogh;Coldridge Valley;Anvilmar", -- [1]
-					"s;eastern kingdoms;dun morogh;Helm's Bed Lake;Ironband's Compound", -- [2]
-					"s;eastern kingdoms;dun morogh;kharanos;Steelgrill's Depot", -- [3]
-					"s;eastern kingdoms;dun morogh;kharanos", -- [4]
-					["s;eastern kingdoms;dun morogh;Helm's Bed Lake;Ironband's Compound"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 716,
-						["worldY"] = -2004.1,
-						["worldX"] = -5858.7,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;dun morogh;Coldridge Valley;Anvilmar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 77,
-						["worldY"] = -383.763,
-						["worldX"] = -6134.28,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;dun morogh;kharanos;Steelgrill's Depot"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 189,
-						["worldY"] = -658.67,
-						["worldX"] = -5488.04,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;dun morogh;kharanos"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 131,
-						["worldY"] = -482.12653,
-						["worldX"] = -5585.9507,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["badlands"] = {
-					"s;eastern kingdoms;badlands;camp cagg;dustbelch grotto", -- [1]
-					"s;eastern kingdoms;badlands;angor fortress", -- [2]
-					"s;eastern kingdoms;badlands;kargath", -- [3]
-					"s;eastern kingdoms;badlands;the maker's terrace;uldaman", -- [4]
-					["s;eastern kingdoms;badlands;camp cagg;dustbelch grotto"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 347,
-						["worldY"] = -2265.09,
-						["worldX"] = -7320.59,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;badlands;angor fortress"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 338,
-						["worldY"] = -3158,
-						["worldX"] = -6392.65,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;badlands;the maker's terrace;uldaman"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 70,
-						["areaId"] = 1337,
-						["worldY"] = -3179.35,
-						["worldX"] = -6092.01,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;badlands;kargath"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 340,
-						["worldY"] = -2186.68,
-						["worldX"] = -6676.42,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["capital"] = {
-					"s;eastern kingdoms;capital;Ironforge", -- [1]
-					"s;eastern kingdoms;capital;Stormwind", -- [2]
-					"s;eastern kingdoms;capital;Undercity", -- [3]
-					["s;eastern kingdoms;capital;Ironforge"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1537,
-						["worldY"] = -834.059,
-						["worldX"] = -5021,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;capital;Undercity"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1497,
-						["worldY"] = -235.699,
-						["worldX"] = 1849.69,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;capital;Stormwind"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1519,
-						["worldY"] = -364.057,
-						["worldX"] = -9153.77,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["ironforge"] = {
-					"s;eastern kingdoms;capital;Ironforge", -- [1]
-					["s;eastern kingdoms;capital;Ironforge"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1537,
-						["worldY"] = -834.059,
-						["worldX"] = -5021,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["redridge mountains"] = {
-					"s;eastern kingdoms;redridge mountains;galardell valley;tower of ilgalar", -- [1]
-					"s;eastern kingdoms;redridge mountains;render's camp;render's rock", -- [2]
-					"s;eastern kingdoms;redridge mountains;rethban caverns", -- [3]
-					"s;eastern kingdoms;redridge mountains;lakeshire", -- [4]
-					["s;eastern kingdoms;redridge mountains;lakeshire"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 69,
-						["worldY"] = -2201.47,
-						["worldX"] = -9227.69,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;redridge mountains;render's camp;render's rock"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 998,
-						["worldY"] = -2290.05,
-						["worldX"] = -8674.12,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;redridge mountains;galardell valley;tower of ilgalar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 96,
-						["worldY"] = -3318.81,
-						["worldX"] = -9281.33,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;redridge mountains;rethban caverns"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 98,
-						["worldY"] = -2002.7,
-						["worldX"] = -8970.76,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["undercity"] = {
-					"s;eastern kingdoms;capital;Undercity", -- [1]
-					["s;eastern kingdoms;capital;Undercity"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1497,
-						["worldY"] = -235.699,
-						["worldX"] = 1849.69,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["westfall"] = {
-					"s;eastern kingdoms;westfall;Moonbrook", -- [1]
-					"s;eastern kingdoms;westfall;sentinel hill", -- [2]
-					["s;eastern kingdoms;westfall;Moonbrook"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 20,
-						["worldY"] = -1510.168,
-						["worldX"] = -11017.066,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;westfall;sentinel hill"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 108,
-						["worldY"] = -1027.76,
-						["worldX"] = -10503.7,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["wetlands"] = {
-					"s;eastern kingdoms;wetlands;Menethil Harbor", -- [1]
-					"s;eastern kingdoms;wetlands;dun algaz", -- [2]
-					"s;eastern kingdoms;wetlands;dun modr", -- [3]
-					"s;eastern kingdoms;wetlands;Dragonmaw Gates;grim batol", -- [4]
-					["s;eastern kingdoms;wetlands;dun algaz"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 837,
-						["worldY"] = -2373.1401,
-						["worldX"] = -4191.0234,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;wetlands;Dragonmaw Gates;grim batol"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1037,
-						["worldY"] = -3448.54,
-						["worldX"] = -4055,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;wetlands;dun modr"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 205,
-						["worldY"] = -2350.5583,
-						["worldX"] = -2610.2583,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;wetlands;Menethil Harbor"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 150,
-						["worldY"] = -828.455,
-						["worldX"] = -3672.7,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["arathi highlands"] = {
-					"s;eastern kingdoms;arathi highlands;stromgarde keep;the tower of arathor", -- [1]
-					"s;eastern kingdoms;arathi highlands;refuge pointe", -- [2]
-					"s;eastern kingdoms;arathi highlands;hammerfall;drywhisker gorge", -- [3]
-					"s;eastern kingdoms;arathi highlands;hammerfall", -- [4]
-					["s;eastern kingdoms;arathi highlands;refuge pointe"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 320,
-						["worldY"] = -2526.81,
-						["worldX"] = -1251.05,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;arathi highlands;hammerfall"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 321,
-						["worldY"] = -3528.34,
-						["worldX"] = -991.57,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;arathi highlands;stromgarde keep;the tower of arathor"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 325,
-						["worldY"] = -1513.16,
-						["worldX"] = -1778.21,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;arathi highlands;hammerfall;drywhisker gorge"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 318,
-						["worldY"] = -3827.39,
-						["worldX"] = -1014.22,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["burning steppes"] = {
-					"s;eastern kingdoms;burning steppes;ruins of thaurissan;flame crest", -- [1]
-					"s;eastern kingdoms;burning steppes;terror wing path;slither rock", -- [2]
-					["s;eastern kingdoms;burning steppes;terror wing path;slither rock"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2419,
-						["worldY"] = -3030.61,
-						["worldX"] = -7652.52,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;burning steppes;ruins of thaurissan;flame crest"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 251,
-						["worldY"] = -2186.4,
-						["worldX"] = -7479.77,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["tirisfal glades"] = {
-					"s;eastern kingdoms;tirisfal glades;brill", -- [1]
-					"s;eastern kingdoms;tirisfal glades;Deathknell;night web's hollow", -- [2]
-					"s;eastern kingdoms;tirisfal glades;Deathknell", -- [3]
-					["s;eastern kingdoms;tirisfal glades;Deathknell"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 154,
-						["worldY"] = -1588.2028,
-						["worldX"] = 1879.8323,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;tirisfal glades;brill"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 159,
-						["worldY"] = -278.41385,
-						["worldX"] = 2249.85,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;tirisfal glades;Deathknell;night web's hollow"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 155,
-						["worldY"] = -1829.45,
-						["worldX"] = 2046.11,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["elwynn forest"] = {
-					"s;eastern kingdoms;elwynn forest;northshire abbey;echo ridge mine", -- [1]
-					"s;eastern kingdoms;elwynn forest;northshire abbey;northshire vineyards", -- [2]
-					"s;eastern kingdoms;elwynn forest;northshire abbey", -- [3]
-					"s;eastern kingdoms;elwynn forest;forest's edge;westbrook garrison", -- [4]
-					"s;eastern kingdoms;elwynn forest;goldshire", -- [5]
-					"s;eastern kingdoms;elwynn forest;mirror lake", -- [6]
-					"s;eastern kingdoms;elwynn forest;fargodeep mine;The Stonefield Farm", -- [7]
-					"s;eastern kingdoms;elwynn forest;fargodeep mine;the maclure vineyards", -- [8]
-					"s;eastern kingdoms;elwynn forest;tower of azora;jasperlode mine", -- [9]
-					["s;eastern kingdoms;elwynn forest;northshire abbey;northshire vineyards"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 59,
-						["worldY"] = -333.965,
-						["worldX"] = -9067.35,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;elwynn forest;tower of azora;jasperlode mine"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 54,
-						["worldY"] = -605.891,
-						["worldX"] = -9184.5,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;elwynn forest;fargodeep mine;the maclure vineyards"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 64,
-						["worldY"] = -69.1568,
-						["worldX"] = -9948.39,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;elwynn forest;forest's edge;westbrook garrison"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 120,
-						["worldY"] = -667.327,
-						["worldX"] = -9615.71,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;elwynn forest;goldshire"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 87,
-						["worldY"] = -63.521755,
-						["worldX"] = -9480.089,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;elwynn forest;mirror lake"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 92,
-						["worldY"] = -458.427,
-						["worldX"] = -9389.26,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;elwynn forest;fargodeep mine;The Stonefield Farm"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 63,
-						["worldY"] = -378.19,
-						["worldX"] = -9901.14,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;elwynn forest;northshire abbey;echo ridge mine"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 34,
-						["worldY"] = -119.634,
-						["worldX"] = -8676.57,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;elwynn forest;northshire abbey"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 24,
-						["worldY"] = -179.32834,
-						["worldX"] = -8896.159,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["swamp of sorrows"] = {
-					"s;eastern kingdoms;swamp of sorrows;misty reed strand;misty reed post", -- [1]
-					"s;eastern kingdoms;swamp of sorrows;Stagalbog;Stagalbog Cave", -- [2]
-					"s;eastern kingdoms;swamp of sorrows;Stonard", -- [3]
-					"s;eastern kingdoms;swamp of sorrows;pool of tears;the temple of atal'hakkar", -- [4]
-					["s;eastern kingdoms;swamp of sorrows;misty reed strand;misty reed post"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1978,
-						["worldY"] = -4093.43,
-						["worldX"] = -10854.8,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;swamp of sorrows;Stonard"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 75,
-						["worldY"] = -3277.49,
-						["worldX"] = -10443.7,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;swamp of sorrows;pool of tears;the temple of atal'hakkar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 109,
-						["areaId"] = 1477,
-						["worldY"] = -3828.52,
-						["worldX"] = -10429.9,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;swamp of sorrows;Stagalbog;Stagalbog Cave"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1817,
-						["worldY"] = -3739.01,
-						["worldX"] = -10803.2,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["silverpine forest"] = {
-					"s;eastern kingdoms;silverpine forest;the sepulcher", -- [1]
-					"s;eastern kingdoms;silverpine forest;valgan's field;valgan's field", -- [2]
-					["s;eastern kingdoms;silverpine forest;valgan's field;valgan's field"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 227,
-						["worldY"] = -1255.63,
-						["worldX"] = 908.754,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;silverpine forest;the sepulcher"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 228,
-						["worldY"] = -1619.02,
-						["worldX"] = 508.073,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["stranglethorn vale"] = {
-					"s;eastern kingdoms;stranglethorn vale;Booty Bay;janeiro's point", -- [1]
-					"s;eastern kingdoms;stranglethorn vale;Booty Bay", -- [2]
-					"s;eastern kingdoms;stranglethorn vale;Grom'gol Base Camp", -- [3]
-					"s;eastern kingdoms;stranglethorn vale;yojamba isle", -- [4]
-					"s;eastern kingdoms;stranglethorn vale;mistvale valley;spirit den", -- [5]
-					["s;eastern kingdoms;stranglethorn vale;mistvale valley;spirit den"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 1742,
-						["worldY"] = -18.3165,
-						["worldX"] = -13751.4,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;stranglethorn vale;Grom'gol Base Camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 117,
-						["worldY"] = -185.734,
-						["worldX"] = -12378.4,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;stranglethorn vale;Booty Bay"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 35,
-						["worldY"] = -487.139,
-						["worldX"] = -14383.3,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;stranglethorn vale;Booty Bay;janeiro's point"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 312,
-						["worldY"] = -718,
-						["worldX"] = -14179.6,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;stranglethorn vale;yojamba isle"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 3357,
-						["worldY"] = -1250.73,
-						["worldX"] = -11874.6,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["eastern plaguelands"] = {
-					"s;eastern kingdoms;eastern plaguelands;northpass tower", -- [1]
-					"s;eastern kingdoms;eastern plaguelands;eastwall tower;browman mill", -- [2]
-					"s;eastern kingdoms;eastern plaguelands;eastwall tower", -- [3]
-					"s;eastern kingdoms;eastern plaguelands;terrordale;Terrorweb Tunnel", -- [4]
-					["s;eastern kingdoms;eastern plaguelands;eastwall tower;browman mill"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2269,
-						["worldY"] = -5183.79,
-						["worldX"] = 2483.98,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;eastern plaguelands;terrordale;Terrorweb Tunnel"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2626,
-						["worldY"] = -2773.9,
-						["worldX"] = 3035.33,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;eastern plaguelands;eastwall tower"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2271,
-						["worldY"] = -4796.96,
-						["worldX"] = 2562.3,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;eastern plaguelands;northpass tower"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2275,
-						["worldY"] = -4376.45,
-						["worldX"] = 3170.26,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["loch modan"] = {
-					"s;eastern kingdoms;loch modan;north gate pass;algaz station", -- [1]
-					"s;eastern kingdoms;loch modan;thelsamar", -- [2]
-					["s;eastern kingdoms;loch modan;thelsamar"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 144,
-						["worldY"] = -2959.91,
-						["worldX"] = -5349.27,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;loch modan;north gate pass;algaz station"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 925,
-						["worldY"] = -2666.7,
-						["worldX"] = -4817.79,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["alterac mountains"] = {
-					"s;eastern kingdoms;alterac mountains;Crushridge Hold;Slaughter Hollow", -- [1]
-					["s;eastern kingdoms;alterac mountains;Crushridge Hold;Slaughter Hollow"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 283,
-						["worldY"] = -558.217,
-						["worldX"] = 861.216,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["Hillsbrad Foothills"] = {
-					"s;eastern kingdoms;Hillsbrad Foothills;Southshore", -- [1]
-					"s;eastern kingdoms;Hillsbrad Foothills;tarren mill", -- [2]
-					["s;eastern kingdoms;Hillsbrad Foothills;Southshore"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 560,
-						["areaId"] = 2369,
-						["worldY"] = -531.727,
-						["worldX"] = -803.031,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;Hillsbrad Foothills;tarren mill"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 560,
-						["areaId"] = 2368,
-						["worldY"] = -900.562,
-						["worldX"] = -27.0354,
-						["createdBy"] = "SkuNav",
-					},
-				},
-				["deadwind pass"] = {
-					"s;eastern kingdoms;deadwind pass;The vice;Grosh'gok Compound", -- [1]
-					"s;eastern kingdoms;deadwind pass;sleeping gorge;sleeping gorge", -- [2]
-					"s;eastern kingdoms;deadwind pass;deadman's crossing;ariden's camp", -- [3]
-					"s;eastern kingdoms;deadwind pass;deadman's crossing;deadwind ravine", -- [4]
-					["s;eastern kingdoms;deadwind pass;sleeping gorge;sleeping gorge"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2938,
-						["worldY"] = -1973.68,
-						["worldX"] = -10740.8,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;deadwind pass;deadman's crossing;deadwind ravine"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2558,
-						["worldY"] = -1841.05,
-						["worldX"] = -10572,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;deadwind pass;The vice;Grosh'gok Compound"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2937,
-						["worldY"] = -2335.63,
-						["worldX"] = -11112.2,
-						["createdBy"] = "SkuNav",
-					},
-					["s;eastern kingdoms;deadwind pass;deadman's crossing;ariden's camp"] = {
-						["createdAt"] = "Sun Apr 25 23:32:35 2021",
-						["contintentId"] = 0,
-						["areaId"] = 2560,
-						["worldY"] = -2141.1,
-						["worldX"] = -10443.3,
-						["createdBy"] = "SkuNav",
-					},
-				},
-			},
+         "Kalimdor", -- [1]
+         "Eastern Kingdoms", -- [2]
+         ["Kalimdor"] = {
+            "Ashenvale", -- [1]
+            "Azshara", -- [2]
+            "The Barrens", -- [3]
+            "Desolace", -- [4]
+            "Darkshore", -- [5]
+            "Durotar", -- [6]
+            "Dustwallow Marsh", -- [7]
+            "Feralas", -- [8]
+            "capital", -- [9]
+            "Dustwallow Marsh", -- [10]
+            "Moonglade", -- [11]
+            "Mulgore", -- [12]
+            "Silithus", -- [13]
+            "Stonetalon Mountains", -- [14]
+            "Tanaris", -- [15]
+            "Thousand Needles", -- [16]
+            "Teldrassil", -- [17]
+            "Felwood", -- [18]
+            "Un'Goro Crater", -- [19]
+            "Winterspring", -- [20]
+            "Darnassus", -- [21]
+            "Orgrimmar", -- [22]
+            "Thunder Bluff", -- [23]
+            ["Moonglade"] = {
+               "s;Kalimdor;Moonglade;Lake Elune'ara;Stormrage Barrow Dens", -- [1]
+               "s;Kalimdor;Moonglade;Lake Elune'ara;Nighthaven", -- [2]
+               "s;Kalimdor;Moonglade;Lake Elune'ara;Shrine of Remulos", -- [3]
+               ["s;Kalimdor;Moonglade;Lake Elune'ara;Nighthaven"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2361,
+                  ["worldY"] = -2491.77,
+                  ["worldX"] = 7961.75,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Moonglade;Lake Elune'ara;Stormrage Barrow Dens"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2363,
+                  ["worldY"] = -2951.72,
+                  ["worldX"] = 7564.51,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Moonglade;Lake Elune'ara;Shrine of Remulos"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2362,
+                  ["worldY"] = -2215.45,
+                  ["worldX"] = 7856.18,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Thousand Needles"] = {
+               "s;Kalimdor;Thousand Needles;Camp E'thok;Whitereach Post", -- [1]
+               "s;Kalimdor;Thousand Needles;The Screeching Canyon;Roguefeather Den", -- [2]
+               "s;Kalimdor;Thousand Needles;The Shimmering Flats;The Rustmaul Dig Site", -- [3]
+               "s;Kalimdor;Thousand Needles;The Shimmering Flats;Mirage Raceway", -- [4]
+               "s;Kalimdor;Thousand Needles;The Shimmering Flats;Tahonda Ruins", -- [5]
+               "s;Kalimdor;Thousand Needles;The Shimmering Flats;Weazel's Crater", -- [6]
+               "s;Kalimdor;Thousand Needles;Darkcloud Pinnacle;Darkcloud Pinnacle", -- [7]
+               "s;Kalimdor;Thousand Needles;Freewind Post", -- [8]
+               "s;Kalimdor;Thousand Needles;Windbreak Canyon;Ironstone Camp", -- [9]
+               "s;Kalimdor;Thousand Needles;Splithoof Crag;The Weathered Nook", -- [10]
+               "s;Kalimdor;Thousand Needles;Splithoof Crag;Splithoof Hold", -- [11]
+               ["s;Kalimdor;Thousand Needles;Camp E'thok;Whitereach Post"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2237,
+                  ["worldY"] = -1375.5,
+                  ["worldX"] = -4917.35,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;Windbreak Canyon;Ironstone Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3037,
+                  ["worldY"] = -3412.38,
+                  ["worldX"] = -5848.05,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;The Screeching Canyon;Roguefeather Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 487,
+                  ["worldY"] = -1636.27,
+                  ["worldX"] = -5466.71,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;Darkcloud Pinnacle;Darkcloud Pinnacle"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2097,
+                  ["worldY"] = -1919.44,
+                  ["worldX"] = -5086.21,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;The Shimmering Flats;Weazel's Crater"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3038,
+                  ["worldY"] = -3899.53,
+                  ["worldX"] = -5799.94,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;The Shimmering Flats;The Rustmaul Dig Site"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 479,
+                  ["worldY"] = -3449.15,
+                  ["worldX"] = -6490.61,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;Freewind Post"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 484,
+                  ["worldY"] = -2445.5,
+                  ["worldX"] = -5454.07,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;The Shimmering Flats;Mirage Raceway"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2240,
+                  ["worldY"] = -3973.12,
+                  ["worldX"] = -6239.42,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;Splithoof Crag;Splithoof Hold"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1557,
+                  ["worldY"] = -2367.61,
+                  ["worldX"] = -5065.61,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;Splithoof Crag;The Weathered Nook"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 488,
+                  ["worldY"] = -2794.53,
+                  ["worldX"] = -5213.85,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Thousand Needles;The Shimmering Flats;Tahonda Ruins"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3039,
+                  ["worldY"] = -3894.97,
+                  ["worldX"] = -6569.91,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Winterspring"] = {
+               "s;Kalimdor;Winterspring;Frostfire Hot Springs;Holzschlundfeste B", -- [1]
+               "s;Kalimdor;Winterspring;Everlook;Moon Horror Den", -- [2]
+               "s;Kalimdor;Winterspring;Everlook", -- [3]
+               "s;Kalimdor;Winterspring;Lake Kel'Theril;The Ruins of Kel'Theril", -- [4]
+               "s;Kalimdor;Winterspring;Mazthoril;Dun Mandarr", -- [5]
+               ["s;Kalimdor;Winterspring;Everlook;Moon Horror Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3139,
+                  ["worldY"] = -4631.57,
+                  ["worldX"] = 7123.02,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Winterspring;Lake Kel'Theril;The Ruins of Kel'Theril"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2252,
+                  ["worldY"] = -4304.99,
+                  ["worldX"] = 6426.76,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Winterspring;Everlook"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2255,
+                  ["worldY"] = -4662.5,
+                  ["worldX"] = 6723.46,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Winterspring;Mazthoril;Dun Mandarr"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2248,
+                  ["worldY"] = -4507.31,
+                  ["worldX"] = 5718.83,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Winterspring;Frostfire Hot Springs;Holzschlundfeste B"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1769,
+                  ["worldY"] = -2298.18,
+                  ["worldX"] = 6900.63,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Ashenvale"] = {
+               "s;Kalimdor;Ashenvale;Astranaar", -- [1]
+               "s;Kalimdor;Ashenvale;The Zoram Strand;Zoram'gar Outpost", -- [2]
+               "s;Kalimdor;Ashenvale;Fallen Sky Lake;Silverwing Outpost", -- [3]
+               "s;Kalimdor;Ashenvale;Fallen Sky Lake;The Dor'Danil Barrow Den", -- [4]
+               "s;Kalimdor;Ashenvale;Fallen Sky Lake;Silverwing Grove", -- [5]
+               "s;Kalimdor;Ashenvale;Fallen Sky Lake;Warsong Labor Camp", -- [6]
+               "s;Kalimdor;Ashenvale;Felfire Hill;Demon Fall Canyon", -- [7]
+               "s;Kalimdor;Ashenvale;Maestra's Post;Bathran's Haunt", -- [8]
+               "s;Kalimdor;Ashenvale;Maestra's Post;The Ruins of Ordil'Aran", -- [9]
+               "s;Kalimdor;Ashenvale;Mystral Lake;Bloodtooth Camp", -- [10]
+               "s;Kalimdor;Ashenvale;Mystral Lake;Talondeep Path A", -- [11]
+               "s;Kalimdor;Ashenvale;Mystral Lake;Greenpaw Village", -- [12]
+               "s;Kalimdor;Ashenvale;Mystral Lake;Silverwind Refuge", -- [13]
+               "s;Kalimdor;Ashenvale;Night Run;Falfarren River", -- [14]
+               "s;Kalimdor;Ashenvale;Satyrnaar;Forest Song", -- [15]
+               "s;Kalimdor;Ashenvale;Satyrnaar;Xavian", -- [16]
+               "s;Kalimdor;Ashenvale;Splintertree Post", -- [17]
+               ["s;Kalimdor;Ashenvale;Fallen Sky Lake;Warsong Labor Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3177,
+                  ["worldY"] = -2463.94,
+                  ["worldX"] = 1575.91,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Maestra's Post;The Ruins of Ordil'Aran"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 412,
+                  ["worldY"] = -119.601,
+                  ["worldX"] = 3493.89,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Splintertree Post"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 431,
+                  ["worldY"] = -2564.67,
+                  ["worldX"] = 2286.41,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Felfire Hill;Demon Fall Canyon"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 435,
+                  ["worldY"] = -3150.99,
+                  ["worldX"] = 1702.45,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Fallen Sky Lake;Silverwing Outpost"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2360,
+                  ["worldY"] = -2065.15,
+                  ["worldX"] = 1776.64,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Satyrnaar;Xavian"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 429,
+                  ["worldY"] = -2822.67,
+                  ["worldX"] = 2936.56,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Night Run;Falfarren River"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 433,
+                  ["worldY"] = -2222.91,
+                  ["worldX"] = 2231.21,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Maestra's Post;Bathran's Haunt"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 411,
+                  ["worldY"] = -161.305,
+                  ["worldX"] = 3827.37,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Mystral Lake;Bloodtooth Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2357,
+                  ["worldY"] = -1465.1,
+                  ["worldX"] = 1612.52,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Satyrnaar;Forest Song"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2358,
+                  ["worldY"] = -3287.54,
+                  ["worldX"] = 2880.33,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;The Zoram Strand;Zoram'gar Outpost"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2897,
+                  ["worldY"] = -1010.16,
+                  ["worldX"] = 3362.22,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Mystral Lake;Talondeep Path A"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1276,
+                  ["worldY"] = -732.677,
+                  ["worldX"] = 1930.26,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Fallen Sky Lake;The Dor'Danil Barrow Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 432,
+                  ["worldY"] = -2678.36,
+                  ["worldX"] = 1776.23,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Mystral Lake;Silverwind Refuge"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 420,
+                  ["worldY"] = -1190.25,
+                  ["worldX"] = 2130.27,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Astranaar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 415,
+                  ["worldY"] = -382.391,
+                  ["worldX"] = 2720.43,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Mystral Lake;Greenpaw Village"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2359,
+                  ["worldY"] = -1444.96,
+                  ["worldX"] = 2291.29,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Ashenvale;Fallen Sky Lake;Silverwing Grove"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3319,
+                  ["worldY"] = -1858.93,
+                  ["worldX"] = 1462.48,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Teldrassil"] = {
+               "s;Kalimdor;Teldrassil;Ban'ethil Hollow;Ban'ethil Barrow Den", -- [1]
+               "s;Kalimdor;Teldrassil;Dolanaar;Fel Rock", -- [2]
+               "s;Kalimdor;Teldrassil;Dolanaar", -- [3]
+               "s;Kalimdor;Teldrassil;Shadowglen;Aldrassil A", -- [4]
+               "s;Kalimdor;Teldrassil;Shadowglen;Shadowthread Cave", -- [5]
+               "s;Kalimdor;Teldrassil;Wellspring Lake;The Cleft", -- [6]
+               ["s;Kalimdor;Teldrassil;Shadowglen;Aldrassil A"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 256,
+                  ["worldY"] = -805.993,
+                  ["worldX"] = 10462.7,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Teldrassil;Shadowglen;Shadowthread Cave"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 257,
+                  ["worldY"] = -921.301,
+                  ["worldX"] = 10756.2,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Teldrassil;Ban'ethil Hollow;Ban'ethil Barrow Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 262,
+                  ["worldY"] = -1557.41,
+                  ["worldX"] = 9864.17,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Teldrassil;Dolanaar;Fel Rock"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 258,
+                  ["worldY"] = -1031.2,
+                  ["worldX"] = 10050.6,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Teldrassil;Dolanaar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 186,
+                  ["worldY"] = -949.897,
+                  ["worldX"] = 9787.99,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Teldrassil;Wellspring Lake;The Cleft"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 263,
+                  ["worldY"] = -1200.62,
+                  ["worldX"] = 10316.4,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Un'Goro Crater"] = {
+               "s;Kalimdor;Un'Goro Crater;Lakkari Tar Pits;Fungal Rock", -- [1]
+               "s;Kalimdor;Un'Goro Crater;Lakkari Tar Pits;Marshal's Refuge", -- [2]
+               ["s;Kalimdor;Un'Goro Crater;Lakkari Tar Pits;Marshal's Refuge"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 541,
+                  ["worldY"] = -1078.89,
+                  ["worldX"] = -6143.21,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Un'Goro Crater;Lakkari Tar Pits;Fungal Rock"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 542,
+                  ["worldY"] = -1836.52,
+                  ["worldX"] = -6370.15,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Mulgore"] = {
+               "s;Kalimdor;Mulgore;Bloodhoof", -- [1]
+               "s;Kalimdor;Mulgore;Camp Narache", -- [2]
+               "s;Kalimdor;Mulgore;The Golden Plains;The Venture Co. Mine", -- [3]
+               ["s;Kalimdor;Mulgore;The Golden Plains;The Venture Co. Mine"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 360,
+                  ["worldY"] = -1036.19,
+                  ["worldX"] = -1501.49,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Mulgore;Camp Narache"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 221,
+                  ["worldY"] = -253.607,
+                  ["worldX"] = -2906.49,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Mulgore;Bloodhoof"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 222,
+                  ["worldY"] = -394.981,
+                  ["worldX"] = -2323.92,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Dustwallow Marsh"] = {
+               "s;Kalimdor;Dustwallow Marsh;Brackenwall Village;Bluefen", -- [1]
+               "s;Kalimdor;Dustwallow Marsh;Brackenwall Village;Brackenwall Village", -- [2]
+               "s;Kalimdor;Dustwallow Marsh;Brackenwall Village;Darkmist Cavern", -- [3]
+               "s;Kalimdor;Dustwallow Marsh;Brackenwall Village;North Point Tower", -- [4]
+               "s;Kalimdor;Dustwallow Marsh;The Dragonmurk;Stonemaul Ruins", -- [5]
+               "s;Kalimdor;Dustwallow Marsh;Wyrmbog;Emberstrife's Den", -- [6]
+               "s;Kalimdor;Dustwallow Marsh;Wyrmbog;Onyxia's Lair", -- [7]
+               "s;Kalimdor;Dustwallow Marsh;Wyrmbog;Tidefury Cove", -- [8]
+               "s;Kalimdor;Dustwallow Marsh;The Den of Flame;Bloodfen Burrow", -- [9]
+               "s;Kalimdor;Dustwallow Marsh;The Quagmire;Lost Point", -- [10]
+               "s;Kalimdor;Dustwallow Marsh;The Quagmire;Shady Rest Inn", -- [11]
+               "s;Kalimdor;Dustwallow Marsh;Nijel's Point", -- [12]
+               "s;Kalimdor;Dustwallow Marsh;Witch Hill;Sentry Point", -- [13]
+               "s;Kalimdor;Dustwallow Marsh;Witch Hill;Swamplight Manor", -- [14]
+               ["s;Kalimdor;Dustwallow Marsh;The Dragonmurk;Stonemaul Ruins"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 508,
+                  ["worldY"] = -3321.15,
+                  ["worldX"] = -4346.02,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Witch Hill;Swamplight Manor"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 497,
+                  ["worldY"] = -3893.5,
+                  ["worldX"] = -2949.47,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Nijel's Point"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 608,
+                  ["worldY"] = -1308.24,
+                  ["worldX"] = 202.521,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Wyrmbog;Onyxia's Lair"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2159,
+                  ["worldY"] = -3720.58,
+                  ["worldX"] = -4698.06,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Brackenwall Village;Darkmist Cavern"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 499,
+                  ["worldY"] = -2722.81,
+                  ["worldX"] = -2829.79,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;The Den of Flame;Bloodfen Burrow"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 498,
+                  ["worldY"] = -2639.53,
+                  ["worldX"] = -4335.04,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Witch Hill;Sentry Point"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 503,
+                  ["worldY"] = -4109.08,
+                  ["worldX"] = -3476.59,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Brackenwall Village;Brackenwall Village"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 496,
+                  ["worldY"] = -2880.71,
+                  ["worldX"] = -3132.98,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Brackenwall Village;Bluefen"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 507,
+                  ["worldY"] = -3087.58,
+                  ["worldX"] = -2685.32,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Wyrmbog;Tidefury Cove"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 517,
+                  ["worldY"] = -4062.71,
+                  ["worldX"] = -4300.98,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Wyrmbog;Emberstrife's Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2158,
+                  ["worldY"] = -3832.99,
+                  ["worldX"] = -4987.73,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;The Quagmire;Lost Point"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 506,
+                  ["worldY"] = -2862.15,
+                  ["worldX"] = -3925.5,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;The Quagmire;Shady Rest Inn"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 403,
+                  ["worldY"] = -2535.18,
+                  ["worldX"] = -3723.63,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Dustwallow Marsh;Brackenwall Village;North Point Tower"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 504,
+                  ["worldY"] = -3429.99,
+                  ["worldX"] = -2884.79,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Felwood"] = {
+               "s;Kalimdor;Felwood;Irontree Woods;Irontree Cavern", -- [1]
+               "s;Kalimdor;Felwood;Bloodvenom Falls;Bloodvenom Post ", -- [2]
+               "s;Kalimdor;Felwood;Felpaw Village;Timbermaw Hold A", -- [3]
+               ["s;Kalimdor;Felwood;Bloodvenom Falls;Bloodvenom Post "] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1997,
+                  ["worldY"] = -353.403,
+                  ["worldX"] = 5111.98,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Felwood;Felpaw Village;Timbermaw Hold A"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1216,
+                  ["worldY"] = -2097.68,
+                  ["worldX"] = 6817.78,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Felwood;Irontree Woods;Irontree Cavern"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1768,
+                  ["worldY"] = -1571,
+                  ["worldX"] = 6481.87,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["capital"] = {
+               "s;Kalimdor;capital;Darnassus", -- [1]
+               "s;Kalimdor;capital;Orgrimmar", -- [2]
+               "s;Kalimdor;capital;Thunder Bluff", -- [3]
+               ["s;Kalimdor;capital;Orgrimmar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1637,
+                  ["worldY"] = -4371.16,
+                  ["worldX"] = 1381.77,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;capital;Darnassus"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1657,
+                  ["worldY"] = -2254.5,
+                  ["worldX"] = 9951.75,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;capital;Thunder Bluff"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1638,
+                  ["worldY"] = -29.4214,
+                  ["worldX"] = -1205.41,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Orgrimmar"] = {
+               "s;Kalimdor;capital;Orgrimmar", -- [1]
+               ["s;Kalimdor;capital;Orgrimmar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1637,
+                  ["worldY"] = -4371.16,
+                  ["worldX"] = 1381.77,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Desolace"] = {
+               "s;Kalimdor;Desolace;Valley of Spears;Maraudon", -- [1]
+               "s;Kalimdor;Desolace;Kodo Graveyard;Ghost Walker Post", -- [2]
+               "s;Kalimdor;Desolace;Gelkis Village;Bolgan's Hole", -- [3]
+               "s;Kalimdor;Desolace;Mannoroc Coven;Scrabblescrew's Camp", -- [4]
+               "s;Kalimdor;Desolace;Mannoroc Coven;Valley of Bones", -- [5]
+               "s;Kalimdor;Desolace;Shadowprey", -- [6]
+               ["s;Kalimdor;Desolace;Mannoroc Coven;Valley of Bones"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2657,
+                  ["worldY"] = -1513.55,
+                  ["worldX"] = -2251.19,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Desolace;Valley of Spears;Maraudon"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 349,
+                  ["areaId"] = 2100,
+                  ["worldY"] = -2918.45,
+                  ["worldX"] = -1422.62,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Desolace;Mannoroc Coven;Scrabblescrew's Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2617,
+                  ["worldY"] = -1493.13,
+                  ["worldX"] = -1407.87,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Desolace;Kodo Graveyard;Ghost Walker Post"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 597,
+                  ["worldY"] = -1736.67,
+                  ["worldX"] = -1224.06,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Desolace;Shadowprey"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2408,
+                  ["worldY"] = -3097.92,
+                  ["worldX"] = -1657.85,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Desolace;Gelkis Village;Bolgan's Hole"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 600,
+                  ["worldY"] = -2499.6,
+                  ["worldX"] = -2281.95,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Tanaris"] = {
+               "s;Kalimdor;Tanaris;Gadgetzan", -- [1]
+               "s;Kalimdor;Tanaris;Lost Rigger Cove;Wavestrider Beach", -- [2]
+               "s;Kalimdor;Tanaris;Valley of the Watchers;Uldum", -- [3]
+               ["s;Kalimdor;Tanaris;Gadgetzan"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 976,
+                  ["worldY"] = -3752.11,
+                  ["worldX"] = -7139.15,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Tanaris;Lost Rigger Cove;Wavestrider Beach"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 988,
+                  ["worldY"] = -4878.96,
+                  ["worldX"] = -7693.45,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Tanaris;Valley of the Watchers;Uldum"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 989,
+                  ["worldY"] = -2787.2,
+                  ["worldX"] = -9635.41,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Durotar"] = {
+               "s;Kalimdor;Durotar;The Den", -- [1]
+               "s;Kalimdor;Durotar;Thunder Ridge;Tor'kren Farm", -- [2]
+               "s;Kalimdor;Durotar;Razor Hill;Razor Hill", -- [3]
+               "s;Kalimdor;Durotar;Razorwind Canyon;Razorwind Canyon", -- [4]
+               "s;Kalimdor;Durotar;Sen'jin Village;Sen'jin Village", -- [5]
+               ["s;Kalimdor;Durotar;Razor Hill;Razor Hill"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 362,
+                  ["worldY"] = -4745.52,
+                  ["worldX"] = 312.659,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Durotar;Razorwind Canyon;Razorwind Canyon"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 410,
+                  ["worldY"] = -4534.04,
+                  ["worldX"] = 636.963,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Durotar;Thunder Ridge;Tor'kren Farm"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2979,
+                  ["worldY"] = -4242.41,
+                  ["worldX"] = 726.297,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Durotar;Sen'jin Village;Sen'jin Village"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 367,
+                  ["worldY"] = -4918.24,
+                  ["worldX"] = -819.492,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Durotar;The Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 364,
+                  ["worldY"] = -4202.92,
+                  ["worldX"] = -604.098,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Azshara"] = {
+               "s;Kalimdor;Azshara;Bay of Storms;Hetaera's Clutch", -- [1]
+               "s;Kalimdor;Azshara;Bay of Storms;Scalebeard's Cave", -- [2]
+               "s;Kalimdor;Azshara;Ruins of Eldarath ;Temple of Zin-Malor", -- [3]
+               "s;Kalimdor;Azshara;The Ruined Reaches;Rethress Sanctum", -- [4]
+               "s;Kalimdor;Azshara;Shadowsong Shrine;Talrendis Point", -- [5]
+               ["s;Kalimdor;Azshara;Bay of Storms;Scalebeard's Cave"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3140,
+                  ["worldY"] = -6043.45,
+                  ["worldX"] = 3705.1,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Azshara;Bay of Storms;Hetaera's Clutch"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1222,
+                  ["worldY"] = -6232.79,
+                  ["worldX"] = 3556.64,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Azshara;Shadowsong Shrine;Talrendis Point"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3137,
+                  ["worldY"] = -3869.25,
+                  ["worldX"] = 2707.72,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Azshara;Ruins of Eldarath ;Temple of Zin-Malor"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1223,
+                  ["worldY"] = -5359.12,
+                  ["worldX"] = 3549.15,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Azshara;The Ruined Reaches;Rethress Sanctum"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3138,
+                  ["worldY"] = -6438.33,
+                  ["worldX"] = 2195.67,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Feralas"] = {
+            },
+            ["The Barrens"] = {
+               "s;Kalimdor;The Barrens;The Mor'shan Rampart;Mor'shan Base Camp", -- [1]
+               "s;Kalimdor;The Barrens;Lushwater Oasis;Wailing Caverns", -- [2]
+               "s;Kalimdor;The Barrens;Fray Island", -- [3]
+               "s;Kalimdor;The Barrens;Camp Mojache", -- [4]
+               "s;Kalimdor;The Barrens;Camp Taurajo", -- [5]
+               "s;Kalimdor;The Barrens;Crossroads", -- [6]
+               "s;Kalimdor;The Barrens;Ratchet", -- [7]
+               ["s;Kalimdor;The Barrens;Fray Island"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 720,
+                  ["worldY"] = -4329.2,
+                  ["worldX"] = -1668.51,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;The Barrens;Lushwater Oasis;Wailing Caverns"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 43,
+                  ["areaId"] = 718,
+                  ["worldY"] = -2037,
+                  ["worldX"] = -837.968,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;The Barrens;Ratchet"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 392,
+                  ["worldY"] = -3680.07,
+                  ["worldX"] = -951.364,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;The Barrens;Crossroads"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 380,
+                  ["worldY"] = -2652.15,
+                  ["worldX"] = -455.9,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;The Barrens;Camp Taurajo"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 378,
+                  ["worldY"] = -1921.67,
+                  ["worldX"] = -2352.66,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;The Barrens;The Mor'shan Rampart;Mor'shan Base Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1599,
+                  ["worldY"] = -2113.34,
+                  ["worldX"] = 1035.13,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;The Barrens;Camp Mojache"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1099,
+                  ["worldY"] = -215.611,
+                  ["worldX"] = -4394.98,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Darkshore"] = {
+               "s;Kalimdor;Darkshore;Auberdine", -- [1]
+               "s;Kalimdor;Darkshore;Cliffspring;Cliffspring Falls", -- [2]
+               "s;Kalimdor;Darkshore;Grove of the Ancients;Wildbend River", -- [3]
+               "s;Kalimdor;Darkshore;The Master's Glaive;Blackwood Den", -- [4]
+               ["s;Kalimdor;Darkshore;The Master's Glaive;Blackwood Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 455,
+                  ["worldY"] = -25.6126,
+                  ["worldX"] = 4619.42,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Darkshore;Cliffspring;Cliffspring Falls"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 445,
+                  ["worldY"] = -662.396,
+                  ["worldX"] = 6870.57,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Darkshore;Auberdine"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 442,
+                  ["worldY"] = -411.951,
+                  ["worldX"] = 6439.33,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Darkshore;Grove of the Ancients;Wildbend River"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 454,
+                  ["worldY"] = -220.755,
+                  ["worldX"] = 5056.04,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Thunder Bluff"] = {
+               "s;Kalimdor;capital;Thunder Bluff", -- [1]
+               ["s;Kalimdor;capital;Thunder Bluff"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1638,
+                  ["worldY"] = -29.4214,
+                  ["worldX"] = -1205.41,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Silithus"] = {
+               "s;Kalimdor;Silithus;Twilight Base Camp;Twilight Base Camp", -- [1]
+               "s;Kalimdor;Silithus;Hive'Regal;Ortell's Hideout", -- [2]
+               "s;Kalimdor;Silithus;Hive'Zora;Twilight Post", -- [3]
+               "s;Kalimdor;Silithus;Bronzebeard Encampment;Bronzebeard Encampment", -- [4]
+               "s;Kalimdor;Silithus;Cenarion Hold;The Swarming Pillar", -- [5]
+               "s;Kalimdor;Silithus;Cenarion Hold;Bones of Grakkarond", -- [6]
+               "s;Kalimdor;Silithus;Cenarion Hold", -- [7]
+               "s;Kalimdor;Silithus;The Crystal Vale;Ravaged Twilight Camp", -- [8]
+               "s;Kalimdor;Silithus;Staghelm Point;Twilight's Run", -- [9]
+               "s;Kalimdor;Silithus;Staghelm Point;Staghelm Point", -- [10]
+               "s;Kalimdor;Silithus;Southwind Village;Valor's Rest", -- [11]
+               "s;Kalimdor;Silithus;Twilight Post;Twilight Post", -- [12]
+               ["s;Kalimdor;Silithus;The Crystal Vale;Ravaged Twilight Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3100,
+                  ["worldY"] = -1766.95,
+                  ["worldX"] = -6206.25,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Cenarion Hold;The Swarming Pillar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3097,
+                  ["worldY"] = -731.852,
+                  ["worldX"] = -7066.79,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Twilight Base Camp;Twilight Base Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2739,
+                  ["worldY"] = -1195.01,
+                  ["worldX"] = -6996.15,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Twilight Post;Twilight Post"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3098,
+                  ["worldY"] = -1636.32,
+                  ["worldX"] = -6740.04,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Hive'Regal;Ortell's Hideout"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3447,
+                  ["worldY"] = -226.396,
+                  ["worldX"] = -7586.17,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Cenarion Hold;Bones of Grakkarond"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3257,
+                  ["worldY"] = -874.224,
+                  ["worldX"] = -7234.61,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Staghelm Point;Twilight's Run"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3446,
+                  ["worldY"] = -136.591,
+                  ["worldX"] = -6310.14,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Cenarion Hold"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3425,
+                  ["worldY"] = -718.398,
+                  ["worldX"] = -6886.15,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Southwind Village;Valor's Rest"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3077,
+                  ["worldY"] = -292.647,
+                  ["worldX"] = -6404.33,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Hive'Zora;Twilight Post"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3099,
+                  ["worldY"] = -1833.28,
+                  ["worldX"] = -7929.11,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Staghelm Point;Staghelm Point"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3426,
+                  ["worldY"] = -97.5554,
+                  ["worldX"] = -6517.49,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Silithus;Bronzebeard Encampment;Bronzebeard Encampment"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 3427,
+                  ["worldY"] = -1105.84,
+                  ["worldX"] = -8021.76,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Stonetalon Mountains"] = {
+               "s;Kalimdor;Stonetalon Mountains;Stonetalon Peak;The Talon Den", -- [1]
+               "s;Kalimdor;Stonetalon Mountains;Stonetalon Peak", -- [2]
+               "s;Kalimdor;Stonetalon Mountains;Windshear Crag;Talondeep Path B", -- [3]
+               "s;Kalimdor;Stonetalon Mountains;Windshear Crag;Cragpool Lake", -- [4]
+               "s;Kalimdor;Stonetalon Mountains;Windshear Crag;Windshear Mine", -- [5]
+               "s;Kalimdor;Stonetalon Mountains;Sishir Canyon;Sishir Canyon", -- [6]
+               "s;Kalimdor;Stonetalon Mountains;Sun Rock Retreat", -- [7]
+               ["s;Kalimdor;Stonetalon Mountains;Stonetalon Peak"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 467,
+                  ["worldY"] = -1449.71,
+                  ["worldX"] = 2658.78,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Stonetalon Mountains;Stonetalon Peak;The Talon Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 468,
+                  ["worldY"] = -1792.39,
+                  ["worldX"] = 2416.89,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Stonetalon Mountains;Sishir Canyon;Sishir Canyon"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2541,
+                  ["worldY"] = -624.05,
+                  ["worldX"] = 515.845,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Stonetalon Mountains;Sun Rock Retreat"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 460,
+                  ["worldY"] = -910.974,
+                  ["worldX"] = 936.308,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Stonetalon Mountains;Windshear Crag;Cragpool Lake"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 463,
+                  ["worldY"] = -70.1338,
+                  ["worldX"] = 1543.57,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Stonetalon Mountains;Windshear Crag;Windshear Mine"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 2160,
+                  ["worldY"] = -358.9,
+                  ["worldX"] = 981.949,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Kalimdor;Stonetalon Mountains;Windshear Crag;Talondeep Path B"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1277,
+                  ["worldY"] = -576.57,
+                  ["worldX"] = 1531.94,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Darnassus"] = {
+               "s;Kalimdor;capital;Darnassus", -- [1]
+               ["s;Kalimdor;capital;Darnassus"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 1,
+                  ["areaId"] = 1657,
+                  ["worldY"] = -2254.5,
+                  ["worldX"] = 9951.75,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+         },
+         ["Eastern Kingdoms"] = {
+            "Alterac Mountains", -- [1]
+            "Arathi Highlands", -- [2]
+            "Burning Steppes", -- [3]
+            "Duskwood", -- [4]
+            "Dun Morogh", -- [5]
+            "Deadwind Pass", -- [6]
+            "capital", -- [7]
+            "The Hinterlands", -- [8]
+            "Loch Modan", -- [9]
+            "Badlands", -- [10]
+            "Eastern Plaguelands", -- [11]
+            "Redridge Mountains", -- [12]
+            "Stranglethorn Vale", -- [13]
+            "Searing Gorge", -- [14]
+            "Silverpine Forest", -- [15]
+            "Swamp of Sorrows", -- [16]
+            "Wetlands", -- [17]
+            "Tirisfal Glades", -- [18]
+            "Hillsbrad Foothills", -- [19]
+            "Elwynn Forest", -- [20]
+            "Westfall", -- [21]
+            "Western Plaguelands", -- [22]
+            "Ironforge", -- [23]
+            "Stormwind City", -- [24]
+            "Undercity", -- [25]
+            "Blasted Lands", -- [26]
+            ["The Hinterlands"] = {
+               "s;Eastern Kingdoms;The Hinterlands;Aerie Peak;Wildhammer Keep", -- [1]
+               "s;Eastern Kingdoms;The Hinterlands;Aerie Peak", -- [2]
+               "s;Eastern Kingdoms;The Hinterlands;The Overlook Cliffs;Revantusk", -- [3]
+               ["s;Eastern Kingdoms;The Hinterlands;Aerie Peak"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 348,
+                  ["worldY"] = -2127.76,
+                  ["worldX"] = 234.85,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;The Hinterlands;The Overlook Cliffs;Revantusk"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 3317,
+                  ["worldY"] = -4590.51,
+                  ["worldX"] = -573.459,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;The Hinterlands;Aerie Peak;Wildhammer Keep"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 349,
+                  ["worldY"] = -2119.3,
+                  ["worldX"] = 316.946,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Stranglethorn Vale"] = {
+               "s;Eastern Kingdoms;Stranglethorn Vale;Booty Bay;Janeiro's Point", -- [1]
+               "s;Eastern Kingdoms;Stranglethorn Vale;Booty Bay", -- [2]
+               "s;Eastern Kingdoms;Stranglethorn Vale;Grom'gol Base Camp", -- [3]
+               "s;Eastern Kingdoms;Stranglethorn Vale;Yojamba Isle", -- [4]
+               "s;Eastern Kingdoms;Stranglethorn Vale;Mistvale Valley;Spirit Den", -- [5]
+               ["s;Eastern Kingdoms;Stranglethorn Vale;Grom'gol Base Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 117,
+                  ["worldY"] = -185.734,
+                  ["worldX"] = -12378.4,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Stranglethorn Vale;Booty Bay;Janeiro's Point"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 312,
+                  ["worldY"] = -718,
+                  ["worldX"] = -14179.6,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Stranglethorn Vale;Yojamba Isle"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 3357,
+                  ["worldY"] = -1250.73,
+                  ["worldX"] = -11874.6,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Stranglethorn Vale;Booty Bay"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 35,
+                  ["worldY"] = -487.139,
+                  ["worldX"] = -14383.3,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Stranglethorn Vale;Mistvale Valley;Spirit Den"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1742,
+                  ["worldY"] = -18.3165,
+                  ["worldX"] = -13751.4,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Eastern Plaguelands"] = {
+               "s;Eastern Kingdoms;Eastern Plaguelands;Northpass Tower", -- [1]
+               "s;Eastern Kingdoms;Eastern Plaguelands;Eastwall Tower;Browman Mill", -- [2]
+               "s;Eastern Kingdoms;Eastern Plaguelands;Eastwall Tower", -- [3]
+               "s;Eastern Kingdoms;Eastern Plaguelands;Terrordale;Terrorweb Tunnel", -- [4]
+               ["s;Eastern Kingdoms;Eastern Plaguelands;Eastwall Tower"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2271,
+                  ["worldY"] = -4796.96,
+                  ["worldX"] = 2562.3,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Eastern Plaguelands;Terrordale;Terrorweb Tunnel"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2626,
+                  ["worldY"] = -2773.9,
+                  ["worldX"] = 3035.33,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Eastern Plaguelands;Northpass Tower"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2275,
+                  ["worldY"] = -4376.45,
+                  ["worldX"] = 3170.26,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Eastern Plaguelands;Eastwall Tower;Browman Mill"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2269,
+                  ["worldY"] = -5183.79,
+                  ["worldX"] = 2483.98,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Duskwood"] = {
+               "s;Eastern Kingdoms;Duskwood;The Rotting Orchard;Roland's Doom", -- [1]
+               "s;Eastern Kingdoms;Duskwood;Darkshire;Beggar's Haunt", -- [2]
+               "s;Eastern Kingdoms;Duskwood;Darkshire;Darkshire", -- [3]
+               "s;Eastern Kingdoms;Duskwood;Raven Hill", -- [4]
+               ["s;Eastern Kingdoms;Duskwood;The Rotting Orchard;Roland's Doom"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2161,
+                  ["worldY"] = -1139.98,
+                  ["worldX"] = -11076,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Duskwood;Raven Hill"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 94,
+                  ["worldY"] = -310.43338,
+                  ["worldX"] = -10752.526,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Duskwood;Darkshire;Beggar's Haunt"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 576,
+                  ["worldY"] = -1538.8,
+                  ["worldX"] = -10349.7,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Duskwood;Darkshire;Darkshire"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 42,
+                  ["worldY"] = -1170.65,
+                  ["worldX"] = -10564.7,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Blasted Lands"] = {
+               ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+               ["contintentId"] = 0,
+               ["areaId"] = 4,
+               ["worldY"] = -3389.016357421875,
+               ["worldX"] = -10997.69921875,
+               ["createdBy"] = "SkuNav",
+            },
+            ["Redridge Mountains"] = {
+               "s;Eastern Kingdoms;Redridge Mountains;Galardell Valley;Tower of Ilgalar", -- [1]
+               "s;Eastern Kingdoms;Redridge Mountains;Render's Camp;Render's Rock", -- [2]
+               "s;Eastern Kingdoms;Redridge Mountains;Rethban Caverns", -- [3]
+               "s;Eastern Kingdoms;Redridge Mountains;Lakeshire", -- [4]
+               ["s;Eastern Kingdoms;Redridge Mountains;Lakeshire"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 69,
+                  ["worldY"] = -2201.47,
+                  ["worldX"] = -9227.69,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Redridge Mountains;Rethban Caverns"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 98,
+                  ["worldY"] = -2002.7,
+                  ["worldX"] = -8970.76,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Redridge Mountains;Galardell Valley;Tower of Ilgalar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 96,
+                  ["worldY"] = -3318.81,
+                  ["worldX"] = -9281.33,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Redridge Mountains;Render's Camp;Render's Rock"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 998,
+                  ["worldY"] = -2290.05,
+                  ["worldX"] = -8674.12,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Arathi Highlands"] = {
+               "s;Eastern Kingdoms;Arathi Highlands;Stromgarde Keep;The Tower of Arathor", -- [1]
+               "s;Eastern Kingdoms;Arathi Highlands;Refuge Pointe", -- [2]
+               "s;Eastern Kingdoms;Arathi Highlands;Hammerfall;Drywhisker Gorge", -- [3]
+               "s;Eastern Kingdoms;Arathi Highlands;Hammerfall", -- [4]
+               ["s;Eastern Kingdoms;Arathi Highlands;Stromgarde Keep;The Tower of Arathor"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 325,
+                  ["worldY"] = -1513.16,
+                  ["worldX"] = -1778.21,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Arathi Highlands;Hammerfall;Drywhisker Gorge"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 318,
+                  ["worldY"] = -3827.39,
+                  ["worldX"] = -1014.22,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Arathi Highlands;Refuge Pointe"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 320,
+                  ["worldY"] = -2526.81,
+                  ["worldX"] = -1251.05,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Arathi Highlands;Hammerfall"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 321,
+                  ["worldY"] = -3528.34,
+                  ["worldX"] = -991.57,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Westfall"] = {
+               "s;Eastern Kingdoms;Westfall;Moonbrook", -- [1]
+               "s;Eastern Kingdoms;Westfall;Sentinel Hill", -- [2]
+               ["s;Eastern Kingdoms;Westfall;Sentinel Hill"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 108,
+                  ["worldY"] = -1027.76,
+                  ["worldX"] = -10503.7,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Westfall;Moonbrook"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 20,
+                  ["worldY"] = -1510.168,
+                  ["worldX"] = -11017.066,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Deadwind Pass"] = {
+               "s;Eastern Kingdoms;Deadwind Pass;The vice;Grosh'gok Compound", -- [1]
+               "s;Eastern Kingdoms;Deadwind Pass;Sleeping Gorge;Sleeping Gorge", -- [2]
+               "s;Eastern Kingdoms;Deadwind Pass;Deadman's Crossing;Ariden's Camp", -- [3]
+               "s;Eastern Kingdoms;Deadwind Pass;Deadman's Crossing;Deadwind Ravine", -- [4]
+               ["s;Eastern Kingdoms;Deadwind Pass;Deadman's Crossing;Ariden's Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2560,
+                  ["worldY"] = -2141.1,
+                  ["worldX"] = -10443.3,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Deadwind Pass;Deadman's Crossing;Deadwind Ravine"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2558,
+                  ["worldY"] = -1841.05,
+                  ["worldX"] = -10572,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Deadwind Pass;Sleeping Gorge;Sleeping Gorge"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2938,
+                  ["worldY"] = -1973.68,
+                  ["worldX"] = -10740.8,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Deadwind Pass;The vice;Grosh'gok Compound"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2937,
+                  ["worldY"] = -2335.63,
+                  ["worldX"] = -11112.2,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["capital"] = {
+               "s;Eastern Kingdoms;capital;Ironforge", -- [1]
+               "s;Eastern Kingdoms;capital;Stormwind", -- [2]
+               "s;Eastern Kingdoms;capital;Undercity", -- [3]
+               ["s;Eastern Kingdoms;capital;Ironforge"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1537,
+                  ["worldY"] = -834.059,
+                  ["worldX"] = -5021,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;capital;Undercity"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1497,
+                  ["worldY"] = -235.699,
+                  ["worldX"] = 1849.69,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;capital;Stormwind"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1519,
+                  ["worldY"] = -364.057,
+                  ["worldX"] = -9153.77,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Loch Modan"] = {
+               "s;Eastern Kingdoms;Loch Modan;North Gate Pass;Algaz Station", -- [1]
+               "s;Eastern Kingdoms;Loch Modan;Thelsamar", -- [2]
+               ["s;Eastern Kingdoms;Loch Modan;North Gate Pass;Algaz Station"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 925,
+                  ["worldY"] = -2666.7,
+                  ["worldX"] = -4817.79,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Loch Modan;Thelsamar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 144,
+                  ["worldY"] = -2959.91,
+                  ["worldX"] = -5349.27,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Burning Steppes"] = {
+               "s;Eastern Kingdoms;Burning Steppes;Ruins of Thaurissan;Flame Crest", -- [1]
+               "s;Eastern Kingdoms;Burning Steppes;Terror Wing Path;Slither Rock", -- [2]
+               ["s;Eastern Kingdoms;Burning Steppes;Ruins of Thaurissan;Flame Crest"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 251,
+                  ["worldY"] = -2186.4,
+                  ["worldX"] = -7479.77,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Burning Steppes;Terror Wing Path;Slither Rock"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 2419,
+                  ["worldY"] = -3030.61,
+                  ["worldX"] = -7652.52,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Undercity"] = {
+               "s;Eastern Kingdoms;capital;Undercity", -- [1]
+               ["s;Eastern Kingdoms;capital;Undercity"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1497,
+                  ["worldY"] = -235.699,
+                  ["worldX"] = 1849.69,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Ironforge"] = {
+               "s;Eastern Kingdoms;capital;Ironforge", -- [1]
+               ["s;Eastern Kingdoms;capital;Ironforge"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1537,
+                  ["worldY"] = -834.059,
+                  ["worldX"] = -5021,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Wetlands"] = {
+               "s;Eastern Kingdoms;Wetlands;Menethil Harbor", -- [1]
+               "s;Eastern Kingdoms;Wetlands;Dun Algaz", -- [2]
+               "s;Eastern Kingdoms;Wetlands;Dun Modr", -- [3]
+               "s;Eastern Kingdoms;Wetlands;Dragonmaw Gates;Grim Batol", -- [4]
+               ["s;Eastern Kingdoms;Wetlands;Dun Algaz"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 837,
+                  ["worldY"] = -2373.1401,
+                  ["worldX"] = -4191.0234,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Wetlands;Dragonmaw Gates;Grim Batol"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1037,
+                  ["worldY"] = -3448.54,
+                  ["worldX"] = -4055,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Wetlands;Menethil Harbor"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 150,
+                  ["worldY"] = -828.455,
+                  ["worldX"] = -3672.7,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Wetlands;Dun Modr"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 205,
+                  ["worldY"] = -2350.5583,
+                  ["worldX"] = -2610.2583,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Tirisfal Glades"] = {
+               "s;Eastern Kingdoms;Tirisfal Glades;Brill", -- [1]
+               "s;Eastern Kingdoms;Tirisfal Glades;Deathknell;Night Web's Hollow", -- [2]
+               "s;Eastern Kingdoms;Tirisfal Glades;Deathknell", -- [3]
+               ["s;Eastern Kingdoms;Tirisfal Glades;Deathknell"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 154,
+                  ["worldY"] = -1588.2028,
+                  ["worldX"] = 1879.8323,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Tirisfal Glades;Deathknell;Night Web's Hollow"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 155,
+                  ["worldY"] = -1829.45,
+                  ["worldX"] = 2046.11,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Tirisfal Glades;Brill"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 159,
+                  ["worldY"] = -278.41385,
+                  ["worldX"] = 2249.85,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Stormwind City"] = {
+               "s;Eastern Kingdoms;capital;Stormwind", -- [1]
+               ["s;Eastern Kingdoms;capital;Stormwind"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1519,
+                  ["worldY"] = -364.057,
+                  ["worldX"] = -9153.77,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Silverpine Forest"] = {
+               "s;Eastern Kingdoms;Silverpine Forest;The Sepulcher", -- [1]
+               "s;Eastern Kingdoms;Silverpine Forest;Valgan's Field;Valgan's Field", -- [2]
+               ["s;Eastern Kingdoms;Silverpine Forest;The Sepulcher"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 228,
+                  ["worldY"] = -1619.02,
+                  ["worldX"] = 508.073,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Silverpine Forest;Valgan's Field;Valgan's Field"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 227,
+                  ["worldY"] = -1255.63,
+                  ["worldX"] = 908.754,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Western Plaguelands"] = {
+               "s;Eastern Kingdoms;Western Plaguelands;The Weeping Cave;The Weeping Cave", -- [1]
+               "s;Eastern Kingdoms;Western Plaguelands;Scholomance", -- [2]
+               "s;Eastern Kingdoms;Western Plaguelands;Sorrow Hill;Chillwind Camp", -- [3]
+               "s;Eastern Kingdoms;Western Plaguelands;Sorrow Hill;Uther's Tomb", -- [4]
+               ["s;Eastern Kingdoms;Western Plaguelands;Sorrow Hill;Uther's Tomb"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 196,
+                  ["worldY"] = -1825.52,
+                  ["worldX"] = 969.176,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Western Plaguelands;Sorrow Hill;Chillwind Camp"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 3197,
+                  ["worldY"] = -1421.46,
+                  ["worldX"] = 921.054,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Western Plaguelands;Scholomance"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 289,
+                  ["areaId"] = 2057,
+                  ["worldY"] = -2579.41,
+                  ["worldX"] = 1262.19,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Western Plaguelands;The Weeping Cave;The Weeping Cave"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 198,
+                  ["worldY"] = -2389.63,
+                  ["worldX"] = 2249.61,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Elwynn Forest"] = {
+               "s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Echo Ridge Mine", -- [1]
+               "s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Northshire Vineyards", -- [2]
+               "s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey", -- [3]
+               "s;Eastern Kingdoms;Elwynn Forest;Forest's Edge;Westbrook Garrison", -- [4]
+               "s;Eastern Kingdoms;Elwynn Forest;Goldshire", -- [5]
+               "s;Eastern Kingdoms;Elwynn Forest;Mirror Lake", -- [6]
+               "s;Eastern Kingdoms;Elwynn Forest;Fargodeep Mine;The Stonefield Farm", -- [7]
+               "s;Eastern Kingdoms;Elwynn Forest;Fargodeep Mine;The Maclure Vineyards", -- [8]
+               "s;Eastern Kingdoms;Elwynn Forest;Tower of Azora;Jasperlode Mine", -- [9]
+               ["s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Echo Ridge Mine"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 34,
+                  ["worldY"] = -119.634,
+                  ["worldX"] = -8676.57,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey;Northshire Vineyards"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 59,
+                  ["worldY"] = -333.965,
+                  ["worldX"] = -9067.35,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Elwynn Forest;Tower of Azora;Jasperlode Mine"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 54,
+                  ["worldY"] = -605.891,
+                  ["worldX"] = -9184.5,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Elwynn Forest;Northshire Abbey"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 24,
+                  ["worldY"] = -179.32834,
+                  ["worldX"] = -8896.159,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Elwynn Forest;Fargodeep Mine;The Maclure Vineyards"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 64,
+                  ["worldY"] = -69.1568,
+                  ["worldX"] = -9948.39,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Elwynn Forest;Forest's Edge;Westbrook Garrison"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 120,
+                  ["worldY"] = -667.327,
+                  ["worldX"] = -9615.71,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Elwynn Forest;Mirror Lake"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 92,
+                  ["worldY"] = -458.427,
+                  ["worldX"] = -9389.26,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Elwynn Forest;Goldshire"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 87,
+                  ["worldY"] = -63.521755,
+                  ["worldX"] = -9480.089,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Elwynn Forest;Fargodeep Mine;The Stonefield Farm"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 63,
+                  ["worldY"] = -378.19,
+                  ["worldX"] = -9901.14,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Hillsbrad Foothills"] = {
+               "s;Eastern Kingdoms;Hillsbrad Foothills;Southshore", -- [1]
+               "s;Eastern Kingdoms;Hillsbrad Foothills;Tarren Mill", -- [2]
+               ["s;Eastern Kingdoms;Hillsbrad Foothills;Southshore"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 560,
+                  ["areaId"] = 2369,
+                  ["worldY"] = -531.727,
+                  ["worldX"] = -803.031,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Hillsbrad Foothills;Tarren Mill"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 560,
+                  ["areaId"] = 2368,
+                  ["worldY"] = -900.562,
+                  ["worldX"] = -27.0354,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Badlands"] = {
+               "s;Eastern Kingdoms;Badlands;Camp Cagg;Dustbelch Grotto", -- [1]
+               "s;Eastern Kingdoms;Badlands;Angor Fortress", -- [2]
+               "s;Eastern Kingdoms;Badlands;Kargath", -- [3]
+               "s;Eastern Kingdoms;Badlands;The Maker's Terrace;Uldaman", -- [4]
+               ["s;Eastern Kingdoms;Badlands;Kargath"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 340,
+                  ["worldY"] = -2186.68,
+                  ["worldX"] = -6676.42,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Badlands;The Maker's Terrace;Uldaman"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 70,
+                  ["areaId"] = 1337,
+                  ["worldY"] = -3179.35,
+                  ["worldX"] = -6092.01,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Badlands;Angor Fortress"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 338,
+                  ["worldY"] = -3158,
+                  ["worldX"] = -6392.65,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Badlands;Camp Cagg;Dustbelch Grotto"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 347,
+                  ["worldY"] = -2265.09,
+                  ["worldX"] = -7320.59,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Searing Gorge"] = {
+               "s;Eastern Kingdoms;Searing Gorge;Firewatch Ridge;Thorium Point", -- [1]
+               ["s;Eastern Kingdoms;Searing Gorge;Firewatch Ridge;Thorium Point"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1446,
+                  ["worldY"] = -1142.76,
+                  ["worldX"] = -6513.68,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Swamp of Sorrows"] = {
+               "s;Eastern Kingdoms;Swamp of Sorrows;Misty Reed Strand;Misty Reed Post", -- [1]
+               "s;Eastern Kingdoms;Swamp of Sorrows;Stagalbog;Stagalbog Cave", -- [2]
+               "s;Eastern Kingdoms;Swamp of Sorrows;Stonard", -- [3]
+               "s;Eastern Kingdoms;Swamp of Sorrows;Pool of Tears;The Temple of Atal'Hakkar", -- [4]
+               ["s;Eastern Kingdoms;Swamp of Sorrows;Stagalbog;Stagalbog Cave"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1817,
+                  ["worldY"] = -3739.01,
+                  ["worldX"] = -10803.2,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Swamp of Sorrows;Pool of Tears;The Temple of Atal'Hakkar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 109,
+                  ["areaId"] = 1477,
+                  ["worldY"] = -3828.52,
+                  ["worldX"] = -10429.9,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Swamp of Sorrows;Misty Reed Strand;Misty Reed Post"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 1978,
+                  ["worldY"] = -4093.43,
+                  ["worldX"] = -10854.8,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Swamp of Sorrows;Stonard"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 75,
+                  ["worldY"] = -3277.49,
+                  ["worldX"] = -10443.7,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Dun Morogh"] = {
+               "s;Eastern Kingdoms;Dun Morogh;Coldridge Valley;Anvilmar", -- [1]
+               "s;Eastern Kingdoms;Dun Morogh;Helm's Bed Lake;Ironband's Compound", -- [2]
+               "s;Eastern Kingdoms;Dun Morogh;Kharanos;Steelgrill's Depot", -- [3]
+               "s;Eastern Kingdoms;Dun Morogh;Kharanos", -- [4]
+               ["s;Eastern Kingdoms;Dun Morogh;Coldridge Valley;Anvilmar"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 77,
+                  ["worldY"] = -383.763,
+                  ["worldX"] = -6134.28,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Dun Morogh;Kharanos"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 131,
+                  ["worldY"] = -482.12653,
+                  ["worldX"] = -5585.9507,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Dun Morogh;Helm's Bed Lake;Ironband's Compound"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 716,
+                  ["worldY"] = -2004.1,
+                  ["worldX"] = -5858.7,
+                  ["createdBy"] = "SkuNav",
+               },
+               ["s;Eastern Kingdoms;Dun Morogh;Kharanos;Steelgrill's Depot"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 189,
+                  ["worldY"] = -658.67,
+                  ["worldX"] = -5488.04,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+            ["Alterac Mountains"] = {
+               "s;Eastern Kingdoms;Alterac Mountains;Crushridge Hold;Slaughter Hollow", -- [1]
+               ["s;Eastern Kingdoms;Alterac Mountains;Crushridge Hold;Slaughter Hollow"] = {
+                  ["createdAt"] = "Sun Apr 25 23:32:35 2021",
+                  ["contintentId"] = 0,
+                  ["areaId"] = 283,
+                  ["worldY"] = -558.217,
+                  ["worldX"] = 861.216,
+                  ["createdBy"] = "SkuNav",
+               },
+            },
+         },
 		},
    },
    ["deDE"] = {

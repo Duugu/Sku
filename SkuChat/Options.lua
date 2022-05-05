@@ -95,66 +95,121 @@ SkuChat.options = {
 				return SkuOptions.db.profile[MODULE_NAME].WowTtsVolume
 			end,
 		},
-		autoPlayPartyChat = {
-			order = 6,
-			name = L["Gruppen Chat automatisch lesen"],
+		WowTtsTags = {
+			order = 5,
+			name = L["TTS pause tags"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat = val
+				SkuOptions.db.profile[MODULE_NAME].WowTtsTags = val
 			end,
 			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].autoPlayPartyChat
+				return SkuOptions.db.profile[MODULE_NAME].WowTtsTags
 			end,
 		},
-		autoPlayGuildChat = {
+
+
+
+
+
+		autoPlaySettings = {
+			name = L["auto play Settings"],
 			order = 6,
-			name = L["Gilden Chat automatisch lesen"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].autoPlayGuildChat = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].autoPlayGuildChat
-			end,
+			type = "group",
+			args = {
+
+				autoPlayPartyChat = {
+					order = 1,
+					name = L["Gruppen Chat automatisch lesen"],
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayPartyChat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayPartyChat
+					end,
+				},
+				autoPlayGuildChat = {
+					order = 2,
+					name = L["Gilden Chat automatisch lesen"],
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayGuildChat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayGuildChat
+					end,
+				},
+				autoPlayTellChat = {
+					order = 3,
+					name = L["Flüster Chat automatisch lesen"],
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayTellChat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayTellChat
+					end,
+				},
+				autoPlayCreatureChat = {
+					order = 4,
+					name = L["Chat von kreaturen automatisch lesen"],
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayCreatureChat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayCreatureChat
+					end,
+				},
+				autoPlaySkuChannelChat = {
+					order = 5,
+					name = L["SkuChat automatisch lesen"],
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlaySkuChannelChat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlaySkuChannelChat
+					end,
+				},		
+				autoPlayRaidChat = {
+					order = 5,
+					name = L["Raid Chat automatisch lesen"],
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayRaidChat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayRaidChat
+					end,
+				},		
+				autoPlayRaidWarningChat = {
+					order = 5,
+					name = L["Raid Warnung automatisch lesen"],
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayRaidWarningChat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayRaidWarningChat
+					end,
+				},		
+			},
 		},
-		autoPlayTellChat = {
-			order = 6,
-			name = L["Flüster Chat automatisch lesen"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].autoPlayTellChat = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].autoPlayTellChat
-			end,
-		},
-		autoPlayCreatureChat = {
-			order = 6,
-			name = L["Chat von kreaturen automatisch lesen"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].autoPlayCreatureChat = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].autoPlayCreatureChat
-			end,
-		},
-		autoPlaySkuChannelChat = {
-			order = 6,
-			name = L["SkuChat automatisch lesen"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].autoPlaySkuChannelChat = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].autoPlaySkuChannelChat
-			end,
-		},		
+
+
+
+
+
+
 		joinSkuChannel = {
 			order = 7,
 			name = L["Sku Chat Channel beitreten"],
@@ -183,11 +238,16 @@ SkuChat.defaults = {
 	WowTtsVoice = 1,
 	WowTtsSpeed = 3,
 	WowTtsVolume = 50,
-	autoPlayPartyChat = true,
-	autoPlayGuildChat = false,
-	autoPlayTellChat = true,
-	autoPlayCreatureChat = false,
-	autoPlaySkuChannelChat = true,
+	WowTtsTags = true,
+	autoPlaySettings = {
+		autoPlayPartyChat = true,
+		autoPlayGuildChat = true,
+		autoPlayTellChat = true,
+		autoPlayCreatureChat = true,
+		autoPlaySkuChannelChat = true,
+		autoPlayRaidChat = true,
+		autoPlayRaidWarningChat = true,
+	},
 	joinSkuChannel = true,
 }
 

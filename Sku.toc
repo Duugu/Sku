@@ -1,8 +1,8 @@
 ## Interface: 20504
-## Title: Sku (26.2)
+## Title: Sku (27)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 26.2
+## Version: 27
 
 embeds.xml
 
@@ -50,6 +50,7 @@ SkuDB\assets\spells.lua
 SkuDB\assets\polygons.lua
 SkuDB\assets\routedata_deDE.lua
 SkuDB\assets\routedata_enUS.lua
+SkuDB\assets\wiki.lua
 
 SkuMob\Core.lua
 SkuMob\Options.lua
@@ -66,6 +67,9 @@ SkuAuras\Core.lua
 SkuAuras\defaultAuras.lua
 SkuAuras\data.lua
 SkuAuras\Options.lua
+
+SkuAdventureGuide\Core.lua
+SkuAdventureGuide\Options.lua
 
 SkuZOptions\utilities.lua
 SkuZOptions\Core.lua

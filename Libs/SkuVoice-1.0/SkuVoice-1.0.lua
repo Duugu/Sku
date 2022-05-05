@@ -257,10 +257,120 @@ function SkuVoice:StopAllOutputs()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ)
-	dprint("OutputStringBTtts(aString", aString)
-	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true then
-		SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ)
+local tLinkIgnoreList = {
+	L["Link History"],
+	L["SkuNavMenuEntry"],
+	L["SkuMobMenuEntry"],
+	L["SkuChatMenuEntry"],
+	L["SkuQuestMenuEntry"],
+	L["SkuCoreMenuEntry"],
+	L["SkuAurasMenuEntry"],
+	L["SkuOptionsMenuEntry"],
+	L["SkuAdventureGuideMenuEntry"],
+	L["Links:"],
+	L["Links"],
+	L["Link History"],
+	L["All entries"],
+	L[" (Redirected from "],
+	L["Links"],
+	L["Wiki"],
+	L["Options"],
+	L["Parent quest"],
+	L["Quests"],
+	L["Close"],
+	L["Loot roll"],
+	L["Inspect"],
+	L["Quest"],
+	L["Taxi"],
+	L["Gossip"],
+	L["Merchant"],
+	L["Popup 1"],
+	L["Popup 2"],
+	L["Popup 3"],
+	L["Pet Stable"],
+	L["Mail"],
+	L["Bag 1"],
+	L["Bag 2"],
+	L["Bag 3"],
+	L["Bag 4"],
+	L["Bag 5"],
+	L["Bag 6"],
+	L["Dropdown List 2"],
+	L["Dropdown List 1"],
+	L["Talents"],
+	L["Send Mail"],
+	L["Auction house"],
+	L["Class Trainer"],
+	L["Character"],
+	L["Reputation"],
+	L["Skills"],
+	L["Honor"],
+	L["Bagnon Taschen"],
+	L["Spellbook"],
+	L["Player Talents"],
+	L["Friends"],
+	L["Trade"],
+	L["Game Menu"],
+	L["Bagnon Bank"],
+	L["Bagnon Guild"],
+	L["Bank"],
+	L["Guild Bank"],
+	L["Panel"],
+	L["Sub panel"],
+	L["Details"],
+	L["Details panel"],
+	L["Sub panel"],
+	L["Rewards"],
+	L["Money"],
+	L["Attributes"],
+	L["Resistance"],
+	L["Items"],
+	L["Progress"],
+	L["Container"],
+	L["Text"],
+	L["Button"],
+	L["Sent"],
+	L["Send failed"],
+	L["Enter text and press ENTER key"],
+	L["Recepient missing"],
+	L["Topic missing"],
+	L["Auto follow"],
+	L["Hunter"],
+	L["Notice on pet starving"],
+	L["Left Multi Bar"],
+	L["Right Multi Bar"],
+	L["Bottom Multi Bar Left"],
+	L["Bottom Multi Bar Right"],
+	L["Main Action Bar"],
+	L["Pet Action Bar"],
+	L["Stance Action Bar"],
+	L["Macros"],
+	L["Menu empty"],
+	L["Assign nothing"],
+	L["Macro"],
+	L["Key"],
+}
+function SkuVoice:CheckIgnore(aString)
+	for i, v in pairs(tLinkIgnoreList) do
+		if aString == v then
+			return true
+		end
+		if string.find(v, aString) then
+			return true
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
+	--print("OutputStringBTtts(aString", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
+
+	if SkuVoice:CheckIgnore(aString) then
+		aIgnoreLinks = true
+	end
+
+	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true and not engine then
+		SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 		return
 	end
 
@@ -346,17 +456,17 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 		for x = 1, #tSplittedString do
 			if tonumber(tSplittedString[x]) then
-				dprint(x, "  NUMBER", tSplittedString[x])
+				--dprint(x, "  NUMBER", tSplittedString[x])
 				if not aVocalizeAsIs then
 					if not string.find(tostring(tSplittedString[x]), "%.") and not string.find(tostring(tSplittedString[x]), ",") then
 						local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
-						dprint("tFloatNumber", tFloatNumber)
+						--dprint("tFloatNumber", tFloatNumber)
 						if tonumber(tFloatNumber) < 1000000 then
 							if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
 								--float
 								local tIVal = string.format("%d", tFloatNumber)
 								local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
-								dprint("tIVal, tFVal", tIVal, tFVal)
+								--dprint("tIVal, tFVal", tIVal, tFVal)
 								--table.insert(tStrings, tIVal)
 								--table.insert(tStrings, L["KommaNumbers"])
 								--table.insert(tStrings, tFVal)
@@ -404,20 +514,27 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 	for x = 1, #tStrings do
 		if tStrings[x] == "§01" then
-			tStrings[x] = '<silence msec="100"/>'
+			if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+				tStrings[x] = '<silence msec="100"/>'
+			else
+				tStrings[x] = " "
+			end
 		end
 
-		dprint(" final",x, tStrings[x])
+		tStrings[x] = string.gsub(tStrings[x], "§", " ")
+		--dprint(" final",x, tStrings[x])
 
 		if (string.find(tStrings[x], "sound%-") or string.find(tStrings[x], "male%-")) then
-			dprint("  FIND SOUND", tStrings[x])
-			SkuVoice:OutputString(tStrings[x], aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ) -- for strings with lookup in string index
+			--dprint("  FIND SOUND", tStrings[x])
+			SkuVoice:OutputString(tStrings[x], aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
 		else
 			if (string.find(tStrings[x], "aura;sound")) then
 				--tFinalStringForBTts = tFinalStringForBTts..'<silence msec="500"/>'..tStrings[x]
 			end
 
-			tFinalStringForBTts = tFinalStringForBTts..'<silence msec="100"/>'..tStrings[x]
+			if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+				tFinalStringForBTts = tFinalStringForBTts..'<silence msec="100"/>'..tStrings[x]
+			end
 			tFinalStringForBTtsMac = tFinalStringForBTtsMac..", "..tStrings[x]
 
 		end
@@ -433,14 +550,22 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 	--tFinalStringForBTts = '<voice required="Language='..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
 	--tFinalStringForBTts = '<LANG LANGID="'..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
-	tFinalStringForBTts = '<pitch middle="0">'..tFinalStringForBTts..'</pitch>'
+	if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+		tFinalStringForBTts = '<pitch middle="0">'..tFinalStringForBTts..'</pitch>'
+	end
 	tFinalStringForBTtsMac = tFinalStringForBTtsMac
 
 	if IsMacClient() == true then
 		C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tFinalStringForBTtsMac, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+		if not aIgnoreLinks then
+			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTtsMac, "")
+		end
 	else
 		C_Timer.After(0.01, function() 
 			C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tFinalStringForBTts, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+			if not aIgnoreLinks then
+				SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTts, "")
+			end
 		end)
 	end
 
@@ -452,12 +577,16 @@ end
 ---@param aString string
 ---@param aOverwrite boolean
 ---@param aWait boolean
-function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ) -- for strings with lookup in string index
-	dprint("OutputString", aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
+function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
+	--print("OutputString", aString, aOverwrite, aWait, aLength, aDoNotOverwrite)
 	if not aString then
 		return
 	end
 	
+	if SkuVoice:CheckIgnore(aString) then
+		aIgnoreLinks = true
+	end
+
 	aDnQ = aDnQ or false
 
 	local tString = ""
@@ -507,10 +636,16 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			if IsMacClient() == true then
 				C_VoiceChat.StopSpeakingText()
 				C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+				if not aIgnoreLinks then
+					SkuOptions.TTS:GetLinksTableFromString(aString, "")
+				end
 			else
 				C_VoiceChat.StopSpeakingText()
 				C_Timer.After(0.05, function() 
 					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+					if not aIgnoreLinks then
+						SkuOptions.TTS:GetLinksTableFromString(aString, "")
+					end
 				end)
 			end
 		end
@@ -554,6 +689,11 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 		aString = Unescape(aString)
 		aString = aString:gsub("\"", "")
+
+		--collect links
+		if not aIgnoreLinks then
+			SkuOptions.TTS:GetLinksTableFromString(aString:gsub(";", " "), "")
+		end
 
 		local tStrings = {}
 		if (string.find(aString, "sound-") or string.find(aString, "male%-")) then
@@ -621,7 +761,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 
 		for x = 1, #tStrings do
-			dprint("tStrings[x] sku", tStrings[x])
+			--dprint("tStrings[x] sku", tStrings[x])
 			if tStrings[x] == "§01" then
 				tStrings[x] = "sound-silence0.1"
 			end

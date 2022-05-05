@@ -1,33 +1,47 @@
 {
 	"folders": [
 		{
+			"name": ".git",
 			"path": ".git"
 		},
 		{
+			"name": "SkuChat",
 			"path": "SkuChat"
 		},
 		{
+			"name": "SkuCore",
 			"path": "SkuCore"
 		},
 		{
+			"name": "SkuDB",
 			"path": "SkuDB"
 		},
 		{
+			"name": "SkuMob",
 			"path": "SkuMob"
 		},
 		{
+			"name": "SkuNav",
 			"path": "SkuNav"
 		},
 		{
+			"name": "SkuQuest",
 			"path": "SkuQuest"
 		},
 		{
+			"name": "SkuZOptions",
 			"path": "SkuZOptions"
 		},
 		{
+			"name": "SkuAuras",
 			"path": "SkuAuras"
 		},
 		{
+			"name": "SkuAdventureGuide",
+			"path": "SkuAdventureGuide"
+		},
+		{
+			"name": "Libs",
 			"path": "Libs"
 		}
 	]

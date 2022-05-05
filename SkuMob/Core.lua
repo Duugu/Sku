@@ -153,10 +153,10 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 	if UnitIsPlayer("target") then
 		if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders == true then
 			if UnitIsFriend("player", "target") then
-				tUnitName = L["freundlicher spieler"]
+				tUnitName = UnitName("target")..", "..L["freundlicher spieler"]
 				tIsPlayerControled = true
 			else
-				tUnitName = L["feindlicher spieler"]
+				tUnitName = UnitName("target")..", "..L["feindlicher spieler"]
 				tIsPlayerControled = true
 			end
 			noSubText = true
@@ -165,17 +165,17 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 		end
 	end
 	if UnitPlayerControlled("target") == true and UnitIsPlayer("target") == false then
-		tUnitName = L["fremder begleiter"]
+		tUnitName = UnitName("target")..", "..L["fremder begleiter"]
 		tIsPlayerControled = true
 		noSubText = true
 	end
 	if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName("target", false)) then
-		tUnitName = L["dein begleiter"]
+		tUnitName = UnitName("target")--L["dein begleiter"]
 		tIsPlayerControled = true
 		noSubText = true
 	end
 	if GetUnitName("target", false) == GetUnitName("player", false) then
-		tUnitName = L["du selbst"]
+		tUnitName = UnitName("target")--L["du selbst"]
 		tIsPlayerControled = true
 		noSubText = true
 	end
@@ -278,13 +278,25 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 
 	local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
 	if hp == 0 then
-		SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)
-		SkuOptions.Voice:OutputString(tUnitName, false, true, 0.8)
+		if tIsPlayerControled == false then
+			SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)
+			SkuOptions.Voice:OutputString(tUnitName, false, true, 0.8)
+		else
+			SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tUnitName, true, true, 0.3, nil, nil, nil, 1)
+		end
 	else
 		if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
-			SkuOptions.Voice:OutputString(tRaidTargetString, true, true, 0.8)
+			if tIsPlayerControled == false then
+				SkuOptions.Voice:OutputString(tRaidTargetString, true, true, 0.8)
+			else
+				SkuOptions.Voice:OutputStringBTtts(tRaidTargetString, true, true, 0.8, nil, nil, nil, 1)
+			end
 		else
-			SkuOptions.Voice:OutputString(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8)
+			if tIsPlayerControled == false then
+				SkuOptions.Voice:OutputString(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8)
+			else
+				SkuOptions.Voice:OutputStringBTtts(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8, nil, nil, nil, 1)
+			end
 		end
 	end
 	
@@ -303,11 +315,20 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 	if tRaidTargetString == "" or SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == false then
 		if tUnitLevel then
 			if tUnitLevel ~= -1 then
-				SkuOptions.Voice:OutputString(L["level"], false, true, 0.2)
-				SkuOptions.Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)
+				if tIsPlayerControled == false then
+					SkuOptions.Voice:OutputString(L["level"], false, true, 0.2)
+					SkuOptions.Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)
+				else
+					--aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine
+					SkuOptions.Voice:OutputStringBTtts(L["level"].." "..string.format("%02d", tUnitLevel), false, true, 0.2, nil, nil, nil, 1)
+				end
 			else
-				SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)
-				SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
+				if tIsPlayerControled == false then
+					SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)
+					SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
+				else
+					SkuOptions.Voice:OutputStringBTtts(L["level"].." "..L["Unknown"], false, true, 2.2, nil, nil, nil, 1)
+				end
 			end
 		end
 		if noSubText ~= true then

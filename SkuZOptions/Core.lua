@@ -4,6 +4,8 @@
 local MODULE_NAME = "SkuOptions"
 local L = Sku.L
 local _G = _G
+local slower = string.lower
+
 
 SkuOptions = SkuOptions or LibStub("AceAddon-3.0"):NewAddon("SkuOptions", "AceConsole-3.0", "AceEvent-3.0")
 LibStub("AceComm-3.0"):Embed(SkuOptions)
@@ -94,7 +96,7 @@ function SkuOptions:SlashFunc(input)
 	input = input:gsub( ", ", ",")
 	input = input:gsub( " ,", ",")
 
-	input = string.lower(input)
+	input = slower(input)
 	--dprint(input)
 	local sep, fields = ",", {}
 	local pattern = string.format("([^%s]+)", sep)
@@ -113,6 +115,12 @@ function SkuOptions:SlashFunc(input)
 			--dprint("SkuOptions off")
 		end
 		]]
+
+		if fields[1] == "version" then
+			local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo("Sku")
+			print(title)
+		end
+
 
 		-- NAMEPLATE TEST -->
 		if fields[1] == "test" then
@@ -189,7 +197,7 @@ function SkuOptions:SlashFunc(input)
 						end
 					end
 
-					if fields[x] == string.lower(tMenu[y].name) then
+					if fields[x] == slower(tMenu[y].name) then
 						tFoundMenuPos = tMenu[y]
 						tMenu[y].OnSelect(tMenu[y], true)
 						tMenu = tMenu[y].children
@@ -274,6 +282,9 @@ function SkuOptions:OnProfileChanged()
 	if SkuAuras then
 		SkuAuras:OnEnable()
 	end
+	if SkuAdventureGuide then
+		SkuAdventureGuide:OnEnable()
+	end
 	if SkuOptions then
 		SkuOptions:OnEnable()
 	end
@@ -303,6 +314,9 @@ function SkuOptions:OnProfileCopied()
 	end
 	if SkuAuras then
 		SkuAuras:OnEnable()
+	end
+	if SkuAdventureGuide then
+		SkuAdventureGuide:OnEnable()
 	end
 	if SkuOptions then
 		SkuOptions:OnEnable()
@@ -344,6 +358,9 @@ function SkuOptions:OnProfileReset()
 	end
 	if SkuAuras then
 		SkuAuras:OnEnable()
+	end
+	if SkuAdventureGuide then
+		SkuAdventureGuide:OnEnable()
 	end
 	if SkuOptions then
 		SkuOptions:OnEnable()
@@ -401,20 +418,46 @@ function SkuOptions:StartStopBackgroundSound(aStartStop)
 	end
 end
 
+--[[
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function TooltipLines_helper(...)
+   local tQualityString = nil
+
+	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
+	if not ItemLink then
+		itemName, ItemLink = GameTooltip:GetItem()
+	end
+	if ItemLink then
+      for x = 0, #ITEM_QUALITY_COLORS do
+         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
+         if tItemCol == "ffa334ee" then 
+            tItemCol = "ffa335ee"
+         end
+         if string.find(ItemLink, tItemCol) then
+            if _G["ITEM_QUALITY"..x.."_DESC"] then
+               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
+            end
+         end
+      end
+   end
+		
 	local rText = ""
-    for i = 1, select("#", ...) do
-        local region = select(i, ...)
-        if region and region:GetObjectType() == "FontString" then
-            local text = region:GetText() -- string or nil
+	for i = 1, select("#", ...) do
+		local region = select(i, ...)
+		if region and region:GetObjectType() == "FontString" then
+			local text = region:GetText() -- string or nil
 			if text then
-				rText = rText..text.."\r\n"
+				if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+					rText = rText..text.." ("..tQualityString..")\r\n"
+				else
+					rText = rText..text.."\r\n"
+				end
 			end
-        end
-    end
+		end
+	end
 	return rText
 end
+]]
 local escapes = {
 	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
 	["|r"] = "", -- color end
@@ -646,7 +689,7 @@ function SkuOptions:UpdateOverviewText()
 			[4] = 0,
 			[3] = -3000,
 			[2] = -6000,
-			[1] = -36000,
+			[1] = -42000,
 			}
 			local tRepLevel = 0
 			for y = 1, 8 do
@@ -708,7 +751,18 @@ function SkuOptions:CreateControlFrame()
 			ttime = ttime + time
 			if ttime > 0.1 then
 				if SkuOptions.TTS:IsVisible() == true then
-					if IsShiftKeyDown() == false and SkuOptions.ChatOpen ~= true then
+					if IsShiftKeyDown() == false and SkuOptions.ChatOpen ~= true and SkuOptions.TTS:IsAutoRead() ~= true then
+						if SkuOptions.currentMenuPosition then
+							if SkuOptions.currentMenuPosition.textFullInitial then
+								SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
+							end
+							SkuOptions.currentMenuPosition.textFullInitial = nil
+							SkuOptions.currentMenuPosition.links = {}
+							SkuOptions.currentMenuPosition.linksSelected = 0
+							SkuOptions.currentMenuPosition.currentLinkName = nil
+							SkuOptions.currentMenuPosition.linksHistory = nil
+						end
+			
 						SkuOptions.TTS:Output("", -1)
 						--SkuOptions.TTS.MainFrame:Hide()
 						SkuOptions.TTS:Hide()
@@ -856,6 +910,7 @@ function SkuOptions:CreateMainFrame()
 			end
 			return
 		end
+		--[[
 		if a == "SHIFT-DOWN" then
 			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
 			if SkuOptions.TooltipReaderText then
@@ -870,6 +925,207 @@ function SkuOptions:CreateMainFrame()
 			end
 			return
 		end
+]]
+
+		if a ~= "SHIFT-RIGHT" and a ~= "SHIFT-LEFT" and a ~= "SHIFT-ENTER" and a ~= "SHIFT-BACKSPACE" and a ~= "SHIFT-UP" and a ~= "SHIFT-DOWN" and a ~= "SHIFT-PAGEDOWN" and a ~= "CTRL-SHIFT-UP" and a ~= "CTRL-SHIFT-DOWN" then
+			if SkuOptions.TTS:IsAutoRead() == true then
+				SkuOptions.TTS:ToggleAutoRead()
+				SkuOptions.Voice:StopOutputEmptyQueue()
+			end
+			if SkuOptions.TTS:IsVisible() then
+				--SkuOptions.TTS:Output("", -1)
+				SkuOptions.TTS:Hide()
+			end
+		end
+		if a == "SHIFT-UP" then
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.textFull ~= "" then
+				if not SkuOptions.TTS:IsVisible() then
+					SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
+				end
+				SkuOptions.currentMenuPosition.links = {}
+				SkuOptions.currentMenuPosition.linksSelected = 0
+				if SkuOptions.TTS:IsAutoRead() == true then
+					SkuOptions.TTS:ToggleAutoRead()
+					SkuOptions.TTS.AutoReadEventFlag = nil
+				end					
+				SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+			end
+		end
+		if a == "SHIFT-DOWN" then
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.textFull ~= "" then
+				if not SkuOptions.TTS:IsVisible() then
+					SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
+				end
+				SkuOptions.currentMenuPosition.links = {}
+				SkuOptions.currentMenuPosition.linksSelected = 0
+				if SkuOptions.TTS:IsAutoRead() == true then
+					SkuOptions.TTS:ToggleAutoRead()
+					SkuOptions.TTS.AutoReadEventFlag = nil
+				end					
+				SkuOptions.TTS:NextLine(SkuOptions.currentMenuPosition.ttsEngine)
+			end
+		end
+		if a == "CTRL-SHIFT-UP" then
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.textFull ~= "" then
+				local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
+				if not SkuOptions.TTS:IsVisible() then
+					SkuOptions.TTS:Output(tTextFull, 1000)
+				end
+				SkuOptions.currentMenuPosition.links = {}
+				SkuOptions.currentMenuPosition.linksSelected = 0
+				if SkuOptions.TTS:IsAutoRead() == true then
+					SkuOptions.TTS:ToggleAutoRead()
+					SkuOptions.TTS.AutoReadEventFlag = nil
+				end					
+				SkuOptions.TTS:PreviousSection(SkuOptions.currentMenuPosition.ttsEngine)
+			end
+		end
+		if a == "CTRL-SHIFT-DOWN" then
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.textFull ~= "" then
+				local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
+				if not SkuOptions.TTS:IsVisible() then
+					SkuOptions.TTS:Output(tTextFull, 1000)
+				end
+				SkuOptions.currentMenuPosition.links = {}
+				SkuOptions.currentMenuPosition.linksSelected = 0
+				if SkuOptions.TTS:IsAutoRead() == true then
+					SkuOptions.TTS:ToggleAutoRead()
+					SkuOptions.TTS.AutoReadEventFlag = nil
+				end					
+				SkuOptions.TTS:NextSection(SkuOptions.currentMenuPosition.ttsEngine)
+			end
+		end
+		if a == "SHIFT-PAGEDOWN" then
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.textFull ~= "" then
+				local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
+				if not SkuOptions.TTS:IsVisible() then
+					SkuOptions.TTS:Output(tTextFull, 1000)
+				end
+				SkuOptions.currentMenuPosition.links = {}
+				SkuOptions.currentMenuPosition.linksSelected = 0
+
+				SkuOptions.TTS:ToggleAutoRead(SkuOptions.currentMenuPosition.ttsEngine)
+				
+			end
+		end
+		if a == "SHIFT-RIGHT" then
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.textFull ~= "" then
+				if SkuOptions.currentMenuPosition.links then
+					if #SkuOptions.currentMenuPosition.links > 0 then
+						SkuOptions.currentMenuPosition.linksSelected = SkuOptions.currentMenuPosition.linksSelected + 1
+						if SkuOptions.currentMenuPosition.linksSelected > #SkuOptions.currentMenuPosition.links then
+							SkuOptions.currentMenuPosition.linksSelected = #SkuOptions.currentMenuPosition.links
+						end
+						if SkuOptions.TTS:IsAutoRead() == true then
+							SkuOptions.TTS:ToggleAutoRead()
+							SkuOptions.TTS.AutoReadEventFlag = nil
+
+						end					
+						SkuOptions.TTS:NextLink(SkuOptions.currentMenuPosition.ttsEngine)
+					end
+				end
+			end
+		end
+		if a == "SHIFT-LEFT" then
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.textFull ~= "" then
+				if SkuOptions.currentMenuPosition.links then
+					if #SkuOptions.currentMenuPosition.links > 0 then
+						SkuOptions.currentMenuPosition.linksSelected = SkuOptions.currentMenuPosition.linksSelected - 1
+						if SkuOptions.currentMenuPosition.linksSelected < 1 then
+							SkuOptions.currentMenuPosition.linksSelected = 1
+						end
+						if SkuOptions.TTS:IsAutoRead() == true then
+							SkuOptions.TTS:ToggleAutoRead()
+							SkuOptions.TTS.AutoReadEventFlag = nil
+
+						end					
+						SkuOptions.TTS:PreviousLink(SkuOptions.currentMenuPosition.ttsEngine)
+					end
+				end
+			end
+		end
+		if a == "SHIFT-ENTER" then
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.textFull ~= "" then
+				if not SkuOptions.currentMenuPosition.textFullInitial then
+					SkuOptions.currentMenuPosition.textFullInitial = SkuOptions.currentMenuPosition.textFull
+				end
+				if SkuOptions.currentMenuPosition.links then
+					if #SkuOptions.currentMenuPosition.links > 0 then
+						if SkuOptions.currentMenuPosition.linksSelected > 0 then
+							if SkuOptions.TTS:IsAutoRead() == true then
+								SkuOptions.TTS:ToggleAutoRead()
+								SkuOptions.TTS.AutoReadEventFlag = nil
+
+							end					
+							SkuOptions:LoadLinkDataToTooltip(slower(SkuOptions.currentMenuPosition.links[SkuOptions.currentMenuPosition.linksSelected]))
+						end
+					end
+				end
+			end
+		end
+		if a == "SHIFT-BACKSPACE" then
+			local tHasHistory = false
+			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			if SkuOptions.currentMenuPosition.linksHistory then
+				if #SkuOptions.currentMenuPosition.linksHistory > 1 then
+					table.remove(SkuOptions.currentMenuPosition.linksHistory, 1)
+					if SkuOptions.currentMenuPosition.linksHistory[1] then
+						tHasHistory = true
+						SkuOptions:LoadLinkDataToTooltip(slower(SkuOptions.currentMenuPosition.linksHistory[1]), true)
+					end
+				end
+			end
+			if tHasHistory == false then
+				if SkuOptions.currentMenuPosition.textFullInitial then
+					SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
+				end
+				SkuOptions.currentMenuPosition.links = {}
+				SkuOptions.currentMenuPosition.linksSelected = 0
+				SkuOptions.currentMenuPosition.currentLinkName = nil
+				SkuOptions.currentMenuPosition.linksHistory = nil
+			end
+			if SkuOptions.currentMenuPosition.textFull then
+				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					if not SkuOptions.TTS:IsVisible() then
+						SkuOptions.TTS:Output(SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId), 1000)
+					end
+					SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
+
+					SkuOptions.currentMenuPosition.links = {}
+					SkuOptions.currentMenuPosition.linksSelected = 0
+					SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+				end
+			end			
+			if SkuOptions.TTS:IsAutoRead() == true then
+				SkuOptions.TTS:ToggleAutoRead()
+				SkuOptions.TTS.AutoReadEventFlag = nil
+
+			end					
+		end
+
+
+
+
+--[[
+
+
 		if a == "CTRL-SHIFT-UP" then
 			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
 			if SkuOptions.TooltipReaderText then
@@ -896,6 +1152,16 @@ function SkuOptions:CreateMainFrame()
 			end
 			return
 		end
+
+]]
+
+
+
+
+
+
+
+
 
 
 		if SkuCore.inCombat == true then
@@ -946,7 +1212,11 @@ function SkuOptions:CreateMainFrame()
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuAuras:MenuBuilder(tNewMenuEntry)
 				end
-
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuAdventureGuideMenuEntry"]}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.BuildChildren = function(self)
+					SkuAdventureGuide:MenuBuilder(tNewMenuEntry)
+				end
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuOptionsMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
@@ -1034,6 +1304,9 @@ function SkuOptions:CreateMainFrame()
 			end
 		end
 
+		if a == "SHIFT-F4" then
+			SkuOptions:SlashFunc(L["short"]..","..L["SkuAdventureGuideMenuEntry"]..","..L["Wiki"]..","..L["Link History"])
+		end
 		if a == "SHIFT-F9" then
 			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1)
 		end
@@ -1105,8 +1378,14 @@ function SkuOptions:CreateMainFrame()
 	SetOverrideBindingClick(tFrame, true, "SHIFT-DOWN", tFrame:GetName(), "SHIFT-DOWN")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-UP", tFrame:GetName(), "CTRL-SHIFT-UP")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-DOWN", tFrame:GetName(), "CTRL-SHIFT-DOWN")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-PAGEDOWN", "OnSkuOptionsMainOption1", "SHIFT-PAGEDOWN")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-RIGHT", "OnSkuOptionsMainOption1", "SHIFT-RIGHT")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-LEFT", "OnSkuOptionsMainOption1", "SHIFT-LEFT")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-ENTER", "OnSkuOptionsMainOption1", "SHIFT-ENTER")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-BACKSPACE", "OnSkuOptionsMainOption1", "SHIFT-BACKSPACE")
 
 	SetOverrideBindingClick(tFrame, true, "SHIFT-F1", tFrame:GetName(), "SHIFT-F1")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-F4", tFrame:GetName(), "SHIFT-F4")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-F9", tFrame:GetName(), "SHIFT-F9")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-F10", tFrame:GetName(), "SHIFT-F10")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-F11", tFrame:GetName(), "SHIFT-F11")
@@ -1148,6 +1427,9 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 
 	if not tDNA then
 		local tFirstLine = aUnmodifiedTextFull[1] or aUnmodifiedTextFull
+		if type(tFirstLine) == "table" then
+			tFirstLine = ""
+		end
 
 		local tFirstWord
 		if string.find(tFirstLine, " ") then
@@ -1179,9 +1461,15 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 				tItemId = aItemId
 			end
 			if tItemId then
-				table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemId))
+				local tNewSection = SkuCore:ItemRatingGetRating(tItemId)
+				if tNewSection ~= "" then
+					table.insert(tNewTextFull, tNewSection)
+				end
 			elseif tItemIdWord then
-				table.insert(tNewTextFull, SkuCore:ItemRatingGetRating(tItemIdWord))
+				local tNewSection = SkuCore:ItemRatingGetRating(tItemIdWord)
+				if tNewSection ~= "" then
+					table.insert(tNewTextFull, tNewSection)
+				end
 			end
 		end
 	end
@@ -1238,7 +1526,7 @@ function SkuOptions:CreateMenuFrame()
 			return
 		end
 
-		if aKey == "SHIFT-RIGHT" then
+		if aKey == "CTRL-RIGHT" then
 			if SkuOptions.currentMenuPosition then
 				if SkuOptions.currentMenuPosition.name ~= "" then
 					SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, false, true, 0, false, nil, nil, nil, true) -- for strings with lookup in string index
@@ -1255,7 +1543,7 @@ function SkuOptions:CreateMenuFrame()
 		OnSkuOptionsMainOnKeyPressTimer = GetTimePreciseSec()
 
 		if SkuOptions.MenuAccessKeysChars[aKey] then
-			aKey = string.lower(aKey)
+			aKey = slower(aKey)
 		end
 
 		if aKey == "SPACE" then
@@ -1273,45 +1561,48 @@ function SkuOptions:CreateMenuFrame()
 		SkuCore.openMenuAfterCombat = false
 		SkuCore.openMenuAfterMoving = false
 
-		if SkuOptions.currentMenuPosition.parent.filterable == true then
-			if  SkuOptions.MenuAccessKeysChars[aKey] or SkuOptions.MenuAccessKeysNumbers[aKey] then
-				if aKey == "shift-," then aKey = ";" end
-				if SkuOptions.Filterstring == "" then
-					--SkuCore:Debug("empty = rep")
-					SkuOptions.Filterstring = aKey
-				elseif string.len(SkuOptions.Filterstring) == 1 and ((GetTime() - OnSkuOptionsMainOption1LastInputTime) < OnSkuOptionsMainOption1LastInputTimeout) then
-					--SkuCore:Debug("1 and in time = add")
-					SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
-					aKey = ""
-				elseif  string.len(SkuOptions.Filterstring) > 1  then
-					--SkuCore:Debug("> 1 = add")
-					SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
-					aKey = ""
-				else
-					--SkuCore:Debug("1 and out of time = rep")
-					SkuOptions.Filterstring = aKey
-				end
-				OnSkuOptionsMainOption1LastInputTime = GetTime()
+		if SkuOptions.currentMenuPosition then
+			if SkuOptions.currentMenuPosition.parent then
+				if SkuOptions.currentMenuPosition.parent.filterable == true then
+					if  SkuOptions.MenuAccessKeysChars[aKey] or SkuOptions.MenuAccessKeysNumbers[aKey] then
+						if aKey == "shift-," then aKey = ";" end
+						if SkuOptions.Filterstring == "" then
+							--SkuCore:Debug("empty = rep")
+							SkuOptions.Filterstring = aKey
+						elseif string.len(SkuOptions.Filterstring) == 1 and ((GetTime() - OnSkuOptionsMainOption1LastInputTime) < OnSkuOptionsMainOption1LastInputTimeout) then
+							--SkuCore:Debug("1 and in time = add")
+							SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
+							aKey = ""
+						elseif  string.len(SkuOptions.Filterstring) > 1  then
+							--SkuCore:Debug("> 1 = add")
+							SkuOptions.Filterstring = SkuOptions.Filterstring..aKey
+							aKey = ""
+						else
+							--SkuCore:Debug("1 and out of time = rep")
+							SkuOptions.Filterstring = aKey
+						end
+						OnSkuOptionsMainOption1LastInputTime = GetTime()
 
-				if string.len(SkuOptions.Filterstring) > 1  then
-					SkuOptions:ApplyFilter(SkuOptions.Filterstring)
-					--SkuCore:Debug("filter by: ", SkuOptions.Filterstring)
-					aKey = ""
-				end
-			end
-			if  string.len(SkuOptions.Filterstring) > 1  then
-				if aKey == "BACKSPACE" then
-					SkuOptions.Filterstring = ""
-					SkuOptions:ApplyFilter(SkuOptions.Filterstring)
-					aKey = ""
-				end
-				if aKey == "LEFT" then
-					SkuOptions.Filterstring = ""
-					SkuOptions:ApplyFilter(SkuOptions.Filterstring)
+						if string.len(SkuOptions.Filterstring) > 1  then
+							SkuOptions:ApplyFilter(SkuOptions.Filterstring)
+							--SkuCore:Debug("filter by: ", SkuOptions.Filterstring)
+							aKey = ""
+						end
+					end
+					if  string.len(SkuOptions.Filterstring) > 1  then
+						if aKey == "BACKSPACE" then
+							SkuOptions.Filterstring = ""
+							SkuOptions:ApplyFilter(SkuOptions.Filterstring)
+							aKey = ""
+						end
+						if aKey == "LEFT" then
+							SkuOptions.Filterstring = ""
+							SkuOptions:ApplyFilter(SkuOptions.Filterstring)
+						end
+					end
 				end
 			end
 		end
-
 		local tVocalizeReset = true
 
 		if aKey == "UP" then
@@ -1381,17 +1672,21 @@ function SkuOptions:CreateMenuFrame()
 		end
 		PlaySound(811)
 
+		if aKey ~= "SHIFT-RIGHT" and aKey ~= "SHIFT-LEFT" and aKey ~= "SHIFT-ENTER" and aKey ~= "SHIFT-BACKSPACE" and aKey ~= "SHIFT-UP" and aKey ~= "SHIFT-DOWN" and aKey ~= "SHIFT-PAGEDOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
+			if SkuOptions.TTS:IsAutoRead() == true then
+				SkuOptions.TTS:ToggleAutoRead()
+				SkuOptions.Voice:StopOutputEmptyQueue()
+			end
+			if SkuOptions.TTS:IsVisible() then
+				--SkuOptions.TTS:Output("", -1)
+				SkuOptions.TTS:Hide()
+			end
+		end
+
 		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true then
 			SkuOptions:VocalizeCurrentMenuName(tVocalizeReset)
 			if string.len(SkuOptions.Filterstring) > 1  then
 				--SkuOptions.Voice:OutputStringBTtts("Filter", false, true, 0.3)
-			end
-		end
-
-		if aKey ~= "SHIFT-UP" and aKey ~= "SHIFT-DOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
-			if SkuOptions.TTS:IsVisible() then
-				--SkuOptions.TTS:Output("", -1)
-				SkuOptions.TTS.MainFrame:Hide()
 			end
 		end
 
@@ -1402,62 +1697,205 @@ function SkuOptions:CreateMenuFrame()
 			SkuQuest:OnSkuQuestPush()
 		end
 
-		if aKey == "SHIFT-UP" then 
-			if SkuOptions.currentMenuPosition.textFull then
-				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(tTextFull, 1000)
+		if SkuOptions.currentMenuPosition then
+			if aKey == "SHIFT-UP" then 
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
+						if not SkuOptions.TTS:IsVisible() then
+							SkuOptions.TTS:Output(tTextFull, 1000)
+						end
+						SkuOptions.currentMenuPosition.links = {}
+						SkuOptions.currentMenuPosition.linksSelected = 0
+						if SkuOptions.TTS:IsAutoRead() == true then
+							SkuOptions.TTS:ToggleAutoRead()
+							SkuOptions.TTS.AutoReadEventFlag = nil
+						end					
+						SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
 					end
-					SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
 				end
 			end
-		end
-		if aKey == "SHIFT-DOWN" then
-			if SkuOptions.currentMenuPosition.textFull then
-				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(tTextFull, 1000)
+			if aKey == "SHIFT-DOWN" then
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
+						if not SkuOptions.TTS:IsVisible() then
+							SkuOptions.TTS:Output(tTextFull, 1000)
+						end
+						SkuOptions.currentMenuPosition.links = {}
+						SkuOptions.currentMenuPosition.linksSelected = 0
+						if SkuOptions.TTS:IsAutoRead() == true then
+							SkuOptions.TTS:ToggleAutoRead()
+							SkuOptions.TTS.AutoReadEventFlag = nil
+						end					
+						SkuOptions.TTS:NextLine(SkuOptions.currentMenuPosition.ttsEngine)
 					end
-					SkuOptions.TTS:NextLine(SkuOptions.currentMenuPosition.ttsEngine)
 				end
 			end
-		end
-		if aKey == "CTRL-SHIFT-UP" then
-			if SkuOptions.currentMenuPosition.textFull then
-				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(tTextFull, 1000)
+			if aKey == "SHIFT-PAGEDOWN" then
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
+						if not SkuOptions.TTS:IsVisible() then
+							SkuOptions.TTS:Output(tTextFull, 1000)
+						end
+						SkuOptions.currentMenuPosition.links = {}
+						SkuOptions.currentMenuPosition.linksSelected = 0
+
+						SkuOptions.TTS:ToggleAutoRead(SkuOptions.currentMenuPosition.ttsEngine)
+						
 					end
-					SkuOptions.TTS:PreviousSection(SkuOptions.currentMenuPosition.ttsEngine)
 				end
 			end
-		end
-		if aKey == "CTRL-SHIFT-DOWN" then
-			if SkuOptions.currentMenuPosition.textFull then
-				if SkuOptions.currentMenuPosition.textFull ~= "" then
-					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(tTextFull, 1000)
+			if aKey == "CTRL-SHIFT-UP" then
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
+						if not SkuOptions.TTS:IsVisible() then
+							SkuOptions.TTS:Output(tTextFull, 1000)
+						end
+						SkuOptions.currentMenuPosition.links = {}
+						SkuOptions.currentMenuPosition.linksSelected = 0
+						if SkuOptions.TTS:IsAutoRead() == true then
+							SkuOptions.TTS:ToggleAutoRead()
+							SkuOptions.TTS.AutoReadEventFlag = nil
+						end					
+						SkuOptions.TTS:PreviousSection(SkuOptions.currentMenuPosition.ttsEngine)
 					end
-					SkuOptions.TTS:NextSection(SkuOptions.currentMenuPosition.ttsEngine)
 				end
 			end
+			if aKey == "CTRL-SHIFT-DOWN" then
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
+						if not SkuOptions.TTS:IsVisible() then
+							SkuOptions.TTS:Output(tTextFull, 1000)
+						end
+						SkuOptions.currentMenuPosition.links = {}
+						SkuOptions.currentMenuPosition.linksSelected = 0
+						if SkuOptions.TTS:IsAutoRead() == true then
+							SkuOptions.TTS:ToggleAutoRead()
+							SkuOptions.TTS.AutoReadEventFlag = nil
+						end					
+						SkuOptions.TTS:NextSection(SkuOptions.currentMenuPosition.ttsEngine)
+					end
+				end
+			end
+			if aKey == "SHIFT-RIGHT" then
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						if SkuOptions.currentMenuPosition.links then
+							if #SkuOptions.currentMenuPosition.links > 0 then
+								SkuOptions.currentMenuPosition.linksSelected = SkuOptions.currentMenuPosition.linksSelected + 1
+								if SkuOptions.currentMenuPosition.linksSelected > #SkuOptions.currentMenuPosition.links then
+									SkuOptions.currentMenuPosition.linksSelected = #SkuOptions.currentMenuPosition.links
+								end
+								if SkuOptions.TTS:IsAutoRead() == true then
+									SkuOptions.TTS:ToggleAutoRead()
+									SkuOptions.TTS.AutoReadEventFlag = nil
+
+								end					
+								SkuOptions.TTS:NextLink(SkuOptions.currentMenuPosition.ttsEngine)
+							end
+						end
+					end
+				end
+			end
+			if aKey == "SHIFT-LEFT" then
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						if SkuOptions.currentMenuPosition.links then
+							if #SkuOptions.currentMenuPosition.links > 0 then
+								SkuOptions.currentMenuPosition.linksSelected = SkuOptions.currentMenuPosition.linksSelected - 1
+								if SkuOptions.currentMenuPosition.linksSelected < 1 then
+									SkuOptions.currentMenuPosition.linksSelected = 1
+								end
+								if SkuOptions.TTS:IsAutoRead() == true then
+									SkuOptions.TTS:ToggleAutoRead()
+									SkuOptions.TTS.AutoReadEventFlag = nil
+
+								end					
+								SkuOptions.TTS:PreviousLink(SkuOptions.currentMenuPosition.ttsEngine)
+							end
+						end
+					end
+				end
+			end
+			if aKey == "SHIFT-ENTER" then
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						if not SkuOptions.currentMenuPosition.textFullInitial then
+							SkuOptions.currentMenuPosition.textFullInitial = SkuOptions.currentMenuPosition.textFull
+						end
+						if SkuOptions.currentMenuPosition.links then
+							if #SkuOptions.currentMenuPosition.links > 0 then
+								if SkuOptions.currentMenuPosition.linksSelected > 0 then
+									if SkuOptions.TTS:IsAutoRead() == true then
+										SkuOptions.TTS:ToggleAutoRead()
+										SkuOptions.TTS.AutoReadEventFlag = nil
+
+									end					
+									SkuOptions:LoadLinkDataToTooltip(slower(SkuOptions.currentMenuPosition.links[SkuOptions.currentMenuPosition.linksSelected]))
+								end
+							end
+						end
+					end
+				end
+			end
+			if aKey == "SHIFT-BACKSPACE" then
+				local tHasHistory = false
+				if SkuOptions.currentMenuPosition.linksHistory then
+					if #SkuOptions.currentMenuPosition.linksHistory > 1 then
+						table.remove(SkuOptions.currentMenuPosition.linksHistory, 1)
+						if SkuOptions.currentMenuPosition.linksHistory[1] then
+							tHasHistory = true
+							SkuOptions:LoadLinkDataToTooltip(slower(SkuOptions.currentMenuPosition.linksHistory[1]), true)
+						end
+					end
+				end
+				if tHasHistory == false then
+					if SkuOptions.currentMenuPosition.textFullInitial then
+						SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
+					end
+					SkuOptions.currentMenuPosition.links = {}
+					SkuOptions.currentMenuPosition.linksSelected = 0
+					SkuOptions.currentMenuPosition.currentLinkName = nil
+					SkuOptions.currentMenuPosition.linksHistory = nil
+				end
+				if SkuOptions.currentMenuPosition.textFull then
+					if SkuOptions.currentMenuPosition.textFull ~= "" then
+						if not SkuOptions.TTS:IsVisible() then
+							SkuOptions.TTS:Output(SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId), 1000)
+						end
+						SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
+
+						SkuOptions.currentMenuPosition.links = {}
+						SkuOptions.currentMenuPosition.linksSelected = 0
+						SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+					end
+				end			
+				if SkuOptions.TTS:IsAutoRead() == true then
+					SkuOptions.TTS:ToggleAutoRead()
+					SkuOptions.TTS.AutoReadEventFlag = nil
+
+				end					
+			end
 		end
-		if aKey ~= "ESCAPE" then
+
+		if aKey ~= "ESCAPE" and SkuOptions.currentMenuPosition then
 			SkuOptions:ShowVisualMenu()
 			local tTable = SkuOptions.currentMenuPosition
 			local tBread = SkuOptions.currentMenuPosition.name
 			local tResult = {}
-			while tTable.parent.name do
-				tTable = tTable.parent
-				tBread = tTable.name.." > "..tBread
-				table.insert(tResult, 1, tTable.name)
+			if tTable.parent then
+				while tTable.parent.name do
+					tTable = tTable.parent
+					tBread = tTable.name.." > "..tBread
+					table.insert(tResult, 1, tTable.name)
+				end
+				table.insert(tResult, SkuOptions.currentMenuPosition.name)
+				SkuOptions:ShowVisualMenuSelectByPath(unpack(tResult))
 			end
-			table.insert(tResult, SkuOptions.currentMenuPosition.name)
-			SkuOptions:ShowVisualMenuSelectByPath(unpack(tResult))
 		end
 	end)
 
@@ -1483,8 +1921,14 @@ function SkuOptions:CreateMenuFrame()
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "OnSkuOptionsMainOption1", "CTRL-SHIFT-DOWN")
 		SetOverrideBindingClick(self, true, "SHIFT-UP", "OnSkuOptionsMainOption1", "SHIFT-UP")
 		SetOverrideBindingClick(self, true, "SHIFT-DOWN", "OnSkuOptionsMainOption1", "SHIFT-DOWN")
+		SetOverrideBindingClick(self, true, "SHIFT-PAGEDOWN", "OnSkuOptionsMainOption1", "SHIFT-PAGEDOWN")
 
 		SetOverrideBindingClick(self, true, "SHIFT-RIGHT", "OnSkuOptionsMainOption1", "SHIFT-RIGHT")
+		SetOverrideBindingClick(self, true, "SHIFT-LEFT", "OnSkuOptionsMainOption1", "SHIFT-LEFT")
+		SetOverrideBindingClick(self, true, "SHIFT-ENTER", "OnSkuOptionsMainOption1", "SHIFT-ENTER")
+		SetOverrideBindingClick(self, true, "SHIFT-BACKSPACE", "OnSkuOptionsMainOption1", "SHIFT-BACKSPACE")
+
+		SetOverrideBindingClick(self, true, "CTRL-RIGHT", "OnSkuOptionsMainOption1", "CTRL-RIGHT")
 		SetOverrideBindingClick(self, true, "HOME", "OnSkuOptionsMainOption1", "HOME")
 		SetOverrideBindingClick(self, true, "UP", "OnSkuOptionsMainOption1", "UP")
 		SetOverrideBindingClick(self, true, "DOWN", "OnSkuOptionsMainOption1", "DOWN")
@@ -1588,6 +2032,192 @@ function SkuOptions:CreateMenuFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:GetLinkFinalRedirectTarget(aLinkName)
+	--check redirect until there is actual content or nil
+	if not SkuDB.Wiki[Sku.Loc].data[aLinkName] then
+		return
+	end
+	if not SkuDB.Wiki[Sku.Loc].data[aLinkName].redirect then
+		return aLinkName
+	end
+	
+	local visited = {}
+	local tNextRedToCheck = SkuDB.Wiki[Sku.Loc].data[aLinkName].redirect
+	while true do
+		if not SkuDB.Wiki[Sku.Loc].data[tNextRedToCheck] then
+			return
+		end
+		if visited[tNextRedToCheck] then
+			return
+		end
+		if not SkuDB.Wiki[Sku.Loc].data[tNextRedToCheck].redirect then
+			return tNextRedToCheck
+		end
+		visited[tNextRedToCheck] = true
+		tNextRedToCheck = SkuDB.Wiki[Sku.Loc].data[tNextRedToCheck].redirect
+	end
+
+	return
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tStar1ValueText = {}
+local tStar2ValueText = {}
+local tStar3ValueText = {}
+
+for x = 0, 500 do
+	tStar1ValueText[x] = x
+	tStar2ValueText[x] = x
+	tStar3ValueText[x] = x
+end
+
+function SkuOptions:FormatAndBuildSectionTable(aPlainText, aLinkName, aRedirectedFromLinkName)
+	SkuOptions.db.profile.testtext = aPlainText
+	aPlainText = string.gsub(aPlainText, "\r\n", "\n")
+	
+	--format and build the section table for SkuTTS
+	local tFormattedWikiFull, tFinalLinkName = aPlainText, aLinkName
+	--bold, italic
+	tFormattedWikiFull = string.gsub(tFormattedWikiFull, "''''''", "")
+	tFormattedWikiFull = string.gsub(tFormattedWikiFull, "'''''", "")
+	--tFormattedWikiFull = string.gsub(tFormattedWikiFull, "''''", "") --this should be never used in wiki articles
+	tFormattedWikiFull = string.gsub(tFormattedWikiFull, "'''", "")
+
+	--bullets, numbers
+	if SkuOptions.db.profile["SkuAdventureGuide"].formatEnumsInArticles ~= true then
+		tFormattedWikiFull = string.gsub(tFormattedWikiFull, "^%*", "")
+		tFormattedWikiFull = string.gsub(tFormattedWikiFull, "^%*%*", "")
+		tFormattedWikiFull = string.gsub(tFormattedWikiFull, "^%*%*%*", "")
+		tFormattedWikiFull = string.gsub(tFormattedWikiFull, "^#", "")
+		tFormattedWikiFull = string.gsub(tFormattedWikiFull, "^##", "")
+		tFormattedWikiFull = string.gsub(tFormattedWikiFull, "^###", "")
+	else
+		local tStar1Value = 0
+		local tStar2Value = 0
+		local tStar3Value = 0
+
+		local tCurrentStart = 0
+		local tNextLb = string.find(tFormattedWikiFull, "\n")
+		
+		local tFinalFormatted = ""
+		if tNextLb then
+			repeat
+				local tSubString = string.sub(tFormattedWikiFull, tCurrentStart, tNextLb)
+				local tFound = false
+				if string.sub(tSubString, 0, 3) == "***" then
+					tSubString = (tStar1ValueText[tStar1Value] or "").."."..(tStar2ValueText[tStar2Value] or "").."."..tStar3ValueText[tStar3Value + 1]..", "..string.sub(tSubString, 4) 
+					tStar3Value = tStar3Value + 1
+					tFound = true
+				else
+					tStar3Value = 0
+				end
+
+				if string.sub(tSubString, 0, 2) == "**" then
+					tSubString = (tStar1ValueText[tStar1Value] or "").."."..tStar2ValueText[tStar2Value + 1]..". "..string.sub(tSubString, 3) 
+					tStar2Value = tStar2Value + 1
+					tStar3Value = 0
+					tFound = true
+				else
+					tStar2Value = 0
+				end
+
+				if string.sub(tSubString, 0, 1) == "*" then
+					tSubString = tStar1ValueText[tStar1Value + 1]..". "..string.sub(tSubString, 2) 
+					tStar1Value = tStar1Value + 1
+					tStar2Value = 0
+					tStar3Value = 0
+					tFound = true
+				end
+
+				if tFound == false then
+					tStar1Value = 0
+					tStar2Value = 0
+					tStar3Value = 0
+				end
+				
+				tCurrentStart = tNextLb + 1
+				tNextLb = string.find(tFormattedWikiFull, "\n", tCurrentStart)
+
+				tFinalFormatted = tFinalFormatted..tSubString
+			until(not tNextLb)
+
+			local tSubString = string.sub(tFormattedWikiFull, tCurrentStart)
+			tFinalFormatted = tFinalFormatted..tSubString
+		end
+
+		if tFinalFormatted ~= "" then
+			tFormattedWikiFull = tFinalFormatted
+		end
+	end
+
+	tFormattedWikiFull = string.gsub(tFormattedWikiFull, "―", " - ")
+	tFormattedWikiFull = string.gsub(tFormattedWikiFull, "{{PAGENAME}}", tFinalLinkName)
+
+	if aRedirectedFromLinkName then
+		aRedirectedFromLinkName = L[" (Redirected from "]..aRedirectedFromLinkName..")"
+	else
+		aRedirectedFromLinkName = ""
+	end
+
+	local tFormattedWikiSections = {}
+	local tSections = {}
+	if not string.find(tFormattedWikiFull, "\n") then
+		local tSection = aLinkName..aRedirectedFromLinkName.."\n"..tFormattedWikiFull
+		table.insert(tFormattedWikiSections, tSection)
+	else
+		local tSection = aLinkName..aRedirectedFromLinkName
+		local tLastString = ""
+		for str in string.gmatch(tFormattedWikiFull, "[^\n]+") do
+			if string.sub(str, 1, 1) ~= "=" then
+				tSection = tSection.."\r\n"..str
+			else
+				table.insert(tFormattedWikiSections, tSection)
+				local tVClear = string.gsub(str, " =", "")
+				tVClear = string.gsub(tVClear, "= ", "")
+				tVClear = string.gsub(tVClear, "=", "")
+				tSection = tVClear
+			end
+			tLastString = str
+		end
+
+		table.insert(tFormattedWikiSections, tSection)
+	end
+
+	return tFormattedWikiSections
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:LoadLinkDataToTooltip(aLinkName, aDontAddToHistory)
+	local tStringLower = slower(aLinkName)
+	local tDataLink = SkuDB.Wiki[Sku.Loc].lookup[tStringLower]
+	if tDataLink then
+		local tFinalLink = SkuOptions:GetLinkFinalRedirectTarget(tDataLink)
+		if tFinalLink then
+			if not aDontAddToHistory then
+				SkuOptions.currentMenuPosition.linksHistory = SkuOptions.currentMenuPosition.linksHistory or {}
+				table.insert(SkuOptions.currentMenuPosition.linksHistory, 1, tFinalLink)
+			end
+
+			--format wiki content and build sections
+			local tFormattedWikiFull = SkuDB.Wiki[Sku.Loc].data[tFinalLink].content
+			local tFormattedWikiSections
+			if tDataLink ~= tFinalLink then
+				tFormattedWikiSections = SkuOptions:FormatAndBuildSectionTable(SkuDB.Wiki[Sku.Loc].data[tFinalLink].content, tFinalLink, tDataLink)
+			else
+				tFormattedWikiSections = SkuOptions:FormatAndBuildSectionTable(SkuDB.Wiki[Sku.Loc].data[tFinalLink].content, tFinalLink)
+			end
+
+			SkuOptions.currentMenuPosition.currentLinkName = tFinalLinkName
+			SkuOptions.currentMenuPosition.textFull = tFormattedWikiSections--tFormattedWikiFull
+			SkuOptions.TTS:Output(tFormattedWikiSections, 1000)
+			SkuOptions.currentMenuPosition.links = {}
+			SkuOptions.currentMenuPosition.linksSelected = 0
+			SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnInitialize()
 	--print("SkuOptions OnInitialize")
 
@@ -1606,6 +2236,10 @@ function SkuOptions:OnInitialize()
 	if SkuChat then
 		options.args["SkuChat"] = SkuChat.options
 		defaults.profile["SkuChat"] = SkuChat.defaults
+	end
+	if SkuAdventureGuide then
+		options.args["SkuAdventureGuide"] = SkuAdventureGuide.options
+		defaults.profile["SkuAdventureGuide"] = SkuAdventureGuide.defaults
 	end
 	if SkuMob then
 		options.args["SkuMob"] = SkuMob.options
@@ -1677,7 +2311,7 @@ end
 function SkuOptions:ApplyFilter(aFilterstring)
 	--dprint("aFilterstring", aFilterstring, SkuOptions.currentMenuPosition.parent.filterable)
 
-	aFilterstring = string.lower(aFilterstring)
+	aFilterstring = slower(aFilterstring)
 
 	if SkuOptions.currentMenuPosition.parent.filterable ~= true then
 		--SkuCore:Debug("ApplyFilter: not filterable")
@@ -1697,7 +2331,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		tFilterEntry.name = L["Filter"]..";"..aFilterstring
 		table.insert(tChildrenFiltered, tFilterEntry)
 		for x = 1, #tOldChildren do
-			local tHayStack = string.lower(tOldChildren[x].name)
+			local tHayStack = slower(tOldChildren[x].name)
 			tHayStack = string.gsub(tHayStack, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
 			tHayStack = string.gsub(tHayStack, ";", " ")
 			tHayStack = string.gsub(tHayStack, "#", " ")
@@ -1714,7 +2348,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 			end
 			tHayStack = tTempHayStack
 
-			if string.find(string.lower(tHayStack), string.lower(aFilterstring))  then
+			if string.find(slower(tHayStack), slower(aFilterstring))  then
 					table.insert(tChildrenFiltered, tOldChildren[x])
 			end
 		end
@@ -2002,7 +2636,7 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 	--handle unicode chars
 	local tString = ""
 	if string.find(tUncleanValue, L["Filter"]..";") then
-		tUncleanValue = string.lower(tUncleanValue:sub(string.len(L["Filter"]..";") + 1))
+		tUncleanValue = slower(tUncleanValue:sub(string.len(L["Filter"]..";") + 1))
 		for tChr in tUncleanValue:gmatch("[\33-\127\192-\255]?[\128-\191]*") do
 			tString = tString..tChr..";"
 		end
@@ -2110,6 +2744,9 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 		if #aGossipListTable[index].childs == 0 then
 			--dprint(aTab, x, "ENTRIY: "..aGossipListTable[index].textFirstLine)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenuTable, {aGossipListTable[index].textFirstLine}, SkuGenericMenuItem)
+			if aGossipListTable[index].noMenuNumbers then
+				tNewMenuEntry.noMenuNumbers = true
+			end
 			tNewMenuEntry.filterable = true
 			if aGossipListTable[index].textFull then
 				--[[if aGossipListTable[index].textFull ~= "" then
@@ -2276,6 +2913,35 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									end
 								end
 							end
+
+							if tItemId then
+								if _G[aGossipListTable[index].containerFrameName].count then
+									if _G[aGossipListTable[index].containerFrameName].count > 1 then
+										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["split"]}, SkuGenericMenuItem)
+										tNewSubMenuEntry.isSelect = true
+										tNewSubMenuEntry.dynamic = true
+										tNewSubMenuEntry.OnAction = function(self, a, amount)
+											local tItemId
+											if aGossipListTable[index].obj.info then
+												tItemId = aGossipListTable[index].obj.info.id
+											end
+											if not tItemId then
+												tItemId = aGossipListTable.itemId
+											end
+
+											if tItemId then
+												SplitContainerItem(_G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID(), amount)
+												SkuCore:CheckFrames()
+											end
+										end
+										tNewSubMenuEntry.BuildChildren = function(self)
+											for x = 1, _G[aGossipListTable[index].containerFrameName].count do
+												local tNewMenuSubEntryNumber = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+											end
+										end
+									end
+								end
+							end							
 						end
 					end
 				end
@@ -2284,6 +2950,10 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			--dprint(aTab, x, "SUB: "..aGossipListTable[index].textFirstLine)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenuTable, {aGossipListTable[index].textFirstLine}, SkuGenericMenuItem)
 			tNewMenuEntry.filterable = true
+			if aGossipListTable[index].noMenuNumbers then
+				tNewMenuEntry.noMenuNumbers = true
+			end
+
 			if aGossipListTable[index].textFull then
 				if aGossipListTable[index].textFull ~= "" then
 					tNewMenuEntry.textFull = aGossipListTable[index].textFull
@@ -2353,7 +3023,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					local tValue = L["On"]
 					--if self.profilePath[self.profileIndex] == true then
 					if self.optionsPath[self.profileIndex]:get() == true then
-						tValue = "Ein"
+						tValue = L["On"]
 					else
 						tValue = L["Off"]
 					end
@@ -2368,9 +3038,8 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
-					--dprint("type select OnAction", self, aValue, aName)
 					for ia, va in pairs(v.values) do
-						if va == aName then
+						if va == aName or va == L["sound"].."#"..aName or va == L["aura;sound"].."#"..aName then
 							self.profilePath[self.profileIndex] = ia
 						end
 					end
@@ -2446,6 +3115,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:StopSounds(aNumberOfSounds)
+	--print("StopSounds", aNumberOfSounds, [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\silence_1s.mp3]])
+	if SkuOptions.db.profile["SkuCore"].playNPCGreetings == true then
+		return
+	end
 	local _, currentSoundHandle = PlaySoundFile([[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\silence_1s.mp3]], "Dialog")--PlaySound(871, "Dialog")
 
 	if currentSoundHandle then

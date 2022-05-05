@@ -600,7 +600,7 @@ L["nah "]  = "near " ---distances
 L["nah"]  = "near " ---distances
 L["weit"]  = "far" --
 L["Der Südstrom"]  = "Southfury River" ---tPlayerUIMap 
-L["Die Höhlen des Wehklagens"]  = "Wailing Caverns" ---tPlayerUIMap 
+L["Die Höhlen des Wehklagens"]  = "The Wailing Caverns" ---tPlayerUIMap 
 L["Höhle der Nebel"]  = "Höhle der Nebel" ---tPlayerUIMap 
 L["Schmiedevaters Grabmal"]  = "Forgewright's Tomb" ---tPlayerUIMap 
 L["Schwarzfelsspitze"]  = "Blackrock Spire" ---tPlayerUIMap 
@@ -1311,3 +1311,31 @@ L["Aus"] = "Off"
 
 L["Auto sell junk at vendors"] = "Auto sell junk at vendors"
 L["Auto repair at vendors"] = "Auto repair at vendors"
+
+
+L["SkuAdventureGuideMenuEntry"] = "Adventure guide"
+L["Links:"] = "Links:"
+L["Link History"] = "Link History"
+L["All entries"] = "All articles"
+L[" (Redirected from "] = " (Redirected from "
+L["Sound on new link in history"] = "Sound on new link in history"
+L["Do not add seen links in history"] = "Do not add seen links in history"
+L["Links"] = "Links"
+L["List links in tooltips"] = "List links in tooltips"
+L["Only global link list in last line"] = "Only global link list in last line"
+L["word"] = "word"
+L["Link indicator in tooltips"] = "Link indicator in tooltips"
+L["TTS pause tags"] = "TTS pause tags"
+L["Wiki"] = "Wiki"
+L["auto play Settings"] = "auto read"
+L["Raid Chat automatisch lesen"] = "Automatically read raid chat"
+L["Raid Warnung automatisch lesen"] = "Automatically read raid warning chat"
+
+L["item settings"] = "item settings"
+L["show item quality"] = "show item quality"
+
+L["split"] = "split"
+
+L["numberDeciamalCharacter"] = "."
+L["Bullet lists as numbers"] = "Bullet lists as numbers"
+L["Play NPC greetings"] = "Play NPC greetings"
