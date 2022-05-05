@@ -7,16 +7,13 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r26.2](https://github.com/Duugu/Sku/releases/download/r26.2/Sku-r26.2-bcc.zip) (12.04.2022)<br>
+[SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
+[SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
+[Sku r27](https://github.com/Duugu/Sku/releases/download/r27/Sku-r27-bcc.zip) (05.05.2022)<br>
 
 *Old updates:* <br>
 [Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
-[EN - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVdzzG1v7vKniA6cQ?e=8JMT9b) (23.03.2022)<br>
-[DE - Updated Addon Package for Patch 2.5.4](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVc2QGEqgCjBitP-w?e=zZgDCR) (23.03.2022)<br>
-[Sku r25.8](https://github.com/Duugu/Sku/releases/download/r25.8/Sku-r25.8-bcc.zip) (18.03.2022)<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
-[SkuAudioData ENGLISH r3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
-[SkuAudioData DEUTSCH r30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
 [SkuBeaconSoundsets r19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
@@ -24,37 +21,129 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 -------------------------------------------------------------------------------------------------------	
 
-Changes in release 26.2
+## Changes in release 27
 
-Navigation
+### Options
+- All tooltips are now read by the Blizzard TTS, no matter if you have enabled the "Use Blizzard TTS for audio menu" option or not.
+- There is a new key for showing/reading tooltips: SHIFT + PAGE DOWN
+	SHIFT + PAGE DOWN starts automatically reading the full tooltip from the current line without having to hold down the SHIFT key or arrowing down to the next line.<br>
+	You can use SHIFT + PAGE DOWN at any place with a tooltip to have it opened and read from the first line.<br>
+	Or you could use SHIFT (hold) + DOWN as before, arrowing down through tooltip lines and use SHIFT + PAGE DOWN at any line to start auto reading from that line.<br>
+	If the auto read mode is active, then you can use SHIFT (hold) + UP/DOWN at any point to stop the auto read and manually go through the lines as usual.<br>
+	Or you can just use SHIFT + PAGE DOWN again to stop the auto-read.
+- Changed the keybind for spelling out the current menu entry from SHIFT + RIGHT to CTRL + RIGHT.
+- Fixed an issue with reputation at Exalted/Hostile on the overview page.
+- The audio menu will not longer speak speak menu numbers for bag items, as the bag items have their own numbering. (Avoiding that irritating "1 1 <itemname>" spam.)
+- Fixed a bug with background sound (spooky whale song) on open Game Menu.
+- Added a new slash command "/sku version" to output the version number of the installed sku addon in the chat.
+
+### Adventure Guide
+- This is a new main menu entry (SHIFT + F1, then DOWN to Adventure Guide). It is intended to provide additional/complementary information, that is not directly related to actual gameplay.<br>
+  For now there is only a wiki with a lot of articles from wowpedia.com, providing more information and context on the game world. <br>
+  Other planned, but not yet implemented, features are: a browsable history/log of all of your activities in the game, and our FAQ ingame.<br>
+  There is a new key bind, to access the Link History (see below): SHIFT + F4
+- The wiki and links to wiki articles in tooltips:
+	- Wiki articles:
+		You will find a list of available wiki articles under Adventure Guide > Wiki > All articles. There are almost 16k articles for english and almost 4k german articles.<br>
+		Just go to the list, and arrow down to see the available articles. Or, probably better, as there are a _lot_ of articles, filter the list as usual.<br>
+		The actual article for each entry can be read via its tooltip. You can use all common tooltip features (SHIFT + UP/DOWN to get to the next line, CTRL + SHIFT for sections, etc.) - including the new SHIFT + PAGE DOWN feature to read the full tooltip without holding the shift key.<br>
+		The content of the articles was auto-imported from wowpedia.com. There was an automatic clean-up on the wiki content, to remove everything that can't be shown/read (like tables, images, videos, etc.). That automatic clean-up should have removed most parts that can't be read in our tooltips. However, there can be things left. Like HTML tags, external URLs and more. That is expected and shouldn't happen much. If you find articles that can't be read due to a lot of clutter, please report them.<br>
+		Most of the content provides details on the game you are playing. But it virtually could be anything. Even on external stuff like the WoW trading card game or trivia or whatever. It's just what the wiki had. There was no human review.<br>
+		It even could be that there are some wiki articles that are related to later Warcraft addons (like the upcoming Lich King).<br>
+		Wiki articles can have any size - from a single line to many hundreds of lines.
+	- Links in wiki articles:
+		As with any wiki the articles have lot of links, referencing other articles. If you are reading an article, the TTS will list all links in the current line at the end of that line.<br>
+		It will say "Links: x, y, z...".<br>
+		You then can use the new key binds SHIFT + RIGHT and SHIFT + LEFT to scroll through the links in the current line.<br>
+		If you would like to follow a link, then select the link with SHIFT RIGHT/LEFT and then, on the link, press the new key bind SHIFT + ENTER. That instantly loads the linked article to the tooltip.<br>
+		Then just read the new article in the tooltip as usual.<br>
+		If you would like to get back to the previous article, you can use the new key bind SHIFT + BACKSPACE. That loads the previous article to the tooltip.<br>
+		Tip: You don't have to wait until the current line is fully read to access the links. You can use SHIFT + LEFT/RIGHT at any point to select the links of that line. Even if the TTS still is reading.
+	- Links in other parts of the game:
+		As the main idea of the wiki was to provide you more context on the game while you're playing, from now on every term that has an article will be linked to the wiki article.<br>
+		All tooltip texts in the game are continously parsed on terms with wiki articles. If there is such a term, you will find the link listed in the tooltip.<br>
+		That applies to all tooltips. Items in your bags, items at vendors, text on the overview page, etc. Just to every text that is shown by Sku.<br>
+		It also applies to every audio output that is played by the sku addon. No matter if it is an area name on entering a new area, or a mob name on targeting that mob, or what ever.<br>
+		If the addon recognizes a wiki term in such outputs, it plays a sound and adds that term to a list of recent seen links.<br>
+		You will find that list under Adventure Guide > Wiki > Link history. It has all recently seen terms with wiki articles. The most recent term is at the top of the list. The oldest at the bottom.<br>
+		Just open the tooltip of an entry in the link history list to read the wiki article.<br>
+		Some additionl details on links:
+			- The addon plays an audio notification on every linked term in outputs. But only once for each new term. The second time that a term appears somethere, it will be added to the link history list, but there won't be the link sound. The list of those "seen" links (no sound) is account wide (not just per character).
+			- The sound on links can be changed or even silenced: Adventure Guide > Options > Link History > Sound on new link in history.
+			- You can disable the announcement of links at the end of tooltip lines: Adventure Guide > Options > Links > List links in tooltips. The links are still be available, but the addon won't auto-read them anymore.
+			- If you are using the new auto-read feature for tooltips (SHIFT + PAGE DOWN), then the addon never reads links at the end of the a line. But the links are still there and can be used.
+			- There are more options. For example to use the link sound in tooltip lines, instead of having the addon read the word "Links".					
+### Navigation
+- New waypoint and map data added for DE and EN (V23, 2022-05-01).
+- Fixed an issue with missing waypoints in "The Wailing Caverns".
+- Fixed an issue with broken routes in English data (due to incorrect translated waypoint names). Example: Jasperload Mine - should now be attached to the routes network.
+- Fixed an issue with broken routes that are connected to any Enchanting Supplier in English data. Example: route to shaman trainer in Exodar.
+
+### Chat
+- All options to automatically read chat messages for different channels have been moved into a new submenu: Chat > Options > Auto read.<br>Due to that all your current settings for those options are resetted to their defaults. (That is On for all of them.)
+- Added two new options to "Auto read": Raid chat and Raid Warning Chat. Both are On as default.
+- Fixed a bug with option "Automatically read SkuChat channel" if you manually joined the SkuChat channel.
+- New option "Chat > Options > TTS pause tags" (default: on). That option is to disable invisible (internal) "pause" and "pitch" tags (SAML) in TTS outputs.<br>If you set that to Off, then the addon will play all TTS outputs without those tags. The effect will be minimal, as there are not that many strings containing a dedicated pause (prices in Auction house would be an example).<br>The second use is if you're using the NVDA voice via Sapi. Set the option to Off, to have those tags (pitch, silence) removed, to avoid that NVDA is speaking them.
+
+### Core
+- The addon now speaks the names of players and their pets via the Blizzard TTS. (Instead of the general "friendly player", etc. placeholders.)<br>As it is not possible to integreate the Blizzard TTS into the TTS queue of the Sku addon, that output will be in parallel to all other outputs. There is not way to avoid that.
+- Fixed an issue with the missing removal of greeting audio on targeting NPCs in the English version.<br>Actually everything those NPCs are saying to greet you should be silenced, as the audio menu will get active at the same time, and it is difficult to follow that if both outputs are played simultaniously. <br>That was not working and now should work. You won't hear such greetings anymore.
+- Added a new option Core > Options > Play NPC greetings to disable the removal of NPC greetings and have them played. Default: Off
+
+### Core
+- There is a new option for bag items. Each bag item has an additional sub menu "Split" to split items stacks. (Only available if the item amount is > 1)
+<br>Go to "Split", go to the submenu of Split and select the amount of items to split from that stack. 
+<br>The splitted items will be added to the mouse cursor. Then go to an empty bag slot, and select Left Click there, to place the splitted items in that empty slot.
+- It is now possible to send less than 1 gold via mail. There are new numbers in the list for the amount of gold to send. Those are:
+<br>0.01 to 0.09 (gold) - that is 1 silver to 9 silver
+<br>0.1 to 0.9 (gold) - that is 10 silver to 90 silver
+- There is a new option "Core > Options > Item settings > Show item quality". The default value is Off. With that option set to On there will be the quality of an item added to every item name in lists, tooltips, etc.
+<br>Example: "Robes of the Lich (Rare)". The item quality levels are: Poor (grey), Common (white), Uncommon (green), Rare (blue), Epic (pink). 
+- The options "Auto sell junk at vendors" and "Auto repair at vendors" under "Core > Options" have been moved to the new submenu "Core > Options > Item settings".
+<br>Thus those two settings are resetted to their default values (On for both). If you had set them to Off, you need to do that again.
+
+### Sku Minimap - only for route/waypoint editors (not relevant for players): 
+- Adjusted the waypoint size of the Sku MM on zooming in/out.
+
+
+
+
+
+
+
+
+
+## Changes in release 26.2
+
+### Navigation
 - Fixed an issue that lead to incorrect compass directions with "Show global direction in waypoint lists" enabled in some regions.
 
-DB
+### DB
 - Added coordinates to npc Lillith Nefara in Tirisfal Glades.
 - Added a Start to the Quest Demon Scarred Cloak. (Not that useful, as that creature is wandering around.)
 
-Quest
+### Quest
 - Fixed a bug with quest start/target/end for objects and items that are on other continents (example: "Until Death Do Us Part", starts in Kalimdor, ends in Eastern Kingdoms). List was shown as Empty. Now there is an entry, letting you know the continent and zone name. You can't navigate there, tough, as one can't directly navigate from one continent to another. But you at least know what continent you need to  go to use a route to that waypoint.
 
-Core
+### Core
 - Fixed CTRL + SHIFT + T to read tooltips of items you're currently rolling on.
 - Fixed missing en translations for "On" and "Off" for "Usable only" in action filters.
 - Fixed a bug with popup windows (like someone is inviting you to a group or guild). The addon was always selecting "Accept", not matter if you did a left click on "Accept" or "Decline". Now "Decline" is working as intended.
 - New option: "Auto sell junk at vendors" (default: On)
 - New option: "Auto repair at vendors" (default: On)
 
-Changes in release 26.1
+## Changes in release 26.1
 
-SkuOptions
+### SkuOptions
 - The "Use Blizzard TTS for audio menu" should now respect the settings from "Chat > Options > TTS voice" and "> TTS speed".
 
-SkuMob
+### SkuMob
 - Removed all outputs for players with "Announce player controled units with generic descriptions" set to Off.
 - Removed the in-combat-sound for player controlled units.
 
-Changes in release 26
+## Changes in release 26
 
-SkuOptions
+### SkuOptions
 - New option: SkuOptions > Options > Use Blizzard TTS for audio menu. The default value is Off.<br>
 With that option the audio menu will use the Blizzard TTS engine for everything, instead of the usual custom Sku TTS engine. (Using settings in "Chat > Options > TTS voice and TTS speed".)<br>
 Please enable the new option, and test that carefully. Feedback on how useful that is would be appreciated. If it turns out to be better, I could set that option to On as default.
@@ -62,24 +151,24 @@ Please enable the new option, and test that carefully. Feedback on how useful th
   Because of that names change, all menu shortcuts (Shift + F9-F12) are resetted to their defaults. If you had other menu items assigned to those shortcuts, you need to do that again.
 - Added the realm/server name to the line with the player name on the overview page.
 
-SkuQuest
+### SkuQuest
 - Fixed a bug with available quests for Undead characters. The list shouldn't be empty anymore.
 
-SkuAuras
+### SkuAuras
 - Fixed an issue with "item use"/"item count" and "output once". Should work as expected now.
 
-SkuNav
+### SkuNav
 - Fixed an issue with english localization of mailboxes. All mailboxes should now be available in waypoint and route lists.
 
-SkuChat
+### SkuChat
 - New option: while reading the chat you now can use Arrow Right to to tell/whisper the sender of the current chat line. You don't need to type the recipients name. Just press Arrow Right on any chat line and start typing your message + Enter to send. This feature needs to be tested carefully!
 - Fixed an issue with the click sound at the end of audio messages via the Blizzard TTS. If you've disabled that, it won't get re-enabled on reload/login anymore.
 
-SkuMob
+### SkuMob
 - New option SkuMob > Options > Announce player controled units with generic descriptions. The default value is On. With this option set to Off the addon won't speak generic descriptions for players. (Example: "friendly player" on targeting a friendly player.)
 - New option SkuMob > Options > Repeat target markers on units. The default value is Off. With that option set to On each raid target marker will be repeated. (Example: "Skull, Skull, Level 60")
 
-SkuAuras
+### SkuAuras
 - Added more number values to the "Item count" attribute (110, 120, 130, 140, 150, 200, 300, 400, 500).
 
 ## Changes in release 25.16
