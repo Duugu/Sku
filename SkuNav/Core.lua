@@ -328,6 +328,10 @@ function SkuNav:waypointWasVisited(wpName)
 	return visitedWaypointsSet[wpName]
 end
 
+function SkuNav:clearVisitedWaypoints()
+	visitedWaypointsSet = {}
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:LoadLinkDataFromProfile()
 	dprint("LoadLinkDataFromProfile")

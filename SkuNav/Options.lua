@@ -700,6 +700,12 @@ function SkuNav:MenuBuilder(aParentEntry)
 			end
 		end
 
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Clear visited"]}, SkuGenericMenuItem)
+	tNewMenuEntry.OnAction = function(self, aValue, aName)
+		SkuNav:clearVisitedWaypoints()
+		PlaySound(835)
+	end
+
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Verwalten"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
