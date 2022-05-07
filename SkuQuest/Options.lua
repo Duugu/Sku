@@ -431,6 +431,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {L["Route"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.isSelect = true
+				tNewMenuSubEntry1.filterable = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					--print("Route onaction", self, aValue, aName)
 					if SkuOptions.db.profile["SkuNav"].routeRecording == true then
@@ -484,11 +485,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
 						SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = nil
 
-								
-						local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
-						tNewMenuGeneralSort.dynamic = true
-						tNewMenuGeneralSort.filterable = true
-						tNewMenuGeneralSort.BuildChildren = function(self)
+						do -- build route choices
 							local tData = {}
 							for i, v in pairs(tMetapaths) do
 								for wpIndex, wpName in pairs(wpTable) do
@@ -534,60 +531,13 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								end
 							end
 						end
-						local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["By name"]}, SkuGenericMenuItem)
-						tNewMenuGeneralSort.dynamic = true
-						tNewMenuGeneralSort.filterable = true
-						tNewMenuGeneralSort.BuildChildren = function(self)
-							local tRoutesList = {}
-
-							for v, i in pairs(tMetapaths) do
-								for wpIndex, wpName in pairs(wpTable) do
-									if string.find(v, wpName) then
-										--print("find:", v, wpName)
-										tRoutesList[v] = v
-									end
-								end
-							end
-
-							local tSortedWaypointList = {}
-							for k,v in SkuSpairs(tRoutesList) do
-								table.insert(tSortedWaypointList, k)
-							end
-							if #tSortedWaypointList == 0 then
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
-							else
-								for tK, tV in ipairs(tSortedWaypointList) do
-									local tDistText = tMetapaths[tV].distance..L[";Meter"]
-									if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
-										tDistText = L["weit"]
-									end
-									
-									-- add direction to wp
-									local tDirectionTargetWp = ""
-									if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
-										local tWpData = SkuNav:GetWaypointData2(tV)
-										local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
-										if tDirectionString then
-											tDirectionTargetWp = ";"..tDirectionString
-										end
-									end
-									tDistText = tDistText..tDirectionTargetWp
-
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem)
-									tNewMenuEntry.OnEnter = function(self, aValue, aName)
-										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
-									end
-									tCoveredWps[tV] = true
-									--tHasContent = true
-								end
-							end
-						end						
 					end
 				end
-			
+
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {L["Closest route"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.isSelect = true
+				tNewMenuSubEntry1.filterable = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					--dprint("OnAction", self.name, aValue, aName)
 					if SkuOptions.db.profile["SkuNav"].routeRecording == true then
@@ -673,10 +623,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							end
 						end
 
-						local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
-						tNewMenuGeneralSort.dynamic = true
-						tNewMenuGeneralSort.filterable = true
-						tNewMenuGeneralSort.BuildChildren = function(self)
+						do -- build choices
 							local tSortedList = {}
 							for k,v in SkuSpairs(tResults, function(t,a,b) return t[b].weightedDistance > t[a].weightedDistance end) do
 								table.insert(tSortedList, k)
@@ -695,35 +642,13 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								end
 							end
 						end
-
-						local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["Nach Name"]}, SkuGenericMenuItem)
-						tNewMenuGeneralSort.dynamic = true
-						tNewMenuGeneralSort.filterable = true
-						tNewMenuGeneralSort.BuildChildren = function(self)
-							local tSortedWaypointList = {}
-							for k,v in SkuSpairs(tResults) do
-								table.insert(tSortedWaypointList, k)
-							end
-							if #tSortedWaypointList == 0 then
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
-							else
-								for tK, tV in ipairs(tSortedWaypointList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuNav:getAnnotatedWaypointLabel(tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..L[";Meter"]..tResults[tV].direction, tV)}, SkuGenericMenuItem)
-									tNewMenuEntry.OnEnter = function(self, aValue, aName)
-										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
-										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
-									end
-									tCoveredWps[tV] = true
-									--tHasContent = true
-								end
-							end
-						end						
 					end
 				end
 			
 				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {L["Wegpunkt"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry1.dynamic = true
 				tNewMenuSubEntry1.isSelect = true
+				tNewMenuSubEntry1.filterable = true
 				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
 					--dprint("OnAction Wegpunkt auswählen", self.name, aValue, aName)
 					if SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
@@ -746,10 +671,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 
 				end
 				tNewMenuSubEntry1.BuildChildren = function(self)
-					local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
-					tNewMenuGeneralSort.dynamic = true
-					tNewMenuGeneralSort.filterable = true
-					tNewMenuGeneralSort.BuildChildren = function(self)
+					do -- build choices
 						local tPlayX, tPlayY = UnitPosition("player")
 
 						local tResults = {}
@@ -785,47 +707,6 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							end
 						end
 					end
-					local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["Nach Name"]}, SkuGenericMenuItem)
-					tNewMenuGeneralSort.dynamic = true
-					tNewMenuGeneralSort.filterable = true
-					tNewMenuGeneralSort.BuildChildren = function(self)
-						SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = nil
-						local tPlayX, tPlayY = UnitPosition("player")
-
-						local tResults = {}
-						for wpIndex, wpName in pairs(wpTable) do
-							local tWpObj = SkuNav:GetWaypointData2(wpName)
-							local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
-
-							-- add direction to wp
-							local tDirectionTargetWp = ""
-							if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
-								local tDirectionString = SkuNav:GetDirectionToAsString(tWpObj.worldX, tWpObj.worldY)
-								if tDirectionString then
-									tDirectionTargetWp = ";"..tDirectionString
-								end
-							end
-
-							tResults[wpName] = {wpName = wpName, distance = tDistanceTargetWp, direction = tDirectionTargetWp,}							
-						end
-
-						local tSortedList = {}
-						for k,v in SkuSpairs(tResults, function(t,a,b) return b > a end) do
-							table.insert(tSortedList, k)
-						end
-						if #tSortedList == 0 then
-							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
-						else
-							for tK, tV in ipairs(tSortedList) do
-								local tNewMenuGeneralSp = SkuOptions:InjectMenuItems(self, {SkuNav:getAnnotatedWaypointLabel(tV.."#"..tResults[tV].distance..L[";Meter"]..tResults[tV].direction, tV)}, SkuGenericMenuItem)
-								tNewMenuGeneralSp.OnEnter = function(self, aValue, aName)
-									SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint = tV
-								end
-								--tHasContent = true
-							end
-						end
-					end
-
 				end
 			end
 		end
@@ -1383,7 +1264,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.filterable = true
 		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-			--SkuOptions.db:SetProfile(aName)
+			--SkuOptions.db:SetSProfile(aName)
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
 			local tNameCache = {}
