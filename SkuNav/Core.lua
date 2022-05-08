@@ -307,7 +307,10 @@ function SkuNav:CreateWaypointCache()
 
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- { string -> boolean }
 local visitedWaypointsSet = {}
+-- string -> nil
 function SkuNav:setWaypointVisited(wpName)
 	-- only track visited for things players would be interested in farming, like hostile NPCs and objects
 	-- assuming if NPC has no role, then hostile, but some friendly NPCs also don't have a role, like guards
@@ -324,10 +327,13 @@ function SkuNav:setWaypointVisited(wpName)
 	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- string -> optional<boolean>
 function SkuNav:waypointWasVisited(wpName)
 	return visitedWaypointsSet[wpName]
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:clearVisitedWaypoints()
 	visitedWaypointsSet = {}
 end

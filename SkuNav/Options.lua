@@ -284,6 +284,8 @@ local function SkuSpairs(t, order)
 	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- (string, optional<string>) -> string
 function SkuNav:getAnnotatedWaypointLabel(originalLabel, id)
 	-- annotate with "visited" if visited
 	local wpID = id or string.sub(originalLabel, string.find(originalLabel, "#") + 1)
