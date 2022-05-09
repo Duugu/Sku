@@ -81,7 +81,7 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].includeDefaultTaxiWaypoints
 			end
 		},
-]]		
+		]]		
 		beaconVolume = {
 			order = 2,
 			name = L["Beacon Volume"],
@@ -236,6 +236,18 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].showGlobalDirectionInWaypointLists
 			end
 		},
+		trackVisited = {
+			order = 12,
+			name = "Track whether waypoints were visited",
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].trackVisited = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].trackVisited
+			end
+		},
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -260,6 +272,7 @@ SkuNav.defaults = {
 	clickClackSoundset = "beep",
 	autoGlobalDirection = false,
 	showGlobalDirectionInWaypointLists = false,
+	trackVisited = true,
 }
 
 local slower = string.lower
