@@ -308,8 +308,8 @@ function SkuNav:CreateWaypointCache()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- { string -> boolean }
-local visitedWaypointsSet = {}
+-- Dictionary mapping waypoint ids to last time they were visited or nil if unvisited
+local waypointVisitedDict = {}
 -- string -> nil
 function SkuNav:setWaypointVisited(wpName)
 	-- only track visited for things players would be interested in farming, like hostile NPCs and objects
@@ -323,19 +323,26 @@ function SkuNav:setWaypointVisited(wpName)
 			-- is hostile NPC
 			or (wp.typeId == 2 and wp.role == "")
 		) then
-		visitedWaypointsSet[wpName] = true
+		waypointVisitedDict[wpName] = GetServerTime()
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- string -> optional<boolean>
+-- string -> boolean
 function SkuNav:waypointWasVisited(wpName)
-	return visitedWaypointsSet[wpName]
+	local lastVisited = waypointVisitedDict[wpName]
+	if lastVisited == nil then return false end
+	local timeToExpire = 5 * 60 -- 5 minutes
+	if GetServerTime() - lastVisited > timeToExpire then
+		-- visited status has expired
+		waypointVisitedDict[wpName] = nil
+		return false
+	else return true end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:clearVisitedWaypoints()
-	visitedWaypointsSet = {}
+	waypointVisitedDict = {}
 end
 
 ------------------------------------------------------------------------------------------------------------------------
