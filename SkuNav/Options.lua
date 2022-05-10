@@ -13,6 +13,11 @@ SkuNav.StandardWpReachedRanges = {
    [3] = L["Auto"],
 }
 
+local timeForVisitedToExpireValues = {"disabled", "1 minute"}
+for i=2, 30 do
+	timeForVisitedToExpireValues[i+1] = i .. " minutes"
+end
+
 SkuNav.options = {
 	name = MODULE_NAME,
 	type = "group",
@@ -248,6 +253,19 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].trackVisited
 			end
 		},
+		timeForVisitedToExpire = {
+			order = 13,
+			name = "visited automatically expires after",
+			desc = "",
+			type = "select",
+			values = timeForVisitedToExpireValues,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].timeForVisitedToExpire = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].timeForVisitedToExpire
+			end
+		},
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -273,6 +291,7 @@ SkuNav.defaults = {
 	autoGlobalDirection = false,
 	showGlobalDirectionInWaypointLists = false,
 	trackVisited = true,
+	timeForVisitedToExpire = 6, -- 5 minutes
 }
 
 local slower = string.lower

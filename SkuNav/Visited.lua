@@ -28,7 +28,9 @@ function SkuNav:waypointWasVisited(wpName)
 	if not SkuOptions.db.profile[MODULE_NAME].trackVisited then return false end
 	local lastVisited = waypointVisitedDict[wpName]
 	if lastVisited == nil then return false end
-	local timeToExpire = 5 * 60 -- 5 minutes
+	local timeToExpire = (SkuOptions.db.profile[MODULE_NAME].timeForVisitedToExpire - 1) * 60
+	-- 0 = refresh disabled
+	if timeToExpire == 0 then return true end
 	if GetServerTime() - lastVisited > timeToExpire then
 		-- visited status has expired
 		waypointVisitedDict[wpName] = nil
