@@ -85,8 +85,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param input string
-function SkuOptions:SlashFunc(input)
-	--print("SkuOptions:SlashFunc(input)", input)
+function SkuOptions:SlashFunc(input, aSilent)
+	--print("++SkuOptions:SlashFunc(input)", input, aSilent)
 	--SkuOptions.AceConfigDialog:Open("SkuOptions")
 
 	if not input then
@@ -211,7 +211,7 @@ function SkuOptions:SlashFunc(input)
 				if SkuOptions.currentMenuPosition.children then
 					if #SkuOptions.currentMenuPosition.children > 0 then
 						SkuOptions.currentMenuPosition:OnSelect()
-						SkuOptions:VocalizeCurrentMenuName()
+						SkuOptions:VocalizeCurrentMenuName()--SkuOptions.currentMenuPosition:BuildChildren(SkuOptions.currentMenuPosition)
 					else
 						SkuOptions.currentMenuPosition:OnSelect()
 						SkuOptions:CloseMenu()
@@ -1404,6 +1404,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
+	--print("AddExtraTooltipData", aUnmodifiedTextFull, aItemId)
 	if not aUnmodifiedTextFull then
 		return ""
 	end
@@ -1417,9 +1418,22 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 	end
 
 	local tDNA
+	local tRatingIndex = #aUnmodifiedTextFull
 	for i, v in pairs(aUnmodifiedTextFull) do
 		if string.find(v, L["Wertung:"]) then
 			tDNA = true
+			tRatingIndex = i
+		end
+	end
+
+	if aItemId then
+		local void, void, Rarity, void, void, void, void, void, void, void, copperItemPrice = GetItemInfo(aItemId)
+		if copperItemPrice then
+			if copperItemPrice > 0 then
+				table.insert(aUnmodifiedTextFull, tRatingIndex + 1, L["Händlerpreis"]..": "..SkuGetCoinText(copperItemPrice, true, nil)..L[" (for 1 item)"])
+			else
+				table.insert(aUnmodifiedTextFull, tRatingIndex + 1, L["Nicht verkaufbar"])
+			end
 		end
 	end
 
@@ -2564,7 +2578,7 @@ end
 ---@param aDuration number duration of the audio
 ---@param aDoNotOverride bool if this audio could be reseted by others
 function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs)
-	dprint("VocalizeMultipartString", aStr)
+	--print("--VocalizeMultipartString", aStr)
 
 	-- don't vocalize object numbers
 	local tTempHayStack = string.gsub(aStr, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
@@ -2582,30 +2596,31 @@ function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoN
 		if fields then
 			--first part (with q reset)
 			--if SkuAudioFileIndex[tostring(fields[1])] or tonumber(fields[x]) then --element is in string index
-				SkuOptions.Voice:OutputString(fields[1], aReset, aWait, 0.2, aDoNotOverride, nil, nil, nil, nil, aVocalizeAsIs)
+				SkuOptions.Voice:OutputStringBTtts(fields[1], aReset, aWait, 0.2, aDoNotOverride, nil, nil, nil, nil, aVocalizeAsIs)
 			--else
 				--SkuOptions.Voice:Output(fields[1]:lower()..".mp3", true, true, 0.2)
-				--SkuOptions.Voice:OutputString("Keine Audiodatei", true, true, 0.2)
+				--SkuOptions.Voice:OutputStringBTtts("Keine Audiodatei", true, true, 0.2)
 			--end
 			--remaining parts (w/o q reset)
 			for x = 2, #fields do
 				--if SkuAudioFileIndex[tostring(fields[x])] or tonumber(fields[x]) then --element is in string index
-					SkuOptions.Voice:OutputString(fields[x], false, aWait, 0.2, aDoNotOverride, nil, nil, nil, nil, aVocalizeAsIs)
+					SkuOptions.Voice:OutputStringBTtts(fields[x], false, aWait, 0.2, aDoNotOverride, nil, nil, nil, nil, aVocalizeAsIs)
 					--else
 					--SkuOptions.Voice:Output(fields[x]:lower()..".mp3", false, true, 0.2)
-				--	SkuOptions.Voice:OutputString("Keine Audiodatei", false, true, 0.2)
+				--	SkuOptions.Voice:OutputStringBTtts("Keine Audiodatei", false, true, 0.2)
 				--end
 			end
 		end
 	else
-		SkuOptions.Voice:OutputString(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, engine, nil, aVocalizeAsIs)
+		SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, engine, nil, aVocalizeAsIs)
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aReset bool reset queue
 function SkuOptions:VocalizeCurrentMenuName(aReset)
-	dprint("VocalizeCurrentMenuName", aReset)
+	--print("--VocalizeCurrentMenuName", aReset, debugstack())
+	
 	if aReset == nil then aReset = true end
 
 	local tTable = SkuOptions.currentMenuPosition
@@ -2664,6 +2679,8 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 	end
 
 	local tFinalString = ""
+
+	tMenuNumber = tMenuNumber or ""
 
 	if SkuOptions.db.profile[MODULE_NAME].vocalizeMenuNumbers == true and  SkuOptions.currentMenuPosition.noMenuNumbers ~= true then
 		tFinalString = tFinalString..tMenuNumber..";"

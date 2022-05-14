@@ -1336,3 +1336,23 @@ L["split"] = "Teilen"
 L["numberDeciamalCharacter"] = ","
 L["Bullet lists as numbers"] = "Aufzählungen nummerieren"
 L["Play NPC greetings"] = "NPC Begrüßungen abspielen"
+
+L["Händlerpreis"] = "Händlerpreis"
+L[" (for 1 item)"] = " pro Stück"
+L["Nicht verkaufbar"] = "Nicht verkaufbar"
+
+L["Rewards"] = "Belohnungen"
+L["Greeting"] = "Auswahl"
+L["Accepted Quest"] = "Angenommene Quest"
+L["Available Quest"] = "Verfügbare Quest"
+L["Progress"] = "Fortschritt"
+L["Detail"] = "Details"
+L["Accept"] = "Annehmen" --verb
+L["Ablehnen"] = "Ablehnen"--verb
+L["Abgabe"] = "Abgabe"
+L["Complete"] = "Abschließen" --verb
+
+L["Quest Items"] = "Questgegenstände"
+L["WoW Token (China Only)"] = "WoW-Marke (nur China)"
+L["Show herbs and mining node waypoints"] = "Wegpunkte für Kräuter und Bergbau anzeigen"
+L["Item Text"] = "Gegenstand Text"

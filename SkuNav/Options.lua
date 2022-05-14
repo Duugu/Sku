@@ -236,6 +236,24 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].showGlobalDirectionInWaypointLists
 			end
 		},
+		showGatherWaypoints = {
+			order = 11,
+			name = L["Show herbs and mining node waypoints"],
+			desc = "",
+			type = "toggle",
+			OnAction = function(info,val)
+				SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
+				SkuNav:CreateWaypointCache()
+				SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
+				SkuNav:LoadLinkDataFromProfile()
+			end,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints
+			end
+		},		
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -260,6 +278,7 @@ SkuNav.defaults = {
 	clickClackSoundset = "beep",
 	autoGlobalDirection = false,
 	showGlobalDirectionInWaypointLists = false,
+	showGatherWaypoints = false,
 }
 
 local slower = string.lower
