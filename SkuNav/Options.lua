@@ -13,6 +13,11 @@ SkuNav.StandardWpReachedRanges = {
    [3] = L["Auto"],
 }
 
+local timeForVisitedToExpireValues = {"disabled", "1 minute"}
+for i=2, 30 do
+	timeForVisitedToExpireValues[i+1] = i .. " minutes"
+end
+
 SkuNav.options = {
 	name = MODULE_NAME,
 	type = "group",
@@ -81,7 +86,7 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].includeDefaultTaxiWaypoints
 			end
 		},
-]]		
+		]]		
 		beaconVolume = {
 			order = 2,
 			name = L["Beacon Volume"],
@@ -236,6 +241,31 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].showGlobalDirectionInWaypointLists
 			end
 		},
+		trackVisited = {
+			order = 12,
+			name = "Track whether waypoints were visited",
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].trackVisited = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].trackVisited
+			end
+		},
+		timeForVisitedToExpire = {
+			order = 13,
+			name = "visited automatically expires after",
+			desc = "",
+			type = "select",
+			values = timeForVisitedToExpireValues,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].timeForVisitedToExpire = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].timeForVisitedToExpire
+			end
+		},
 		showGatherWaypoints = {
 			order = 11,
 			name = L["Show herbs and mining node waypoints"],
@@ -278,6 +308,8 @@ SkuNav.defaults = {
 	clickClackSoundset = "beep",
 	autoGlobalDirection = false,
 	showGlobalDirectionInWaypointLists = false,
+	trackVisited = true,
+	timeForVisitedToExpire = 6, -- 5 minutes
 	showGatherWaypoints = false,
 }
 
@@ -304,10 +336,21 @@ local function SkuSpairs(t, order)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+-- (string, optional<string>) -> string
+function SkuNav:getAnnotatedWaypointLabel(originalLabel, id)
+	-- annotate with "visited" if visited
+	local wpID = id or string.sub(originalLabel, string.find(originalLabel, "#") + 1)
+	if SkuNav:waypointWasVisited(wpID) then
+		return "visited " .. originalLabel
+	else return originalLabel
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypointList)
 	--dprint("SkuNav_MenuBuilder_WaypointSelectionMenu")
 	for i, waypointName in pairs(aSortedWaypointList) do
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {waypointName}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuNav:getAnnotatedWaypointLabel(waypointName)}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = nil
@@ -316,7 +359,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 			--select wp
 			local tNewMenuEntrySub = SkuOptions:InjectMenuItems(self, {L["Auswählen"]}, SkuGenericMenuItem)
 			tNewMenuEntrySub.OnEnter = function(self)
-				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = self.parent.name
+				SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_NPC = waypointName
 			end
 
 			--close rts
@@ -384,10 +427,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 						end
 					end
 
-					local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
-					tNewMenuGeneralSort.dynamic = true
-					tNewMenuGeneralSort.filterable = true
-					tNewMenuGeneralSort.BuildChildren = function(self)
+					do -- build choice
 						local tSortedList = {}
 						for k,v in SkuSpairs(tResults, function(t,a,b) return t[b].weightedDistance > t[a].weightedDistance end) do
 							table.insert(tSortedList, k)
@@ -407,31 +447,6 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 							end
 						end
 					end
-
-					local tNewMenuGeneralSort = SkuOptions:InjectMenuItems(self, {L["Nach Name"]}, SkuGenericMenuItem)
-					tNewMenuGeneralSort.dynamic = true
-					tNewMenuGeneralSort.filterable = true
-					tNewMenuGeneralSort.BuildChildren = function(self) 
-						local tSortedWaypointList = {}
-						for k,v in SkuSpairs(tResults) do
-							table.insert(tSortedWaypointList, k)
-						end
-						if #tSortedWaypointList == 0 then
-							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
-						else
-							for tK, tV in ipairs(tSortedWaypointList) do
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tV.."#"..tResults[tV].metapathLength..";"..L["plus"]..";"..tResults[tV].distanceTargetWp..L[";Meter"]..tResults[tV].direction}, SkuGenericMenuItem)
-								tNewMenuEntry.OnEnter = function(self, aValue, aName)
-									SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
-									SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
-									SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = true
-								end
-								tCoveredWps[tV] = true
-								--tHasContent = true
-							end
-						end
-					end
-										
 				end			
 
 			end
@@ -709,6 +724,12 @@ function SkuNav:MenuBuilder(aParentEntry)
 				--PlaySound(835)
 			end
 		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Clear visited"]}, SkuGenericMenuItem)
+	tNewMenuEntry.OnAction = function(self, aValue, aName)
+		SkuNav:clearVisitedWaypoints()
+		PlaySound(835)
+	end
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Verwalten"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
@@ -1022,7 +1043,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 									end
 									tDistText = tDistText..tDirectionTargetWp									
 
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDistText.."#"..tV}, SkuGenericMenuItem)--
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem) --
 									tNewMenuEntry.OnEnter = function(self)
 										SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypoint = nil
 										SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData = nil

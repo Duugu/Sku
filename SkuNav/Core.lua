@@ -1562,6 +1562,7 @@ function SkuNav:ProcessCheckReachingWp()
 						if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 						end
+						SkuNav:setWaypointVisited(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 						SkuNav:SelectWP("", true)
 					end
 				end
@@ -1618,6 +1619,9 @@ function SkuNav:ProcessCheckReachingWp()
 									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 								end
 								SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
+
+								local selectedWaypoint = SkuOptions.db.profile[MODULE_NAME].selectedWaypoint
+								SkuNav:setWaypointVisited(selectedWaypoint)
 
 								SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
 								SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths = nil
