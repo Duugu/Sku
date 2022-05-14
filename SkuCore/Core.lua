@@ -54,6 +54,8 @@ SkuCoreMovement = {
 			["MoveBackward"] = false,
 			["StrafeLeft"] = false,
 			["StrafeRight"] = false,
+			["Ascend"] = false,
+			["Descend"] = false,
 			["FollowUnit"] = false,
 			["IsTurningOrAutorunningOrStrafing"] = false,
 			},
@@ -94,9 +96,13 @@ SkuCore.interactFramesListManual = {
 	--["BagnonGuildFrame1"] = function(...) SkuCore:Build_BagnonGuildFrame1(...) end,
 	["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
 	["PetStableFrame"] = function(...) SkuCore:Build_PetStableFrame(...) end,
+	["GossipFrame"] = function(...) SkuCore:GossipFrame(...) end,
+	["QuestFrame"] = function(...) SkuCore:QuestFrame(...) end,
+	["ItemTextFrame"] = function(...) SkuCore:ItemTextFrame(...) end,
 }
 
 SkuCore.interactFramesList = {
+	"ItemTextFrame",
 	"QuestFrame",--o
 	"TaxiFrame",--o
 	"GossipFrame",--o
@@ -469,7 +475,9 @@ function SkuCore:IsPlayerMoving()
 		SkuCoreMovement.Flags.MoveForward == true or
 		SkuCoreMovement.Flags.MoveBackward == true or
 		SkuCoreMovement.Flags.StrafeLeft == true or
-		SkuCoreMovement.Flags.StrafeRight == true
+		SkuCoreMovement.Flags.StrafeRight == true --or
+		--SkuCoreMovement.Flags.Ascend == true or
+		--SkuCoreMovement.Flags.Descend == true
 	then
 		rValue = true
 	end
@@ -1142,6 +1150,10 @@ function SkuCore:OnEnable()
 	hooksecurefunc("StrafeLeftStop", function() SkuCoreMovement.Flags.StrafeLeft = false end)
 	hooksecurefunc("StrafeRightStart", function() SkuCoreMovement.Flags.StrafeRight = true end)
 	hooksecurefunc("StrafeRightStop", function() SkuCoreMovement.Flags.StrafeRight = false end)
+	hooksecurefunc("JumpOrAscendStart", function() SkuCoreMovement.Flags.Ascend = true end)
+	hooksecurefunc("AscendStop", function() SkuCoreMovement.Flags.Ascend = false end)
+	hooksecurefunc("SitStandOrDescendStart", function() SkuCoreMovement.Flags.Descend = true end)
+	hooksecurefunc("DescendStop", function() SkuCoreMovement.Flags.Descend = false end)
 	--hooksecurefunc("TurnLeftStart", function() dprint("TurnLeftStartf") end)
 	--hooksecurefunc("TurnLeftStop", function() dprint("TurnLeftStopf") end)
 	--hooksecurefunc("TurnRightStart", function() dprint("TurnRightStartf") end)
@@ -2055,6 +2067,7 @@ local friendlyFrameNames = {
 	["InspectFrame"] = L["Inspect"],
 	["QuestFrame"] = L["Quest"],
 	["TaxiFrame"] = L["Taxi"],
+	["ItemTextFrame"] = L["Item Text"],
 	["GossipFrame"] = L["Gossip"],
 	["MerchantFrame"] = L["Merchant"],
 	["StaticPopup1"] = L["Popup 1"],
@@ -2514,7 +2527,7 @@ end
 -------------------------------------------------------------------------------------------------
 ---@param aForceLocalRoot bool force the audio menu to return to the "Local" root element if there are new childs in Local
 function SkuCore:CheckFrames(aForceLocalRoot)
-	--print("!!!!!!!!!!!!!!!!!!!!!!CheckFrames", aForceLocalRoot)
+	--print("++CheckFrames", aForceLocalRoot)
 	-- temp hack to avoid the CURSOR_UPDATE spam from questie
 	if Questie then
 		Questie:UnregisterEvent("CURSOR_UPDATE")
@@ -2575,36 +2588,38 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 			local tBread = nil
 			local tFirstFrame = nil
 			if SkuOptions.currentMenuPosition then
-				local tTable = SkuOptions.currentMenuPosition.parent
+				if SkuOptions.currentMenuPosition.parent then
+					local tTable = SkuOptions.currentMenuPosition.parent
 
-				if tTable.children then
-					for x = 1, #tTable.children do
-						if tTable.children[x].name == SkuOptions.currentMenuPosition.name then
-							tIndex = x
+					if tTable.children then
+						for x = 1, #tTable.children do
+							if tTable.children[x].name == SkuOptions.currentMenuPosition.name then
+								tIndex = x
+							end
 						end
 					end
-				end
 
-				tBread = SkuOptions.currentMenuPosition.parent.name
-				if tTable.parent then
-					while tTable.parent.name do
-						tFirstFrame = tTable.name
-						tTable = tTable.parent
-						if tBread then
-							tBread = tTable.name..","..tBread
-						else
-							tBread = tTable.name
+					tBread = SkuOptions.currentMenuPosition.parent.name
+					if tTable.parent then
+						while tTable.parent.name do
+							tFirstFrame = tTable.name
+							tTable = tTable.parent
+							if tBread then
+								tBread = tTable.name..","..tBread
+							else
+								tBread = tTable.name
+							end
 						end
 					end
-				end
 				--dprint("tBread", tBread)
 				--dprint("tFirstFrame", tFirstFrame)
+				end
 			end
 			--dprint("aForceLocalRoot", aForceLocalRoot)
-			SkuOptions:SlashFunc(L["short"]..","..L["Local"])
 
 			local tFlag = false
 			if tBread and aForceLocalRoot ~= true and tFlag == false then
+				SkuOptions:SlashFunc(L["short"]..","..L["Local"])
 				for i, v in pairs(friendlyFrameNames) do
 					if v == tFirstFrame then
 						if _G[i] then

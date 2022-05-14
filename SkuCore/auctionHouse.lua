@@ -117,47 +117,6 @@ local function ItemName_helper(aText)
 
 	return string.gsub(tShort, "\r\n", " "), tLong
 end
---[[
-local function TooltipLines_helper(...)
-   local tQualityString = nil
-
-	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
-	if not ItemLink then
-		itemName, ItemLink = GameTooltip:GetItem()
-	end
-
-	if ItemLink then
-      for x = 0, #ITEM_QUALITY_COLORS do
-         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-         if tItemCol == "ffa334ee" then 
-            tItemCol = "ffa335ee"
-         end
-         if string.find(ItemLink, tItemCol) then
-            if _G["ITEM_QUALITY"..x.."_DESC"] then
-               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
-            end
-         end
-      end
-   end
-
-
-	local rText = ""
-   for i = 1, select("#", ...) do
-		local region = select(i, ...)
-		if region and region:GetObjectType() == "FontString" then
-			local text = region:GetText() -- string or nil
-			if text then
-            if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
-               rText = rText..text.." ("..tQualityString..")\r\n"
-            else
-				   rText = rText..text.."\r\n"
-            end
-			end
-		end
-	end
-	return rText
-end
-]]
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.AuctionChatMessageFailFlag = false
@@ -1183,50 +1142,52 @@ function SkuCore:AuctionHouseMenuBuilder()
 
          --categories
          for categoryIndex, categoryInfo in ipairs(AuctionCategories) do
-            tNewMenuEntryCategory = SkuOptions:InjectMenuItems(self, {categoryInfo.name}, SkuGenericMenuItem)
-            tNewMenuEntryCategory.dynamic = true
-            tNewMenuEntryCategory.filterable = true
-            tNewMenuEntryCategory.OnEnter = function(self, aValue, aName, aEnterFlag)
-               if not aValue then
-                  SkuCore:AuctionStartQuery(categoryIndex, nil, nil, true)
+            if categoryInfo.name ~= L["Quest Items"] and categoryInfo.name ~= L["WoW Token (China Only)"] then
+               tNewMenuEntryCategory = SkuOptions:InjectMenuItems(self, {categoryInfo.name}, SkuGenericMenuItem)
+               tNewMenuEntryCategory.dynamic = true
+               tNewMenuEntryCategory.filterable = true
+               tNewMenuEntryCategory.OnEnter = function(self, aValue, aName, aEnterFlag)
+                  if not aValue then
+                     SkuCore:AuctionStartQuery(categoryIndex, nil, nil, true)
+                  end
                end
-            end
-            tNewMenuEntryCategory.BuildChildren = function(self)
-               if categoryInfo.subCategories then
-                  for subCategoryIndex, subCategoryInfo in ipairs(categoryInfo.subCategories) do
-                     tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {subCategoryInfo.name}, SkuGenericMenuItem)
-                     tNewMenuEntryCategorySub.dynamic = true
-                     tNewMenuEntryCategorySub.filterable = true
-                     tNewMenuEntryCategorySub.OnEnter = function(self, aValue, aName, aEnterFlag)
-                        if not aValue then
-                           SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, nil, true)
+               tNewMenuEntryCategory.BuildChildren = function(self)
+                  if categoryInfo.subCategories then
+                     for subCategoryIndex, subCategoryInfo in ipairs(categoryInfo.subCategories) do
+                        tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {subCategoryInfo.name}, SkuGenericMenuItem)
+                        tNewMenuEntryCategorySub.dynamic = true
+                        tNewMenuEntryCategorySub.filterable = true
+                        tNewMenuEntryCategorySub.OnEnter = function(self, aValue, aName, aEnterFlag)
+                           if not aValue then
+                              SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, nil, true)
+                           end
                         end
-                     end
-                     tNewMenuEntryCategorySub.BuildChildren = function(self)
-                        if subCategoryInfo.subCategories then
-                           for subSubCategoryIndex, subSubCategoryInfo in ipairs(subCategoryInfo.subCategories) do
-                              tNewMenuEntryCategorySubSub = SkuOptions:InjectMenuItems(self, {subSubCategoryInfo.name}, SkuGenericMenuItem)
-                              tNewMenuEntryCategorySubSub.dynamic = true
-                              tNewMenuEntryCategorySubSub.filterable = true
-                              tNewMenuEntryCategorySubSub.OnEnter = function(self, aValue, aName, aEnterFlag)
-                                 if not aValue then
-                                    SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, subSubCategoryIndex, true)
+                        tNewMenuEntryCategorySub.BuildChildren = function(self)
+                           if subCategoryInfo.subCategories then
+                              for subSubCategoryIndex, subSubCategoryInfo in ipairs(subCategoryInfo.subCategories) do
+                                 tNewMenuEntryCategorySubSub = SkuOptions:InjectMenuItems(self, {subSubCategoryInfo.name}, SkuGenericMenuItem)
+                                 tNewMenuEntryCategorySubSub.dynamic = true
+                                 tNewMenuEntryCategorySubSub.filterable = true
+                                 tNewMenuEntryCategorySubSub.OnEnter = function(self, aValue, aName, aEnterFlag)
+                                    if not aValue then
+                                       SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, subSubCategoryIndex, true)
+                                    end
+                                 end
+                                 tNewMenuEntryCategorySubSub.BuildChildren = function(self)
+                                    -- query categoryIndex subCategoryIndex
+                                    SkuCore:AuctionListItemMenuBuilder(self)
                                  end
                               end
-                              tNewMenuEntryCategorySubSub.BuildChildren = function(self)
-                                 -- query categoryIndex subCategoryIndex
-                                 SkuCore:AuctionListItemMenuBuilder(self)
-                              end
+                           else
+                              -- query categoryIndex subCategoryIndex
+                              SkuCore:AuctionListItemMenuBuilder(self)
                            end
-                        else
-                           -- query categoryIndex subCategoryIndex
-                           SkuCore:AuctionListItemMenuBuilder(self)
                         end
                      end
+                  else
+                     --query categoryIndex
+                     SkuCore:AuctionListItemMenuBuilder(self)
                   end
-               else
-                  --query categoryIndex
-                  SkuCore:AuctionListItemMenuBuilder(self)
                end
             end
          end

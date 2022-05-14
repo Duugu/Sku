@@ -169,9 +169,15 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 	end
 
 	if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - to be completed additional to this before next in series
-		local parentQuest = ""
-		parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
-		table.insert(tSections, L["Parent quest"]..": "..parentQuest)
+		if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then
+			if SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]] then
+				if SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1] then
+					local parentQuest = ""
+					parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
+					table.insert(tSections, L["Parent quest"]..": "..parentQuest)
+				end
+			end
+		end
 	end
 
 

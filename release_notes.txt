@@ -3,6 +3,42 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in release 27.1
+
+	Core
+		- There are now audio outputs for Breath (on diving), Feign Death (hunter), and Exhaustion (on leaving the world boundaries).
+			The spoken numbers are percent values. Example: "Breath 25" means, there is 25% breath left, before you start drowning.
+		- Texts from books, letters, etc. in your bags are now readable using right click. The text will be shown via the Local menu.
+		- Manually implemented the NPC dialog menu (that is the one that every NPC opens if he provides more than one option, like multiple quests, quests and vendor, etc.)
+			The audio menu for Dialog is now much clearer and in the correct order, without any mysterious and complex "sub sections", "containers" etc.
+		- Manually implemented all quest dialog menus (select, accept, progress, complete). Should be much more user friendly now.
+		- Removed the categories "Quest Items" and "WoW Token (China Only)" from the auction house list.
+		- Fixed an issue with bags that occured on opening the bags without using the audio menu at least once in the current session.
+		- Fixed an issue with the mailbox and letters from auction house.
+
+	Quest
+		- Fixed an issue with the quest log in Orgrimmar.
+
+	Chat
+		- Fixed an issue with Chat > Options > TTS pause tags. Should now work as expected if set to Off.
+
+	Options
+		- There is a new line with the vendor price in item tooltips (below the action house price data).
+		- Fixed issues with unwanted outputs and/or missing outputs via Blizzard TTS in menus.
+		- Fixed an issue with missing "period period period" output for long texts in menu via the Blizzard TTS.
+
+	Navigation
+		- There is a new option Navigation > Options > Show herb and mining node waypoints. Default: Off
+		- Fixed an issues with hearthstone on active route navigation.
+
+	Maps
+		- Added more waypoints to the caves in Stonesplinter Valley.
+		- Added waypoint comments to portals in Darnassus and Rut'theran.
+		- Added routes to quest targets in moonglade lake.
+		- Added a route for the alliance druid class quest (poison) in darkshore.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in release 27
 
 	Options

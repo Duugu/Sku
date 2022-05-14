@@ -1339,3 +1339,24 @@ L["split"] = "split"
 L["numberDeciamalCharacter"] = "."
 L["Bullet lists as numbers"] = "Bullet lists as numbers"
 L["Play NPC greetings"] = "Play NPC greetings"
+
+L["Händlerpreis"] = "Vendor price"
+L[" (for 1 item)"] = " for 1 item"
+L["Nicht verkaufbar"] = "Can not be sold"
+
+
+L["Rewards"] = "Rewards"
+L["Greeting"] = "Greeting"
+L["Accepted Quest"] = "Accepted Quest"
+L["Available Quest"] = "Available Quest"
+L["Progress"] = "Progress"
+L["Detail"] = "Details"
+L["Accept"] = "Accept" --verb
+L["Ablehnen"] = "Reject"--verb
+L["Abgabe"] = "Delivery"
+L["Complete"] = "Complete" --verb
+
+L["Quest Items"] = "Quest Items" --use the exact ingame string (from auction house)
+L["WoW Token (China Only)"] = "WoW Token (China Only)" --use the exact ingame string (from auction house)
+L["Show herbs and mining node waypoints"] = "Show herb and mining node waypoints"
+L["Item Text"] = "Item Text"

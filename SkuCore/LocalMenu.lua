@@ -50,7 +50,9 @@ local function ItemName_helper(aText)
 		tShort = taTextWoLb
 	end
 
-	return string.gsub(tShort, "\r\n", " "), tLong
+   tShort = string.gsub(tShort, "\r\n", " ")
+   tShort = string.gsub(tShort, "\n", " ")
+	return tShort, tLong
 end
 
 --[[
@@ -364,7 +366,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                aParentChilds[tFriendlyName].childs = {}
                aParentChilds[tFriendlyName].type = "Text"
                aParentChilds[tFriendlyName].func = nil
-            end
+            end   
 
             GameTooltip:ClearLines()
             aParentChilds[tFriendlyName].obj:GetScript("OnEnter")(aParentChilds[tFriendlyName].obj)
@@ -675,5 +677,732 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
          click = true,
       }   
    end
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:ItemTextFrame(aParent)
+   local tFrameName = "ItemTextTitleText"
+   if _G[tFrameName]:IsShown() == true  then
+      local tText = _G[tFrameName]:GetText()
+      local tFrst, tFll = ItemName_helper(tText)
+      local tFriendlyName = tFrst
+      table.insert(aParent, tFriendlyName)
+      aParent[tFriendlyName] = {
+         frameName = tFrameName,
+         RoC = "Child",
+         type = "FontString",
+         obj = _G[tFrameName],
+         textFirstLine = tFrst,
+         textFull = tFll,
+         childs = {},
+      }
+   end
+
+   local tFrameName = "ItemTextPageText"
+   if _G[tFrameName]:IsShown() == true  then
+      local tHtmlTable = _G[tFrameName]:GetTextData()
+
+      local tText = ""
+      for i, v in pairs(tHtmlTable) do
+         if v.text then
+            print(unescape(v.text))
+            tText = unescape(v.text).."\r\n"
+         end
+      end
+
+      local tFrst, tFll = ItemName_helper(tText)
+      local tFriendlyName = tFrst
+      table.insert(aParent, tFriendlyName)
+      aParent[tFriendlyName] = {
+         frameName = tFrameName,
+         RoC = "Child",
+         type = "FontString",
+         obj = _G[tFrameName],
+         textFirstLine = tFrst,
+         textFull = tFll,
+         childs = {},
+      }
+   end
+
+   local tFrameName = "ItemTextPrevPageButton"
+   if _G[tFrameName]:IsShown() == true  then
+      local tFriendlyName = L["Previous"]
+      local tFrst, tFll = tFriendlyName, ""
+      table.insert(aParent, tFriendlyName)
+      aParent[tFriendlyName] = {
+         frameName = tFrameName,
+         RoC = "Child",
+         type = "Button",
+         obj = _G[tFrameName],
+         textFirstLine = tFrst,
+         textFull = tFll,
+         childs = {},
+         func = _G[tFrameName]:GetScript("OnClick"),
+         click = true,
+      }
+   end
+
+   local tFrameName = "ItemTextNextPageButton"
+   if _G[tFrameName]:IsShown() == true  then
+      local tFriendlyName = L["Next"]
+      local tFrst, tFll = tFriendlyName, ""
+      table.insert(aParent, tFriendlyName)
+      aParent[tFriendlyName] = {
+         frameName = tFrameName,
+         RoC = "Child",
+         type = "Button",
+         obj = _G[tFrameName],
+         textFirstLine = tFrst,
+         textFull = tFll,
+         childs = {},
+         func = _G[tFrameName]:GetScript("OnClick"),
+         click = true,
+      }
+   end
+end
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:GossipFrame(aParentChilds)
+
+   local dtc = { _G["GossipGreetingScrollChildFrame"]:GetRegions() }
+   for x = 1, #dtc do
+      --print(i, v)
+      if dtc[x].GetText then
+         local tText = dtc[x]:GetText()
+         if tText then
+            local tFrameName = "GossipText"
+            local tFriendlyName = tText
+            local tFrst, tFll = ItemName_helper(tText)
+            table.insert(aParentChilds, tFriendlyName)
+            aParentChilds[tFriendlyName] = {
+               frameName = tFrameName,
+               RoC = "Child",
+               type = "FontString",
+               obj = _G[tFrameName],
+               textFirstLine = tFrst,
+               textFull = tFll,
+               childs = {},
+            }  
+         end
+      end
+   end
+
+
+   local tIconStrings = {
+      [132048] = "Accepted Quest",
+      [132049] = "Available Quest",
+   }
+
+   for x = 1, GossipFrame.buttonIndex - 1 do
+      local tFrameName = "GossipTitleButton"..x
+      if _G[tFrameName] then
+         if _G[tFrameName]:IsShown() == true  then
+            if _G[tFrameName]:GetText() == true then
+               --print(x, unescape(_G[tFrameName]:GetText()))
+               local tFriendlyName = unescape(_G[tFrameName]:GetText())
+               if _G["GossipTitleButton"..x.."GossipIcon"]:IsShown() == true then
+                  --print(_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID(), tIconStrings[_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID()] )
+                  tFriendlyName = (tIconStrings[_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID()] or "").." "..unescape(_G[tFrameName]:GetText())
+               end
+               local tText, tFullText = "", ""
+               if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+                  table.insert(aParentChilds, tFriendlyName)
+                  aParentChilds[tFriendlyName] = {
+                     frameName = tFrameName,
+                     RoC = "Child",
+                     type = "Button",
+                     obj = _G[tFrameName],
+                     textFirstLine = tFriendlyName,
+                     textFull = "",
+                     childs = {},
+                     func = _G[tFrameName]:GetScript("OnClick"),
+                     click = true,
+                  } 
+               end
+            end
+         end
+      end
+   end
+end
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:QuestFrame(aParentChilds)
+
+
+   local function QuestInfoRewardsFrameHelper(aParent, aInfoOnly)
+      if QuestInfoRewardsFrame.ItemChooseText:IsShown() == true or QuestInfoRewardsFrame.ItemReceiveText:IsShown() == true or (QuestInfoMoneyFrame:IsShown() == true and QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame.staticMoney) then
+         local tFrameName = "QuestInfoRewardsFrame"
+         local tFriendlyName = L["Rewards"]
+         local tFrst, tFll = tFriendlyName, ""
+         table.insert(aParent, tFriendlyName)
+         aParent[tFriendlyName] = {
+            frameName = tFrameName,
+            RoC = "Child",
+            type = "Button",
+            obj = _G[tFrameName],
+            textFirstLine = tFrst,
+            textFull = tFll,
+            childs = {},
+         }
+
+         local tTaken = {}
+         local tQuestInfoRewardsFrameChilds = aParent[tFriendlyName].childs
+
+         if QuestInfoRewardsFrame.ItemChooseText then
+            if QuestInfoRewardsFrame.ItemChooseText:IsShown() == true then
+               local tText = QuestInfoRewardsFrame.ItemChooseText:GetText()
+               local tFrst, tFll = ItemName_helper(tText)
+               local tFriendlyName = tFrst
+               table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
+               tQuestInfoRewardsFrameChilds[tFriendlyName] = {
+                  frameName = tFrameName,
+                  RoC = "Child",
+                  type = "FontString",
+                  obj = _G[tFrameName],
+                  textFirstLine = tFrst,
+                  textFull = tFll,
+                  childs = {},
+               } 
+
+               for x = 1, 10 do
+                  local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
+                  if _G[tFrameName] then
+                     if _G[tFrameName]:IsShown() == true then
+                        local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
+                        if tText then
+                           tTaken[x] = true
+                           tText = tText.." "..(_G[tFrameName].count or "")
+                           local tFriendlyName = unescape(tText)
+                           if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+                              table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
+                              tQuestInfoRewardsFrameChilds[tFriendlyName] = {
+                                 frameName = tFrameName,
+                                 RoC = "Child",
+                                 type = "Button",
+                                 obj = _G[tFrameName],
+                                 textFirstLine = tText,
+                                 textFull = tFullText,
+                                 childs = {},
+                                 func = _G[tFrameName]:GetScript("OnClick"),
+                                 click = true,
+                              } 
+                              if aInfoOnly then
+                                 tQuestInfoRewardsFrameChilds[tFriendlyName].func = nil
+                                 tQuestInfoRewardsFrameChilds[tFriendlyName].click = nil
+                              end
+                           end
+                        end
+                     end
+                  end
+               end
+            end
+         end
+
+         local tQuestInfoRewardsFrameChilds = aParent[tFriendlyName].childs
+         if QuestInfoRewardsFrame.ItemReceiveText then
+            if QuestInfoRewardsFrame.ItemReceiveText:IsShown() == true then
+               local tText = QuestInfoRewardsFrame.ItemReceiveText:GetText()
+               local tFrst, tFll = ItemName_helper(tText)
+               local tFriendlyName = tFrst
+               table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
+               tQuestInfoRewardsFrameChilds[tFriendlyName] = {
+                  frameName = tFrameName,
+                  RoC = "Child",
+                  type = "FontString",
+                  obj = _G[tFrameName],
+                  textFirstLine = tFrst,
+                  textFull = tFll,
+                  childs = {},
+               } 
+
+               for x = 1, 10 do
+                  if not tTaken[x] then
+                     local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
+                     if _G[tFrameName] then
+                        if _G[tFrameName]:IsShown() == true then
+                           local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
+                           if tText then
+                              tTaken[x] = true
+                              tText = tText.." "..(_G[tFrameName].count or "")
+                              local tFriendlyName = unescape(tText)
+                              if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+                                 table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
+                                 tQuestInfoRewardsFrameChilds[tFriendlyName] = {
+                                    frameName = tFrameName,
+                                    RoC = "Child",
+                                    type = "Button",
+                                    obj = _G[tFrameName],
+                                    textFirstLine = tText,
+                                    textFull = tFullText,
+                                    childs = {},
+                                    func = _G[tFrameName]:GetScript("OnClick"),
+                                    click = true,
+                                 } 
+                                 if aInfoOnly then
+                                    tQuestInfoRewardsFrameChilds[tFriendlyName].func = nil
+                                    tQuestInfoRewardsFrameChilds[tFriendlyName].click = nil
+                                 end
+                              end
+                           end
+                        end
+                     end
+                  end
+               end
+            end
+         end
+
+         if QuestInfoMoneyFrame then
+            if QuestInfoMoneyFrame:IsShown() == true then
+               if QuestInfoMoneyFrame.staticMoney then
+                  local tFrst, tFll = SkuGetCoinText(QuestInfoMoneyFrame.staticMoney, true), ""
+                  local tFriendlyName = tFrst
+                  table.insert(tQuestInfoRewardsFrameChilds, tFriendlyName)
+                  tQuestInfoRewardsFrameChilds[tFriendlyName] = {
+                     frameName = tFrameName,
+                     RoC = "Child",
+                     type = "FontString",
+                     obj = _G[tFrameName],
+                     textFirstLine = tFrst,
+                     textFull = tFll,
+                     childs = {},
+                  }
+               end
+            end
+         end   
+      end
+
+   end
+
+
+   --QuestFrameGreetingPanel
+   if _G["QuestFrameGreetingPanel"] then 
+      if _G["QuestFrameGreetingPanel"]:IsShown() == true then
+
+         local tFrameName = "QuestFrameGreetingPanel"
+         local tFriendlyName = L["Greeting"]
+         local tFrst, tFll = tFriendlyName, ""
+         table.insert(aParentChilds, tFriendlyName)
+         aParentChilds[tFriendlyName] = {
+            frameName = tFrameName,
+            RoC = "Child",
+            type = "Button",
+            obj = _G[tFrameName],
+            textFirstLine = tFrst,
+            textFull = tFll,
+            childs = {},
+         }  
+
+         local tGreetingChilds = aParentChilds[tFriendlyName].childs
+         local dtc = { _G["QuestGreetingScrollChildFrame"]:GetRegions() }
+         for x = 1, 1 do --#dtc do
+            if dtc[x].GetText then
+               local tText = dtc[x]:GetText()
+               if tText then
+                  local tFrameName = "GreetingText"
+                  local tFriendlyName = tText
+                  local tFrst, tFll = ItemName_helper(tText)
+                  table.insert(tGreetingChilds, tFriendlyName)
+                  tGreetingChilds[tFriendlyName] = {
+                     frameName = tFrameName,
+                     RoC = "Child",
+                     type = "FontString",
+                     obj = _G[tFrameName],
+                     textFirstLine = tFrst,
+                     textFull = tFll,
+                     childs = {},
+                  }  
+               end
+            end
+         end
+
+         local tIconStrings = {
+            [132048] = L["Accepted Quest"],
+            [132049] = L["Available Quest"],
+         }
+
+         for x = 1, 10 do
+            local tFrameName = "QuestTitleButton"..x
+            if _G[tFrameName] then
+               if _G[tFrameName]:IsShown() == true then
+                  if _G[tFrameName]:GetText() then
+                     --print(x, unescape(_G[tFrameName]:GetText()))
+                     local tFriendlyName = unescape(_G[tFrameName]:GetText())
+                     if _G["QuestTitleButton"..x.."QuestIcon"]:IsShown() == true  then
+                        tFriendlyName = (tIconStrings[_G["QuestTitleButton"..x.."QuestIcon"]:GetTextureFileID()] or "").." "..unescape(_G[tFrameName]:GetText())
+                     end
+                     local tText, tFullText = "", ""
+                     if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+                        table.insert(tGreetingChilds, tFriendlyName)
+                        tGreetingChilds[tFriendlyName] = {
+                           frameName = tFrameName,
+                           RoC = "Child",
+                           type = "Button",
+                           obj = _G[tFrameName],
+                           textFirstLine = tFriendlyName,
+                           textFull = "",
+                           childs = {},
+                           func = _G[tFrameName]:GetScript("OnClick"),
+                           click = true,
+                        } 
+                     end
+                  end
+               end
+            end
+         end
+      end
+   end
+
+   --QuestFrameProgressPanel
+   if _G["QuestFrameProgressPanel"] then 
+      if _G["QuestFrameProgressPanel"]:IsShown() == true then
+         local tFrameName = "QuestFrameProgressPanel"
+         local tFriendlyName = L["Progress"]
+         local tFrst, tFll = tFriendlyName, ""
+         table.insert(aParentChilds, tFriendlyName)
+         aParentChilds[tFriendlyName] = {
+            frameName = tFrameName,
+            RoC = "Child",
+            type = "Button",
+            obj = _G[tFrameName],
+            textFirstLine = tFrst,
+            textFull = tFll,
+            childs = {},
+         }  
+
+         local tProgressChilds = aParentChilds[tFriendlyName].childs
+         local dtc = { _G["QuestProgressScrollChildFrame"]:GetRegions() }
+         for x = 1, 2 do
+            --print(i, v)
+            if dtc[x].GetText then
+               local tText = dtc[x]:GetText()
+               if tText then
+                  local tFrameName = "QuestInfo"
+                  local tFriendlyName = tText
+                  local tFrst, tFll = ItemName_helper(tText)
+                  table.insert(tProgressChilds, tFriendlyName)
+                  tProgressChilds[tFriendlyName] = {
+                     frameName = tFrameName,
+                     RoC = "Child",
+                     type = "FontString",
+                     obj = _G[tFrameName],
+                     textFirstLine = tFrst,
+                     textFull = tFll,
+                     childs = {},
+                  }  
+               end
+            end
+         end
+         if dtc[3]:IsShown() == true then
+            if dtc[3].GetText then
+               local tText = dtc[3]:GetText()
+               if tText then
+                  local tFrameName = "QuestInfo"
+                  local tFriendlyName = tText
+                  local tFrst, tFll = ItemName_helper(tText)
+                  table.insert(tProgressChilds, tFriendlyName)
+                  tProgressChilds[tFriendlyName] = {
+                     frameName = tFrameName,
+                     RoC = "Child",
+                     type = "FontString",
+                     obj = _G[tFrameName],
+                     textFirstLine = tFrst,
+                     textFull = tFll,
+                     childs = {},
+                  }  
+               end
+            end
+
+            for x = 1, 10 do
+               local tFrameName = "QuestProgressItem"..x
+               if _G[tFrameName] then
+                  if _G[tFrameName]:IsShown() == true then
+                     local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
+                     if tText then
+                        tText = tText.." "..(_G[tFrameName].count or "")
+                        local tFriendlyName = unescape(tText)
+                        --if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+                           table.insert(tProgressChilds, tFriendlyName)
+                           tProgressChilds[tFriendlyName] = {
+                              frameName = tFrameName,
+                              RoC = "Child",
+                              type = "Button",
+                              obj = _G[tFrameName],
+                              textFirstLine = tText,
+                              textFull = tFullText,
+                              childs = {},
+                              --func = _G[tFrameName]:GetScript("OnClick"),
+                              --click = true,
+                           } 
+                        --end
+                     end
+                  end
+               end
+            end
+         end
+
+         if dtc[4]:IsShown() == true then
+            if dtc[4].GetText then
+               local tText = dtc[4]:GetText()
+               if tText then
+                  local tFrameName = "QuestInfo"
+                  local tFriendlyName = tText
+                  local tFrst, tFll = ItemName_helper(tText)
+                  table.insert(tProgressChilds, tFriendlyName)
+                  tProgressChilds[tFriendlyName] = {
+                     frameName = tFrameName,
+                     RoC = "Child",
+                     type = "FontString",
+                     obj = _G[tFrameName],
+                     textFirstLine = tFrst,
+                     textFull = tFll,
+                     childs = {},
+                  }  
+               end
+            end
+         end
+
+         local tFrameName = "QuestFrameCompleteButton"
+         if _G[tFrameName] then
+            if _G[tFrameName]:IsShown() == true then
+               if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+                  local tFriendlyName = _G[tFrameName]:GetText()
+                  table.insert(tProgressChilds, tFriendlyName)
+                  tProgressChilds[tFriendlyName] = {
+                     frameName = tFrameName,
+                     RoC = "Child",
+                     type = "Button",
+                     obj = _G[tFrameName],
+                     textFirstLine = tFriendlyName,
+                     textFull = "",
+                     childs = {},
+                     func = _G[tFrameName]:GetScript("OnClick"),
+                     click = true,
+                  } 
+               end
+            end
+         end
+      end
+   end
+
+   --QuestFrameDetailPanel
+   if _G["QuestFrameDetailPanel"] then 
+      if _G["QuestFrameDetailPanel"]:IsShown() == true then
+         local tFrameName = "QuestFrameDetailPanel"
+         local tFriendlyName = L["Detail"]
+         local tFrst, tFll = tFriendlyName, ""
+         table.insert(aParentChilds, tFriendlyName)
+         aParentChilds[tFriendlyName] = {
+            frameName = tFrameName,
+            RoC = "Child",
+            type = "Button",
+            obj = _G[tFrameName],
+            textFirstLine = tFrst,
+            textFull = tFll,
+            childs = {},
+         }  
+
+
+         local tDetailChilds = aParentChilds[tFriendlyName].childs
+         local dtc = { _G["QuestDetailScrollChildFrame"]:GetRegions() }
+
+         local tFrameName = "QuestInfoTitleHeader"
+         if _G[tFrameName] then
+            local tText = _G[tFrameName]:GetText()
+            if tText then
+               local tFriendlyName = tText
+               local tFrst, tFll = ItemName_helper(tText)
+               table.insert(tDetailChilds, tFriendlyName)
+               tDetailChilds[tFriendlyName] = {
+                  frameName = tFrameName,
+                  RoC = "Child",
+                  type = "FontString",
+                  obj = _G[tFrameName],
+                  textFirstLine = tFrst,
+                  textFull = tFll,
+                  childs = {},
+               }  
+            end
+         end
+         local tFrameName = "QuestInfoDescriptionText"
+         if _G[tFrameName] then
+            local tText = _G[tFrameName]:GetText()
+            if tText then
+               local tFriendlyName = tText
+               local tFrst, tFll = ItemName_helper(tText)
+               table.insert(tDetailChilds, tFriendlyName)
+               tDetailChilds[tFriendlyName] = {
+                  frameName = tFrameName,
+                  RoC = "Child",
+                  type = "FontString",
+                  obj = _G[tFrameName],
+                  textFirstLine = tFrst,
+                  textFull = tFll,
+                  childs = {},
+               }  
+            end
+         end
+
+         local tFrameName = "QuestInfoObjectivesHeader"
+         if _G[tFrameName] then
+            local tText = _G[tFrameName]:GetText()
+            if tText then
+               local tFriendlyName = tText
+               local tFrst, tFll = ItemName_helper(tText)
+               table.insert(tDetailChilds, tFriendlyName)
+               tDetailChilds[tFriendlyName] = {
+                  frameName = tFrameName,
+                  RoC = "Child",
+                  type = "FontString",
+                  obj = _G[tFrameName],
+                  textFirstLine = tFrst,
+                  textFull = tFll,
+                  childs = {},
+               }  
+            end
+         end
+         local tFrameName = "QuestInfoObjectivesText"
+         if _G[tFrameName] then
+            local tText = _G[tFrameName]:GetText()
+            if tText then
+               local tFriendlyName = tText
+               local tFrst, tFll = ItemName_helper(tText)
+               table.insert(tDetailChilds, tFriendlyName)
+               tDetailChilds[tFriendlyName] = {
+                  frameName = tFrameName,
+                  RoC = "Child",
+                  type = "FontString",
+                  obj = _G[tFrameName],
+                  textFirstLine = tFrst,
+                  textFull = tFll,
+                  childs = {},
+               }  
+            end
+         end
+
+         --rewards
+         if _G["QuestInfoRewardsFrame"] then 
+            QuestInfoRewardsFrameHelper(tDetailChilds, true)
+         end
+
+         local tFrameName = "QuestFrameAcceptButton"
+         local tFriendlyName = L["Accept"]
+         local tFrst, tFll = tFriendlyName, ""
+         if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+            table.insert(tDetailChilds, tFriendlyName)
+            tDetailChilds[tFriendlyName] = {
+               frameName = tFrameName,
+               RoC = "Child",
+               type = "Button",
+               obj = _G[tFrameName],
+               textFirstLine = tFrst,
+               textFull = tFll,
+               childs = {},
+               func = _G[tFrameName]:GetScript("OnClick"),
+               click = true,
+            }  
+         end
+         local tFrameName = "QuestFrameDeclineButton"
+         local tFriendlyName = L["Ablehnen"]
+         local tFrst, tFll = tFriendlyName, ""
+         if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+            table.insert(tDetailChilds, tFriendlyName)
+            tDetailChilds[tFriendlyName] = {
+               frameName = tFrameName,
+               RoC = "Child",
+               type = "Button",
+               obj = _G[tFrameName],
+               textFirstLine = tFrst,
+               textFull = tFll,
+               childs = {},
+               func = _G[tFrameName]:GetScript("OnClick"),
+               click = true,
+            }  			
+         end
+      end
+   end
+
+
+   --QuestFrameRewardPanel
+   if _G["QuestFrameRewardPanel"] then 
+      if _G["QuestFrameRewardPanel"]:IsShown() == true then
+         local tFrameName = "QuestFrameRewardPanel"
+         local tFriendlyName = L["Abgabe"]
+         local tFrst, tFll = tFriendlyName, ""
+         table.insert(aParentChilds, tFriendlyName)
+         aParentChilds[tFriendlyName] = {
+            frameName = tFrameName,
+            RoC = "Child",
+            type = "Button",
+            obj = _G[tFrameName],
+            textFirstLine = tFrst,
+            textFull = tFll,
+            childs = {},
+         }  
+
+         local tDetailChilds = aParentChilds[tFriendlyName].childs
+
+         local tFrameName = "QuestInfoTitleHeader"
+         if _G[tFrameName] then
+            local tText = _G[tFrameName]:GetText()
+            if tText then
+               local tFriendlyName = tText
+               local tFrst, tFll = ItemName_helper(tText)
+               table.insert(tDetailChilds, tFriendlyName)
+               tDetailChilds[tFriendlyName] = {
+                  frameName = tFrameName,
+                  RoC = "Child",
+                  type = "FontString",
+                  obj = _G[tFrameName],
+                  textFirstLine = tFrst,
+                  textFull = tFll,
+                  childs = {},
+               }  
+            end
+         end
+         local tFrameName = "QuestInfoRewardText"
+         if _G[tFrameName] then
+            local tText = _G[tFrameName]:GetText()
+            if tText then
+               local tFriendlyName = tText
+               local tFrst, tFll = ItemName_helper(tText)
+               table.insert(tDetailChilds, tFriendlyName)
+               tDetailChilds[tFriendlyName] = {
+                  frameName = tFrameName,
+                  RoC = "Child",
+                  type = "FontString",
+                  obj = _G[tFrameName],
+                  textFirstLine = tFrst,
+                  textFull = tFll,
+                  childs = {},
+               }  
+            end
+         end
+
+         if QuestInfoRewardsFrame.ItemChooseText:IsShown() == true or QuestInfoRewardsFrame.ItemReceiveText:IsShown() == true or (QuestInfoMoneyFrame:IsShown() == true and QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame.staticMoney) then
+            QuestInfoRewardsFrameHelper(tDetailChilds, true)
+         end
+         
+         local tFrameName = "QuestFrameCompleteQuestButton"
+         local tFriendlyName = L["Complete"]
+         local tFrst, tFll = tFriendlyName, ""
+         table.insert(tDetailChilds, tFriendlyName)
+         tDetailChilds[tFriendlyName] = {
+            frameName = tFrameName,
+            RoC = "Child",
+            type = "Button",
+            obj = _G[tFrameName],
+            textFirstLine = tFrst,
+            textFull = tFll,
+            childs = {},
+            func = _G[tFrameName]:GetScript("OnClick"),
+            click = true,
+         }  
+			         
+      end
+   end
+
+
+
 end
 

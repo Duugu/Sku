@@ -72,7 +72,7 @@ SkuGenericMenuItem = {
 	dynamic = false,
 	filterable = false,
 	OnUpdate = function(self, aKey)
-		--print("OnUpdate generic")
+		--print("++ OnUpdate generic")
 		local tCurrentItemNumber
 		local tCurrentItemName = self.name
 		local tParent = self.parent
@@ -291,7 +291,7 @@ SkuGenericMenuItem = {
 		self:OnPostSelect(aEnterFlag)
 	end,
 	OnPostSelect = function(self, aEnterFlag)
-		--print("OnPostSelect generic", self.name, self.actionOnEnter, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
+		--print("++ OnPostSelect generic", self.name, self.actionOnEnter, aEnterFlag, self.isSelect, self.isMultiselect, self.dynamic)
 		if self.dynamic == true then
 			self.children = {}
 			if self.isMultiselect == true then
