@@ -490,6 +490,9 @@ local tAdditionalTranslations = {
 	["Avelina Lilly"] = "Avelina Lilly",
 	["Gneis"] = "Gneis",
 	["Kotka"] = "Kotka",		
+	["Von hier 2 sekunden geradeaus laufen, um durch das portal zu gehen."] = "From here move 1 second forward, to get through the portal.",
+	["Hier Questgegenstand benutzen"] = "Use quest item here",
+	["Von hier eine Sekunde geradeaus laufen, um durch das Portal zu gehen."] = "From here move 1 second forward, to get through the portal.",
 }
 
 

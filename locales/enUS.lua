@@ -1360,3 +1360,10 @@ L["Quest Items"] = "Quest Items" --use the exact ingame string (from auction hou
 L["WoW Token (China Only)"] = "WoW Token (China Only)" --use the exact ingame string (from auction house)
 L["Show herbs and mining node waypoints"] = "Show herb and mining node waypoints"
 L["Item Text"] = "Item Text"
+
+L["disabled"] = "Disabled"
+L["visited"] = "Visited"
+L["minute"] = "minute"
+L["Track whether waypoints were visited"] =  "Track whether waypoints were visited"
+L["visited automatically expires after"] = "visited automatically expires after"
+L["Clear visited"] = "Clear visited"

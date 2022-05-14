@@ -13,9 +13,9 @@ SkuNav.StandardWpReachedRanges = {
    [3] = L["Auto"],
 }
 
-local timeForVisitedToExpireValues = {"disabled", "1 minute"}
+local timeForVisitedToExpireValues = {L["disabled"], "1 "..L["minute"]}
 for i=2, 30 do
-	timeForVisitedToExpireValues[i+1] = i .. " minutes"
+	timeForVisitedToExpireValues[i+1] = i .. L[" Minuten"]
 end
 
 SkuNav.options = {
@@ -243,7 +243,7 @@ SkuNav.options = {
 		},
 		trackVisited = {
 			order = 12,
-			name = "Track whether waypoints were visited",
+			name = L["Track whether waypoints were visited"],
 			desc = "",
 			type = "toggle",
 			set = function(info,val)
@@ -255,7 +255,7 @@ SkuNav.options = {
 		},
 		timeForVisitedToExpire = {
 			order = 13,
-			name = "visited automatically expires after",
+			name = L["visited automatically expires after"],
 			desc = "",
 			type = "select",
 			values = timeForVisitedToExpireValues,
@@ -341,7 +341,7 @@ function SkuNav:getAnnotatedWaypointLabel(originalLabel, id)
 	-- annotate with "visited" if visited
 	local wpID = id or string.sub(originalLabel, string.find(originalLabel, "#") + 1)
 	if SkuNav:waypointWasVisited(wpID) then
-		return "visited " .. originalLabel
+		return L["visited"].." " .. originalLabel
 	else return originalLabel
 	end
 end

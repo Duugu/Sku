@@ -5,6 +5,17 @@
 -------------------------------------------------------------------------------------------------------	
 Changes in release 27.1
 
+	Navigation
+		- Samalam contributed a new feature to have visited waypoints flagged as "visited" in waypoint lists. Thanks a million! :)
+			The feature is intended for farming stuff (killing mobs of a specific type, or collecting/gathering objects). It is enabled as default. 
+			On reaching a waypoint (via routes or just waypoint navigation) it internally flags that waypoint as "visited" for 5 minutes.
+			Visited waypoints have the word "visited" added in all waypoint lists.
+			There are two options to control the feature: Navigation > Options > Track whether waypoints were visited and Visited automatically expires after.
+			And there is a new menu entry to instantly clear all "visited" flags on request: Navigation > Waypoints > Clear visited.
+		- The "By name" lists for Waypoints and routes were removed. There are only the default "By distance" lists left, as apparently no one was using "By name" at all. :)
+		- There is a new option Navigation > Options > Show herb and mining node waypoints. Default: Off
+		- Fixed an issue with hearthstone on active route navigation.
+
 	Core
 		- There are now audio outputs for Breath (on diving), Feign Death (hunter), and Exhaustion (on leaving the world boundaries).
 			The spoken numbers are percent values. Example: "Breath 25" means, there is 25% breath left, before you start drowning.
@@ -26,10 +37,6 @@ Changes in release 27.1
 		- There is a new line with the vendor price in item tooltips (below the action house price data).
 		- Fixed issues with unwanted outputs and/or missing outputs via Blizzard TTS in menus.
 		- Fixed an issue with missing "period period period" output for long texts in menu via the Blizzard TTS.
-
-	Navigation
-		- There is a new option Navigation > Options > Show herb and mining node waypoints. Default: Off
-		- Fixed an issues with hearthstone on active route navigation.
 
 	Maps
 		- Added more waypoints to the caves in Stonesplinter Valley.

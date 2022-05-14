@@ -11,6 +11,7 @@ function SkuNav:setWaypointVisited(wpName)
 	-- assuming if NPC has no role, then hostile, but some friendly NPCs also don't have a role, like guards
 	-- could identify hostile creatures accurately if had access to "friendlyMask", but in SkuDB.NpcData only have access to "hostileMask" (as "factionID")
 	-- reference: https://github.com/cmangos/issues/wiki/FactionTemplate.dbc
+	-- Duugu: That reference is from a p-server implementation and isn't reliable. We shouldn't use any data from there.
 	local wp = SkuNav:GetWaypointData2(wpName)
 	if wp and (
 		-- is object
