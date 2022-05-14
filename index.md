@@ -7,9 +7,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+[Sku r27.1](https://github.com/Duugu/Sku/releases/download/r27.1/Sku-r27.1-bcc.zip) (14.05.2022)<br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
 [SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
-[Sku r27](https://github.com/Duugu/Sku/releases/download/r27/Sku-r27-bcc.zip) (05.05.2022)<br>
 
 *Old updates:* <br>
 [Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
@@ -20,6 +20,46 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in release 27.1
+
+### Navigation
+- Samalam contributed a new feature to have visited waypoints flagged as "visited" in waypoint lists. Thanks a million! :)<br>
+	The feature is intended for farming stuff (killing mobs of a specific type, or collecting/gathering objects). It is enabled as default. <br>
+	On reaching a waypoint (via routes or just waypoint navigation) it internally flags that waypoint as "visited" for 5 minutes.<br>
+	Visited waypoints have the word "visited" added in all waypoint lists.<br>
+	There are two options to control the feature: Navigation > Options > Track whether waypoints were visited and Visited automatically expires after.<br>
+	And there is a new menu entry to instantly clear all "visited" flags on request: Navigation > Waypoints > Clear visited.
+- The "By name" lists for Waypoints and routes were removed. There are only the default "By distance" lists left, as apparently no one was using "By name" at all. :)
+- There is a new option Navigation > Options > Show herb and mining node waypoints. Default: Off
+- Fixed an issue with hearthstone on active route navigation.
+
+### Core
+- There are now audio outputs for Breath (on diving), Feign Death (hunter), and Exhaustion (on leaving the world boundaries).<br>
+	The spoken numbers are percent values. Example: "Breath 25" means, there is 25% breath left, before you start drowning.
+- Texts from books, letters, etc. in your bags are now readable using right click. The text will be shown via the Local menu.
+- Manually implemented the NPC dialog menu (that is the one that every NPC opens if he provides more than one option, like multiple quests, quests and vendor, etc.)<br>
+	The audio menu for Dialog is now much clearer and in the correct order, without any mysterious and complex "sub sections", "containers" etc.
+- Manually implemented all quest dialog menus (select, accept, progress, complete). Should be much more user friendly now.
+- Removed the categories "Quest Items" and "WoW Token (China Only)" from the auction house list.
+- Fixed an issue with bags that occured on opening the bags without using the audio menu at least once in the current session.
+- Fixed an issue with the mailbox and letters from auction house.
+
+### Quest
+- Fixed an issue with the quest log in Orgrimmar.
+
+### Chat
+- Fixed an issue with Chat > Options > TTS pause tags. Should now work as expected if set to Off.
+
+### Options
+- There is a new line with the vendor price in item tooltips (below the action house price data).
+- Fixed issues with unwanted outputs and/or missing outputs via Blizzard TTS in menus.
+- Fixed an issue with missing "period period period" output for long texts in menu via the Blizzard TTS.
+
+### Maps
+- Added more waypoints to the caves in Stonesplinter Valley.
+- Added waypoint comments to portals in Darnassus and Rut'theran.
+- Added routes to quest targets in moonglade lake.
+- Added a route for the alliance druid class quest (poison) in darkshore.
 
 ## Changes in release 27
 
@@ -104,13 +144,6 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 ### Sku Minimap - only for route/waypoint editors (not relevant for players): 
 - Adjusted the waypoint size of the Sku MM on zooming in/out.
-
-
-
-
-
-
-
 
 
 ## Changes in release 26.2
