@@ -797,7 +797,6 @@ function SkuCore:GossipFrame(aParentChilds)
       local tFrameName = "GossipTitleButton"..x
       if _G[tFrameName] then
          if _G[tFrameName]:IsShown() == true  then
-            print(x, unescape(_G[tFrameName]:GetText()))
             if _G[tFrameName]:GetText() then
                local tFriendlyName = unescape(_G[tFrameName]:GetText())
                if _G["GossipTitleButton"..x.."GossipIcon"]:IsShown() == true then
