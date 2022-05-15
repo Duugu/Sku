@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.1](https://github.com/Duugu/Sku/releases/download/r27.1/Sku-r27.1-bcc.zip) (14.05.2022)<br>
+[Sku r27.2](https://github.com/Duugu/Sku/releases/download/r27.2/Sku-r27.2-bcc.zip) (14.05.2022)<br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
 [SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
 
@@ -20,7 +20,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
-## Changes in release 27.1
+## Changes in release 27.2
 
 ### Navigation
 - Samalam contributed a new feature to have visited waypoints flagged as "visited" in waypoint lists. Thanks a million! :)<br>
