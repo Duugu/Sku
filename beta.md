@@ -1,12 +1,12 @@
 # Beta Updates
 
-[Sku r27.3-beta1](https://github.com/Duugu/Sku/releases/download/r27.3-beta1/Sku-r27.3-beta1-bcc.zip) (15.05.2022)<br>
+[Sku r27.3-beta1a](https://github.com/Duugu/Sku/releases/download/r27.3-beta1a/Sku-r27.3-beta1a-bcc.zip) (15.05.2022)<br>
 
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
 
-## Changes in Sku r27.3-beta1
+## Changes in Sku r27.3-beta1a
 
 ### Core
 - Fixed the missing Left click option for choosing quest rewards.
