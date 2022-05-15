@@ -1363,3 +1363,6 @@ L["minute"] = "Minute"
 L["Track whether waypoints were visited"] =  "Wegpunkte als Besucht markieren"
 L["visited automatically expires after"] = "Besucht markierung löschen nach"
 L["Clear visited"] = "Besucht löschen"
+
+L["Full scan completed"] ="Voller Auktionshaus Scan abgeschlossen"
+L["Full scan started"] ="Voller Auktionshaus Scan gestartet"

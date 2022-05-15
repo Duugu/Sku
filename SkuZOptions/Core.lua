@@ -1426,17 +1426,6 @@ function SkuOptions:AddExtraTooltipData(aUnmodifiedTextFull, aItemId)
 		end
 	end
 
-	if aItemId then
-		local void, void, Rarity, void, void, void, void, void, void, void, copperItemPrice = GetItemInfo(aItemId)
-		if copperItemPrice then
-			if copperItemPrice > 0 then
-				table.insert(aUnmodifiedTextFull, tRatingIndex + 1, L["Händlerpreis"]..": "..SkuGetCoinText(copperItemPrice, true, nil)..L[" (for 1 item)"])
-			else
-				table.insert(aUnmodifiedTextFull, tRatingIndex + 1, L["Nicht verkaufbar"])
-			end
-		end
-	end
-
 	local tNewTextFull = aUnmodifiedTextFull
 
 	if not tDNA then
