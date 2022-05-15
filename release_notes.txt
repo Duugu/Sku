@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
-Changes in release 27.1
+Changes in release 27.2
 
 	Navigation
 		- Samalam contributed a new feature to have visited waypoints flagged as "visited" in waypoint lists. Thanks a million! :)

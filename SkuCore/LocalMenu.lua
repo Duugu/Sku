@@ -797,8 +797,8 @@ function SkuCore:GossipFrame(aParentChilds)
       local tFrameName = "GossipTitleButton"..x
       if _G[tFrameName] then
          if _G[tFrameName]:IsShown() == true  then
-            if _G[tFrameName]:GetText() == true then
-               --print(x, unescape(_G[tFrameName]:GetText()))
+            print(x, unescape(_G[tFrameName]:GetText()))
+            if _G[tFrameName]:GetText() then
                local tFriendlyName = unescape(_G[tFrameName]:GetText())
                if _G["GossipTitleButton"..x.."GossipIcon"]:IsShown() == true then
                   --print(_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID(), tIconStrings[_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID()] )
@@ -1026,7 +1026,6 @@ function SkuCore:QuestFrame(aParentChilds)
             if _G[tFrameName] then
                if _G[tFrameName]:IsShown() == true then
                   if _G[tFrameName]:GetText() then
-                     --print(x, unescape(_G[tFrameName]:GetText()))
                      local tFriendlyName = unescape(_G[tFrameName]:GetText())
                      if _G["QuestTitleButton"..x.."QuestIcon"]:IsShown() == true  then
                         tFriendlyName = (tIconStrings[_G["QuestTitleButton"..x.."QuestIcon"]:GetTextureFileID()] or "").." "..unescape(_G[tFrameName]:GetText())
