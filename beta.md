@@ -1,11 +1,14 @@
 # Beta Updates
 
-[Sku r27.3-beta1a](https://github.com/Duugu/Sku/releases/download/r27.3-beta1a/Sku-r27.3-beta1a-bcc.zip) (15.05.2022)<br>
+[Sku r27.3-beta2](https://github.com/Duugu/Sku/releases/download/r27.3-beta2/Sku-r27.3-beta2-bcc.zip) (16.05.2022)<br>
 
 # Release notes
 
--------------------------------------------------------------------------------------------------------	
+## Changes in Sku 27.3-beta2
 
+### Core
+- Fixed missing vendor price.
+    
 ## Changes in Sku r27.3-beta1a
 
 ### Core
