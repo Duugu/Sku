@@ -353,6 +353,16 @@ function SkuCore:AuctionPriceHistoryData(aItemID, aAddCurrentPriceData, aAddHist
       return tSeenAmount, tLastSeen, tLow, tHigh, tAverage
    end
 
+   --vendor price
+   local void, void, Rarity, void, void, void, void, void, void, void, copperItemPrice = GetItemInfo(aItemID)
+   local tText = L["Nicht verkaufbar"]
+   if copperItemPrice then
+      if copperItemPrice > 0 then
+         tText = L["Händlerpreis"]..": "..SkuGetCoinText(copperItemPrice, true, nil)..L[" (for 1 item)"]
+      end
+   end
+   table.insert(tFullTextSections, tText)
+
    --current data
    if aAddCurrentPriceData == true then
       local tTempCurrentHistoryDB = {}

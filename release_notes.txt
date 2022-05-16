@@ -2,8 +2,15 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
 -------------------------------------------------------------------------------------------------------	
-Changes in release 27.3
+Changes in release 27.3-beta2
+	Core
+		- Fixed missing vendor price.
+
+
+-------------------------------------------------------------------------------------------------------	
+Changes in release 27.3-beta1a
 
 	Core
 		- Fixed the missing Left click option for choosing quest rewards.

@@ -705,7 +705,7 @@ function SkuCore:ItemTextFrame(aParent)
       local tText = ""
       for i, v in pairs(tHtmlTable) do
          if v.text then
-            print(unescape(v.text))
+            --print(unescape(v.text))
             tText = unescape(v.text).."\r\n"
          end
       end
