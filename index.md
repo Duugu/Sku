@@ -30,7 +30,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - Full scan starts and ends (every 15 minutes) on auction house open are now announced in voice and chat.
 - Fixed a but with vendor price in tooltips, where the vendor price line was shown multiple times.
 
-###Navigation
+### Navigation
 - For map editors only: fixed a bug with showing the additional Minimap.
 		
 ## Changes in Sku 27.2
