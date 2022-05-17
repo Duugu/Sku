@@ -7,11 +7,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.2](https://github.com/Duugu/Sku/releases/download/r27.2/Sku-r27.2-bcc.zip) (14.05.2022)<br>
-[SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
-[SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
+[Sku r27.3](https://github.com/Duugu/Sku/releases/download/r27.3/Sku-r27.3-bcc.zip) (17.05.2022)<br>
 
 *Old updates:* <br>
+[SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
+[SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
 [Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
 [SkuBeaconSoundsets r19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
@@ -20,7 +20,20 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
-## Changes in release 27.2
+## Changes in Sku 27.3
+
+### Core
+- Fixed the missing Left click option for choosing quest rewards.
+- Fixed a bug with current auction house price data in item tooltips. Current price data now should be shown, if there was at least one full scan completed in the current session (login or reload).
+- The average price in auction house tooltip data now is the Median value (instead of just the average, as before). The median is more robust against outliers (scam auctions with extreme high buy out prices). Thus the average value now is a realistic and usefull value.
+- The highest price in auction house tooltip data now ignores any auctions with prices > 10 times the median value. That should limit the highest price on auctions that are non-scam, and make that value usable.
+- Full scan starts and ends (every 15 minutes) on auction house open are now announced in voice and chat.
+- Fixed a but with vendor price in tooltips, where the vendor price line was shown multiple times.
+
+###Navigation
+- For map editors only: fixed a bug with showing the additional Minimap.
+		
+## Changes in Sku 27.2
 
 ### Navigation
 - Samalam contributed a new feature to have visited waypoints flagged as "visited" in waypoint lists. Thanks a million! :)<br>
@@ -61,7 +74,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - Added routes to quest targets in moonglade lake.
 - Added a route for the alliance druid class quest (poison) in darkshore.
 
-## Changes in release 27
+## Changes in Sku 27
 
 ### Options
 - All tooltips are now read by the Blizzard TTS, no matter if you have enabled the "Use Blizzard TTS for audio menu" option or not.
@@ -146,7 +159,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - Adjusted the waypoint size of the Sku MM on zooming in/out.
 
 
-## Changes in release 26.2
+## Changes in Sku 26.2
 
 ### Navigation
 - Fixed an issue that lead to incorrect compass directions with "Show global direction in waypoint lists" enabled in some regions.
@@ -174,7 +187,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - Removed all outputs for players with "Announce player controled units with generic descriptions" set to Off.
 - Removed the in-combat-sound for player controlled units.
 
-## Changes in release 26
+## Changes in Sku 26
 
 ### SkuOptions
 - New option: SkuOptions > Options > Use Blizzard TTS for audio menu. The default value is Off.<br>
