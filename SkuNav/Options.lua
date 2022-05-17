@@ -1169,7 +1169,6 @@ function SkuNav:MenuBuilder(aParentEntry)
 				return
 			end
 			SkuOptions.db.profile[MODULE_NAME].Routes = nil
-			SkuOptions.db.profile["SkuNav"].RtAndWpVersion = 22
 
 			SkuOptions.db.global[MODULE_NAME].Waypoints = {}
 			SkuOptions.db.global[MODULE_NAME].Links = {}

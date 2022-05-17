@@ -251,6 +251,38 @@ function SkuCore:AuctionItemNameFormat(aItemData, aIndex, aAddLevel)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function Median(t)
+   if not t then
+      return 0
+   end
+
+   if #t == 0 then
+      return 0
+   end
+
+   local temp={}
+ 
+   -- deep copy table so that when we sort it, the original is unchanged
+   -- also weed out any non numbers
+   for k,v in pairs(t) do
+      if type(v) == "number" then
+         table.insert( temp, v )
+      end
+   end
+ 
+   table.sort(temp)
+ 
+   -- If we have an even number of table elements or odd.
+   if math.fmod(#temp,2) == 0 then
+      -- return mean value of middle two elements
+      return (temp[#temp/2] + temp[(#temp/2)+1]) / 2
+   else
+      -- return middle element
+      return temp[math.ceil(#temp/2)]
+   end
+ end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionPriceHistoryData(aItemID, aAddCurrentPriceData, aAddHistoryPriceData)
 
    --SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB
@@ -271,6 +303,13 @@ function SkuCore:AuctionPriceHistoryData(aItemID, aAddCurrentPriceData, aAddHist
       local tHigh
       local tAverage
       local tCopperSum
+
+      local tMedian = {}
+      for tCopper, tSeenData in pairs(tSource) do
+         table.insert(tMedian, tCopper)
+      end
+      tAverage = Median(tMedian)--tCopperSum / tSeenAmount
+
 
       for tCopper, tSeenData in pairs(tSource) do
          for tServerTime, tAmountSeen in pairs(tSeenData) do
@@ -294,12 +333,16 @@ function SkuCore:AuctionPriceHistoryData(aItemID, aAddCurrentPriceData, aAddHist
             end
          end
          
-         if not tHigh then
-            tHigh = tCopper
-         else
-            if tCopper > tHigh then
+         if tCopper < tAverage * 10 then
+            if not tHigh then
                tHigh = tCopper
+            else
+               if tCopper > tHigh then
+                  tHigh = tCopper
+               end
             end
+         else
+            --print("ignored", aItemID, SkuGetCoinText(tAverage, true), SkuGetCoinText(tCopper, true))
          end
       end
 
@@ -307,15 +350,23 @@ function SkuCore:AuctionPriceHistoryData(aItemID, aAddCurrentPriceData, aAddHist
          return nil
       end
 
-      tAverage = tCopperSum / tSeenAmount
-
       return tSeenAmount, tLastSeen, tLow, tHigh, tAverage
    end
+
+   --vendor price
+   local void, void, Rarity, void, void, void, void, void, void, void, copperItemPrice = GetItemInfo(aItemID)
+   local tText = L["Nicht verkaufbar"]
+   if copperItemPrice then
+      if copperItemPrice > 0 then
+         tText = L["Händlerpreis"]..": "..SkuGetCoinText(copperItemPrice, true, nil)..L[" (for 1 item)"]
+      end
+   end
+   table.insert(tFullTextSections, tText)
 
    --current data
    if aAddCurrentPriceData == true then
       local tTempCurrentHistoryDB = {}
-      SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, true, tTempCurrentHistoryDB)
+      SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, true, tTempCurrentHistoryDB, aItemID)
 
       local tText = ""
       if not tTempCurrentHistoryDB[aItemID] then
@@ -1430,6 +1481,8 @@ function SkuCore:AuctionHouseOnLogin()
 
    GameTooltip:HookScript("OnShow", SkuCore.AuctionTooltipHook)
    _G["SkuScanningTooltip"]:HookScript("OnShow", SkuCore.AuctionTooltipHook)
+
+   SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = {}
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1594,7 +1647,7 @@ function SkuCore:ConfirmButtonShow(aText, aOkScript, aEscScript)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, aCustomTargetTable)
+function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, aCustomTargetTable, aItemID)
    --print("AuctionUpdateAuctionDBHistory", aFromAuctionDB, aFromCurrentDB, aCustomTargetTable)
    if not aFromAuctionDB and not aFromCurrentDB then
       return
@@ -1609,7 +1662,7 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, a
    if aFromAuctionDB then
       tSourceData = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB
    elseif aFromCurrentDB then
-      tSourceData = SkuCore.CurrentDB
+      tSourceData = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB--SkuCore.CurrentDB
    else
       return
    end
@@ -1617,78 +1670,79 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, a
    for tIndex, tData in pairs(tSourceData) do
       if tData then
          local tItemId = tData[tAIDIndex["itemId"]]
-
-         --we need the numbers for one item; min 1 copper
-         local tMinBid = 0
-         if tData[tAIDIndex["minBid"]] > 0 then
-            tMinBid = mfloor(tData[tAIDIndex["minBid"]] / tData[tAIDIndex["count"]])
-            if tMinBid == 0 then tMinBid = 1 end
-         end
-         local tBuyoutPrice = 0
-         if tData[tAIDIndex["buyoutPrice"]] > 0 then
-            tBuyoutPrice = mfloor(tData[tAIDIndex["buyoutPrice"]] / tData[tAIDIndex["count"]])
-            if tBuyoutPrice == 0 then tBuyoutPrice = 1 end
-         end
-
-         if not tTargetTable[tItemId] then
-            tTargetTable[tItemId] = {
-               bids = {},
-               buyouts = {},
-            }
-         end
-
-         --minbid
-         if tBuyoutPrice == 0 or tMinBid < tBuyoutPrice then
-            if not tTargetTable[tItemId].bids[tMinBid] then
-               tTargetTable[tItemId].bids[tMinBid] = {}
+         if (aItemID and aItemID == tItemId) or not aItemID then
+            --we need the numbers for one item; min 1 copper
+            local tMinBid = 0
+            if tData[tAIDIndex["minBid"]] > 0 then
+               tMinBid = mfloor(tData[tAIDIndex["minBid"]] / tData[tAIDIndex["count"]])
+               if tMinBid == 0 then tMinBid = 1 end
             end
-            if tTargetTable[tItemId].bids[tMinBid][tServerTime] then
-               tTargetTable[tItemId].bids[tMinBid][tServerTime] = tTargetTable[tItemId].bids[tMinBid][tServerTime] + 1
-            else
-               local tNew = true
-               for i, v in pairs(tTargetTable[tItemId].bids[tMinBid]) do
-                  if tSaveTime == mfloor(i / tDelayFactorForAddingAuctionsToHistory) then
-                     tNew = false
-                  end
+            local tBuyoutPrice = 0
+            if tData[tAIDIndex["buyoutPrice"]] > 0 then
+               tBuyoutPrice = mfloor(tData[tAIDIndex["buyoutPrice"]] / tData[tAIDIndex["count"]])
+               if tBuyoutPrice == 0 then tBuyoutPrice = 1 end
+            end
+
+            if not tTargetTable[tItemId] then
+               tTargetTable[tItemId] = {
+                  bids = {},
+                  buyouts = {},
+               }
+            end
+
+            --minbid
+            if tBuyoutPrice == 0 or tMinBid < tBuyoutPrice then
+               if not tTargetTable[tItemId].bids[tMinBid] then
+                  tTargetTable[tItemId].bids[tMinBid] = {}
                end
-               if tNew == true then
-                  tTargetTable[tItemId].bids[tMinBid][tServerTime] = 1
-                  --[[
-                  if #tTargetTable[tItemId].bids[tMinBid] > tHistoryDataMaxiumAmount then
-                     local tRemoveAmount = tHistoryDataMaxiumAmount - #tTargetTable[tItemId].bids[tMinBid]
-                     for z = 1, tRemoveAmount do
-                        table.remove(tTargetTable[tItemId].bids[tMinBid], 1)
+               if tTargetTable[tItemId].bids[tMinBid][tServerTime] then
+                  tTargetTable[tItemId].bids[tMinBid][tServerTime] = tTargetTable[tItemId].bids[tMinBid][tServerTime] + 1
+               else
+                  local tNew = true
+                  for i, v in pairs(tTargetTable[tItemId].bids[tMinBid]) do
+                     if tSaveTime == mfloor(i / tDelayFactorForAddingAuctionsToHistory) then
+                        tNew = false
                      end
                   end
-                  ]]
-               end
-            end
-         end
-         --buyout
-         if tBuyoutPrice > 0 then
-            if not tTargetTable[tItemId].buyouts[tBuyoutPrice] then
-               tTargetTable[tItemId].buyouts[tBuyoutPrice] = {}
-            end
-
-            if tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] then
-               tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] = tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] + 1
-            else
-               local tNew = true
-               for i, v in pairs(tTargetTable[tItemId].buyouts[tBuyoutPrice]) do
-                  if tSaveTime == mfloor(i / tDelayFactorForAddingAuctionsToHistory) then
-                     tNew = false
+                  if tNew == true then
+                     tTargetTable[tItemId].bids[tMinBid][tServerTime] = 1
+                     --[[
+                     if #tTargetTable[tItemId].bids[tMinBid] > tHistoryDataMaxiumAmount then
+                        local tRemoveAmount = tHistoryDataMaxiumAmount - #tTargetTable[tItemId].bids[tMinBid]
+                        for z = 1, tRemoveAmount do
+                           table.remove(tTargetTable[tItemId].bids[tMinBid], 1)
+                        end
+                     end
+                     ]]
                   end
                end
-               if tNew == true then
-                  tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] = 1
-                  --[[
-                  if #tTargetTable[tItemId].buyouts[tBuyoutPrice] > tHistoryDataMaxiumAmount then
-                     local tRemoveAmount = tHistoryDataMaxiumAmount - #tTargetTable[tItemId].buyouts[tBuyoutPrice]
-                     for z = 1, tRemoveAmount do
-                        table.remove(tTargetTable[tItemId].buyouts[tBuyoutPrice], 1)
+            end
+            --buyout
+            if tBuyoutPrice > 0 then
+               if not tTargetTable[tItemId].buyouts[tBuyoutPrice] then
+                  tTargetTable[tItemId].buyouts[tBuyoutPrice] = {}
+               end
+
+               if tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] then
+                  tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] = tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] + 1
+               else
+                  local tNew = true
+                  for i, v in pairs(tTargetTable[tItemId].buyouts[tBuyoutPrice]) do
+                     if tSaveTime == mfloor(i / tDelayFactorForAddingAuctionsToHistory) then
+                        tNew = false
                      end
                   end
-                  ]]
+                  if tNew == true then
+                     tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] = 1
+                     --[[
+                     if #tTargetTable[tItemId].buyouts[tBuyoutPrice] > tHistoryDataMaxiumAmount then
+                        local tRemoveAmount = tHistoryDataMaxiumAmount - #tTargetTable[tItemId].buyouts[tBuyoutPrice]
+                        for z = 1, tRemoveAmount do
+                           table.remove(tTargetTable[tItemId].buyouts[tBuyoutPrice], 1)
+                        end
+                     end
+                     ]]
+                  end
                end
             end
          end
@@ -1714,6 +1768,9 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
    if SkuCore.AuctionIsFullScanning == true then
       --this is a full query
       if not aRet then
+         print(L["Full scan started"])
+         SkuOptions.Voice:OutputStringBTtts(L["Full scan started"], false, true, 0.2)
+
          SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = {}
          local tBatch, tCount = GetNumAuctionItems("list")
          dprint("AuctionIsFullScanning tBatch, tCount", tBatch, tCount)
@@ -1749,7 +1806,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
             SkuCore.AuctionIsScanning = false
             SkuCore.AuctionIsFullScanning = false
             SkuCore:AuctionScanQueueRemove()
-            dprint("full scan completed")
+            print(L["Full scan completed"])
+            SkuOptions.Voice:OutputStringBTtts(L["Full scan completed"], false, true, 0.2)
             SkuCore:AuctionUpdateAuctionDBHistory(true, nil)
          end
       end)         

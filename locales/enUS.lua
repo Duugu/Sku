@@ -1367,3 +1367,6 @@ L["minute"] = "minute"
 L["Track whether waypoints were visited"] =  "Track whether waypoints were visited"
 L["visited automatically expires after"] = "visited automatically expires after"
 L["Clear visited"] = "Clear visited"
+
+L["Full scan completed"] ="Auction house full scan completed"
+L["Full scan started"] ="Auction house full scan started"

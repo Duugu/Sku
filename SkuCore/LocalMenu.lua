@@ -705,7 +705,7 @@ function SkuCore:ItemTextFrame(aParent)
       local tText = ""
       for i, v in pairs(tHtmlTable) do
          if v.text then
-            print(unescape(v.text))
+            --print(unescape(v.text))
             tText = unescape(v.text).."\r\n"
          end
       end
@@ -1378,7 +1378,7 @@ function SkuCore:QuestFrame(aParentChilds)
          end
 
          if QuestInfoRewardsFrame.ItemChooseText:IsShown() == true or QuestInfoRewardsFrame.ItemReceiveText:IsShown() == true or (QuestInfoMoneyFrame:IsShown() == true and QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame.staticMoney) then
-            QuestInfoRewardsFrameHelper(tDetailChilds, true)
+            QuestInfoRewardsFrameHelper(tDetailChilds)
          end
          
          local tFrameName = "QuestFrameCompleteQuestButton"
