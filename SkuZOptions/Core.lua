@@ -329,9 +329,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnProfileReset()
 	dprint("SkuOptions:OnProfileReset")
-	local tVersion = GetAddOnMetadata("Sku", "Version") 
-	if tVersion then tVersion = tonumber(tVersion) end
-	SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
 	SkuOptions.db.profile["SkuNav"].Routes = nil
 	SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
 	SkuNav:CreateWaypointCache()
@@ -787,14 +784,6 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.InteractMove = false
 
 	tFrame:SetScript("OnClick", function(self, a, b)
-		--dprint("OnSkuOptionsMain OnClick ", a, b)
-		--[[
-		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
-			print("Funktion erst nach Abschluss von Routen Umwandlung verfügbar")
-			SkuOptions.Voice:OutputStringBTtts("Funktion erst nach Abschluss von Routen Umwandlung verfügbar", true, true, 0.3, true)
-			return
-		end
-		]]
 		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
 			SkuCore.openMenuAfterMoving = true
 			return
@@ -3954,20 +3943,7 @@ function SkuOptions:ImportPre22WpAndRouteData()
 				print("  Umbenannt: ", tRenameCounterWps)
 				print("  Ignoriert: ", tIgnoredCounterWps)
 
-
-
-
-
-				--start conversion
-				SkuOptions.db.profile["SkuNav"].RtAndWpVersion = nil
 				SkuNav:PLAYER_ENTERING_WORLD()
-
-
-
-
-
-
-
 			else
 				SkuOptions.Voice:OutputStringBTtts("Import fehlgeschlagen", false, true, 0.2)										
 			end

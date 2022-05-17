@@ -258,9 +258,6 @@ function SkuNav:DrawAll(aFrame)
 		SkuLineRepo = CreateFramePool("Frame", aFrame)
 	end
 
-	if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
-		return
-	end
 	if SkuDrawFlag == true then
 		ClearWaypoints()
 		--SkuNav:DrawTerrainData(aFrame)
@@ -655,13 +652,6 @@ function SkuNav:SkuNavMMOpen()
 	SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY = SkuOptions.db.profile[MODULE_NAME].SkuNavMMMainPosY or UIParent:GetHeight() / 2
 
 	if SkuOptions.db.profile[MODULE_NAME].showSkuMM == true then
-		if not SkuOptions.db.profile["SkuNav"].RtAndWpVersion or SkuOptions.db.profile["SkuNav"].RtAndWpVersion < 22 then
-			if _G["SkuNavMMMainFrame"] then
-				_G["SkuNavMMMainFrame"]:Hide()
-			end
-			SkuOptions.db.profile[MODULE_NAME].showSkuMM = false
-			return
-		end
 		SkuNavMMShowCustomWo = false
 		SkuNavMMShowDefaultWo = false
 

@@ -1764,69 +1764,65 @@ function SkuNav:CreateSkuNavControl()
 				ttimeDraw = 0
 			end
 			
-			if SkuOptions.db.profile["SkuNav"].RtAndWpVersion then
-				if SkuOptions.db.profile["SkuNav"].RtAndWpVersion >= 22 then
-					SkuWaypointWidgetCurrent = nil
-					for i, v in SkuWaypointWidgetRepo:EnumerateActive() do
-						if i:IsVisible() == true then
-							if i:IsMouseOver() then
-								if i.aText ~= SkuWaypointWidgetCurrent then
-									SkuWaypointWidgetCurrent = i.aText
+			SkuWaypointWidgetCurrent = nil
+			for i, v in SkuWaypointWidgetRepo:EnumerateActive() do
+				if i:IsVisible() == true then
+					if i:IsMouseOver() then
+						if i.aText ~= SkuWaypointWidgetCurrent then
+							SkuWaypointWidgetCurrent = i.aText
 
-									GameTooltip.SkuWaypointWidgetCurrent = i.aText
-									GameTooltip:ClearLines()
-									GameTooltip:SetOwner(i, "ANCHOR_RIGHT")
-									GameTooltip:AddLine(i.aText, 1, 1, 1)
-									GameTooltip:Show()
-									i:SetSize(3, 3)
-									local r, g, b, t = i:GetVertexColor()
-									i.oldColor = {r = r, g = g, b = b, t = t}
-									i:SetColorTexture(0, 1, 1)
-								else
-									i:SetSize(2, 2)
-									if i.oldColor then
-										i:SetColorTexture(i.oldColor.r, i.oldColor.g, i.oldColor.b, i.oldColor.a)
-										--i:SetColorTexture(i.oldColor)
-									end
-								end
+							GameTooltip.SkuWaypointWidgetCurrent = i.aText
+							GameTooltip:ClearLines()
+							GameTooltip:SetOwner(i, "ANCHOR_RIGHT")
+							GameTooltip:AddLine(i.aText, 1, 1, 1)
+							GameTooltip:Show()
+							i:SetSize(3, 3)
+							local r, g, b, t = i:GetVertexColor()
+							i.oldColor = {r = r, g = g, b = b, t = t}
+							i:SetColorTexture(0, 1, 1)
+						else
+							i:SetSize(2, 2)
+							if i.oldColor then
+								i:SetColorTexture(i.oldColor.r, i.oldColor.g, i.oldColor.b, i.oldColor.a)
+								--i:SetColorTexture(i.oldColor)
 							end
 						end
 					end
-					
-					if SkuWaypointWidgetRepoMM then
-						if _G["SkuNavMMMainFrame"]:IsShown() then
-							SkuWaypointWidgetCurrent = nil
-							for i, v in SkuWaypointWidgetRepoMM:EnumerateActive() do
-								if i:IsVisible() == true then
-									if i.aText ~= "line" then
-										if i:IsMouseOver() then
-											local _, _, _, x, y = i:GetPoint(1)
-											local MMx, MMy = _G["SkuNavMMMainFrame"]:GetSize()
-											MMx, MMy = MMx / 2, MMy / 2
-											if x > -MMx and x < MMx and y > -MMy and y < MMy then
-												if i.aText ~= SkuWaypointWidgetCurrent then
-													SkuWaypointWidgetCurrent = i.aText
+				end
+			end
+			
+			if SkuWaypointWidgetRepoMM then
+				if _G["SkuNavMMMainFrame"]:IsShown() then
+					SkuWaypointWidgetCurrent = nil
+					for i, v in SkuWaypointWidgetRepoMM:EnumerateActive() do
+						if i:IsVisible() == true then
+							if i.aText ~= "line" then
+								if i:IsMouseOver() then
+									local _, _, _, x, y = i:GetPoint(1)
+									local MMx, MMy = _G["SkuNavMMMainFrame"]:GetSize()
+									MMx, MMy = MMx / 2, MMy / 2
+									if x > -MMx and x < MMx and y > -MMy and y < MMy then
+										if i.aText ~= SkuWaypointWidgetCurrent then
+											SkuWaypointWidgetCurrent = i.aText
 
-													GameTooltip.SkuWaypointWidgetCurrent = i.aText
-													GameTooltip:ClearLines()
-													GameTooltip:SetOwner(i, "ANCHOR_RIGHT")
-													GameTooltip:AddLine(i.aText, 1, 1, 1)
-													if i.aComments then
-														for x = 1, #i.aComments do
-															GameTooltip:AddLine(i.aComments[x], 1, 1, 0)
-														end
-													end
-													GameTooltip:Show()
-													local r, g, b, a = i:GetVertexColor()
-													i.oldColor = {r = r, g = g, b = b, a = a}
-													--i.oldColor = i:GetVertexColor()
-													i:SetColorTexture(0, 1, 1)
-												else
-													--i:SetSize(2, 2)
-													if i.oldColor then
-														i:SetColorTexture(i.oldColor.r, i.oldColor.g, i.oldColor.b, i.oldColor.a)
-													end
+											GameTooltip.SkuWaypointWidgetCurrent = i.aText
+											GameTooltip:ClearLines()
+											GameTooltip:SetOwner(i, "ANCHOR_RIGHT")
+											GameTooltip:AddLine(i.aText, 1, 1, 1)
+											if i.aComments then
+												for x = 1, #i.aComments do
+													GameTooltip:AddLine(i.aComments[x], 1, 1, 0)
 												end
+											end
+											GameTooltip:Show()
+											local r, g, b, a = i:GetVertexColor()
+											i.oldColor = {r = r, g = g, b = b, a = a}
+											--i.oldColor = i:GetVertexColor()
+											i:SetColorTexture(0, 1, 1)
+										else
+											--i:SetSize(2, 2)
+											if i.oldColor then
+												i:SetColorTexture(i.oldColor.r, i.oldColor.g, i.oldColor.b, i.oldColor.a)
 											end
 										end
 									end
@@ -1834,15 +1830,15 @@ function SkuNav:CreateSkuNavControl()
 							end
 						end
 					end
-
-					if GameTooltip:IsShown() and not SkuWaypointWidgetCurrent and GameTooltip.SkuWaypointWidgetCurrent then
-						GameTooltip.SkuWaypointWidgetCurrent = nil
-						GameTooltip:Hide()
-					end
-
-					SkuNav:ProcessRecordingMousClickStuff()
 				end
 			end
+
+			if GameTooltip:IsShown() and not SkuWaypointWidgetCurrent and GameTooltip.SkuWaypointWidgetCurrent then
+				GameTooltip.SkuWaypointWidgetCurrent = nil
+				GameTooltip:Hide()
+			end
+
+			SkuNav:ProcessRecordingMousClickStuff()
 
 			if ttime > 0.1 then
 				SkuNav:ProcessPolyZones()
@@ -2625,10 +2621,6 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 
 	SkuNav:ClearWaypointsTemporary(true)
 	
-	local tVersion = GetAddOnMetadata("Sku", "Version") 
-	if tVersion then tVersion = tonumber(tVersion) end
-	SkuOptions.db.profile["SkuNav"].RtAndWpVersion = tVersion
-
 	SkuNav:CreateWaypointCache()
 	SkuNav:LoadLinkDataFromProfile()
 
@@ -3002,234 +2994,4 @@ function SkuNav:DeleteWaypoint(aWpName)
 	end
 
 	return false
-end
-
-
-
-
-
-
-
-
-
-------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------
---temp helper to remove unintended wp dupes
-------------------------------------------------------------------------------------------------------------------------
-function SkuNav:CleanupWaypoints(aJustReportFlag)
-	for i, v in pairs(WaypointCache) do
-		if v.typeId == 1 then
-			local tWpToTestName = v.name
-			local tWpToTestLast2 = string.sub(tWpToTestName, string.len(tWpToTestName) - 1)
-			local tWpToTestUpToLast2 = string.sub(tWpToTestName, 1, string.len(tWpToTestName) - 2)
-			if tWpToTestLast2 == ";1" or tWpToTestLast2 == ";2" or tWpToTestLast2 == ";3" then
-				if WaypointCacheLookupAll[tWpToTestUpToLast2] then
-					local tWpToTestData = v
-					local tWpToTesUpToLast2Data = WaypointCache[WaypointCacheLookupAll[tWpToTestUpToLast2]]
-
-					if tWpToTestData.worldX == tWpToTesUpToLast2Data.worldX and
-						tWpToTestData.worldY == tWpToTesUpToLast2Data.worldY and
-						tWpToTestData.areaId == tWpToTesUpToLast2Data.areaId and
-						tWpToTestData.contintentId == tWpToTesUpToLast2Data.contintentId and
-						tWpToTestData.comments == tWpToTesUpToLast2Data.comments
-					then
-						if not aJustReportFlag then
-							dprint("Wp-Doublette gelöscht:", tWpToTestName, SkuNav:DeleteWaypoint(tWpToTestName))
-						else
-							dprint("Wp-Doublette löschen:", tWpToTestName)
-						end
-					end
-				end
-			end
-		end
-	end
-	--SkuNav:SaveLinkDataToProfile()
-
-end
-------------------------------------------------------------------------------------------------------------------------
---everything below is just to convert pre-22 data to new format
-------------------------------------------------------------------------------------------------------------------------
-local tCacheNbWpsTimerCounter = 0
-local tCacheNbWpsTimerCounterProgress = 0
-local tCacheNbWpsTimerCounterProgressShow = true
-local tCacheNbWpsTimerRate = 2
-local tCacheNbWpsTimer = nil
-local SkuNeighbCache = {}
-local tFoundThisRound = false
-------------------------------------------------------------------------------------------------------------------------
-function SkuNav:UpdateWaypointCacheLinks(aChangedWpNames)
-	for tNameSource, tData in pairs(SkuNeighbCache) do
-		for tIndex, tNameTarget in pairs(tData) do
-			local tSourceWpId = WaypointCacheLookupAll[tNameSource]
-			local tTargetWpId = WaypointCacheLookupAll[tNameTarget]
-			local tSourceWpData = WaypointCache[tSourceWpId]
-			local tTargetWpData = WaypointCache[tTargetWpId]
-
-			if not tSourceWpData or not tTargetWpData then
-				dprint("MISSING", tSourceWpData, tTargetWpData)
-			else
-				local tDistance = SkuNav:Distance(WaypointCache[tSourceWpId].worldX, WaypointCache[tSourceWpId].worldY, WaypointCache[tTargetWpId].worldX, WaypointCache[tTargetWpId].worldY)
-				if not WaypointCache[tSourceWpId].links.byId then
-					WaypointCache[tSourceWpId].links.byId ={}
-				end
-				WaypointCache[tSourceWpId].links.byId[tTargetWpId] = tDistance
-				if not WaypointCache[tSourceWpId].links.byName then
-					WaypointCache[tSourceWpId].links.byName ={}
-				end
-				WaypointCache[tSourceWpId].links.byName[tNameTarget] = tDistance
-
-				if not WaypointCache[tTargetWpId].links.byId then
-					WaypointCache[tTargetWpId].links.byId ={}
-				end
-				WaypointCache[tTargetWpId].links.byId[tSourceWpId] = tDistance
-				if not WaypointCache[tTargetWpId].links.byName then
-					WaypointCache[tTargetWpId].links.byName ={}
-				end
-				WaypointCache[tTargetWpId].links.byName[tNameSource] = tDistance
-			end
-		end
-	end
-end
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:CacheNbWps(aRate, aListOfRouteNamesToReCache, aListOfWpNamesToReCache)
-	tCacheNbWpsTimerRate = 20--aRate or 10
-	dprint("CacheNbWps")
-
-	local tCacheNbWpsTimerWpList = {}
-	if tCacheNbWpsTimerCounterProgressShow == true then
-		--dprint("SkuNav: WPs and RTs cache req")
-		SkuOptions.Voice:OutputString(L["Routen Umwandlung auf neue Version gestartet"], false, true, 0.3, true)
-		print(L["Routen Umwandlung auf neue Version gestartet"])
-
-	end
-	for i, tRouteName in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes) do
-		if SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName] then
-			if SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs then
-				for x, tWpName in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs) do
-					tCacheNbWpsTimerWpList[#tCacheNbWpsTimerWpList + 1] = tWpName
-				end
-			end
-		end
-	end
-	if tCacheNbWpsTimerCounterProgressShow == true then
-		dprint("SkuNav: "..#tCacheNbWpsTimerWpList.." WPs to cache")
-	end
-
-	if #tCacheNbWpsTimerWpList > 0 then
-		if tCacheNbWpsTimer then
-			tCacheNbWpsTimer:Cancel()
-			tCacheNbWpsTimer = nil
-			if tCacheNbWpsTimerCounterProgressShow == true then
-				dprint("SkuNav: Caching restarted...")
-			end
-		else
-			if tCacheNbWpsTimerCounterProgressShow == true then
-				dprint("SkuNav: Caching started...")
-				tFoundThisRound = false
-			end
-		end
-
-		tCacheNbWpsTimerCounter = 0
-		tCacheNbWpsTimerCounterProgress = 0
-		tCacheNbWpsTimer = C_Timer.NewTicker(0, function()
-			local tOldFps = 0
-			local tFps = 0
-			--print("new ticker", tCacheNbWpsTimer)
-			local tFoundCount = 0
-			for x = 1, tCacheNbWpsTimerRate do
-				tCacheNbWpsTimerCounter = tCacheNbWpsTimerCounter + 1
-				if tCacheNbWpsTimerCounter >= #tCacheNbWpsTimerWpList == true then
-					if tCacheNbWpsTimer then
-						tCacheNbWpsTimer:Cancel()
-						tCacheNbWpsTimer = nil
-						if tCacheNbWpsTimerCounterProgressShow == true then
-							--dprint("SkuNav: Caching completed")
-							--if tFoundThisRound == true then
-								--SkuOptions.Voice:OutputString("Routen Konvertierung abgeschlossen", false, true, 0.3, true)
-							--end
-							tFoundThisRound = false
-
-							SkuOptions.Voice:OutputString(L["Routen Umwandlung abgeschlossen"], false, true, 0.3, true)
-							print(L["Routen Umwandlung abgeschlossen"])
-							SkuNav:UpdateWaypointCacheLinks()
-							SkuNav:SaveLinkDataToProfile()
-							SkuOptions.db.profile[MODULE_NAME].Routes = nil
-							SkuOptions.db.profile["SkuNav"].RtAndWpVersion = 22
-						end
-					end
-				end
-				if tCacheNbWpsTimerWpList[tCacheNbWpsTimerCounter] then
-					local tWaste, tFound = GetNeighbToWp(tCacheNbWpsTimerWpList[tCacheNbWpsTimerCounter], true)
-					if tFound == true then
-						tFoundThisRound = tFound
-						tFoundCount = tFoundCount + 1
-					end
-				end
-			end
-			if tCacheNbWpsTimerCounterProgressShow == true then
-				if math.floor(tCacheNbWpsTimerCounterProgress / 1000) ~= math.floor(tCacheNbWpsTimerCounter / 1000) then
-					tCacheNbWpsTimerCounterProgress = tCacheNbWpsTimerCounter
-					SkuOptions.Voice:OutputString(L["Routen Umwandlung "]..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000), false, true, 0.3, true)
-					print(L["Routen Umwandlung "]..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000))
-					--dprint("SkuNav: Caching progress "..math.floor(tCacheNbWpsTimerCounterProgress / 1000).."/"..math.floor(#tCacheNbWpsTimerWpList / 1000))
-				end
-			end
-			if tFoundCount > 0 then
-				tFps = GetFramerate()
-				if tFps < 10 then
-					tCacheNbWpsTimerRate = tCacheNbWpsTimerRate - 0.01
-					if tCacheNbWpsTimerRate < 1 then
-						tCacheNbWpsTimerRate = 1
-					end
-				elseif tFps > 10 then
-					tCacheNbWpsTimerRate = tCacheNbWpsTimerRate + 0.01
-				end
-				tOldFps = tFps
-			end
-		end)
-	else
-		SkuOptions.Voice:OutputString(L["Routen Umwandlung abgeschlossen"], false, true, 0.3, true)
-		SkuOptions.db.profile[MODULE_NAME].Routes = nil
-		SkuOptions.db.profile["SkuNav"].RtAndWpVersion = 22		
-	end
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function GetNeighbToWp(aWpName, aTicker)
-	if not aTicker then
-		if tCacheNbWpsTimer then
-			if tCacheNbWpsTimerCounterProgressShow == true then
-				dprint("SkuNav: Caching stopped")
-			end
-			tCacheNbWpsTimer:Cancel()
-			tCacheNbWpsTimer = nil
-		end
-	end
-
-	if SkuNeighbCache[aWpName] then
-		return SkuNeighbCache[aWpName]
-	end
-	--local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
-	--local tUIMap = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId())
-
-	local tFoundNeighb = {}
-	if not SkuOptions.db.profile[MODULE_NAME].Routes then
-		return
-	end
-	for _, tRouteName in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes) do
-			for x, tWpName in ipairs(SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs) do
-				if aWpName == tWpName then
-					if x > 1 then
-						tFoundNeighb[#tFoundNeighb+1] = SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[x-1]
-					end
-					if x < #SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs then
-						tFoundNeighb[#tFoundNeighb+1] = SkuOptions.db.profile[MODULE_NAME].Routes[tRouteName].WPs[x+1]
-					end
-				end
-			end
-	end
-	SkuNeighbCache[aWpName] = tFoundNeighb
-
-	return tFoundNeighb, true
 end
