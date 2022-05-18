@@ -132,6 +132,9 @@ function SkuNav:CreateWaypointCache()
 		--we don't want stuff like ores, herbs, etc.
 		if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints == true then
 			if SkuDB.objectDataTBC[i] then
+				if i < 100 then
+					print(i)
+				end
 				local tSpawns = SkuDB.objectDataTBC[i][4]
 				if tSpawns then
 					for is, vs in pairs(tSpawns) do
