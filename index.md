@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.3](https://github.com/Duugu/Sku/releases/download/r27.3/Sku-r27.3-bcc.zip) (17.05.2022)<br>
+[Sku r27.4](https://github.com/Duugu/Sku/releases/download/r27.4/Sku-r27.4-bcc.zip) (19.05.2022)<br>
 
 *Old updates:* <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
@@ -20,6 +20,19 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku release 27.4
+
+### Navigation
+- Fixed the missing waypoint to Sunken Chest.
+
+### Core
+- Added a "Cancel" option to the submenus of your current auctions in Core > Auction house > Sales
+- Fixed a bug with bags and auction data.
+- Fixed a (taint) issu that caused errors on switching stance in combat.
+
+### Quest
+- Fixed a but with not responding quest menu on interacting with npcs.
+
 ## Changes in Sku 27.3
 
 ### Core
