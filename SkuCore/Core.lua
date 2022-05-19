@@ -1644,10 +1644,12 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				TRAINER_FILTER_UNAVAILABLE = 0 
 				TRAINER_FILTER_USED = 0
 				SetActionBarToggles(1,1,1,1,1) 
+				--[[
 				SHOW_MULTI_ACTIONBAR_1 = 1 
 				SHOW_MULTI_ACTIONBAR_2 = 1 
 				SHOW_MULTI_ACTIONBAR_3 = 1 
 				SHOW_MULTI_ACTIONBAR_4 = 1 
+				]]
 				MultiActionBar_Update() 
 				UIParent_ManageFramePositions() 
 
