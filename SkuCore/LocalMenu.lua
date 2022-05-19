@@ -162,6 +162,21 @@ end
 -- menu items
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+local function getItemTooltipTextHelper(tooltipSetter)
+	local tooltip = _G["SkuScanningTooltip"]
+	tooltip:ClearLines()
+	tooltipSetter(tooltip)
+	local getEscapedText = function() return TooltipLines_helper(tooltip:GetRegions()) end
+	if getEscapedText() ~= "asd" and getEscapedText() ~= "" then
+		return unescape(getEscapedText())
+	end
+end
+
+local function getItemTooltipTextFromBagItem(bag, slot)
+	return getItemTooltipTextHelper(
+		function(tooltip) tooltip:SetBagItem(bag, slot) end
+	)
+end
 function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
    if not BagnonInventoryFrame1.bagGroup then
@@ -239,30 +254,27 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                      end
 
 
-                     _G["SkuScanningTooltip"]:ClearLines()
-                     local hsd, rc = _G["SkuScanningTooltip"]:SetBagItem(aParentChilds[tFriendlyName].obj:GetParent():GetID(), aParentChilds[tFriendlyName].obj:GetID())
-                     if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-                        if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                           local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-                           
-                           if aParentChilds[tFriendlyName].obj.info then
-                              if aParentChilds[tFriendlyName].obj.info.id then
-                                 aParentChilds[tFriendlyName].itemId = aParentChilds[tFriendlyName].obj.info.id
-                                 aParentChilds[tFriendlyName].textFirstLine = ItemName_helper(tText)
-                                 aParentChilds[tFriendlyName].textFull = SkuCore:AuctionPriceHistoryData(aParentChilds[tFriendlyName].obj.info.id, true, true)
-                              end
-                           end
-                           if not aParentChilds[tFriendlyName].textFull then
-                              aParentChilds[tFriendlyName].textFull = {}
-                           end
-                           local tFirst, tFull = ItemName_helper(tText)
-                           aParentChilds[tFriendlyName].textFirstLine = tFirst
-                           if type(aParentChilds[tFriendlyName].textFull) ~= "table" then
-                              aParentChilds[tFriendlyName].textFull = {(aParentChilds[tFriendlyName].textFull or aParentChilds[tFriendlyName].textFirstLine or ""),}
-                           end
-                           table.insert(aParentChilds[tFriendlyName].textFull, 1, tFull)
-                        end
-                     end
+							local maybeText = getItemTooltipTextFromBagItem(aParentChilds[tFriendlyName].obj:GetParent():GetID(), aParentChilds[tFriendlyName].obj:GetID())
+							if maybeText then
+									local tText = maybeText
+									
+									if aParentChilds[tFriendlyName].obj.info then
+										if aParentChilds[tFriendlyName].obj.info.id then
+											aParentChilds[tFriendlyName].itemId = aParentChilds[tFriendlyName].obj.info.id
+											aParentChilds[tFriendlyName].textFirstLine = ItemName_helper(tText)
+											aParentChilds[tFriendlyName].textFull = SkuCore:AuctionPriceHistoryData(aParentChilds[tFriendlyName].obj.info.id, true, true)
+										end
+									end
+									if not aParentChilds[tFriendlyName].textFull then
+										aParentChilds[tFriendlyName].textFull = {}
+									end
+									local tFirst, tFull = ItemName_helper(tText)
+									aParentChilds[tFriendlyName].textFirstLine = tFirst
+									if type(aParentChilds[tFriendlyName].textFull) ~= "table" then
+										aParentChilds[tFriendlyName].textFull = {(aParentChilds[tFriendlyName].textFull or aParentChilds[tFriendlyName].textFirstLine or ""),}
+									end
+									table.insert(aParentChilds[tFriendlyName].textFull, 1, tFull)
+							end
 
                      if aParentChilds[tFriendlyName].textFirstLine == "" and aParentChilds[tFriendlyName].textFull == "" and aParentChilds[tFriendlyName].obj.ShowTooltip then
                         GameTooltip:ClearLines()
