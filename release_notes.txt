@@ -3,9 +3,17 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
-Changes in release 27.4-beta1
+Changes in release 27.4
 	Navigation
 		- Fixed the missing waypoint to Sunken Chest.
+
+	Core
+		- Added a "Cancel" option to the submenus of your current auctions in Core > Auction house > Sales
+		- Fixed a bug with bags and auction data.
+		- Fixed a (taint) issu that caused errors on switching stance in combat.
+
+	Quest
+		- Fixed a but with not responding quest menu on interacting with npcs.
 
 
 -------------------------------------------------------------------------------------------------------	

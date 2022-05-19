@@ -100,8 +100,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function GetButtonTooltipLines(aButtonObj)
    GameTooltip:ClearLines()
-   if aButtonObj:GetScript("OnEnter") then
-      aButtonObj:GetScript("OnEnter")(aButtonObj)
+   if aButtonObj.type then
+      if aButtonObj:GetScript("OnEnter") then
+         aButtonObj:GetScript("OnEnter")(aButtonObj)
+      end
    end
 
    local tQualityString = nil
