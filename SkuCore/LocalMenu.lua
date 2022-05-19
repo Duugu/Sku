@@ -173,10 +173,62 @@ local function getItemTooltipTextHelper(tooltipSetter)
 end
 
 local function getItemTooltipTextFromBagItem(bag, slot)
-	return getItemTooltipTextHelper(
-		function(tooltip) tooltip:SetBagItem(bag, slot) end
-	)
+	return getItemTooltipTextHelper(function(tooltip)
+		tooltip:SetBagItem(bag, slot)
+	end)
 end
+
+local function getItemTooltipTextFromInventory(invSlot)
+	return getItemTooltipTextHelper(function(tooltip)
+tooltip:SetInventoryItem("player", invSlot)
+	end)
+end
+
+local BOTH_HANDS = {INVSLOT_MAINHAND, INVSLOT_OFFHAND}
+local JUST_MAINHAND = {INVSLOT_MAINHAND}
+local JUST_OFFHAND = {INVSLOT_OFFHAND}
+local RANGED = {INVSLOT_RANGED}
+
+local comparableInvSlotsforInvType = {
+	[INVTYPE_HEAD] = {INVSLOT_HEAD},
+	[INVTYPE_NECK] = {INVSLOT_NECK},
+	[INVTYPE_SHOULDER] = {INVSLOT_SHOULDER},
+	[INVTYPE_BODY] = {INVSLOT_BODY},
+	[INVTYPE_CHEST] = {INVSLOT_CHEST},
+	[INVTYPE_WAIST] = {INVSLOT_WAIST},
+	[INVTYPE_LEGS] = {INVSLOT_LEGS},
+	[INVTYPE_FEET] = {INVSLOT_FEET},
+	[INVTYPE_WRIST] = {INVSLOT_WRIST},
+	[INVTYPE_HAND] = {INVSLOT_HAND},
+	[INVTYPE_FINGER] = {INVSLOT_FINGER1, INVSLOT_FINGER2},
+	[INVTYPE_TRINKET] = {INVSLOT_TRINKET1, INVSLOT_TRINKET2},
+	[INVTYPE_WEAPON] = CanDualWield() and BOTH_HANDS or JUST_MAINHAND,
+	[INVTYPE_SHIELD] = JUST_OFFHAND,
+	[INVTYPE_RANGED] = RANGED,
+	[INVTYPE_2HWEAPON] = BOTH_HANDS,
+	[INVTYPE_CLOAK] = {INVSLOT_BACK},
+	[INVTYPE_TABARD] = {INVSLOT_TABARD},
+	[INVTYPE_ROBE] = {INVSLOT_CHEST},
+	[INVTYPE_THROWN] = RANGED,
+	[INVTYPE_WEAPONMAINHAND] = JUST_MAINHAND,
+	[INVTYPE_WEAPONOFFHAND] = JUST_OFFHAND,
+	[INVTYPE_HOLDABLE] = JUST_OFFHAND,
+}
+
+local function getItemComparisnSections(itemId, cache)
+	local _, _, _, invType = GetItemInfoInstant(itemId)
+	local invSlotsToCompare = comparableInvSlotsforInvType[invType]
+	local comparisnSections = {}
+	for slot in pairs(invSlotsToCompare) do
+		local cacheEntry = cache and cache[slot]
+		local text = cacheEntry or getItemTooltipTextFromInventory(slot)
+		if text then
+			table.insert(comparisnSections, text)
+			if not cacheEntry then cache[slot] = text end
+		end
+	end
+end
+
 function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
    if not BagnonInventoryFrame1.bagGroup then
