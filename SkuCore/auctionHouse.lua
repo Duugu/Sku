@@ -1269,11 +1269,13 @@ function SkuCore:AuctionHouseMenuBuilder()
    tNewMenuEntry  = SkuOptions:InjectMenuItems(self, {L["Verkäufe"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
+
    tNewMenuEntry.BuildChildren = function(self)
       if SkuCore.AuctionIsFullScanning == true then
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Nicht möglich, volle Abfrage läuft"]}, SkuGenericMenuItem)
          return
       end
+
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Neue Auktion"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.BuildChildren = function(self)
@@ -1408,6 +1410,18 @@ function SkuCore:AuctionHouseMenuBuilder()
                tNewMenuEntry.dynamic = false
                tNewMenuEntry.filterable = true
                tNewMenuEntry.textFull = select(2, SkuCore:AuctionBuildItemTooltip(tData, tIndex, true, true))
+               tNewMenuEntry.ownerID = tIndex
+               tNewMenuEntry.BuildChildren = function(self)
+                  local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Abbrechen"]}, SkuGenericMenuItem)
+                  tNewSubMenuEntry.OnAction = function(self, aValue, aName)
+                     CancelAuction(self.parent.ownerID)
+                     C_Timer.After(0.65, function()
+                        SkuOptions.currentMenuPosition.parent:OnSelect()
+                        SkuOptions:VocalizeCurrentMenuName()
+                     end)
+                  end                  
+               end
+
             end
          end
       else
@@ -1481,6 +1495,8 @@ function SkuCore:AuctionHouseOnLogin()
 
    GameTooltip:HookScript("OnShow", SkuCore.AuctionTooltipHook)
    _G["SkuScanningTooltip"]:HookScript("OnShow", SkuCore.AuctionTooltipHook)
+
+   SkuOptions.db.factionrealm[MODULE_NAME] = SkuOptions.db.factionrealm[MODULE_NAME] or {}
 
    SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = {}
 end
@@ -1662,8 +1678,15 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, a
    if aFromAuctionDB then
       tSourceData = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB
    elseif aFromCurrentDB then
+      if not SkuOptions.db.factionrealm[MODULE_NAME] then
+         return
+      end
       tSourceData = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB--SkuCore.CurrentDB
    else
+      return
+   end
+
+   if not tSourceData then
       return
    end
 
@@ -1715,6 +1738,7 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, a
                      end
                      ]]
                   end
+
                end
             end
             --buyout
