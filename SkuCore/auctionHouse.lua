@@ -1738,6 +1738,7 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, a
                      end
                      ]]
                   end
+
                end
             end
             --buyout
