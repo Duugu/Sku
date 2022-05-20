@@ -162,6 +162,97 @@ end
 -- menu items
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+---@alias EquipLoc string See https://wowpedia.fandom.com/wiki/Enum.InventoryType
+---@alias InvSlot integer See https://wowpedia.fandom.com/wiki/InventorySlotId
+
+---Sets tooltip item and returns its cleaned up text.
+---(Meant for defining other functions, not meant for direct use)
+---@param tooltipSetter fun(tooltip: GameTooltip): void Define how the item tooltip should be set.
+---@return string | nil Tooltip text
+local function getItemTooltipTextHelper(tooltipSetter)
+	local tooltip = _G["SkuScanningTooltip"]
+	tooltip:ClearLines()
+	tooltipSetter(tooltip)
+	local getEscapedText = function() return TooltipLines_helper(tooltip:GetRegions()) end
+	if getEscapedText() ~= "asd" and getEscapedText() ~= "" then
+		return unescape(getEscapedText())
+	end
+end
+
+local function getItemTooltipTextFromBagItem(bag, slot)
+	return getItemTooltipTextHelper(function(tooltip)
+		tooltip:SetBagItem(bag, slot)
+	end)
+end
+
+---Gets tooltip text for given equipped item
+---@param invSlot InvSlot
+---@return string|nil
+local function getEquippedItemTooltipText(invSlot)
+	return getItemTooltipTextHelper(function(tooltip)
+		tooltip:SetInventoryItem("player", invSlot)
+	end)
+end
+
+-- to reduce repetition
+local BOTH_HANDS = {INVSLOT_MAINHAND, INVSLOT_OFFHAND}
+local JUST_MAINHAND = {INVSLOT_MAINHAND}
+local JUST_OFFHAND = {INVSLOT_OFFHAND}
+local RANGED = {INVSLOT_RANGED}
+
+---See https://wowpedia.fandom.com/wiki/Enum.InventoryType
+---@type table<EquipLoc, InvSlot[]> Maps what inventory slots (equipped items) correspond to an equip location.
+local comparableInvSlotsforInvType = {
+	INVTYPE_HEAD = {INVSLOT_HEAD},
+	INVTYPE_NECK = {INVSLOT_NECK},
+	INVTYPE_SHOULDER = {INVSLOT_SHOULDER},
+	INVTYPE_BODY = {INVSLOT_BODY},
+	INVTYPE_CHEST = {INVSLOT_CHEST},
+	INVTYPE_WAIST = {INVSLOT_WAIST},
+	INVTYPE_LEGS = {INVSLOT_LEGS},
+	INVTYPE_FEET = {INVSLOT_FEET},
+	INVTYPE_WRIST = {INVSLOT_WRIST},
+	INVTYPE_HAND = {INVSLOT_HAND},
+	INVTYPE_FINGER = {INVSLOT_FINGER1, INVSLOT_FINGER2},
+	INVTYPE_TRINKET = {INVSLOT_TRINKET1, INVSLOT_TRINKET2},
+	INVTYPE_WEAPON = CanDualWield() and BOTH_HANDS or JUST_MAINHAND,
+	INVTYPE_SHIELD = JUST_OFFHAND,
+	INVTYPE_RANGED = RANGED,
+	INVTYPE_2HWEAPON = BOTH_HANDS,
+	INVTYPE_CLOAK = {INVSLOT_BACK},
+	INVTYPE_TABARD = {INVSLOT_TABARD},
+	INVTYPE_ROBE = {INVSLOT_CHEST},
+	INVTYPE_THROWN = RANGED,
+	INVTYPE_WEAPONMAINHAND = JUST_MAINHAND,
+	INVTYPE_WEAPONOFFHAND = JUST_OFFHAND,
+	INVTYPE_HOLDABLE = JUST_OFFHAND,
+}
+
+---For a given item, Returns item tooltip texts for comparable equipped items.
+---@param itemId number Item ID for item for which comparisns will be returned.
+---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
+---@return string[] List of tooltip texts
+local function getItemComparisnSections(itemId, cache)
+	local invType = select(4, GetItemInfoInstant(itemId))
+	local invSlotsToCompare = comparableInvSlotsforInvType[invType]
+	--if offhand slot and equipped a 2H weapon, compare both hands instead
+	if invSlotsToCompare == JUST_OFFHAND then
+		local mainHandItemId = GetInventoryItemID("player", JUST_MAINHAND[1])
+		if mainHandItemId and select(4, GetItemInfoInstant(mainHandItemId)) == "INVTYPE_2HWEAPON" then
+			invSlotsToCompare = BOTH_HANDS
+		end
+	end
+	local comparisnSections = {}
+	for _, slot in pairs(invSlotsToCompare) do
+		local cacheEntry = cache and cache[slot]
+		local text = cacheEntry or getEquippedItemTooltipText(slot)
+		if text then
+			table.insert(comparisnSections, text)
+			if not cacheEntry then cache[slot] = text end
+		end
+	end
+	return comparisnSections
+end
 function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
    if not BagnonInventoryFrame1.bagGroup then
@@ -175,10 +266,11 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
       end
    end
 
-   local tEmptyCounter = 1
-   local tCurrentBag
-   local tCurrentParentContainer = nil
-   local tBagResults = {}
+	local tEmptyCounter = 1
+	local tCurrentBag
+	local tCurrentParentContainer = nil
+	local tBagResults = {}
+	local inventoryTooltipTextCache = {}
 
    for frameNo = 1, 8 do
       for itemNo = 1, 36 do
@@ -239,30 +331,37 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                      end
 
 
-                     _G["SkuScanningTooltip"]:ClearLines()
-                     local hsd, rc = _G["SkuScanningTooltip"]:SetBagItem(aParentChilds[tFriendlyName].obj:GetParent():GetID(), aParentChilds[tFriendlyName].obj:GetID())
-                     if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-                        if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                           local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-                           
-                           if aParentChilds[tFriendlyName].obj.info then
-                              if aParentChilds[tFriendlyName].obj.info.id then
-                                 aParentChilds[tFriendlyName].itemId = aParentChilds[tFriendlyName].obj.info.id
-                                 aParentChilds[tFriendlyName].textFirstLine = ItemName_helper(tText)
-                                 aParentChilds[tFriendlyName].textFull = SkuCore:AuctionPriceHistoryData(aParentChilds[tFriendlyName].obj.info.id, true, true)
-                              end
-                           end
-                           if not aParentChilds[tFriendlyName].textFull then
-                              aParentChilds[tFriendlyName].textFull = {}
-                           end
-                           local tFirst, tFull = ItemName_helper(tText)
-                           aParentChilds[tFriendlyName].textFirstLine = tFirst
-                           if type(aParentChilds[tFriendlyName].textFull) ~= "table" then
-                              aParentChilds[tFriendlyName].textFull = {(aParentChilds[tFriendlyName].textFull or aParentChilds[tFriendlyName].textFirstLine or ""),}
-                           end
-                           table.insert(aParentChilds[tFriendlyName].textFull, 1, tFull)
-                        end
-                     end
+							local maybeText = getItemTooltipTextFromBagItem(aParentChilds[tFriendlyName].obj:GetParent():GetID(), aParentChilds[tFriendlyName].obj:GetID())
+							if maybeText then
+									local tText = maybeText
+									
+									if aParentChilds[tFriendlyName].obj.info then
+										if aParentChilds[tFriendlyName].obj.info.id then
+											aParentChilds[tFriendlyName].itemId = aParentChilds[tFriendlyName].obj.info.id
+											aParentChilds[tFriendlyName].textFirstLine = ItemName_helper(tText)
+											aParentChilds[tFriendlyName].textFull = SkuCore:AuctionPriceHistoryData(aParentChilds[tFriendlyName].obj.info.id, true, true)
+										end
+									end
+									if not aParentChilds[tFriendlyName].textFull then
+										aParentChilds[tFriendlyName].textFull = {}
+									end
+									local tFirst, tFull = ItemName_helper(tText)
+									aParentChilds[tFriendlyName].textFirstLine = tFirst
+									if type(aParentChilds[tFriendlyName].textFull) ~= "table" then
+										aParentChilds[tFriendlyName].textFull = {(aParentChilds[tFriendlyName].textFull or aParentChilds[tFriendlyName].textFirstLine or ""),}
+									end
+									table.insert(aParentChilds[tFriendlyName].textFull, 1, tFull)
+								local itemId = aParentChilds[tFriendlyName].itemId
+								if itemId and IsEquippableItem(itemId) then
+									local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
+									for i, section in ipairs(comparisnSections) do
+										local sectionHeader = #comparisnSections > 1 and
+											"currently equipped number " .. i .. "\r\n"
+											or "currently equipped\r\n"
+										table.insert(aParentChilds[tFriendlyName].textFull, i + 1, sectionHeader .. section)
+									end
+								end
+							end
 
                      if aParentChilds[tFriendlyName].textFirstLine == "" and aParentChilds[tFriendlyName].textFull == "" and aParentChilds[tFriendlyName].obj.ShowTooltip then
                         GameTooltip:ClearLines()
