@@ -1,10 +1,16 @@
 # Beta Updates
 
-[Sku r27.5-beta1](https://github.com/Duugu/Sku/releases/download/r27.5-beta1/Sku-r27.5-beta1-bcc.zip) (20.05.2022)<br>
+[Sku r27.5-beta2](https://github.com/Duugu/Sku/releases/download/r27.5-beta2/Sku-r27.5-beta2-bcc.zip) (20.05.2022)<br>
 
 # Release notes
 
-## Changes in release 27.5-beta1
+## Changes in Sku 27.5-beta2
+
+### Core
+- Fixed an issue with item comparison in tooltips and bag slot items.
+- Fixed another issue with quest dialogs.
+
+## Changes in Sku 27.5-beta1
 	
 ### Core
 - New feature by Samalam: tooltips in bags are now showing the currently equiped item(s) in a new section under the bag item.
