@@ -1370,3 +1370,5 @@ L["Clear visited"] = "Clear visited"
 
 L["Full scan completed"] ="Auction house full scan completed"
 L["Full scan started"] ="Auction house full scan started"
+
+L["currently equipped"] = "currently equipped item"

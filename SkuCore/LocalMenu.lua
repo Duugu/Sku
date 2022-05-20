@@ -218,6 +218,8 @@ local comparableInvSlotsforInvType = {
 	INVTYPE_WEAPON = CanDualWield() and BOTH_HANDS or JUST_MAINHAND,
 	INVTYPE_SHIELD = JUST_OFFHAND,
 	INVTYPE_RANGED = RANGED,
+	INVTYPE_RELIC = RANGED,
+	INVTYPE_AMMO = {INVSLOT_AMMO},
 	INVTYPE_2HWEAPON = BOTH_HANDS,
 	INVTYPE_CLOAK = {INVSLOT_BACK},
 	INVTYPE_TABARD = {INVSLOT_TABARD},
@@ -253,6 +255,8 @@ local function getItemComparisnSections(itemId, cache)
 	end
 	return comparisnSections
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
    if not BagnonInventoryFrame1.bagGroup then
@@ -355,9 +359,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 								if itemId and IsEquippableItem(itemId) then
 									local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
 									for i, section in ipairs(comparisnSections) do
-										local sectionHeader = #comparisnSections > 1 and
-											"currently equipped number " .. i .. "\r\n"
-											or "currently equipped\r\n"
+										local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
 										table.insert(aParentChilds[tFriendlyName].textFull, i + 1, sectionHeader .. section)
 									end
 								end
