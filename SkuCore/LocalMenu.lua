@@ -101,8 +101,10 @@ end
 local function GetButtonTooltipLines(aButtonObj)
    GameTooltip:ClearLines()
    if aButtonObj.type then
-      if aButtonObj:GetScript("OnEnter") then
-         aButtonObj:GetScript("OnEnter")(aButtonObj)
+      if aButtonObj.type ~= "" then
+         if aButtonObj:GetScript("OnEnter") then
+            aButtonObj:GetScript("OnEnter")(aButtonObj)
+         end
       end
    end
 
@@ -244,6 +246,11 @@ local function getItemComparisnSections(itemId, cache)
 			invSlotsToCompare = BOTH_HANDS
 		end
 	end
+
+   if not invSlotsToCompare then
+      return
+   end
+
 	local comparisnSections = {}
 	for _, slot in pairs(invSlotsToCompare) do
 		local cacheEntry = cache and cache[slot]
@@ -358,10 +365,12 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 								local itemId = aParentChilds[tFriendlyName].itemId
 								if itemId and IsEquippableItem(itemId) then
 									local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
-									for i, section in ipairs(comparisnSections) do
-										local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
-										table.insert(aParentChilds[tFriendlyName].textFull, i + 1, sectionHeader .. section)
-									end
+                           if comparisnSections then
+                              for i, section in ipairs(comparisnSections) do
+                                 local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
+                                 table.insert(aParentChilds[tFriendlyName].textFull, i + 1, sectionHeader .. section)
+                              end
+                           end
 								end
 							end
 
@@ -933,7 +942,7 @@ function SkuCore:QuestFrame(aParentChilds)
 
 
    local function QuestInfoRewardsFrameHelper(aParent, aInfoOnly)
-      if QuestInfoRewardsFrame.ItemChooseText:IsShown() == true or QuestInfoRewardsFrame.ItemReceiveText:IsShown() == true or (QuestInfoMoneyFrame:IsShown() == true and QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame.staticMoney) then
+      if QuestInfoRewardsFrame.ItemChooseText:IsVisible() == true or QuestInfoRewardsFrame.ItemReceiveText:IsVisible() == true or (QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame.staticMoney) then
          local tFrameName = "QuestInfoRewardsFrame"
          local tFriendlyName = L["Rewards"]
          local tFrst, tFll = tFriendlyName, ""
@@ -952,7 +961,7 @@ function SkuCore:QuestFrame(aParentChilds)
          local tQuestInfoRewardsFrameChilds = aParent[tFriendlyName].childs
 
          if QuestInfoRewardsFrame.ItemChooseText then
-            if QuestInfoRewardsFrame.ItemChooseText:IsShown() == true then
+            if QuestInfoRewardsFrame.ItemChooseText:IsVisible() == true then
                local tText = QuestInfoRewardsFrame.ItemChooseText:GetText()
                local tFrst, tFll = ItemName_helper(tText)
                local tFriendlyName = tFrst
@@ -970,7 +979,7 @@ function SkuCore:QuestFrame(aParentChilds)
                for x = 1, 10 do
                   local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
                   if _G[tFrameName] then
-                     if _G[tFrameName]:IsShown() == true then
+                     if _G[tFrameName]:IsVisible() == true then
                         local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
                         if tText then
                            tTaken[x] = true
@@ -1003,7 +1012,7 @@ function SkuCore:QuestFrame(aParentChilds)
 
          local tQuestInfoRewardsFrameChilds = aParent[tFriendlyName].childs
          if QuestInfoRewardsFrame.ItemReceiveText then
-            if QuestInfoRewardsFrame.ItemReceiveText:IsShown() == true then
+            if QuestInfoRewardsFrame.ItemReceiveText:IsVisible() == true then
                local tText = QuestInfoRewardsFrame.ItemReceiveText:GetText()
                local tFrst, tFll = ItemName_helper(tText)
                local tFriendlyName = tFrst
@@ -1022,7 +1031,7 @@ function SkuCore:QuestFrame(aParentChilds)
                   if not tTaken[x] then
                      local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
                      if _G[tFrameName] then
-                        if _G[tFrameName]:IsShown() == true then
+                        if _G[tFrameName]:IsVisible() == true then
                            local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
                            if tText then
                               tTaken[x] = true
@@ -1055,7 +1064,7 @@ function SkuCore:QuestFrame(aParentChilds)
          end
 
          if QuestInfoMoneyFrame then
-            if QuestInfoMoneyFrame:IsShown() == true then
+            if QuestInfoMoneyFrame:IsVisible() == true then
                if QuestInfoMoneyFrame.staticMoney then
                   local tFrst, tFll = SkuGetCoinText(QuestInfoMoneyFrame.staticMoney, true), ""
                   local tFriendlyName = tFrst
@@ -1079,7 +1088,7 @@ function SkuCore:QuestFrame(aParentChilds)
 
    --QuestFrameGreetingPanel
    if _G["QuestFrameGreetingPanel"] then 
-      if _G["QuestFrameGreetingPanel"]:IsShown() == true then
+      if _G["QuestFrameGreetingPanel"]:IsVisible() == true then
 
          local tFrameName = "QuestFrameGreetingPanel"
          local tFriendlyName = L["Greeting"]
@@ -1126,10 +1135,10 @@ function SkuCore:QuestFrame(aParentChilds)
          for x = 1, 10 do
             local tFrameName = "QuestTitleButton"..x
             if _G[tFrameName] then
-               if _G[tFrameName]:IsShown() == true then
+               if _G[tFrameName]:IsVisible() == true then
                   if _G[tFrameName]:GetText() then
                      local tFriendlyName = unescape(_G[tFrameName]:GetText())
-                     if _G["QuestTitleButton"..x.."QuestIcon"]:IsShown() == true  then
+                     if _G["QuestTitleButton"..x.."QuestIcon"]:IsVisible() == true  then
                         tFriendlyName = (tIconStrings[_G["QuestTitleButton"..x.."QuestIcon"]:GetTextureFileID()] or "").." "..unescape(_G[tFrameName]:GetText())
                      end
                      local tText, tFullText = "", ""
@@ -1156,7 +1165,7 @@ function SkuCore:QuestFrame(aParentChilds)
 
    --QuestFrameProgressPanel
    if _G["QuestFrameProgressPanel"] then 
-      if _G["QuestFrameProgressPanel"]:IsShown() == true then
+      if _G["QuestFrameProgressPanel"]:IsVisible() == true then
          local tFrameName = "QuestFrameProgressPanel"
          local tFriendlyName = L["Progress"]
          local tFrst, tFll = tFriendlyName, ""
@@ -1194,7 +1203,7 @@ function SkuCore:QuestFrame(aParentChilds)
                end
             end
          end
-         if dtc[3]:IsShown() == true then
+         if dtc[3]:IsVisible() == true then
             if dtc[3].GetText then
                local tText = dtc[3]:GetText()
                if tText then
@@ -1217,7 +1226,7 @@ function SkuCore:QuestFrame(aParentChilds)
             for x = 1, 10 do
                local tFrameName = "QuestProgressItem"..x
                if _G[tFrameName] then
-                  if _G[tFrameName]:IsShown() == true then
+                  if _G[tFrameName]:IsVisible() == true then
                      local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
                      if tText then
                         tText = tText.." "..(_G[tFrameName].count or "")
@@ -1242,7 +1251,7 @@ function SkuCore:QuestFrame(aParentChilds)
             end
          end
 
-         if dtc[4]:IsShown() == true then
+         if dtc[4]:IsVisible() == true then
             if dtc[4].GetText then
                local tText = dtc[4]:GetText()
                if tText then
@@ -1265,7 +1274,7 @@ function SkuCore:QuestFrame(aParentChilds)
 
          local tFrameName = "QuestFrameCompleteButton"
          if _G[tFrameName] then
-            if _G[tFrameName]:IsShown() == true then
+            if _G[tFrameName]:IsVisible() == true then
                if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
                   local tFriendlyName = _G[tFrameName]:GetText()
                   table.insert(tProgressChilds, tFriendlyName)
@@ -1288,7 +1297,7 @@ function SkuCore:QuestFrame(aParentChilds)
 
    --QuestFrameDetailPanel
    if _G["QuestFrameDetailPanel"] then 
-      if _G["QuestFrameDetailPanel"]:IsShown() == true then
+      if _G["QuestFrameDetailPanel"]:IsVisible() == true then
          local tFrameName = "QuestFrameDetailPanel"
          local tFriendlyName = L["Detail"]
          local tFrst, tFll = tFriendlyName, ""
@@ -1426,7 +1435,7 @@ function SkuCore:QuestFrame(aParentChilds)
 
    --QuestFrameRewardPanel
    if _G["QuestFrameRewardPanel"] then 
-      if _G["QuestFrameRewardPanel"]:IsShown() == true then
+      if _G["QuestFrameRewardPanel"]:IsVisible() == true then
          local tFrameName = "QuestFrameRewardPanel"
          local tFriendlyName = L["Abgabe"]
          local tFrst, tFll = tFriendlyName, ""
@@ -1480,7 +1489,7 @@ function SkuCore:QuestFrame(aParentChilds)
             end
          end
 
-         if QuestInfoRewardsFrame.ItemChooseText:IsShown() == true or QuestInfoRewardsFrame.ItemReceiveText:IsShown() == true or (QuestInfoMoneyFrame:IsShown() == true and QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame.staticMoney) then
+         if QuestInfoRewardsFrame.ItemChooseText:IsVisible() == true or QuestInfoRewardsFrame.ItemReceiveText:IsVisible() == true or (QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame.staticMoney) then
             QuestInfoRewardsFrameHelper(tDetailChilds)
          end
          

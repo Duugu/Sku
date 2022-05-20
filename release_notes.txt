@@ -4,6 +4,14 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Changes in release 27.5-beta2
+	
+	Core
+		- Fixed an issue with item comparison in tooltips and bag slot items.
+		- Fixed another issue with quest dialogs.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in release 27.5-beta1
 	
 	Core
