@@ -235,6 +235,13 @@ local comparableInvSlotsforInvType = {
 local function getItemComparisnSections(itemId, cache)
 	local invType = select(4, GetItemInfoInstant(itemId))
 	local invSlotsToCompare = comparableInvSlotsforInvType[invType]
+	--if offhand slot and equipped a 2H weapon, compare both hands instead
+	if invSlotsToCompare == JUST_OFFHAND then
+		local mainHandItemId = GetInventoryItemID("player", JUST_MAINHAND[1])
+		if mainHandItemId and select(4, GetItemInfoInstant(mainHandItemId)) == "INVTYPE_2HWEAPON" then
+			invSlotsToCompare = BOTH_HANDS
+		end
+	end
 	local comparisnSections = {}
 	for _, slot in pairs(invSlotsToCompare) do
 		local cacheEntry = cache and cache[slot]
