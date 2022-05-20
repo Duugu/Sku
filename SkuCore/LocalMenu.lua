@@ -162,6 +162,13 @@ end
 -- menu items
 ---------------------------------------------------------------------------------------------------------------------------------------
 
+---@alias EquipLoc string See https://wowpedia.fandom.com/wiki/Enum.InventoryType
+---@alias InvSlot integer See https://wowpedia.fandom.com/wiki/InventorySlotId
+
+---Sets tooltip item and returns its cleaned up text.
+---(Meant for defining other functions, not meant for direct use)
+---@param tooltipSetter fun(tooltip: GameTooltip): void Define how the item tooltip should be set.
+---@return string | nil Tooltip text
 local function getItemTooltipTextHelper(tooltipSetter)
 	local tooltip = _G["SkuScanningTooltip"]
 	tooltip:ClearLines()
@@ -178,17 +185,23 @@ local function getItemTooltipTextFromBagItem(bag, slot)
 	end)
 end
 
-local function getItemTooltipTextFromInventory(invSlot)
+---Gets tooltip text for given equipped item
+---@param invSlot InvSlot
+---@return string|nil
+local function getEquippedItemTooltipText(invSlot)
 	return getItemTooltipTextHelper(function(tooltip)
-tooltip:SetInventoryItem("player", invSlot)
+		tooltip:SetInventoryItem("player", invSlot)
 	end)
 end
 
+-- to reduce repetition
 local BOTH_HANDS = {INVSLOT_MAINHAND, INVSLOT_OFFHAND}
 local JUST_MAINHAND = {INVSLOT_MAINHAND}
 local JUST_OFFHAND = {INVSLOT_OFFHAND}
 local RANGED = {INVSLOT_RANGED}
 
+---See https://wowpedia.fandom.com/wiki/Enum.InventoryType
+---@type table<EquipLoc, InvSlot[]> Maps what inventory slots (equipped items) correspond to an equip location.
 local comparableInvSlotsforInvType = {
 	INVTYPE_HEAD = {INVSLOT_HEAD},
 	INVTYPE_NECK = {INVSLOT_NECK},
@@ -215,13 +228,17 @@ local comparableInvSlotsforInvType = {
 	INVTYPE_HOLDABLE = JUST_OFFHAND,
 }
 
+---For a given item, Returns item tooltip texts for comparable equipped items.
+---@param itemId number Item ID for item for which comparisns will be returned.
+---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
+---@return string[] List of tooltip texts
 local function getItemComparisnSections(itemId, cache)
 	local invType = select(4, GetItemInfoInstant(itemId))
 	local invSlotsToCompare = comparableInvSlotsforInvType[invType]
 	local comparisnSections = {}
 	for _, slot in pairs(invSlotsToCompare) do
 		local cacheEntry = cache and cache[slot]
-		local text = cacheEntry or getItemTooltipTextFromInventory(slot)
+		local text = cacheEntry or getEquippedItemTooltipText(slot)
 		if text then
 			table.insert(comparisnSections, text)
 			if not cacheEntry then cache[slot] = text end
