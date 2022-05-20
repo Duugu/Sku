@@ -216,10 +216,10 @@ local comparableInvSlotsforInvType = {
 }
 
 local function getItemComparisnSections(itemId, cache)
-	local _, _, _, invType = GetItemInfoInstant(itemId)
+	local invType = select(4, GetItemInfoInstant(itemId))
 	local invSlotsToCompare = comparableInvSlotsforInvType[invType]
 	local comparisnSections = {}
-	for slot in pairs(invSlotsToCompare) do
+	for _, slot in pairs(invSlotsToCompare) do
 		local cacheEntry = cache and cache[slot]
 		local text = cacheEntry or getItemTooltipTextFromInventory(slot)
 		if text then
@@ -227,8 +227,8 @@ local function getItemComparisnSections(itemId, cache)
 			if not cacheEntry then cache[slot] = text end
 		end
 	end
+	return comparisnSections
 end
-
 function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
    if not BagnonInventoryFrame1.bagGroup then
@@ -242,10 +242,11 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
       end
    end
 
-   local tEmptyCounter = 1
-   local tCurrentBag
-   local tCurrentParentContainer = nil
-   local tBagResults = {}
+	local tEmptyCounter = 1
+	local tCurrentBag
+	local tCurrentParentContainer = nil
+	local tBagResults = {}
+	local inventoryTooltipTextCache = {}
 
    for frameNo = 1, 8 do
       for itemNo = 1, 36 do
@@ -326,6 +327,16 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 										aParentChilds[tFriendlyName].textFull = {(aParentChilds[tFriendlyName].textFull or aParentChilds[tFriendlyName].textFirstLine or ""),}
 									end
 									table.insert(aParentChilds[tFriendlyName].textFull, 1, tFull)
+								local itemId = aParentChilds[tFriendlyName].itemId
+								if itemId and IsEquippableItem(itemId) then
+									local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
+									for i, section in ipairs(comparisnSections) do
+										local sectionHeader = #comparisnSections > 1 and
+											"currently equipped number " .. i .. "\r\n"
+											or "currently equipped\r\n"
+										table.insert(aParentChilds[tFriendlyName].textFull, i + 1, sectionHeader .. section)
+									end
+								end
 							end
 
                      if aParentChilds[tFriendlyName].textFirstLine == "" and aParentChilds[tFriendlyName].textFull == "" and aParentChilds[tFriendlyName].obj.ShowTooltip then
