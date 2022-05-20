@@ -1,8 +1,13 @@
 # Beta Updates
 
-[Sku r27.3-beta2](https://github.com/Duugu/Sku/releases/download/r27.3-beta2/Sku-r27.3-beta2-bcc.zip) (16.05.2022)<br>
+[Sku r27.5-beta1](https://github.com/Duugu/Sku/releases/download/r27.5-beta1/Sku-r27.5-beta1-bcc.zip) (20.05.2022)<br>
 
 # Release notes
+
+## Changes in release 27.5-beta1
+	
+### Core
+- New feature by Samalam: tooltips in bags are now showing the currently equiped item(s) in a new section under the bag item.
 
 ## Changes in Sku 27.3-beta2
 
