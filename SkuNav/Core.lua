@@ -780,7 +780,7 @@ function SkuNav:PlayWpComments(aWpName)
 		if #tWpData.comments > 0 then
 			for x = 1, #tWpData.comments do
 				local comment = tWpData.comments[x] -- the comment to read out
-				if comment ~= nil and comment ~= '' then -- check comment of waypoint is a empty string
+				if comment ~= nil and comment ~= "" then -- check comment of waypoint is a empty string
 					print(L["Waypoint information"]..": "..comment)
 					SkuOptions.Voice:OutputString(" ", true, true, 0.3)
 					SkuOptions:VocalizeMultipartString(L["Waypoint information"]..": "..comment, false, true, nil, nil, 2)
