@@ -1,6 +1,6 @@
 # Beta Updates
 
-[Sku r27.5-beta2](https://github.com/Duugu/Sku/releases/download/r27.5-beta2/Sku-r27.5-beta2-bcc.zip) (20.05.2022)<br>
+[Sku r27.5-beta2](https://github.com/Duugu/Sku/releases/download/27.5-beta2/Sku-27.5-beta2-bcc.zip) (20.05.2022)<br>
 
 # Release notes
 
