@@ -1,5 +1,4 @@
-﻿--ncstst
-local MODULE_NAME = "SkuChat"
+﻿local MODULE_NAME = "SkuChat"
 local _G = _G
 local L = Sku.L
 
