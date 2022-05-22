@@ -16,6 +16,8 @@ local ssplit = string.split
 local ssub = string.sub
 local tinsert = table.insert
 
+SkuNav.BeaconSoundSetNames  = {}
+
 SkuNav.PrintMT = {
 	__tostring = function(thisTable)
 		local tStr = ""
@@ -2351,12 +2353,7 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 
 	SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = aWpName
 
-	local tBeaconType = "probe_deep_1"
-	if SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size == 5 then
-		tBeaconType = "probe_mid_1"
-		--tBeaconType = "probe_deep_1_b"
-	end
-
+	local tBeaconType = SkuNav:getBeaconSoundSetName(SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
 	if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
 		if SkuOptions.db.profile[MODULE_NAME].clickClackSoundset and SkuOptions.db.profile[MODULE_NAME].clickClackSoundset ~= "off" then
 			tBeaconType = tBeaconType..SkuOptions.db.profile[MODULE_NAME].clickClackSoundset
@@ -2634,6 +2631,14 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 				_G["SkuNavMMMainFrameZoneSelect"]:SetText(SkuDB.InternalAreaTable[SkuNav:GetCurrentAreaId()].AreaName_lang[Sku.Loc])	
 			end
 		end)
+	end
+
+	-- populate sound set names
+	for key, value in pairs(SkuOptions.BeaconLib:GetSoundSets()) do
+		local suffix = string.lower(string.sub(value, -4))
+		if suffix ~= "lick" and suffix ~= "beep" then
+			table.insert(SkuNav.BeaconSoundSetNames, value)
+		end
 	end
 end
 
@@ -2997,4 +3002,24 @@ function SkuNav:DeleteWaypoint(aWpName)
 	end
 
 	return false
+end
+
+function SkuNav:getBeaconSoundSetName(size)
+	local beacontype = "narrow"
+	if size == 5 then
+		beacontype = "wide"
+	end
+	local name = ""
+	if beacontype == "narrow" then
+		name = SkuNav.BeaconSoundSetNames[SkuOptions.db.profile[MODULE_NAME].beaconSoundSetNarrow]
+	else
+		name = SkuNav.BeaconSoundSetNames[SkuOptions.db.profile[MODULE_NAME].beaconSoundSetWide]
+	end
+	if name == nil then
+		if size == 5 then
+			return "probe_mid_1"
+		end
+		return "probe_deep_1"
+	end
+	return name
 end
