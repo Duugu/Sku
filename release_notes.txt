@@ -2,6 +2,15 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Changes in release 27.5
+	
+	Core
+		- Fixed an issue with item comparison in tooltips and bag slot items.
+		- Fixed another issue with quest dialogs.
+		- Fixed an issue with creating auctions.
+		- Christoph fixed an issue with empty waypoint comments.
+
 
 -------------------------------------------------------------------------------------------------------	
 Changes in release 27.5-beta2
