@@ -836,7 +836,7 @@ function SkuCore:OnEnable()
 		if infoType ~= oinfoType or itemID~= oitemID or itemLink ~= oitemLink then
 			if infoType then
 				if infoType == "merchant" then
-					tResult = _G["MerchantItem"..itemID.."Name"]:GetText()
+					tResult = GetMerchantItemInfo(itemID)
 				elseif infoType == "item" then
 					tResult = string.sub(unescape(itemLink), 2, string.len(unescape(itemLink))-1)
 				else
