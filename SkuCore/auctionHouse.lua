@@ -596,6 +596,7 @@ function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
          end
          tNewMenuEntry.BuildChildren = function(self)
             local tNewMenuEntryAuctions = SkuOptions:InjectMenuItems(self, {L["Anzahl Auktionen"]}, SkuGenericMenuItem)
+            self.selectTarget.amount = self.selectTarget.amount or 1
             local tNumActionsMax = mfloor(self.selectTarget.amountMax / self.selectTarget.amount)
             local tNewMenuEntryAuctions = SkuOptions:InjectMenuItems(self, {L["Alle ("]..tNumActionsMax..L[" mal "]..self.selectTarget.amount..L[")"]}, SkuGenericMenuItem)
             tNewMenuEntryAuctions.dynamic = true
