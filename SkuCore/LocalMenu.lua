@@ -235,7 +235,7 @@ local comparableInvSlotsforInvType = {
 ---For a given item, Returns item tooltip texts for comparable equipped items.
 ---@param itemId number Item ID for item for which comparisns will be returned.
 ---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
----@return string[] List of tooltip texts
+---@return string[]|nil List of tooltip texts or nil if no slots to compare found
 local function getItemComparisnSections(itemId, cache)
 	local invType = select(4, GetItemInfoInstant(itemId))
 	local invSlotsToCompare = comparableInvSlotsforInvType[invType]
