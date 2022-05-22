@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.5](https://github.com/Duugu/Sku/releases/download/r27.5/Sku-r27.5-bcc.zip) (22.05.2022)<br>
+[Sku r27.6](https://github.com/Duugu/Sku/releases/download/r27.6/Sku-r27.6-bcc.zip) (22.05.2022)<br>
 
 *Old updates:* <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
@@ -20,6 +20,17 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+##Changes in release 27.6
+	
+### Core
+- New feature by Samalam: tooltips in bags are now showing the currently equiped item(s) in a new section under the bag item.
+- Fixed an issue with merchants and page 2.
+
+### Navigation
+- Added some routes to different zones.
+- Fixed route to warlock level 30 quest in 1k needles.
+- Fixed a route in Westfall to avoid Dust Devil.
+
 ## Changes in release 27.5
 
 ### Core
