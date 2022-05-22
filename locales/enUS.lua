@@ -1372,3 +1372,5 @@ L["Full scan completed"] ="Auction house full scan completed"
 L["Full scan started"] ="Auction house full scan started"
 
 L["currently equipped"] = "currently equipped item"
+L["narrow beacon sound set"] = "Sound for small beacons"
+L["wide beacon sound set"] = "Sound for large beacons"

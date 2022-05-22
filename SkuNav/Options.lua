@@ -99,6 +99,32 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].beaconVolume
 			end
 		},
+		beaconSoundSetNarrow = {
+			order = 200,
+			name = L["narrow beacon sound set"],
+			desc = "",
+			type = "select",
+			values = SkuNav.BeaconSoundSetNames,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].beaconSoundSetNarrow = SkuNav.BeaconSoundSetNames[val]
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].beaconSoundSetNarrow
+			end
+		},
+		beaconSoundSetWide = {
+			order = 200,
+			name = L["wide beacon sound set"],
+			desc = "",
+			type = "select",
+			values = SkuNav.BeaconSoundSetNames,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].beaconSoundSetWide = SkuNav.BeaconSoundSetNames[val]
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].beaconSoundSetWide
+			end
+		},
 		vocalizeFullDirectionDistance = {
 			name = L["Detailed direction and distance"],
 			desc = "",
@@ -296,6 +322,8 @@ SkuNav.defaults = {
 	includeDefaultTaxiWaypoints = true,
 	]]
 	beaconVolume = 100,
+	beaconSoundSetNarrow = "probe_deep_1",
+	beaconSoundSetWide = "probe_mid_1",
 	vocalizeFullDirectionDistance = true,
 	vocalizeZoneNames = true,
 	showRoutesOnMinimap = false,
