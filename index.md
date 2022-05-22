@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.4](https://github.com/Duugu/Sku/releases/download/r27.4/Sku-r27.4-bcc.zip) (19.05.2022)<br>
+[Sku r27.5](https://github.com/Duugu/Sku/releases/download/r27.5/Sku-r27.5-bcc.zip) (22.05.2022)<br>
 
 *Old updates:* <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
@@ -20,6 +20,14 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in release 27.5
+
+### Core
+- Fixed an issue with item comparison in tooltips and bag slot items.
+- Fixed another issue with quest dialogs.
+- Fixed an issue with creating auctions.
+- Christoph fixed an issue with empty waypoint comments.
+
 ## Changes in Sku release 27.4
 
 ### Navigation
