@@ -1,7 +1,7 @@
 # Beta Updates
 
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) <br>
-[Sku r27.5-beta2](https://github.com/Duugu/Sku/releases/download/27.7-beta1/Sku-27.7-beta1-bcc.zip) (23.05.2022)<br>
+[Sku r27.7-beta2](https://github.com/Duugu/Sku/releases/download/27.7-beta1/Sku-27.7-beta1-bcc.zip) (23.05.2022)<br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) <br>
 [SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) <br>
 
