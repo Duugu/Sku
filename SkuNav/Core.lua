@@ -1926,7 +1926,6 @@ function SkuNav:CreateSkuNavMain()
 			SkuNav.MoveToWp = 1
 		end
 		if a == "CTRL-SHIFT-S" then
-			print("!!!!!!!!!!!!!")
 			SkuNav.MoveToWp = -1
 		end
 
@@ -2354,12 +2353,9 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 	SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = aWpName
 
 	local tBeaconType = SkuNav:getBeaconSoundSetName(SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
-	if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
-		if SkuOptions.db.profile[MODULE_NAME].clickClackSoundset and SkuOptions.db.profile[MODULE_NAME].clickClackSoundset ~= "off" then
-			tBeaconType = tBeaconType..SkuOptions.db.profile[MODULE_NAME].clickClackSoundset
-		end
+	if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", aWpName, tBeaconType, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+		return
 	end
-	SkuOptions.BeaconLib:CreateBeacon("SkuOptions", aWpName, tBeaconType, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange)
 	SkuOptions.BeaconLib:StartBeacon("SkuOptions", aWpName)
 
 	if not string.find(aWpName, L["auto"]..";") then
@@ -2550,7 +2546,8 @@ function SkuNav:PLAYER_LOGIN(...)
 			hooksecurefunc(TomTom, "AddWaypoint", function(self, map, x, y, options)
 				if SkuOptions.db.profile[MODULE_NAME].tomtomWp == true then
 					local bx, by = SkuOptions.HBD:GetWorldCoordinatesFromZone(x, y, map)
-					SkuOptions.BeaconLib:CreateBeacon("SkuOptions", SkuOptions.tomtomBeaconName, "probe_mid_1", by, bx, -3, 1, SkuOptions.db.profile["SkuNav"].beaconVolume)
+					local tBeaconType = SkuNav:getBeaconSoundSetName(SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
+					SkuOptions.BeaconLib:CreateBeacon("SkuOptions", SkuOptions.tomtomBeaconName, tBeaconType, by, bx, -3, 1, SkuOptions.db.profile["SkuNav"].beaconVolume)
 					SkuOptions.BeaconLib:StartBeacon("SkuOptions", SkuOptions.tomtomBeaconName)
 				end
 			end)
@@ -2572,8 +2569,6 @@ function SkuNav:PLAYER_LOGIN(...)
 	end
 
 	SkuNav:SkuNavMMOpen()
-
-
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_ENTERING_WORLD(...)
@@ -2634,12 +2629,29 @@ function SkuNav:PLAYER_ENTERING_WORLD(...)
 	end
 
 	-- populate sound set names
-	for key, value in pairs(SkuOptions.BeaconLib:GetSoundSets()) do
-		local suffix = string.lower(string.sub(value, -4))
-		if suffix ~= "lick" and suffix ~= "beep" then
-			table.insert(SkuNav.BeaconSoundSetNames, value)
+	C_Timer.After(0.01, function()
+		SkuNav.BeaconSoundSetNames = {}
+		for key, value in ipairs(SkuOptions.BeaconLib:GetSoundSets()) do
+			SkuNav.BeaconSoundSetNames[value] = value
 		end
+
+		SkuNav.options.args.beaconSoundSetNarrow.values = SkuNav.BeaconSoundSetNames
+		SkuNav.options.args.beaconSoundSetWide.values = SkuNav.BeaconSoundSetNames
+	end)
+
+	-- populate clickclack sound set names
+	SkuNav.ClickClackSoundsets = {}
+	SkuNav.ClickClackSoundsets["off"] = L["Nichts"]
+	for key, value in pairs(SkuOptions.BeaconLib:GetClickClackSoundSets()) do
+		SkuNav.ClickClackSoundsets[key] = value.friendlyName
 	end
+	SkuNav.options.args.clickClackSoundset.values = SkuNav.ClickClackSoundsets
+
+	if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
+		SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
+	else
+		SkuOptions.BeaconLib:SetClickClackSoundSet("off")
+	end	
 end
 
 local old_ZONE_CHANGED_X = ""
@@ -3017,9 +3029,9 @@ function SkuNav:getBeaconSoundSetName(size)
 	end
 	if name == nil then
 		if size == 5 then
-			return "probe_mid_1"
+			return "Beacon 4"
 		end
-		return "probe_deep_1"
+		return "Beacon 2"
 	end
 	return name
 end

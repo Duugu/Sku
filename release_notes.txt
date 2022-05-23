@@ -2,6 +2,19 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Changes in release 27.7-beta1
+
+	Navigation
+		- New feature by Talon: 
+			There are two new options to select beacons sounds: Navigation > Options > Sound for small beacons / Sound for large beacons.
+			The available beacons sounds depend on what you have installed. As default there are 4 sounds.
+			The additional addon SkuCustomBeacons from Talon provides more sounds.
+			Download the SkuCustomBeacons addon here:
+			Install the SkuCustomBeacons addon as usual, and you should find more beacon sounds under the two options.
+			
+
 -------------------------------------------------------------------------------------------------------	
 Changes in release 27.6
 	

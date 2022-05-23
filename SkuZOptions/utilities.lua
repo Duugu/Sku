@@ -493,6 +493,7 @@ local tAdditionalTranslations = {
 	["Von hier 2 sekunden geradeaus laufen, um durch das portal zu gehen."] = "From here move 1 second forward, to get through the portal.",
 	["Hier Questgegenstand benutzen"] = "Use quest item here",
 	["Von hier eine Sekunde geradeaus laufen, um durch das Portal zu gehen."] = "From here move 1 second forward, to get through the portal.",
+	["Stopp. Wenn du unter level 20 bist, und von menethil nach loch modan willst, bleib hier steht. Prüfe, ob vor dir ein mob ist. Wenn das der fall ist, warte hier bis dieser sich wegbewegt hat. laufe erst dann weiter! Solltest du trotzdem angegriffen werden, bleib nicht stehen. lauf weiter der route nach."] = "Stop. If you are under level 20 and want to go from menethil to loch modan, stop here. Check if there is a mob in front of you. If that is the case, wait here until it has moved away and can't be targeted anymore. Then continue! If you are attacked anyway, don't stop. keep following the route to get as far as possible before you are dead.",	
 }
 
 

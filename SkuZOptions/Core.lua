@@ -3046,6 +3046,9 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 							SkuOptions:StartStopBackgroundSound(true)
 						end
 					end
+					if self.optionsPath[self.profileIndex].OnAction then
+						self.optionsPath[self.profileIndex]:OnAction()
+					end
 				end
 				tNewMenuEntry.BuildChildren = function(self)
 					for ia, va in pairs(v.values) do

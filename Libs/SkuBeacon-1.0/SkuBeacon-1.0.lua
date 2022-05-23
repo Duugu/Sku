@@ -1,4 +1,4 @@
-local SKUBEACON_MAJOR, SKUBEACON_MINOR = "SkuBeacon-1.0", 1
+local SKUBEACON_MAJOR, SKUBEACON_MINOR = "SkuBeacon-1.0", 2
 local SkuBeacon, oldminor = LibStub:NewLibrary(SKUBEACON_MAJOR, SKUBEACON_MINOR)
 if not SkuBeacon then return end
 
@@ -15,6 +15,8 @@ local CONST_DYNAME_PING_RATE5 = -5
 ---------------------------------------------------------------------------------------------------------
 local gBeaconRepo = {}
 local gSoundsetRepo = {}
+local gClickClackSoundsetRepo = {}
+local gCurrentClickClackSoundset
 
 ---------------------------------------------------------------------------------------------------------
 -- PRIVATE
@@ -151,16 +153,16 @@ local function OnUpdate(self, aTime)
 							tDynPingRate = tDynPingRate - (1 - (tUnsignedCleanedDirection / 45))
 						end
 
-					if tSoundSet.clackFileName then
+					if gCurrentClickClackSoundset and gClickClackSoundsetRepo[gCurrentClickClackSoundset] then
 						local tClickClackDeg = tBeacon.clickSoundRange or 10
 						if tCleanedDirection > tClickClackDeg or tCleanedDirection < -tClickClackDeg then
 							if tPrevCleanedDirection == true then
-								local tWillPlay, tPlayingHandle = PlaySoundFile(tSoundSet.path.."\\"..tSoundSet.clackFileName, "Talking Head")
+								local tWillPlay, tPlayingHandle = PlaySoundFile(gClickClackSoundsetRepo[gCurrentClickClackSoundset].path.."\\"..gClickClackSoundsetRepo[gCurrentClickClackSoundset].clackFileName, "Talking Head")
 								tPrevCleanedDirection = false
 							end
 						else
 							if tPrevCleanedDirection == false then
-								local tWillPlay, tPlayingHandle = PlaySoundFile(tSoundSet.path.."\\"..tSoundSet.clickFileName, "Talking Head")
+								local tWillPlay, tPlayingHandle = PlaySoundFile(gClickClackSoundsetRepo[gCurrentClickClackSoundset].path.."\\"..gClickClackSoundsetRepo[gCurrentClickClackSoundset].clickFileName, "Talking Head")
 								tPrevCleanedDirection = true
 							end
 						end
@@ -260,13 +262,7 @@ end
 --			distanceNumber: 1 to aMaxDistance
 --		Example file name: beacon_male_one;-1;15.mp3 
 --			(soundset name "beacon_male_one", degree -1, distance 15)
-function SkuBeacon:RegisterSoundSet(aBaseName, aPath, aDegreesStep, aMaxDistance, aFileName, aClickFileName, aClackFileName)
-	Debug("SkuBeacon RegisterSoundSet")
-	Debug("  BaseName:", aBaseName)
-	Debug("  Path:", aPath)
-	Debug("  DegreesStep:", aDegreesStep)
-	Debug("  MaxDistances:", aMaxDistance)
-
+function SkuBeacon:RegisterSoundSet(aBaseName, aPath, aDegreesStep, aMaxDistance, aFileName)
 	if gSoundsetRepo[aBaseName] then return end
 
 	--add the new soundset
@@ -276,9 +272,30 @@ function SkuBeacon:RegisterSoundSet(aBaseName, aPath, aDegreesStep, aMaxDistance
 		degreesStep = aDegreesStep,
 		maxDistance = aMaxDistance,
 		fileName = aFileName,
+	}
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:RegisterClickClackSoundSet(aFriendlyName, aInternalName, aPath, aClickFileName, aClackFileName)
+	if gClickClackSoundsetRepo[aInternalName] then return end
+	
+	--add the new soundset
+	table.insert(gClickClackSoundsetRepo, aInternalName)
+	gClickClackSoundsetRepo[aInternalName] = {
+		friendlyName = aFriendlyName,
+		path = aPath,
 		clickFileName = aClickFileName,
 		clackFileName = aClackFileName,
 	}
+end
+
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:SetClickClackSoundSet(aInternalName)
+	if not gClickClackSoundsetRepo[aInternalName] then 
+		gCurrentClickClackSoundset = nil
+		return
+	end
+	gCurrentClickClackSoundset = aInternalName
 end
 
 ---------------------------------------------------------------------------------------------------------
@@ -287,16 +304,15 @@ function SkuBeacon:GetSoundSets()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY, aRate, aSilenceRange, aVolume, aClickSoundRange)
-	Debug("SkuBeacon CreateBeacon")
-	Debug("  aReference:", aReference)
-	Debug("  aBeaconName:", aBeaconName)
-	Debug("  aSoundSet:", aSoundSet)
-	Debug("  aPosX:", aPosX)
-	Debug("  aPosY:", aPosY)
+function SkuBeacon:GetClickClackSoundSets()
+	return gClickClackSoundsetRepo
+end
 
+---------------------------------------------------------------------------------------------------------
+function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY, aRate, aSilenceRange, aVolume, aClickSoundRange)
 	if not gBeaconRepo[aReference] then return false end
 	if gBeaconRepo[aReference][aBeaconName] then return false end
+	if not gSoundsetRepo[aSoundSet] then return end
 	
 	--add new beacon
 	table.insert(gBeaconRepo[aReference], aBeaconName)
@@ -311,7 +327,8 @@ function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY
 		volume = aVolume or 100,
 		clickSoundRange = aClickSoundRange,
 	}
-	Debug(gBeaconRepo[aReference][aBeaconName])
+	
+	return true
 end
 
 ---------------------------------------------------------------------------------------------------------

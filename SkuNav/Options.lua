@@ -1,11 +1,7 @@
 local MODULE_NAME = "SkuNav"
 local L = Sku.L
 
-SkuNav.ClickClackSoundsets = {
-	["off"] = L["Nichts"],
-	["click"] = L["Klick"],
-	["beep"] = L["Ping"],
-}
+SkuNav.ClickClackSoundsets = {}
 
 SkuNav.StandardWpReachedRanges = {
    [1] = L["1 Meter"],
@@ -211,7 +207,19 @@ SkuNav.options = {
 			name = L["Klick bei Beacons"],
 			desc = "",
 			type = "toggle",
+			OnAction = function(info,val)
+				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
+					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
+				else
+					SkuOptions.BeaconLib:SetClickClackSoundSet("off")
+				end				
+			end,
 			set = function(info,val)
+				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
+					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
+				else
+					SkuOptions.BeaconLib:SetClickClackSoundSet("off")
+				end				
 				SkuOptions.db.profile[MODULE_NAME].clickClackEnabled = val
 			end,
 			get = function(info)
@@ -236,7 +244,19 @@ SkuNav.options = {
 			desc = "",
 			type = "select",
 			values = SkuNav.ClickClackSoundsets,
+			OnAction = function(info,val)
+				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
+					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
+				else
+					SkuOptions.BeaconLib:SetClickClackSoundSet("off")
+				end				
+			end,
 			set = function(info,val)
+				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
+					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
+				else
+					SkuOptions.BeaconLib:SetClickClackSoundSet("off")
+				end				
 				SkuOptions.db.profile[MODULE_NAME].clickClackSoundset = val
 			end,
 			get = function(info)
@@ -322,8 +342,8 @@ SkuNav.defaults = {
 	includeDefaultTaxiWaypoints = true,
 	]]
 	beaconVolume = 100,
-	beaconSoundSetNarrow = "probe_deep_1",
-	beaconSoundSetWide = "probe_mid_1",
+	beaconSoundSetNarrow = "Beacon 2",
+	beaconSoundSetWide = "Beacon 4",
 	vocalizeFullDirectionDistance = true,
 	vocalizeZoneNames = true,
 	showRoutesOnMinimap = false,
