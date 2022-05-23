@@ -1,8 +1,18 @@
 # Beta Updates
 
-[Sku r27.5-beta2](https://github.com/Duugu/Sku/releases/download/27.5-beta2/Sku-27.5-beta2-bcc.zip) (20.05.2022)<br>
+[Sku r27.5-beta2](https://github.com/Duugu/Sku/releases/download/27.7-beta1/Sku-27.7-beta1-bcc.zip) (23.05.2022)<br>
 
 # Release notes
+
+## Changes in release 27.7-beta1
+
+### Navigation
+- New feature by Talon: 
+	There are two new options to select beacons sounds: Navigation > Options > Sound for small beacons / Sound for large beacons.
+	The available beacons sounds depend on what you have installed. As default there are 4 sounds.
+	The additional addon SkuCustomBeacons from Talon provides more sounds.
+	Download the SkuCustomBeacons addon here:
+	Install the SkuCustomBeacons addon as usual, and you should find more beacon sounds under the two options.
 
 ## Changes in Sku 27.5-beta2
 
