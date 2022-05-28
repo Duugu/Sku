@@ -7,12 +7,13 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+[Sku Script (wow_menu) r2.8](https://github.com/Duugu/wow_menu/releases/download/r2.8/wow_menu-r2.8-bcc.zip) (28.05.2022)<br>
 [Sku r27.6](https://github.com/Duugu/Sku/releases/download/r27.6/Sku-r27.6-bcc.zip) (22.05.2022)<br>
 
 *Old updates:* <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
 [SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
-[Sku-Maus Skript (wow_menu) r2.7](https://github.com/Duugu/wow_menu/releases/download/r2.7/wow_menu-r2.7-bcc.zip) (27.03.2022) FOLLOW THE INSTALLATION STEPS IN THE README.TXT!<br>
+README.TXT!<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
 [SkuBeaconSoundsets r19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
@@ -20,7 +21,15 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
-##Changes in release 27.6
+
+## Changes in Sku Script (wow_menu) r2.8
+
+- Added alternative key binds for the numpad 7-9 feature:
+	Shift + I for numpad 7
+	Shift + O for numpad 8
+	Shift + P for numpad 9
+
+## Changes in Sku r27.6
 	
 ### Core
 - New feature by Samalam: tooltips in bags are now showing the currently equiped item(s) in a new section under the bag item.
@@ -39,7 +48,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - Fixed an issue with creating auctions.
 - Christoph fixed an issue with empty waypoint comments.
 
-## Changes in Sku release 27.4
+## Changes in Sku r27.4
 
 ### Navigation
 - Fixed the missing waypoint to Sunken Chest.
@@ -52,7 +61,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 ### Quest
 - Fixed a but with not responding quest menu on interacting with npcs.
 
-## Changes in Sku 27.3
+## Changes in Sku r27.3
 
 ### Core
 - Fixed the missing Left click option for choosing quest rewards.
