@@ -7,8 +7,8 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+[Sku r27.7](https://github.com/Duugu/Sku/releases/download/r27.7/Sku-r27.7-bcc.zip) (28.05.2022)<br>
 [Sku Script (wow_menu) r2.8](https://github.com/Duugu/wow_menu/releases/download/r2.8/wow_menu-r2.8-bcc.zip) (28.05.2022)<br>
-[Sku r27.6](https://github.com/Duugu/Sku/releases/download/r27.6/Sku-r27.6-bcc.zip) (22.05.2022)<br>
 
 *Old updates:* <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
@@ -21,6 +21,25 @@ README.TXT!<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in Sku r27.7
+
+### Core
+- The auto bid price for new actions was adjusted from 50% to 90% of your selected buyout price.
+
+### Navigation
+- New feature by Talon: 
+	There are two new options to select beacons sounds: Navigation > Options > Sound for small beacons / Sound for large beacons.
+	On changing those options the new beacon sound will be played for one second.
+	The available beacon sounds depend on what additional sound set addons are installed. As default there are only 4 base sounds from the SkuBeaconSoundsets addon.
+	The additional addons SkuCustomBeaconsEssential 0.1 and SkuCustomBeaconsAdditional 0.1 (via the regular Sku download page) from Talon add more sounds sets. Install those two addons as usual, and there are more beacon sounds available.
+
+### Quests
+- Fixed the quest target for "Plundering the Plunderers".
+
+### Maps
+- Updated the route from Menethil to Loch Modan. Low level characters (level 10+) who need to get to Loch Modan or Westfall to continue leveling, shouldn't die at all, or at least only one time. Of course only if you are navigating precisely. As usual. :)
+- Updated the rescue route in Booty Bay. You still need to navigate very precisely to get out of the water.
 
 ## Changes in Sku Script (wow_menu) r2.8
 
