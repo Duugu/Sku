@@ -3047,13 +3047,17 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 						end
 					end
 					if self.optionsPath[self.profileIndex].OnAction then
-						self.optionsPath[self.profileIndex]:OnAction()
+						self.optionsPath[self.profileIndex]:OnAction(aValue, aName)
 					end
 				end
 				tNewMenuEntry.BuildChildren = function(self)
-					for ia, va in pairs(v.values) do
-						--dprint(ia, va)
-						SkuOptions:InjectMenuItems(self, {va}, SkuGenericMenuItem)
+					tSortedList = {}
+					for k,v in SkuSpairs(v.values, function(t,a,b) return t[b] > t[a] end) do
+						table.insert(tSortedList, v)
+					end
+
+					for key, value in ipairs(tSortedList) do
+						SkuOptions:InjectMenuItems(self, {value}, SkuGenericMenuItem)
 					end
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)

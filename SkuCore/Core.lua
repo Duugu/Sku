@@ -2828,7 +2828,3 @@ function SkuCore:StartStopGameMenuBackgroundSound()
 		end
 	end
 end
-
-function test()
-	SetAllowDangerousScripts(true)
-end

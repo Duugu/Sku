@@ -29,60 +29,6 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].enable
 			end
 		},
-		--[[
-		includeDefaultMapWaypoints = {
-			name = "Standard-WPs Karten",
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].includeDefaultMapWaypoints = val
-				SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
-				SkuNav:PLAYER_ENTERING_WORLD()
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].includeDefaultMapWaypoints
-			end
-		},
-		includeDefaultInkeeperWaypoints = {
-			name = "Standard-WPs Gastwirte ",
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].includeDefaultInkeeperWaypoints = val
-				SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
-				SkuNav:PLAYER_ENTERING_WORLD()
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].includeDefaultInkeeperWaypoints
-			end
-		},
-		includeDefaultPostboxWaypoints = {
-			name = "Standard-WPs Briefkästen",
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].includeDefaultPostboxWaypoints = val
-				SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
-				SkuNav:PLAYER_ENTERING_WORLD()
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].includeDefaultPostboxWaypoints
-			end
-		},
-		includeDefaultTaxiWaypoints = {
-			name = "Standard-WPs Flugpunkte",
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].includeDefaultTaxiWaypoints = val
-				SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = ""
-				SkuNav:PLAYER_ENTERING_WORLD()
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].includeDefaultTaxiWaypoints
-			end
-		},
-		]]		
 		beaconVolume = {
 			order = 2,
 			name = L["Beacon Volume"],
@@ -96,11 +42,21 @@ SkuNav.options = {
 			end
 		},
 		beaconSoundSetNarrow = {
-			order = 200,
+			order = 3,
 			name = L["narrow beacon sound set"],
 			desc = "",
 			type = "select",
 			values = SkuNav.BeaconSoundSetNames,
+			OnAction = function(self, info, val)
+				local tPlayerPosX, tPlayerPosY = UnitPosition("player")
+				if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+					return
+				end
+				SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
+				C_Timer.After(1, function()
+					SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", "sampleBeacon")
+				end)
+			end,	
 			set = function(info,val)
 				SkuOptions.db.profile[MODULE_NAME].beaconSoundSetNarrow = SkuNav.BeaconSoundSetNames[val]
 			end,
@@ -109,11 +65,21 @@ SkuNav.options = {
 			end
 		},
 		beaconSoundSetWide = {
-			order = 200,
+			order = 4,
 			name = L["wide beacon sound set"],
 			desc = "",
 			type = "select",
 			values = SkuNav.BeaconSoundSetNames,
+			OnAction = function(self, info, val)
+				local tPlayerPosX, tPlayerPosY = UnitPosition("player")
+				if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+					return
+				end
+				SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
+				C_Timer.After(1, function()
+					SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", "sampleBeacon")
+				end)
+			end,				
 			set = function(info,val)
 				SkuOptions.db.profile[MODULE_NAME].beaconSoundSetWide = SkuNav.BeaconSoundSetNames[val]
 			end,
@@ -121,93 +87,12 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].beaconSoundSetWide
 			end
 		},
-		vocalizeFullDirectionDistance = {
-			name = L["Detailed direction and distance"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].vocalizeFullDirectionDistance = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].vocalizeFullDirectionDistance
-			end
-		},
-		vocalizeZoneNames = {
-			name = L["Announce zone names"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].vocalizeZoneNames = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].vocalizeZoneNames
-			end
-		},
-		showRoutesOnMinimap = {
-			name = L["Show routes on minimap"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap
-			end
-		},
-		showSkuMM = {
-			name = L["Show extra minimap"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].showSkuMM = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].showSkuMM
-			end
-		},
-		nearbyWpRange = {
-			order = 4,
-			name = L["Range for near route starts"],
-			desc = "",
-			type = "range",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].nearbyWpRange = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].nearbyWpRange
-			end
-		},
-		tomtomWp = {
-			order = 4,
-			name = L["Auto sound on Tom Tom arrow"],
-			desc = "",
-			type = "toggle",
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].tomtomWp = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].tomtomWp
-			end
-		},
-		standardWpReachedRange = {
-			order = 4,
-			name = L["Waypoint reached at"],
-			desc = "",
-			type = "select",
-			values = SkuNav.StandardWpReachedRanges,
-			set = function(info,val)
-				SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange
-			end
-		},
 		clickClackEnabled = {
-			order = 4,
+			order = 5,
 			name = L["Klick bei Beacons"],
 			desc = "",
 			type = "toggle",
-			OnAction = function(info,val)
+			OnAction = function(self, info, val)
 				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
 					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
 				else
@@ -227,7 +112,7 @@ SkuNav.options = {
 			end
 		},
 		clickClackRange = {
-			order = 4,
+			order = 6,
 			name = L["Winkel für Klick bei Beacons"],
 			desc = "",
 			type = "range",
@@ -239,12 +124,12 @@ SkuNav.options = {
 			end
 		},
 		clickClackSoundset = {
-			order = 4,
+			order = 7,
 			name = L["Ton für Klick bei Beacons"],
 			desc = "",
 			type = "select",
 			values = SkuNav.ClickClackSoundsets,
-			OnAction = function(info,val)
+			OnAction = function(self, info, val)
 				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
 					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
 				else
@@ -263,8 +148,57 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].clickClackSoundset
 			end
 		},
-		autoGlobalDirection = {
+		vocalizeFullDirectionDistance = {
+			order = 8,
+			name = L["Detailed direction and distance"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].vocalizeFullDirectionDistance = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].vocalizeFullDirectionDistance
+			end
+		},
+		vocalizeZoneNames = {
+			order = 9,
+			name = L["Announce zone names"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].vocalizeZoneNames = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].vocalizeZoneNames
+			end
+		},
+		nearbyWpRange = {
 			order = 10,
+			name = L["Range for near route starts"],
+			desc = "",
+			type = "range",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].nearbyWpRange = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].nearbyWpRange
+			end
+		},
+		standardWpReachedRange = {
+			order = 11,
+			name = L["Waypoint reached at"],
+			desc = "",
+			type = "select",
+			values = SkuNav.StandardWpReachedRanges,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange
+			end
+		},
+		autoGlobalDirection = {
+			order = 12,
 			name = L["Auto announce global direction"],
 			desc = "",
 			type = "toggle",
@@ -276,7 +210,7 @@ SkuNav.options = {
 			end
 		},
 		showGlobalDirectionInWaypointLists = {
-			order = 11,
+			order = 13,
 			name = L["Show global direction in waypoint lists"],
 			desc = "",
 			type = "toggle",
@@ -288,7 +222,7 @@ SkuNav.options = {
 			end
 		},
 		trackVisited = {
-			order = 12,
+			order = 14,
 			name = L["Track whether waypoints were visited"],
 			desc = "",
 			type = "toggle",
@@ -300,7 +234,7 @@ SkuNav.options = {
 			end
 		},
 		timeForVisitedToExpire = {
-			order = 13,
+			order = 15,
 			name = L["visited automatically expires after"],
 			desc = "",
 			type = "select",
@@ -313,11 +247,11 @@ SkuNav.options = {
 			end
 		},
 		showGatherWaypoints = {
-			order = 11,
+			order = 16,
 			name = L["Show herbs and mining node waypoints"],
 			desc = "",
 			type = "toggle",
-			OnAction = function(info,val)
+			OnAction = function(self, info, val)
 				SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
 				SkuNav:CreateWaypointCache()
 				SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
@@ -329,7 +263,44 @@ SkuNav.options = {
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints
 			end
-		},		
+		},	
+		showRoutesOnMinimap = {
+			order = 17,
+			name = L["Show routes on minimap"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].showRoutesOnMinimap
+			end
+		},
+		showSkuMM = {
+			order = 18,
+			name = L["Show extra minimap"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].showSkuMM = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].showSkuMM
+			end
+		},
+
+		tomtomWp = {
+			order = 19,
+			name = L["Auto sound on Tom Tom arrow"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].tomtomWp = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].tomtomWp
+			end
+		},			
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------

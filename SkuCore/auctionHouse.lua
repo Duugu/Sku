@@ -1331,7 +1331,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                            local tAmount = tonumber(self.selectTarget.amount)
                            local tNumAuctions = tonumber(self.selectTarget.numAuctions)
                            local tCopperBuyout = tonumber(self.selectTarget.price)
-                           local tCopperStartBid = mfloor(tCopperBuyout / 2)
+                           local tCopperStartBid = mfloor(tCopperBuyout * 0.9)
                            local tDuration
                            if aName == L["Erstellen: 12 Stunden"] then
                               tDuration = 720
