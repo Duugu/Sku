@@ -24,10 +24,11 @@ README.TXT!<br>
 
 ## Changes in Sku Script (wow_menu) r2.8
 
-- Added alternative key binds for the numpad 7-9 feature:
-	Shift + I for numpad 7
-	Shift + O for numpad 8
+- Added alternative key binds for the numpad 7-9 feature:<br>
+	Shift + I for numpad 7<br>
+	Shift + O for numpad 8<br>
 	Shift + P for numpad 9
+- Fixed an issue with switching servers and 1024x768 resolution
 
 ## Changes in Sku r27.6
 	
