@@ -8,6 +8,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 [Sku r27.7](https://github.com/Duugu/Sku/releases/download/r27.7/Sku-r27.7-bcc.zip) (28.05.2022)<br>
+[SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
+[SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
+[SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) (28.05.2022) <br>
 [Sku Script (wow_menu) r2.8](https://github.com/Duugu/wow_menu/releases/download/r2.8/wow_menu-r2.8-bcc.zip) (28.05.2022)<br>
 
 *Old updates:* <br>
@@ -29,9 +32,9 @@ README.TXT!<br>
 
 ### Navigation
 - New feature by Talon: 
-	There are two new options to select beacons sounds: Navigation > Options > Sound for small beacons / Sound for large beacons.
-	On changing those options the new beacon sound will be played for one second.
-	The available beacon sounds depend on what additional sound set addons are installed. As default there are only 4 base sounds from the SkuBeaconSoundsets addon.
+	There are two new options to select beacons sounds: Navigation > Options > Sound for small beacons / Sound for large beacons.<br>
+	On changing those options the new beacon sound will be played for one second.<br>
+	The available beacon sounds depend on what additional sound set addons are installed. As default there are only 4 base sounds from the SkuBeaconSoundsets addon.<br>
 	The additional addons SkuCustomBeaconsEssential 0.1 and SkuCustomBeaconsAdditional 0.1 (via the regular Sku download page) from Talon add more sounds sets. Install those two addons as usual, and there are more beacon sounds available.
 
 ### Quests
