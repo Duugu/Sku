@@ -16,9 +16,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 *Old updates:* <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
 [SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
-README.TXT!<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
-[SkuBeaconSoundsets r19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
 # Release notes
