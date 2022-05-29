@@ -7,11 +7,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+[Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
 [Sku r27.7](https://github.com/Duugu/Sku/releases/download/r27.7/Sku-r27.7-bcc.zip) (28.05.2022)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
 [SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) (28.05.2022) <br>
-[Sku Script (wow_menu) r2.8](https://github.com/Duugu/wow_menu/releases/download/r2.8/wow_menu-r2.8-bcc.zip) (28.05.2022)<br>
 
 *Old updates:* <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
@@ -22,6 +22,13 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in Sku Script (wow_menu) r2.9
+
+- Changed the alternative key binds for the numpad 7-9 from Shift to Ctrl + Shift, as just Shift is interfering with chat inputs:
+	Control + Shift + I for numpad 7
+	Control + Shift + O for numpad 8
+	Control + Shift + P for numpad 9
 
 ## Changes in Sku r27.7
 
