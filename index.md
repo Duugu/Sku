@@ -25,9 +25,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 ## Changes in Sku Script (wow_menu) r2.9
 
-- Changed the alternative key binds for the numpad 7-9 from Shift to Ctrl + Shift, as just Shift is interfering with chat inputs:
-	Control + Shift + I for numpad 7
-	Control + Shift + O for numpad 8
+- Changed the alternative key binds for the numpad 7-9 from Shift to Ctrl + Shift, because just Shift is interfering with chat inputs:<br>
+	Control + Shift + I for numpad 7<br>
+	Control + Shift + O for numpad 8<br>
 	Control + Shift + P for numpad 9
 
 ## Changes in Sku r27.7
