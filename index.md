@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.8](https://github.com/Duugu/Sku/releases/download/r27.8/Sku-r27.8-bcc.zip) (30.05.2022)<br> 
+[Sku r27.8](https://github.com/Duugu/Sku/releases/download/r28.8/Sku-r28.8-bcc.zip) (30.05.2022)<br> 
 [Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
