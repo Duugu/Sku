@@ -789,6 +789,14 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 
+		if a == "SHIFT-U" then
+			SkuCore:MinimapScan(60)
+		end
+		if a == "SHIFT-J" then
+			SkuCore:MinimapScan(20)
+		end
+
+
 		if a == "CTRL-SHIFT-F3" then
 			Sku.debug = Sku.debug == false
 			print("Debug:", Sku.debug)
@@ -899,22 +907,6 @@ function SkuOptions:CreateMainFrame()
 			end
 			return
 		end
-		--[[
-		if a == "SHIFT-DOWN" then
-			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
-			if SkuOptions.TooltipReaderText then
-				if SkuOptions.TooltipReaderText ~= "" then
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
-						SkuOptions.TTS:PreviousLine(2, true)
-					else
-						SkuOptions.TTS:NextLine(2, true)
-					end
-				end
-			end
-			return
-		end
-]]
 
 		if a ~= "SHIFT-RIGHT" and a ~= "SHIFT-LEFT" and a ~= "SHIFT-ENTER" and a ~= "SHIFT-BACKSPACE" and a ~= "SHIFT-UP" and a ~= "SHIFT-DOWN" and a ~= "SHIFT-PAGEDOWN" and a ~= "CTRL-SHIFT-UP" and a ~= "CTRL-SHIFT-DOWN" then
 			if SkuOptions.TTS:IsAutoRead() == true then
@@ -1108,50 +1100,6 @@ function SkuOptions:CreateMainFrame()
 
 			end					
 		end
-
-
-
-
---[[
-
-
-		if a == "CTRL-SHIFT-UP" then
-			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
-			if SkuOptions.TooltipReaderText then
-				if SkuOptions.TooltipReaderText ~= "" then
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
-					end
-					SkuOptions.TTS:PreviousSection(2, true)
-				end
-			end
-			return
-		end
-		if a == "CTRL-SHIFT-DOWN" then
-			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
-			if SkuOptions.TooltipReaderText then
-				if SkuOptions.TooltipReaderText ~= "" then
-					if not SkuOptions.TTS:IsVisible() then
-						SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
-						SkuOptions.TTS:PreviousSection(2, true)
-					else
-						SkuOptions.TTS:NextSection(2, true)
-					end
-				end
-			end
-			return
-		end
-
-]]
-
-
-
-
-
-
-
-
-
 
 		if SkuCore.inCombat == true then
 			SkuCore.openMenuAfterCombat = true
@@ -1359,6 +1307,9 @@ function SkuOptions:CreateMainFrame()
 		--ClearOverrideBindings(self)
 		SkuOptions:HideVisualMenu()
 	end)
+
+	SetOverrideBindingClick(tFrame, true, "SHIFT-U", tFrame:GetName(), "SHIFT-U")
+	SetOverrideBindingClick(tFrame, true, "SHIFT-J", tFrame:GetName(), "SHIFT-J")
 
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F3", tFrame:GetName(), "CTRL-SHIFT-F3")
 

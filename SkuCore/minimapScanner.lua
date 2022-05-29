@@ -5,6 +5,12 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+function SkuCore:MinimapScan(aRange)
+   print("MinimapScan", aRange)
+
+
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function PrepareMinimap()
    MinimapCluster:SetFrameLevel(9002)
@@ -42,7 +48,7 @@ local function isMatch()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
---/script SkuCore:StoreMinimap() tScan = true SkuCore:MinimapScan() 
+--/script SkuCore:StoreMinimap() tScan = true SkuCore:MinimapScanTest() 
 -- 20-25 yards
 
 local nodeName = "Silverleaf"
@@ -53,7 +59,7 @@ local tScan = false
 local fx, fy = 0,0
 local m = {}
 
-function SkuCore:MinimapScan()
+function SkuCore:MinimapScanTest()
 	if tScan == false then
 		SkuCore:RestoreMinimap()
 		return
