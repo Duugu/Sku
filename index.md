@@ -25,7 +25,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 ## Changes in Sku r27.8
 
 ### Core
-- All profession menus are overhauled and manually created, with reagents, difficult colors, etc.
+- All profession menus are overhauled and manually created, with reagents, colors for receipe level, etc.
 
 
 ## Changes in Sku Script (wow_menu) r2.9
