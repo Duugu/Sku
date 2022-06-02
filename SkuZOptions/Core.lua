@@ -527,13 +527,19 @@ function SkuOptions:UpdateOverviewText()
 
 	--general
 	local tGeneral = L["Allgemeines"]
+	local function formatPercentage(current, max)
+		return (math.floor(current / max * 100)) .. "% (" .. current .. ")"
+	end
 	if UnitHealth("player") then
-		tGeneral = tGeneral.."\r\n"..L["Gesundheit: "]..(math.floor(UnitHealth("player") / UnitHealthMax("player") * 100)).."% ("..UnitHealth("player")..")"
+		tGeneral = tGeneral .. "\r\n" .. L["Gesundheit: "] .. formatPercentage(UnitHealth("player"), UnitHealthMax("player"))
 	end
 	if UnitPower("player") then
 		local powerType, powerToken = UnitPowerType("player")
 		tPowerString = _G[powerToken]
-		tGeneral = tGeneral.."\r\n"..tPowerString..": "..(math.floor(UnitPower("player") / UnitPowerMax("player") * 100)).."% ("..UnitPower("player")..")"
+		tGeneral = tGeneral .. "\r\n" .. tPowerString .. ": " .. formatPercentage(UnitPower("player"), UnitPowerMax("player"))
+	end
+	if UnitHealth("pet") ~= 0 then
+		tGeneral = tGeneral .. "\r\n" .. L["Pet"] .. " " .. L["Gesundheit: "] .. formatPercentage(UnitHealth("pet"), UnitHealthMax("pet"))
 	end
 
 	--repair status
