@@ -717,6 +717,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
+local oldPetLoyaltyRate = nil
 local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 function SkuCore:OnEnable()
 	--dprint("SkuCore OnEnable")
@@ -806,12 +807,18 @@ function SkuCore:OnEnable()
 		if select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"] then
 			if SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true then
 				SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
-				if SkuCoreOldPetHappinessCounter > 15 then
-					local happiness, damagePercentage, loyaltyRate = GetPetHappiness()
-					if happiness and (happiness == 1 or happiness == 2) then
-						SkuOptions.Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)
+				if SkuCoreOldPetHappinessCounter > 2 then
+					local happiness, _, loyaltyRate = GetPetHappiness()
+					if oldPetLoyaltyRate and loyaltyRate and oldPetLoyaltyRate < loyaltyRate then
+						-- happiness has increased due to feeding
+						SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness] .. " " .. loyaltyRate, true, true, 0.2)
+						SkuCoreOldPetHappinessCounter = 0
+					elseif SkuCoreOldPetHappinessCounter > 15 and happiness and (happiness == 1 or happiness == 2) then
+						-- pet isn't happy, alert player
+						SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness], true, true, 0.2)
 						SkuCoreOldPetHappinessCounter = 0
 					end
+					oldPetLoyaltyRate = loyaltyRate
 				end
 			end
 		end
