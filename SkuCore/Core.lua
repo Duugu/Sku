@@ -804,22 +804,27 @@ function SkuCore:OnEnable()
 		end
 
 		--hunter pet happiness
-		if select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"] then
-			if SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true then
-				SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
-				if SkuCoreOldPetHappinessCounter > 2 then
-					local happiness, _, loyaltyRate = GetPetHappiness()
-					if oldPetLoyaltyRate and loyaltyRate and oldPetLoyaltyRate < loyaltyRate then
-						-- happiness has increased due to feeding
-						SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness] .. " " .. loyaltyRate, true, true, 0.2)
-						SkuCoreOldPetHappinessCounter = 0
-					elseif SkuCoreOldPetHappinessCounter > 15 and happiness and (happiness == 1 or happiness == 2) then
-						-- pet isn't happy, alert player
-						SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness], true, true, 0.2)
-						SkuCoreOldPetHappinessCounter = 0
-					end
-					oldPetLoyaltyRate = loyaltyRate
+		if select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"]
+			and SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true
+			-- make sure player isn't dead and pet exists
+			and UnitHealth("player") ~= 0
+			and UnitHealth("pet") ~= 0
+		then
+			SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
+			if SkuCoreOldPetHappinessCounter > 2 then
+				local happiness, _, loyaltyRate = GetPetHappiness()
+				if oldPetLoyaltyRate and loyaltyRate and oldPetLoyaltyRate < loyaltyRate then
+					-- happiness has increased due to feeding
+					SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness] .. " " .. loyaltyRate, true, true, 0.2)
+					SkuCoreOldPetHappinessCounter = 0
+				elseif SkuCoreOldPetHappinessCounter > 15
+					and happiness and (happiness == 1 or happiness == 2)
+				then
+					-- pet isn't happy, alert player
+					SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness], true, true, 0.2)
+					SkuCoreOldPetHappinessCounter = 0
 				end
+				oldPetLoyaltyRate = loyaltyRate
 			end
 		end
 
