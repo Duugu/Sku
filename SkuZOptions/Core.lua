@@ -734,6 +734,10 @@ function SkuOptions:UpdateOverviewText()
 		petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
 		petSection = petSection .. "\r\n" .. GetPetLoyalty()
 		petSection = petSection .. "\r\n" .. GetPetTrainingPoints() .. " " .. L["training points"]
+		local SkuCorePetHappinessString = { [1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"] }
+		local happiness, _, loyaltyGainRate = GetPetHappiness()
+		local loyaltyGainRateString = loyaltyGainRate > 0 and L["Plus"] .. loyaltyGainRate or loyaltyGainRate
+		petSection = petSection .. "\r\n" .. SkuCorePetHappinessString[happiness] .. " (" .. loyaltyGainRateString .. ")"
 		table.insert(tSections, petSection)
 	end
 	--GetPetFoodTypes
