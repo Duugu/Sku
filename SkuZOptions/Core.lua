@@ -730,7 +730,11 @@ function SkuOptions:UpdateOverviewText()
 	--pet
 	local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
 	if UnitName("playerpet") then
-		table.insert(tSections, L["Tier XP: "]..tPetcurrXP..L[" von "]..tPetnextXP..L[" für "]..UnitLevel("playerpet") + 1)
+		local petSection = L["Pet"]
+		petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
+		petSection = petSection .. "\r\n" .. GetPetLoyalty()
+		petSection = petSection .. "\r\n" .. GetPetTrainingPoints() .. " " .. L["training points"]
+		table.insert(tSections, petSection)
 	end
 	--GetPetFoodTypes
 
