@@ -728,18 +728,18 @@ function SkuOptions:UpdateOverviewText()
 	table.insert(tSections, L["Gilde:\r\n"]..tTmpText)
 
 	--pet
-	local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
-	if UnitName("playerpet") then
+	if UnitName("playerpet") and SkuCorePlayerIsHunter() then
 		local petSection = L["Pet"]
+		local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
 		petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
 		petSection = petSection .. "\r\n" .. GetPetLoyalty()
 		local total, spent = GetPetTrainingPoints()
 		local trainingPoints = total - spent
 		if trainingPoints ~= 0 then
 			petSection = petSection .. "\r\n" .. trainingPoints .. " " .. L["training points"]
-		end
 		local happiness = GetPetHappiness()
 		petSection = petSection .. "\r\n" .. SkuCorePetHappinessString[happiness]
+		end
 		table.insert(tSections, petSection)
 	end
 	--GetPetFoodTypes

@@ -719,6 +719,11 @@ local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
 ---@type integer|nil
 local SkuCoreOldPetHappiness = nil
+---Check whether player is a hunter
+---@return boolean
+function SkuCorePlayerIsHunter()
+	return select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"]
+end
 SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 function SkuCore:OnEnable()
 	--dprint("SkuCore OnEnable")
@@ -805,7 +810,7 @@ function SkuCore:OnEnable()
 		end
 
 		--hunter pet happiness
-		if select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"]
+		if SkuCorePlayerIsHunter()
 			and SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true
 			-- make sure player isn't dead and pet exists
 			and UnitHealth("player") ~= 0
