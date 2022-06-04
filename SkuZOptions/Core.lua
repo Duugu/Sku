@@ -538,7 +538,7 @@ function SkuOptions:UpdateOverviewText()
 		tPowerString = _G[powerToken]
 		tGeneral = tGeneral .. "\r\n" .. tPowerString .. ": " .. formatPercentage(UnitPower("player"), UnitPowerMax("player"))
 	end
-	if UnitHealth("pet") ~= 0 then
+	if UnitName("playerpet") then
 		tGeneral = tGeneral .. "\r\n" .. L["Pet"] .. " " .. L["Gesundheit: "] .. formatPercentage(UnitHealth("pet"), UnitHealthMax("pet"))
 	end
 
@@ -737,9 +737,9 @@ function SkuOptions:UpdateOverviewText()
 		local trainingPoints = total - spent
 		if trainingPoints ~= 0 then
 			petSection = petSection .. "\r\n" .. trainingPoints .. " " .. L["training points"]
+		end
 		local happiness = GetPetHappiness()
 		petSection = petSection .. "\r\n" .. SkuCorePetHappinessString[happiness]
-		end
 		table.insert(tSections, petSection)
 	end
 	--GetPetFoodTypes
