@@ -738,7 +738,6 @@ function SkuOptions:UpdateOverviewText()
 		if trainingPoints ~= 0 then
 			petSection = petSection .. "\r\n" .. trainingPoints .. " " .. L["training points"]
 		end
-		local SkuCorePetHappinessString = { [1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"] }
 		local happiness = GetPetHappiness()
 		petSection = petSection .. "\r\n" .. SkuCorePetHappinessString[happiness]
 		table.insert(tSections, petSection)

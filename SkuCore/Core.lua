@@ -717,8 +717,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
+---@type integer|nil
 local SkuCoreOldPetHappiness = nil
-local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
+SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 function SkuCore:OnEnable()
 	--dprint("SkuCore OnEnable")
 	SkuCore:RangeCheckOnEnable()
