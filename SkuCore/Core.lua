@@ -717,7 +717,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
-local oldPetLoyaltyRate = nil
+local SkuCoreOldPetHappiness = nil
 local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 function SkuCore:OnEnable()
 	--dprint("SkuCore OnEnable")
@@ -812,19 +812,18 @@ function SkuCore:OnEnable()
 		then
 			SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
 			if SkuCoreOldPetHappinessCounter > 2 then
-				local happiness, _, loyaltyRate = GetPetHappiness()
-				if oldPetLoyaltyRate and loyaltyRate and oldPetLoyaltyRate < loyaltyRate then
-					-- happiness has increased due to feeding
-					SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness] .. " " .. loyaltyRate, true, true, 0.2)
-					SkuCoreOldPetHappinessCounter = 0
-				elseif SkuCoreOldPetHappinessCounter > 15
-					and happiness and (happiness == 1 or happiness == 2)
-				then
-					-- pet isn't happy, alert player
+				local happiness = GetPetHappiness()
+				-- speak pet happiness
+				if happiness and (
+					-- either happiness has just increased due to feeding, so let player know new happiness level
+					SkuCoreOldPetHappiness and SkuCoreOldPetHappiness < happiness
+						-- or alert player periodically when pet is not happy
+						or SkuCoreOldPetHappinessCounter > 60 and (happiness == 1 or happiness == 2)
+					) then
 					SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness], true, true, 0.2)
 					SkuCoreOldPetHappinessCounter = 0
 				end
-				oldPetLoyaltyRate = loyaltyRate
+				SkuCoreOldPetHappiness = happiness
 			end
 		end
 
