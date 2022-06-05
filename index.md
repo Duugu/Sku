@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.8](https://github.com/Duugu/Sku/releases/download/r28.8/Sku-r28.8-bcc.zip) (30.05.2022)<br> 
+[Sku r27.9](https://github.com/Duugu/Sku/releases/download/r28.9/Sku-r28.9-bcc.zip) (05.06.2022)<br> 
 [Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
@@ -22,6 +22,32 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r27.9
+
+### Core
+- Fixed a bug with the "Create all" button in the profession menu.
+- Fixed a bug with the list of recipes that sometimes showed recipes from other professions. 
+- Added the PageDown and PageUp buttons to the class trainer panel, to scroll down/up in the list of available skills.
+
+### Quest
+- Added a load of waypoints and quest targets to quests that require to get to some specific area or position.
+
+### Options
+- Fixed a bug where the menu was opened after combat if the overview page (shift down) was used in combat.
+- Fixed a bug with Sku TTS in menus and (partly) lost output of menu strings.
+
+### Maps
+- Mac has completed the mapping for Darkshore. Routes are not fully tested yet.
+- Fixed an issue with missing/broken routes in english maps that was caused by hares, rabbits, snow bunnys and snowshoe rabbits.
+- Added waypoints for forges in Booty Bay, Stormwind, and Ironforge.
+- Added Neeru Fireblade as a quest target to Hidden Enemies.
+- Fixed the route to Clopper Wizbang in Bloodmyst Isle.
+- Tried to fix the route for Tree's Company to Geezle in Azuremyst Isle. Not sure if that worked. Needs to be veryfied.
+- Added a route to Need for a Cure in Durotar.
+- Added some more routes to weapon containers in quel'danas
+- Added route to follow Prospector Anvilward after talking to him.
+- Added a waypoint for Murkdeep in Darkshore.
+		
 ## Changes in Sku r27.8
 
 ### Core
