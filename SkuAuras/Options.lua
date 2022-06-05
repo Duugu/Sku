@@ -264,8 +264,8 @@ function SkuAuras:NewAuraAttributeBuilder(self)
 						SkuGenericMenuItem.OnEnter(self, aValue, aName)
 					end
 					tAttributeEntry.BuildChildren = function(self)
-						dprint("build content of", self.name)
-						dprint("self.internalName", self.internalName)
+						--dprint("build content of", self.name)
+						--dprint("self.internalName", self.internalName)
 					end
 				end
 			end
@@ -290,8 +290,8 @@ function SkuAuras:NewAuraAttributeBuilder(self)
 						SkuAuras:BuildAuraTooltip(self)
 					end
 					tAttributeEntry.BuildChildren = function(self)
-						dprint("build content of", self.name)
-						dprint("self.internalName", self.internalName)
+						--dprint("build content of", self.name)
+						--dprint("self.internalName", self.internalName)
 					end
 				end
 
@@ -351,8 +351,8 @@ function SkuAuras:NewAuraOutputBuilder(self)
 					SkuGenericMenuItem.OnEnter(self, aValue, aName)
 				end
 				tAttributeEntry.BuildChildren = function(self)
-					dprint("build content of", self.name)
-					dprint("self.internalName", self.internalName)
+					--dprint("build content of", self.name)
+					--dprint("self.internalName", self.internalName)
 				end
 			end
 		end
@@ -389,7 +389,7 @@ function SkuAuras:NewAuraOperatorBuilder(self)
 				SkuAuras:BuildAuraTooltip(self)
 			end
 			tAttributeEntry.BuildChildren = function(self)
-				dprint("build content of", self.name)
+				--dprint("build content of", self.name)
 			end
 		else
 			local tSortedList = TableSortByIndex(SkuAuras.Operators)
@@ -407,7 +407,7 @@ function SkuAuras:NewAuraOperatorBuilder(self)
 						SkuAuras:BuildAuraTooltip(self)
 					end
 					tAttributeEntry.BuildChildren = function(self)
-						dprint("build content of", self.name)
+						--dprint("build content of", self.name)
 					end
 				end
 			end
@@ -479,7 +479,7 @@ function SkuAuras:NewAuraValueBuilder(self)
 				end
 				if not tSelectTarget.single then
 					tAttributeValueEntry.BuildChildren = function(self)
-						dprint("build content of", self.name)
+						--dprint("build content of", self.name)
 					end
 				end
 			end
@@ -493,7 +493,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttributes, aNewActions, aNewOutputs)
-	dprint("UpdateAura", aAuraNameToUpdate)
+	--dprint("UpdateAura", aAuraNameToUpdate)
 	--build the new name
 	local tAuraName = SkuAuras.Types[aNewType].friendlyName..";"
 	local tOuterCount = 0
@@ -697,9 +697,9 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			tNewMenuEntryOutp.single = true
 			tNewMenuEntryOutp.internalName = "action"
 			tNewMenuEntryOutp.OnAction = function(self, aValue, aName)
-				dprint("---- OnAction Ausgaben ", aValue, aName)
-				dprint("     self.auraName", self.auraName)
-				dprint("     self.collectValuesFrom.name", self.collectValuesFrom.name)
+				--dprint("---- OnAction Ausgaben ", aValue, aName)
+				--dprint("     self.auraName", self.auraName)
+				--dprint("     self.collectValuesFrom.name", self.collectValuesFrom.name)
 
 				local tType = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].type
 				local tEnabled = SkuOptions.db.char[MODULE_NAME].Auras[self.auraName].enabled
@@ -727,7 +727,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			dprint("OnAction Duplizieren")
+			--dprint("OnAction Duplizieren")
 			local tCopyCounter = 1
 			local tTestNewName = L["Kopie;"]..tCopyCounter..";"..self.parent.name
 			while SkuOptions.db.char[MODULE_NAME].Auras[tTestNewName] do
@@ -845,7 +845,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 					SkuAuras:BuildAuraTooltip(self)
 				end
 				tTypeItem.BuildChildren = function(self)
-					dprint("generic build content of", self.name, "this should not happen")
+					--dprint("generic build content of", self.name, "this should not happen")
 				end
 
 			end		
@@ -944,8 +944,8 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tTypeItem.dynamic = true
 		tTypeItem.isSelect = true
 		tTypeItem.OnAction = function(self, aValue, aName)
-			dprint("OnAction Sets verwalten", self, aValue, aName)
-			dprint(self.selectedSetInternalName)
+			--dprint("OnAction Sets verwalten", self, aValue, aName)
+			--dprint(self.selectedSetInternalName)
 			if aName == L["Übernehmen überschreiben"] then
 				SkuOptions.db.char[MODULE_NAME].Auras = {}
 				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
@@ -973,13 +973,13 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tTypeItem.BuildChildren = function(self)
 			local tHasEntries = false
 			for tIntName, tData in pairs(SkuAuras.AuraSets) do 
-				dprint(tIntName, tData, tData.friendlyName)
+				--dprint(tIntName, tData, tData.friendlyName)
 				tHasEntries = true
 				local tSet = SkuOptions:InjectMenuItems(self, {tData.friendlyName}, SkuGenericMenuItem)
 				tSet.dynamic = true
 				tSet.internalName = tIntName
 				tSet.OnEnter = function(self, aValue, aName)
-					dprint(self, aValue, aName)
+					--dprint(self, aValue, aName)
 					self.parent.selectedSetInternalName = self.internalName
 					self.textFull = SkuAuras.AuraSets[self.internalName].tooltip
 				end
@@ -999,7 +999,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tTypeItem.dynamic = false
 		tTypeItem.isSelect = true
 		tTypeItem.OnAction = function(self, aValue, aName)
-			dprint("OnAction Set importieren")
+			--dprint("OnAction Set importieren")
 			SkuOptions.Voice:OutputStringBTtts(L["noch nicht implementiert"], false, true, 0.1, true)
 		end
 		

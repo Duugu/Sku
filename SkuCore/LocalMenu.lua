@@ -554,7 +554,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 
    for x = 1, 8 do
       local tFrameName = "TradeSkillSkill"..x
-      if _G[tFrameName] and _G[tFrameName].text then
+      if _G[tFrameName] and _G[tFrameName].text and _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then
          if _G[tFrameName].text:GetText() then
             local tDifficulty = ""
             local r, g, b, a = _G[tFrameName].text:GetTextColor()
@@ -717,7 +717,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
                childs = {},
                func = _G[tFrameName]:GetScript("OnClick"),
                click = true,
-               containerFrameName = "TradeSkillCreateButton",
+               containerFrameName = "TradeSkillCreateAllButton",
                onActionFunc = function(self, aTable, aChildName) end,
             }   
          end
@@ -1157,8 +1157,8 @@ function SkuCore:GossipFrame(aParentChilds)
 
 
    local tIconStrings = {
-      [132048] = "Accepted Quest",
-      [132049] = "Available Quest",
+      [132048] = L["Accepted Quest"],
+      [132049] = L["Available Quest"],
    }
 
    for x = 1, GossipFrame.buttonIndex - 1 do

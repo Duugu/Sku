@@ -375,7 +375,7 @@ function SkuAuras:SPELL_COOLDOWN_START(aEventData)
 				end
 
 				if SkuAuras.SpellCDRepo[aEventData[CleuBase.spellId]] then
-					dprint("STILL OLD THERE, TRIUGGER BEFORE NEW!!!!!!!!!!!!!!")
+					--dprint("STILL OLD THERE, TRIUGGER BEFORE NEW!!!!!!!!!!!!!!")
 					SkuAuras:SPELL_COOLDOWN_END(SkuAuras.SpellCDRepo[aEventData[CleuBase.spellId]].eventData)
 				end
 
@@ -391,7 +391,7 @@ function SkuAuras:SPELL_COOLDOWN_START(aEventData)
 					eventData = aEventData,
 				}
 
-				dprint("SPELL_COOLDOWN_START", aEventData[CleuBase.spellName])
+				--dprint("SPELL_COOLDOWN_START", aEventData[CleuBase.spellName])
 				if aEventData[CleuBase.spellName] then
 					SkuAuras.thingsNamesOnCd["spell:"..aEventData[CleuBase.spellName]] = "spell:"..aEventData[CleuBase.spellName]
 				end
@@ -511,7 +511,7 @@ function SkuAuras:SPELL_COOLDOWN_END(aEventData)
 	aEventData[CleuBase.subevent] = "SPELL_COOLDOWN_END"
 	aEventData[CleuBase.timestamp] = GetTime()
 	SkuAuras.thingsNamesOnCd["spell:"..aEventData[13]] = nil
-	dprint("SPELL_COOLDOWN_END", aEventData[CleuBase.subevent], aEventData[13])
+	--dprint("SPELL_COOLDOWN_END", aEventData[CleuBase.subevent], aEventData[13])
 	SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 end
 
@@ -570,7 +570,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:UNIT_INVENTORY_CHANGED(aEventName, a, b, c, d)
-	dprint("UNIT_INVENTORY_CHANGED", aEventName, a, b, c, d)
+	--dprint("UNIT_INVENTORY_CHANGED", aEventName, a, b, c, d)
 	for bagId = 0, 4 do
 		local tNumberOfSlots = GetContainerNumSlots(bagId)
 		for slotId = 1, tNumberOfSlots do
@@ -597,7 +597,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:ITEM_COOLDOWN_END(aEventData)
-	dprint("ITEM_COOLDOWN_END")
+	--dprint("ITEM_COOLDOWN_END")
 	aEventData[CleuBase.subevent] = "ITEM_COOLDOWN_END"
 	aEventData[CleuBase.timestamp] = GetTime()
 	SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
@@ -671,6 +671,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	tEventData[38] = tdebuffList
 
 if tEventData[2] ~= "KEY_PRESS" then
+	--[[
 		dprint("---------------------------------------------------------------------")
 		dprint("--NEW EVENT:", tEventData[2] )
 		dprint("---------------------------------------------------------------------")
@@ -711,7 +712,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 		dprint("SpellNamesOnCd")
 		setmetatable(SkuAuras.thingsNamesOnCd, SkuPrintMTWo)
 		dprint(SkuAuras.thingsNamesOnCd)
-		
+		]]
 	end
 
 	--evaluate all auras
@@ -831,7 +832,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 			local tHasCountCondition_NumConditionsWoCountIsTrue = 0
 
 			for tAttributeName, tAttributeValue in pairs(tAuraData.attributes) do
-				dprint("tAttributeName, tAttributeValue", tAttributeName, tAttributeValue[1][1], tAttributeValue[1][2])
+				--dprint("tAttributeName, tAttributeValue", tAttributeName, tAttributeValue[1][1], tAttributeValue[1][2])
 				if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
 					tHasCountCondition_NumCountConditions = tHasCountCondition_NumCountConditions + 1
 				end
@@ -842,7 +843,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 					local tLocalResult = false
 					for tInd, tLocalValue in pairs(tAttributeValue) do
 						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2])
-						dprint("  ","RESULT:", tEvaluateData, tLocalValue[1], tLocalValue[2], tResult)
+						--dprint("  ","RESULT:", tEvaluateData, tLocalValue[1], tLocalValue[2], tResult)
 						if tResult == true then
 							tLocalResult = true
 							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
@@ -859,7 +860,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 					local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2])
 					for tInd, tLocalValue in pairs(tAttributeValue) do
 						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2])
-						dprint("  ","RESULT:", tEvaluateData, tLocalValue[1], tLocalValue[2], tResult)
+						--dprint("  ","RESULT:", tEvaluateData, tLocalValue[1], tLocalValue[2], tResult)
 						if tResult == true then
 							tLocalResult = true
 							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
@@ -888,24 +889,24 @@ if tEventData[2] ~= "KEY_PRESS" then
 			tEvaluateData.debuffListTarget = tSingleDebuffListTargetValue
 
 			--overall result
-			dprint("  ","OVERALL RESULT:", tOverallResult, "tHasApplicableAttributes", tHasApplicableAttributes)
-			dprint("  ","used", tAuraData.used)
-			dprint("  ","single", SkuAuras.actions[tAuraData.actions[1]].single)
-			dprint("  ","instant", SkuAuras.actions[tAuraData.actions[1]].instant)
+			--dprint("  ","OVERALL RESULT:", tOverallResult, "tHasApplicableAttributes", tHasApplicableAttributes)
+			--dprint("  ","used", tAuraData.used)
+			--dprint("  ","single", SkuAuras.actions[tAuraData.actions[1]].single)
+			--dprint("  ","instant", SkuAuras.actions[tAuraData.actions[1]].instant)
 
 			if tAuraData.type == "if" then
 				if tOverallResult == true and tHasApplicableAttributes == true then
 					if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then
-						dprint(" x x x x x  ","== trigger:", #tAuraData.actions, tAuraData.actions[1])
+						--dprint(" x x x x x  ","== trigger:", #tAuraData.actions, tAuraData.actions[1])
 						
 						--set aura to used
-						dprint("   USED = true")
+						--dprint("   USED = true")
 						tAuraData.used = true
 
 						for i, v in pairs(tAuraData.outputs) do
 							if SkuAuras.outputs[string.gsub(v, "output:", "")] then
-								dprint("  ",tAuraData.actions[1])
-								dprint("  ","output", i, v)
+								--dprint("  ",tAuraData.actions[1])
+								--dprint("  ","output", i, v)
 
 								local tAction = tAuraData.actions[1]
 								if tAction == "notifyAudioSingle" or tAction == "notifyAudioSingleInstant" then
@@ -923,14 +924,14 @@ if tEventData[2] ~= "KEY_PRESS" then
 				else
 					--set aura to unused
 
-					dprint("NumConditions", tHasCountCondition_NumConditions, "NumCountConditions", tHasCountCondition_NumCountConditions, "NumCountConditionsTrue", tHasCountCondition_NumCountConditionsTrue, "NumConditionsWoCountIsTrue", tHasCountCondition_NumConditionsWoCountIsTrue)
+					--dprint("NumConditions", tHasCountCondition_NumConditions, "NumCountConditions", tHasCountCondition_NumCountConditions, "NumCountConditionsTrue", tHasCountCondition_NumCountConditionsTrue, "NumConditionsWoCountIsTrue", tHasCountCondition_NumConditionsWoCountIsTrue)
 					if tHasCountCondition_NumCountConditions > 0 then --es großer oder kleiner hat 
 						if (tHasCountCondition_NumConditionsWoCountIsTrue - tHasCountCondition_NumCountConditionsTrue == tHasCountCondition_NumConditions - tHasCountCondition_NumCountConditions) and ( tHasCountCondition_NumCountConditionsTrue < tHasCountCondition_NumCountConditions) then--alles außer größer oder kleiner = true und größer kleiner = false
-							dprint("   USED 1 = false")
+							--dprint("   USED 1 = false")
 							tAuraData.used = false
 						end
 					else
-						dprint("   USED 2 = false")
+						--dprint("   USED 2 = false")
 						tAuraData.used = false
 					end
 
@@ -938,14 +939,14 @@ if tEventData[2] ~= "KEY_PRESS" then
 			else
 				if tOverallResult == false and tHasApplicableAttributes == true then
 					if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then					
-						dprint("  ","~= trigger:", #tAuraData.actions, tAuraData.actions[1])
+						--dprint("  ","~= trigger:", #tAuraData.actions, tAuraData.actions[1])
 						--set aura to used
 						tAuraData.used = true
 
 						for i, v in pairs(tAuraData.outputs) do
 							if SkuAuras.outputs[string.gsub(v, "output:", "")] then
-								dprint("  ",tAuraData.actions[1])
-								dprint("  ","  output", i, v)
+								--dprint("  ",tAuraData.actions[1])
+								--dprint("  ","  output", i, v)
 
 								local tAction = tAuraData.actions[1]
 								if tAction == "notifyAudioSingle" then

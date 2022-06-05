@@ -167,6 +167,14 @@ function SkuOptions:SlashFunc(input, aSilent)
 			end
 		end
 		
+		if fields[1] == "netstats" then
+			local bandwidthIn, bandwidthOut, latencyHome, latencyWorld = GetNetStats()
+			print("bandwidthIn", bandwidthIn)
+			print("bandwidthOut", bandwidthOut)
+			print("latencyHome", latencyHome)
+			print("latencyWorld", latencyWorld)
+		end
+
 		if fields[1] == "aq" then
 			SkuCore:AqSlashHandler(fields)
 		end
@@ -1118,7 +1126,7 @@ function SkuOptions:CreateMainFrame()
 		end
 
 		if SkuCore.inCombat == true then
-			SkuCore.openMenuAfterCombat = true
+			--SkuCore.openMenuAfterCombat = true
 			return
 		end
 		if SkuCore.isMoving == true then
@@ -1457,6 +1465,10 @@ function SkuOptions:CreateMenuFrame()
 
 		if aKey == "PAGEDOWN" then
 			if SkuOptions.currentMenuPosition then
+				if _G["ClassTrainerFrameScrollBarScrollDownButton"] then
+					_G["ClassTrainerFrameScrollBarScrollDownButton"]:Click()
+					_G["ClassTrainerFrameScrollBarScrollDownButton"]:Click()
+				end				
 				if _G["CraftListScrollFrameScrollBarScrollDownButton"] then
 					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
 					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
@@ -1472,6 +1484,10 @@ function SkuOptions:CreateMenuFrame()
 
 		if aKey == "PAGEUP" then
 			if SkuOptions.currentMenuPosition then
+				if _G["ClassTrainerFrameScrollBarScrollUpButton"] then
+					_G["ClassTrainerFrameScrollBarScrollUpButton"]:Click()
+					_G["ClassTrainerFrameScrollBarScrollUpButton"]:Click()
+				end				
 				if _G["CraftListScrollFrameScrollBarScrollUpButton"] then
 					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
 					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
@@ -2605,7 +2621,6 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 		end
 		tUncleanValue = tString
 	end
-
 
 	if string.sub(tUncleanValue, 1, string.len(L["Filter"]..";")) == L["Filter"]..";" then
 		local tSecondSegment = string.sub(tUncleanValue, string.len(L["Filter"]..";") + 1)

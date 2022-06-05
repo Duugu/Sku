@@ -82,16 +82,12 @@ function SkuCore:JunkAndRepairInitialize()
 
    -- Event handler
    SellJunkFrame:SetScript("OnEvent", function(self, event)
-      dprint("SellJunkFrame OnEvent", event)
       if event == "MERCHANT_SHOW" then
          -- repair
          if CanMerchantRepair() then -- If merchant is capable of repair 
-            dprint("CanMerchantRepair", CanMerchantRepair)
             local RepairCost, CanRepair = GetRepairAllCost()
-            dprint("RepairCost, CanRepair", RepairCost, CanRepair)
             if CanRepair then -- If merchant is offering repair
                if SkuOptions.db.profile[MODULE_NAME].itemSettings.autoRepair == true then
-                  dprint("RepairAllItems")
                   if RepairCost > GetMoney() then
                      SkuOptions.Voice:OutputString(L["Nicht genug Gold zum Reparieren"], false, true, 1, true)
                   else
