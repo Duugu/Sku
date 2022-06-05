@@ -3,6 +3,16 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r27.10
+
+	Quest
+		- Fixed german translations for "Accepted Quest" and "Available Quest" in quest dialogs.
+
+	Options
+		- Fixed the slow response for Blizzard TTS output (overview, tooltips, etc.)
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r27.9
 
 	Core

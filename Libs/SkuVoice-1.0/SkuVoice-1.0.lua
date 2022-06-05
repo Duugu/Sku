@@ -26,16 +26,13 @@ function SkuVoice:Create()
 		end
 	end)
 	local fTime = 0
+	local fTimeBTTS = 0
 	local tLastWait = -1
 	f:SetScript("OnUpdate", function(self, time)
 
-
-
-
-
-		fTime = fTime + time
-		if fTime > 0.1 then
-			fTime = 0
+		fTimeBTTS = fTimeBTTS + time
+		if fTimeBTTS > 0.01 then
+			fTimeBTTS = 0
 			local tLastReset
 			for x = 1, #mSkuVoiceQueueBTTS do
 				if mSkuVoiceQueueBTTS[x] == "queuereset" then
@@ -71,13 +68,11 @@ function SkuVoice:Create()
 					end
 				end
 			end
+		end
 
-
-
-
-
-
-
+		fTime = fTime + time
+		if fTime > 0.1 then
+			fTime = 0
 			--play everything that is not flagged for queuing (wait == true)
 			for i = 1, table.getn(mSkuVoiceQueue) do
 				if mSkuVoiceQueue[i].wait == false and not mSkuVoiceQueue[i].soundHandle then

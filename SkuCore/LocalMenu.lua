@@ -1157,8 +1157,8 @@ function SkuCore:GossipFrame(aParentChilds)
 
 
    local tIconStrings = {
-      [132048] = "Accepted Quest",
-      [132049] = "Available Quest",
+      [132048] = L["Accepted Quest"],
+      [132049] = L["Available Quest"],
    }
 
    for x = 1, GossipFrame.buttonIndex - 1 do
