@@ -715,7 +715,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local oinfoType, oitemID, oitemLink = nil, nil, nil
 local SkuCoreOldPetHappinessCounter = 0
-local SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
+---@type integer|nil
+local SkuCoreOldPetHappiness = nil
+---Check whether player is a hunter
+---@return boolean
+function SkuCorePlayerIsHunter()
+	return select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"]
+end
+SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
 function SkuCore:OnEnable()
 	--dprint("SkuCore OnEnable")
 	SkuCore:RangeCheckOnEnable()
@@ -801,16 +808,26 @@ function SkuCore:OnEnable()
 		end
 
 		--hunter pet happiness
-		if select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"] then
-			if SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true then
-				SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
-				if SkuCoreOldPetHappinessCounter > 15 then
-					local happiness, damagePercentage, loyaltyRate = GetPetHappiness()
-					if happiness and (happiness == 1 or happiness == 2) then
-						SkuOptions.Voice:OutputString(L["Pet"]..";"..SkuCorePetHappinessString[happiness], true, true, 0.2)
-						SkuCoreOldPetHappinessCounter = 0
-					end
+		if SkuCorePlayerIsHunter()
+			and SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true
+			-- make sure player isn't dead and pet exists
+			and UnitHealth("player") ~= 0
+			and UnitHealth("pet") ~= 0
+		then
+			SkuCoreOldPetHappinessCounter = SkuCoreOldPetHappinessCounter + time
+			if SkuCoreOldPetHappinessCounter > 2 then
+				local happiness = GetPetHappiness()
+				-- speak pet happiness
+				if happiness and (
+					-- either happiness has just increased due to feeding, so let player know new happiness level
+					SkuCoreOldPetHappiness and SkuCoreOldPetHappiness < happiness
+						-- or alert player periodically when pet is not happy
+						or SkuCoreOldPetHappinessCounter > 60 and (happiness == 1 or happiness == 2)
+					) then
+					SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness], true, true, 0.2)
+					SkuCoreOldPetHappinessCounter = 0
 				end
+				SkuCoreOldPetHappiness = happiness
 			end
 		end
 

@@ -1379,6 +1379,8 @@ L["easy"] = "grün"
 L["trivial"] = "grau"
 L["nodifficulty"] = "unbekannt"
 
+L["training points"] = "to do"
+
 L["Ressource Scanning"] = "ressourcen scan"
 L["Herbs"] = "Kräuter"
 L["mining nodes"] = "bergbau"

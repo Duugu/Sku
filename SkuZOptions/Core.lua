@@ -535,13 +535,19 @@ function SkuOptions:UpdateOverviewText()
 
 	--general
 	local tGeneral = L["Allgemeines"]
+	local function formatPercentage(current, max)
+		return (math.floor(current / max * 100)) .. "% (" .. current .. ")"
+	end
 	if UnitHealth("player") then
-		tGeneral = tGeneral.."\r\n"..L["Gesundheit: "]..(math.floor(UnitHealth("player") / UnitHealthMax("player") * 100)).."% ("..UnitHealth("player")..")"
+		tGeneral = tGeneral .. "\r\n" .. L["Gesundheit: "] .. formatPercentage(UnitHealth("player"), UnitHealthMax("player"))
 	end
 	if UnitPower("player") then
 		local powerType, powerToken = UnitPowerType("player")
 		tPowerString = _G[powerToken]
-		tGeneral = tGeneral.."\r\n"..tPowerString..": "..(math.floor(UnitPower("player") / UnitPowerMax("player") * 100)).."% ("..UnitPower("player")..")"
+		tGeneral = tGeneral .. "\r\n" .. tPowerString .. ": " .. formatPercentage(UnitPower("player"), UnitPowerMax("player"))
+	end
+	if UnitName("playerpet") then
+		tGeneral = tGeneral .. "\r\n" .. L["Pet"] .. " " .. L["Gesundheit: "] .. formatPercentage(UnitHealth("pet"), UnitHealthMax("pet"))
 	end
 
 	--repair status
@@ -730,9 +736,19 @@ function SkuOptions:UpdateOverviewText()
 	table.insert(tSections, L["Gilde:\r\n"]..tTmpText)
 
 	--pet
-	local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
-	if UnitName("playerpet") then
-		table.insert(tSections, L["Tier XP: "]..tPetcurrXP..L[" von "]..tPetnextXP..L[" für "]..UnitLevel("playerpet") + 1)
+	if UnitName("playerpet") and SkuCorePlayerIsHunter() then
+		local petSection = L["Pet"]
+		local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
+		petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
+		petSection = petSection .. "\r\n" .. GetPetLoyalty()
+		local total, spent = GetPetTrainingPoints()
+		local trainingPoints = total - spent
+		if trainingPoints ~= 0 then
+			petSection = petSection .. "\r\n" .. trainingPoints .. " " .. L["training points"]
+		end
+		local happiness = GetPetHappiness()
+		petSection = petSection .. "\r\n" .. SkuCorePetHappinessString[happiness]
+		table.insert(tSections, petSection)
 	end
 	--GetPetFoodTypes
 
