@@ -218,7 +218,6 @@ local getItemInventoryTypeToInvSlotId = {
 	[26] = 16,
 }
 function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
-	dprint("ItemRatingGetRating", aItemIdItemToRate)
 	if not aItemIdItemToRate then return "" end
 
 	local f = _G["SkuRatingTooltip"] or CreateFrame("GameTooltip", "SkuRatingTooltip"); -- Tooltip name cannot be nil
@@ -249,11 +248,8 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 	local stats = {}
 	GetItemStats("item:"..aItemIdItemToRate, stats)
 	setmetatable(stats, SkuPrintMT)
-	dprint("-- ITEM STATS ----------------")
-	dprint(stats)
 	for SpecID = 1, 4 do
 		if tStatRatings[ClassID][SpecID] then
-			dprint("ClassID", ClassID, "SpecID", SpecID)
 			local tResult = 0
 			for bName, value in pairs(stats) do
 				local pname = tItemStatNameToRatingValue[bName] or tItemStatNameToRatingValue[bName.."_SHORT"]
@@ -262,7 +258,6 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 				end
 				tNewItemRatings[SpecID] = tResult
 			end
-			dprint("        new item Result:", tResult)
 		end
 	end
 
@@ -270,36 +265,21 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 	local tCurrentItemRatings = {}
 	local stats = {}
 	GetItemStats("item:"..tCurrentEqItemId, stats)
-	setmetatable(stats, SkuPrintMT)
-	dprint("-- ITEM STATS ----------------")
-	dprint(stats)
 	for SpecID = 1, 4 do
 		if tStatRatings[ClassID][SpecID] then
-			dprint("ClassID", ClassID, "SpecID", SpecID)
 			local tResult = 0
 			for bName, value in pairs(stats) do
 				local pname = tItemStatNameToRatingValue[bName] or tItemStatNameToRatingValue[bName.."_SHORT"]
-				dprint("ClassID SpecID pname bName", ClassID, SpecID, pname, bName)
 				if pname then
 					tResult = tResult + value * tStatRatings[ClassID][SpecID][pname]
 				end
 				tCurrentItemRatings[SpecID] = tResult
 			end
-			dprint("        old item Result:", tResult)
 		end
 	end
 
-	setmetatable(tCurrentItemRatings, SkuPrintMT)
-	dprint("tCurrentItemRatings")
-	dprint(tCurrentItemRatings)
-	setmetatable(tNewItemRatings, SkuPrintMT)
-	dprint("tNewItemRatings")
-	dprint(tNewItemRatings)
-
-
 	--create rating
 	for i, v in pairs(tCurrentItemRatings) do
-		dprint(i, v)
 		local tMod = L["Keine Bewertung möglich"]
 		if tNewItemRatings[i] then
 			local tDiff

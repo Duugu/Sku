@@ -5,6 +5,7 @@ SkuCore.options = {
 	name = MODULE_NAME,
 	type = "group",
 	args = {
+		--[[
 		enable = {
 			name = L["Module enabled"],
 			desc = "",
@@ -15,6 +16,26 @@ SkuCore.options = {
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].enable
 			end
+		},
+		]]
+		ressourceScanning={
+			name = L["Ressource Scanning"],
+			type = "group",
+			order = 1,
+			args= {
+				miningNodes={
+					name = L["mining nodes"],
+					type = "group",
+					order = 1,
+					args= {},
+				},
+				herbs={
+					name = L["Herbs"],
+					type = "group",
+					order = 2,
+					args= {},
+				},
+			},
 		},
 		autoFollow = {
 			name = L["Auto follow"],
@@ -63,7 +84,7 @@ SkuCore.options = {
 		classes={
 			name = L["Classes"],
 			type = "group",
-			order = 1,
+			order = 2,
 			args= {
 				hunter={
 					name = L["Hunter"],
@@ -89,7 +110,7 @@ SkuCore.options = {
 		itemSettings={
 			name = L["item settings"],
 			type = "group",
-			order = 2,
+			order = 3,
 			args= {
 				ShowItemQality = {
 					name = L["show item quality"],
@@ -134,7 +155,7 @@ SkuCore.options = {
 		UIErrors={
 			name = L["Error feedback"],
 			type = "group",
-			order = 3,
+			order = 4,
 			args= {
 				ErrorSoundChannel={
 					name = L["sound channel"],
@@ -284,6 +305,39 @@ SkuCore.options = {
 	},
 }
 
+do
+	for x = 1, #SkuCore.RessourceTypes.mining do
+		SkuCore.options.args.ressourceScanning.args.miningNodes.args[x] = {
+			order = x,
+			name = SkuCore.RessourceTypes.mining[x][Sku.L["locale"]],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x] = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x]
+			end
+		}
+	end
+end
+
+do
+	for x = 1, #SkuCore.RessourceTypes.herbs do
+		SkuCore.options.args.ressourceScanning.args.herbs.args[x] = {
+			order = x,
+			name = SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x]
+			end
+		}
+	end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.defaults = {
 	enable = true,
@@ -291,6 +345,10 @@ SkuCore.defaults = {
 	endFollowOnCast = false,
 	interactMove = true,
 	playNPCGreetings = false,
+	ressourceScanning = {
+		miningNodes = {},
+		herbs = {},
+	},
 	classes = {
 		hunter = {
 			petHappyness = true,
@@ -315,6 +373,18 @@ SkuCore.defaults = {
 		Interrupted = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
 	},
 }
+
+do
+	for x = 1, #SkuCore.RessourceTypes.mining do
+		SkuCore.defaults.ressourceScanning.miningNodes[x] = true
+	end
+end
+do
+	for x = 1, #SkuCore.RessourceTypes.herbs do
+		SkuCore.defaults.ressourceScanning.herbs[x] = true
+	end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 local escapes = {
 	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
@@ -330,46 +400,8 @@ local function unescape(str)
 	return str
 end
 
---[[
-local function TooltipLines_helper(...)
-   local tQualityString = nil
 
-	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
-	if not ItemLink then
-		itemName, ItemLink = GameTooltip:GetItem()
-	end
-
-	if ItemLink then
-      for x = 0, #ITEM_QUALITY_COLORS do
-         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-         if tItemCol == "ffa334ee" then 
-            tItemCol = "ffa335ee"
-         end
-         if string.find(ItemLink, tItemCol) then
-            if _G["ITEM_QUALITY"..x.."_DESC"] then
-               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
-            end
-         end
-      end
-   end
-
-	local rText = ""
-   for i = 1, select("#", ...) do
-		local region = select(i, ...)
-		if region and region:GetObjectType() == "FontString" then
-			local text = region:GetText() -- string or nil
-			if text then
-            if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
-               rText = rText..text.." ("..tQualityString..")\r\n"
-            else
-				   rText = rText..text.."\r\n"
-            end
-			end
-		end
-	end
-	return rText
-end
-]]
+---------------------------------------------------------------------------------------------------------------------------------------
 local maxItemNameLength = 40
 local function ItemName_helper(aText)
 	aText = unescape(aText)

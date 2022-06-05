@@ -408,8 +408,28 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 				end
 			end
 		end
+
 	elseif aSubType == "creature" then
 		CreatureIdHelper(aSubIDTable, tResultWPs, aOnly3)
+
+	elseif aSubType == "waypoint" then
+		for i, tWaypointName in pairs(aSubIDTable) do
+			local tData = SkuNav:GetWaypointData2(tWaypointName)
+			if tData then
+				local isUiMap = SkuNav:GetUiMapIdFromAreaId(tData.areaId)
+				--we don't care for stuff that isn't in the open world
+				if isUiMap then
+					if not tResultWPs[tWaypointName] then
+						tResultWPs[tWaypointName] = {}
+					end			
+					if tPlayerContinentID == tData.contintentId then
+						table.insert(tResultWPs[tWaypointName], tWaypointName)
+					else
+						table.insert(tResultWPs[tWaypointName], L["Anderer Kontinent"]..";"..tWaypointName)
+					end
+				end
+			end
+		end
 	end
 
 end
@@ -765,9 +785,28 @@ function SkuQuest:GetQuestTargetIds(aQuestID, aList)
 	elseif aList[5] then--kills
 		tTargets = aList[5][1]
 		tTargetType = "creature"
+
+	elseif SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.triggerEnd] then--triggerEnd
+		tTargets = SkuQuest:GetTriggerEndWps(aQuestID)
+		tTargetType = "waypoint"
 	end
 	
 	return tTargets, tTargetType
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuQuest:GetTriggerEndWps(aQuestId)
+	local tWaypoints = {}
+	if SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]] ~= nil then 
+		for zone, data in pairs(SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]][2]) do
+			local _, taName = SkuNav:GetAreaData(zone)
+			if taName then
+				tWaypoints[#tWaypoints + 1] = SkuDB.questLookup[Sku.Loc][aQuestId][1]..";"..taName..";".."Questziel"..";"..data[1][1]..";"..data[1][2]
+			end
+		end
+	end
+
+	return tWaypoints
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -868,7 +907,7 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 			local tTargets = {}
 			local tTargetType = nil
 
-			tTargets, tTargetType =SkuQuest: GetQuestTargetIds(aQuestID, tFinishedBy)
+			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
 
 			tNewMenuSubEntry.BuildChildren = function(self)
 				tHasEntries = true
@@ -910,8 +949,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
 		else
 			local tQuestsByHeader = {}
-			--setmetatable(tQuestsByHeader, SkuNav.PrintMT)
-
 			local tHeader = ""
 			for questLogID = 1, numEntries do
 				local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)

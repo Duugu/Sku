@@ -1382,3 +1382,7 @@ L["medium"] = "yellow"
 L["easy"] = "green"
 L["trivial"] = "grey"
 L["nodifficulty"] = "unknown"
+
+L["Ressource Scanning"] = "ressource scanning"
+L["Herbs"] = "herbs"
+L["mining nodes"] = "mining nodes"

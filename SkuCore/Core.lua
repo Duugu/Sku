@@ -164,8 +164,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
-	--dprint("SkuCore OnInitialize")
-
 	SkuCore:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuCore:RegisterEvent("PLAYER_LOGIN")
 	SkuCore:RegisterEvent("VARIABLES_LOADED")
@@ -1410,7 +1408,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local unfollowOnCastWasOnFollowUnitName = nil
 function SkuCore:UnfollowOnCast()
-	dprint("UnfollowOnCast", unfollowOnCastWasOnFollowUnitName)
 	if SkuOptions.db.profile[MODULE_NAME].endFollowOnCast == true and SkuStatus.followUnitName ~= "" then
 		unfollowOnCastWasOnFollowUnitName = SkuStatus.followUnitName
 		FollowUnit("player")
@@ -1418,7 +1415,6 @@ function SkuCore:UnfollowOnCast()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:FollowOnCast()
-	dprint("UnfollowOnCast", unfollowOnCastWasOnFollowUnitName)
 	if SkuOptions.db.profile[MODULE_NAME].endFollowOnCast == true and unfollowOnCastWasOnFollowUnitName then
 		if UnitName("TARGET") == unfollowOnCastWasOnFollowUnitName then
 			FollowUnit("TARGET")
@@ -1440,7 +1436,6 @@ function SkuCore:FollowOnCast()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
-	dprint(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	if aUnitTarget == "player" and SkuCore.inCombat == false then
 		SkuOptions.Voice:OutputString(L["cast"], true, true, 0.2)
 	end
@@ -1449,40 +1444,31 @@ function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	end
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_START(aEvent, unitTarget, castGUID, spellID)
-	dprint(aEvent)
 	if aUnitTarget == "player" then
 		SkuCore:UnfollowOnCast()
 	end
 end
 function SkuCore:UNIT_SPELLCAST_STOP(aEvent, aUnitTarget, aCastGUID, aSpellID)
-	dprint(aEvent)
 	if aUnitTarget == "player" then
 		SkuCore:FollowOnCast()
 	end
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_STOP(aEvent, unitTarget, castGUID, spellID)
-	dprint(aEvent)
 	if aUnitTarget == "player" then
 		SkuCore:FollowOnCast()
 	end
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_UPDATE(aEvent, unitTarget, castGUID, spellID)
-	dprint(aEvent)
 end
 function SkuCore:UNIT_SPELLCAST_DELAYED(aEvent, unitTarget, castGUID, spellID)
-	dprint(aEvent)
 end
 function SkuCore:UNIT_SPELLCAST_FAILED(aEvent, aUnitTarget, aCastGUID, aSpellID)
-	dprint(aEvent)
 end
 function SkuCore:UNIT_SPELLCAST_FAILED_QUIET(aEvent, aUnitTarget, aCastGUID, aSpellID)
-	dprint(aEvent)
 end
 function SkuCore:UNIT_SPELLCAST_INTERRUPTED(aEvent, aUnitTarget, aCastGUID, aSpellID)
-	dprint(aEvent)
 end
 function SkuCore:UNIT_SPELLCAST_SUCCEEDED(aEvent, aUnitTarget, aCastGUID, aSpellID)
-	dprint(aEvent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2181,7 +2167,6 @@ end
 local function IterateChildren(t, tab)
 	local tResults = {}
 
-	dprint(tab, "Regions of", GetTableID(t), t:GetName())
 	if t.GetRegions then
 		local dtc = { t:GetRegions() }
 		for x = 1, #dtc do
@@ -2234,7 +2219,6 @@ local function IterateChildren(t, tab)
 		end
 	end
 
-	dprint(tab, "Children of", GetTableID(t), t:GetName())
 	if t.GetChildren then
 		local dtc = { t:GetChildren() }
 
@@ -2358,11 +2342,9 @@ local function IterateChildren(t, tab)
 									local tChildsResult = IterateChildren(dtc[x], tab.."  ")
 									--if there is only one child, set its content directly to this item; except it's a money frame, then there may just one item
 									if #tChildsResult == 1 and not string.find(fName, "Money") then
-										dprint(tab, "+++++ #tChildsResult == 1")
 										tResults[fName].childs = tChildsResult[tChildsResult[1]].childs
 									--otherwise add them to childs
 									elseif #tChildsResult > 1 or string.find(fName, "Money") then
-										dprint(tab, "+++++ #tChildsResult > 1")
 										tResults[fName].childs = tChildsResult
 									end
 								end

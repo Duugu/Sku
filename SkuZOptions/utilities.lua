@@ -195,6 +195,57 @@ if not GTT_CreatureInspectHooked then
 end
 
 
+function SkuTranslateTest()
+	local tfoundNames = {}
+	local tnames = ""
+	local tcounterold = 1
+	local tcounter = 1
+	local co = coroutine.create(function()	
+		for i, v in pairs(SkuDB.NpcData.Names.deDE) do
+			local tfound = false
+			for i1, v1 in pairs(SkuDB.NpcData.Names.deDE) do
+				if v[1] == v1[1] and i ~= i1 and not tfoundNames[v[1]] then
+					tfound = true
+					tfoundNames[v[1]] = v[1]
+					break
+				end
+			end
+			if tfound == true then
+				tnames = tnames..";"..v[1]
+			end
+			coroutine.yield()
+			tcounter = tcounter + 1
+		end
+	end)
+
+	local tCoCompleted = false
+	local tSkuCoroutineControlFrameOnUpdateTimer = 0
+	local tSkuCoroutineControlFrame = _G["SkuCoroutineControlFrame"] or CreateFrame("Frame", "SkuCoroutineControlFrame", UIParent)
+	tSkuCoroutineControlFrame:SetPoint("CENTER")
+	tSkuCoroutineControlFrame:SetSize(50, 50)
+	tSkuCoroutineControlFrame:SetScript("OnUpdate", function(self, time)
+		tSkuCoroutineControlFrameOnUpdateTimer = tSkuCoroutineControlFrameOnUpdateTimer + time
+		if tSkuCoroutineControlFrameOnUpdateTimer < 0.001 then return end
+
+		if coroutine.status(co) == "suspended" then
+			if tcounter - tcounterold > 100 then
+				tcounterold = tcounter
+				print(tcounterold)
+			end
+			coroutine.resume(co)
+		else
+			if tCoCompleted == false then
+				print("completed")
+				print(tnames)
+				tCoCompleted = true
+			end
+		end
+
+	end)
+	
+	--/script SkuTranslateTest()
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- localization helpers
@@ -546,50 +597,53 @@ function SkuTranslateStringDeToEn(aString)
 
 			--creatures.lua
 			if tFound == false then
-				for i, v in pairs(SkuDB.NpcData.Names.deDE) do
-					if SkuDB.NpcData.Names.enUS[i] then
-						if v[1] then
-							local tToTest = slower(v[1])
-							if tToTest == tstrlower then
-								tTarget = SkuDB.NpcData.Names.enUS[i][1]
-								tFound = true
-								break
-							end
-						end
-						if tFound == false then
-							if v[2] then
-								local tToTest = slower(v[2])
-								if tToTest == tstrlower then
-									tTarget = SkuDB.NpcData.Names.enUS[i][2]
-									tFound = true
-									break
+				--fix for hare/rabbit issue
+				if string.find(aString, "Hase") or string.find(aString, "Schneehase") then
+					local tName, tArea, tNumber, tCoordX, tCoordY = string.match(aString, "([^;]+);([^;]+);([^;]+);([^;]+);([^;]+)")
+					if tName then
+						for i, v in pairs(SkuDB.NpcData.Names.deDE) do
+							if v[1] == tName then
+								for tZone, tCoords in pairs(SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns]) do
+									local _, taName = SkuNav:GetAreaData(tZone)
+									if taName == tArea then
+										for _, tCoord in pairs(tCoords) do
+											if tostring(tCoord[1]) == tostring(tCoordX) and tostring(tCoord[2]) == tostring(tCoordY) then
+												--print(aString, " -- ", SkuDB.NpcData.Names.enUS[i][1])
+												tTarget = SkuDB.NpcData.Names.enUS[i][1]
+												tFound = true
+												break
+											end
+										end
+									end
 								end
 							end
 						end
 					end
-					--[[
-					local tI = string.gsub(i, "'", "\'")
-					if SkuDB.NpcData.Names.enUS[tI] then
-						if v[1] then
-							local tToTest = slower(v[1])
-							if tToTest == tstrlower then
-								tTarget = SkuDB.NpcData.Names.enUS[tI][1]
-								tFound = true
-								break
-							end
-						end
-						if tFound == false then
-							if v[2] then
-								local tToTest = slower(v[2])
+				end
+
+				if tFound == false then
+					for i, v in pairs(SkuDB.NpcData.Names.deDE) do
+						if SkuDB.NpcData.Names.enUS[i] then
+							if v[1] then
+								local tToTest = slower(v[1])
 								if tToTest == tstrlower then
-									tTarget = SkuDB.NpcData.Names.enUS[tI][2]
+									tTarget = SkuDB.NpcData.Names.enUS[i][1]
 									tFound = true
 									break
 								end
 							end
+							if tFound == false then
+								if v[2] then
+									local tToTest = slower(v[2])
+									if tToTest == tstrlower then
+										tTarget = SkuDB.NpcData.Names.enUS[i][2]
+										tFound = true
+										break
+									end
+								end
+							end
 						end
 					end
-					]]
 				end
 			end
 
@@ -606,19 +660,6 @@ function SkuTranslateStringDeToEn(aString)
 							end
 						end
 					end
-					--[[
-					local tI = string.gsub(i, "'", "\'")
-					if SkuDB.objectLookup.enUS[tI] then
-						if v then
-							local tToTest = slower(v)
-							if tToTest == tstrlower then
-								tTarget = SkuDB.objectLookup.enUS[tI]
-								tFound = true
-								break
-							end
-						end
-					end
-					]]
 				end	
 			end
 
@@ -663,19 +704,6 @@ function SkuTranslateStringDeToEn(aString)
 							end
 						end
 					end
-					--[[
-					local tI = string.gsub(i, "'", "\'")
-					if SkuDB.itemLookup.enUS[tI] then
-						if v then
-							local tToTest = slower(v)
-							if tToTest == tstrlower then
-								tTarget = SkuDB.itemLookup.enUS[tI]
-								tFound = true
-								break
-							end
-						end
-					end	
-					]]				
 				end
 			end
 
@@ -706,21 +734,6 @@ function SkuTranslateStringDeToEn(aString)
 							end
 						end
 					end
-					--[[
-					local tI = string.gsub(i, "'", "\'")
-					if SkuDB.questLookup.enUS[tI] then
-						if SkuDB.questLookup.enUS[tI][1] then
-							if v[1] then
-								local tToTest = slower(v[1])
-								if tToTest == tstrlower then
-									tTarget = SkuDB.questLookup.enUS[tI][1]
-									tFound = true
-									break
-								end
-							end
-						end
-					end	
-					]]				
 				end	
 			end
 
@@ -1014,4 +1027,3 @@ function SkuRtWpDataDeToEn()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	end)
 
 end
-

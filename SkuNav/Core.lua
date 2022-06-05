@@ -303,6 +303,50 @@ function SkuNav:CreateWaypointCache()
 		end
 	end
 
+	--TriggerEnd Wps from Quest DB
+	for i, v in pairs(SkuDB.questDataTBC) do 
+		if SkuDB.questLookup[Sku.Loc][i] then
+			if v[SkuDB.questKeys["triggerEnd"]] ~= nil then 
+				for zone, data in pairs(v[SkuDB.questKeys["triggerEnd"]][2]) do
+					if data[1][1] and data[1][1] ~= -1 then
+						local _, taName, tContintentId = SkuNav:GetAreaData(zone)
+						if taName then
+							--print(SkuDB.questLookup[Sku.Loc][i][1]..";"..taName..";".."Questziel"..";"..data[1][1]..";"..data[1][2])
+							local tName = SkuDB.questLookup[Sku.Loc][i][1]..";"..taName..";".."Questziel"..";"..data[1][1]..";"..data[1][2]
+							local isUiMap = SkuNav:GetUiMapIdFromAreaId(zone)
+							local tNewIndex = #WaypointCache + 1
+							WaypointCacheLookupAll[tName] = tNewIndex									
+							if not WaypointCacheLookupPerContintent[tContintentId] then
+								WaypointCacheLookupPerContintent[tContintentId] = {}
+							end
+							WaypointCacheLookupPerContintent[tContintentId][tNewIndex] = tName
+							WaypointCache[tNewIndex] = {
+								name = tName,
+								role = "",
+								typeId = 4,
+								dbIndex = nil,
+								contintentId = tContintentId,
+								areaId = zone,
+								uiMapId = isUiMap,
+								worldX = tonumber(data[1][1]),
+								worldY = tonumber(data[1][2]),
+								createdAt = GetTime(),
+								createdBy = "SkuNav",
+								size = 1,
+								links = {
+									byId = nil,
+									byName = nil,
+								},
+							}
+						end
+					end
+				end
+			end
+		end
+	end
+	
+
+
 	SkuNav:LoadLinkDataFromProfile()
 
 	dprint("End", debugprofilestop() - beginTime)

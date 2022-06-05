@@ -426,6 +426,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionScanQueueReset()
+   dprint("SkuCore:AuctionScanQueueReset()")
    if SkuCore.AuctionIsFullScanning == true then
       return
    end
@@ -453,7 +454,7 @@ function SkuCore:AuctionScanQueueRemove()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionScanQueueAdd(aScanData, aResetQueue)
-   dprint("AuctionScanQueueAdd", aScanData, aResetQueue)
+   dprint("AuctionScanQueueAdd", aScanData.page, aResetQueue)
    if aResetQueue then
       if SkuCore.AuctionIsFullScanning == true then
          return
@@ -510,6 +511,7 @@ function SkuCore:AuctionScanQueueTicker()
 
    if SkuCore.ScanQueue[1] then
       dprint("AuctionScanQueueTicker, new scan")
+
       SkuCore.AuctionIsScanning = true
       if SkuCore.ScanQueue[1].getAll == true then
          SkuCore.AuctionIsFullScanning = true
@@ -522,6 +524,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 do
+   SkuCore.AuctionTickerWait = 0.8
    local tTime = 0
    local tFrame = CreateFrame("Button", "SkuCoreSecureTabButtonAuctions", _G["UIParent"], "SecureActionButtonTemplate")
    tFrame:SetSize(1, 1)
@@ -529,7 +532,7 @@ do
    tFrame:Show()
    tFrame:SetScript("OnUpdate", function(self, time)
       tTime = tTime + time
-      if tTime < 0.8 then return end
+      if tTime < SkuCore.AuctionTickerWait then return end
       if SkuCore.AuctionScanQueueTicker then
          SkuCore:AuctionScanQueueTicker()
       end
@@ -745,6 +748,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionStartQuery(aCategoryIndex, aSubCategoryIndex, aSubSubCategoryIndex, aResetQueue, aMaxPage)
+   dprint("SkuCore:AuctionStartQuery(", aCategoryIndex, aSubCategoryIndex, aSubSubCategoryIndex, aResetQueue, aMaxPage)
    local text = ""
    local minLevel = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin
    local maxLevel = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax
@@ -1777,12 +1781,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
-   dprint("AUCTION_ITEM_LIST_UPDATE", aRet, c)
-   dprint("SkuCore.AuctionIsScanning", SkuCore.AuctionIsScanning)
-   dprint("aRet", aRet)
    if SkuCore.AuctionIsScanning == false then
       return
    end
+   dprint("AUCTION_ITEM_LIST_UPDATE", aRet, c)
 
    if _G["SkuAuctionConfirm"] then
       if _G["SkuAuctionConfirm"]:IsShown() == true then
@@ -2040,6 +2042,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
          end
 
          local tBatch, tCount = GetNumAuctionItems("list")
+         dprint("tBatch, tCount, tPage", tBatch, tCount, tPage)
          if tPage == 0 then
             SkuCore.CurrentDB = {}
          end
@@ -2086,7 +2089,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName, aRed)
-   dprint("AUCTION_BIDDER_LIST_UPDATE")
+   dprint("AUCTION_BIDDER_LIST_UPDATE", aEventName, aRed)
 
    if not aRed then
       SkuCore.BidDB= {}
@@ -2125,7 +2128,7 @@ function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName, aRed)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_OWNED_LIST_UPDATE(aEventName, aRed)
-   dprint("AUCTION_OWNED_LIST_UPDATE")
+   dprint("AUCTION_OWNED_LIST_UPDATE", aEventName, aRed)
 
    if not aRed then
       SkuCore.OwnedDB= {}

@@ -34,7 +34,7 @@ function SkuVoice:Create()
 
 
 		fTime = fTime + time
-		if fTime > 0.01 then
+		if fTime > 0.1 then
 			fTime = 0
 			local tLastReset
 			for x = 1, #mSkuVoiceQueueBTTS do

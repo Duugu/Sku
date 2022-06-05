@@ -107,7 +107,7 @@ SkuAuras.actions = {
       tooltip = L["Die Ausgaben werden als Audio ausgegeben"],
       friendlyName = L["audio ausgabe"],
       func = function(tAuraName, tEvaluateData)
-      	dprint("    ","action func audio benachrichtigung DING")
+      	----dprint("    ","action func audio benachrichtigung DING")
       end,
       single = false,
    },
@@ -115,7 +115,7 @@ SkuAuras.actions = {
       tooltip = L["Die Ausgaben werden als Text im Chat ausgegeben"],
       friendlyName = L["chat ausgabe"],
       func = function(tAuraName, tEvaluateData)
-      	dprint("    ","action func chat benachrichtigung")
+      	----dprint("    ","action func chat benachrichtigung")
       end,
       single = false,
    },
@@ -123,7 +123,7 @@ SkuAuras.actions = {
       tooltip = L["Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."],
       friendlyName = L["audio ausgabe einmal"],
       func = function(tAuraName, tEvaluateData)
-      	dprint("    ","action func audio benachrichtigung single")
+      	----dprint("    ","action func audio benachrichtigung single")
       end,
       single = true,
    },
@@ -132,7 +132,7 @@ SkuAuras.actions = {
       tooltip = L["Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."],
       friendlyName = L["audio ausgabe einmal sofort",
       func = function(tAuraName, tEvaluateData)
-      	dprint("    ","action func audio benachrichtigung SingleInstant")
+      	--dprint("    ","action func audio benachrichtigung SingleInstant")
       end,
       single = true,
       instant = true,
@@ -142,7 +142,7 @@ SkuAuras.actions = {
       tooltip = L["Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."],
       friendlyName = L["chat ausgabe einmal"],
       func = function(tAuraName, tEvaluateData)
-      	dprint("    ","action func chat benachrichtigung single")
+      	--dprint("    ","action func chat benachrichtigung single")
       end,
       single = true,
    },
@@ -156,7 +156,7 @@ SkuAuras.outputs = {
       friendlyName = L["ereignis"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
-            dprint("    ","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
+            --dprint("    ","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
             if not tEvaluateData.event then return end
             if not SkuAuras.values[tEvaluateData.event] then return end
             if SkuAuras.values[tEvaluateData.event].friendlyNameShort then
@@ -183,7 +183,7 @@ SkuAuras.outputs = {
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.sourceUnitId then
-               dprint("    ","tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
+               --dprint("    ","tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
                SkuOptions.Voice:OutputString(tEvaluateData.sourceUnitId[1], aFirst, true, 0.1, true)
             end
          end,
@@ -199,7 +199,7 @@ SkuAuras.outputs = {
       friendlyName = L["ziel einheit"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
-            dprint("    ","tEvaluateData.destUnitId", tEvaluateData.destUnitId)
+            --dprint("    ","tEvaluateData.destUnitId", tEvaluateData.destUnitId)
             if tEvaluateData.destUnitId then
                SkuOptions.Voice:OutputString(tEvaluateData.destUnitId[1], aFirst, true, 0.1, true)
             end
@@ -931,7 +931,7 @@ SkuAuras.attributes = {
       tooltip = L["Du legst als nächstes die Aktion fest, die bei der Auslösung der Aura passieren soll"],
       friendlyName = L["aktion"],
       evaluate = function()
-      	dprint("    ","SkuAuras.attributes.action.evaluate")
+      	--dprint("    ","SkuAuras.attributes.action.evaluate")
       end,
       values = {
          "notifyAudio",
@@ -945,7 +945,7 @@ SkuAuras.attributes = {
       tooltip = L["Die Ziel-Einheit, bei der die Aura ausgelöst werden soll"],
       friendlyName = L["ziel (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
+      	--dprint("    ","SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
          if aOperator == "is" then
             aOperator = "contains"
          elseif aOperator == "isNot" then
@@ -1028,7 +1028,7 @@ SkuAuras.attributes = {
       tooltip = L["Die Einheit des Ziels deines Ziels"],
       friendlyName = L["ziel deines ziels (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.targetTargetUnitId.evaluate", aEventData.targetTargetUnitId)
+      	--dprint("    ","SkuAuras.attributes.targetTargetUnitId.evaluate", aEventData.targetTargetUnitId)
          if aOperator == "is" then
             aOperator = "contains"
          elseif aOperator == "isNot" then
@@ -1111,7 +1111,7 @@ SkuAuras.attributes = {
       friendlyName = L["Taste"],
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.pressedKey then
-            dprint("    ","SkuAuras.attributes.pressedKey.evaluate", string.upper(aEventData.pressedKey), aOperator, string.upper(aValue))
+            --dprint("    ","SkuAuras.attributes.pressedKey.evaluate", string.upper(aEventData.pressedKey), aOperator, string.upper(aValue))
             return SkuAuras:ProcessEvaluate(string.upper(aEventData.pressedKey), aOperator,string.upper(aValue))
          end
       end,
@@ -1121,7 +1121,7 @@ SkuAuras.attributes = {
       tooltip = L["Ob das Event im Kampf auftritt"],
       friendlyName = L["Im Kampf"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
+      	--dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
          if aEventData.tInCombat then
             return SkuAuras:ProcessEvaluate(aEventData.tInCombat, aOperator,true)
          end
@@ -1135,7 +1135,7 @@ SkuAuras.attributes = {
       tooltip = L["Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Quell Einheit angreifbar"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
+      	--dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
          if aEventData.tSourceUnitIDCannAttack then
             return SkuAuras:ProcessEvaluate(aEventData.tSourceUnitIDCannAttack, aOperator,true)
          end
@@ -1149,7 +1149,7 @@ SkuAuras.attributes = {
       tooltip = L["Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Ziel Einheit angreifbar"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
+      	--dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
          if aEventData.tDestinationUnitIDCannAttack then
             return SkuAuras:ProcessEvaluate(aEventData.tDestinationUnitIDCannAttack, aOperator,true)
          end
@@ -1163,7 +1163,7 @@ SkuAuras.attributes = {
       tooltip = L["Die Quell Einheit, bei der die Aura ausgelöst werden soll"],
       friendlyName = L["Quelle (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
+      	--dprint("    ","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
          if aOperator == "is" then
             aOperator = "contains"
          elseif aOperator == "isNot" then
@@ -1253,7 +1253,7 @@ SkuAuras.attributes = {
       tooltip = L["Das Ereignis, das die Aura auslösen soll"],
       friendlyName = L["ereignis"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.event.evaluate")
+      	--dprint("    ","SkuAuras.attributes.event.evaluate")
          if aEventData.event then
             local tEvaluation
             if string.find(aValue, ";") then
@@ -1312,7 +1312,7 @@ SkuAuras.attributes = {
       tooltip = L["Der Typ des Verfehlen Ereignisses"],
       friendlyName = L["Verfehlen Typ"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.missType.evaluate")
+      	--dprint("    ","SkuAuras.attributes.missType.evaluate")
          if aEventData.missType then
             return SkuAuras:ProcessEvaluate(aEventData.missType, aOperator, aValue)
          end
@@ -1334,7 +1334,7 @@ SkuAuras.attributes = {
       tooltip = L["Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc."],
       friendlyName = L["Eigene Ressource"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.unitPowerPlayer.evaluate")
+      	--dprint("    ","SkuAuras.attributes.unitPowerPlayer.evaluate")
          if aEventData.unitPowerPlayer then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitPowerPlayer), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1451,7 +1451,7 @@ SkuAuras.attributes = {
       tooltip = L["Dein gesundheits Level in Prozent, das die Aura auslösen soll"],
       friendlyName = L["Eigene Gesundheit"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.unitHealthPlayer.evaluate")
+      	--dprint("    ","SkuAuras.attributes.unitHealthPlayer.evaluate")
          if aEventData.unitHealthPlayer then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitHealthPlayer), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1568,7 +1568,7 @@ SkuAuras.attributes = {
       tooltip = L["Die Zauber-ID, die die Aura auslösen soll"],
       friendlyName = L["zauber nr"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.spellId.evaluate")
+      	--dprint("    ","SkuAuras.attributes.spellId.evaluate")
          if aEventData.spellId then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.spellId), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1585,7 +1585,7 @@ SkuAuras.attributes = {
       tooltip = L["Ob ein Zauber gerade auf CD ist"],
       friendlyName = L["zauber auf cd (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.spellNameOnCd.evaluate", aEventData, aOperator, aValue)
+      	--dprint("    ","SkuAuras.attributes.spellNameOnCd.evaluate", aEventData, aOperator, aValue)
          if aOperator == "is" then
             aOperator = "contains"
          elseif aOperator == "isNot" then
@@ -1609,11 +1609,11 @@ SkuAuras.attributes = {
       tooltip = L["Ob ein Zauber gerade nicht auf CD ist"],
       friendlyName = L["zauber nicht auf cd (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.spellNameNotOnCd.evaluate", aValue)
+      	--dprint("    ","SkuAuras.attributes.spellNameNotOnCd.evaluate", aValue)
          if aEventData.spellsNamesOnCd then
-            dprint("aEventData.spellsNamesOnCd")
+            --dprint("aEventData.spellsNamesOnCd")
             setmetatable(aEventData.spellsNamesOnCd, SkuPrintMTWo)
-            dprint(aEventData.spellsNamesOnCd)
+            --dprint(aEventData.spellsNamesOnCd)
       
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellsNamesOnCd[aValue], aOperator, aValue)
             if tEvaluation == false then
@@ -1630,7 +1630,7 @@ SkuAuras.attributes = {
       tooltip = L["Der Zauber-name, der die Aura auslösen soll"],
       friendlyName = L["zauber name"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.spellName.evaluate")
+      	--dprint("    ","SkuAuras.attributes.spellName.evaluate")
          if aEventData.spellName then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellName, aOperator, aValue)
             if tEvaluation == true then
@@ -1645,7 +1645,7 @@ SkuAuras.attributes = {
       tooltip = L["Die Liste der Buffs des Ziels"],
       friendlyName = L["Buff Liste Ziel (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.buffListTarget.evaluate", aEventData, aOperator, aValue)
+      	--dprint("    ","SkuAuras.attributes.buffListTarget.evaluate", aEventData, aOperator, aValue)
          if aEventData.buffListTarget then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.buffListTarget, aOperator, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
@@ -1661,7 +1661,7 @@ SkuAuras.attributes = {
       tooltip = L["Die Liste der Debuffs  des Ziels"],
       friendlyName = L["Debuff Liste Ziel (L)"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
+      	--dprint("    ","SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
          if aEventData.debuffListTarget then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.debuffListTarget, aOperator, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
@@ -1677,7 +1677,7 @@ SkuAuras.attributes = {
       tooltip = L["Der Gegenstandsname, der die Aura auslösen soll"],
       friendlyName = L["gegenstand name"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.itemName.evaluate")
+      	--dprint("    ","SkuAuras.attributes.itemName.evaluate")
          if aEventData.itemName then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.itemName, aOperator, aValue)
             if tEvaluation == true then
@@ -1692,7 +1692,7 @@ SkuAuras.attributes = {
       tooltip = L["Die Gegenstands-ID, die die Aura auslösen soll"],
       friendlyName = L["gegenstand nr"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.itemId.evaluate")
+      	--dprint("    ","SkuAuras.attributes.itemId.evaluate")
          if aEventData.itemId then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.itemId), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1707,7 +1707,7 @@ SkuAuras.attributes = {
       tooltip = L["Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll"],
       friendlyName = L["gegenstand anzahl"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.itemCount.evaluate")
+      	--dprint("    ","SkuAuras.attributes.itemCount.evaluate")
          if aEventData.itemCount then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.itemCount), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1833,7 +1833,7 @@ SkuAuras.attributes = {
       tooltip = L["Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll"],
       friendlyName = L["buff/debuff"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.auraType.evaluate")
+      	--dprint("    ","SkuAuras.attributes.auraType.evaluate")
          if aEventData.auraType then
             local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.auraType, aOperator, aValue)
             if tEvaluation == true then
@@ -1850,7 +1850,7 @@ SkuAuras.attributes = {
       tooltip = L["Die Anzahl der Stacks einer Aura (Buff oder Debuff), bei der die Aura auslösen soll"],
       friendlyName = L["aura stacks"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	dprint("    ","SkuAuras.attributes.auraAmount.evaluate")
+      	--dprint("    ","SkuAuras.attributes.auraAmount.evaluate")
          if aEventData.auraAmount then
             local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.auraAmount), aOperator, tonumber(aValue))
             if tEvaluation == true then
@@ -1967,7 +1967,7 @@ SkuAuras.attributes = {
       tooltip = L["Der Klasse, die die Aura auslösen soll"],
       friendlyName = L["klasse"],
       evaluate = function()
-      	dprint("    ","SkuAuras.attributes.class.evaluate")
+      	--dprint("    ","SkuAuras.attributes.class.evaluate")
 
 
 
@@ -2017,23 +2017,23 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut entspricht dem gewählten Wert"],
       friendlyName = L["gleich"],
       func = function(aValueA, aValueB) 
-      	dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
+      	--dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          --if type(aValueA) == "table" then return false end
-         dprint("type", type(aValueA))
+         --dprint("type", type(aValueA))
          if type(aValueA) == "table" then 
-            dprint("      ","TABLE")
+            --dprint("      ","TABLE")
             for tName, tValue in pairs(aValueA) do
                if type(aValueB) == "table" then
                   for tNameB, tValueB in pairs(aValueB) do
-                     dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB))
+                     --dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB))
                      local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                      if tResult == true then
                         return true
                      end
                   end
                else
-                  dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(aValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(aValueB))
+                  --dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(aValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(aValueB))
                   local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(aValueB)
                   if tResult == true then
                      return true
@@ -2041,7 +2041,7 @@ SkuAuras.Operators = {
                end
             end
          else
-            dprint("      ","SINGLE")
+            --dprint("      ","SINGLE")
             if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(aValueB) then 
                return true 
             end
@@ -2053,21 +2053,21 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut entspricht nicht dem gewählten Wert"],
       friendlyName = L["ungleich"],
       func = function(aValueA, aValueB) 
-      	--dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
+      	----dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          --if type(aValueA) == "table" then return false end
          if type(aValueA) == "table" then 
             for tName, tValue in pairs(aValueA) do
                if type(aValueB) == "table" then
                   for tNameB, tValueB in pairs(aValueB) do
-                     dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB))
+                     --dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB))
                      local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                      if tResult == true then
                         return true
                      end
                   end
                else
-                  dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(aValueB))
+                  --dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(aValueB))
                   local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(aValueB)
                   if tResult == true then
                      return true
@@ -2087,23 +2087,23 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut enthält den gewählten Wert"],
       friendlyName = L["enthält"],
       func = function(aValueA, aValueB) 
-      	--dprint("      ","SkuAuras.Operators contains", aValueA, aValueB)
+      	----dprint("      ","SkuAuras.Operators contains", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
 
          if type(aValueB) ~= "table" then 
             aValueB = {aValueB}
          end
-         dprint("      contains")
-         dprint("      ","type(aValueA) type(aValueB)", type(aValueA), type(aValueB))
+         --dprint("      contains")
+         --dprint("      ","type(aValueA) type(aValueB)", type(aValueA), type(aValueB))
          if type(aValueA) == "table" then 
-            dprint("      TABLE")
+            --dprint("      TABLE")
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  dprint("      tValue", SkuAuras:RemoveTags(tValue))
-                  dprint("      tValueB", SkuAuras:RemoveTags(tValueB))
-                  dprint("      tName", SkuAuras:RemoveTags(tName))
-                  dprint("      tNameB", SkuAuras:RemoveTags(tNameB))
-                  dprint("       result", SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB))
+                  --dprint("      tValue", SkuAuras:RemoveTags(tValue))
+                  --dprint("      tValueB", SkuAuras:RemoveTags(tValueB))
+                  --dprint("      tName", SkuAuras:RemoveTags(tName))
+                  --dprint("      tNameB", SkuAuras:RemoveTags(tNameB))
+                  --dprint("       result", SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB))
                   local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      return true
@@ -2111,12 +2111,12 @@ SkuAuras.Operators = {
                end
             end
          else
-            dprint("      SINGLE")
+            --dprint("      SINGLE")
             for tNameB, tValueB in pairs(aValueB) do
-               dprint("      ", SkuAuras:RemoveTags(tValueA))
-               dprint("      ", SkuAuras:RemoveTags(tValueB))
-               dprint("      ", SkuAuras:RemoveTags(tNameB))
-               dprint("        ", SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB))
+               --dprint("      ", SkuAuras:RemoveTags(tValueA))
+               --dprint("      ", SkuAuras:RemoveTags(tValueB))
+               --dprint("      ", SkuAuras:RemoveTags(tNameB))
+               --dprint("        ", SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB))
                if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB) then 
                   return true 
                end
@@ -2129,7 +2129,7 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut enthält nicht den gewählten Wert"],
       friendlyName = L["enthält nicht"],
       func = function(aValueA, aValueB) 
-      	--dprint("      ","SkuAuras.Operators containsNot", aValueA, aValueB)
+      	----dprint("      ","SkuAuras.Operators containsNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
 
          if type(aValueB) ~= "table" then 
@@ -2141,7 +2141,7 @@ SkuAuras.Operators = {
             local tFound = false
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  dprint("    ","tName", tName, tValue, tNameB, tValueB)
+                  --dprint("    ","tName", tName, tValue, tNameB, tValueB)
                   local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      tFound = true
@@ -2173,7 +2173,7 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut ist größer als der gewählte Wert"],
       friendlyName = L["größer"],
       func = function(aValueA, aValueB) 
-      	--dprint("      ","SkuAuras.Operators >", aValueA, aValueB)
+      	----dprint("      ","SkuAuras.Operators >", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
          if tonumber(SkuAuras:RemoveTags(aValueA)) > tonumber(SkuAuras:RemoveTags(aValueB)) then 
@@ -2186,7 +2186,7 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut ist kleiner als der gewählte Wert"],
       friendlyName = L["kleiner"],
       func = function(aValueA, aValueB) 
-      	--dprint("      ","SkuAuras.Operators <", aValueA, aValueB)
+      	----dprint("      ","SkuAuras.Operators <", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
          if tonumber(SkuAuras:RemoveTags(aValueA)) < tonumber(SkuAuras:RemoveTags(aValueB)) then 
