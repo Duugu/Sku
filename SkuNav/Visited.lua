@@ -17,7 +17,8 @@ function SkuNav:setWaypointVisited(wpName)
 		-- is object
 		wp.typeId == 3
 			-- is hostile NPC
-			or (wp.typeId == 2 and wp.role == "")
+			-- assume custom(1) is NPC, since false negatives are bigger problem than false positives
+			or ((wp.typeId == 2 or wp.typeId == 1) and wp.role == "")
 		) then
 		waypointVisitedDict[wpName] = GetServerTime()
 	end
