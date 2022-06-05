@@ -713,16 +713,20 @@ function SkuCore:UpdateInteractMove(aForceFlag)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local oinfoType, oitemID, oitemLink = nil, nil, nil
-local SkuCoreOldPetHappinessCounter = 0
----@type integer|nil
-local SkuCoreOldPetHappiness = nil
+SkuCore.PetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
+
 ---Check whether player is a hunter
 ---@return boolean
-function SkuCorePlayerIsHunter()
+function SkuCore:PlayerIsHunter()
 	return select(2, UnitClassBase("player")) == CLASS_IDS["HUNTER"]
 end
-SkuCorePetHappinessString = {[1] = L["Unhappy"], [2] = L["Content "], [3] = L["Happy"]}
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local oinfoType, oitemID, oitemLink = nil, nil, nil
+local SkuCoreOldPetHappinessCounter = 0
+
+---@type integer|nil
+local SkuCoreOldPetHappiness = nil
 function SkuCore:OnEnable()
 	--dprint("SkuCore OnEnable")
 	SkuCore:RangeCheckOnEnable()
@@ -808,7 +812,7 @@ function SkuCore:OnEnable()
 		end
 
 		--hunter pet happiness
-		if SkuCorePlayerIsHunter()
+		if SkuCore:PlayerIsHunter()
 			and SkuOptions.db.profile[MODULE_NAME].classes.hunter.petHappyness == true
 			-- make sure player isn't dead and pet exists
 			and UnitHealth("player") ~= 0
@@ -824,7 +828,7 @@ function SkuCore:OnEnable()
 						-- or alert player periodically when pet is not happy
 						or SkuCoreOldPetHappinessCounter > 60 and (happiness == 1 or happiness == 2)
 					) then
-					SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCorePetHappinessString[happiness], true, true, 0.2)
+					SkuOptions.Voice:OutputString(L["Pet"] .. ";" .. SkuCore.PetHappinessString[happiness], false, true, 0.2)
 					SkuCoreOldPetHappinessCounter = 0
 				end
 				SkuCoreOldPetHappiness = happiness

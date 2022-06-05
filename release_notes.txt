@@ -6,6 +6,12 @@
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r27.11
 
+	Core
+		- Pet health is now displayed below player mana in general section.
+		- Pet details added bottom of overview page.
+		- Pet happiness is not more announced when the player is dead
+		- Pet happiness is announced ASAP if it has increased
+		- Pet happiness is announced once a minute when not happy.
 
 
 -------------------------------------------------------------------------------------------------------	
