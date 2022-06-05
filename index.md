@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.9](https://github.com/Duugu/Sku/releases/download/r27.9/Sku-r27.9-bcc.zip) (05.06.2022)<br> 
+[Sku r27.10](https://github.com/Duugu/Sku/releases/download/r27.10/Sku-r27.10-bcc.zip) (05.06.2022)<br> 
 [Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
@@ -22,6 +22,14 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r27.10
+
+### Quest
+- Fixed german translations for "Accepted Quest" and "Available Quest" in quest dialogs.
+
+### Options
+- Fixed the slow response for Blizzard TTS output (overview, tooltips, etc.)
+
 ## Changes in Sku r27.9
 
 ### Core
