@@ -801,7 +801,7 @@ function SkuQuest:GetTriggerEndWps(aQuestId)
 		for zone, data in pairs(SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]][2]) do
 			local _, taName = SkuNav:GetAreaData(zone)
 			if taName then
-				tWaypoints[#tWaypoints + 1] = SkuDB.questLookup[Sku.Loc][aQuestId][1]..";"..taName..";".."Questziel"..";"..data[1][1]..";"..data[1][2]
+				tWaypoints[#tWaypoints + 1] = SkuDB.questLookup[Sku.Loc][aQuestId][1]..";"..taName..";"..L["Questziel"]..";"..data[1][1]..";"..data[1][2]
 			end
 		end
 	end

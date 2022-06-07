@@ -803,13 +803,24 @@ function SkuCore:Build_CraftFrame(aParentChilds)
       if _G[tFrameName] then
          if _G[tFrameName.."Text"]:GetText() then
             local tKnown = ""
-            local r, g, b = _G["Craft"..x].subR, _G["Craft"..x].subG, _G["Craft"..x].subB
-            if r == 1 and g == 1 and b == 1 then
-               r, g, b = CraftHighlight:GetVertexColor()
+            local tDifficulty = ""
+            local r, g, b, a = _G[tFrameName].text:GetTextColor()
+            r, g, b, a = round(r), round(g), round(b), round(a)
+            if r == 1 and g == 1 and  b == 1 then
+               if _G["CraftHighlightFrame"] and _G["CraftHighlightFrame"]:GetRegions() then
+                  r, g, b, a = _G["CraftHighlightFrame"]:GetRegions():GetVertexColor()
+                  if r then
+                     r, g, b, a = round(r), round(g), round(b), round(a)
+                  end
+               end
             end
-            if r < 0.51 and g < 0.51 and b < 0.51 then
-               tKnown = L["bekannt"]
+
+            for i, v in pairs(tTradeSkillTypeColor) do
+               if v.r == r and v.g == g and  v.b == b then
+                  tDifficulty = i
+               end
             end
+
             local tFriendlyName = unescape(_G[tFrameName.."Text"]:GetText()).." ".. (unescape(_G[tFrameName.."SubText"]:GetText()) or "").." ".. (unescape(_G[tFrameName.."Cost"]:GetText()) or "").." "..tKnown
             local tText, tFullText = "", ""
             if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
@@ -826,6 +837,13 @@ function SkuCore:Build_CraftFrame(aParentChilds)
                   click = true,
                }   
             end
+
+            if tDifficulty == "subheader" or tDifficulty == "header" then
+               aParentChilds[tFriendlyName].click = false
+               aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..L["category"]..")"
+            else
+               aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
+            end            
          end
       end
    end

@@ -1388,3 +1388,7 @@ L["training points"] = "training points"
 L["Ressource Scanning"] = "ressource scanning"
 L["Herbs"] = "herbs"
 L["mining nodes"] = "mining nodes"
+
+L["Questziel"] = "quest target"
+
+L["Bereitschaft check"] = "ready check"

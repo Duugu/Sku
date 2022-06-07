@@ -546,6 +546,18 @@ local tAdditionalTranslations = {
 	["Von hier eine Sekunde geradeaus laufen, um durch das Portal zu gehen."] = "From here move 1 second forward, to get through the portal.",
 	["Stopp. Wenn du unter level 20 bist, und von menethil nach loch modan willst, bleib hier steht. Prüfe, ob vor dir ein mob ist. Wenn das der fall ist, warte hier bis dieser sich wegbewegt hat. laufe erst dann weiter! Solltest du trotzdem angegriffen werden, bleib nicht stehen. lauf weiter der route nach."] = "Stop. If you are under level 20 and want to go from menethil to loch modan, stop here. Check if there is a mob in front of you. If that is the case, wait here until it has moved away and can't be targeted anymore. Then continue! If you are attacked anyway, don't stop. keep following the route to get as far as possible before you are dead.",	
 	["Von hier zurück an Land musst du extrem präsizes navigieren."] = "You need to navigate very, very precisly to get out of the water.",	
+
+	["Achtung. Hier kommt ein Fahrstuhl ohne Geräusche nach oben. Um nach oben zu kommen, halte dich genau an die folgenden Schritte: Geh zum nächsten Wegpunkt. Nimm Akolyth der Aldor ins Ziel. Springe so lange immer wieder, bis sich die Entferung zum Ziel verändert. Laufe dann sofort vorwärts, bis du nicht mehr feststeckst. Dann bist oben und kannst zum nächsten Wegpunkt laufen."] = "Attention. Here is a silent elevator. To get to the top, follow the steps below exactly: Unmount! Go to the next waypoint. Target Aldor Acolyte. Keep jumping until the distance to the target changes. Then immediately run forward until you are no longer stuck. Then you are on top and can go to the next waypoint.",
+	["Achtung. Hier kommt ein Fahrstuhl ohne Geräusche nach oben. Um nach oben zu kommen, halte dich genau an die folgenden Schritte: Nicht reiten! Geh zum nächsten Wegpunkt. Nimm Anhängerin der Seher ins Ziel. Springe so lange immer wieder, bis sich die Entferung zum Ziel verändert. Laufe dann sofort vorwärts, bis du nicht mehr feststeckst. Dann bist oben und kannst zum nächsten Wegpunkt laufen."] = "Attention. Here is a silent elevator. To get to the top, follow the steps below exactly: Unmount! Go to the next waypoint. Target Scryer Retainer. Keep jumping until the distance to the target changes. Then immediately run forward until you are no longer stuck. Then you are on top and can go to the next waypoint.",
+	["Nimm jetzt Akolyth der Aldor ins Ziel und geht zum nächsten Wegpunkt."] = "Now target Aldor Acolyte and go to the next waypoint.",
+	["Nimm jetzt Anhängerin der Seher ins Ziel und geht zum nächsten Wegpunkt."] = "Now target Scryer Retainer and go to the next waypoint.",
+	["Springe so lange dauerhaft, bis sich die Entferung zum Ziel verändert. Laufe dann sofort vorwärts, bis du nicht mehr feststeckst."] = "Keep jumping until the distance your target changes. Then immediately run forward until you are no longer stuck.",
+	["Springe so lange, bis sich die Entferung zum Ziel verändert. Laufe dann sofort vorwärts, bis du nicht mehr feststeckst."] = "Keep jumping until the distance your target changes. Then immediately run forward until you are no longer stuck.",
+	["Achtung. Hier kommt ein Fahrstuhl ohne Geräusche nach unten. Du kannst nicht den Fahrstuhl nach unten nehmen. Suche nach dem Wegpunkt Shattrath Aldor oben nach unten und folge von dort einer Route nach unten."] = "Attention. There is an elevator with no sound. You can't take the elevator down. Look for the waypoint Shattrath Aldor up to down and follow a route down from there.",
+	["Achtung. Hier kommt ein Fahrstuhl ohne Geräusche nach unten. Du kannst nicht den Fahrstuhl nach unten nehmen. Suche nach dem Wegpunkt Shattrath seher oben nach unten und folge von dort einer Route nach unten."] = "Attention. There is an elevator with no sound. You can't take the elevator down. Look for the waypoint Shattrath scryer up to down and follow a route down from there.",
+	["STOP! Von hier musst du sehr vorsichtig den Berg runter rutschen, um nach unten zu kommen. Navigiere 100% präzise! Wenn du fällst, heile oder verbinde dich, bevor du weiter läufst!"] = "STOP! From here you have to move very, very carefully to get down. Navigate 100% precisely! If you fall, heal or bandage yourself before you go further!",
+	["Hier ist das untere Ende des Weges von der Aldor- und Seherhöhe nach unten. Er funktioniert nur runter. Du kommst hier nicht rauf. Nimm stattdessen eine Route zum Aldor- oder Seher-Fahrstuhl, wenn du rauf willst."] = "This is the bottom of the path from Aldor and scryer rise down. It only works down. You can't get up here. Take a route to the Aldor or scryer elevator instead if you want to go up.",
+	
 }
 
 
@@ -648,6 +660,17 @@ function SkuTranslateStringDeToEn(aString)
 			end
 
 			--objects.lua
+
+			--fix for weapon crate/container 3661/181107
+			if tFound == false then
+				if string.find(aString, "Waffenkiste") then
+					local tName, tObjectId = string.match(aString, "([^;]+);([^;]+)")
+					if tObjectId and tObjectId == "181107" then
+						tTarget = "Weapon Container"
+						tFound = true
+					end
+				end
+			end
 			if tFound == false then
 				for i, v in pairs(SkuDB.objectLookup.deDE) do
 					if SkuDB.objectLookup.enUS[i] then
@@ -924,7 +947,6 @@ function SkuRtLinkDataDeToEn()
 			local tIndexEN = SkuTranslateStringDeToEn(i)
 			local tValue = v
 
-			--print(1, tIndex, tValue)
 			SkuTranslatedData.Links[tIndexEN] = {}
 
 			for i1, v1 in pairs(tValue) do
@@ -986,6 +1008,7 @@ function SkuRtWpDataDeToEn()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			local tIndex = SkuDB.routedata[Sku.Loc].Waypoints[q]
 			local tIndexEN = SkuTranslateStringDeToEn(tIndex)
 			local tValue = SkuDB.routedata[Sku.Loc].Waypoints[SkuDB.routedata[Sku.Loc].Waypoints[q]]
+
 			--print(1, tIndex, tValue)
 			table.insert(SkuTranslatedData.Waypoints, #SkuTranslatedData.Waypoints + 1, tIndexEN)
 			SkuTranslatedData.Waypoints[tIndexEN] = SkuDB.routedata[Sku.Loc].Waypoints[SkuDB.routedata[Sku.Loc].Waypoints[q]]

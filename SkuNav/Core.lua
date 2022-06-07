@@ -308,12 +308,15 @@ function SkuNav:CreateWaypointCache()
 		if SkuDB.questLookup[Sku.Loc][i] then
 			if v[SkuDB.questKeys["triggerEnd"]] ~= nil then 
 				for zone, data in pairs(v[SkuDB.questKeys["triggerEnd"]][2]) do
-					if data[1][1] and data[1][1] ~= -1 then
+					if data[1][1] and tonumber(data[1][1]) ~= -1 then
 						local _, taName, tContintentId = SkuNav:GetAreaData(zone)
 						if taName then
-							--print(SkuDB.questLookup[Sku.Loc][i][1]..";"..taName..";".."Questziel"..";"..data[1][1]..";"..data[1][2])
-							local tName = SkuDB.questLookup[Sku.Loc][i][1]..";"..taName..";".."Questziel"..";"..data[1][1]..";"..data[1][2]
+							local tName = SkuDB.questLookup[Sku.Loc][i][1]..";"..taName..";"..L["Questziel"]..";"..data[1][1]..";"..data[1][2]
+
 							local isUiMap = SkuNav:GetUiMapIdFromAreaId(zone)
+							local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(data[1][1] / 100, data[1][2] / 100))
+							local tWorldX, tWorldY = worldPosition:GetXY()
+
 							local tNewIndex = #WaypointCache + 1
 							WaypointCacheLookupAll[tName] = tNewIndex									
 							if not WaypointCacheLookupPerContintent[tContintentId] then
@@ -328,8 +331,8 @@ function SkuNav:CreateWaypointCache()
 								contintentId = tContintentId,
 								areaId = zone,
 								uiMapId = isUiMap,
-								worldX = tonumber(data[1][1]),
-								worldY = tonumber(data[1][2]),
+								worldX = tonumber(tWorldX),
+								worldY = tonumber(tWorldY),
 								createdAt = GetTime(),
 								createdBy = "SkuNav",
 								size = 1,

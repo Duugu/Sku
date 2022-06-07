@@ -146,6 +146,7 @@ SkuCore.interactFramesList = {
 	--"MultiBarBottomRight",
 	"BagnonGuildFrame1",
 	--"MainMenuBar",
+	"ReadyCheckFrame",
 }
 
 local escapes = {
@@ -2120,6 +2121,7 @@ local friendlyFrameNames = {
 	["BankFrame"] = L["Bank"],
 	["GuildBankFrame"] = L["Guild Bank"],
 	["TradeSkillFrame"] = L["Trade skill"],
+	["ReadyCheckFrame"] = L["Bereitschaft check"],
 	[""] = "",
 }
 local containerFrames = {

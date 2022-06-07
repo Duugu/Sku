@@ -1466,9 +1466,9 @@ function SkuOptions:CreateMenuFrame()
 
 		if aKey == "PAGEDOWN" then
 			if SkuOptions.currentMenuPosition then
-				if _G["ClassTrainerFrameScrollBarScrollDownButton"] then
-					_G["ClassTrainerFrameScrollBarScrollDownButton"]:Click()
-					_G["ClassTrainerFrameScrollBarScrollDownButton"]:Click()
+				if _G["ClassTrainerDetailScrollFrameScrollBarScrollDownButton"] then
+					_G["ClassTrainerDetailScrollFrameScrollBarScrollDownButton"]:Click()
+					_G["ClassTrainerDetailScrollFrameScrollBarScrollDownButton"]:Click()
 				end				
 				if _G["CraftListScrollFrameScrollBarScrollDownButton"] then
 					_G["CraftListScrollFrameScrollBarScrollDownButton"]:Click()
@@ -1485,9 +1485,9 @@ function SkuOptions:CreateMenuFrame()
 
 		if aKey == "PAGEUP" then
 			if SkuOptions.currentMenuPosition then
-				if _G["ClassTrainerFrameScrollBarScrollUpButton"] then
-					_G["ClassTrainerFrameScrollBarScrollUpButton"]:Click()
-					_G["ClassTrainerFrameScrollBarScrollUpButton"]:Click()
+				if _G["ClassTrainerDetailScrollFrameScrollBarScrollUpButton"] then
+					_G["ClassTrainerDetailScrollFrameScrollBarScrollUpButton"]:Click()
+					_G["ClassTrainerDetailScrollFrameScrollBarScrollUpButton"]:Click()
 				end				
 				if _G["CraftListScrollFrameScrollBarScrollUpButton"] then
 					_G["CraftListScrollFrameScrollBarScrollUpButton"]:Click()
