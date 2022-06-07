@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.10](https://github.com/Duugu/Sku/releases/download/r27.10/Sku-r27.10-bcc.zip) (05.06.2022)<br> 
+[Sku r27.11](https://github.com/Duugu/Sku/releases/download/r27.11/Sku-r27.11-bcc.zip) (08.06.2022)<br> 
 [Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
@@ -22,6 +22,32 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r27.11
+
+Core
+- Added the ready check frame to the interact frames list. Ready checks now should open the Local menu.
+- Pet health is now displayed below player mana in general section.
+- Pet details added to the bottom of overview page.
+- Pet happiness is not more announced when the player is dead
+- Pet happiness is announced ASAP if it has increased
+- Pet happiness is announced once a minute when not happy.
+
+Quest
+- Fixed a bug with quest target waypoints for areas or positions.
+
+Options
+- Added difficulty colors to Crafting frame (Enchanting).
+- Fixed Page-Down/Up buttons for scrolling in class and profession trainer lists. Should work now.
+
+Map
+- Added comments and new waypoints to routes for aldor/Scryer rise (silent elevator). 
+	Take the elevator up. To get down you need to take another way. Don't take the elevator. Find the waypoint named "aldor/Scryer...to down". Then follow the instructions.
+- Fixed the broken route to Captain Keelhaul and Fleet Master Fireallon.
+- Fixed a waypoint translation issue with Weapon Container objects.
+- Added a waypoints for the shaman quest to ashenvale.
+- Added some routes to southern ashenvale.
+- Added a waypoint to the moonwell in ashenvale.
+
 ## Changes in Sku r27.10
 
 ### Quest
