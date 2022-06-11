@@ -417,7 +417,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 						end
 						
-						tBagResults[bagId].childs[#tBagResults[bagId].childs + 1] = aParentChilds[bagItemSlotName]
+						table.insert(tBagResults[bagId].childs, aParentChilds[bagItemSlotName])
 
 					end
 				end
