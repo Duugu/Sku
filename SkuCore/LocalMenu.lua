@@ -396,7 +396,6 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							end
 							if bagItemButton and string.find(containerFrameName, "ContainerFrame") then
 								if bagItemButton.textFirstLine then
-									bagItemButton.originalTextFirstLine = bagItemButton.textFirstLine
 									bagItemButton.textFirstLine = (#tBagResults[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
 									tEmptyCounter = tEmptyCounter + 1
 								end
@@ -421,8 +420,14 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 						
 						table.insert(tBagResults[bagId].childs, aParentChilds[bagItemSlotName])
 						if not string.find(aParentChilds[bagItemSlotName].textFirstLine, L["Empty"]) then
-							table.insert(allBagItems, aParentChilds[bagItemSlotName])
-							allBagItems[aParentChilds[bagItemSlotName]] = aParentChilds[bagItemSlotName]
+							-- put a copy in all items that doesn't include the numbering in the textFirstLine
+							copy = {}
+							for k, v in pairs(aParentChilds[bagItemSlotName]) do
+								copy[k] = v
+							end
+							copy.textFirstLine = string.sub(copy.textFirstLine, string.find(copy.textFirstLine, " ") + 1)
+							table.insert(allBagItems, copy)
+							allBagItems[copy] = copy
 						end
 
 					end
@@ -440,9 +445,9 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 	-- sort all items alphabetically
 	table.sort(allBagItems, function(item1, item2)
-		return item1.originalTextFirstLine < item2.originalTextFirstLine
+		return item1.textFirstLine < item2.textFirstLine
 	end)
-	
+
 	-- all items menu item
 	do
 		local allItemsMenuItemName = "all items"
