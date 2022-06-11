@@ -292,21 +292,21 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							tCurrentBag = bagId
 							if not tBagResults[bagId] then
 
-								local tFriendlyName = L["Bag"].." "..bagId
+								local bagName = L["Bag"] .. " " .. bagId
 								local tText, tFullText = L["Bag"].." "..bagId, ""
-								table.insert(aParentChilds, tFriendlyName)
-								aParentChilds[tFriendlyName] = {
+								table.insert(aParentChilds, bagName)
+								aParentChilds[bagName] = {
 									frameName = containerFrameName,
 									RoC = "Child",
 									type = "Button",
 									obj = containerFrame,
-									textFirstLine = tFriendlyName,
+									textFirstLine = bagName,
 									textFull = "",
 									noMenuNumbers = true,
 									childs = {},
 								}   
 
-								tBagResults[bagId] = {obj = aParentChilds[tFriendlyName], childs = {}}
+								tBagResults[bagId] = { obj = aParentChilds[bagName], childs = {} }
 							end
 						end
 
