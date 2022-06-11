@@ -277,6 +277,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 	local tCurrentParentContainer = nil
 	local tBagResults = {}
 	local inventoryTooltipTextCache = {}
+	local allBagItems = {}
 
 	for frameNo = 1, 8 do
 		for itemNo = 1, 36 do
@@ -418,6 +419,8 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 						end
 						
 						table.insert(tBagResults[bagId].childs, aParentChilds[bagItemSlotName])
+						table.insert(allBagItems, aParentChilds[bagItemSlotName]	)
+						allBagItems[aParentChilds[bagItemSlotName]] = aParentChilds[bagItemSlotName]
 
 					end
 				end
@@ -430,6 +433,20 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 			table.insert(v.obj.childs, vc)
 			v.obj.childs[vc] = vc
 		end
+	end
+
+	-- all items menu item
+	do
+		local allItemsMenuItemName = "all items"
+		table.insert(aParentChilds, 1, allItemsMenuItemName)
+		aParentChilds[allItemsMenuItemName] = {
+			RoC = "Child",
+			type = "Button",
+			textFirstLine = allItemsMenuItemName,
+			textFull = "",
+			noMenuNumbers = true,
+			childs = allBagItems,
+		}
 	end
 
 
