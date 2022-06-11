@@ -396,6 +396,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							end
 							if bagItemButton and string.find(containerFrameName, "ContainerFrame") then
 								if bagItemButton.textFirstLine then
+									bagItemButton.originalTextFirstLine = bagItemButton.textFirstLine
 									bagItemButton.textFirstLine = (#tBagResults[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
 									tEmptyCounter = tEmptyCounter + 1
 								end
@@ -437,6 +438,11 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 		end
 	end
 
+	-- sort all items alphabetically
+	table.sort(allBagItems, function(item1, item2)
+		return item1.originalTextFirstLine < item2.originalTextFirstLine
+	end)
+	
 	-- all items menu item
 	do
 		local allItemsMenuItemName = "all items"
