@@ -278,14 +278,15 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 	local tBagResults = {}
 	local inventoryTooltipTextCache = {}
 
-   for frameNo = 1, 8 do
-      for itemNo = 1, 36 do
-         local tFrameName = "ContainerFrame"..frameNo.."Item"..itemNo
-         if _G[tFrameName] then
-            if _G[tFrameName].GetBag then
-               if _G[tFrameName].bag >= 0 then
-                  local bagId = _G[tFrameName]:GetBag() + 1
-                  local slotId = _G[tFrameName]:GetID()
+	for frameNo = 1, 8 do
+		for itemNo = 1, 36 do
+			local containerFrameName = "ContainerFrame" .. frameNo .. "Item" .. itemNo
+			local containerFrame = _G[containerFrameName]
+			if containerFrame then
+				if containerFrame.GetBag then
+					if containerFrame.bag >= 0 then
+						local bagId = containerFrame:GetBag() + 1
+						local slotId = containerFrame:GetID()
 
                   if bagId > 0 then
                      tCurrentBag = bagId
@@ -295,10 +296,10 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                         local tText, tFullText = L["Bag"].." "..bagId, ""
                         table.insert(aParentChilds, tFriendlyName)
                         aParentChilds[tFriendlyName] = {
-                           frameName = tFrameName,
+                           frameName = containerFrameName,
                            RoC = "Child",
                            type = "Button",
-                           obj = _G[tFrameName],
+                           obj = containerFrame,
                            textFirstLine = tFriendlyName,
                            textFull = "",
                            noMenuNumbers = true,
@@ -311,12 +312,12 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
                   local tFriendlyName = L["Bag"]..bagId.."-"..slotId
                   local tText, tFullText = L["Empty"], ""
-                  if _G[tFrameName]:IsEnabled() == true then
+                  if containerFrame:IsEnabled() == true then
                      aParentChilds[tFriendlyName] = {
-                        frameName = tFrameName,
+                        frameName = containerFrameName,
                         RoC = "Child",
                         type = "Button",
-                        obj = _G[tFrameName],
+                        obj = containerFrame,
                         textFirstLine = tText,
                         textFull = "",
                         noMenuNumbers = true,
@@ -327,7 +328,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                         if aParentChilds[tFriendlyName].obj:GetObjectType() == "Button" then
                            aParentChilds[tFriendlyName].func = aParentChilds[tFriendlyName].obj:GetScript("OnClick")
                         end
-                        aParentChilds[tFriendlyName].containerFrameName = tFrameName
+                        aParentChilds[tFriendlyName].containerFrameName = containerFrameName
                         aParentChilds[tFriendlyName].onActionFunc = function(self, aTable, aChildName)
 
                         end
@@ -382,31 +383,31 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
                      
                      
 
-                     if _G[tFrameName.."Count"] and not _G[tFrameName].info then
-                        if aParentChilds[tFriendlyName] and _G[tFrameName.."Count"]:GetText() then
+                     if _G[containerFrameName .. "Count"] and not containerFrame.info then
+                        if aParentChilds[tFriendlyName] and _G[containerFrameName .. "Count"]:GetText() then
                            if not string.find(aParentChilds[tFriendlyName].textFirstLine, L["Empty"].." ") then
-                              aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ".._G[tFrameName.."Count"]:GetText()
+                              aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine .. " " .. _G[containerFrameName .. "Count"]:GetText()
                            else
                               aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine
                            end
                         end
                      end
-                     if aParentChilds[tFriendlyName] and string.find(tFrameName, "ContainerFrame") then
+                     if aParentChilds[tFriendlyName] and string.find(containerFrameName, "ContainerFrame") then
                         if aParentChilds[tFriendlyName].textFirstLine then
                            aParentChilds[tFriendlyName].textFirstLine = (#tBagResults[bagId].childs + 1).." "..aParentChilds[tFriendlyName].textFirstLine
                            tEmptyCounter = tEmptyCounter + 1
                         end
                      end
-                     if _G[tFrameName.."Count"] and aParentChilds[tFriendlyName] then
-                        aParentChilds[tFriendlyName].stackSize = _G[tFrameName.."Count"]:GetText()
+                     if _G[containerFrameName .. "Count"] and aParentChilds[tFriendlyName] then
+                        aParentChilds[tFriendlyName].stackSize = _G[containerFrameName .. "Count"]:GetText()
                      end
-                     if _G[tFrameName].info then
-                        aParentChilds[tFriendlyName].itemId = _G[tFrameName].info.id
-                        if not _G[tFrameName].info.count then
+                     if containerFrame.info then
+                        aParentChilds[tFriendlyName].itemId = containerFrame.info.id
+                        if not containerFrame.info.count then
                            aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine
                         else
-                           if not string.find(aParentChilds[tFriendlyName].textFirstLine, L["Empty"].." ") and _G[tFrameName].info.count > 1 then
-                              aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ".._G[tFrameName].info.count
+                           if not string.find(aParentChilds[tFriendlyName].textFirstLine, L["Empty"] .. " ") and containerFrame.info.count > 1 then
+                              aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine .. " " .. containerFrame.info.count
                            else
                               aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine
                            end
