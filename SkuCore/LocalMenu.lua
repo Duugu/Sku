@@ -310,10 +310,10 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							end
 						end
 
-						local tFriendlyName = L["Bag"]..bagId.."-"..slotId
+						local bagItemSlotName = L["Bag"] .. bagId .. "-" .. slotId
 						local tText, tFullText = L["Empty"], ""
 						if containerFrame:IsEnabled() == true then
-							aParentChilds[tFriendlyName] = {
+							aParentChilds[bagItemSlotName] = {
 								frameName = containerFrameName,
 								RoC = "Child",
 								type = "Button",
@@ -323,60 +323,61 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 								noMenuNumbers = true,
 								childs = {},
 							}   
+							local bagItemButton = aParentChilds[bagItemSlotName]
 							--get the onclick func if there is one
-							if aParentChilds[tFriendlyName].obj:IsMouseClickEnabled() == true then
-								if aParentChilds[tFriendlyName].obj:GetObjectType() == "Button" then
-									aParentChilds[tFriendlyName].func = aParentChilds[tFriendlyName].obj:GetScript("OnClick")
+							if bagItemButton.obj:IsMouseClickEnabled() == true then
+								if bagItemButton.obj:GetObjectType() == "Button" then
+									bagItemButton.func = bagItemButton.obj:GetScript("OnClick")
 								end
-								aParentChilds[tFriendlyName].containerFrameName = containerFrameName
-								aParentChilds[tFriendlyName].onActionFunc = function(self, aTable, aChildName)
+								bagItemButton.containerFrameName = containerFrameName
+								bagItemButton.onActionFunc = function(self, aTable, aChildName)
 
 								end
-								if aParentChilds[tFriendlyName].func then
-									aParentChilds[tFriendlyName].click = true
+								if bagItemButton.func then
+									bagItemButton.click = true
 								end
 							end
 
 
-							local maybeText = getItemTooltipTextFromBagItem(aParentChilds[tFriendlyName].obj:GetParent():GetID(), aParentChilds[tFriendlyName].obj:GetID())
+							local maybeText = getItemTooltipTextFromBagItem(bagItemButton.obj:GetParent():GetID(), bagItemButton.obj:GetID())
 							if maybeText then
 									local tText = maybeText
 									
-									if aParentChilds[tFriendlyName].obj.info then
-										if aParentChilds[tFriendlyName].obj.info.id then
-											aParentChilds[tFriendlyName].itemId = aParentChilds[tFriendlyName].obj.info.id
-											aParentChilds[tFriendlyName].textFirstLine = ItemName_helper(tText)
-											aParentChilds[tFriendlyName].textFull = SkuCore:AuctionPriceHistoryData(aParentChilds[tFriendlyName].obj.info.id, true, true)
+								if bagItemButton.obj.info then
+									if bagItemButton.obj.info.id then
+										bagItemButton.itemId = bagItemButton.obj.info.id
+										bagItemButton.textFirstLine = ItemName_helper(tText)
+										bagItemButton.textFull = SkuCore:AuctionPriceHistoryData(bagItemButton.obj.info.id, true, true)
 										end
 									end
-									if not aParentChilds[tFriendlyName].textFull then
-										aParentChilds[tFriendlyName].textFull = {}
+								if not bagItemButton.textFull then
+									bagItemButton.textFull = {}
 									end
 									local tFirst, tFull = ItemName_helper(tText)
-									aParentChilds[tFriendlyName].textFirstLine = tFirst
-									if type(aParentChilds[tFriendlyName].textFull) ~= "table" then
-										aParentChilds[tFriendlyName].textFull = {(aParentChilds[tFriendlyName].textFull or aParentChilds[tFriendlyName].textFirstLine or ""),}
+								bagItemButton.textFirstLine = tFirst
+								if type(bagItemButton.textFull) ~= "table" then
+									bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or ""), }
 									end
-									table.insert(aParentChilds[tFriendlyName].textFull, 1, tFull)
-								local itemId = aParentChilds[tFriendlyName].itemId
+								table.insert(bagItemButton.textFull, 1, tFull)
+								local itemId = bagItemButton.itemId
 								if itemId and IsEquippableItem(itemId) then
 									local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
 									if comparisnSections then
 										for i, section in ipairs(comparisnSections) do
 											local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
-											table.insert(aParentChilds[tFriendlyName].textFull, i + 1, sectionHeader .. section)
+											table.insert(bagItemButton.textFull, i + 1, sectionHeader .. section)
 										end
 									end
 								end
 							end
 
-							if aParentChilds[tFriendlyName].textFirstLine == "" and aParentChilds[tFriendlyName].textFull == "" and aParentChilds[tFriendlyName].obj.ShowTooltip then
+							if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
 								GameTooltip:ClearLines()
-								aParentChilds[tFriendlyName].obj:ShowTooltip()
+								bagItemButton.obj:ShowTooltip()
 								if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 									if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
 										local tText = unescape(TooltipLines_helper(GameTooltip:GetRegions()))
-										aParentChilds[tFriendlyName].textFirstLine, aParentChilds[tFriendlyName].textFull = ItemName_helper(tText)
+										bagItemButton.textFirstLine, bagItemButton.textFull = ItemName_helper(tText)
 									end
 								end
 							end
@@ -384,39 +385,39 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							
 
 							if _G[containerFrameName .. "Count"] and not containerFrame.info then
-								if aParentChilds[tFriendlyName] and _G[containerFrameName .. "Count"]:GetText() then
-									if not string.find(aParentChilds[tFriendlyName].textFirstLine, L["Empty"].." ") then
-										aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine .. " " .. _G[containerFrameName .. "Count"]:GetText()
+								if bagItemButton and _G[containerFrameName .. "Count"]:GetText() then
+									if not string.find(bagItemButton.textFirstLine, L["Empty"] .. " ") then
+										bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. _G[containerFrameName .. "Count"]:GetText()
 									else
-										aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine
+										bagItemButton.textFirstLine = bagItemButton.textFirstLine
 									end
 								end
 							end
-							if aParentChilds[tFriendlyName] and string.find(containerFrameName, "ContainerFrame") then
-								if aParentChilds[tFriendlyName].textFirstLine then
-									aParentChilds[tFriendlyName].textFirstLine = (#tBagResults[bagId].childs + 1).." "..aParentChilds[tFriendlyName].textFirstLine
+							if bagItemButton and string.find(containerFrameName, "ContainerFrame") then
+								if bagItemButton.textFirstLine then
+									bagItemButton.textFirstLine = (#tBagResults[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
 									tEmptyCounter = tEmptyCounter + 1
 								end
 							end
-							if _G[containerFrameName .. "Count"] and aParentChilds[tFriendlyName] then
-								aParentChilds[tFriendlyName].stackSize = _G[containerFrameName .. "Count"]:GetText()
+							if _G[containerFrameName .. "Count"] and bagItemButton then
+								bagItemButton.stackSize = _G[containerFrameName .. "Count"]:GetText()
 							end
 							if containerFrame.info then
-								aParentChilds[tFriendlyName].itemId = containerFrame.info.id
+								bagItemButton.itemId = containerFrame.info.id
 								if not containerFrame.info.count then
-									aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine
+									bagItemButton.textFirstLine = bagItemButton.textFirstLine
 								else
-									if not string.find(aParentChilds[tFriendlyName].textFirstLine, L["Empty"] .. " ") and containerFrame.info.count > 1 then
-										aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine .. " " .. containerFrame.info.count
+									if not string.find(bagItemButton.textFirstLine, L["Empty"] .. " ") and containerFrame.info.count > 1 then
+										bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. containerFrame.info.count
 									else
-										aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine
+										bagItemButton.textFirstLine = bagItemButton.textFirstLine
 									end
 								end								
 							end							
 
 						end
 						
-						tBagResults[bagId].childs[#tBagResults[bagId].childs + 1] = aParentChilds[tFriendlyName]
+						tBagResults[bagId].childs[#tBagResults[bagId].childs + 1] = aParentChilds[bagItemSlotName]
 
 					end
 				end
