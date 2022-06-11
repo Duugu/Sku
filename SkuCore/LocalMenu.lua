@@ -419,8 +419,10 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 						end
 						
 						table.insert(tBagResults[bagId].childs, aParentChilds[bagItemSlotName])
-						table.insert(allBagItems, aParentChilds[bagItemSlotName]	)
-						allBagItems[aParentChilds[bagItemSlotName]] = aParentChilds[bagItemSlotName]
+						if not string.find(aParentChilds[bagItemSlotName].textFirstLine, L["Empty"]) then
+							table.insert(allBagItems, aParentChilds[bagItemSlotName])
+							allBagItems[aParentChilds[bagItemSlotName]] = aParentChilds[bagItemSlotName]
+						end
 
 					end
 				end
@@ -443,7 +445,6 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 			RoC = "Child",
 			type = "Button",
 			textFirstLine = allItemsMenuItemName,
-			textFull = "",
 			noMenuNumbers = true,
 			childs = allBagItems,
 		}
