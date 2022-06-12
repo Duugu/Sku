@@ -322,6 +322,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 								textFull = "",
 								noMenuNumbers = true,
 								childs = {},
+								isNewItem = C_NewItems.IsNewItem(bagId - 1, slotId),
 							}   
 							local bagItemButton = aParentChilds[bagItemSlotName]
 							--get the onclick func if there is one
@@ -418,8 +419,9 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 						end
 						
 						table.insert(tBagResultsByBag[bagId].childs, aParentChilds[bagItemSlotName])
+						-- if the item slot isn't empty, add it to allBagResults
 						if not string.find(aParentChilds[bagItemSlotName].textFirstLine, L["Empty"]) then
-							-- put a copy in all items that doesn't include the numbering in the textFirstLine
+							-- create a copy that doesn't have the numbering in textFirstLine
 							copy = {}
 							for k, v in pairs(aParentChilds[bagItemSlotName]) do
 								copy[k] = v
@@ -442,11 +444,22 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 		end
 	end
 
-	-- sort all items alphabetically
+	-- sort all items alphabetically, putting newly acquired on top
 	table.sort(allBagResults, function(item1, item2)
+		if item1.isNewItem and not item2.isNewItem then
+			return true
+		elseif item2.isNewItem and not item1.isNewItem then
+			return false
+		end
 		return item1.textFirstLine < item2.textFirstLine
 	end)
 
+	-- prepend "new" to all new items
+	for _, itemButton in pairs(allBagResults) do
+		if itemButton.isNewItem then
+			itemButton.textFirstLine = L["New"] .. " " .. itemButton.textFirstLine
+		end
+	end
 	-- all items menu item
 	do
 		local allItemsMenuItemName = "all items"
