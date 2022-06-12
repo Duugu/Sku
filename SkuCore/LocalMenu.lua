@@ -461,7 +461,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 	end
 	-- all items menu item
 	do
-		local allItemsMenuItemName = "all items"
+		local allItemsMenuItemName = L["all items"]
 		table.insert(aParentChilds, 1, allItemsMenuItemName)
 		aParentChilds[allItemsMenuItemName] = {
 			RoC = "Child",
