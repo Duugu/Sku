@@ -294,7 +294,6 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							if not tBagResults[bagId] then
 
 								local bagName = L["Bag"] .. " " .. bagId
-								local tText, tFullText = L["Bag"].." "..bagId, ""
 								table.insert(aParentChilds, bagName)
 								aParentChilds[bagName] = {
 									frameName = containerFrameName,
@@ -312,7 +311,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 						end
 
 						local bagItemSlotName = L["Bag"] .. bagId .. "-" .. slotId
-						local tText, tFullText = L["Empty"], ""
+						local tText = L["Empty"]
 						if containerFrame:IsEnabled() == true then
 							aParentChilds[bagItemSlotName] = {
 								frameName = containerFrameName,
@@ -463,13 +462,12 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 
 	local tFriendlyName = L["Bags"]
-	local tText, tFullText = L["Bags"], ""
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
-		frameName = tFrameName,
+		frameName = nil,
 		RoC = "Child",
 		type = "Button",
-		obj = _G[tFrameName],
+		obj = nil,
 		textFirstLine = tFriendlyName,
 		textFull = "",
 		noMenuNumbers = true,
@@ -484,8 +482,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 	for x = 1, (#dtc - 1) do
 		if dtc[x] then
 
-			local tFriendlyName = L["Bag-slot"].." "..(x + 1)
-			local tText, tFullText = L["Bag-slot"].." "..(x + 1), ""
+			local tFriendlyName = L["Bag-slot"] .. " " .. (x + 1)
 			if dtc[x]:IsEnabled() == true then
 				aParentChilds[tFriendlyName] = {
 					frameName = L["Bag-slot"]..(x + 1),
