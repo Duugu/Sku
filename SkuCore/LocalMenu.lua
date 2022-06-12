@@ -275,9 +275,9 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 	local tEmptyCounter = 1
 	local tCurrentBag
 	local tCurrentParentContainer = nil
-	local tBagResults = {}
+	local allBagResults = {}
+	local tBagResultsByBag = {}
 	local inventoryTooltipTextCache = {}
-	local allBagItems = {}
 
 	for frameNo = 1, 8 do
 		for itemNo = 1, 36 do
@@ -291,7 +291,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 						if bagId > 0 then
 							tCurrentBag = bagId
-							if not tBagResults[bagId] then
+							if not tBagResultsByBag[bagId] then
 
 								local bagName = L["Bag"] .. " " .. bagId
 								table.insert(aParentChilds, bagName)
@@ -306,7 +306,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 									childs = {},
 								}   
 
-								tBagResults[bagId] = { obj = aParentChilds[bagName], childs = {} }
+								tBagResultsByBag[bagId] = { obj = aParentChilds[bagName], childs = {} }
 							end
 						end
 
@@ -395,7 +395,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							end
 							if bagItemButton and string.find(containerFrameName, "ContainerFrame") then
 								if bagItemButton.textFirstLine then
-									bagItemButton.textFirstLine = (#tBagResults[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
+									bagItemButton.textFirstLine = (#tBagResultsByBag[bagId].childs + 1) .. " " .. bagItemButton.textFirstLine
 									tEmptyCounter = tEmptyCounter + 1
 								end
 							end
@@ -417,7 +417,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 						end
 						
-						table.insert(tBagResults[bagId].childs, aParentChilds[bagItemSlotName])
+						table.insert(tBagResultsByBag[bagId].childs, aParentChilds[bagItemSlotName])
 						if not string.find(aParentChilds[bagItemSlotName].textFirstLine, L["Empty"]) then
 							-- put a copy in all items that doesn't include the numbering in the textFirstLine
 							copy = {}
@@ -425,8 +425,8 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 								copy[k] = v
 							end
 							copy.textFirstLine = string.sub(copy.textFirstLine, string.find(copy.textFirstLine, " ") + 1)
-							table.insert(allBagItems, copy)
-							allBagItems[copy] = copy
+							table.insert(allBagResults, copy)
+							allBagResults[copy] = copy
 						end
 
 					end
@@ -435,7 +435,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 		end  
 	end
 
-	for i, v in pairs(tBagResults) do
+	for i, v in pairs(tBagResultsByBag) do
 		for ic, vc in pairs(v.childs) do
 			table.insert(v.obj.childs, vc)
 			v.obj.childs[vc] = vc
@@ -443,7 +443,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 	end
 
 	-- sort all items alphabetically
-	table.sort(allBagItems, function(item1, item2)
+	table.sort(allBagResults, function(item1, item2)
 		return item1.textFirstLine < item2.textFirstLine
 	end)
 
@@ -456,7 +456,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 			type = "Button",
 			textFirstLine = allItemsMenuItemName,
 			noMenuNumbers = true,
-			childs = allBagItems,
+			childs = allBagResults,
 		}
 	end
 
