@@ -312,6 +312,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 						local bagItemSlotName = L["Bag"] .. bagId .. "-" .. slotId
 						local tText = L["Empty"]
+						local isEmpty = true
 						if containerFrame:IsEnabled() == true then
 							aParentChilds[bagItemSlotName] = {
 								frameName = containerFrameName,
@@ -343,6 +344,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							local maybeText = getItemTooltipTextFromBagItem(bagItemButton.obj:GetParent():GetID(), bagItemButton.obj:GetID())
 							if maybeText then
 									local tText = maybeText
+								isEmpty = false
 									
 								if bagItemButton.obj.info then
 									if bagItemButton.obj.info.id then
@@ -379,6 +381,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 									if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
 										local tText = unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 										bagItemButton.textFirstLine, bagItemButton.textFull = ItemName_helper(tText)
+										isEmpty = false
 									end
 								end
 							end
@@ -387,10 +390,8 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 							if _G[containerFrameName .. "Count"] and not containerFrame.info then
 								if bagItemButton and _G[containerFrameName .. "Count"]:GetText() then
-									if not string.find(bagItemButton.textFirstLine, L["Empty"] .. " ") then
+									if not isEmpty then
 										bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. _G[containerFrameName .. "Count"]:GetText()
-									else
-										bagItemButton.textFirstLine = bagItemButton.textFirstLine
 									end
 								end
 							end
@@ -408,10 +409,8 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 								if not containerFrame.info.count then
 									bagItemButton.textFirstLine = bagItemButton.textFirstLine
 								else
-									if not string.find(bagItemButton.textFirstLine, L["Empty"] .. " ") and containerFrame.info.count > 1 then
+									if not isEmpty and containerFrame.info.count > 1 then
 										bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. containerFrame.info.count
-									else
-										bagItemButton.textFirstLine = bagItemButton.textFirstLine
 									end
 								end								
 							end							
@@ -420,7 +419,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 						
 						table.insert(tBagResultsByBag[bagId].childs, aParentChilds[bagItemSlotName])
 						-- if the item slot isn't empty, add it to allBagResults
-						if not string.find(aParentChilds[bagItemSlotName].textFirstLine, L["Empty"]) then
+						if not isEmpty then
 							-- create a copy that doesn't have the numbering in textFirstLine
 							copy = {}
 							for k, v in pairs(aParentChilds[bagItemSlotName]) do
