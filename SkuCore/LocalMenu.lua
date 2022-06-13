@@ -310,11 +310,12 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 							end
 						end
 
-						local bagItemSlotName = L["Bag"] .. bagId .. "-" .. slotId
+						local tFriendlyName = L["Bag"] .. bagId .. "-" .. slotId
 						local tText = L["Empty"]
 						local isEmpty = true
+						local bagItemButton
 						if containerFrame:IsEnabled() == true then
-							aParentChilds[bagItemSlotName] = {
+							aParentChilds[tFriendlyName] = {
 								frameName = containerFrameName,
 								RoC = "Child",
 								type = "Button",
@@ -325,7 +326,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 								childs = {},
 								isNewItem = C_NewItems.IsNewItem(bagId - 1, slotId),
 							}   
-							local bagItemButton = aParentChilds[bagItemSlotName]
+							bagItemButton = aParentChilds[tFriendlyName]
 							--get the onclick func if there is one
 							if bagItemButton.obj:IsMouseClickEnabled() == true then
 								if bagItemButton.obj:GetObjectType() == "Button" then
@@ -417,12 +418,12 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 						end
 						
-						tBagResultsByBag[bagId].childs[#tBagResultsByBag[bagId].childs + 1] = aParentChilds[bagItemSlotName]
+						tBagResultsByBag[bagId].childs[#tBagResultsByBag[bagId].childs + 1] = bagItemButton
 						-- if the item slot isn't empty, add it to allBagResults
 						if not isEmpty then
 							-- create a copy that doesn't have the numbering in textFirstLine
 							copy = {}
-							for k, v in pairs(aParentChilds[bagItemSlotName]) do
+							for k, v in pairs(bagItemButton) do
 								copy[k] = v
 							end
 							copy.textFirstLine = string.sub(copy.textFirstLine, string.find(copy.textFirstLine, " ") + 1)
