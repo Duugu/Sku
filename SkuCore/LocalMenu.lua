@@ -417,7 +417,7 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 
 						end
 						
-						table.insert(tBagResultsByBag[bagId].childs, aParentChilds[bagItemSlotName])
+						tBagResultsByBag[bagId].childs[#tBagResultsByBag[bagId].childs + 1] = aParentChilds[bagItemSlotName]
 						-- if the item slot isn't empty, add it to allBagResults
 						if not isEmpty then
 							-- create a copy that doesn't have the numbering in textFirstLine
