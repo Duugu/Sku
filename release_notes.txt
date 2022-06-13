@@ -2,6 +2,53 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------	
+Changes in Sku r27.12
+
+	Core
+		- New feature: Scanning for herbs and mineral veins
+			If you have mining and/or herbalism, then you have the Find Herbs/Find Minerals skills/spells. On enabeling those, nearby spawns of herbs/mineral veins will appear on the minimap, if you're getting close to them. "Close" can be something between 60 and 140 meters.
+			There are two new shortcuts to let the addon automatically scan and find those herbs and mineral veins on the minimap, and output the results.
+			CTRL + SHIFT + R: do a 50 meters range scan around your position
+			CTRL + SHIFT + F: do a 140 meters range scan around your position
+			As long as the check is running there is a sound.
+			The check can only done out of combat. It is automatically stopped if you get in combat during check.
+			The 50 meters range takes <1 second. The 140 meters range takes 4 seconds.
+			The addon will voice output all found ressource types.
+			Caution: Please don't hold Control durching the check. That will lead to empty results! (The scan is based on the game tooltip, and that is cleared while you hold Control.)
+			There are new options to control the herb/mineral vein types that the scan is detecting: Core > Options > Ressource Scan
+			There you can enable all different herb/mineral vein node types. As default all herbs and nodes are enabled.
+		- Fixed a bug in the key bind menu. Missing bind options (like B for Toggle Backpack) should now be availabe.
+		- The pet action bar is available for configuration (Core > Action bars).
+			You can't remove the six default pet control actions (aggressive, passive, defensive and attack, wait follow). But you can move those actions to other action buttons.
+			That means, there are only up to 4 action buttons left for special pet spells. (Pet bar has 10 slots.)
+			If you are trying to remove the default control action, they will be automatically set to the bar again.
+		- Fixed an issue with auction house scanning on high populated servers. Scan process should not get stuck anymore.
+		- Limited the amount of auction house history price data that is recorded.
+			Unlimited storage of history data is most probably the reason for unexpected resets of all addon settings.
+			The addon now stores a maximum of 1.5M price data records. If there are more records, then the oldest records are deleted.
+		- The addon isn't doing automatic auction house full scans anymore.
+			Previously there was a full scan on opening the auction house, if a full scan was possible (only once every 15 minutes). That feature is removed, as is leads to issues on high populated servers (with a lot of auctions).
+			Now full scans need to be triggered manually via the Update offline database option in the auction house menu.
+			The offline database in the auction house menu and the price history data in item tooltips are based on those full scan data. If you don't manually trigger full scans, it won't be populated/updated. So, if you are using the offline database and/or the price history data, and if you would like to have up-to-date data, then you regulary need to use the Update offline database option.
+		- Fixed a missing translation in action house bid workflow.
+		- Fixed the bid/buy workflow for multiple actions to (hopefully) prevent the addon from bidding/buying incorrect auctions.
+
+	Navigation
+		- Added the terms "herbalism" and "mining" to waypoint names for herbs and mineral veins for easier filtering.
+		- Changed the key binds to open the visual route data maps, to avoid unintenional use.
+			CTRL + SHIFT + F changed to CTRL + SHIFT + K 
+			CTRL + SHIFT + R changed to CTRL + SHIFT + L
+
+	Mapdata
+		- Fixed another bug with the translation of route data. There shouldn't be any more broken routes.
+		- Fixed missing routes in Ghostlands.
+		- Added more routes all over the world.
+
+	Quest
+		- Fixed the warlock Incubus quests (Devourer of Souls quest chain).
+		- Fixed quest log errors in dungeons.
+
 
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r27.11

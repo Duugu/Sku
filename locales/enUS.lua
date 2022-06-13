@@ -1392,3 +1392,6 @@ L["mining nodes"] = "mining nodes"
 L["Questziel"] = "quest target"
 
 L["Bereitschaft check"] = "ready check"
+
+L["herbalism"] = "herbalism"
+L["mining"] = "mining"

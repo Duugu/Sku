@@ -324,10 +324,7 @@ function SkuQuest:GetQuestTitlesList()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:CheckQuestProgress(aSilent)
-	--dprint("CheckQuestProgress(aSilent)", aSilent, SkuOptions.db.profile[MODULE_NAME].CheckQuestProgressList)
-	--if not SkuOptions.db.profile[MODULE_NAME].CheckQuestProgressList then
-		--SkuOptions.db.profile["SkuQuest"].CheckQuestProgressList  = {}
-	--end
+	--print("CheckQuestProgress(aSilent)", aSilent, SkuOptions.db.char["SkuQuest"].CheckQuestProgressList) 
 	if not SkuOptions.db.char[MODULE_NAME] then
 		SkuOptions.db.char["SkuQuest"]  = {}
 	end
@@ -347,34 +344,34 @@ function SkuQuest:CheckQuestProgress(aSilent)
 		if not isHeader then
 
 			if not SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID] then
-			--dprint(questID, "new objective in db")
+				--print(questID, "  new objective in db")
 				table.insert(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList, questID)
 				SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID] = {
 					["objectives"] = {},
-					}
+				}
 			end
 
 			local numObjectives = GetNumQuestLeaderBoards(questLogID) --number of objectives for a given quest questID
 			if ( numObjectives > 0 ) then
 				local objectivesChanged = false
 				local objectivesCompleted = 0
-				for j=1, numObjectives do
+				for j = 1, numObjectives do
 
 					local text, ttype, finished = GetQuestLogLeaderBoard(j, questLogID)
+					--print("    text, ttype, finished", text, ttype, finished, aSilent)
 					if not aSilent then
-						--dprint("text, ttype, finished", text, ttype, finished)
 						if type(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID]) == "table" then
 							if not SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] then
 								-- new objective
-								--dprint("new objective", j)
+								--print("      new objective", j)
 								table.insert(SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives, j)
 								SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] = text
 							else
 								-- updated objective
-								--dprint("updated objective", j, SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j], "-", text)
+								--print("      updated objective", j, SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j], "-", text)
 								if SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j] ~= text then
 									objectivesChanged = true
-									--dprint("success 1")
+									--print("         success 1", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList[questID].objectives[j], text)
 									if not aSilent then
 										SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
 									end
@@ -384,7 +381,6 @@ function SkuQuest:CheckQuestProgress(aSilent)
 						end
 						if ( finished ) then
 							objectivesCompleted = objectivesCompleted + 1
-							--PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\sounds_non-voice\\unused\\success\\3.mp3", "Dialog")
 						end
 					end
 				end
@@ -968,19 +964,20 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:QUEST_LOG_UPDATE(...)
-	--dprint("QUEST_LOG_UPDATE", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
-	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
+	--print("QUEST_LOG_UPDATE", SkuOptions.db.char[MODULE_NAME])
+	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag, SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UPDATE_FACTION(...)
-	--dprint("UPDATE_FACTION", SkuOptions.db.char[MODULE_NAME].)
-	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
+	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
+	--print("UPDATE_FACTION", SkuOptions.db.char[MODULE_NAME])
+	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag, SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UNIT_QUEST_LOG_CHANGED(...)
-	--dprint("UNIT_QUEST_LOG_CHANGED", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
+	--print("UNIT_QUEST_LOG_CHANGED", SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 end
 
@@ -997,11 +994,13 @@ function SkuQuest:PLAYER_LOGIN(...)
 	SkuDB:FixObjectsDB()
 	SkuQuest:BuildQuestZoneCache()
 
+	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	C_Timer.NewTimer(10, function() PLAYER_ENTERING_WORLD_flag = false end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:PLAYER_ENTERING_WORLD(...)
-	--dprint("PLAYER_ENTERING_WORLD", SkuOptions.db.char[MODULE_NAME].CheckQuestProgressList)
+	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
+	--print("PLAYER_ENTERING_WORLD", SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
 
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)

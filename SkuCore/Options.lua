@@ -439,7 +439,7 @@ local tActionBarData = {
 	MultiBarBottomLeft = {friendlyName = L["Bottom Multi Bar Left"], buttonName = "MultiBarBottomLeftButton", command = "MULTIACTIONBAR1BUTTON",},
 	MultiBarBottomRight = {friendlyName = L["Bottom Multi Bar Right"], buttonName = "MultiBarBottomRightButton", command = "MULTIACTIONBAR2BUTTON",},
 	MainMenuBar = {friendlyName = L["Main Action Bar"], buttonName = "ActionButton", command = "ACTIONBUTTON",},
-	PetBar = {friendlyName = L["Pet Action Bar"], buttonName = "", command = "BONUSACTIONBUTTON",},
+	PetBar = {friendlyName = L["Pet Action Bar"], buttonName = "PetActionButton", command = "BONUSACTIONBUTTON",},
 	ShapeshiftBar = {friendlyName = L["Stance Action Bar"], buttonName = "", command = "SHAPESHIFTBUTTON",},
 }
 
@@ -529,11 +529,29 @@ local function ItemsMenuBuilder(aParentEntry)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function SpellBookMenuBuilder(aParentEntry, aBooktype)
+local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWithCurrentPetControlAction)
+	aIsPet = aIsPet or false
 	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Assign nothing"]}, SkuGenericMenuItem)
-	for x = 1, GetNumSpellTabs() do
+
+	local tNumSpellTabs = 1
+	if aIsPet == false then
+		tNumSpellTabs = GetNumSpellTabs()
+	end
+
+	for x = 1, tNumSpellTabs do
 		local name, texture, offset, numEntries, isGuild, offspecID = GetSpellTabInfo(x)
-		local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {name}, SkuGenericMenuItem)
+		local tNumEntries, token = HasPetSpells()
+		if aIsPet == true then
+			numEntries = tNumEntries or 0
+		end
+		
+		local tNewMenuSubEntry
+		if aIsPet == true then
+			tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {_G["PET_TYPE_"..token]}, SkuGenericMenuItem)
+		else
+			tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {name}, SkuGenericMenuItem)
+		end
+
 		tNewMenuSubEntry.dynamic = true
 		tNewMenuSubEntry.filterable = true
 		tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
@@ -544,26 +562,49 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype)
 			if numEntries > 0 then
 				for y = offset + 1, offset + numEntries do
 					local spellName, spellSubName, spellID = GetSpellBookItemName(y, aBooktype) --BOOKTYPE_PET
-
-					local tIsPassive = IsPassiveSpell(spellID)
-					local isKnown = IsSpellKnown(spellID, false)
-					if not tIsPassive and isKnown then
-						local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {spellName..";"..spellSubName}, SkuGenericMenuItem)
-						tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
-							self.selectTarget.spellID = spellID
-							_G["SkuScanningTooltip"]:ClearLines()
-							_G["SkuScanningTooltip"]:SetSpellByID(spellID)
-							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-									local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-									SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+					if spellName then
+						local tIsPassive = IsPassiveSpell(spellID)
+						local isKnown = IsSpellKnown(spellID, aIsPet)
+						if not tIsPassive and isKnown then
+							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {spellName..";"..spellSubName}, SkuGenericMenuItem)
+							tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
+								self.selectTarget.petDefaultControlId = nil
+								self.selectTarget.spellID = spellID
+								_G["SkuScanningTooltip"]:ClearLines()
+								_G["SkuScanningTooltip"]:SetSpellByID(spellID)
+								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+										local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+									end
 								end
 							end
+							tHasEntries = true
 						end
-						tHasEntries = true
 					end
 				end
 			end
+			if aIsPet == true then
+				for i, v in pairs(aButtonsWithCurrentPetControlAction) do
+					dprint("aButtonsWithCurrentPetControlAction", i, v, _G[i])
+					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {_G[i]}, SkuGenericMenuItem)
+					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.spellID = nil
+						self.selectTarget.petDefaultControlId = v
+						_G["SkuScanningTooltip"]:ClearLines()
+						_G["SkuScanningTooltip"]:SetPetAction(v)
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+								local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+							end
+						end						
+					end
+					tHasEntries = true
+
+				end
+			end
+
 			if tHasEntries == false then
 				local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
 			end
@@ -589,6 +630,11 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 		elseif aActionType == "macro" then
 			local name, icon, body, isLocal = GetMacroInfo(aId)
 			rName = L["Macro"]..";"..name
+		elseif aActionType == "pet" then
+			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(aId);
+			if name then
+				rName = _G[name] or name
+			end
 		--[[
 		elseif aActionType == "mount" then
 		elseif aActionType == "companion" then
@@ -781,6 +827,174 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				SpellBookMenuBuilder(self, aBooktype)
 				ItemsMenuBuilder(self)
 				MacrosMenuBuilder(self)
+				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Bind key"]}, SkuGenericMenuItem)
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
+	if not aParentEntry or not aActionBarName then return end
+
+	local tButtonsWithCurrentPetControlAction = {
+		PET_MODE_AGGRESSIVE = -1,
+		PET_MODE_PASSIVE = -1,
+		PET_MODE_DEFENSIVE = -1,
+		PET_ACTION_ATTACK = -1,
+		PET_ACTION_WAIT = -1,
+		PET_ACTION_FOLLOW = -1,
+	}
+
+	for x = 1, NUM_PET_ACTION_SLOTS do
+		local tButtonObj = _G[tActionBarData[aActionBarName].buttonName..x]
+		if tButtonObj then
+			local name = GetPetActionInfo(x)
+			if name and tButtonsWithCurrentPetControlAction[name] then
+				tButtonsWithCurrentPetControlAction[name] = x
+			end
+		end
+	end
+
+	for x = 1, NUM_PET_ACTION_SLOTS do
+		local tButtonObj = _G[tActionBarData[aActionBarName].buttonName..x]
+		if tButtonObj then
+			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(x);
+			local tButtonName = ButtonContentNameHelper("pet", x, subType, aActionBarName, x) --_G[name] or name or L["empty"] 
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Button"].." "..x..";"..tButtonName}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.buttonObj = _G[tActionBarData[aActionBarName].buttonName..x]
+			tNewMenuEntry.id = x
+			tNewMenuEntry.OnEnter = function(self, aValue, aName)
+				self.spellID = nil
+				self.itemID = nil
+				self.macroID = nil
+				if self.buttonObj:GetID() and name then
+					_G["SkuScanningTooltip"]:ClearLines()
+					_G["SkuScanningTooltip"]:SetPetAction(x)
+					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+							local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+						end
+					end
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				dprint("OnAction", "aValue", aValue, "aName", aName, "petDefaultControlId", self.spellID)
+				local tButtonObjId = self.buttonObj:GetID()
+				if aName == L["Assign nothing"] then
+					PickupPetAction(self.buttonObj:GetID())
+					ClearCursor()
+				elseif self.spellID and not self.petDefaultControlId then
+					ClearCursor()
+					if self.spellID then
+						PickupPetSpell(self.spellID)
+						PickupPetAction(self.buttonObj:GetID())
+						ClearCursor()
+					end					
+				elseif self.petDefaultControlId then
+					PickupPetAction(self.petDefaultControlId)
+					PickupPetAction(self.buttonObj:GetID())
+					ClearCursor()
+				elseif aName == L["Bind key"] then
+					SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2)						
+					local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
+					f.menuTarget = self
+					f:SetSize(80, 22)
+					f:SetText("SkuCoreBindTest")
+					f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
+					f:SetPoint("CENTER")
+					f:SetScript("OnClick", function(self, aKey, aB)
+						--dprint(aKey, aB)
+						local tBlockedKeys = {
+							["ENTER"] = true,
+							["RIGHT"] = true,
+							["LEFT"] = true,
+							["DOWN"] = true,
+							["UP"] = true,
+							["a"] = true,
+							["w"] = true,
+							["d"] = true,
+							["s"] = true,
+						}
+						local tBlockedKeysParts = {
+							"CTRL%-SHIFT%-F",
+							"SHIFT%-F",
+							"BUTTON1",
+							"BUTTON2",
+							"BUTTON3",
+							"BUTTON4",
+							"BUTTON5",
+						}
+
+						if tBlockedKeys[aKey] or tBlockedKeys[string.lower(aKey)] then  return end
+						for z = 1, #tBlockedKeysParts do
+							if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then return end
+						end
+
+						if aKey ~= "ESCAPE" then
+							ButtonContentNameHelper("pet", tButtonObjId, subType, aActionBarName, tButtonObjId)
+							SetBinding(aKey)
+							local key1, key2 = GetBindingKey(tActionBarData[aActionBarName].command..x)
+							if key1 then SetBinding(key1) end
+							if key2 then SetBinding(key2) end
+							local ok = SetBinding(aKey , tActionBarData[aActionBarName].command..x)
+							SaveBindings(GetCurrentBindingSet())
+							--local actionType, id, subType = GetActionInfo(self.menuTarget.buttonObj.action)
+							self.menuTarget.name = L["Button"].." "..x..";"..ButtonContentNameHelper("pet", tButtonObjId, subType, aActionBarName, tButtonObjId)
+							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
+							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+							SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..aKey, true, true, 0.2)						
+						else
+							SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2)						
+						end
+						ClearOverrideBindings(self)
+					end)
+					SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
+
+					local tModifierKeys = {
+						"",
+						"CTRL-",
+						"SHIFT-",
+						"ALT-",
+						"CTRL-SHIFT-",
+						"CTRL-ALT-",
+						"SHIFT-ALT-",
+						"SHIFT-SHIFT-ALT-",
+					}
+
+					for i, v in pairs(_G) do 
+						if string.find(i, "KEY_") == 1 then 
+							if not string.find(i, "ESC") then
+								--dprint(i, v, string.find(i, "KEY_"), string.sub(i, 5))
+								for x = 1, #tModifierKeys do
+									SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
+								end
+							end
+						end 
+					end
+
+					local tStandardChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ö", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", ",", ".", "-", "#", "+", "ß", "´", "<"}
+					local tStandardNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",}
+					for x = 1, #tStandardChars do
+						for y = 1, #tModifierKeys do
+							SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
+						end
+					end
+					for x = 1, #tStandardNumbers do
+						for y = 1, #tModifierKeys do
+							SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
+						end
+					end
+				end
+
+				self.name = L["Button"].." "..x..";"..ButtonContentNameHelper("pet", self.id, subType, aActionBarName, self.id)
+				self.spellID = nil
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SpellBookMenuBuilder(self, aBooktype, true, tButtonsWithCurrentPetControlAction)
 				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Bind key"]}, SkuGenericMenuItem)
 			end
 		end
@@ -1222,6 +1436,18 @@ function SkuCore:MenuBuilder(aParentEntry)
 			ActionBarMenuBuilder(self, "MultiBarLeft", BOOKTYPE_SPELL)
 		end
 
+
+
+
+		if HasPetSpells() then
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["PetBar"].friendlyName}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.BuildChildren = function(self)
+				PetActionBarMenuBuilder(self, "PetBar", BOOKTYPE_PET)
+			end
+		end
+
 		--local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Einstellungen"}, SkuGenericMenuItem)
 		--tNewMenuEntry.dynamic = true
 		--tNewMenuEntry.BuildChildren = function(self)
@@ -1310,8 +1536,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 							tCurrentCategory = tCategory
 							if not tCurrentCategory then 
 								tCurrentCategory = "ADDONS" 
-							end							
-							tBindings[tCurrentCategory] = {}
+							end	
+							tBindings[tCurrentCategory] = tBindings[tCurrentCategory] or {}
 						end
 						tBindings[tCurrentCategory][tCommand] = {key1 = tKey1, key2 = tKey2, index = x}
 					end	

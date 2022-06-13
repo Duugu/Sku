@@ -1388,3 +1388,6 @@ L["mining nodes"] = "bergbau"
 L["Questziel"] = "Questziel"
 
 L["Bereitschaft check"] = "Bereitschaft check"
+
+L["herbalism"] = "kräuterkunde"
+L["mining"] = "bergbau"

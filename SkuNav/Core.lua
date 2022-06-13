@@ -56,10 +56,10 @@ SkuNav.MaxMetaWPs = 200
 SkuNav.MaxMetaEntryRange = 300
 SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
 
-local WaypointCache = {}
-local WaypointCacheLookupAll = {}
+WaypointCache = {}
+WaypointCacheLookupAll = {}
 local WaypointCacheLookupPerContintent = {}
-function SkuNav:CreateWaypointCache()
+function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 	dprint("CreateWaypointCache")
 	local beginTime = debugprofilestop()
 
@@ -121,6 +121,24 @@ function SkuNav:CreateWaypointCache()
 										byName = nil,
 									},
 								}
+								if aAddLocalizedNames then
+									for _, tLocale in pairs(aAddLocalizedNames) do
+										local tSubname = SkuDB.NpcData.Names[tLocale][i][2]
+										local tRolesString = ""
+										if not tSubname then
+											local tRoles = SkuNav:GetNpcRoles(v[1], i, tLocale)
+											if #tRoles > 0 then
+												for i, v in pairs(tRoles) do
+													tRolesString = tRolesString..";"..v
+												end
+												tRolesString = tRolesString..""
+											end
+										else
+											tRolesString = tRolesString..";"..tSubname
+										end
+										WaypointCache[tNewIndex][tLocale] = SkuDB.NpcData.Names[tLocale][i][1]..tRolesString..";"..tData.AreaName_lang[tLocale]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+									end
+								end
 							end
 						end
 					end
@@ -130,6 +148,11 @@ function SkuNav:CreateWaypointCache()
 	end
 
 	--add objects
+	local tObjectTranslations = {
+		["enUS"]  = "OBJECT",
+		["deDE"]  = "OBJEKT",
+	}
+
 	for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
 		--we don't want stuff like ores, herbs, etc.
 		if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints == true then
@@ -148,13 +171,22 @@ function SkuNav:CreateWaypointCache()
 									local tWorldX, tWorldY = worldPosition:GetXY()
 	
 									local tNewIndex = #WaypointCache + 1
-									WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
+
+									local tRessourceType = ""
+									if SkuDB.objectResourceNames[Sku.Loc][v] == 1 then
+										tRessourceType = ";"..L["herbalism"]
+									elseif SkuDB.objectResourceNames[Sku.Loc][v] == 2 then
+										tRessourceType = ";"..L["mining"]
+									end
+
+
+									WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
 									if not WaypointCacheLookupPerContintent[tData.ContinentID] then
 										WaypointCacheLookupPerContintent[tData.ContinentID] = {}
 									end
-									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
 									WaypointCache[tNewIndex] = {
-										name = L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
+										name = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
 										role = "",
 										typeId = 3,
 										dbIndex = i,
@@ -172,6 +204,12 @@ function SkuNav:CreateWaypointCache()
 											byName = nil,
 										},
 									}
+									if aAddLocalizedNames then
+										for _, tLocale in pairs(aAddLocalizedNames) do
+											WaypointCache[tNewIndex][tLocale] = tObjectTranslations[tLocale]..";"..i..";"..SkuDB.objectLookup[tLocale][i]..tRessourceType..";"..tData.AreaName_lang[tLocale]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+										end
+									end									
+
 								end
 							end
 						end
@@ -1939,7 +1977,7 @@ function SkuNav:CreateSkuNavMain()
 
 	tFrame:SetScript("OnClick", function(self, a, b)
 
-		if a == "CTRL-SHIFT-R" then
+		if a == "CTRL-SHIFT-L" then
 			if Sku.testMode == true then
 				-- NAMEPLATE TEST -->
 				SkuCore:PingNameplates()
@@ -1949,7 +1987,7 @@ function SkuNav:CreateSkuNavMain()
 			end
 
 		end
-		if a == "CTRL-SHIFT-F" then
+		if a == "CTRL-SHIFT-K" then
 			SkuOptions.db.profile[MODULE_NAME].showSkuMM = SkuOptions.db.profile[MODULE_NAME].showSkuMM == false
 			SkuNav:SkuNavMMOpen()
 		end
@@ -2039,13 +2077,13 @@ function SkuNav:CreateSkuNavMain()
 	tFrame:Hide()
 	
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Z", tFrame:GetName(), "CTRL-SHIFT-Z")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F", tFrame:GetName(), "CTRL-SHIFT-F")
+	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-K", tFrame:GetName(), "CTRL-SHIFT-K")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Q", tFrame:GetName(), "CTRL-SHIFT-Q")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-W", tFrame:GetName(), "CTRL-SHIFT-W")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-S", tFrame:GetName(), "CTRL-SHIFT-S")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-O", tFrame:GetName(), "CTRL-SHIFT-O")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-P", tFrame:GetName(), "CTRL-SHIFT-P")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-R", tFrame:GetName(), "CTRL-SHIFT-R")
+	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-L", tFrame:GetName(), "CTRL-SHIFT-L")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-M", tFrame:GetName(), "SHIFT-M")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-F5", tFrame:GetName(), "SHIFT-F5")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F5", tFrame:GetName(), "CTRL-SHIFT-F5")
@@ -2334,6 +2372,10 @@ function SkuNav:GetAllLinkedWPsInRangeToCoords(aX, aY, aRange)
 	local tFoundWps = {}
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 	local tPlayerUIMapId = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()) or SkuNav:GetCurrentAreaId()
+
+	if not tPlayerContinentID then
+		return tFoundWps
+	end
 
 	for tIndex, tName in pairs(WaypointCacheLookupPerContintent[tPlayerContinentID]) do
 		local tWpData = WaypointCache[tIndex]
@@ -2954,9 +2996,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local GetNpcRolesCache = {}
-function SkuNav:GetNpcRoles(aNpcName, aNpcId)
+function SkuNav:GetNpcRoles(aNpcName, aNpcId, aLocale)
+	aLocale = aLocale or Sku.Loc
 	if not aNpcId then
-		for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
+		for i, v in pairs(SkuDB.NpcData.Names[aLocale]) do
 			if v[1] == aNpcName then
 				aNpcId = i
 				break
@@ -2964,12 +3007,16 @@ function SkuNav:GetNpcRoles(aNpcName, aNpcId)
 		end
 	end
 
-	if GetNpcRolesCache[aNpcId] then
-		return GetNpcRolesCache[aNpcId]
+	if not GetNpcRolesCache[aLocale] then
+		GetNpcRolesCache[aLocale] = {}
+	end
+
+	if GetNpcRolesCache[aLocale][aNpcId] then
+		return GetNpcRolesCache[aLocale][aNpcId]
 	end
 
 	local rRoles = {}
-	for i, v in pairs(SkuNav.NPCRolesToRecognize[Sku.Loc]) do
+	for i, v in pairs(SkuNav.NPCRolesToRecognize[aLocale]) do
 		if SkuDB.NpcData.Data[aNpcId] then
 			--print(aNpcId, SkuDB.NpcData.Data[aNpcId])
 			if bit.band(i, SkuDB.NpcData.Data[aNpcId][SkuDB.NpcData.Keys["npcFlags"]]) > 0 then
@@ -2979,7 +3026,7 @@ function SkuNav:GetNpcRoles(aNpcName, aNpcId)
 		end
 	end
 
-	GetNpcRolesCache[aNpcId] = rRoles
+	GetNpcRolesCache[aLocale][aNpcId] = rRoles
 	return rRoles
 end
 

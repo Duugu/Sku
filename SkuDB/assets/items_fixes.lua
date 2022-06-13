@@ -231,7 +231,39 @@
             [itemKeys.subClass] = 0,
             [itemKeys.vendors] = {24495,27489},
         },
-
+        --wl sukk quest
+        [190179] = {
+            [itemKeys.name] = "Avelina's Heart",
+            [itemKeys.npcDrops] = {185333},
+            [itemKeys.relatedQuests] = {65593},
+        },
+        [190180] = {
+            [itemKeys.name] = "Isaac's Heart",
+            [itemKeys.npcDrops] = {185334},
+            [itemKeys.relatedQuests] = {65593},
+        },
+        [190181] = {
+            [itemKeys.name] = "Lovers' Hearts",
+            [itemKeys.relatedQuests] = {65597},
+        },
+        [190186] = {
+            [itemKeys.name] = "Wooden Figurine",
+            [itemKeys.relatedQuests] = {65603},
+        },
+        [190187] = {
+            [itemKeys.name] = "Withered Scarf",
+            [itemKeys.relatedQuests] = {65604},
+        },
+        [190232] = {
+            [itemKeys.name] = "Withered Scarf",
+            [itemKeys.npcDrops] = {3782,3784},
+            [itemKeys.relatedQuests] = {65610},
+        },
+        [190309] = {
+            [itemKeys.name] = "Wooden Figurine",
+            [itemKeys.objectDrops] = {400013},
+            [itemKeys.relatedQuests] = {65602},
+        },        
 
         -- Below are fake items which can be used to show special quest "objectives" as requiredSourceItem.
         -- For example this is used for quest 10129 to show the NPC you have to talk with to start the flight
@@ -258,12 +290,19 @@
 
 function SkuDB:FixItemDB()
     for i, v in pairs(SkuItemFixes) do
+        local tNew = false
         for k, val in pairs(v) do
             if SkuDB.itemDataTBC[i] then
                SkuDB.itemDataTBC[i][k] = val
             else
                 SkuDB.itemDataTBC[i] = v
+                tNew = true
             end
         end
+        if tNew == true then
+            SkuDB.itemLookup["deDE"][i] = SkuDB.itemDataTBC[i][itemKeys.name]
+            SkuDB.itemLookup["enUS"][i] = SkuDB.itemDataTBC[i][itemKeys.name]
+        end
+
     end
 end

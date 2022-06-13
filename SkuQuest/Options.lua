@@ -67,156 +67,158 @@ local tStatesFriendly = {["false"] = L["No"], ["true"] = L["Yes"], ["nil"] = L["
 local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 	local tSections = {}
 
-	local i = aQuestID
+	if aQuestID then
+		local i = aQuestID
 
-	table.insert(tSections, L["Quest ID"]..": "..i)
+		table.insert(tSections, L["Quest ID"]..": "..i)
 
-	table.insert(tSections, SkuDB.questLookup[Sku.Loc][i][1]) --de name
+		table.insert(tSections, SkuDB.questLookup[Sku.Loc][i][1]) --de name
 
-	local tCurrentQuestLogQuestsTable = {}
-	local numEntries = GetNumQuestLogEntries()
-	if (numEntries > 0) then
-		for questLogID = 1, numEntries do
-			local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
-			tCurrentQuestLogQuestsTable[questID] = true
-		end
-	end
-	if not tCurrentQuestLogQuestsTable[aQuestID] then
-		table.insert(tSections, L["Completed"]..": "..tStatesFriendly[tostring(C_QuestLog.IsQuestFlaggedCompleted(i))]) --https://wowpedia.fandom.com/wiki/API_C_QuestLog.GetAllCompletedQuestIDs
-	else
-		table.insert(tSections, L["Completed: In log"])
-	end
-
-	if SkuDB.InternalAreaTable[aZoneID] then
-		table.insert(tSections, L["Zone"]..": "..SkuDB.InternalAreaTable[aZoneID].AreaName_lang[Sku.Loc])
-	else
-		table.insert(tSections, L["Zone: Unknown"])
-	end
-
-	table.insert(tSections, L["Level"]..": "..SkuDB.questDataTBC[i][SkuDB.questKeys["questLevel"]].." ("..SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]]..")")
-
-	if SkuDB.questLookup[Sku.Loc][i][3] then
-		table.insert(tSections, L["Objectives"].."\r\n"..(SkuDB.questLookup[Sku.Loc][i][3][1] or ""))
-	else
-		table.insert(tSections, L["Objectives"].."\r\n")
-	end
-	--table.insert(tSections, "Questtext\r\n"..questDescription
-
-	local rRaces = {}
-	local tFlagH = nil
-	local tFlagA = nil
-	for iR, vR in pairs(SkuDB.raceKeys) do
-		if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]]) > 0 then
-			table.insert(rRaces, iR)
-			if iR == "ALL_HORDE" then
-				tFlagH = true
-			end
-			if iR == "ALL_ALLIANCE" then
-				tFlagA = true
+		local tCurrentQuestLogQuestsTable = {}
+		local numEntries = GetNumQuestLogEntries()
+		if (numEntries > 0) then
+			for questLogID = 1, numEntries do
+				local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
+				tCurrentQuestLogQuestsTable[questID] = true
 			end
 		end
-	end
-	local tRaceText = ""
-	if tFlagH then
-		tRaceText = tRaceText..SkuQuest.racesFriendly["ALL_HORDE"]..";"
-	end
-	if tFlagA then
-		tRaceText = tRaceText..SkuQuest.racesFriendly["ALL_ALLIANCE"]..";"
-	end
-	if not tFlagA and not tFlagH then
-		for i, v in pairs(rRaces) do
-			--dprint(i, v)
-			tRaceText = tRaceText..SkuQuest.racesFriendly[v]..";"
+		if not tCurrentQuestLogQuestsTable[aQuestID] then
+			table.insert(tSections, L["Completed"]..": "..tStatesFriendly[tostring(C_QuestLog.IsQuestFlaggedCompleted(i))]) --https://wowpedia.fandom.com/wiki/API_C_QuestLog.GetAllCompletedQuestIDs
+		else
+			table.insert(tSections, L["Completed: In log"])
 		end
-	end
-	table.insert(tSections, L["Races"]..": "..tRaceText)
 
-	local tClasses = {}
-	for iR, vR in pairs(SkuDB.classKeys) do
-		if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]] then
-			if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]]) > 0 then
-				table.insert(tClasses, iR)
-			end
+		if SkuDB.InternalAreaTable[aZoneID] then
+			table.insert(tSections, L["Zone"]..": "..SkuDB.InternalAreaTable[aZoneID].AreaName_lang[Sku.Loc])
+		else
+			table.insert(tSections, L["Zone: Unknown"])
 		end
-	end
-	local tClassText = ""
-	for i, v in pairs(tClasses) do
-		--dprint(i, v)
-		tClassText = tClassText..SkuQuest.classesFriendly[v]..";"
-	end
-	table.insert(tSections, L["Classes"]..": "..tClassText)
 
-	if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
-		local preQuestGroup = ""
-		for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]]) do
-			preQuestGroup = preQuestGroup.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
-		end
-		table.insert(tSections, L["Pre Quests"]..": "..preQuestGroup)
-	end
-	if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
-		local preQuestSingle = ""
-		for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]]) do
-			preQuestSingle = preQuestSingle.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
-		end
-		table.insert(tSections, L["Pre Quest"]..": "..preQuestSingle)
-	end
-	if SkuDB.questDataTBC[i][SkuDB.questKeys["inGroupWith"]] then -- table: {quest(int)} - to be completed additional to this before next in series
-		local inGroupWith = ""
-		for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["inGroupWith"]]) do
-			inGroupWith = inGroupWith.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
-		end
-		table.insert(tSections, L["Quests group"]..": "..inGroupWith)
-	end
+		table.insert(tSections, L["Level"]..": "..SkuDB.questDataTBC[i][SkuDB.questKeys["questLevel"]].." ("..SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]]..")")
 
-	if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - to be completed additional to this before next in series
-		if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then
-			if SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]] then
-				if SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1] then
-					local parentQuest = ""
-					parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
-					table.insert(tSections, L["Parent quest"]..": "..parentQuest)
+		if SkuDB.questLookup[Sku.Loc][i][3] then
+			table.insert(tSections, L["Objectives"].."\r\n"..(SkuDB.questLookup[Sku.Loc][i][3][1] or ""))
+		else
+			table.insert(tSections, L["Objectives"].."\r\n")
+		end
+		--table.insert(tSections, "Questtext\r\n"..questDescription
+
+		local rRaces = {}
+		local tFlagH = nil
+		local tFlagA = nil
+		for iR, vR in pairs(SkuDB.raceKeys) do
+			if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]]) > 0 then
+				table.insert(rRaces, iR)
+				if iR == "ALL_HORDE" then
+					tFlagH = true
+				end
+				if iR == "ALL_ALLIANCE" then
+					tFlagA = true
 				end
 			end
 		end
-	end
-
-
-	--if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- 
-		--table.insert(tSections, "parentQuest: "..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]])
-	--end
-	--if SkuDB.questDataTBC[i][SkuDB.questKeys["childQuests"]] then -- table: {quest(int)} - to be completed additional to this before next in series
-		--local childQuests = ""
-		--for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["childQuests"]]) do
-			--childQuests = childQuests..";"..iR.."-"..vR
-		--end
-		--table.insert(tSections, "childQuests: "..childQuests)
-	--end									
-
-	local tFlags = {}
-	for iR, vR in pairs(SkuDB.QuestFlags) do
-		if SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]] then
-			--dprint(iR, vR, SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]])
-			if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]]) > 0 then
-				table.insert(tFlags, iR)
+		local tRaceText = ""
+		if tFlagH then
+			tRaceText = tRaceText..SkuQuest.racesFriendly["ALL_HORDE"]..";"
+		end
+		if tFlagA then
+			tRaceText = tRaceText..SkuQuest.racesFriendly["ALL_ALLIANCE"]..";"
+		end
+		if not tFlagA and not tFlagH then
+			for i, v in pairs(rRaces) do
+				--dprint(i, v)
+				tRaceText = tRaceText..SkuQuest.racesFriendly[v]..";"
 			end
 		end
+		table.insert(tSections, L["Races"]..": "..tRaceText)
+
+		local tClasses = {}
+		for iR, vR in pairs(SkuDB.classKeys) do
+			if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]] then
+				if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]]) > 0 then
+					table.insert(tClasses, iR)
+				end
+			end
+		end
+		local tClassText = ""
+		for i, v in pairs(tClasses) do
+			--dprint(i, v)
+			tClassText = tClassText..SkuQuest.classesFriendly[v]..";"
+		end
+		table.insert(tSections, L["Classes"]..": "..tClassText)
+
+		if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
+			local preQuestGroup = ""
+			for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]]) do
+				preQuestGroup = preQuestGroup.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
+			end
+			table.insert(tSections, L["Pre Quests"]..": "..preQuestGroup)
+		end
+		if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
+			local preQuestSingle = ""
+			for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]]) do
+				preQuestSingle = preQuestSingle.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
+			end
+			table.insert(tSections, L["Pre Quest"]..": "..preQuestSingle)
+		end
+		if SkuDB.questDataTBC[i][SkuDB.questKeys["inGroupWith"]] then -- table: {quest(int)} - to be completed additional to this before next in series
+			local inGroupWith = ""
+			for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["inGroupWith"]]) do
+				inGroupWith = inGroupWith.."\r\n"..iR.." "..SkuDB.questLookup[Sku.Loc][vR][1]
+			end
+			table.insert(tSections, L["Quests group"]..": "..inGroupWith)
+		end
+
+		if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - to be completed additional to this before next in series
+			if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then
+				if SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]] then
+					if SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1] then
+						local parentQuest = ""
+						parentQuest = parentQuest.."\r\n"..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]].." "..SkuDB.questLookup[Sku.Loc][SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]]][1]
+						table.insert(tSections, L["Parent quest"]..": "..parentQuest)
+					end
+				end
+			end
+		end
+
+
+		--if SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]] then -- 
+			--table.insert(tSections, "parentQuest: "..SkuDB.questDataTBC[i][SkuDB.questKeys["parentQuest"]])
+		--end
+		--if SkuDB.questDataTBC[i][SkuDB.questKeys["childQuests"]] then -- table: {quest(int)} - to be completed additional to this before next in series
+			--local childQuests = ""
+			--for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["childQuests"]]) do
+				--childQuests = childQuests..";"..iR.."-"..vR
+			--end
+			--table.insert(tSections, "childQuests: "..childQuests)
+		--end									
+
+		local tFlags = {}
+		for iR, vR in pairs(SkuDB.QuestFlags) do
+			if SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]] then
+				--dprint(iR, vR, SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]])
+				if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["questFlags"]]) > 0 then
+					table.insert(tFlags, iR)
+				end
+			end
+		end
+		local tFlagText = ""
+		for i, v in pairs(tFlags) do
+			tFlagText = tFlagText..SkuDB.QuestFlagsFriendly[v]..";"
+		end
+		table.insert(tSections, L["Attributes"]..": "..tFlagText)
+
+		--[[
+		['requiredSkill'] = 18, -- table: {skill(int), value(int)}
+		['requiredMinRep'] = 19, -- table: {faction(int), value(int)}
+		['requiredMaxRep'] = 20, -- table: {faction(int), value(int)}
+		['requiredSourceItems'] = 21, -- table: {item(int), ...} Items that are not an objective but still needed for the quest.
+
+		['specialFlags'] = 24, -- bitmask: 1 = Repeatable, 2 = Needs event, 4 = Monthly reset (req. 1). See https://github.com/cmangos/issues/wiki/Quest_template#specialflags
+
+		['reputationReward'] = 26, -- table: {{FACTION,VALUE}, ...}, A list of reputation reward for factions
+		]]
 	end
-	local tFlagText = ""
-	for i, v in pairs(tFlags) do
-		tFlagText = tFlagText..SkuDB.QuestFlagsFriendly[v]..";"
-	end
-	table.insert(tSections, L["Attributes"]..": "..tFlagText)
-
-	--[[
-	['requiredSkill'] = 18, -- table: {skill(int), value(int)}
-	['requiredMinRep'] = 19, -- table: {faction(int), value(int)}
-	['requiredMaxRep'] = 20, -- table: {faction(int), value(int)}
-	['requiredSourceItems'] = 21, -- table: {item(int), ...} Items that are not an objective but still needed for the quest.
-
-	['specialFlags'] = 24, -- bitmask: 1 = Repeatable, 2 = Needs event, 4 = Monthly reset (req. 1). See https://github.com/cmangos/issues/wiki/Quest_template#specialflags
-
-	['reputationReward'] = 26, -- table: {{FACTION,VALUE}, ...}, A list of reputation reward for factions
-	]]
 
 	return tSections
 end
@@ -813,105 +815,107 @@ end
 local function CreateQuestSubmenu(aParent, aQuestID)
 	local tHasEntries
 	--parent qs
-	local tPreQuestTable = {}
-	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
-		local preQuestGroup = ""
-		for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestGroup"]]) do
-			tPreQuestTable[#tPreQuestTable+1] = vR
+	if aQuestID then
+		local tPreQuestTable = {}
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
+			local preQuestGroup = ""
+			for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestGroup"]]) do
+				tPreQuestTable[#tPreQuestTable+1] = vR
+			end
 		end
-	end
-	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
-		local preQuestSingle = ""
-		for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]]) do
-			tPreQuestTable[#tPreQuestTable+1] = vR
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
+			local preQuestSingle = ""
+			for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]]) do
+				tPreQuestTable[#tPreQuestTable+1] = vR
+			end
 		end
-	end
 
-	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - one to be completed before next in series
-		local parentQuest = ""
-		tPreQuestTable[#tPreQuestTable+1] = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]]
-	end
-
-	if #tPreQuestTable > 0 then
-		tHasEntries = true
-		local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Pre Quests"]}, SkuGenericMenuItem)
-		tNewMenuSubEntry.dynamic = true
-		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - one to be completed before next in series
+			local parentQuest = ""
+			tPreQuestTable[#tPreQuestTable+1] = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]]
 		end
-		tNewMenuSubEntry.BuildChildren = function(self)
-			for i, v in pairs(tPreQuestTable) do
-				local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[Sku.Loc][v][1]}, SkuGenericMenuItem)
-				tNewMenuSubEntry1.dynamic = true
-				tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
-					C_Timer.NewTimer(0.1, function()
-						SkuOptions:SlashFunc("short,"..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
-						SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
-					end)
+
+		if #tPreQuestTable > 0 then
+			tHasEntries = true
+			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Pre Quests"]}, SkuGenericMenuItem)
+			tNewMenuSubEntry.dynamic = true
+			tNewMenuSubEntry.OnAction = function(self, aValue, aName)
+
+			end
+			tNewMenuSubEntry.BuildChildren = function(self)
+				for i, v in pairs(tPreQuestTable) do
+					local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[Sku.Loc][v][1]}, SkuGenericMenuItem)
+					tNewMenuSubEntry1.dynamic = true
+					tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
+						C_Timer.NewTimer(0.1, function()
+							SkuOptions:SlashFunc("short,"..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
+							SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
+						end)
+					end
 				end
 			end
 		end
-	end
 
-	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
-		or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][2]
-		or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3]
-	then
-		tHasEntries = true
-		local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
-		if tstartedBy then
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
+			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][2]
+			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3]
+		then
+			tHasEntries = true
+			local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
+			if tstartedBy then
+				local tTargets = {}
+				local tTargetType = nil
+				
+				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
+
+				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Annahme"]}, SkuGenericMenuItem)
+				tNewMenuSubEntry.dynamic = true
+				tNewMenuSubEntry.filterable = true
+				tNewMenuSubEntry.BuildChildren = function(self)
+					tHasEntries = true
+					CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+					--CreateRtWpSubmenu(self, SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1], "creature", aQuestID)
+				end
+			end
+		end
+
+		local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
+		if tObjectives then
+			tHasEntries = true
 			local tTargets = {}
 			local tTargetType = nil
-			
-			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
 
-			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Annahme"]}, SkuGenericMenuItem)
+			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
+
+			if	tTargetType then
+				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Ziel"]}, SkuGenericMenuItem)
+				tNewMenuSubEntry.dynamic = true
+				--tNewMenuSubEntry.filterable = true
+				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
+				end
+				tNewMenuSubEntry.BuildChildren = function(self)
+					tHasEntries = true
+					CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+				end
+			end
+		end
+
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
+			tHasEntries = true
+			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Abgabe"]}, SkuGenericMenuItem)
 			tNewMenuSubEntry.dynamic = true
 			tNewMenuSubEntry.filterable = true
-			tNewMenuSubEntry.BuildChildren = function(self)
-				tHasEntries = true
-				CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
-				--CreateRtWpSubmenu(self, SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1], "creature", aQuestID)
-			end
-		end
-	end
+			local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
+			if tFinishedBy then
+				local tTargets = {}
+				local tTargetType = nil
 
-	local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
-	if tObjectives then
-		tHasEntries = true
-		local tTargets = {}
-		local tTargetType = nil
+				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
 
-		tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
-
-		if	tTargetType then
-			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Ziel"]}, SkuGenericMenuItem)
-			tNewMenuSubEntry.dynamic = true
-			--tNewMenuSubEntry.filterable = true
-			tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-			end
-			tNewMenuSubEntry.BuildChildren = function(self)
-				tHasEntries = true
-				CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
-			end
-		end
-	end
-
-	if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
-		tHasEntries = true
-		local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Abgabe"]}, SkuGenericMenuItem)
-		tNewMenuSubEntry.dynamic = true
-		tNewMenuSubEntry.filterable = true
-		local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
-		if tFinishedBy then
-			local tTargets = {}
-			local tTargetType = nil
-
-			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
-
-			tNewMenuSubEntry.BuildChildren = function(self)
-				tHasEntries = true
-				CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+				tNewMenuSubEntry.BuildChildren = function(self)
+					tHasEntries = true
+					CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+				end
 			end
 		end
 	end

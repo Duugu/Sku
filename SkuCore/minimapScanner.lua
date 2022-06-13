@@ -86,20 +86,13 @@ SkuCore.RessourceTypes = {
    },
 }
 
+SkuCore.IsScanning = false
 
-
-
-
-
-
-
-
-
-function SkuCore:MinimapScan(aRange)
-   print("MinimapScan", aRange)
-
-
-end
+local tScanResults = {}
+local tMinimapStore = {}
+local tRange = 15
+local tCurrentMMPosX, tCurrentMMPosY = -(tRange / 2), -(tRange / 2)
+local fx, fy = 0, 0
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function PrepareMinimap()
@@ -111,7 +104,7 @@ local function PrepareMinimap()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function SetMinimapLoc(xOffset, yOffset)
+local function SetMinimapPosition(xOffset, yOffset)
    PrepareMinimap()
    local xOffset = xOffset or 0
    local yOffset = yOffset or 0
@@ -123,73 +116,87 @@ local function SetMinimapLoc(xOffset, yOffset)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function isMatch()
+local function FindActiveRessource()
    for i = 1, GameTooltip:NumLines() do
       local line = string.lower(_G['GameTooltipTextLeft'..i]:GetText())
       if line then
-         for w in string.gmatch(nodeName, ".+") do
-            if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w..'|'), 1, true) then
-               return true               
+         for x = 1, #SkuCore.RessourceTypes.mining do
+            if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x] == true then
+               for w in string.gmatch(SkuCore.RessourceTypes.mining[x][Sku.L["locale"]], ".+") do
+                  if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w..'|'), 1, true) then
+                     return SkuCore.RessourceTypes.mining[x][Sku.L["locale"]]               
+                  end
+               end 
             end
-         end 
+         end
+
+         for x = 1, #SkuCore.RessourceTypes.herbs do
+            if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
+               for w in string.gmatch(SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]], ".+") do
+                  if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w..'|'), 1, true) then
+                     return SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]               
+                  end
+               end 
+            end
+         end
       end
    end
-   return false
+
+   return
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
---/script SkuCore:StoreMinimap() tScan = true SkuCore:MinimapScanTest() 
--- 20-25 yards
-
-local nodeName = "Silverleaf"
-
-local cx, cy = -10, -10
-local tFound = false
-local tScan = false
-local fx, fy = 0,0
-local m = {}
-
-function SkuCore:MinimapScanTest()
-	if tScan == false then
+local tNotificationTicker
+local function MinimapScanStep()
+	if SkuCore.IsMMScanning == false and SkuCore.inCombat ~= true then
 		SkuCore:RestoreMinimap()
 		return
 	end
 
-	cx = cx + 4
-	if cx > 10 then
-		cx = -10
-		cy = cy + 4
+	tCurrentMMPosX = tCurrentMMPosX + 4
+	if tCurrentMMPosX > (tRange / 2) then
+		tCurrentMMPosX = -(tRange / 2)
+		tCurrentMMPosY = tCurrentMMPosY + 4
 	end
-	if cy > 10 then
-		cx, cy = -10, -10
-		tFound = false
-		tScan = false
+
+	if tCurrentMMPosY > (tRange / 2) then
+		tCurrentMMPosX, tCurrentMMPosY = -(tRange / 2), -(tRange / 2)
+		SkuCore.IsMMScanning = false
+      C_Timer.After(1, function()
+         SkuCore.NoMouseOverNotification = true
+      end)
+      SkuCore:MinimapScanProcessResults()
 	end
 	
-	SetMinimapLoc(cx, cy)
+	SetMinimapPosition(tCurrentMMPosX, tCurrentMMPosY)
 
 	C_Timer.After(0, function()
-		if isMatch() == true then
-			tFound = true
-			print(tFound, fx, fy)
-			tScan = false
-			fx, fy = cx, cy
+      local tResultString = FindActiveRessource()
+		if tResultString then
+			fx, fy = tCurrentMMPosX, tCurrentMMPosY
+			--print(tResultString, fx, fy)
+         if not tScanResults[tResultString] then
+            tScanResults[tResultString] = 0
+         end
+         tScanResults[tResultString] = tScanResults[tResultString] + 1
 		end
-		SkuCore:MinimapScan()
+      if SkuCore.inCombat ~= true then
+		   MinimapScanStep()
+      end
 	end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:StoreMinimap()
-	m.point, m.relativeTo, m.relativePoint, m.x, m.y = Minimap:GetPoint()
-	m.parent = Minimap:GetParent()
-	m.scale = Minimap:GetScale()
-	m.GameTooltipScale = GameTooltip:GetScale()
-	m.frameLevel = MinimapCluster:GetFrameLevel()
-	m.frameStrata = MinimapCluster:GetFrameStrata()
+	tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y = Minimap:GetPoint()
+	tMinimapStore.parent = Minimap:GetParent()
+	tMinimapStore.scale = Minimap:GetScale()
+	tMinimapStore.GameTooltipScale = GameTooltip:GetScale()
+	tMinimapStore.frameLevel = MinimapCluster:GetFrameLevel()
+	tMinimapStore.frameStrata = MinimapCluster:GetFrameStrata()
 
 	minimapChildren = {Minimap:GetChildren()}
-	for k,v in pairs(minimapChildren) do
+	for k, v in pairs(minimapChildren) do
 			v.MMA_VISIBLE = v:IsVisible()
 			v.MMA_FRAME_LEVEL = v:GetFrameLevel()
 			v.MMA_FRAME_STRATA = v:GetFrameStrata()
@@ -198,14 +205,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:RestoreMinimap()
-   Minimap:SetScale(m.scale)
+   Minimap:SetScale(tMinimapStore.scale)
    Minimap:ClearAllPoints()
-   Minimap:SetPoint(m.point, m.relativeTo, m.relativePoint, m.x, m.y)
-   MinimapCluster:SetFrameLevel(m.frameLevel)
-   MinimapCluster:SetFrameStrata(m.frameStrata)
-   GameTooltip:SetScale(m.GameTooltipScale)
+   Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
+   MinimapCluster:SetFrameLevel(tMinimapStore.frameLevel)
+   MinimapCluster:SetFrameStrata(tMinimapStore.frameStrata)
+   GameTooltip:SetScale(tMinimapStore.GameTooltipScale)
 
-   for k,v in pairs(minimapChildren) do
+   for k, v in pairs(minimapChildren) do
       if v.MMA_VISIBLE then 
          v:Show() 
       end
@@ -214,4 +221,44 @@ function SkuCore:RestoreMinimap()
    end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MinimapStopScan()
+   SkuCore:RestoreMinimap()
+   SkuCore.IsMMScanning = false
+   SkuCore:RestoreMinimap()
+   if tNotificationTicker then
+      tNotificationTicker:Cancel()
+   end
+   SkuOptions.Voice:StopOutputEmptyQueue()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MinimapScan(aRange)
+   SkuOptions.Voice:OutputStringBTtts("sound-notification21", false, false)--24
+   tNotificationTicker = C_Timer.NewTicker(0.6, function()
+      SkuOptions.Voice:OutputStringBTtts("sound-notification21", false, false)--24
+   end)
+
+   aRange = aRange or 20
+   tScanResults = {}
+   tRange = aRange
+   SkuCore.NoMouseOverNotification = true
+
+   SkuCore:StoreMinimap() 
+   tCurrentMMPosX, tCurrentMMPosY = (aRange / 2) * -1, (aRange / 2) * -1
+   SkuCore.IsMMScanning = true 
+   MinimapScanStep()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MinimapScanProcessResults()
+   if tNotificationTicker then
+      tNotificationTicker:Cancel()
+   end
+   SkuOptions.Voice:StopOutputEmptyQueue()
+   for i, v in pairs(tScanResults) do
+      SkuOptions.Voice:OutputString(i, false, true, 0.2)
+      --print(i)
+   end
+end
 
