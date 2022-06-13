@@ -7,13 +7,13 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.11](https://github.com/Duugu/Sku/releases/download/r27.11/Sku-r27.11-bcc.zip) (08.06.2022)<br> 
+[Sku r27.12](https://github.com/Duugu/Sku/releases/download/r27.12/Sku-r27.12-bcc.zip) (14.06.2022)<br> 
+
+*Old updates:* <br>
 [Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
 [SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) (28.05.2022) <br>
-
-*Old updates:* <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
 [SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
 [SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
@@ -22,9 +22,56 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
-Changes in Sku r27.11
+## Changes in Sku r27.12
 
-Core
+### Core
+- New feature: Scanning for herbs and mineral veins<br>
+	If you have mining and/or herbalism, then you have the Find Herbs/Find Minerals skills/spells. On enabeling those, nearby spawns of herbs/mineral veins will appear on the minimap, if you're getting close to them. "Close" can be something between 60 and 140 meters.<br>
+	There are two new shortcuts to let the addon automatically scan and find those herbs and mineral veins on the minimap, and output the results:<br>
+	- CTRL + SHIFT + R: do a 50 meters range scan around your position
+	- CTRL + SHIFT + F: do a 140 meters range scan around your position
+	
+	As long as the check is running there is a sound.<br>
+	The check can only done out of combat. It is automatically stopped if you get in combat during check.<br>
+	The 50 meters range takes <1 second. The 140 meters range takes 4 seconds.<br>
+	The addon will voice output all found ressource types.<br>
+	Caution: Please don't hold Control durching the check. That will lead to empty results! (The scan is based on the game tooltip, and that is cleared while you hold Control.)<br>
+	There are new options to control the herb/mineral vein types that the scan is detecting: Core > Options > Ressource Scan<br>
+	There you can enable all different herb/mineral vein node types. As default all herbs and nodes are enabled.
+- Fixed a bug in the key bind menu. Missing bind options (like B for Toggle Backpack) should now be availabe.
+- The pet action bar is available for configuration (Core > Action bars).<br>
+	You can't remove the six default pet control actions (aggressive, passive, defensive and attack, wait follow). But you can move those actions to other action buttons.<br>
+	That means, there are only up to 4 action buttons left for special pet spells. (Pet bar has 10 slots.)<br>
+	If you are trying to remove the default control action, they will be automatically set to the bar again.
+- Fixed an issue with auction house scanning on high populated servers. Scan process should not get stuck anymore.
+- Limited the amount of auction house history price data that is recorded.<br>
+	Unlimited storage of history data is most probably the reason for unexpected resets of all addon settings.<br>
+	The addon now stores a maximum of 1.5M price data records. If there are more records, then the oldest records are deleted.
+- The addon isn't doing automatic auction house full scans anymore.<br>
+	Previously there was a full scan on opening the auction house, if a full scan was possible (only once every 15 minutes). That feature is removed, as is leads to issues on high populated servers (with a lot of auctions).<br>
+	Now full scans need to be triggered manually via the Update offline database option in the auction house menu.<br>
+	The offline database in the auction house menu and the price history data in item tooltips are based on those full scan data. If you don't manually trigger full scans, it won't be populated/updated. So, if you are using the offline database and/or the price history data, and if you would like to have up-to-date data, then you regulary need to use the Update offline database option.
+- Fixed a missing translation in action house bid workflow.
+- Fixed the bid/buy workflow for multiple actions to (hopefully) prevent the addon from bidding/buying incorrect auctions.
+
+### Navigation
+- Added the terms "herbalism" and "mining" to waypoint names for herbs and mineral veins for easier filtering.
+- Changed the key binds to open the visual route data maps, to avoid unintenional use.<br>
+	CTRL + SHIFT + F changed to CTRL + SHIFT + K <br>
+	CTRL + SHIFT + R changed to CTRL + SHIFT + L
+
+### Map
+- Fixed another bug with the translation of route data. There shouldn't be any more broken routes.
+- Fixed missing routes in Ghostlands.
+- Added more routes all over the world.
+
+### Quest
+- Fixed the warlock Incubus quests (Devourer of Souls quest chain).
+- Fixed quest log errors in dungeons.
+		
+## Changes in Sku r27.11
+
+### Core
 - Added the ready check frame to the interact frames list. Ready checks now should open the Local menu.
 - Pet health is now displayed below player mana in general section.
 - Pet details added to the bottom of overview page.
@@ -32,14 +79,14 @@ Core
 - Pet happiness is announced ASAP if it has increased
 - Pet happiness is announced once a minute when not happy.
 
-Quest
+### Quest
 - Fixed a bug with quest target waypoints for areas or positions.
 
-Options
+### Options
 - Added difficulty colors to Crafting frame (Enchanting).
 - Fixed Page-Down/Up buttons for scrolling in class and profession trainer lists. Should work now.
 
-Map
+### Map
 - Added comments and new waypoints to routes for aldor/Scryer rise (silent elevator). 
 	Take the elevator up. To get down you need to take another way. Don't take the elevator. Find the waypoint named "aldor/Scryer...to down". Then follow the instructions.
 - Fixed the broken route to Captain Keelhaul and Fleet Master Fireallon.
