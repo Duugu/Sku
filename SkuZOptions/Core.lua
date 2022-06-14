@@ -257,10 +257,17 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 		elseif fields[1] == "rdatareset" then
 			dprint("/sku rdatareset")
-			SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
-			SkuNav:CreateWaypointCache()
-			SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
-			SkuNav:LoadLinkDataFromProfile()
+			SkuOptions.db.global["SkuNav"].Waypoints = {}
+			SkuOptions.db.global["SkuNav"].Links = {}
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = nil
+			--SkuNav:CreateWaypointCache()
+			SkuNav:PLAYER_ENTERING_WORLD()
+
+		elseif fields[1] == "translate" then
+			if SkuTranslatedData then
+				SkuTranslatedData.untranslatedTerms = {}
+			end
+			SkuRtWpDataDeToEnNEW()
 		end
 	end
 end
@@ -3629,6 +3636,74 @@ function SkuOptions:ImportWpAndLinkData()
 				tImportCounterLinks = tImportCounterLinks + 1
 			end
 			SkuOptions.db.global["SkuNav"].Links = tLinks or {}
+
+			SkuNav:LoadLinkDataFromProfile()
+
+			--done
+			print(L["Links importiert:"], tImportCounterLinks)
+			print(L["Wegpunkte importiert:"], tImportCounterWps)
+			print(L["Wegpunkte ignoriert:"], tIgnoredCounterWps)
+		end
+	end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:ImportWpAndLinkDataMerge()
+	PlaySound(88)
+	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2)
+
+	SkuOptions:EditBoxPasteShow("", function(self)
+		PlaySound(89)
+		local tSerializedData = strtrim(table.concat(_G["SkuOptionsEditBoxPaste"].SkuOptionsTextBuffer))
+
+		local tImportCounterLinks = 0
+		local tImportCounterWps = 0
+		local tIgnoredCounterWps = 0
+		local tIgnoredCounterLinks = 0
+
+		if tSerializedData ~= "" then
+			local tSuccess, tVersion, tLinks, tWaypoints = SkuOptions:Deserialize(tSerializedData)
+
+			if tVersion ~= 22 then
+				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2)										
+				return
+			end
+			if tSuccess ~= true then
+				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Daten fehlerhaft."], false, true, 0.2)										
+				return
+			end
+
+			SkuOptions.Voice:OutputStringBTtts(L["Import erfolgreich"], true, true, 0.2, true)			
+
+			--do tWaypoints 
+			local tFullCounterWps = 0
+
+			for tWpName, tWpData in pairs(tWaypoints) do
+				if not SkuOptions.db.global["SkuNav"].Waypoints[tWpName] then
+					SkuOptions.db.global["SkuNav"].Waypoints[#SkuOptions.db.global["SkuNav"].Waypoints + 1] = tWpName
+					SkuOptions.db.global["SkuNav"].Waypoints[tWpName] = tWpData
+					tImportCounterWps = tImportCounterWps + 1
+				else
+					tIgnoredCounterWps = tIgnoredCounterWps + 1
+				end
+				tFullCounterWps = tFullCounterWps + 1
+			end
+
+			SkuNav:CreateWaypointCache()
+
+			--do tLinks
+			for i, v in pairs(tLinks) do
+				if not SkuOptions.db.global["SkuNav"].Links[i] then
+					SkuOptions.db.global["SkuNav"].Links[i] = v
+					tImportCounterLinks = tImportCounterLinks + 1
+				else
+					for linki, linkv in pairs(v) do
+						SkuOptions.db.global["SkuNav"].Links[i][linki] = linkv
+						tIgnoredCounterLinks = tIgnoredCounterLinks + 1
+					end
+				end
+			end
+			--SkuOptions.db.global["SkuNav"].Links = tLinks or {}
 
 			SkuNav:LoadLinkDataFromProfile()
 

@@ -151,6 +151,8 @@ SkuGenericMenuItem = {
 
 		if self.prev then
 			SkuOptions.currentMenuPosition = self.prev
+		else
+			PlaySound(681)
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
@@ -160,6 +162,8 @@ SkuGenericMenuItem = {
 
 		if self.next then
 			SkuOptions.currentMenuPosition = self.next
+		else
+			PlaySound(681)
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,

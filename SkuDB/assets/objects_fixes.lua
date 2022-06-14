@@ -709,15 +709,27 @@ local SkuObjectsFixes = {
         [objectKeys.spawns] = {[zoneIDs.STORMWIND_CITY]={{84,37}}},
         [objectKeys.zoneID] = zoneIDs.STORMWIND_CITY,
     },
+    [400013] = {
+        [objectKeys.name] = "Gather Nether Residue from any Herb or Ore Deposit in Outland",
+        [objectKeys.spawns] = {[zoneIDs.SHATTRATH_CITY]={{53.9,44.8}}},
+        [objectKeys.zoneID] = zoneIDs.SHATTRATH_CITY,
+    },    
 }
 function SkuDB:FixObjectsDB()
     for i, v in pairs(SkuObjectsFixes) do
+        local tNew = false
         for k, val in pairs(v) do
             if SkuDB.objectDataTBC[i] then
                 SkuDB.objectDataTBC[i][k] = val
             else
                 SkuDB.objectDataTBC[i] = v
+                tNew = true
             end
         end
+        if tNew == true then
+            SkuDB.objectLookup["deDE"][i] = SkuDB.objectDataTBC[i][objectKeys.name]
+            SkuDB.objectLookup["enUS"][i] = SkuDB.objectDataTBC[i][objectKeys.name]
+        end
+
     end
 end

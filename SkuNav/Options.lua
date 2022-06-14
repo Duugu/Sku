@@ -774,6 +774,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					if wpObj then
 						local tSuccess = SkuNav:DeleteWaypoint(aChildName)
 						if tSuccess == true then
+							SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 							SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt gelöscht"], false, true, 0.2)
 						elseif tSuccess == false then
 							SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
@@ -872,6 +873,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 							end
 							tWpData.comments[#tWpData.comments + 1] = tText
 							SkuNav:SetWaypoint(aName, tWpData)
+							SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 							SkuOptions.Voice:OutputStringBTtts(L["Kommentar zugewiesen"], false, true, 0.3, true)
 						else
 							SkuOptions.Voice:OutputStringBTtts(L["Kommentar leer"], false, true, 0.3, true)
@@ -1187,11 +1189,11 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.Voice:OutputStringBTtts(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
-			SkuOptions.db.profile[MODULE_NAME].Routes = nil
-
-			SkuOptions.db.global[MODULE_NAME].Waypoints = {}
-			SkuOptions.db.global[MODULE_NAME].Links = {}
-			SkuNav:CreateWaypointCache()
+			SkuOptions.db.global["SkuNav"].Waypoints = {}
+			SkuOptions.db.global["SkuNav"].Links = {}
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = nil
+			--SkuNav:CreateWaypointCache()
+			SkuNav:PLAYER_ENTERING_WORLD()
 			SkuOptions.Voice:OutputStringBTtts(L["Alles gelöscht"], false, true, 0.3, true)
 		end
 	end

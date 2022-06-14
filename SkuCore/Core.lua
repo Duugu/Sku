@@ -1092,7 +1092,7 @@ function SkuCore:OnEnable()
 	tFrame:SetText("SkuCoreControlOption1")
 	tFrame:SetPoint("TOP", _G["SkuCoreControl"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
-		--dprint("SkuCoreControlOption1", self, aKey, aB)
+		dprint("SkuCoreControlOption1", self, aKey, aB)
 
 		if aKey == "CTRL-SHIFT-Y" then
 			SkuCore:PanicModeStart()
@@ -1106,6 +1106,17 @@ function SkuCore:OnEnable()
 			--SkuCore.openMenuAfterMoving = true
 			return
 		end
+
+
+		if SkuCore.inCombat ~= true then
+			if aKey == "CTRL-SHIFT-F" then
+				SkuCore:MinimapScan(50) --140
+			end
+			if aKey == "CTRL-SHIFT-R" then
+				SkuCore:MinimapScan(15) --50
+			end
+		end
+
 
 		if aKey == "SHIFT-UP" then
 			SkuOptions.TTS:PreviousLine()
@@ -1144,6 +1155,8 @@ function SkuCore:OnEnable()
 		end
 		ClearOverrideBindings(self)
 		SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Y", "SkuCoreControlOption1", "CTRL-SHIFT-Y")
+		SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F", "SkuCoreControlOption1", "CTRL-SHIFT-F")
+		SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-R", "SkuCoreControlOption1", "CTRL-SHIFT-R")
 	end)
 	
 	tFrame:Hide()
@@ -1515,66 +1528,27 @@ end
 function SkuCore:UNIT_HAPPINESS(unitTarget)
 
 end
---[[
----------------------------------------------------------------------------------------------------------------------------------------
-local function TooltipLines_helper(...)
 
-   local tQualityString = nil
-
-	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
-	if not ItemLink then
-		itemName, ItemLink = GameTooltip:GetItem()
-	end
-
-	if ItemLink then
-      for x = 0, #ITEM_QUALITY_COLORS do
-         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-         if tItemCol == "ffa334ee" then 
-            tItemCol = "ffa335ee"
-         end
-         if string.find(ItemLink, tItemCol) then
-            if _G["ITEM_QUALITY"..x.."_DESC"] then
-               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
-            end
-         end
-      end
-   end
-
-	local rText = ""
-   for i = 1, select("#", ...) do
-		local region = select(i, ...)
-		if region and region:GetObjectType() == "FontString" then
-			local text = region:GetText() -- string or nil
-			if text then
-            if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
-               rText = rText..text.." ("..tQualityString..")\r\n"
-            else
-				   rText = rText..text.."\r\n"
-            end
-			end
-		end
-	end
-	return rText
-end
-]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 --local tSkuCoreTooltipCheckerControlPrevOpac = 1
 --SkuCore.CheckInteractObjectShowIsShown = false
 function SkuCore:CheckInteractObjectShow()
 	--tSkuCoreTooltipCheckerControlPrevOpac = 1
-	if not GameTooltipTextLeft1.GetText then
-		return
-	end
-	local tFirstLine = GameTooltipTextLeft1:GetText()
-	if not tFirstLine or tFirstLine == "" then
-		return
-	end
-	for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
-		if v == tFirstLine then
-			--SkuCore.CheckInteractObjectShowIsShown = true
-			--print("show", tFirstLine)
-			SkuOptions.Voice:OutputString(tFirstLine..";"..L["cursor;on"]..";"..L["OBJECT"], true, true, 0.2)
-			break
+	if SkuCore.NoMouseOverNotification ~= true then
+		if not GameTooltipTextLeft1.GetText then
+			return
+		end
+		local tFirstLine = GameTooltipTextLeft1:GetText()
+		if not tFirstLine or tFirstLine == "" then
+			return
+		end
+		for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
+			if v == tFirstLine then
+				--SkuCore.CheckInteractObjectShowIsShown = true
+				--print("show", tFirstLine)
+				SkuOptions.Voice:OutputString(tFirstLine..";"..L["cursor;on"]..";"..L["OBJECT"], true, true, 0.2)
+				break
+			end
 		end
 	end
 end
@@ -1813,6 +1787,7 @@ end
 function SkuCore:PLAYER_REGEN_DISABLED(...)
 	SkuOptions:CloseMenu()
 	_G["SkuCoreControlOption1"]:Hide()
+	SkuCore:MinimapStopScan()
 	SkuCore.inCombat = true
 	SkuOptions.Voice:OutputString(L["Combat start"], true, true, 0.2)
 end

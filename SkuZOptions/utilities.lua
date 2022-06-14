@@ -557,7 +557,8 @@ local tAdditionalTranslations = {
 	["Achtung. Hier kommt ein Fahrstuhl ohne Geräusche nach unten. Du kannst nicht den Fahrstuhl nach unten nehmen. Suche nach dem Wegpunkt Shattrath seher oben nach unten und folge von dort einer Route nach unten."] = "Attention. There is an elevator with no sound. You can't take the elevator down. Look for the waypoint Shattrath scryer up to down and follow a route down from there.",
 	["STOP! Von hier musst du sehr vorsichtig den Berg runter rutschen, um nach unten zu kommen. Navigiere 100% präzise! Wenn du fällst, heile oder verbinde dich, bevor du weiter läufst!"] = "STOP! From here you have to move very, very carefully to get down. Navigate 100% precisely! If you fall, heal or bandage yourself before you go further!",
 	["Hier ist das untere Ende des Weges von der Aldor- und Seherhöhe nach unten. Er funktioniert nur runter. Du kommst hier nicht rauf. Nimm stattdessen eine Route zum Aldor- oder Seher-Fahrstuhl, wenn du rauf willst."] = "This is the bottom of the path from Aldor and scryer rise down. It only works down. You can't get up here. Take a route to the Aldor or scryer elevator instead if you want to go up.",
-	
+	["Der königliche Markt"] = "The Royal Exchange",
+	["Straße der Urahnen"] = "Walk of Elders",
 }
 
 
@@ -935,7 +936,7 @@ end
 -- rt link data
 local tSkuCoroutineControlFrameOnUpdateTimer = 0
 local tCounter = 0
-function SkuRtLinkDataDeToEn()
+function SkuRtLinkDataDeToEnNEW()
 	tCounter = 0
 	SkuTranslatedData.Links = SkuTranslatedData.Links or {}
 	SkuTranslatedData.Links = {}
@@ -944,14 +945,30 @@ function SkuRtLinkDataDeToEn()
 		local tNumberDone = 0
 		for i, v in pairs(SkuDB.routedata[Sku.Loc].Links) do
 			local tIndex = i
-			local tIndexEN = SkuTranslateStringDeToEn(i)
+			local tIndexEN
+			if WaypointCache[WaypointCacheLookupAll[tIndex]] then
+				tIndexEN = WaypointCache[WaypointCacheLookupAll[tIndex]].enUS
+			end
+			
+			if not tIndexEN then
+				tIndexEN = SkuTranslateStringDeToEn(i)
+			end
+
 			local tValue = v
 
 			SkuTranslatedData.Links[tIndexEN] = {}
 
 			for i1, v1 in pairs(tValue) do
 				local tIndex1 = i1
-				local tIndex1EN = SkuTranslateStringDeToEn(i1)
+				local tIndex1EN
+				if WaypointCache[WaypointCacheLookupAll[tIndex1]] then
+					tIndex1EN = WaypointCache[WaypointCacheLookupAll[tIndex1]].enUS
+				end
+				
+				if not tIndex1EN then
+					tIndex1EN = SkuTranslateStringDeToEn(i1)
+				end
+
 				local tValue1 = v1
 				--print("  ", 2, tIndex1, tValue1)
 				SkuTranslatedData.Links[tIndexEN][tIndex1EN] = v1
@@ -959,7 +976,7 @@ function SkuRtLinkDataDeToEn()
 			tCounter = tCounter + 1
 			--print(tCounter)
 			tNumberDone = tNumberDone + 1
-			if tNumberDone > 100 then
+			if tNumberDone > 300 then
 				tNumberDone = 0
 				print(tCounter)
 				coroutine.yield()
@@ -994,7 +1011,11 @@ end
 -- rt link data
 local tSkuCoroutineControlFrameOnUpdateTimer = 0
 local tCounter = 0
-function SkuRtWpDataDeToEn()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+function SkuRtWpDataDeToEnNEW()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	SkuOptions.db.global["SkuNav"].Waypoints = {}
+	SkuOptions.db.global["SkuNav"].Links = {}
+	SkuNav:CreateWaypointCache({"enUS"})
+
 	tCounter = 0
 	SkuTranslatedData.Waypoints = SkuTranslatedData.Waypoints or {}
 	SkuTranslatedData.Waypoints = {}
@@ -1006,7 +1027,16 @@ function SkuRtWpDataDeToEn()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		local tNumberDone = 0
 		for q = 1, #SkuDB.routedata[Sku.Loc].Waypoints do
 			local tIndex = SkuDB.routedata[Sku.Loc].Waypoints[q]
-			local tIndexEN = SkuTranslateStringDeToEn(tIndex)
+			local tIndexEN
+			if WaypointCache[WaypointCacheLookupAll[tIndex]] then
+				tIndexEN = WaypointCache[WaypointCacheLookupAll[tIndex]].enUS
+			end
+
+
+			if not tIndexEN then
+				tIndexEN = SkuTranslateStringDeToEn(tIndex)
+			end
+
 			local tValue = SkuDB.routedata[Sku.Loc].Waypoints[SkuDB.routedata[Sku.Loc].Waypoints[q]]
 
 			--print(1, tIndex, tValue)
@@ -1041,12 +1071,12 @@ function SkuRtWpDataDeToEn()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			coroutine.resume(co)
 		else
 			if tCoCompleted == false then
-				print("completed")
+				print("wp completed")
 				tCoCompleted = true
-				--SkuRtLinkDataDeToEn()
+				SkuRtLinkDataDeToEnNEW()
 			end
 		end
 
 	end)
-
+	
 end

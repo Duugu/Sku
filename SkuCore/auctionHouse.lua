@@ -284,7 +284,7 @@ local function Median(t)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionPriceHistoryData(aItemID, aAddCurrentPriceData, aAddHistoryPriceData)
-
+   dprint("AuctionPriceHistoryData")
    --SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB
    --SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory
    --SkuCore.CurrentDB
@@ -425,9 +425,9 @@ end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:AuctionScanQueueReset()
+function SkuCore:AuctionScanQueueReset(aForce)
    dprint("SkuCore:AuctionScanQueueReset()")
-   if SkuCore.AuctionIsFullScanning == true then
+   if SkuCore.AuctionIsFullScanning == true and not aForce then
       return
    end
    
@@ -450,6 +450,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionScanQueueRemove()
+   dprint("AuctionScanQueueRemove")
    tremove(SkuCore.ScanQueue, 1)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -505,19 +506,31 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tCurrentQuery = nil
 function SkuCore:AuctionScanQueueTicker()
+   --dprint("AuctionScanQueueTicker")
    if SkuCore.AuctionIsScanning == true then
+      SkuOptions.Voice:OutputStringBTtts("sound-notification6", false, true)--24
+      
+      return
+   end
+   local tCanScan = CanSendAuctionQuery()
+   if tCanScan == false then
       return
    end
 
    if SkuCore.ScanQueue[1] then
-      dprint("AuctionScanQueueTicker, new scan")
+      dprint("AuctionScanQueueTicker new scan SkuCore.AuctionIsFullScanning", SkuCore.AuctionIsFullScanning)
 
       SkuCore.AuctionIsScanning = true
       if SkuCore.ScanQueue[1].getAll == true then
          SkuCore.AuctionIsFullScanning = true
+         print(L["Full scan started"])
+         SkuOptions.Voice:OutputStringBTtts(L["Full scan started"], false, true, 0.2)
+
       end
       tCurrentQuery = SkuCore.ScanQueue[1]
 
+      dprint("CanSendAuctionQuery", CanSendAuctionQuery() )
+      dprint(SkuCore.ScanQueue[1].text, SkuCore.ScanQueue[1].minLevel, SkuCore.ScanQueue[1].maxLevel, SkuCore.ScanQueue[1].page, SkuCore.ScanQueue[1].usable, SkuCore.ScanQueue[1].rarity, SkuCore.ScanQueue[1].getAll, SkuCore.ScanQueue[1].exactMatch, SkuCore.ScanQueue[1].filterData)
       QueryAuctionItems(SkuCore.ScanQueue[1].text, SkuCore.ScanQueue[1].minLevel, SkuCore.ScanQueue[1].maxLevel, SkuCore.ScanQueue[1].page, SkuCore.ScanQueue[1].usable, SkuCore.ScanQueue[1].rarity, SkuCore.ScanQueue[1].getAll, SkuCore.ScanQueue[1].exactMatch, SkuCore.ScanQueue[1].filterData)
    end
 end
@@ -1435,29 +1448,7 @@ function SkuCore:AuctionHouseMenuBuilder()
       end
    end
 
-   --full auction db
-   tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {L["Offline Datenbank"]}, SkuGenericMenuItem)
-   tNewMenuEntryCategorySub.dynamic = true
-   tNewMenuEntryCategorySub.filterable = true
-   tNewMenuEntryCategorySub.BuildChildren = function(self)
-      if #SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB > 0 then
-         for tIndex, tData in pairs(SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB) do
-            if tData then
-               tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuCore:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
-               tNewMenuEntry.dynamic = false
-               tNewMenuEntry.filterable = true
-               tNewMenuEntry.tIndex = tIndex
-               tNewMenuEntry.data = tData
-               tNewMenuEntry.textFull = function() 
-                  return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))                  
-               end
-            end
-         end
-      else
-         tNewMenuEntry  = SkuOptions:InjectMenuItems(self, {L["leer"]}, SkuGenericMenuItem)
-         tNewMenuEntry.dynamic = false
-      end
-   end
+   --full scan
    if SkuCore.AuctionHouseOpen == true then
       tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Offline Datenbank aktualisieren"]}, SkuGenericMenuItem)
       tNewMenuEntry.isSelect = true
@@ -1482,6 +1473,33 @@ function SkuCore:AuctionHouseMenuBuilder()
          end
       end
    end
+
+   --full auction db
+   tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {L["Offline Datenbank"]}, SkuGenericMenuItem)
+   tNewMenuEntryCategorySub.dynamic = true
+   tNewMenuEntryCategorySub.filterable = true
+   tNewMenuEntryCategorySub.BuildChildren = function(self)
+      if #SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB > 0 then
+         for tIndex, tData in pairs(SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB) do
+            if tData then
+               --tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuCore:AuctionItemNameFormat(tData, tIndex)}, SkuGenericMenuItem)
+               tNewMenuEntry = SkuOptions:InjectMenuItems(self, {aItemData[tAIDIndex["name"]]}, SkuGenericMenuItem)
+               tNewMenuEntry.dynamic = false
+               tNewMenuEntry.filterable = true
+               tNewMenuEntry.tIndex = tIndex
+               tNewMenuEntry.data = tData
+               tNewMenuEntry.textFull = function() 
+                  return ""
+                  --return select(2, SkuCore:AuctionBuildItemTooltip(SkuOptions.currentMenuPosition.data, SkuOptions.currentMenuPosition.tIndex, true, true))                  
+               end
+            end
+         end
+      else
+         tNewMenuEntry  = SkuOptions:InjectMenuItems(self, {L["leer"]}, SkuGenericMenuItem)
+         tNewMenuEntry.dynamic = false
+      end
+   end
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1529,7 +1547,11 @@ function SkuCore:AUCTION_HOUSE_CLOSED()
       ["SortBy"] = 1,
    }
    ]]
+   SkuCore:AuctionScanQueueReset(true)
+   SkuCore.AuctionIsScanning = false
    SkuCore.AuctionHouseOpen = false
+
+   SkuCore:AuctionCleanupAuctionDBHistory()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1548,6 +1570,7 @@ function SkuCore:AUCTION_HOUSE_SHOW()
    SkuCore.AuctionHouseOpen = true
    SkuOptions:SlashFunc(L["short"]..L[",SkuCore,Auktionshaus"])
 
+   --[[
    local canQuery, canQueryAll = CanSendAuctionQuery()
    if canQueryAll == true then
       SkuCore:AuctionScanQueueAdd({
@@ -1562,6 +1585,7 @@ function SkuCore:AUCTION_HOUSE_SHOW()
          ["filterData"] = nil,
       })
    end   
+   ]]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1669,7 +1693,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, aCustomTargetTable, aItemID)
-   --print("AuctionUpdateAuctionDBHistory", aFromAuctionDB, aFromCurrentDB, aCustomTargetTable)
+   dprint("AuctionUpdateAuctionDBHistory", aFromAuctionDB, aFromCurrentDB, aCustomTargetTable)
    if not aFromAuctionDB and not aFromCurrentDB then
       return
    end
@@ -1734,14 +1758,6 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, a
                   end
                   if tNew == true then
                      tTargetTable[tItemId].bids[tMinBid][tServerTime] = 1
-                     --[[
-                     if #tTargetTable[tItemId].bids[tMinBid] > tHistoryDataMaxiumAmount then
-                        local tRemoveAmount = tHistoryDataMaxiumAmount - #tTargetTable[tItemId].bids[tMinBid]
-                        for z = 1, tRemoveAmount do
-                           table.remove(tTargetTable[tItemId].bids[tMinBid], 1)
-                        end
-                     end
-                     ]]
                   end
 
                end
@@ -1763,22 +1779,98 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, a
                   end
                   if tNew == true then
                      tTargetTable[tItemId].buyouts[tBuyoutPrice][tServerTime] = 1
-                     --[[
-                     if #tTargetTable[tItemId].buyouts[tBuyoutPrice] > tHistoryDataMaxiumAmount then
-                        local tRemoveAmount = tHistoryDataMaxiumAmount - #tTargetTable[tItemId].buyouts[tBuyoutPrice]
-                        for z = 1, tRemoveAmount do
-                           table.remove(tTargetTable[tItemId].buyouts[tBuyoutPrice], 1)
-                        end
-                     end
-                     ]]
                   end
                end
             end
          end
       end
    end
+
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:AuctionCleanupAuctionDBHistory()
+
+   local tRecords = {}
+   local tCurrentServerTime = GetServerTime()
+   local tHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory
+   for tItemId, tData in pairs(tHistory) do
+      if tData.buyouts then
+         for tPrice, tBuyoutData in pairs(tData.buyouts) do
+            for tServertime, tCount in pairs(tBuyoutData) do
+               local tTimeDiff = tCurrentServerTime - tServertime
+               if not tRecords[tTimeDiff] then
+                  tRecords[tTimeDiff] = 1
+                  dprint(tTimeDiff)
+               else
+                  tRecords[tTimeDiff] = tRecords[tTimeDiff] + 1
+               end
+            end
+         end
+      end
+      if tData.bids then
+         for tPrice, tBuyoutData in pairs(tData.bids) do
+            for tServertime, tCount in pairs(tBuyoutData) do
+               local tTimeDiff = tCurrentServerTime - tServertime
+               if not tRecords[tTimeDiff] then
+                  tRecords[tTimeDiff] = 1
+                  dprint(tTimeDiff)
+               else
+                  tRecords[tTimeDiff] = tRecords[tTimeDiff] + 1
+               end
+            end
+         end
+      end
+   end
+
+   dprint("tRecords:")
+
+   local tCountRs = 0
+   local tLastValidTime
+   for x = 1, 2500000 do
+      if tRecords[x] then
+         dprint(x, tRecords[x])
+         tCountRs = tCountRs + tRecords[x]
+         if tCountRs > 1500000 then
+            tLastValidTime = x
+            break
+         end
+      end
+   end
+
+   dprint("tCountRs", tCountRs)
+   dprint("tLastValidTime", tLastValidTime)
+
+   local tDeleted = 0
+   if tLastValidTime then
+      for tItemId, tData in pairs(tHistory) do
+         if tData.buyouts then
+            for tPrice, tBuyoutData in pairs(tData.buyouts) do
+               for tServertime, tCount in pairs(tBuyoutData) do
+                  local tTimeDiff = tCurrentServerTime - tServertime
+                  if tTimeDiff > tLastValidTime then
+                     tBuyoutData[tServertime] = nil
+                     tDeleted = tDeleted + 1
+                  end
+               end
+            end
+         end
+         if tData.bids then
+            for tPrice, tBuyoutData in pairs(tData.bids) do
+               for tServertime, tCount in pairs(tBuyoutData) do
+                  local tTimeDiff = tCurrentServerTime - tServertime
+                  if tTimeDiff > tLastValidTime then
+                     tBuyoutData[tServertime] = nil
+                     tDeleted = tDeleted + 1
+                  end
+               end
+            end
+         end
+      end
+   end
+   dprint("tDeleted", tDeleted)
+
+end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
    if SkuCore.AuctionIsScanning == false then
@@ -1794,9 +1886,11 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
 
    if SkuCore.AuctionIsFullScanning == true then
       --this is a full query
+      --local beginTime = debugprofilestop()
+
       if not aRet then
-         print(L["Full scan started"])
-         SkuOptions.Voice:OutputStringBTtts(L["Full scan started"], false, true, 0.2)
+         --print(L["Full scan started"])
+         --SkuOptions.Voice:OutputStringBTtts(L["Full scan started"], false, true, 0.2)
 
          SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = {}
          local tBatch, tCount = GetNumAuctionItems("list")
@@ -1809,7 +1903,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
             end   
          end
       end
-  
+      --dprint("filled", debugprofilestop() - beginTime)
+
       SkuCore:AuctionScanQueueRemove()
 
       AUCTION_ITEM_LIST_UPDATE_timerHandle = C_Timer.NewTimer(0.4, function()
@@ -1829,7 +1924,6 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
          if tNew then
             SkuCore:AUCTION_ITEM_LIST_UPDATE("AUCTION_ITEM_LIST_UPDATE", true)
          else
-            --SkuOptions.Voice:OutputStringBTtts("Scan abgeschlossen", false, true, 1, true)
             SkuCore.AuctionIsScanning = false
             SkuCore.AuctionIsFullScanning = false
             SkuCore:AuctionScanQueueRemove()
@@ -1837,7 +1931,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
             SkuOptions.Voice:OutputStringBTtts(L["Full scan completed"], false, true, 0.2)
             SkuCore:AuctionUpdateAuctionDBHistory(true, nil)
          end
-      end)         
+      end)      
+
    else
       -- this is a bid request
       local tIsConfVis = false
@@ -1876,7 +1971,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                      local tItemIndex = x
                      local tItemName = SkuCore.IsBid[1]
                      local tItemCount = SkuCore.IsBid[3]
-                     
+print(SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])                     
                      SkuCore:ConfirmButtonShow(L["Gebot "]..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount..L[" stück wirklich "]..SkuGetCoinText(tBidAmount, false, true)..L[" bieten? Eingabe Ja, Escape Nein"], 
                         function(self)
                            PlaySound(89)
@@ -1887,8 +1982,10 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                               SkuCore.AuctionIsScanning = false
                               if SkuCore.IsBid then
                                  SkuCore.IsBid.page = 0
+print(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])                     
+
                                  SkuCore:AuctionScanQueueAdd({
-                                    ["text"] = SkuCore.IsBid.query.text, 
+                                    ["text"] = SkuCore.IsBid[1],--SkuCore.IsBid.query.text, 
                                     ["minLevel"] = SkuCore.IsBid.query.minLevel, 
                                     ["maxLevel"] = SkuCore.IsBid.query.maxLevel, 
                                     ["page"] = 0, 
@@ -1931,7 +2028,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                         end
                      )
                      PlaySound(88)
-                     SkuOptions.Voice:OutputStringBTtts("Gebot "..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount.." stück wirklich "..SkuGetCoinText(tBidAmount, false, true).." bieten? Eingabe Ja, Escape Nein", false, true, 0.2, false)
+                     SkuOptions.Voice:OutputStringBTtts(L["Gebot "]..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount..L[" stück wirklich "]..SkuGetCoinText(tBidAmount, false, true)..L[" bieten? Eingabe Ja, Escape Nein"], false, true, 0.2, false)
                      return
                   else
                      --buyout
@@ -1952,7 +2049,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                               if SkuCore.IsBid then
                                  SkuCore.IsBid.page = 0
                                  SkuCore:AuctionScanQueueAdd({
-                                    ["text"] = SkuCore.IsBid.query.text, 
+                                    ["text"] = SkuCore.IsBid[1], --SkuCore.IsBid.query.text, 
                                     ["minLevel"] = SkuCore.IsBid.query.minLevel, 
                                     ["maxLevel"] = SkuCore.IsBid.query.maxLevel, 
                                     ["page"] = 0, 

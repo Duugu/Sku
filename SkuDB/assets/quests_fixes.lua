@@ -239,6 +239,34 @@ local zoneIDs = {
    ISLE_OF_QUEL_DANAS = 4080,
    UPPER_BLACKROCK_SPIRE = 7307,
 }
+local sortKeys = {
+    SEASONAL = -22,
+    HERBALISM = -24,
+    BATTLEGROUND = -25,
+    WARLOCK = -61,
+    WARRIOR = -81,
+    SHAMAN = -82,
+    FISHING = -101,
+    BLACKSMITHING = -121,
+    PALADIN = -141,
+    MAGE = -161,
+    ROGUE = -162,
+    ALCHEMY = -181,
+    LEATHERWORKING = -182,
+    ENGINEERING = -201,
+    HUNTER = -261,
+    PRIEST = -262,
+    DRUID = -263,
+    TAILORING = -264,
+    SPECIAL = -284,
+    COOKING = -304,
+    FIRST_AID = -324,
+    DARKMOON_FAIRE = -364,
+    LUNAR_FESTIVAL = -366,
+    REPUTATION = -367,
+    MIDSUMMER = -369,
+    BREWFEST = -370,
+}
 
 local SkuQuestFixes = {
     [62] = {
@@ -4182,6 +4210,107 @@ local SkuQuestFixesAlliance = {
    [9389] = {
        [questKeys.startedBy] = {{16817,},nil,nil,},
    },
+    ----- Warlock Incubus quest chain -----
+    [65593] = {
+        [questKeys.name] = "Hearts of the Lovers",
+        [questKeys.startedBy] = {{5693},nil,nil},
+        [questKeys.finishedBy] = {{5675},nil},
+        [questKeys.requiredLevel] = 20,
+        [questKeys.questLevel] = -1,
+        [questKeys.requiredRaces] = raceIDs.ALL_HORDE,
+        [questKeys.requiredClasses] = classIDs.WARLOCK,
+        [questKeys.objectivesText] = {"Bring the hearts of Avelina Lilly and Isaac Pearson to Carendin Halgar in the Temple of the Damned."},
+        [questKeys.objectives] = {nil,nil,{{190179},{190180}},nil,nil},
+        [questKeys.exclusiveTo] = {65610},
+        [questKeys.zoneOrSort] = sortKeys.WARLOCK,
+    },
+    [65597] = {
+        [questKeys.name] = "The Binding",
+        [questKeys.startedBy] = {{5675},nil,nil},
+        [questKeys.finishedBy] = {{5675},nil},
+        [questKeys.requiredLevel] = 20,
+        [questKeys.questLevel] = -1,
+        [questKeys.requiredRaces] = raceIDs.ALL_HORDE,
+        [questKeys.requiredClasses] = classIDs.WARLOCK,
+        [questKeys.objectivesText] = {"Using the Lovers' Hearts, summon and subdue an incubus, then return the Lovers' Hearts to Carendin Halgar in the Magic Quarter of the Undercity."},
+        [questKeys.objectives] = {{{185335}},nil,nil,nil,nil},
+        [questKeys.preQuestSingle] = {65593},
+        [questKeys.requiredSourceItems] = {190181},
+        [questKeys.exclusiveTo] = {65604},
+        [questKeys.zoneOrSort] = sortKeys.WARLOCK,
+        [questKeys.extraObjectives] = {{{[zoneIDs.UNDERCITY]={{86.4,26.4}}}, ICON_TYPE_EVENT, "Use the Lovers' Hearts to summon an Incubus and slay it.",}},
+    },
+    [65601] = {
+        [questKeys.name] = "Love Hurts",
+        [questKeys.startedBy] = {{5909},nil,nil},
+        [questKeys.finishedBy] = {{3363},nil},
+        [questKeys.requiredLevel] = 20,
+        [questKeys.questLevel] = -1,
+        [questKeys.requiredRaces] = raceIDs.ALL_HORDE,
+        [questKeys.requiredClasses] = classIDs.WARLOCK,
+        [questKeys.objectivesText] = {"Speak with Magar in Orgrimmar."},
+        [questKeys.preQuestSingle] = {1507},
+        [questKeys.exclusiveTo] = {65593,65610},
+        [questKeys.zoneOrSort] = sortKeys.WARLOCK,
+    },
+    [65602] = {
+        [questKeys.name] = "What Is Love?",
+        [questKeys.startedBy] = {{6244},nil,nil},
+        [questKeys.finishedBy] = {{6122},nil},
+        [questKeys.requiredLevel] = 20,
+        [questKeys.questLevel] = -1,
+        [questKeys.requiredRaces] = raceIDs.ALL_ALLIANCE,
+        [questKeys.requiredClasses] = classIDs.WARLOCK,
+        [questKeys.objectivesText] = {"Retrieve the Wooden Figurine and bring it to Gakin the Darkbinder in the Mage Quarter of Stormwind."},
+        [questKeys.objectives] = {nil,nil,{{190309}},nil,nil},
+        [questKeys.zoneOrSort] = sortKeys.WARLOCK,
+        [questKeys.extraObjectives] = {{{[zoneIDs.ASHENVALE]={{26.7,22.5}}}, ICON_TYPE_EVENT, "Light the Unlit Torch near a fire and use the Burning Torch to set the Archaeoligst's Cart on fire.",}},
+    },
+    [65603] = {
+        [questKeys.name] = "The Binding",
+        [questKeys.startedBy] = {{6122},nil,nil},
+        [questKeys.finishedBy] = {{6122},nil},
+        [questKeys.requiredLevel] = 20,
+        [questKeys.questLevel] = -1,
+        [questKeys.requiredRaces] = raceIDs.ALL_ALLIANCE,
+        [questKeys.requiredClasses] = classIDs.WARLOCK,
+        [questKeys.objectivesText] = {"Using the Wooden Figurine, summon and subdue an incubus, then return the Wooden Figurine to Gakin the Darkbinder in the Slaughtered Lamb."},
+        [questKeys.objectives] = {{{185335}},nil,nil,nil,nil},
+        [questKeys.preQuestSingle] = {65602},
+        [questKeys.requiredSourceItems] = {190186},
+        [questKeys.zoneOrSort] = sortKeys.WARLOCK,
+        [questKeys.extraObjectives] = {{{[zoneIDs.STORMWIND_CITY]={{25.2,77.4}}}, ICON_TYPE_EVENT, "Use the Withered Scarf to summon an Incubus and slay it.",}},
+    },
+    [65604] = {
+        [questKeys.name] = "The Binding",
+        [questKeys.startedBy] = {{5875},nil,nil},
+        [questKeys.finishedBy] = {{5875},nil},
+        [questKeys.requiredLevel] = 20,
+        [questKeys.questLevel] = -1,
+        [questKeys.requiredRaces] = raceIDs.ALL_HORDE,
+        [questKeys.requiredClasses] = classIDs.WARLOCK,
+        [questKeys.objectivesText] = {"Using the Withered Scarf, summon and subdue an incubus, then return the Withered Scarf to Gan'rul Bloodeye in Orgrimmar."},
+        [questKeys.objectives] = {{{185335}},nil,nil,nil,nil},
+        [questKeys.preQuestSingle] = {65610},
+        [questKeys.requiredSourceItems] = {190187},
+        [questKeys.exclusiveTo] = {65597},
+        [questKeys.zoneOrSort] = sortKeys.WARLOCK,
+        [questKeys.extraObjectives] = {{{[zoneIDs.ORGRIMMAR]={{49.4,50}}}, ICON_TYPE_EVENT, "Use the Withered Scarf to summon an Incubus and slay it.",}},
+    },
+    [65610] = {
+        [questKeys.name] = "Wish You Were Here",
+        [questKeys.startedBy] = {{3363},nil,nil},
+        [questKeys.finishedBy] = {{5875},nil},
+        [questKeys.requiredLevel] = 20,
+        [questKeys.questLevel] = -1,
+        [questKeys.requiredRaces] = raceIDs.ALL_HORDE,
+        [questKeys.requiredClasses] = classIDs.WARLOCK,
+        [questKeys.objectivesText] = {"Investigate Fallen Sky Lake in Ashenvale and report your findings to Gan'rul Bloodeye in Orgrimmar."},
+        [questKeys.preQuestSingle] = {65601},
+        [questKeys.objectives] = {nil,nil,{{190232}},nil,nil},
+        [questKeys.exclusiveTo] = {65593},
+        [questKeys.zoneOrSort] = sortKeys.WARLOCK,
+    },   
 }
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -4206,43 +4335,70 @@ local SkuQuestFixesSKU = {
     },
 }
 
+--SkuDB.questLookup["deDE"][1] = {"Alexanders Quest",nil, {"Find the forgotten location and cast the magical spell."}},
+--name objectivesText
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 function SkuDB:FixQuestDB()
     for i, v in pairs(SkuQuestFixes) do
+        local tNew = false
         for k, val in pairs(v) do
             if SkuDB.questDataTBC[i] then
                 SkuDB.questDataTBC[i][k] = val
             else
-                SkuDB.questDataTBC[i] = v         
+                SkuDB.questDataTBC[i] = v    
+                tNew = true
             end
+        end
+        if tNew == true then
+            SkuDB.questLookup["deDE"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+            SkuDB.questLookup["enUS"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
         end
     end
     for i, v in pairs(SkuQuestFixesHorde) do
+        local tNew = false
         for k, val in pairs(v) do
             if SkuDB.questDataTBC[i] then
                 SkuDB.questDataTBC[i][k] = val
             else
                 SkuDB.questDataTBC[i] = v         
+                tNew = true
             end
+        end
+        if tNew == true then
+            SkuDB.questLookup["deDE"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+            SkuDB.questLookup["enUS"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
         end
     end
     for i, v in pairs(SkuQuestFixesAlliance) do
+        local tNew = false
         for k, val in pairs(v) do
             if SkuDB.questDataTBC[i] then
                 SkuDB.questDataTBC[i][k] = val
             else
                 SkuDB.questDataTBC[i] = v         
+                tNew = true
             end
         end
+        if tNew == true then
+            SkuDB.questLookup["deDE"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+            SkuDB.questLookup["enUS"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+        end        
     end
     for i, v in pairs(SkuQuestFixesSKU) do
+        local tNew = false
         for k, val in pairs(v) do
             if SkuDB.questDataTBC[i] then
                 SkuDB.questDataTBC[i][k] = val
             else
                 SkuDB.questDataTBC[i] = v         
+                tNew = true
             end
         end
+        if tNew == true then
+            SkuDB.questLookup["deDE"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+            SkuDB.questLookup["enUS"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+        end        
     end
 end

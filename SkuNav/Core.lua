@@ -56,10 +56,10 @@ SkuNav.MaxMetaWPs = 200
 SkuNav.MaxMetaEntryRange = 300
 SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
 
-local WaypointCache = {}
-local WaypointCacheLookupAll = {}
+WaypointCache = {}
+WaypointCacheLookupAll = {}
 local WaypointCacheLookupPerContintent = {}
-function SkuNav:CreateWaypointCache()
+function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 	dprint("CreateWaypointCache")
 	local beginTime = debugprofilestop()
 
@@ -121,6 +121,24 @@ function SkuNav:CreateWaypointCache()
 										byName = nil,
 									},
 								}
+								if aAddLocalizedNames then
+									for _, tLocale in pairs(aAddLocalizedNames) do
+										local tSubname = SkuDB.NpcData.Names[tLocale][i][2]
+										local tRolesString = ""
+										if not tSubname then
+											local tRoles = SkuNav:GetNpcRoles(v[1], i, tLocale)
+											if #tRoles > 0 then
+												for i, v in pairs(tRoles) do
+													tRolesString = tRolesString..";"..v
+												end
+												tRolesString = tRolesString..""
+											end
+										else
+											tRolesString = tRolesString..";"..tSubname
+										end
+										WaypointCache[tNewIndex][tLocale] = SkuDB.NpcData.Names[tLocale][i][1]..tRolesString..";"..tData.AreaName_lang[tLocale]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+									end
+								end
 							end
 						end
 					end
@@ -130,6 +148,11 @@ function SkuNav:CreateWaypointCache()
 	end
 
 	--add objects
+	local tObjectTranslations = {
+		["enUS"]  = "OBJECT",
+		["deDE"]  = "OBJEKT",
+	}
+
 	for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
 		--we don't want stuff like ores, herbs, etc.
 		if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints == true then
@@ -148,13 +171,22 @@ function SkuNav:CreateWaypointCache()
 									local tWorldX, tWorldY = worldPosition:GetXY()
 	
 									local tNewIndex = #WaypointCache + 1
-									WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
+
+									local tRessourceType = ""
+									if SkuDB.objectResourceNames[Sku.Loc][v] == 1 then
+										tRessourceType = ";"..L["herbalism"]
+									elseif SkuDB.objectResourceNames[Sku.Loc][v] == 2 then
+										tRessourceType = ";"..L["mining"]
+									end
+
+
+									WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
 									if not WaypointCacheLookupPerContintent[tData.ContinentID] then
 										WaypointCacheLookupPerContintent[tData.ContinentID] = {}
 									end
-									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
 									WaypointCache[tNewIndex] = {
-										name = L["OBJECT"]..";"..i..";"..v..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
+										name = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
 										role = "",
 										typeId = 3,
 										dbIndex = i,
@@ -172,6 +204,12 @@ function SkuNav:CreateWaypointCache()
 											byName = nil,
 										},
 									}
+									if aAddLocalizedNames then
+										for _, tLocale in pairs(aAddLocalizedNames) do
+											WaypointCache[tNewIndex][tLocale] = tObjectTranslations[tLocale]..";"..i..";"..SkuDB.objectLookup[tLocale][i]..tRessourceType..";"..tData.AreaName_lang[tLocale]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+										end
+									end									
+
 								end
 							end
 						end
@@ -733,6 +771,8 @@ function SkuNav:CreateWpLink(aWpAName, aWpBName)
 		SkuOptions.db.global[MODULE_NAME].Links[aWpAName][aWpBName] = tDistance
 		SkuOptions.db.global[MODULE_NAME].Links[aWpBName] = SkuOptions.db.global[MODULE_NAME].Links[aWpBName] or {}
 		SkuOptions.db.global[MODULE_NAME].Links[aWpBName][aWpAName] = tDistance
+
+		SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 	end
 end
 
@@ -1939,7 +1979,7 @@ function SkuNav:CreateSkuNavMain()
 
 	tFrame:SetScript("OnClick", function(self, a, b)
 
-		if a == "CTRL-SHIFT-R" then
+		if a == "CTRL-SHIFT-L" then
 			if Sku.testMode == true then
 				-- NAMEPLATE TEST -->
 				SkuCore:PingNameplates()
@@ -1949,7 +1989,7 @@ function SkuNav:CreateSkuNavMain()
 			end
 
 		end
-		if a == "CTRL-SHIFT-F" then
+		if a == "CTRL-SHIFT-K" then
 			SkuOptions.db.profile[MODULE_NAME].showSkuMM = SkuOptions.db.profile[MODULE_NAME].showSkuMM == false
 			SkuNav:SkuNavMMOpen()
 		end
@@ -2039,13 +2079,13 @@ function SkuNav:CreateSkuNavMain()
 	tFrame:Hide()
 	
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Z", tFrame:GetName(), "CTRL-SHIFT-Z")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F", tFrame:GetName(), "CTRL-SHIFT-F")
+	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-K", tFrame:GetName(), "CTRL-SHIFT-K")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Q", tFrame:GetName(), "CTRL-SHIFT-Q")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-W", tFrame:GetName(), "CTRL-SHIFT-W")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-S", tFrame:GetName(), "CTRL-SHIFT-S")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-O", tFrame:GetName(), "CTRL-SHIFT-O")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-P", tFrame:GetName(), "CTRL-SHIFT-P")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-R", tFrame:GetName(), "CTRL-SHIFT-R")
+	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-L", tFrame:GetName(), "CTRL-SHIFT-L")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-M", tFrame:GetName(), "SHIFT-M")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-F5", tFrame:GetName(), "SHIFT-F5")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F5", tFrame:GetName(), "CTRL-SHIFT-F5")
@@ -2119,6 +2159,7 @@ function SkuNav:OnMouseLeftDown()
 					tCurrentDragWpName = tWpName
 				end
 			end
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 		end
 	end
 end
@@ -2134,6 +2175,7 @@ function SkuNav:OnMouseLeftHold()
 					worldX = tDragX,
 					worldY = tDragY,
 				})
+				SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 			end
 		end
 	end
@@ -2151,6 +2193,7 @@ function SkuNav:OnMouseLeftUp()
 					worldX = tDragX,
 					worldY = tDragY,
 				})
+				SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 			end
 		end
 	end
@@ -2212,6 +2255,8 @@ function SkuNav:OnMouse4Up(aUseTarget)
 		SkuOptions.db.profile[MODULE_NAME].routeRecordingLastWp = tNewWpName
 	end
 	
+	SkuOptions.db.global["SkuNav"].hasCustomMapData = true
+
 	SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
 
 end
@@ -2272,6 +2317,8 @@ function SkuNav:OnMouseMiddleUp()
 			end
 		end
 	end
+
+	SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2293,6 +2340,7 @@ function SkuNav:OnMouse5Up()
 		local wpObj = SkuNav:GetWaypointData2(SkuWaypointWidgetCurrent)
 		if wpObj then
 			SkuNav:DeleteWaypoint(SkuWaypointWidgetCurrent)
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 		end
 	end
 end
@@ -2334,6 +2382,10 @@ function SkuNav:GetAllLinkedWPsInRangeToCoords(aX, aY, aRange)
 	local tFoundWps = {}
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 	local tPlayerUIMapId = SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()) or SkuNav:GetCurrentAreaId()
+
+	if not tPlayerContinentID then
+		return tFoundWps
+	end
 
 	for tIndex, tName in pairs(WaypointCacheLookupPerContintent[tPlayerContinentID]) do
 		local tWpData = WaypointCache[tIndex]
@@ -2529,53 +2581,10 @@ function SkuNav:PLAYER_LOGIN(...)
 	--print("PLAYER_LOGIN", ...)
 	SkuNav.MinimapFull = false
 
-	--delete pre r24 waypoint/link tables from profiles
-	SkuOptions.db.profile["SkuNav"].Links = nil
-	SkuOptions.db.profile["SkuNav"].Waypoints = nil
-
-	if SkuOptions.db.profile["SkuNav"].NavDataUpdateWith2517Done ~= true then
-		--reset menu quick access buttons to default because of the menu name changes
-		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect1 = SkuOptions.defaults.allModules.MenuQuickSelect1
-		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect2 = SkuOptions.defaults.allModules.MenuQuickSelect2
-		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect3 = SkuOptions.defaults.allModules.MenuQuickSelect3
-		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect4 = SkuOptions.defaults.allModules.MenuQuickSelect4
-
-		--reset nav data to default data with first load of r25.17 to include the update default waypoint data for mailboxes
-		if SkuOptions.db.global["SkuNav"] then
-			SkuOptions.db.global["SkuNav"].Waypoints = nil
-			SkuOptions.db.global["SkuNav"].Links = nil
-		end
-		SkuOptions.db.profile["SkuNav"].NavDataUpdateWith2517Done = true
-	end
-
-	--load default data if there aren't any nav data
 	SkuOptions.db.global["SkuNav"] = SkuOptions.db.global["SkuNav"] or {}
-	local tLinksEmpty, tWpsEmpty = true, true
-	if SkuOptions.db.global["SkuNav"].Waypoints then
-		for i = 1, #SkuOptions.db.global["SkuNav"].Waypoints do 
-			if not string.find(SkuOptions.db.global["SkuNav"].Waypoints[i], L["Quick waypoint"]) then
-				tWpsEmpty = false
-				break 
-			end
-		end
-	end
-	if tWpsEmpty == true then
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
-		SkuOptions.db.global["SkuNav"].Links = nil
-		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata[Sku.Loc]["Waypoints"]
-	end
 
-	if SkuOptions.db.global["SkuNav"].Links then
-		for i, v in pairs(SkuOptions.db.global["SkuNav"].Links) do 
-			tLinksEmpty = false
-			break 
-		end
-	end
-	if tLinksEmpty == true then
-		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
-		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata[Sku.Loc]["Links"]
-	end
-
+	--load default data if there isn't custom data
+	SkuNav:LoadDefaultMapData()
 
 	SkuOptions.db.profile[MODULE_NAME].routeRecording = false
 	SkuOptions.db.profile[MODULE_NAME].routeRecordingLastWp = nil
@@ -2617,47 +2626,29 @@ function SkuNav:PLAYER_LOGIN(...)
 
 	SkuNav:SkuNavMMOpen()
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:PLAYER_ENTERING_WORLD(...)
-	--print("PLAYER_ENTERING_WORLD", ...)
+function SkuNav:LoadDefaultMapData()
+	if not SkuOptions.db.global["SkuNav"].hasCustomMapData then
+		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
+		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
+	dprint("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuNav:UpdateStandardWpReachedRange()
 
-	--load default data if there isn't any
-	local tLinksEmpty, tWpsEmpty = true, true
-	if SkuOptions.db.global["SkuNav"].Waypoints then
-		for i = 1, #SkuOptions.db.global["SkuNav"].Waypoints do 
-			if not string.find(SkuOptions.db.global["SkuNav"].Waypoints[i], L["Quick waypoint"]) then
-				tWpsEmpty = false
-				break 
-			end
-		end
-	end
-	if tWpsEmpty == true then
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
-		SkuOptions.db.global["SkuNav"].Links = nil
-		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata[Sku.Loc]["Waypoints"]
-	end
-
-	if SkuOptions.db.global["SkuNav"].Links then
-		for i, v in pairs(SkuOptions.db.global["SkuNav"].Links) do 
-			tLinksEmpty = false
-			break 
-		end
-	end
-	if tLinksEmpty == true then
-		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
-		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata[Sku.Loc]["Links"]
+	--load default data if there isn't custom data
+	if aIsInitialLogin ~= true then
+		SkuNav:LoadDefaultMapData()
 	end
 
 	C_Timer.NewTimer(15, function() SkuDrawFlag = true end)
 
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowing = false
 	SkuOptions.db.profile[MODULE_NAME].routeRecording = false
-
-	--this is to update pre 21.8 profiles, where standardWpReachedRange was a boolean
-	if type(SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange) == "boolean" then
-		SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = 3
-	end
 
 	SkuNav:SelectWP("", true)
 
@@ -2879,6 +2870,12 @@ function SkuNav:CreateWaypoint(aName, aX, aY, aSize, aForcename)
 		aName = nil
 	end
 
+	if aName then
+		if not string.find(aName, L["Einheiten;Route;"]) then
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = true
+		end
+	end
+
 	return aName
 end
 
@@ -2954,9 +2951,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local GetNpcRolesCache = {}
-function SkuNav:GetNpcRoles(aNpcName, aNpcId)
+function SkuNav:GetNpcRoles(aNpcName, aNpcId, aLocale)
+	aLocale = aLocale or Sku.Loc
 	if not aNpcId then
-		for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
+		for i, v in pairs(SkuDB.NpcData.Names[aLocale]) do
 			if v[1] == aNpcName then
 				aNpcId = i
 				break
@@ -2964,12 +2962,16 @@ function SkuNav:GetNpcRoles(aNpcName, aNpcId)
 		end
 	end
 
-	if GetNpcRolesCache[aNpcId] then
-		return GetNpcRolesCache[aNpcId]
+	if not GetNpcRolesCache[aLocale] then
+		GetNpcRolesCache[aLocale] = {}
+	end
+
+	if GetNpcRolesCache[aLocale][aNpcId] then
+		return GetNpcRolesCache[aLocale][aNpcId]
 	end
 
 	local rRoles = {}
-	for i, v in pairs(SkuNav.NPCRolesToRecognize[Sku.Loc]) do
+	for i, v in pairs(SkuNav.NPCRolesToRecognize[aLocale]) do
 		if SkuDB.NpcData.Data[aNpcId] then
 			--print(aNpcId, SkuDB.NpcData.Data[aNpcId])
 			if bit.band(i, SkuDB.NpcData.Data[aNpcId][SkuDB.NpcData.Keys["npcFlags"]]) > 0 then
@@ -2979,7 +2981,7 @@ function SkuNav:GetNpcRoles(aNpcName, aNpcId)
 		end
 	end
 
-	GetNpcRolesCache[aNpcId] = rRoles
+	GetNpcRolesCache[aLocale][aNpcId] = rRoles
 	return rRoles
 end
 
