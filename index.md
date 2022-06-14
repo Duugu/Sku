@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.12](https://github.com/Duugu/Sku/releases/download/r27.12/Sku-r27.12-bcc.zip) (14.06.2022)<br> 
+[Sku r27.13](https://github.com/Duugu/Sku/releases/download/r27.13/Sku-r27.13-bcc.zip) (14.06.2022)<br> 
 
 *Old updates:* <br>
 [Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
@@ -22,6 +22,17 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r27.13
+
+### Options
+- The menu is now playing a dedicated sound if you go on the first menu entry up or on the last down, to indicate that the current entry is the first/last one in a list.
+
+### Navigation
+- Fixed an issue that caused map data not being updated on new addon releases in specific scenarios.
+
+### Quest
+- Fixed an issues with Quests > starts in zone.
+
 ## Changes in Sku r27.12
 
 ### Core
