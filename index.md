@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku r27.13](https://github.com/Duugu/Sku/releases/download/r27.13/Sku-r27.13-bcc.zip) (14.06.2022)<br> 
+[Sku r27.14](https://github.com/Duugu/Sku/releases/download/r27.14/Sku-r27.14-bcc.zip) (14.06.2022)<br> 
 
 *Old updates:* <br>
 [Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
@@ -22,6 +22,14 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r27.14
+
+### Local
+- "all bags" menu added to bags menu by SamKacer. Lists all items alphabetically, with newly acquired items on top and flagged with the term "new".
+
+### Core
+- Fixed a bug with the minimap scan that caused errors on starting combat.
+
 ## Changes in Sku r27.13
 
 ### Options
