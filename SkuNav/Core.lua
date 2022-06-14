@@ -771,6 +771,8 @@ function SkuNav:CreateWpLink(aWpAName, aWpBName)
 		SkuOptions.db.global[MODULE_NAME].Links[aWpAName][aWpBName] = tDistance
 		SkuOptions.db.global[MODULE_NAME].Links[aWpBName] = SkuOptions.db.global[MODULE_NAME].Links[aWpBName] or {}
 		SkuOptions.db.global[MODULE_NAME].Links[aWpBName][aWpAName] = tDistance
+
+		SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 	end
 end
 
@@ -2157,6 +2159,7 @@ function SkuNav:OnMouseLeftDown()
 					tCurrentDragWpName = tWpName
 				end
 			end
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 		end
 	end
 end
@@ -2172,6 +2175,7 @@ function SkuNav:OnMouseLeftHold()
 					worldX = tDragX,
 					worldY = tDragY,
 				})
+				SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 			end
 		end
 	end
@@ -2189,6 +2193,7 @@ function SkuNav:OnMouseLeftUp()
 					worldX = tDragX,
 					worldY = tDragY,
 				})
+				SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 			end
 		end
 	end
@@ -2250,6 +2255,8 @@ function SkuNav:OnMouse4Up(aUseTarget)
 		SkuOptions.db.profile[MODULE_NAME].routeRecordingLastWp = tNewWpName
 	end
 	
+	SkuOptions.db.global["SkuNav"].hasCustomMapData = true
+
 	SkuOptions:VocalizeMultipartString(L["WP created"], false, true, 0.3, true)
 
 end
@@ -2310,6 +2317,8 @@ function SkuNav:OnMouseMiddleUp()
 			end
 		end
 	end
+
+	SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2331,6 +2340,7 @@ function SkuNav:OnMouse5Up()
 		local wpObj = SkuNav:GetWaypointData2(SkuWaypointWidgetCurrent)
 		if wpObj then
 			SkuNav:DeleteWaypoint(SkuWaypointWidgetCurrent)
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 		end
 	end
 end
@@ -2571,53 +2581,10 @@ function SkuNav:PLAYER_LOGIN(...)
 	--print("PLAYER_LOGIN", ...)
 	SkuNav.MinimapFull = false
 
-	--delete pre r24 waypoint/link tables from profiles
-	SkuOptions.db.profile["SkuNav"].Links = nil
-	SkuOptions.db.profile["SkuNav"].Waypoints = nil
-
-	if SkuOptions.db.profile["SkuNav"].NavDataUpdateWith2517Done ~= true then
-		--reset menu quick access buttons to default because of the menu name changes
-		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect1 = SkuOptions.defaults.allModules.MenuQuickSelect1
-		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect2 = SkuOptions.defaults.allModules.MenuQuickSelect2
-		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect3 = SkuOptions.defaults.allModules.MenuQuickSelect3
-		SkuOptions.db.profile["SkuOptions"].allModules.MenuQuickSelect4 = SkuOptions.defaults.allModules.MenuQuickSelect4
-
-		--reset nav data to default data with first load of r25.17 to include the update default waypoint data for mailboxes
-		if SkuOptions.db.global["SkuNav"] then
-			SkuOptions.db.global["SkuNav"].Waypoints = nil
-			SkuOptions.db.global["SkuNav"].Links = nil
-		end
-		SkuOptions.db.profile["SkuNav"].NavDataUpdateWith2517Done = true
-	end
-
-	--load default data if there aren't any nav data
 	SkuOptions.db.global["SkuNav"] = SkuOptions.db.global["SkuNav"] or {}
-	local tLinksEmpty, tWpsEmpty = true, true
-	if SkuOptions.db.global["SkuNav"].Waypoints then
-		for i = 1, #SkuOptions.db.global["SkuNav"].Waypoints do 
-			if not string.find(SkuOptions.db.global["SkuNav"].Waypoints[i], L["Quick waypoint"]) then
-				tWpsEmpty = false
-				break 
-			end
-		end
-	end
-	if tWpsEmpty == true then
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
-		SkuOptions.db.global["SkuNav"].Links = nil
-		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata[Sku.Loc]["Waypoints"]
-	end
 
-	if SkuOptions.db.global["SkuNav"].Links then
-		for i, v in pairs(SkuOptions.db.global["SkuNav"].Links) do 
-			tLinksEmpty = false
-			break 
-		end
-	end
-	if tLinksEmpty == true then
-		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
-		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata[Sku.Loc]["Links"]
-	end
-
+	--load default data if there isn't custom data
+	SkuNav:LoadDefaultMapData()
 
 	SkuOptions.db.profile[MODULE_NAME].routeRecording = false
 	SkuOptions.db.profile[MODULE_NAME].routeRecordingLastWp = nil
@@ -2659,47 +2626,29 @@ function SkuNav:PLAYER_LOGIN(...)
 
 	SkuNav:SkuNavMMOpen()
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:PLAYER_ENTERING_WORLD(...)
-	--print("PLAYER_ENTERING_WORLD", ...)
+function SkuNav:LoadDefaultMapData()
+	if not SkuOptions.db.global["SkuNav"].hasCustomMapData then
+		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
+		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
+	dprint("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuNav:UpdateStandardWpReachedRange()
 
-	--load default data if there isn't any
-	local tLinksEmpty, tWpsEmpty = true, true
-	if SkuOptions.db.global["SkuNav"].Waypoints then
-		for i = 1, #SkuOptions.db.global["SkuNav"].Waypoints do 
-			if not string.find(SkuOptions.db.global["SkuNav"].Waypoints[i], L["Quick waypoint"]) then
-				tWpsEmpty = false
-				break 
-			end
-		end
-	end
-	if tWpsEmpty == true then
-		SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
-		SkuOptions.db.global["SkuNav"].Links = nil
-		--SkuOptions.db.global["SkuNav"].Waypoints = SkuDB.routedata[Sku.Loc]["Waypoints"]
-	end
-
-	if SkuOptions.db.global["SkuNav"].Links then
-		for i, v in pairs(SkuOptions.db.global["SkuNav"].Links) do 
-			tLinksEmpty = false
-			break 
-		end
-	end
-	if tLinksEmpty == true then
-		SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
-		--SkuOptions.db.global["SkuNav"].Links = SkuDB.routedata[Sku.Loc]["Links"]
+	--load default data if there isn't custom data
+	if aIsInitialLogin ~= true then
+		SkuNav:LoadDefaultMapData()
 	end
 
 	C_Timer.NewTimer(15, function() SkuDrawFlag = true end)
 
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowing = false
 	SkuOptions.db.profile[MODULE_NAME].routeRecording = false
-
-	--this is to update pre 21.8 profiles, where standardWpReachedRange was a boolean
-	if type(SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange) == "boolean" then
-		SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = 3
-	end
 
 	SkuNav:SelectWP("", true)
 
@@ -2919,6 +2868,12 @@ function SkuNav:CreateWaypoint(aName, aX, aY, aSize, aForcename)
 		})
 	else
 		aName = nil
+	end
+
+	if aName then
+		if not string.find(aName, L["Einheiten;Route;"]) then
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = true
+		end
 	end
 
 	return aName

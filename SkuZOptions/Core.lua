@@ -257,11 +257,11 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 		elseif fields[1] == "rdatareset" then
 			dprint("/sku rdatareset")
-			SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
-			SkuNav:CreateWaypointCache()
-			SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
-			SkuNav:LoadLinkDataFromProfile()
-
+			SkuOptions.db.global["SkuNav"].Waypoints = {}
+			SkuOptions.db.global["SkuNav"].Links = {}
+			SkuOptions.db.global["SkuNav"].hasCustomMapData = nil
+			--SkuNav:CreateWaypointCache()
+			SkuNav:PLAYER_ENTERING_WORLD()
 
 		elseif fields[1] == "translate" then
 			if SkuTranslatedData then

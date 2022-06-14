@@ -1084,21 +1084,23 @@ function SkuQuest:MenuBuilder(aParentEntry)
 							local tRaceName = C_CreatureInfo.GetRaceInfo(tmpraceID)
 
 							local tCount = 0
-							for iR, vR in pairs(SkuDB.raceKeys) do
-								if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]]) > 0 then
-									if iR == "ALL_HORDE" then
-										tFlagH = true
-									end
-									if iR == "ALL_ALLIANCE" then
-										tFlagA = true
-									end
-									if iR ~= "ALL_HORDE" and iR ~= "ALL_ALLIANCE" then
-										local tCleanRaceName = string.upper(string.gsub(iR, "_", ""))
-										if tCleanRaceName == "UNDEAD" then
-											tCleanRaceName = "SCOURGE"
+							if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]] then
+								for iR, vR in pairs(SkuDB.raceKeys) do
+									if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]]) > 0 then
+										if iR == "ALL_HORDE" then
+											tFlagH = true
 										end
-										rRaces[tCleanRaceName] = true
-										tCount = tCount + 1
+										if iR == "ALL_ALLIANCE" then
+											tFlagA = true
+										end
+										if iR ~= "ALL_HORDE" and iR ~= "ALL_ALLIANCE" then
+											local tCleanRaceName = string.upper(string.gsub(iR, "_", ""))
+											if tCleanRaceName == "UNDEAD" then
+												tCleanRaceName = "SCOURGE"
+											end
+											rRaces[tCleanRaceName] = true
+											tCount = tCount + 1
+										end
 									end
 								end
 							end
