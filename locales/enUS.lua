@@ -1393,5 +1393,9 @@ L["Questziel"] = "quest target"
 
 L["Bereitschaft check"] = "ready check"
 
+
+L["all items"] = "all bags"
+
 L["herbalism"] = "herbalism"
 L["mining"] = "mining"
+
