@@ -9,7 +9,7 @@ Changes in Sku r27.13
 		- The menu is now playing a dedicated sound if you go on the first menu entry up or on the last down, to indicate that the current entry is the first/last one in a list.
 
 	Navigation
-		- Fixed an issue that caused map data not being updated on new addon releases in specifc scenarios.
+		- Fixed an issue that caused map data not being updated on new addon releases in specific scenarios.
 
 	Quest
 		- Fixed an issues with Quests > starts in zone.
