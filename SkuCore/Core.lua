@@ -1787,7 +1787,9 @@ end
 function SkuCore:PLAYER_REGEN_DISABLED(...)
 	SkuOptions:CloseMenu()
 	_G["SkuCoreControlOption1"]:Hide()
-	SkuCore:MinimapStopScan()
+	if SkuCore.IsMMScanning == true then
+		SkuCore:MinimapStopScan()
+	end
 	SkuCore.inCombat = true
 	SkuOptions.Voice:OutputString(L["Combat start"], true, true, 0.2)
 end

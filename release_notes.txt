@@ -3,6 +3,15 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r27.14
+
+	Local
+		- "all bags" menu added to bags menu by SamKacer. Lists all items alphabetically, with newly acquired items on top and flagged with the term "new".
+
+	Core
+		- Fixed a bug with the minimap scan that caused errors on starting combat.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r27.13
 
 	Options
@@ -12,7 +21,7 @@ Changes in Sku r27.13
 		- Fixed an issue that caused map data not being updated on new addon releases in specific scenarios.
 
 	Quest
-		- Fixed an issues with Quests > starts in zone.
+		- Fixed an issue with Quests > starts in zone.
 
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r27.12

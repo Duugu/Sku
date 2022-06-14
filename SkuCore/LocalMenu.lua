@@ -457,7 +457,9 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 	-- prepend "new" to all new items
 	for _, itemButton in pairs(allBagResults) do
 		if itemButton.isNewItem then
-			itemButton.textFirstLine = L["New"] .. " " .. itemButton.textFirstLine
+			if not string.find(itemButton.textFirstLine, "^"..L["New"]) then
+				itemButton.textFirstLine = L["New"] .. " " .. itemButton.textFirstLine
+			end
 		end
 	end
 	-- all items menu item
