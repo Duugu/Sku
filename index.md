@@ -8,6 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 [Sku r27.14](https://github.com/Duugu/Sku/releases/download/r27.14/Sku-r27.14-bcc.zip) (14.06.2022)<br> 
+[SkuFluegel r5.6](https://github.com/Duugu/SkuFluegel/releases/download/r5.6/SkuFluegel-r5.6-bcc.zip)) (21.06.2022) (addon for sighted players)<br>
 
 *Old updates:* <br>
 [Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
@@ -16,7 +17,6 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 [SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) (28.05.2022) <br>
 [SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
 [SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
-[SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
 [BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
 # Release notes
