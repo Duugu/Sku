@@ -7,11 +7,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+[Sku Script (wow_menu) r2.10](https://github.com/Duugu/wow_menu/releases/download/r2.10/wow_menu-r2.10-bcc.zip) (23.06.2022)<br>
 [Sku r27.14](https://github.com/Duugu/Sku/releases/download/r27.14/Sku-r27.14-bcc.zip) (14.06.2022)<br> 
-[SkuFluegel r5.6](https://github.com/Duugu/SkuFluegel/releases/download/r5.6/SkuFluegel-r5.6-bcc.zip)) (21.06.2022) (addon for sighted players)<br>
 
 *Old updates:* <br>
-[Sku Script (wow_menu) r2.9](https://github.com/Duugu/wow_menu/releases/download/r2.9/wow_menu-r2.9-bcc.zip) (30.05.2022)<br>
+[SkuFluegel r5.6](https://github.com/Duugu/SkuFluegel/releases/download/r5.6/SkuFluegel-r5.6-bcc.zip)) (21.06.2022) (addon for sighted players)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
 [SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) (28.05.2022) <br>
@@ -22,6 +22,14 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku Script (wow_menu) r2.10
+- Added a "Delete character" menu option. 
+	The character in the currently selected slot will be deleted. 
+	All characters below the deleted character will be moved one slot up.
+- Added a voice output to script termination.
+- Fixed a bug with unusual portrait screen resolutions like 1250 x 1440 (width/height ratio <1). Script should now recognize login mode with those resolutions.
+
+
 ## Changes in Sku r27.14
 
 ### Local
