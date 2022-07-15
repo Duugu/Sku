@@ -75,6 +75,10 @@ function SkuQuest:OnInitialize()
 	SkuQuest:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuQuest:RegisterEvent("PLAYER_LOGIN")
 
+	SkuQuest:RegisterEvent("QUEST_ACCEPTED")
+	SkuQuest:RegisterEvent("QUEST_REMOVED")
+	SkuQuest:RegisterEvent("QUEST_TURNED_IN")
+
 	--SkuQuestDB = SkuQuestDB or {}
 	--SkuQuestDB = LibStub("AceDB-3.0"):New("SkuQuestDB", defaults) -- TODO: fix default values for subgroups
 
@@ -154,10 +158,10 @@ function SkuQuest:OnEnable()
 		end
 
 
-		if aKey == "CTRL-SHIFT-D" then
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key then
 			SkuQuest:OnSkuQuestAbandon()
 		end
-		if aKey == "CTRL-SHIFT-T" then
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key then
 			SkuQuest:OnSkuQuestPush()
 		end
 		if aKey == "UP" then
@@ -201,8 +205,8 @@ function SkuQuest:OnEnable()
 		SetOverrideBindingClick(self, true, "SHIFT-UP", "SkuQuestMainOption1", "SHIFT-UP")
 		SetOverrideBindingClick(self, true, "SHIFT-DOWN", "SkuQuestMainOption1", "SHIFT-DOWN")
 
-		SetOverrideBindingClick(self, true, "CTRL-SHIFT-D", "SkuQuestMainOption1", "CTRL-SHIFT-D")
-		SetOverrideBindingClick(self, true, "CTRL-SHIFT-T", "SkuQuestMainOption1", "CTRL-SHIFT-T")
+		SetOverrideBindingClick(self, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key, "SkuQuestMainOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key)
+		SetOverrideBindingClick(self, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key, "SkuQuestMainOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key)
 		SetOverrideBindingClick(self, true, "UP", "SkuQuestMainOption1", "UP")
 		SetOverrideBindingClick(self, true, "DOWN", "SkuQuestMainOption1", "DOWN")
 		]]
@@ -996,6 +1000,8 @@ function SkuQuest:PLAYER_LOGIN(...)
 
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	C_Timer.NewTimer(10, function() PLAYER_ENTERING_WORLD_flag = false end)
+
+	SkuQuest:UpdateAllQuestObjects()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:PLAYER_ENTERING_WORLD(...)
@@ -1008,7 +1014,6 @@ function SkuQuest:PLAYER_ENTERING_WORLD(...)
 	C_Timer.After(20, function()
 		SkuQuest:LoadEventHandler()
 	end)
-	
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1225,4 +1230,56 @@ function SkuQuest:BuildQuestZoneCache()
 			end
 		end
 	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+SkuQuest.questObjects = {}
+function SkuQuest:GetAllQuestObjects()
+	return SkuQuest.questObjects
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuQuest:UpdateAllQuestObjects()
+	SkuQuest.questObjects = {}
+	if GetNumQuestLogEntries() > 0 then
+		for x = 1, GetNumQuestLogEntries() do
+			if GetNumQuestLeaderBoards(x) > 0 then
+				for y = 1, GetNumQuestLeaderBoards(x) do
+					local description, objectiveType, isCompleted = GetQuestLogLeaderBoard(y, x)
+					if isCompleted == false then
+						if objectiveType == "object" then
+							dprint(x, y, description)
+						elseif objectiveType == "item" then
+							for i, v in pairs(SkuDB.itemLookup[Sku.L["locale"]]) do
+								if string.find(description, v) then
+									if SkuDB.itemDataTBC[i] and SkuDB.itemDataTBC[i][SkuDB.itemKeys.objectDrops] then
+										for _, tObjectId in pairs(SkuDB.itemDataTBC[i][SkuDB.itemKeys.objectDrops]) do
+											dprint(v, tObjectId, SkuDB.objectLookup[Sku.L["locale"]][tObjectId])
+											if SkuDB.objectLookup[Sku.L["locale"]][tObjectId] then
+												SkuQuest.questObjects[SkuDB.objectLookup[Sku.L["locale"]][tObjectId]] = tObjectId
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuQuest:QUEST_ACCEPTED()
+	SkuQuest:UpdateAllQuestObjects()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuQuest:QUEST_REMOVED()
+	SkuQuest:UpdateAllQuestObjects()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuQuest:QUEST_TURNED_IN()
+	SkuQuest:UpdateAllQuestObjects()
 end

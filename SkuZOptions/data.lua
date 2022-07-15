@@ -511,31 +511,4 @@ SkuOptions.Glossary1 = {
 	},
 }
 
-SkuOptions.BackgroundSoundFiles = {
-	["silence.mp3"] = L["Nichts"],
-	["benny_hill.mp3"] = L["Benny Hill"],
-	["chor1.mp3"] = L["Chormusik 1"],
-	["chor2.mp3"] = L["Chormusik 2"],
-	["chor3.mp3"] = L["Chormusik 3"],
-	["chor4.mp3"] = L["Chormusik 4"],
-	["entspannungsmusik.mp3"] = L["Entspannungsmusik"],
-	["gewitter.mp3"] = L["Gewitter"],
-	["nachts_im_wald.mp3"] = L["Nachts im Wald"],
-	["wald.mp3"] = L["Vögel"],
-	["walgesang.mp3"] = L["Walgesang"],
-	["slowreggaet.mp3"] = L["Slow Reggae"],
-}
-SkuOptions.BackgroundSoundFilesLen = {
-	["benny_hill.mp3"] = 238,8,
-	["chor1.mp3"] = 167,75,
-	["chor2.mp3"] = 186,55,
-	["chor3.mp3"] = 62.841541666666664,
-	["chor4.mp3"] = 317,15,
-	["entspannungsmusik.mp3"] = 112,95,
-	["gewitter.mp3"] = 125,91,
-	["nachts_im_wald.mp3"] = 100,41,
-	["wald.mp3"] = 59,13,
-	["walgesang.mp3"] = 141,37,
-	["slowreggaet.mp3"] = 152,36,
-}
 

@@ -147,6 +147,7 @@ SkuCore.interactFramesList = {
 	"BagnonGuildFrame1",
 	--"MainMenuBar",
 	"ReadyCheckFrame",
+	"ItemSocketingFrame",
 }
 
 local escapes = {
@@ -203,6 +204,7 @@ function SkuCore:OnInitialize()
 	SkuCore:RegisterEvent("NAME_PLATE_CREATED")
 	SkuCore:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 	SkuCore:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
+	SkuCore:RegisterEvent("PLAYER_STARTED_MOVING")
 	--SkuCore:RegisterEvent("CURSOR_CHANGED")
 	--SkuCore:RegisterEvent("PET_STABLE_SHOW")
 	--SkuCore:RegisterEvent("PET_STABLE_CLOSED")
@@ -212,9 +214,19 @@ function SkuCore:OnInitialize()
 	SkuCore:RangeCheckOnInitialize()
 	SkuCore:AqOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
+	SkuCore:GameWorldObjectsOnInitialize()
 	SkuCore:TutorialOnInitialize()
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:PLAYER_STARTED_MOVING()
+   if SkuCore.gameWorldObjectsScanFrame then
+      SkuCore:GameWorldObjectsRestoreView()
+   end
+   if SkuCore.IsMMScanning == true then
+		SkuCore:MinimapStopScan()
+	end
+end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:PanicModeStartStopBackgroundSound(aStartStop)
 	if 1 == 1 then return end
@@ -407,21 +419,26 @@ function SkuCore:PanicModeStart()
 			end
 			------------------------------------------------- calculate final
 			local tPlayerPosX, tPlayerPosY = UnitPosition("player")
-			if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y) < SkuCorePanicBeaconDistance then
-				if SkuCorePanicCurrentPoint == #tPanicData then
-					SkuCore:PanicModeStart()
-				else
-					for x = SkuCorePanicCurrentPoint, #tPanicData do
-						if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[x].x, tPanicData[x].y) > SkuCorePanicBeaconDistance then
-							SkuCorePanicCurrentPoint = x
-							if not SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanicBeaconName) then
-								SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanicBeaconName, SkuCorePanicBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, 66)
-								SkuOptions.BeaconLib:StartBeacon("SkuOptions", tPanicBeaconName)
-							else
-								SkuOptions.BeaconLib:UpdateBeacon("SkuOptions", tPanicBeaconName, SkuCorePanicBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, 66, true)
+			if tPanicData[SkuCorePanicCurrentPoint] then
+				if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y) < SkuCorePanicBeaconDistance then
+					if SkuCorePanicCurrentPoint == #tPanicData then
+						SkuCore:PanicModeStart()
+					else
+						for x = SkuCorePanicCurrentPoint, #tPanicData do
+							if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[x].x, tPanicData[x].y) > SkuCorePanicBeaconDistance then
+								SkuCorePanicCurrentPoint = x
+								if not SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanicBeaconName) then
+									local tBeaconType = SkuNav:getBeaconSoundSetName(1)
+									if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+										return
+									end
+									SkuOptions.BeaconLib:StartBeacon("SkuOptions", tPanicBeaconName)
+								else
+									SkuOptions.BeaconLib:UpdateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange)
+								end
+		
+								break
 							end
-	
-							break
 						end
 					end
 				end
@@ -886,7 +903,7 @@ function SkuCore:OnEnable()
 					SkuCore.openMenuAfterPath = ""
 				else
 					if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
-						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
+						_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 					end
 				end
 			end
@@ -975,22 +992,26 @@ function SkuCore:OnEnable()
 			if SkuStatus.riding == 0 then
 				SkuStatus.riding = GetTime()
 				SkuOptions.Voice:OutputString("male-Reiten", false, true, 0.2)
+				SkuOptions:SendTrackingStatusUpdates()
 			end
 		else
 			if SkuStatus.riding > 0 then
 				SkuStatus.riding = 0
 				SkuOptions.Voice:OutputString("male-Reiten beendet", false, true, 0.2)
+				SkuOptions:SendTrackingStatusUpdates()
 			end
 		end
 		if IsFlying() == true then
 			if SkuStatus.flying == 0 then
 				SkuStatus.flying = GetTime()
 				SkuOptions.Voice:OutputString("male-Fliegen", false, true, 0.2)
+				SkuOptions:SendTrackingStatusUpdates()
 			end
 		else
 			if SkuStatus.flying > 0 then
 				SkuStatus.flying = 0
 				SkuOptions.Voice:OutputString("Fliegen beendet", false, true, 0.2)
+				SkuOptions:SendTrackingStatusUpdates()
 			end
 		end
 
@@ -1094,10 +1115,59 @@ function SkuCore:OnEnable()
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		dprint("SkuCoreControlOption1", self, aKey, aB)
 
-		if aKey == "CTRL-SHIFT-Y" then
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_PANICMODE"].key then
 			SkuCore:PanicModeStart()
 		end
+
 		
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key then
+			dprint("SKU_KEY_SCANCONTINUE", L["SKU_KEY_SCANCONTINUE"])
+			SkuCore:GameWorldObjectsScan(true)
+		end
+
+		local function tStartScan(aScanNumber)
+			local tScanObjects = {}
+			for i, v in pairs(SkuOptions.db.char[MODULE_NAME].scanConfigs[aScanNumber].objects) do
+				tScanObjects[SkuCore.ScanObjects[v]] = true
+			end
+			local tScanParameters = SkuCore.ScanTypes[SkuOptions.db.char[MODULE_NAME].scanConfigs[aScanNumber].type]
+			SkuCore:GameWorldObjectsScan(false, tScanObjects, tScanParameters.hStepSizeDeg, tScanParameters.hStepsMax, tScanParameters.vMoveSpeed, tScanParameters.vStepsMax, nil, tScanParameters.hStart)
+		end
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key then
+			dprint("SKU_KEY_SCAN1", L["SKU_KEY_SCAN1"])
+			tStartScan(1)
+		end
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN2"].key then
+			dprint("SKU_KEY_SCAN2", L["SKU_KEY_SCAN2"])
+			tStartScan(2)
+		end
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN3"].key then
+			dprint("SKU_KEY_SCAN3", L["SKU_KEY_SCAN3"])
+			tStartScan(3)
+		end
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN4"].key then
+			dprint("SKU_KEY_SCAN4", L["SKU_KEY_SCAN4"])
+			tStartScan(4)
+		end
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN5"].key then
+			dprint("SKU_KEY_SCAN5", L["SKU_KEY_SCAN5"])
+			tStartScan(5)
+		end
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN6"].key then
+			dprint("SKU_KEY_SCAN6", L["SKU_KEY_SCAN6"])
+			tStartScan(6)
+		end
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN7"].key then
+			dprint("SKU_KEY_SCAN7", L["SKU_KEY_SCAN7"])
+			tStartScan(7)
+		end
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN8"].key then
+			dprint("SKU_KEY_SCAN8", L["SKU_KEY_SCAN8"])
+			tStartScan(8)
+		end
+
+
+
 		if SkuCore.inCombat == true then
 			--SkuCore.openMenuAfterCombat = true
 			return
@@ -1109,11 +1179,11 @@ function SkuCore:OnEnable()
 
 
 		if SkuCore.inCombat ~= true then
-			if aKey == "CTRL-SHIFT-F" then
-				SkuCore:MinimapScan(50) --140
+			if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key then
+				SkuCore:MinimapScan(50) --120
 			end
-			if aKey == "CTRL-SHIFT-R" then
-				SkuCore:MinimapScan(15) --50
+			if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key then
+				SkuCore:MinimapScan(20) --50
 			end
 		end
 
@@ -1154,9 +1224,20 @@ function SkuCore:OnEnable()
 			return
 		end
 		ClearOverrideBindings(self)
-		SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Y", "SkuCoreControlOption1", "CTRL-SHIFT-Y")
-		SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F", "SkuCoreControlOption1", "CTRL-SHIFT-F")
-		SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-R", "SkuCoreControlOption1", "CTRL-SHIFT-R")
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_PANICMODE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_PANICMODE"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key)
+
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN2"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN2"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN3"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN3"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN4"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN4"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN5"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN5"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN6"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN6"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN7"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN7"].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN8"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN8"].key)
+
 	end)
 	
 	tFrame:Hide()
@@ -1477,21 +1558,34 @@ function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	if aUnitTarget == "player" then
 		SkuCore:UnfollowOnCast()
 	end
+	if SkuStatus.casting == 0 then
+		SkuStatus.casting = 1
+		SkuOptions:SendTrackingStatusUpdates("C-1")
+	end
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_START(aEvent, unitTarget, castGUID, spellID)
 	if aUnitTarget == "player" then
 		SkuCore:UnfollowOnCast()
+	end
+	if SkuStatus.casting == 0 then
+		SkuStatus.casting = 1
+		SkuOptions:SendTrackingStatusUpdates("C-1")
 	end
 end
 function SkuCore:UNIT_SPELLCAST_STOP(aEvent, aUnitTarget, aCastGUID, aSpellID)
 	if aUnitTarget == "player" then
 		SkuCore:FollowOnCast()
 	end
+	SkuStatus.casting = 0
+	SkuOptions:SendTrackingStatusUpdates("C-4")
+
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_STOP(aEvent, unitTarget, castGUID, spellID)
 	if aUnitTarget == "player" then
 		SkuCore:FollowOnCast()
 	end
+	SkuStatus.casting = 0
+	SkuOptions:SendTrackingStatusUpdates("C-4")
 end
 function SkuCore:UNIT_SPELLCAST_CHANNEL_UPDATE(aEvent, unitTarget, castGUID, spellID)
 end
@@ -1508,8 +1602,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:CURRENT_SPELL_CAST_CHANGED(aCancelledCast)
+	--[[
 	local nameCn, text, texture, startTime, endTime, isTradeSkill, spellID = ChannelInfo()
 	local namec, text, texture, startTime, endTime, isTradeSkill, castID, spellID = CastingInfo() -- bcc
+	print("CURRENT_SPELL_CAST_CHANGED", aCancelledCast, nameCn, namec, nameCn or namec)
 	if nameCn or namec then
 		SkuStatus.casting = 1
 		SkuOptions:SendTrackingStatusUpdates("C-1")
@@ -1517,6 +1613,7 @@ function SkuCore:CURRENT_SPELL_CAST_CHANGED(aCancelledCast)
 		SkuStatus.casting = 0
 		SkuOptions:SendTrackingStatusUpdates("C-4")
 	end
+	]]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1533,8 +1630,9 @@ end
 --local tSkuCoreTooltipCheckerControlPrevOpac = 1
 --SkuCore.CheckInteractObjectShowIsShown = false
 function SkuCore:CheckInteractObjectShow()
+	--print("CheckInteractObjectShow", SkuCore.noMouseOverNotification)
 	--tSkuCoreTooltipCheckerControlPrevOpac = 1
-	if SkuCore.NoMouseOverNotification ~= true then
+	if SkuCore.noMouseOverNotification ~= true then
 		if not GameTooltipTextLeft1.GetText then
 			return
 		end
@@ -1551,16 +1649,19 @@ function SkuCore:CheckInteractObjectShow()
 			end
 		end
 	end
+	C_Timer.After(0.1, function() GameTooltip:Hide() end)
 end
---[[
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:CheckInteractObjectHide()
-	if SkuCore.CheckInteractObjectShowIsShown == true then
-		SkuCore.CheckInteractObjectShowIsShown = false
+	dprint("CheckInteractObjectHide", SkuCore.noMouseOverNotification)
+
+	--if SkuCore.CheckInteractObjectShowIsShown == true then
+		--SkuCore.CheckInteractObjectShowIsShown = false
 		--print("hide")
-	end
+	--end
 end
-]]
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 local SkuDropdownlistGenericFlag = false
 function SkuCore:PLAYER_ENTERING_WORLD(...)
@@ -1602,9 +1703,11 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			
 			C_Timer.After(5, function()
 				SkuCore:ResetBindings()
-				SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+				--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
+				--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 			end)
-			SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+			--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
+			--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 
 			SkuOptions.db.global[MODULE_NAME].IsFirstAccountLogin = false
 		end
@@ -1613,7 +1716,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			dprint("SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin", SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin)
 			--first load with character
 			--set up char specific things
-			SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+			--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
+			--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 
 			local tCurrentP = SkuOptions.db:GetCurrentProfile()
 			local tName, tServer = UnitFullName("player") 
@@ -1642,20 +1746,36 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				C_CVar.SetCVar("alwaysShowActionBars", "1")
 				C_CVar.SetCVar("cameraSmoothStyle", "2")
 				C_CVar.GetCVar("removeChatDelay", "1")
+
+				SetCVar("cameraViewBlendStyle", 2) --Controls if the camera moves from saved positions - 1 smoothly 2 instantly 
 	
-				SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+				--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
+				--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 
 				LeaveChannelByName("LookingForGroup")
 				LeaveChannelByName("SucheNachGruppe")				
 			end)			
 
+			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+			SkuOptions:CloseMenu()
+			
 			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
 		end
-		SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
+		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 	
 	end
 
 	if isInitialLogin == true or isReloadingUi == true then
+
+		--update profile for sku r28 error output change
+		for i, v in pairs(SkuOptions.db.profile["SkuCore"].UIErrors) do
+			if string.find(v, "marlene_") or string.find(v, "hans_")then
+				SkuOptions.db.profile["SkuCore"].UIErrors[i] = "voice"
+			end
+		end
+		--
+
 		WorldMapFrame:Show()
 		WorldMapFrame:Hide()
 
@@ -1737,7 +1857,10 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 		SkuCore:UpdateInteractMove(true)
 
-		SetBindingClick("SHIFT-F2", "OnSkuChatToggle")
+		SkuCore:GameWorldObjectsOnLogin()
+
+		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
+		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 	end
 
 	C_Timer.After(6, function()
@@ -1762,7 +1885,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		C_CVar.GetCVar("removeChatDelay", "1")
 	end)			
 
-	hooksecurefunc(GameTooltip, "Show", SkuCore.CheckInteractObjectShow)
+	--hooksecurefunc(GameTooltip, "Show", SkuCore.CheckInteractObjectShow)
+	GameTooltip:HookScript("OnShow", SkuCore.CheckInteractObjectShow)
+	--GameTooltip:HookScript("OnHide", SkuCore.CheckInteractObjectHide)
 	hooksecurefunc(GameMenuFrame, "Show", SkuCore.StartStopGameMenuBackgroundSound)
 	hooksecurefunc(GameMenuFrame, "Hide", SkuCore.StartStopGameMenuBackgroundSound)
 	--[[
@@ -1820,7 +1945,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GOSSIP_SHOW(self, event, ...)
-	print("GOSSIP_SHOW", self, event, ...)
+	dprint("GOSSIP_SHOW", self, event, ...)
 	SkuOptions:StopSounds(5)
 	SkuCore:CheckFrames()
 end
@@ -2099,6 +2224,7 @@ local friendlyFrameNames = {
 	["GuildBankFrame"] = L["Guild Bank"],
 	["TradeSkillFrame"] = L["Trade skill"],
 	["ReadyCheckFrame"] = L["Bereitschaft check"],
+	["ItemSocketingFrame"] = L["Socketing"],
 	[""] = "",
 }
 local containerFrames = {
@@ -2663,6 +2789,19 @@ end
 --DEFAULT_BINDINGS (0)
 --ACCOUNT_BINDINGS (1)
 --CHARACTER_BINDINGS (2)
+
+-------------------------------------------------------------------------------------------------
+function SkuCore:CheckBound(aKey)
+	local aBindingSet = GetCurrentBindingSet()
+	local tNumKeyBindings = GetNumBindings()
+	for x = 1, tNumKeyBindings do
+		local tCommand, _, tKey1, tKey2, tKey3, tKey4 = GetBinding(x, aBindingSet)
+		if aKey == tKey1 then
+			return tCommand
+		end
+	end
+end
+
 -------------------------------------------------------------------------------------------------
 function SkuCore:SaveBindings()
 	local aBindingSet = GetCurrentBindingSet()
@@ -2739,6 +2878,12 @@ function SkuCore:ResetBindings(aToWowDefaults)
 	if not aToWowDefaults then
 		for icat, vcat in pairs(SkuCore.Keys.SkuDefaultBindings) do
 			for icom, vcom in pairs(vcat) do
+				if vcom.index ~= -1 then
+					local tCommand, tCategory, tKey1, tKey2 = SkuCore:GetBinding(vcom.index)
+					--if tKey1 then SetBinding(tKey1) end
+					--if tKey2 then SetBinding(tKey2) end
+				end
+
 				if vcom.key1 then
 					if vcom.index == -1 then
 						SetBinding(vcom.key1)
@@ -2777,7 +2922,7 @@ function SkuCore:StartStopGameMenuBackgroundSound()
 					SkuCore.currentBackgroundSoundTimerHandle = nil
 				end
 				if SkuCore.currentBackgroundSoundTimerHandle == nil then
-					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuOptions.BackgroundSoundFilesLen["walgesang.mp3"], function()
+					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen["walgesang.mp3"], function()
 						--StopSound(SkuCore.currentBackgroundSoundHandle, 0)
 						SkuCore.currentBackgroundSoundTimerHandle = nil
 						SkuCore.currentBackgroundSoundHandle = nil
@@ -2789,7 +2934,7 @@ function SkuCore:StartStopGameMenuBackgroundSound()
 						SkuCore.currentBackgroundSoundTimerHandle = nil
 					end
 					SkuCore.currentBackgroundSoundTimerHandle = nil
-					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuOptions.BackgroundSoundFilesLen["walgesang.mp3"], function()
+					SkuCore.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen["walgesang.mp3"], function()
 						SkuCore.currentBackgroundSoundTimerHandle = nil
 						SkuCore.currentBackgroundSoundHandle = nil
 						SkuCore:StartStopGameMenuBackgroundSound(true)

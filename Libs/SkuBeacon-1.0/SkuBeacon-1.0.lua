@@ -92,9 +92,37 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tTime = 0
 local tPrevCleanedDirection = true
+local tBeaconRunning = false
 local function OnUpdate(self, aTime)
 	tTime = tTime + aTime
 	if tTime > 0.05 then
+		if _G["SkuBeaconSkriptRecognizerTurn"] then
+			local tDisable = false
+			if _G["ChatFrame1EditBox"] then
+				if _G["ChatFrame1EditBox"]:IsShown() then
+					tDisable = true
+				end
+			end
+			if SkuOptions:IsMenuOpen() == true then
+				tDisable = true
+			end
+			if tBeaconRunning == true then
+				if tDisable == true then
+					if _G["SkuBeaconSkriptRecognizerTurn"]:IsShown() then
+						_G["SkuBeaconSkriptRecognizerTurn"]:Hide()
+					end
+				else
+					if not _G["SkuBeaconSkriptRecognizerTurn"]:IsShown() then
+						_G["SkuBeaconSkriptRecognizerTurn"]:Show()
+					end
+				end
+			else
+				if _G["SkuBeaconSkriptRecognizerTurn"]:IsShown() then
+					_G["SkuBeaconSkriptRecognizerTurn"]:Hide()
+				end
+			end
+		end
+
 		for iRefs, vRefs in ipairs(gBeaconRepo) do
 			local tBeacons = gBeaconRepo[vRefs]
 			for iBeacons, vBeacons in ipairs(tBeacons) do
@@ -236,6 +264,20 @@ function SkuBeacon:Create(aReference)
 		gBeaconRepo[aReference] = {}
 	end
 
+	local tWidget = _G["SkuBeaconSkriptRecognizerTurn"]
+	if not tWidget then
+		tWidget = CreateFrame("Frame", "SkuBeaconSkriptRecognizerTurn", _G["UIParent"])
+		tWidget:SetFrameStrata("TOOLTIP")
+		tWidget:SetFrameLevel(10000)
+		tWidget:SetWidth(10)  
+		tWidget:SetHeight(10) 
+		local tex = tWidget:CreateTexture(nil, "OVERLAY")
+		tex:SetAllPoints()
+		tex:SetColorTexture(1, 0, 0, 1)
+		tWidget:SetPoint("TOPLEFT", 0, -10)
+		tWidget:Hide()
+	end
+
 	return SkuBeacon
 end
 
@@ -369,6 +411,7 @@ function SkuBeacon:DestroyBeacon(aReference, aBeaconName)
 			table.remove(gBeaconRepo[aReference], i)
 		end
 	end
+
 end
 
 ---------------------------------------------------------------------------------------------------------
@@ -386,8 +429,8 @@ function SkuBeacon:StartBeacon(aReference, aBeaconName)
 	if not gBeaconRepo[aReference][aBeaconName] then return false end
 
 	gBeaconRepo[aReference][aBeaconName].active = true
-	--do stuff
 
+	tBeaconRunning = true --_G["SkuBeaconSkriptRecognizerTurn"]:Show()
 end
 
 ---------------------------------------------------------------------------------------------------------
@@ -399,8 +442,8 @@ function SkuBeacon:StopBeacon(aReference, aBeaconName)
 	if not gBeaconRepo[aReference][aBeaconName] then return false end
 
 	gBeaconRepo[aReference][aBeaconName].active = false
-	--do stuff
 
+	tBeaconRunning = false --_G["SkuBeaconSkriptRecognizerTurn"]:Hide()
 end
 
 ---------------------------------------------------------------------------------------------------------

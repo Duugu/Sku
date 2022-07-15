@@ -57,7 +57,7 @@ local defaults = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:CloseMenu()
 	if SkuOptions:IsMenuOpen() == true then
-		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
+		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 	end
 end
 
@@ -191,7 +191,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 				return
 			end
 			if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
-				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
+				_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 			end
 
 			local tMenu = SkuOptions.Menu
@@ -279,6 +279,9 @@ function SkuOptions:OnProfileChanged()
 	dprint("SkuOptions:OnProfileChanged")
 	SkuNav:PLAYER_ENTERING_WORLD()
 
+	SkuOptions:SkuKeyBindsUpdate(true)
+	SkuCore:GameWorldObjectsOnLogin()
+	
   	if SkuCore then
 		SkuCore:OnEnable()
 	end
@@ -303,6 +306,8 @@ function SkuOptions:OnProfileChanged()
 	if SkuOptions then
 		SkuOptions:OnEnable()
 	end
+
+	SkuOptions:SkuKeyBindsUpdate()
 
 	SkuOptions.Voice:OutputStringBTtts(L["Profil gewechselt"], false, true, 0.2)
 end
@@ -312,6 +317,9 @@ function SkuOptions:OnProfileCopied()
 	dprint("SkuOptions:OnProfileCopied")
 	SkuNav:PLAYER_ENTERING_WORLD()
 
+	SkuOptions:SkuKeyBindsUpdate(true)
+	SkuCore:GameWorldObjectsOnLogin()
+
   	if SkuCore then
 		SkuCore:OnEnable()
 	end
@@ -337,8 +345,9 @@ function SkuOptions:OnProfileCopied()
 		SkuOptions:OnEnable()
 	end
 
-	SkuOptions.Voice:OutputStringBTtts(L["Profil kopiert"], false, true, 0.2)
+	SkuOptions:SkuKeyBindsUpdate()
 
+	SkuOptions.Voice:OutputStringBTtts(L["Profil kopiert"], false, true, 0.2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -353,6 +362,10 @@ function SkuOptions:OnProfileReset()
 
 	SkuNav:PLAYER_ENTERING_WORLD()
 
+	SkuOptions:SkuKeyBindsResetBindings()
+	SkuOptions:SkuKeyBindsUpdate(true)
+	SkuCore:GameWorldObjectsOnLogin()
+
   	if SkuCore then
 		SkuCore:OnEnable()
 	end
@@ -378,16 +391,19 @@ function SkuOptions:OnProfileReset()
 		SkuOptions:OnEnable()
 	end
 
-	SkuOptions.Voice:OutputStringBTtts(L["Profil zurückgesetzt"], false, true, 0.2)
+	SkuOptions:SkuKeyBindsUpdate()
 
+	SkuOptions.Voice:OutputStringBTtts(L["Profil zurückgesetzt"], false, true, 0.2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aStartStop bool
-function SkuOptions:StartStopBackgroundSound(aStartStop)
+function SkuOptions:StartStopBackgroundSound(aStartStop, aSoundFile)
+	aSoundFile = aSoundFile or SkuOptions.db.profile[MODULE_NAME].backgroundSound
+
 	if aStartStop == true then
 		if SkuOptions.currentBackgroundSoundHandle == nil then
-			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuZOptions\\assets\\audio\\background\\"..SkuOptions.db.profile[MODULE_NAME].backgroundSound, "Talking Head")
+			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuZOptions\\assets\\audio\\background\\"..aSoundFile, "Talking Head")
 			if soundHandle then
 				SkuOptions.currentBackgroundSoundHandle = soundHandle
 				if SkuOptions.currentBackgroundSoundTimerHandle then
@@ -395,7 +411,7 @@ function SkuOptions:StartStopBackgroundSound(aStartStop)
 					SkuOptions.currentBackgroundSoundTimerHandle = nil
 				end
 				if SkuOptions.currentBackgroundSoundTimerHandle == nil then
-					SkuOptions.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuOptions.BackgroundSoundFilesLen[SkuOptions.db.profile[MODULE_NAME].backgroundSound], function()
+					SkuOptions.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen[aSoundFile], function()
 						--StopSound(SkuOptions.currentBackgroundSoundHandle, 0)
 						SkuOptions.currentBackgroundSoundTimerHandle = nil
 						SkuOptions.currentBackgroundSoundHandle = nil
@@ -407,7 +423,7 @@ function SkuOptions:StartStopBackgroundSound(aStartStop)
 						SkuOptions.currentBackgroundSoundTimerHandle = nil
 					end
 					SkuOptions.currentBackgroundSoundTimerHandle = nil
-					SkuOptions.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuOptions.BackgroundSoundFilesLen[SkuOptions.db.profile[MODULE_NAME].backgroundSound], function()
+					SkuOptions.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen[aSoundFile], function()
 						SkuOptions.currentBackgroundSoundTimerHandle = nil
 						SkuOptions.currentBackgroundSoundHandle = nil
 						SkuOptions:StartStopBackgroundSound(true)
@@ -430,46 +446,7 @@ function SkuOptions:StartStopBackgroundSound(aStartStop)
 	end
 end
 
---[[
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function TooltipLines_helper(...)
-   local tQualityString = nil
-
-	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
-	if not ItemLink then
-		itemName, ItemLink = GameTooltip:GetItem()
-	end
-	if ItemLink then
-      for x = 0, #ITEM_QUALITY_COLORS do
-         local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-         if tItemCol == "ffa334ee" then 
-            tItemCol = "ffa335ee"
-         end
-         if string.find(ItemLink, tItemCol) then
-            if _G["ITEM_QUALITY"..x.."_DESC"] then
-               tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
-            end
-         end
-      end
-   end
-		
-	local rText = ""
-	for i = 1, select("#", ...) do
-		local region = select(i, ...)
-		if region and region:GetObjectType() == "FontString" then
-			local text = region:GetText() -- string or nil
-			if text then
-				if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
-					rText = rText..text.." ("..tQualityString..")\r\n"
-				else
-					rText = rText..text.."\r\n"
-				end
-			end
-		end
-	end
-	return rText
-end
-]]
 local escapes = {
 	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
 	["|r"] = "", -- color end
@@ -740,6 +717,8 @@ function SkuOptions:UpdateOverviewText()
 			tTmpText = tTmpText.."\r\n"..name..", "..classDisplayName..", "..level..", "..zone..", "..publicNote
 		end
 	end
+
+	tTmpText = tTmpText or ""
 	table.insert(tSections, L["Gilde:\r\n"]..tTmpText)
 
 	--pet
@@ -772,35 +751,29 @@ function SkuOptions:CreateControlFrame()
 	local ttime = 0
 	local f = CreateFrame("Frame", "SkuOptionsControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
-		--if SkuOptions.db.profile[MODULE_NAME].enable == true then
-			if IsRightShiftKeyDown() then
-				SkuOptions.Voice:StopOutputEmptyQueue()
-			end
-
-			ttime = ttime + time
-			if ttime > 0.1 then
-				if SkuOptions.TTS:IsVisible() == true then
-					if IsShiftKeyDown() == false and SkuOptions.ChatOpen ~= true and SkuOptions.TTS:IsAutoRead() ~= true then
-						if SkuOptions.currentMenuPosition then
-							if SkuOptions.currentMenuPosition.textFullInitial then
-								SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
-							end
-							SkuOptions.currentMenuPosition.textFullInitial = nil
-							SkuOptions.currentMenuPosition.links = {}
-							SkuOptions.currentMenuPosition.linksSelected = 0
-							SkuOptions.currentMenuPosition.currentLinkName = nil
-							SkuOptions.currentMenuPosition.linksHistory = nil
+		ttime = ttime + time
+		if ttime > 0.1 then
+			if SkuOptions.TTS:IsVisible() == true then
+				if IsShiftKeyDown() == false and SkuOptions.ChatOpen ~= true and SkuOptions.TTS:IsAutoRead() ~= true then
+					if SkuOptions.currentMenuPosition then
+						if SkuOptions.currentMenuPosition.textFullInitial then
+							SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
 						end
-			
-						SkuOptions.TTS:Output("", -1)
-						--SkuOptions.TTS.MainFrame:Hide()
-						SkuOptions.TTS:Hide()
+						SkuOptions.currentMenuPosition.textFullInitial = nil
+						SkuOptions.currentMenuPosition.links = {}
+						SkuOptions.currentMenuPosition.linksSelected = 0
+						SkuOptions.currentMenuPosition.currentLinkName = nil
+						SkuOptions.currentMenuPosition.linksHistory = nil
 					end
+		
+					SkuOptions.TTS:Output("", -1)
+					--SkuOptions.TTS.MainFrame:Hide()
+					SkuOptions.TTS:Hide()
 				end
-
-				ttime = 0
 			end
-		--end
+
+			ttime = 0
+		end
 	end)
 end
 
@@ -816,25 +789,30 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.InteractMove = false
 
 	tFrame:SetScript("OnClick", function(self, a, b)
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPTTSOUTPUT"].key then
+			SkuOptions.Voice:StopOutputEmptyQueue()
+		end
+
 		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
 			SkuCore.openMenuAfterMoving = true
 			return
 		end
 
+		--[[
 		if a == "SHIFT-U" then
 			SkuCore:MinimapScan(60)
 		end
 		if a == "SHIFT-J" then
 			SkuCore:MinimapScan(20)
 		end
+		]]
 
-
-		if a == "CTRL-SHIFT-F3" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key then
 			Sku.debug = Sku.debug == false
 			print("Debug:", Sku.debug)
 		end
 	
-		if a == "CTRL-SHIFT-B" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLNEED"].key then
 			if SkuOptions.nextRollFrameNumber then
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
@@ -850,7 +828,7 @@ function SkuOptions:CreateMainFrame()
 			end
 			return
 		end
-		if a == "CTRL-SHIFT-G" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLGREED"].key then
 			if SkuOptions.nextRollFrameNumber then
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
@@ -866,7 +844,7 @@ function SkuOptions:CreateMainFrame()
 			end
 			return
 		end
-		if a == "CTRL-SHIFT-X" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLPASS"].key then
 			if SkuOptions.nextRollFrameNumber then
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
@@ -877,7 +855,7 @@ function SkuOptions:CreateMainFrame()
 			end
 			return
 		end
-		if a == "CTRL-SHIFT-C" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLINFO"].key then
 			local tItem
 			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 			if SkuOptions.nextRollFrameNumber then
@@ -886,7 +864,7 @@ function SkuOptions:CreateMainFrame()
 			return
 		end
 
-		if a == "CTRL-SHIFT-T" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key then
 			SkuOptions.TooltipReaderText = ""
 
 			if GameTooltip:IsVisible() == true then
@@ -1145,7 +1123,7 @@ function SkuOptions:CreateMainFrame()
 		SkuCore.openMenuAfterCombat = false
 		SkuCore.openMenuAfterMoving = false
 		--dprint("SkuCore.isMoving1", SkuCore.isMoving)
-		if a == "SHIFT-F1" or a == nil then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key or a == nil then
 			if #SkuOptions.Menu == 0 then
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuNavMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
@@ -1273,23 +1251,23 @@ function SkuOptions:CreateMainFrame()
 			end
 		end
 
-		if a == "SHIFT-F4" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENADVGUIDE"].key then
 			SkuOptions:SlashFunc(L["short"]..","..L["SkuAdventureGuideMenuEntry"]..","..L["Wiki"]..","..L["Link History"])
 		end
-		if a == "SHIFT-F9" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1"].key then
 			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1)
 		end
-		if a == "SHIFT-F10" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2"].key then
 			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2)
 		end
-		if a == "SHIFT-F11" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3"].key then
 			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3)
 		end
-		if a == "SHIFT-F12" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4"].key then
 			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4)
 		end
 
-		if a == "CTRL-SHIFT-F9" or a == "CTRL-SHIFT-F10" or a == "CTRL-SHIFT-F11" or a == "CTRL-SHIFT-F12" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key or a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key or a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key or a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key then
 			if self:IsVisible() then
 				local tTable = SkuOptions.currentMenuPosition
 				local tBread = SkuOptions.currentMenuPosition.name
@@ -1298,19 +1276,19 @@ function SkuOptions:CreateMainFrame()
 					tBread = tTable.name..","..tBread
 				end
 
-				if a == "CTRL-SHIFT-F9" then
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key then
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1 = tBread
 					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 				end
-				if a == "CTRL-SHIFT-F10" then
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key then
 					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2 = tBread
 				end
-				if a == "CTRL-SHIFT-F11" then
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key then
 					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3 = tBread
 				end
-				if a == "CTRL-SHIFT-F12" then
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key then
 					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4 = tBread
 				end
@@ -1340,12 +1318,12 @@ function SkuOptions:CreateMainFrame()
 		SkuOptions:HideVisualMenu()
 	end)
 
-	SetOverrideBindingClick(tFrame, true, "SHIFT-U", tFrame:GetName(), "SHIFT-U")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-J", tFrame:GetName(), "SHIFT-J")
+	--SetOverrideBindingClick(tFrame, true, "SHIFT-U", tFrame:GetName(), "SHIFT-U")
+	--SetOverrideBindingClick(tFrame, true, "SHIFT-J", tFrame:GetName(), "SHIFT-J")
 
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F3", tFrame:GetName(), "CTRL-SHIFT-F3")
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key)
 
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-T", tFrame:GetName(), "CTRL-SHIFT-T")
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key)
 	SetOverrideBindingClick(tFrame, true, "SHIFT-UP", tFrame:GetName(), "SHIFT-UP")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-DOWN", tFrame:GetName(), "SHIFT-DOWN")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-UP", tFrame:GetName(), "CTRL-SHIFT-UP")
@@ -1356,21 +1334,23 @@ function SkuOptions:CreateMainFrame()
 	SetOverrideBindingClick(tFrame, true, "SHIFT-ENTER", "OnSkuOptionsMainOption1", "SHIFT-ENTER")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-BACKSPACE", "OnSkuOptionsMainOption1", "SHIFT-BACKSPACE")
 
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F1", tFrame:GetName(), "SHIFT-F1")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F4", tFrame:GetName(), "SHIFT-F4")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F9", tFrame:GetName(), "SHIFT-F9")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F10", tFrame:GetName(), "SHIFT-F10")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F11", tFrame:GetName(), "SHIFT-F11")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F12", tFrame:GetName(), "SHIFT-F12")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F9", tFrame:GetName(), "CTRL-SHIFT-F9")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F10", tFrame:GetName(), "CTRL-SHIFT-F10")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F11", tFrame:GetName(), "CTRL-SHIFT-F11")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F12", tFrame:GetName(), "CTRL-SHIFT-F12")
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENADVGUIDE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENADVGUIDE"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key)
 
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-B", tFrame:GetName(), "CTRL-SHIFT-B")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-G", tFrame:GetName(), "CTRL-SHIFT-G")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-X", tFrame:GetName(), "CTRL-SHIFT-X")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-C", tFrame:GetName(), "CTRL-SHIFT-C")
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLNEED"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLNEED"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLGREED"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLGREED"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLPASS"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLPASS"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLINFO"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLINFO"].key)
+
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPTTSOUTPUT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPTTSOUTPUT"].key)
 
 end
 
@@ -1457,7 +1437,7 @@ function SkuOptions:CreateMenuFrame()
 	local OnSkuOptionsMainOption1LastInputTime = GetTime()
 	local OnSkuOptionsMainOption1LastInputTimeout = 0.5
 
-	tFrame = CreateFrame("Button", "OnSkuOptionsMainOption1", _G["OnSkuOptionsMain"], "UIPanelButtonTemplate")
+	tFrame = _G["OnSkuOptionsMainOption1"] or CreateFrame("Button", "OnSkuOptionsMainOption1", _G["OnSkuOptionsMain"], "UIPanelButtonTemplate")
 	tFrame:SetSize(80, 22)
 	tFrame:SetText("OnSkuOptionsMainOption1")
 	tFrame:SetPoint("TOP", _G["OnSkuOptionsMain"], "BOTTOM", 0, 0)
@@ -1469,7 +1449,7 @@ function SkuOptions:CreateMenuFrame()
 		OnSkuOptionsMainOption1:GetScript("OnClick")(self, aKey)
 	end)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
-		--dprint("OnSkuOptionsMainOption1 click", aKey, SkuOptions.currentMenuPosition.textFull)
+		dprint("OnSkuOptionsMainOption1 click", aKey, aB)
 
 		if aKey == "PAGEDOWN" then
 			if SkuOptions.currentMenuPosition then
@@ -1637,7 +1617,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "HOME" then
 			SkuOptions.currentMenuPosition:OnFirst()
 		end
-		if aKey == "ENTER" then
+		if aKey == "ENTER" or aKey == "SHIFT-ENTER" then
 			tVocalizeReset = false
 			SkuOptions.currentMenuPosition:OnSelect(true)
 			SkuOptions:ClearFilter()
@@ -1673,10 +1653,10 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 
-		if aKey == "CTRL-SHIFT-D" then
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key then
 			SkuQuest:OnSkuQuestAbandon()
 		end
-		if aKey == "CTRL-SHIFT-T" then
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key then
 			SkuQuest:OnSkuQuestPush()
 		end
 
@@ -1898,8 +1878,8 @@ function SkuOptions:CreateMenuFrame()
 		PlaySound(88)
 		SetOverrideBindingClick(self, true, "PAGEUP", "OnSkuOptionsMainOption1", "PAGEUP")
 		SetOverrideBindingClick(self, true, "PAGEDOWN", "OnSkuOptionsMainOption1", "PAGEDOWN")
-		SetOverrideBindingClick(self, true, "CTRL-SHIFT-D", "SkuQuestMainOption1", "CTRL-SHIFT-D")
-		SetOverrideBindingClick(self, true, "CTRL-SHIFT-T", "SkuQuestMainOption1", "CTRL-SHIFT-T")
+		SetOverrideBindingClick(self, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key, "SkuQuestMainOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key)
+		SetOverrideBindingClick(self, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key, "SkuQuestMainOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key)
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-UP", "OnSkuOptionsMainOption1", "CTRL-SHIFT-UP")
 		SetOverrideBindingClick(self, true, "CTRL-SHIFT-DOWN", "OnSkuOptionsMainOption1", "CTRL-SHIFT-DOWN")
 		SetOverrideBindingClick(self, true, "SHIFT-UP", "OnSkuOptionsMainOption1", "SHIFT-UP")
@@ -1933,6 +1913,7 @@ function SkuOptions:CreateMenuFrame()
 		end
 		SkuOptions:StartStopBackgroundSound(true)
 
+		--[[
 		SkuOptions:ShowVisualMenu()
 		local tTable = SkuOptions.currentMenuPosition
 		local tBread = SkuOptions.currentMenuPosition.name
@@ -1944,6 +1925,7 @@ function SkuOptions:CreateMenuFrame()
 		end
 		table.insert(tResult, SkuOptions.currentMenuPosition.name)
 		SkuOptions:ShowVisualMenuSelectByPath(unpack(tResult))
+		]]
 	end)
 
 	tFrame:SetScript("OnHide", function(self)
@@ -2202,7 +2184,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnInitialize()
-	--print("SkuOptions OnInitialize")
+	dprint("SkuOptions OnInitialize")
 
 	if SkuOptions then
 		options.args["SkuOptions"] = SkuOptions.options
@@ -2249,7 +2231,9 @@ function SkuOptions:OnInitialize()
 	options.args.profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(SkuOptions.db)
 
 	SkuOptions:UpdateMovedAceDbProfileValues()
-	
+
+	SkuOptions:SkuKeyBindsUpdate(true)
+
 	SkuOptions.db.RegisterCallback(self, "OnProfileChanged", "OnProfileChanged")
 	SkuOptions.db.RegisterCallback(self, "OnProfileCopied", "OnProfileCopied")
 	SkuOptions.db.RegisterCallback(self, "OnProfileReset", "OnProfileReset")
@@ -2798,7 +2782,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
 								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
-								--dprint("rechts mac", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
+								--print("rechts mac", aGossipListTable[index].containerFrameName, aGossipListTable[index].isBag, _G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID(), tNewSubMenuEntry.macrotext)
 							else
 								tNewSubMenuEntry.OnAction = function()
 									aGossipListTable[index].func(aGossipListTable[index].obj, "RightButton") --"LeftButton", "RightButton", "MiddleButton", "Button4", "Button5"
@@ -2816,6 +2800,41 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									end
 								end
 							end
+
+							if aGossipListTable[index].containerFrameName then
+								if _G[aGossipListTable[index].containerFrameName].GetBag and _G[aGossipListTable[index].containerFrameName]:GetBag() and _G[aGossipListTable[index].containerFrameName]:GetID() then
+									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Socketing"]}, SkuGenericMenuItem)
+									tNewSubMenuEntry.macrotext = "/script SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()"
+									--dprint("sock mac bag", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
+								else
+									local tContainerSlotIDs = {
+										[1]	 = "CharacterHeadSlot",
+										[2]	 = "CharacterNeckSlot",
+										[3]	 = "CharacterShoulderSlot",
+										[4]	 = "CharacterShirtSlot",
+										[5]	 = "CharacterChestSlot",
+										[6]	 = "CharacterWaistSlot",
+										[7]	 = "CharacterLegsSlot",
+										[8]	 = "CharacterFeetSlot",
+										[9]	 = "CharacterWristSlot",
+										[10] = "CharacterHandsSlot",
+										[11] = "CharacterFinger0Slot",
+										[12] = "CharacterFinger0Slot",
+										[13] = "CharacterTrinket0Slot",
+										[14] = "CharacterTrinket1Slot",
+										[15] = "CharacterBackSlot",
+										[16] = "CharacterMainHandSlot",
+										[17] = "CharacterSecondaryHandSlot",
+									}
+									for x = 1, #tContainerSlotIDs do
+										if tContainerSlotIDs[x] == aGossipListTable[index].containerFrameName then
+											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Socketing"]}, SkuGenericMenuItem)
+											tNewSubMenuEntry.macrotext = "/script SocketInventoryItem("..x..") SkuCore:CheckFrames()"
+											--dprint("sock mac cont", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
+										end
+									end
+								end
+							end							
 
 							if SkuCore.AuctionHouseOpen == true then
 								if aGossipListTable[index].obj:GetParent() then
@@ -3030,7 +3049,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					end
 
 					local tFlag
-					for is, vs in pairs(SkuOptions.BackgroundSoundFiles) do
+					for is, vs in pairs(SkuCore.BackgroundSoundFiles) do
 						if aName == is or aName == vs then
 							SkuOptions:StartStopBackgroundSound(false)
 							SkuOptions:StartStopBackgroundSound(true)
@@ -3130,8 +3149,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ProcessComm(aSender, aIndex, aValue)
-	--dprint("SkuOptions:ProcessComm", aSender, aIndex, aValue)
-
+	--print("SkuOptions:ProcessComm", aSender, aIndex, aValue)
 	if aIndex == "ping" then
 		SkuOptions.TrackingTargets = SkuOptions.TrackingTargets or {}
 		local tFound = false
@@ -3146,8 +3164,23 @@ function SkuOptions:ProcessComm(aSender, aIndex, aValue)
 
 		SkuOptions:SendTrackingStatusUpdates()
 	elseif aIndex == "followme" then
-		FollowUnit(aSender)
-
+		if aValue == UnitName("player") then
+			FollowUnit(aSender)
+		elseif not aValue then
+			FollowUnit(aSender)
+		end
+		SkuOptions:SendTrackingStatusUpdates()
+	elseif aIndex == "unfollowme" then
+		if aValue == UnitName("player") then
+			FollowUnit("player")
+			SkuStatus.followUnitName = nil
+			SkuStatus.follow = 0
+		elseif not aValue then
+			FollowUnit("player")
+			SkuStatus.followUnitName = nil
+			SkuStatus.follow = 0			
+		end
+		SkuOptions:SendTrackingStatusUpdates()
 	end
 end
 

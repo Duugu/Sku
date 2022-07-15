@@ -24,12 +24,11 @@ function SkuChat:OnEnable()
 	end
 	
 	local b = _G["OnSkuChatToggle"] or CreateFrame("Button", "OnSkuChatToggle", UIParent, "UIPanelButtonTemplate")
-	b:SetSize(80, 22)
-	b:SetText("OnSkuChatToggle")
-	b:SetPoint("CENTER")
-	--b:SetScript("OnClick", SkuChat.OnSkuChatToggle)
+	b:SetSize(1, 1)
+	b:SetPoint("TOPLEFT", -10, 10)
 	b:SetScript("OnClick", function(self, a, b)
-		if a == "LeftButton" or a == "ESCAPE" then
+		--print(a, b)
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key or a == "ESCAPE" then
 			C_VoiceChat.StopSpeakingText()
 			SkuChat.OnSkuChatToggle()
 			return
@@ -70,7 +69,7 @@ function SkuChat:OnEnable()
 			end)
 		end
 	end)
-	b:Hide()
+	--b:Hide()
 
 	b:SetScript("OnShow", function(self)
 		--SetOverrideBindingClick(self, true, "ESCAPE", "OnSkuChatToggle", "ESCAPE")
@@ -79,7 +78,8 @@ function SkuChat:OnEnable()
 		--ClearOverrideBindings(self)
 	end)
 
-	SetBindingClick("SHIFT-F2", b:GetName())
+	--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, b:GetName())
+	SetOverrideBindingClick(b, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, b:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -215,6 +215,7 @@ function SkuChat:OnSkuChatToggle(a, b, c)
 		SkuOptions.ChatOpen = false
 		SkuOptions.TTS:Output("", -1)
 		ClearOverrideBindings(_G["OnSkuChatToggle"])
+		SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 		return
 	end
 	

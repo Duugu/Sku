@@ -461,7 +461,6 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	if aOverwrite == true then
 		mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = "queuereset"
 		--print("ADD RESET TO QUEUE")
---[[
 		local tIt = true
 		while tIt == true do
 			tIt = false
@@ -476,6 +475,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 				end
 			end
 		end
+--[[
 		if IsMacClient() == true then
 			C_VoiceChat.StopSpeakingText()
 		else

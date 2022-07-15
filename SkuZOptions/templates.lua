@@ -72,7 +72,7 @@ SkuGenericMenuItem = {
 	dynamic = false,
 	filterable = false,
 	OnUpdate = function(self, aKey)
-		--print("++ OnUpdate generic")
+		dprint("++ OnUpdate generic")
 		local tCurrentItemNumber
 		local tCurrentItemName = self.name
 		local tParent = self.parent
@@ -95,22 +95,25 @@ SkuGenericMenuItem = {
 		tParent:BuildChildren(self.parent)
 
 		tParent:OnSelect()
-
-		if tMenuItems[tCurrentItemNumber] then
-			SkuOptions.currentMenuPosition = tMenuItems[tCurrentItemNumber]
-		elseif tMenuItems[tCurrentItemNumber - 1] then
-			SkuOptions.currentMenuPosition = tMenuItems[tCurrentItemNumber - 1]
+		if self.parent.children[tCurrentItemNumber] then
+			SkuOptions.currentMenuPosition = self.parent.children[tCurrentItemNumber]
+		elseif self.parent.children[tCurrentItemNumber - 1] then
+			SkuOptions.currentMenuPosition = self.parent.children[tCurrentItemNumber - 1]
 		else
-			SkuOptions.currentMenuPosition = tMenuItems[1]
+			SkuOptions.currentMenuPosition = self.parent.children[1]
 		end
 
 		SkuOptions.currentMenuPosition:OnEnter()
+
 		if SkuOptions.TTS.MainFrame:IsVisible() ~= true then
 			SkuOptions:VocalizeCurrentMenuName()
 		end
 	end,
 	OnKey = function(self, aKey)
-		--dprint("OnKey", aKey)
+		if SkuOptions.bindingMode == true then
+			return
+		end
+		dprint("OnKey", aKey, SkuOptions.bindingMode)
 		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)
 
 		local tNewMenuItem = nil

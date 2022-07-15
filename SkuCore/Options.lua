@@ -1,6 +1,60 @@
 local MODULE_NAME = "SkuCore"
 local L = Sku.L
 
+local tBlockedKeysParts = {
+	"TAB",
+	"BACKSPACE",
+	"ENTER",
+	"ESCAPE",
+	"BUTTON1",
+	"BUTTON2",
+	"BUTTON3",
+	"BUTTON4",
+	"BUTTON5",
+	"DOWN",
+	"UP",
+	"LEFT",
+	"RIGHT",
+	"PAGEDOWN",
+	"PAGEDUP",
+}
+local tBlockedKeysBinds = {
+	"I",
+}
+
+local tModifierKeys = {
+	"",
+	"CTRL-",
+	"SHIFT-",
+	"ALT-",
+	"CTRL-SHIFT-",
+	"CTRL-ALT-",
+	"SHIFT-ALT-",
+	"SHIFT-SHIFT-ALT-",
+}
+
+local tStandardChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ö", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", ",", ".", "-", "#", "+", "ß", "´", "<"}
+local tStandardNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",}
+
+local tActionBarData = {
+	MultiBarLeft = {friendlyName = L["Left Multi Bar"], buttonName = "MultiBarLeftButton", command = "MULTIACTIONBAR4BUTTON",},
+	MultiBarRight = {friendlyName = L["Right Multi Bar"], buttonName = "MultiBarRightButton", command = "MULTIACTIONBAR3BUTTON"},
+	MultiBarBottomLeft = {friendlyName = L["Bottom Multi Bar Left"], buttonName = "MultiBarBottomLeftButton", command = "MULTIACTIONBAR1BUTTON",},
+	MultiBarBottomRight = {friendlyName = L["Bottom Multi Bar Right"], buttonName = "MultiBarBottomRightButton", command = "MULTIACTIONBAR2BUTTON",},
+	MainMenuBar = {friendlyName = L["Main Action Bar"], buttonName = "ActionButton", command = "ACTIONBUTTON",},
+	PetBar = {friendlyName = L["Pet Action Bar"], buttonName = "PetActionButton", command = "BONUSACTIONBUTTON",},
+	ShapeshiftBar = {friendlyName = L["Stance Action Bar"], buttonName = "", command = "SHAPESHIFTBUTTON",},
+}
+
+local scanAccuracyValues = {
+	[1] = 1,
+	[2] = 2,
+	[3] = 3,
+	[4] = 4,
+	[5] = 5,
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.options = {
 	name = MODULE_NAME,
 	type = "group",
@@ -18,6 +72,19 @@ SkuCore.options = {
 			end
 		},
 		]]
+		scanBackgroundSound = {
+			order = 1,
+			name = L["scanning background sound"],
+			desc = "",
+			type = "select",
+			values = SkuCore.BackgroundSoundFiles,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].scanBackgroundSound = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].scanBackgroundSound
+			end
+		},		
 		ressourceScanning={
 			name = L["Ressource Scanning"],
 			type = "group",
@@ -35,6 +102,19 @@ SkuCore.options = {
 					order = 2,
 					args= {},
 				},
+				scanAccuracyS = {
+					order = 1,
+					name = L["scan accuracy"],
+					desc = "",
+					type = "select",
+					values = scanAccuracyValues,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
+					end
+				},		
 			},
 		},
 		autoFollow = {
@@ -300,6 +380,20 @@ SkuCore.options = {
 						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Interrupted
 					end
 				},
+				Other={
+					name = L["other"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.Other = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Other
+					end
+				},
+
 			},
 		},
 	},
@@ -345,9 +439,11 @@ SkuCore.defaults = {
 	endFollowOnCast = false,
 	interactMove = true,
 	playNPCGreetings = false,
+	scanBackgroundSound = "tools-ratchet.mp3",
 	ressourceScanning = {
 		miningNodes = {},
 		herbs = {},
+		scanAccuracyS = 3,
 	},
 	classes = {
 		hunter = {
@@ -355,22 +451,23 @@ SkuCore.defaults = {
 		},
 	},
 	itemSettings = {
-		ShowItemQality = false,
+		ShowItemQality = true,
 		autoSellJunk = true,
 		autoRepair = true,
 	},
 	UIErrors = {
 		ErrorSoundChannel = "Talking Head",
-		OutOfRange = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
-		Moving = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
-		NoLoS = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
-		BadTarget = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
-		InCombat = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		OutOfRange = "voice",
+		Moving = "voice",
+		NoLoS = "voice",
+		BadTarget = "voice",
+		InCombat = "voice",
 		NoMana = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
-		ObjectBusy = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
-		NotFacing = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
-		CrowdControlled = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
-		Interrupted = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		ObjectBusy = "voice",
+		NotFacing = "voice",
+		CrowdControlled = "voice",
+		Interrupted = "voice",
+		Other = "voice",
 	},
 }
 
@@ -384,6 +481,7 @@ do
 		SkuCore.defaults.ressourceScanning.herbs[x] = true
 	end
 end
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local escapes = {
@@ -399,7 +497,6 @@ local function unescape(str)
 	end
 	return str
 end
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local maxItemNameLength = 40
@@ -433,15 +530,128 @@ local function ItemName_helper(aText)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local tActionBarData = {
-	MultiBarLeft = {friendlyName = L["Left Multi Bar"], buttonName = "MultiBarLeftButton", command = "MULTIACTIONBAR4BUTTON",},
-	MultiBarRight = {friendlyName = L["Right Multi Bar"], buttonName = "MultiBarRightButton", command = "MULTIACTIONBAR3BUTTON"},
-	MultiBarBottomLeft = {friendlyName = L["Bottom Multi Bar Left"], buttonName = "MultiBarBottomLeftButton", command = "MULTIACTIONBAR1BUTTON",},
-	MultiBarBottomRight = {friendlyName = L["Bottom Multi Bar Right"], buttonName = "MultiBarBottomRightButton", command = "MULTIACTIONBAR2BUTTON",},
-	MainMenuBar = {friendlyName = L["Main Action Bar"], buttonName = "ActionButton", command = "ACTIONBUTTON",},
-	PetBar = {friendlyName = L["Pet Action Bar"], buttonName = "PetActionButton", command = "BONUSACTIONBUTTON",},
-	ShapeshiftBar = {friendlyName = L["Stance Action Bar"], buttonName = "", command = "SHAPESHIFTBUTTON",},
-}
+local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarName, aButtonId)
+	--dprint(aActionType, aId, aSubType, aActionBarName, aButtonId)
+	local rName = L["Empty"]
+
+	if aActionType then
+		if aActionType == "spell" then
+			local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(aId)
+			rName = name
+			if GetSpellSubtext(aId) and GetSpellSubtext(aId) ~= "" then
+				rName = rName..";"..GetSpellSubtext(aId)
+			end
+		elseif aActionType == "item" then
+			local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(aId)
+			rName = itemName
+		elseif aActionType == "macro" then
+			local name, icon, body, isLocal = GetMacroInfo(aId)
+			rName = L["Macro"]..";"..name
+		elseif aActionType == "pet" then
+			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(aId);
+			if name then
+				rName = _G[name] or name
+			end
+		--[[
+		elseif aActionType == "mount" then
+		elseif aActionType == "companion" then
+		elseif aActionType == "equipmentset" then
+		elseif aActionType == "flyout" then
+		]]
+		end
+	end
+
+	local tKeysString, key1, key2 = "", GetBindingKey(tActionBarData[aActionBarName].command..aButtonId)
+	if key1 then
+		tKeysString = ";"..L["Key"]..";"..GetBindingText(key1)
+	end
+	if key2 and tKeysString == "" then
+		tKeysString = ";"..L["Key"]..";"..GetBindingText(key2)
+	elseif key2 then
+		tKeysString = tKeysString..";"..L["Key"]..";"..GetBindingText(key2)
+	end
+	if tKeysString == "" then
+		tKeysString = ";"..L["Key;not;assigned"]
+	end
+
+	return rName..tKeysString
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function BindingHelper(aCurrentMenuEntry, aType, aButtonId, aParentEntry, aActionBarName, aBooktypeOrObjId)
+	SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2)						
+	local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
+	f.menuTarget = aCurrentMenuEntry
+	f:SetSize(80, 22)
+	f:SetText("SkuCoreBindTest")
+	f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
+	f:SetPoint("CENTER")
+	f:SetScript("OnClick", function(self, aKey, aB)
+		--dprint(aKey, aB)
+		SkuOptions.bindingMode = nil
+
+		for z = 1, #tBlockedKeysParts do
+			if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
+				SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+				return
+			end
+		end
+
+		for z = 1, #tBlockedKeysBinds do
+			if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then 
+				SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+				return
+			end
+		end
+
+		if aKey ~= "ESCAPE" then
+			SetBinding(aKey)
+			local key1, key2 = GetBindingKey(tActionBarData[aActionBarName].command..aButtonId)
+			if key1 then SetBinding(key1) end
+			if key2 then SetBinding(key2) end
+			local ok = SetBinding(aKey , tActionBarData[aActionBarName].command..aButtonId)
+			SaveBindings(GetCurrentBindingSet())
+
+			if aType == "player" then
+				local actionType, id, subType = GetActionInfo(self.menuTarget.buttonObj.action)
+				self.menuTarget.name = L["Button"].." "..aButtonId..";"..ButtonContentNameHelper(actionType, id, subType, aActionBarName, aButtonId)
+			elseif aType == "pet" then
+				self.menuTarget.name = L["Button"].." "..aButtonId..";"..ButtonContentNameHelper("pet", aBooktypeOrObjId, subType, aActionBarName, aBooktypeOrObjId)
+			end
+
+			print(self.menuTarget.name)
+			_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
+			_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+			SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..aKey, true, true, 0.2)						
+		else
+			SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2)						
+		end
+		ClearOverrideBindings(self)
+	end)
+	SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
+
+	for i, v in pairs(_G) do 
+		if string.find(i, "KEY_") == 1 then 
+			if not string.find(i, "ESC") then
+				--dprint(i, v, string.find(i, "KEY_"), string.sub(i, 5))
+				for x = 1, #tModifierKeys do
+					SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
+				end
+			end
+		end 
+	end
+
+	for x = 1, #tStandardChars do
+		for y = 1, #tModifierKeys do
+			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
+		end
+	end
+	for x = 1, #tStandardNumbers do
+		for y = 1, #tModifierKeys do
+			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
+		end
+	end
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function MacrosMenuBuilder(aParentEntry)
@@ -613,54 +823,6 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarName, aButtonId)
-	--dprint(aActionType, aId, aSubType, aActionBarName, aButtonId)
-	local rName = L["Empty"]
-
-	if aActionType then
-		if aActionType == "spell" then
-			local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(aId)
-			rName = name
-			if GetSpellSubtext(aId) and GetSpellSubtext(aId) ~= "" then
-				rName = rName..";"..GetSpellSubtext(aId)
-			end
-		elseif aActionType == "item" then
-			local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(aId)
-			rName = itemName
-		elseif aActionType == "macro" then
-			local name, icon, body, isLocal = GetMacroInfo(aId)
-			rName = L["Macro"]..";"..name
-		elseif aActionType == "pet" then
-			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(aId);
-			if name then
-				rName = _G[name] or name
-			end
-		--[[
-		elseif aActionType == "mount" then
-		elseif aActionType == "companion" then
-		elseif aActionType == "equipmentset" then
-		elseif aActionType == "flyout" then
-		]]
-		end
-	end
-
-	local tKeysString, key1, key2 = "", GetBindingKey(tActionBarData[aActionBarName].command..aButtonId)
-	if key1 then
-		tKeysString = ";"..L["Key"]..";"..GetBindingText(key1)
-	end
-	if key2 and tKeysString == "" then
-		tKeysString = ";"..L["Key"]..";"..GetBindingText(key2)
-	elseif key2 then
-		tKeysString = tKeysString..";"..L["Key"]..";"..GetBindingText(key2)
-	end
-	if tKeysString == "" then
-		tKeysString = ";"..L["Key;not;assigned"]
-	end
-
-	return rName..tKeysString
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
 local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 	if not aParentEntry or not aActionBarName then return end
 
@@ -715,95 +877,11 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					PlaceAction(self.buttonObj.action)
 					ClearCursor()
 				elseif aName == L["Bind key"] then
-					SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2)						
-					local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
-					f.menuTarget = self
-					f:SetSize(80, 22)
-					f:SetText("SkuCoreBindTest")
-					f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
-					f:SetPoint("CENTER")
-					f:SetScript("OnClick", function(self, aKey, aB)
-						--dprint(aKey, aB)
-						local tBlockedKeys = {
-							["ENTER"] = true,
-							["RIGHT"] = true,
-							["LEFT"] = true,
-							["DOWN"] = true,
-							["UP"] = true,
-							["a"] = true,
-							["w"] = true,
-							["d"] = true,
-							["s"] = true,
-						}
-						local tBlockedKeysParts = {
-							"CTRL%-SHIFT%-F",
-							"SHIFT%-F",
-							"BUTTON1",
-							"BUTTON2",
-							"BUTTON3",
-							"BUTTON4",
-							"BUTTON5",
-						}
-
-						if tBlockedKeys[aKey] or tBlockedKeys[string.lower(aKey)] then  return end
-						for z = 1, #tBlockedKeysParts do
-							if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then return end
-						end
-
-						if aKey ~= "ESCAPE" then
-							ButtonContentNameHelper(actionType, id, subType, aActionBarName, x)
-							SetBinding(aKey)
-							local key1, key2 = GetBindingKey(tActionBarData[aActionBarName].command..x)
-							if key1 then SetBinding(key1) end
-							if key2 then SetBinding(key2) end
-							local ok = SetBinding(aKey , tActionBarData[aActionBarName].command..x)
-							SaveBindings(GetCurrentBindingSet())
-							local actionType, id, subType = GetActionInfo(self.menuTarget.buttonObj.action)
-							self.menuTarget.name = L["Button"].." "..x..";"..ButtonContentNameHelper(actionType, id, subType, aActionBarName, x)
-							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
-							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-							SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..aKey, true, true, 0.2)						
-						else
-							SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2)						
-						end
-						ClearOverrideBindings(self)
+					SkuOptions.bindingMode = true
+					SkuOptions.Voice:StopAllOutputs()
+					C_Timer.After(0.001, function()
+						BindingHelper(self, "player", x, aParentEntry, aActionBarName, aBooktype)
 					end)
-					SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
-
-					local tModifierKeys = {
-						"",
-						"CTRL-",
-						"SHIFT-",
-						"ALT-",
-						"CTRL-SHIFT-",
-						"CTRL-ALT-",
-						"SHIFT-ALT-",
-						"SHIFT-SHIFT-ALT-",
-					}
-
-					for i, v in pairs(_G) do 
-						if string.find(i, "KEY_") == 1 then 
-							if not string.find(i, "ESC") then
-								--dprint(i, v, string.find(i, "KEY_"), string.sub(i, 5))
-								for x = 1, #tModifierKeys do
-									SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
-								end
-							end
-						end 
-					end
-
-					local tStandardChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ö", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", ",", ".", "-", "#", "+", "ß", "´", "<"}
-					local tStandardNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",}
-					for x = 1, #tStandardChars do
-						for y = 1, #tModifierKeys do
-							SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
-						end
-					end
-					for x = 1, #tStandardNumbers do
-						for y = 1, #tModifierKeys do
-							SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
-						end
-					end
 				end
 
 				local actionType, id, subType = GetActionInfo(self.buttonObj.action)
@@ -899,95 +977,11 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					PickupPetAction(self.buttonObj:GetID())
 					ClearCursor()
 				elseif aName == L["Bind key"] then
-					SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2)						
-					local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
-					f.menuTarget = self
-					f:SetSize(80, 22)
-					f:SetText("SkuCoreBindTest")
-					f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
-					f:SetPoint("CENTER")
-					f:SetScript("OnClick", function(self, aKey, aB)
-						--dprint(aKey, aB)
-						local tBlockedKeys = {
-							["ENTER"] = true,
-							["RIGHT"] = true,
-							["LEFT"] = true,
-							["DOWN"] = true,
-							["UP"] = true,
-							["a"] = true,
-							["w"] = true,
-							["d"] = true,
-							["s"] = true,
-						}
-						local tBlockedKeysParts = {
-							"CTRL%-SHIFT%-F",
-							"SHIFT%-F",
-							"BUTTON1",
-							"BUTTON2",
-							"BUTTON3",
-							"BUTTON4",
-							"BUTTON5",
-						}
-
-						if tBlockedKeys[aKey] or tBlockedKeys[string.lower(aKey)] then  return end
-						for z = 1, #tBlockedKeysParts do
-							if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then return end
-						end
-
-						if aKey ~= "ESCAPE" then
-							ButtonContentNameHelper("pet", tButtonObjId, subType, aActionBarName, tButtonObjId)
-							SetBinding(aKey)
-							local key1, key2 = GetBindingKey(tActionBarData[aActionBarName].command..x)
-							if key1 then SetBinding(key1) end
-							if key2 then SetBinding(key2) end
-							local ok = SetBinding(aKey , tActionBarData[aActionBarName].command..x)
-							SaveBindings(GetCurrentBindingSet())
-							--local actionType, id, subType = GetActionInfo(self.menuTarget.buttonObj.action)
-							self.menuTarget.name = L["Button"].." "..x..";"..ButtonContentNameHelper("pet", tButtonObjId, subType, aActionBarName, tButtonObjId)
-							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
-							_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-							SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..aKey, true, true, 0.2)						
-						else
-							SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2)						
-						end
-						ClearOverrideBindings(self)
+					SkuOptions.bindingMode = true
+					SkuOptions.Voice:StopAllOutputs()
+					C_Timer.After(0.001, function()				
+						BindingHelper(self, "pet", x, aParentEntry, aActionBarName, tButtonObjId)
 					end)
-					SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
-
-					local tModifierKeys = {
-						"",
-						"CTRL-",
-						"SHIFT-",
-						"ALT-",
-						"CTRL-SHIFT-",
-						"CTRL-ALT-",
-						"SHIFT-ALT-",
-						"SHIFT-SHIFT-ALT-",
-					}
-
-					for i, v in pairs(_G) do 
-						if string.find(i, "KEY_") == 1 then 
-							if not string.find(i, "ESC") then
-								--dprint(i, v, string.find(i, "KEY_"), string.sub(i, 5))
-								for x = 1, #tModifierKeys do
-									SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
-								end
-							end
-						end 
-					end
-
-					local tStandardChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ö", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", ",", ".", "-", "#", "+", "ß", "´", "<"}
-					local tStandardNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",}
-					for x = 1, #tStandardChars do
-						for y = 1, #tModifierKeys do
-							SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
-						end
-					end
-					for x = 1, #tStandardNumbers do
-						for y = 1, #tModifierKeys do
-							SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
-						end
-					end
 				end
 
 				self.name = L["Button"].." "..x..";"..ButtonContentNameHelper("pet", self.id, subType, aActionBarName, self.id)
@@ -1436,10 +1430,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 			ActionBarMenuBuilder(self, "MultiBarLeft", BOOKTYPE_SPELL)
 		end
 
-
-
-
-		if HasPetSpells() then
+		--if HasPetSpells() then
+		if _G["PetActionBarFrame"] and _G["PetActionBarFrame"]:IsShown() == true then
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["PetBar"].friendlyName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
@@ -1563,107 +1555,115 @@ function SkuCore:MenuBuilder(aParentEntry)
 										tFriendlyKey2 = gsub(tFriendlyKey2, "%-%-", "-"..L["Minus"])
 									end
 
-									local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {_G["BINDING_NAME_" .. commandConst2]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])..L[" Taste 2: "]..(tFriendlyKey2 or L["nichts"])}, SkuGenericMenuItem)
+									local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {_G["BINDING_NAME_" .. commandConst2]..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])}, SkuGenericMenuItem)
 									tNewMenuEntryKey.isSelect = true
 									tNewMenuEntryKey.dynamic = true
 									tNewMenuEntryKey.OnAction = function(self, aValue, aName)
 										--dprint("cat OnAction 2", aValue, aName, self.name)
 										if aName == L["Neu belegen"] then
-											SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"].." "..L["Oder Rückschritt zum löschen"], true, true, 0.2)						
+											SkuOptions.bindingMode = true
 
-											local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
-											f.menuTarget = self
-											f.command = self.command
-											f.category = self.category
-											f.index = self.index
-						
-											f:SetSize(80, 22)
-											f:SetText("SkuCoreBindTest")
-											f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
-											f:SetPoint("CENTER")
-											f:SetScript("OnClick", function(self, aKey, aB)
-												--dprint(aKey, aB)
-												local tBlockedKeys = {
-													--["BACKSPACE"] = true,
-												}
-												local tBlockedKeysParts = {
-													"CTRL%-SHIFT%-F",
-													"BUTTON1",
-													"BUTTON2",
-													"BUTTON3",
-													"BUTTON4",
-													"BUTTON5",
-												}
-						
-												if tBlockedKeys[aKey] or tBlockedKeys[string.lower(aKey)] then 
-													SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2)						
-													return 
-												end
-						
-												for z = 1, #tBlockedKeysParts do
-													if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
-														SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2)						
-														return 
-													end
-												end
-						
-												if aKey ~= "ESCAPE" then
-													if not self.command or not self.category or not self.menuTarget or not self.index then return end
-													--dprint("OnClick new bind", aKey)
-													--dprint(self.command, self.category, self.menuTarget, self.menuTarget.name, self.index)
-						
-													SkuCore:SetBinding(aKey, self.command)
-													
-													local tCommand, tCategory, tKey1, tKey2 = GetBinding(self.index, GetCurrentBindingSet())
-													local tFriendlyKey1, tFriendlyKey2 = tKey1 or L["nichts"], tKey2 or L["nichts"]
-													for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
-														tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
-														tFriendlyKey2 = gsub(tFriendlyKey2, kLocKey, vLocKey)
-													end							
-													self.menuTarget.name = _G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(tFriendlyKey1)..L[" Taste 2: "]..(tFriendlyKey2)
-													_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
-													_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
-													SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey1, true, true, 0.2)						
-												elseif aKey == "ESCAPE" then
-													SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2)						
-												end
-												ClearOverrideBindings(self)
-											end)
-											SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
-						
-											local tModifierKeys = {
-												"",
-												"CTRL-",
-												"SHIFT-",
-												"ALT-",
-												"CTRL-SHIFT-",
-												"CTRL-ALT-",
-												"SHIFT-ALT-",
-												"SHIFT-SHIFT-ALT-",
-											}
-						
-											for i, v in pairs(_G) do 
-												if string.find(i, "KEY_") == 1 then 
-													if not string.find(i, "ESC") then
-														for x = 1, #tModifierKeys do
-															SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
+											C_Timer.After(0.001, function()
+												SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
+
+												local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
+												f.menuTarget = self
+												f.command = self.command
+												f.category = self.category
+												f.index = self.index
+												f.prevKey = nil
+							
+												f:SetSize(80, 22)
+												f:SetText("SkuCoreBindTest")
+												f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
+												f:SetPoint("CENTER")
+												f:SetScript("OnClick", function(self, aKey, aB)
+													--dprint(aKey, aB)
+													if aKey ~= "ESCAPE" then
+														if not self.command or not self.category or not self.menuTarget or not self.index then return end
+														for z = 1, #tBlockedKeysParts do
+															if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
+																SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+																self.prevKey = nil
+
+																return 
+															end
 														end
+
+														for z = 1, #tBlockedKeysBinds do
+															if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then 
+																SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+																return
+															end
+														end
+
+														local tCommand = SkuCore:CheckBound(aKey)
+														local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
+														if tCommand or bindingConst then
+															if not self.prevKey or self.prevKey ~= aKey then
+																self.prevKey = aKey
+																if bindingConst then
+																	SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." "..L[bindingConst]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
+																elseif tCommand then
+																	SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." ".._G["BINDING_NAME_"..tCommand]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
+																end
+																return 
+															end
+														end
+					
+														if tCommand or bindingConst and self.prevKey == aKey then
+															if bindingConst then
+																SkuOptions:SkuKeyBindsDeleteBinding(bindingConst)
+															elseif tCommand then
+																SkuCore:DeleteBinding(tCommand)
+															end
+														end
+														
+														SkuCore:SetBinding(aKey, self.command)
+														
+														local tCommand, tCategory, tKey1, tKey2 = GetBinding(self.index, GetCurrentBindingSet())
+														local tFriendlyKey1, tFriendlyKey2 = tKey1 or L["nichts"], tKey2 or L["nichts"]
+														for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
+															tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
+															tFriendlyKey2 = gsub(tFriendlyKey2, kLocKey, vLocKey)
+														end				
+														if tCommand or bindingConst then
+															_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+														else
+															self.menuTarget.name = _G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(tFriendlyKey1)..L[" Taste 2: "]..(tFriendlyKey2)
+															_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
+															_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+														end
+														SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey1, true, true, 0.2, true, nil, nil, 2)
+													elseif aKey == "ESCAPE" then
+														SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
 													end
-												end 
-											end
-						
-											local tStandardChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ö", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", ",", ".", "-", "#", "+", "ß", "´", "<"}
-											local tStandardNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",}
-											for x = 1, #tStandardChars do
-												for y = 1, #tModifierKeys do
-													SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
+													ClearOverrideBindings(self)
+													SkuOptions.bindingMode = nil
+												end)
+												SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
+							
+												for i, v in pairs(_G) do 
+													if string.find(i, "KEY_") == 1 then 
+														if not string.find(i, "ESC") then
+															for x = 1, #tModifierKeys do
+																SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
+															end
+														end
+													end 
 												end
-											end
-											for x = 1, #tStandardNumbers do
-												for y = 1, #tModifierKeys do
-													SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
+							
+												for x = 1, #tStandardChars do
+													for y = 1, #tModifierKeys do
+														SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
+													end
 												end
-											end
+												for x = 1, #tStandardNumbers do
+													for y = 1, #tModifierKeys do
+														SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
+													end
+												end
+											end)											
 										elseif aName == L["Belegung löschen"] then
 											if not self.command or not self.category or not self.index then return end
 											SkuCore:DeleteBinding(self.command)
@@ -1692,6 +1692,322 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 		end
 	end
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Sku Tastenbelegung"]}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.BuildChildren = function(self)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
+			tNewMenuEntry1.OnAction = function(self, aValue, aName)
+				SkuOptions:SkuKeyBindsResetBindings()
+				SkuOptions.Voice:OutputStringBTtts(L["Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt."], true, true, 0.2)						
+			end
+			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
+		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			--dprint("Taste zuweisen 2 BuildChildren")
+			for tBindingConst, v in pairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds) do
+				local tFriendlyKey1
+				if v.key == "" then
+					tFriendlyKey1 = L["nichts"]
+				else
+					tFriendlyKey1 = v.key or L["nichts"]
+				end
+				for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
+					tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
+				end
+				if tFriendlyKey1 == "-" then
+					tFriendlyKey1 = L["Minus"]
+				else
+					tFriendlyKey1 = gsub(tFriendlyKey1, "%-%-", "-"..L["Minus"])
+				end
+
+				local tFix = ""
+				if tBindingConst == "SKU_KEY_TURNTOBEACON" then
+					tFix = L["fixed"]
+				end
+				local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {L[tBindingConst].." "..L["Taste"]..":"..(tFriendlyKey1 or L["nichts"]).." "..tFix}, SkuGenericMenuItem)
+				tNewMenuEntryKey.isSelect = true
+				tNewMenuEntryKey.dynamic = true
+				tNewMenuEntryKey.OnAction = function(self, aValue, aName)
+					dprint("Taste zuweisen OnAction", aValue, aName, self.name)
+					if aName == L["fixed"] then
+						return
+					end
+					if aName == L["Neu belegen"] then
+						SkuOptions.bindingMode = true
+
+						C_Timer.After(0.001, function()
+							SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
+
+							local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
+							f.menuTarget = self
+							f.bindingConst = self.bindingConst
+							f.prevKey = nil
+		
+							f:SetSize(80, 22)
+							f:SetText("SkuCoreBindTest")
+							f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
+							f:SetPoint("CENTER")
+							f:SetScript("OnClick", function(self, aKey, aB)
+								print("SkuCoreBindTest OnClick", aKey, aB)
+								if aKey ~= "ESCAPE" then
+									if not self.bindingConst or not self.menuTarget then return end
+									for z = 1, #tBlockedKeysParts do
+										if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
+											print("Ungültig", tBlockedKeysParts[z])
+											SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+											self.prevKey = nil
+											return 
+										end
+									end
+									for z = 1, #tBlockedKeysBinds do
+										if aKey == tBlockedKeysBinds[z] or string.lower(aKey) == string.lower(tBlockedKeysBinds[z]) then 
+											SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
+											return
+										end
+									end
+							
+
+									dprint(self.bindingConst, self.menuTarget, self.menuTarget.name, self.prevKey)
+
+									local tCommand = SkuCore:CheckBound(aKey)
+									local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
+									print("tCommand, bindingConst", tCommand, bindingConst)
+									if tCommand or bindingConst then
+										if not self.prevKey or self.prevKey ~= aKey then
+											self.prevKey = aKey
+											if bindingConst then
+												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." "..L[bindingConst]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
+											elseif tCommand then
+												SkuOptions.Voice:OutputStringBTtts(L["Warning! That key is already bound to"].." ".._G["BINDING_NAME_"..tCommand]..L[". Press the key again to confirm new binding. The current bound action will be unbound!"], true, true, 0.2, true, nil, nil, 2)
+											end
+											return 
+										end
+									end
+
+									if tCommand or bindingConst and self.prevKey == aKey then
+										if bindingConst then
+											SkuOptions:SkuKeyBindsDeleteBinding(bindingConst)
+										elseif tCommand then
+											SkuCore:DeleteBinding(tCommand)
+										end
+									end
+
+									SkuOptions:SkuKeyBindsSetBinding(self.bindingConst, aKey)
+									
+									local tKey1 = SkuOptions:SkuKeyBindsGetBinding(self.bindingConst)
+									local tFriendlyKey1 = tKey1 or L["nichts"]
+									for kLocKey, vLocKey in pairs(SkuCore.Keys.LocNames) do
+										tFriendlyKey1 = gsub(tFriendlyKey1, kLocKey, vLocKey)
+									end							
+									if tCommand or bindingConst then
+										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+									else
+										self.menuTarget.name = L[self.bindingConst].." "..L["Taste"]..":"..(tFriendlyKey1 or L["nichts"]) --_G["BINDING_NAME_" .. tCommand]..L[" Taste 1: "]..(tFriendlyKey1)..L[" Taste 2: "]..(tFriendlyKey2)
+										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
+										_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+									end
+									SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..tFriendlyKey1, true, true, 0.2, true, nil, nil, 2)
+								elseif aKey == "ESCAPE" then
+									self.prevKey = nil
+									SkuOptions.Voice:OutputStringBTtts(L["Binding canceled"], true, true, 0.2, true, nil, nil, 2)
+								end
+								ClearOverrideBindings(self)
+								SkuOptions.bindingMode = nil
+							end)
+							SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
+		
+							for i, v in pairs(_G) do 
+								if string.find(i, "KEY_") == 1 then 
+									if not string.find(i, "ESC") then
+										for x = 1, #tModifierKeys do
+											SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
+										end
+									end
+								end 
+							end
+		
+							for x = 1, #tStandardChars do
+								for y = 1, #tModifierKeys do
+									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
+								end
+							end
+							for x = 1, #tStandardNumbers do
+								for y = 1, #tModifierKeys do
+									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
+								end
+							end
+						end)											
+					elseif aName == L["Belegung löschen"] then
+						if not self.bindingConst then return end
+						SkuOptions:SkuKeyBindsDeleteBinding(self.bindingConst)
+						local tKey1 = SkuOptions:SkuKeyBindsGetBinding(self.bindingConst)
+						local tFriendlyKey1
+						self.name = L[self.bindingConst].." "..L["Taste"]..":"..(tFriendlyKey1 or L["nichts"]) 
+						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
+						_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
+						SkuOptions.Voice:OutputStringBTtts(L["Belegung gelöscht"], true, true, 0.2)						
+					end					
+				end
+				tNewMenuEntryKey.bindingConst = tBindingConst
+				--tNewMenuEntryKey.category = categoryConst2
+				--tNewMenuEntryKey.index = v1.index
+				
+				tNewMenuEntryKey.BuildChildren = function(self)
+					if tBindingConst ~= "SKU_KEY_TURNTOBEACON" then
+						local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Neu belegen"]}, SkuGenericMenuItem)
+						local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
+					else
+						local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["fixed"]}, SkuGenericMenuItem)
+					end
+				end
+			end
+		end
+	end
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Scan settings"]}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.BuildChildren = function(self)
+		for x = 1, 8 do
+			local tText = SkuCore.ScanTypes[SkuOptions.db.char["SkuCore"].scanConfigs[x].type].name
+			for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+				tText = tText..", "..L[SkuCore.ScanObjects[vDb]]
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["SKU_KEY_SCAN"..x].." "..tText}, SkuGenericMenuItem)
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.scanNumber = nil
+			tNewMenuEntry.tAction = nil
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				--print(L["SKU_KEY_SCAN"..x].." OnAction", aValue, aName, self.name, self.tAction)
+				if aName == L["Empty"] then
+					return
+				end
+				if self.tAction == "type" then
+					for i, v in pairs(SkuCore.ScanTypes) do
+						if v.name == aName then
+							SkuOptions.db.char["SkuCore"].scanConfigs[x].type = i
+							C_Timer.After(0.01, function()
+								self:OnUpdate()
+							end)
+							return
+						end
+					end
+				elseif self.tAction == "add" then
+					for i, v in pairs(SkuCore.ScanObjects) do
+						if aName == L[v] then
+							local tFound = false
+							for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+								if i == vDb then
+									tFound = true
+								end
+							end
+							if tFound == false then
+								table.insert(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects, i)
+								C_Timer.After(0.01, function()
+									self:OnUpdate()
+								end)
+								return
+							end
+						end
+					end
+
+				elseif self.tAction == "remove" then
+					for i, v in pairs(SkuCore.ScanObjects) do
+						if aName == L[v] then
+							for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+								if i == vDb then
+									table.remove(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects, iDb)
+									C_Timer.After(0.01, function()
+										self:OnUpdate()
+									end)
+									return
+								end
+							end
+						end
+					end
+
+				end
+			end
+			tNewMenuEntry.OnEnter = function(self, aValue, aName)
+				self.tAction = nil
+			end
+
+			tNewMenuEntry.BuildChildren = function(self)
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["type"]}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.BuildChildren = function(self)
+					for y = 1, #SkuCore.ScanTypes  do
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuCore.ScanTypes[y].name}, SkuGenericMenuItem)
+						tNewMenuEntry.OnEnter = function(self, aValue, aName)
+							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore.ScanTypes[y].name, SkuCore.ScanTypes[y].desc
+							self.selectTarget.tAction = "type"
+							self.selectTarget.scanNumber = y
+						end
+					end
+				end
+
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["add object"]}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.BuildChildren = function(self)
+					local tEmpty = true
+					for i, v in pairs(SkuCore.ScanObjects) do
+						local tFound = false
+						for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+							if i == vDb then
+								tFound = true
+							end
+						end
+						if tFound == false then
+							tEmpty = false
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[v]}, SkuGenericMenuItem)
+							tNewMenuEntry.OnEnter = function(self, aValue, aName)
+								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = "", ""
+								self.selectTarget.tAction = "add"
+							end
+						end
+					end
+					if tEmpty == true then
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+					end
+				end
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["remove object"]}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.BuildChildren = function(self)
+					local tEmpty = true
+					for i, v in pairs(SkuCore.ScanObjects) do
+						local tFound = false
+						for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
+							if i == vDb then
+								tFound = true
+							end
+						end
+						if tFound == true then
+							tEmpty = false
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[v]}, SkuGenericMenuItem)
+							tNewMenuEntry.OnEnter = function(self, aValue, aName)
+								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = "", ""
+								self.selectTarget.tAction = "remove"
+							end
+						end
+					end
+					if tEmpty == true then
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+					end
+
+				end
+			end
+		end
+
+	end
+
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Auktionshaus"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true

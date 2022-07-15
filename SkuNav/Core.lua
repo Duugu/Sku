@@ -572,7 +572,7 @@ function SkuNav:GetAllMetaTargetsFromWp4(aStartWpName, aMaxDistance, aMaxWPs, aR
 	for tIndex, tName in pairs(tTargetWps) do
 		if tFoundNbList[tIndex] then
 			if tAuto == "" or ssub(tName, 1, 4) ~= tAuto then
-				if aStartWpName ~= tName then
+				--if aStartWpName ~= tName then
 					rMetapathData[tName] = {
 						distance = aMaxDistance,
 						distanceToStartWp = tDistanceToStartWp,
@@ -623,7 +623,7 @@ function SkuNav:GetAllMetaTargetsFromWp4(aStartWpName, aMaxDistance, aMaxWPs, aR
 							rMetapathData[tName].distance = tDistance + tDistanceToStartWp
 						end
 					end
-				end
+				--end
 			end
 		end
 	end
@@ -1979,7 +1979,11 @@ function SkuNav:CreateSkuNavMain()
 
 	tFrame:SetScript("OnClick", function(self, a, b)
 
-		if a == "CTRL-SHIFT-L" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOBEACON"].key then
+			SkuCore:GameWorldObjectsTurnToWp()
+		end
+
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKURTMMDISPLAY"].key then
 			if Sku.testMode == true then
 				-- NAMEPLATE TEST -->
 				SkuCore:PingNameplates()
@@ -1989,12 +1993,12 @@ function SkuNav:CreateSkuNavMain()
 			end
 
 		end
-		if a == "CTRL-SHIFT-K" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMMOPEN"].key then
 			SkuOptions.db.profile[MODULE_NAME].showSkuMM = SkuOptions.db.profile[MODULE_NAME].showSkuMM == false
 			SkuNav:SkuNavMMOpen()
 		end
 
-		if a == "CTRL-SHIFT-Q" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEREACHRANGE"].key then
 			SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange + 1
 			if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange > #SkuNav.StandardWpReachedRanges then
 				SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = 1
@@ -2004,23 +2008,23 @@ function SkuNav:CreateSkuNavMain()
 		end
 
 
-		if a == "CTRL-SHIFT-Z" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STARTRRFOLLOW"].key then
 			SkuNav:StartReverseRtFollow()
 		end
 		
 		--move to prev/next wp on following a rt
-		if a == "CTRL-SHIFT-W" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETONEXTWP"].key then
 			SkuNav.MoveToWp = 1
 		end
-		if a == "CTRL-SHIFT-S" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETOPREVWP"].key then
 			SkuNav.MoveToWp = -1
 		end
 
 		--add manual int wp and link if recording
-		if a == "CTRL-SHIFT-P" or a == "CTRL-SHIFT-O" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDSMALLWP"].key or a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDLARGEWP"].key then
 			if SkuOptions.db.profile[MODULE_NAME].routeRecordingDelete ~= true then
 				local tWpSize = 1
-				if a == "CTRL-SHIFT-O" then
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDLARGEWP"].key then
 					tWpSize = 5
 				end
 			
@@ -2037,7 +2041,7 @@ function SkuNav:CreateSkuNavMain()
 			end
 		end
 
-		if a == "SHIFT-M" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEMMSIZE"].key then
 			SkuNav.MinimapFull = SkuNav.MinimapFull == false
 			if SkuNav.MinimapFull == true then
 				MinimapCluster:SetScale(3.5)
@@ -2046,55 +2050,56 @@ function SkuNav:CreateSkuNavMain()
 			end
 		end
 
-		if a == "SHIFT-F5" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1"].key then
 			SkuNav:EndFollowingWpOrRt()
 			SkuNav:SelectWP(L["Quick waypoint"]..";1")
 		end
-		if a == "CTRL-SHIFT-F5" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1SET"].key then
 			SkuNav:UpdateQuickWP(L["Quick waypoint"]..";1")
 		end
-		if a == "SHIFT-F6" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2"].key then
 			SkuNav:EndFollowingWpOrRt()
 			SkuNav:SelectWP(L["Quick waypoint"]..";2")
 		end
-		if a == "CTRL-SHIFT-F6" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2SET"].key then
 			SkuNav:UpdateQuickWP(L["Quick waypoint"]..";2")
 		end		
-		if a == "SHIFT-F7" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3"].key then
 			SkuNav:EndFollowingWpOrRt()
 			SkuNav:SelectWP(L["Quick waypoint"]..";3")
 		end
-		if a == "CTRL-SHIFT-F7" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3SET"].key then
 			SkuNav:UpdateQuickWP(L["Quick waypoint"]..";3")
 		end		
-		if a == "SHIFT-F8" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4"].key then
 			SkuNav:EndFollowingWpOrRt()
 			SkuNav:SelectWP(L["Quick waypoint"]..";4")
 		end
-		if a == "CTRL-SHIFT-F8" then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4SET"].key then
 			SkuNav:UpdateQuickWP(L["Quick waypoint"]..";4")
 		end		
 		
 	end)
 	tFrame:Hide()
 	
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Z", tFrame:GetName(), "CTRL-SHIFT-Z")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-K", tFrame:GetName(), "CTRL-SHIFT-K")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-Q", tFrame:GetName(), "CTRL-SHIFT-Q")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-W", tFrame:GetName(), "CTRL-SHIFT-W")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-S", tFrame:GetName(), "CTRL-SHIFT-S")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-O", tFrame:GetName(), "CTRL-SHIFT-O")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-P", tFrame:GetName(), "CTRL-SHIFT-P")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-L", tFrame:GetName(), "CTRL-SHIFT-L")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-M", tFrame:GetName(), "SHIFT-M")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F5", tFrame:GetName(), "SHIFT-F5")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F5", tFrame:GetName(), "CTRL-SHIFT-F5")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F6", tFrame:GetName(), "SHIFT-F6")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F6", tFrame:GetName(), "CTRL-SHIFT-F6")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F7", tFrame:GetName(), "SHIFT-F7")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F7", tFrame:GetName(), "CTRL-SHIFT-F7")
-	SetOverrideBindingClick(tFrame, true, "SHIFT-F8", tFrame:GetName(), "SHIFT-F8")
-	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-F8", tFrame:GetName(), "CTRL-SHIFT-F8")
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOBEACON"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOBEACON"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STARTRRFOLLOW"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STARTRRFOLLOW"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMMOPEN"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMMOPEN"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEREACHRANGE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEREACHRANGE"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETONEXTWP"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETONEXTWP"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETOPREVWP"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETOPREVWP"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDLARGEWP"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDLARGEWP"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDSMALLWP"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ADDSMALLWP"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKURTMMDISPLAY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKURTMMDISPLAY"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEMMSIZE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEMMSIZE"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1SET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP2SET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3SET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4SET"].key)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
@@ -2690,6 +2695,8 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	else
 		SkuOptions.BeaconLib:SetClickClackSoundSet("off")
 	end	
+
+	SetCVar("cameraYawSmoothSpeed", 270)
 end
 
 local old_ZONE_CHANGED_X = ""

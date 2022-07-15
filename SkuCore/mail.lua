@@ -47,7 +47,7 @@ end
 function SkuCore:MAIL_CLOSED(...)
    --dprint("MAIL_CLOSED", ...)
    if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
-      _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], "SHIFT-F1")
+      _G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
    end
 end
 

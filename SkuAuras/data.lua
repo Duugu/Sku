@@ -160,7 +160,6 @@ SkuAuras.outputs = {
             if not tEvaluateData.event then return end
             if not SkuAuras.values[tEvaluateData.event] then return end
             if SkuAuras.values[tEvaluateData.event].friendlyNameShort then
-                                          --aString,                                               aOverwrite, aWait, aLength, aDoNotOverwrite
                SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyNameShort, aFirst, true, 0.1, true)
             else
                SkuOptions.Voice:OutputString(SkuAuras.values[tEvaluateData.event].friendlyName, aFirst, true, 0.1, true)

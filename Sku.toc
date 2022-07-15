@@ -1,8 +1,8 @@
 ## Interface: 20504
-## Title: Sku (27.14)
+## Title: Sku (28)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 27.14
+## Version: 28
 
 embeds.xml
 
@@ -24,6 +24,7 @@ SkuChat\Options.lua
 
 SkuCore\Core.lua
 SkuCore\data.lua
+SkuCore\gameWorldObjects.lua
 SkuCore\minimapScanner.lua
 SkuCore\LocalMenu.lua
 SkuCore\JunkAndRepair.lua
@@ -78,3 +79,4 @@ SkuZOptions\Core.lua
 SkuZOptions\data.lua
 SkuZOptions\templates.lua
 SkuZOptions\Options.lua
+SkuZOptions\SkuKeyBinds.lua

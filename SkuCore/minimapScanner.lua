@@ -88,6 +88,7 @@ SkuCore.RessourceTypes = {
 
 SkuCore.IsScanning = false
 
+local tMinimapYardsMod = 3.125
 local tScanResults = {}
 local tMinimapStore = {}
 local tRange = 15
@@ -116,7 +117,8 @@ local function SetMinimapPosition(xOffset, yOffset)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function FindActiveRessource()
+local tFoundPositions = {}
+function SkuCore:MinimapScanFindActiveRessource(aX, aY)
    for i = 1, GameTooltip:NumLines() do
       local line = string.lower(_G['GameTooltipTextLeft'..i]:GetText())
       if line then
@@ -134,6 +136,60 @@ local function FindActiveRessource()
             if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
                for w in string.gmatch(SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]], ".+") do
                   if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w..'|'), 1, true) then
+                     if not tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] then
+                        tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] = {}
+                     end
+                     if #tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] == 0 then
+                        tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][1] = {
+                           xMin = aX - 1,
+                           xMax = aX + 1,
+                           yMin = aY - 1,
+                           yMax = aY + 1,
+                        }
+                     else
+                        local tFoundIndex
+                        for q = 1, #tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] do
+                           dprint("q", q, #tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]], tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q])
+                           local xmax = tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q].xMax - aX
+                           local ymax = tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q].yMax - aY
+                           local xmin = tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q].xMin - aX
+                           local ymin = tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q].yMin - aY
+                           if xmax < 0 then xmax = xmax * -1 end
+                           if ymax < 0 then ymax = ymax * -1 end
+                           if xmin < 0 then xmin = xmin * -1 end
+                           if ymin < 0 then ymin = ymin * -1 end
+
+                           dprint("  ", xmax, ymax, xmin, ymin)
+                           local tRangeNew = 20
+                           if xmax < tRangeNew and ymax < tRangeNew and xmin < tRangeNew and ymin < tRangeNew then
+                              tFoundIndex = q
+                           end
+                        end
+                        if tFoundIndex then
+                           dprint("found", tFoundIndex)
+                           if tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].xMin > aX then
+                              tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].xMin = aX
+                           end
+                           if tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].xMax < aX then
+                              tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].xMax = aX
+                           end
+                           if tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].yMin > aY then
+                              tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].yMin = aY
+                           end
+                           if tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].yMax < aY then
+                              tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].yMax = aY
+                           end
+                        else
+                           dprint("new", SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]], #tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] + 1)
+                           tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][#tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] + 1] = {
+                              xMin = aX - 1,
+                              xMax = aX + 1,
+                              yMin = aY - 1,
+                              yMax = aY + 1,
+                           }
+                        end
+                     end
+
                      return SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]               
                   end
                end 
@@ -150,20 +206,23 @@ local tNotificationTicker
 local function MinimapScanStep()
 	if SkuCore.IsMMScanning == false and SkuCore.inCombat ~= true then
 		SkuCore:RestoreMinimap()
+      C_Timer.After(1.1, function()
+         SkuCore.noMouseOverNotification = nil
+      end)      
 		return
 	end
 
-	tCurrentMMPosX = tCurrentMMPosX + 4
+	tCurrentMMPosX = tCurrentMMPosX + SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
 	if tCurrentMMPosX > (tRange / 2) then
 		tCurrentMMPosX = -(tRange / 2)
-		tCurrentMMPosY = tCurrentMMPosY + 4
+		tCurrentMMPosY = tCurrentMMPosY + SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
 	end
 
 	if tCurrentMMPosY > (tRange / 2) then
 		tCurrentMMPosX, tCurrentMMPosY = -(tRange / 2), -(tRange / 2)
 		SkuCore.IsMMScanning = false
       C_Timer.After(1, function()
-         SkuCore.NoMouseOverNotification = true
+         SkuCore.noMouseOverNotification = true
       end)
       SkuCore:MinimapScanProcessResults()
 	end
@@ -171,9 +230,9 @@ local function MinimapScanStep()
 	SetMinimapPosition(tCurrentMMPosX, tCurrentMMPosY)
 
 	C_Timer.After(0, function()
-      local tResultString = FindActiveRessource()
+      local tResultString = SkuCore:MinimapScanFindActiveRessource(tCurrentMMPosX, tCurrentMMPosY)
 		if tResultString then
-			fx, fy = tCurrentMMPosX, tCurrentMMPosY
+			--fx, fy = tCurrentMMPosX, tCurrentMMPosY
 			--print(tResultString, fx, fy)
          if not tScanResults[tResultString] then
             tScanResults[tResultString] = 0
@@ -195,8 +254,8 @@ function SkuCore:StoreMinimap()
 	tMinimapStore.frameLevel = MinimapCluster:GetFrameLevel()
 	tMinimapStore.frameStrata = MinimapCluster:GetFrameStrata()
 
-	minimapChildren = {Minimap:GetChildren()}
-	for k, v in pairs(minimapChildren) do
+	SkuCore.minimapChildren = {Minimap:GetChildren()}
+	for k, v in pairs(SkuCore.minimapChildren) do
 			v.MMA_VISIBLE = v:IsVisible()
 			v.MMA_FRAME_LEVEL = v:GetFrameLevel()
 			v.MMA_FRAME_STRATA = v:GetFrameStrata()
@@ -212,41 +271,63 @@ function SkuCore:RestoreMinimap()
    MinimapCluster:SetFrameStrata(tMinimapStore.frameStrata)
    GameTooltip:SetScale(tMinimapStore.GameTooltipScale)
 
-   for k, v in pairs(minimapChildren) do
+   for k, v in pairs(SkuCore.minimapChildren) do
       if v.MMA_VISIBLE then 
          v:Show() 
       end
       v:SetFrameStrata(v.MMA_FRAME_STRATA)
       v:SetFrameLevel(v.MMA_FRAME_LEVEL)
    end
+   SkuCore.noMouseOverNotification = nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MinimapStopScan()
+   SkuOptions:StartStopBackgroundSound(false)
    SkuCore:RestoreMinimap()
    SkuCore.IsMMScanning = false
    SkuCore:RestoreMinimap()
    if tNotificationTicker then
       tNotificationTicker:Cancel()
    end
+   SkuCore.noMouseOverNotification = nil
    SkuOptions.Voice:StopOutputEmptyQueue()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MinimapScan(aRange)
-   SkuOptions.Voice:OutputStringBTtts("sound-notification21", false, false)--24
-   tNotificationTicker = C_Timer.NewTicker(0.6, function()
-      SkuOptions.Voice:OutputStringBTtts("sound-notification21", false, false)--24
-   end)
+   if Questie then
+      Questie.db.global.enableMiniMapIcons = false
+   end
+
+   SkuCore:GameWorldObjectsCenterMouseCursor(0.5)
+   Minimap:SetZoom(0)
+   if GetCVar("rotateMinimap") == "1" then
+      ToggleMiniMapRotation() 
+   end
+   SetCVar("minimapAltitudeHintMode", 0)
+   
+   --diable all tracking options except spells
+   local tCount = GetNumTrackingTypes()
+   for i = 1, tCount do 
+      local name, texture, active, category = GetTrackingInfo(i)
+      if category ~= "spell" then
+         SetTracking(i, false)
+      end
+   end
+
+   SkuOptions:StartStopBackgroundSound(true, SkuOptions.db.profile["SkuCore"].scanBackgroundSound)
 
    aRange = aRange or 20
    tScanResults = {}
    tRange = aRange
-   SkuCore.NoMouseOverNotification = true
+   SkuCore.noMouseOverNotification = true
 
    SkuCore:StoreMinimap() 
    tCurrentMMPosX, tCurrentMMPosY = (aRange / 2) * -1, (aRange / 2) * -1
+   tFoundPositions = {}
    SkuCore.IsMMScanning = true 
+
    MinimapScanStep()
 end
 
@@ -255,10 +336,61 @@ function SkuCore:MinimapScanProcessResults()
    if tNotificationTicker then
       tNotificationTicker:Cancel()
    end
+
    SkuOptions.Voice:StopOutputEmptyQueue()
+   SkuOptions:StartStopBackgroundSound(false)
+
+   local tQuickWpNumber = 1
    for i, v in pairs(tScanResults) do
-      SkuOptions.Voice:OutputString(i, false, true, 0.2)
-      --print(i)
+      local xCenter, yCenter
+      if tFoundPositions[i] then
+         for q = 1, #tFoundPositions[i] do
+            local tempX = (tFoundPositions[i][q].xMax + 1000) - (tFoundPositions[i][q].xMin + 1000)
+            if tempX < 0 then
+               tempX = tempX * -1
+            end
+            local tempY = (tFoundPositions[i][q].yMax + 1000) - (tFoundPositions[i][q].yMin + 1000)
+            if tempY < 0 then
+               tempY = tempY * -1
+            end
+            xCenter = tFoundPositions[i][q].xMin + (tempX / 2) + 2.5
+            yCenter = tFoundPositions[i][q].yMin + (tempY / 2) + 0.5
+            local xa, ya = UnitPosition("player") 
+            if xa then
+               xa = xa + (yCenter * -1)
+               ya = ya + xCenter
+               local tDistance = SkuNav:Distance(0, 0, xCenter, yCenter)
+               
+               print((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod).." "..L["Meter"])
+               SkuOptions.Voice:OutputStringBTtts((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod).." "..L["Meter"], false, true, 0.2)
+
+               if tQuickWpNumber then
+                  local tAreaId = SkuNav:GetCurrentAreaId()
+                  local worldx, worldy = UnitPosition("player")
+                  local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())) or -1
+                  local tTime = GetTime()
+                  SkuNav:SetWaypoint(L["Quick waypoint"]..";"..tQuickWpNumber, {
+                     ["contintentId"] = tPlayerContintentId,
+                     ["areaId"] = tAreaId,
+                     ["worldX"] = worldx + ((yCenter * tMinimapYardsMod)) * -1,
+                     ["worldY"] = worldy + ((xCenter * tMinimapYardsMod)),
+                     ["createdAt"] = tTime, 
+                     ["createdBy"] = "SkuCore",
+                     ["size"] = 1,
+                  })            
+               end
+
+               tQuickWpNumber = tQuickWpNumber + 1
+               if tQuickWpNumber > 4 then
+                  tQuickWpNumber = nil
+               end
+            else
+               print(i)
+               SkuOptions.Voice:OutputStringBTtts(i, false, true, 0.2)
+
+            end
+         end
+      end
    end
 end
 

@@ -47,7 +47,7 @@ SkuOptions.options = {
 			name = L["Hintergrund Audio"] ,
 			desc = "",
 			type = "select",
-			values = SkuOptions.BackgroundSoundFiles,
+			values = SkuCore.BackgroundSoundFiles,
 			set = function(info,val)
 				SkuOptions.db.profile[MODULE_NAME].backgroundSound = val
 			end,
@@ -338,13 +338,14 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Zurücksetzen"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-		--dprint("db", SkuOptions.db:ResetProfile())
+		SkuOptions.db:ResetProfile()
 		SkuOptions.db.char["SkuCore"] = {}
 		SkuOptions.db.char["SkuCore"].RangeChecks = {
 			Friendly = {},
 			Hostile = {},
 			Misc = {},
 		}
+		SkuOptions:OnProfileReset()
 	end
 
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Fehlende Audio Wörter kopieren"]}, SkuGenericMenuItem)

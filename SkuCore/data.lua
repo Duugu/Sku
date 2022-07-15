@@ -2,6 +2,69 @@
 local _G = _G
 local L = Sku.L
 
+SkuCore.ScanTypes = {
+	[1] = {
+		name = L["180 front"],
+		desc = L["180 degrees 5-35 meters 10 seconds"],
+		hStepSizeDeg = 12,
+		hStepsMax = 7,
+		vMoveSpeed = 0.3,
+		vStepsMax = 19,
+		hStart = 0.6,
+	},
+	[2] = {
+		name = L["360 10 fast"],
+		desc = L["360 degrees 0-10 meters 4 seconds"],
+		hStepSizeDeg = 11,
+		hStepsMax = 18,
+		vMoveSpeed = 1.0,
+		vStepsMax = 6,
+		hStart = 0.50,
+	},	
+	[3] = {
+		name = L["360 30 fast"],
+		desc = L["360 degrees 3-30 meters 10 seconds"],
+		hStepSizeDeg = 11,
+		hStepsMax = 15,
+		vMoveSpeed = 0.4,
+		vStepsMax = 9,
+		hStart = 0.65,
+	},	
+	[4] = {
+		name = L["360 10 accurate"],
+		desc = L["360 degrees 0-10 meters 10 seconds"],
+		hStepSizeDeg = 7,
+		hStepsMax = 25,
+		vMoveSpeed = 1.0,
+		vStepsMax = 6,
+		hStart = 0.50,
+	},		
+	[5] = {
+		name = L["360 30 accurate"],
+		desc = L["360 degrees 3-30 meters 20 seconds"],
+		hStepSizeDeg = 9,
+		hStepsMax = 20,
+		vMoveSpeed = 0.2,
+		vStepsMax = 11,
+		hStart = 0.65,
+	},		
+}
+
+SkuCore.ScanObjects = {
+	[1] = "CorpseLootable",
+	[2] = "CorpseSkinnable",
+	[3] = "CorpseNotLootable",
+	[4] = "CreaturePlayerTarget",
+	[5] = "CreatureAny",
+	[6] = "ObjectCurrentQuest",
+	[7] = "ObjectHerb",
+	[8] = "ObjectVein",
+	[9] = "Bobber",
+	[10] = "ObjectUsable",
+	[11] = "ObjectAny",
+	[12] = "Any",
+}
+
 SkuCore.Keys = {}
 SkuCore.Keys.SkuDefaultBindings = {
 	["BINDING_HEADER_RAID_TARGET"] = {
@@ -48,7 +111,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 226,
 		},
 		["SETVIEW5"] = {
-			["key1"] = "CTRL-NUMPAD9",
 			["index"] = 217,
 		},
 		["SETVIEW2"] = {
@@ -69,7 +131,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 216,
 		},
 		["PREVVIEW"] = {
-			["key1"] = "HOME",
 			["index"] = 210,
 		},
 		["FLIPCAMERAYAW"] = {
@@ -98,7 +159,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 225,
 		},
 		["NEXTVIEW"] = {
-			["key1"] = "END",
 			["index"] = 209,
 		},
 		["CAMERAZOOMIN"] = {
@@ -110,6 +170,24 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 	},	
 	["BINDING_HEADER_MULTIACTIONBAR"] = {
+
+		--1
+		["MULTIACTIONBAR1BUTTON1"] = {
+			["key1"] = "F1",
+			["index"] = 73,
+		},
+		["MULTIACTIONBAR1BUTTON2"] = {
+			["key1"] = "F2",
+			["index"] = 74,
+		},
+		["MULTIACTIONBAR1BUTTON3"] = {
+			["key1"] = "F3",
+			["index"] = 75,
+		},
+		["MULTIACTIONBAR1BUTTON4"] = {
+			["key1"] = "F4",
+			["index"] = 76,
+		},
 		["MULTIACTIONBAR1BUTTON5"] = {
 			["key1"] = "F5",
 			["index"] = 77,
@@ -118,97 +196,173 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["key1"] = "F6",
 			["index"] = 78,
 		},
-		["MULTIACTIONBAR2BUTTON3"] = {
-			["key1"] = "F9",
-			["index"] = 88,
+		["MULTIACTIONBAR1BUTTON7"] = {
+			["key1"] = "F7",
+			["index"] = 79,
 		},
+		["MULTIACTIONBAR1BUTTON8"] = {
+			["key1"] = "F8",
+			["index"] = 80,
+		},
+		["MULTIACTIONBAR1BUTTON9"] = {
+			["key1"] = "F9",
+			["index"] = 81,
+		},
+		["MULTIACTIONBAR1BUTTON10"] = {
+			["key1"] = "F10",
+			["index"] = 82,
+		},
+		["MULTIACTIONBAR1BUTTON11"] = {
+			["key1"] = "F11",
+			["index"] = 83,
+		},
+		["MULTIACTIONBAR1BUTTON12"] = {
+			["key1"] = "F12",
+			["index"] = 84,
+		},
+
 		["HEADER_BLANK4"] = {
 			["index"] = 85,
 		},
-		["MULTIACTIONBAR2BUTTON4"] = {
-			["key1"] = "F10",
-			["index"] = 89,
-		},
-		["MULTIACTIONBAR4BUTTON5"] = {
-			["key1"] = "CTRL-F11",
-			["index"] = 116,
-		},
-		["MULTIACTIONBAR4BUTTON4"] = {
-			["key1"] = "CTRL-F10",
-			["index"] = 115,
-		},
+
+		--2
 		["MULTIACTIONBAR2BUTTON1"] = {
-			["key1"] = "F7",
+			--["key1"] = "",
 			["index"] = 86,
 		},
 		["MULTIACTIONBAR2BUTTON2"] = {
-			["key1"] = "F8",
+			--["key1"] = "",
 			["index"] = 87,
 		},
-		["MULTIACTIONBAR1BUTTON4"] = {
-			["key1"] = "F4",
-			["index"] = 76,
+		["MULTIACTIONBAR2BUTTON3"] = {
+			--["key1"] = "",
+			["index"] = 88,
 		},
-		["MULTIACTIONBAR2BUTTON6"] = {
-			["key1"] = "F12",
-			["index"] = 91,
-		},
-		["MULTIACTIONBAR3BUTTON2"] = {
-			["key1"] = "CTRL-F2",
-			["index"] = 100,
-		},
-		["MULTIACTIONBAR4BUTTON6"] = {
-			["key1"] = "CTRL-F12",
-			["index"] = 117,
-		},
-		["MULTIACTIONBAR4BUTTON3"] = {
-			["key1"] = "CTRL-F9",
-			["index"] = 114,
-		},
-		["MULTIACTIONBAR4BUTTON1"] = {
-			["key1"] = "CTRL-F7",
-			["index"] = 112,
-		},
-		["MULTIACTIONBAR3BUTTON4"] = {
-			["key1"] = "CTRL-F4",
-			["index"] = 102,
-		},
-		["MULTIACTIONBAR4BUTTON2"] = {
-			["key1"] = "CTRL-F8",
-			["index"] = 113,
-		},
-		["MULTIACTIONBAR3BUTTON3"] = {
-			["key1"] = "CTRL-F3",
-			["index"] = 101,
-		},
-		["MULTIACTIONBAR1BUTTON3"] = {
-			["key1"] = "F3",
-			["index"] = 75,
+		["MULTIACTIONBAR2BUTTON4"] = {
+			--["key1"] = "",
+			["index"] = 89,
 		},
 		["MULTIACTIONBAR2BUTTON5"] = {
-			["key1"] = "F11",
+			--["key1"] = "",
 			["index"] = 90,
 		},
-		["MULTIACTIONBAR1BUTTON2"] = {
-			["key1"] = "F2",
-			["index"] = 74,
+		["MULTIACTIONBAR2BUTTON6"] = {
+			--["key1"] = "",
+			["index"] = 91,
 		},
-		["MULTIACTIONBAR3BUTTON6"] = {
-			["key1"] = "CTRL-F6",
-			["index"] = 104,
+		["MULTIACTIONBAR2BUTTON7"] = {
+			--["key1"] = "",
+			["index"] = 92,
 		},
-		["MULTIACTIONBAR1BUTTON1"] = {
-			["key1"] = "F1",
-			["index"] = 73,
+		["MULTIACTIONBAR2BUTTON8"] = {
+			--["key1"] = "",
+			["index"] = 93,
 		},
+		["MULTIACTIONBAR2BUTTON9"] = {
+			--["key1"] = "",
+			["index"] = 94,
+		},
+		["MULTIACTIONBAR2BUTTON10"] = {
+			--["key1"] = "",
+			["index"] = 95,
+		},
+		["MULTIACTIONBAR2BUTTON11"] = {
+			--["key1"] = "",
+			["index"] = 96,
+		},
+		["MULTIACTIONBAR2BUTTON12"] = {
+			--["key1"] = "",
+			["index"] = 97,
+		},
+
+		--3
 		["MULTIACTIONBAR3BUTTON1"] = {
-			["key1"] = "CTRL-F1",
+			--["key1"] = "CTRL-F1",
 			["index"] = 99,
 		},
+		["MULTIACTIONBAR3BUTTON2"] = {
+			--["key1"] = "CTRL-F2",
+			["index"] = 100,
+		},
+		["MULTIACTIONBAR3BUTTON3"] = {
+			--["key1"] = "CTRL-F3",
+			["index"] = 101,
+		},
+		["MULTIACTIONBAR3BUTTON4"] = {
+			--["key1"] = "CTRL-F4",
+			["index"] = 102,
+		},
 		["MULTIACTIONBAR3BUTTON5"] = {
-			["key1"] = "CTRL-F5",
+			--["key1"] = "CTRL-F5",
 			["index"] = 103,
 		},
+		["MULTIACTIONBAR3BUTTON6"] = {
+			--["key1"] = "CTRL-F6",
+			["index"] = 104,
+		},
+		["MULTIACTIONBAR3BUTTON7"] = {
+			["index"] = 105,
+		},
+		["MULTIACTIONBAR3BUTTON8"] = {
+			["index"] = 106,
+		},
+		["MULTIACTIONBAR3BUTTON9"] = {
+			["index"] = 107,
+		},
+		["MULTIACTIONBAR3BUTTON10"] = {
+			["index"] = 108,
+		},
+		["MULTIACTIONBAR3BUTTON11"] = {
+			["index"] = 109,
+		},
+		["MULTIACTIONBAR3BUTTON12"] = {
+			["index"] = 110,
+		},
+
+		--4
+		["MULTIACTIONBAR4BUTTON1"] = {
+			--["key1"] = "CTRL-F7",
+			["index"] = 112,
+		},
+		["MULTIACTIONBAR4BUTTON2"] = {
+			--["key1"] = "CTRL-F8",
+			["index"] = 113,
+		},
+		["MULTIACTIONBAR4BUTTON3"] = {
+			--["key1"] = "CTRL-F9",
+			["index"] = 114,
+		},
+		["MULTIACTIONBAR4BUTTON4"] = {
+			--["key1"] = "CTRL-F10",
+			["index"] = 115,
+		},
+		["MULTIACTIONBAR4BUTTON5"] = {
+			--["key1"] = "CTRL-F11",
+			["index"] = 116,
+		},
+		["MULTIACTIONBAR4BUTTON6"] = {
+			--["key1"] = "CTRL-F12",
+			["index"] = 117,
+		},
+		["MULTIACTIONBAR4BUTTON7"] = {
+			["index"] = 118,
+		},
+		["MULTIACTIONBAR4BUTTON8"] = {
+			["index"] = 119,
+		},
+		["MULTIACTIONBAR4BUTTON9"] = {
+			["index"] = 120,
+		},
+		["MULTIACTIONBAR4BUTTON10"] = {
+			["index"] = 121,
+		},
+		["MULTIACTIONBAR4BUTTON11"] = {
+			["index"] = 122,
+		},
+		["MULTIACTIONBAR4BUTTON12"] = {
+			["index"] = 123,
+		},
+
 	},
 	["BINDING_HEADER_MOVEMENT"] = {
 		["SITORSTAND"] = {
@@ -366,7 +520,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 54,
 		},
 		["PREVIOUSACTIONPAGE"] = {
-			["key1"] = "SHIFT-UP",
 			["index"] = 69,
 			["key2"] = "SHIFT-MOUSEWHEELUP",
 		},
@@ -471,7 +624,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 176,
 		},
 		["TOGGLEPETBOOK"] = {
-			["key1"] = "SHIFT-I",
 			["index"] = 173,
 		},
 		["TOGGLESPELLBOOK"] = {
@@ -511,7 +663,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 158,
 		},
 		["TOGGLEBATTLEFIELDMINIMAP"] = {
-			["key1"] = "SHIFT-M",
 			["index"] = 180,
 		},
 		["HEADER_BLANK7"] = {
@@ -574,7 +725,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 129,
 		},
 		["TARGETPARTYPET4"] = {
-			["key1"] = "SHIFT-F5",
 			["index"] = 142,
 		},
 		["TARGETPARTYMEMBER2"] = {
@@ -604,6 +754,7 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 140,
 		},
 		["INTERACTMOUSEOVER"] = {
+			["key1"] = "SHIFT-G",
 			["index"] = 148,
 		},
 		["TARGETPREVIOUSENEMY"] = {
@@ -871,7 +1022,8 @@ if Sku.Loc == "deDE" then
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_swoosh.ogg"] = L["error;sound"].."#"..L["swoosh"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg"] = L["error;sound"].."#"..L["tsching"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3"] = L["error;sound"].."#"..L["silent"],
-
+		["voice"] = L["vocalized"],
+--[[
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\error_Range.mp3"] = L["error;sound"].."#"..L["Range"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\error_Move.mp3"] = L["error;sound"].."#"..L["Move"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_de-de\\error_LOS.mp3"] = L["error;sound"].."#"..L["LOS"],
@@ -893,6 +1045,7 @@ if Sku.Loc == "deDE" then
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Dir.mp3"] = L["error;sound"].."#Hans;"..L["Dir"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Stun.mp3"] = L["error;sound"].."#Hans;"..L["Stun"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_de-de\\error_Inter.mp3"] = L["error;sound"].."#Hans;"..L["Inter"],
+	]]
 	}
 elseif Sku.Loc == "enUS" or Sku.Loc == "enGB"  or Sku.Loc == "enAU" then
 	SkuCore.Errors.Sounds = {
@@ -905,7 +1058,8 @@ elseif Sku.Loc == "enUS" or Sku.Loc == "enGB"  or Sku.Loc == "enAU" then
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_swoosh.ogg"] = L["error;sound"].."#"..L["swoosh"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg"] = L["error;sound"].."#"..L["tsching"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3"] = L["error;sound"].."#"..L["silent"],
-
+		["voice"] = L["vocalized"],
+--[[
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_en-us\\error_Range.mp3"] = L["error;sound"].."#"..L["Range"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_en-us\\error_Move.mp3"] = L["error;sound"].."#"..L["Move"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\marlene_en-us\\error_LOS.mp3"] = L["error;sound"].."#"..L["LOS"],
@@ -927,6 +1081,7 @@ elseif Sku.Loc == "enUS" or Sku.Loc == "enGB"  or Sku.Loc == "enAU" then
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_en-us\\error_Dir.mp3"] = L["error;sound"].."#Hans;"..L["Dir"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_en-us\\error_Stun.mp3"] = L["error;sound"].."#Hans;"..L["Stun"],
 		["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\hans_en-us\\error_Inter.mp3"] = L["error;sound"].."#Hans;"..L["Inter"],
+	]]
 	}	
 end
 
@@ -951,4 +1106,54 @@ SKU_CONSTANTS = {
 		["Dialog"] = L["Dialog"],
 		["Talking Head"] = L["Sku"],
 	},
+}
+
+SkuCore.BackgroundSoundFiles = {
+	["silence.mp3"] = L["Nichts"],
+	["benny_hill.mp3"] = L["Benny Hill"],
+	["chor1.mp3"] = L["Chormusik 1"],
+	["chor2.mp3"] = L["Chormusik 2"],
+	["chor3.mp3"] = L["Chormusik 3"],
+	["chor4.mp3"] = L["Chormusik 4"],
+	["entspannungsmusik.mp3"] = L["Entspannungsmusik"],
+	["gewitter.mp3"] = L["Gewitter"],
+	["nachts_im_wald.mp3"] = L["Nachts im Wald"],
+	["wald.mp3"] = L["Vögel"],
+	["walgesang.mp3"] = L["Walgesang"],
+	["slowreggaet.mp3"] = L["Slow Reggae"],
+	["catpurrwaterdrop.mp3"] = L["purr drop"],
+	["creaking-wood.mp3"] = L["creaking"],
+	["electric-sparks.mp3"] = L["sparks"],
+	["film_running.mp3"] = L["film"],
+	["fly-fishing-reel-running.mp3"] = L["fishing reel"],
+	["nikonf4.mp3"] = L["shutter"],
+	["spinning-reel.mp3"] = L["spinning"],
+	["gear-spinning-loop.mp3"] = L["gear"],
+	["tools-ratchet.mp3"] = L["ratchet"],
+	["typing.mp3"] = L["typing"],
+	["windscreen-wipers.mp3"] = L["wipe"],
+}
+SkuCore.BackgroundSoundFilesLen = {
+	["benny_hill.mp3"] = 238,8,
+	["chor1.mp3"] = 167,75,
+	["chor2.mp3"] = 186,55,
+	["chor3.mp3"] = 62.841541666666664,
+	["chor4.mp3"] = 317,15,
+	["entspannungsmusik.mp3"] = 112,95,
+	["gewitter.mp3"] = 125,91,
+	["nachts_im_wald.mp3"] = 100,41,
+	["wald.mp3"] = 59,13,
+	["walgesang.mp3"] = 141,37,
+	["slowreggaet.mp3"] = 152,36,
+	["catpurrwaterdrop.mp3"] = 133.034,
+	["creaking-wood.mp3"] = 15.677,
+	["electric-sparks.mp3"] = 11.424,
+	["film_running.mp3"] = 16.418,
+	["fly-fishing-reel-running.mp3"] = 8.930,
+	["nikonf4.mp3"] = 18.775,
+	["spinning-reel.mp3"] = 6.013,
+	["gear-spinning-loop.mp3"] = 12.266,
+	["tools-ratchet.mp3"] = 16.187,
+	["typing.mp3"] = 16.861,
+	["windscreen-wipers.mp3"] = 32.738,
 }
