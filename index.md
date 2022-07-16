@@ -160,7 +160,7 @@ Thus downloading wow_menu r2.11 is mandatory.
 - changed Show routes on minmap from CTRL + SHIFT + L to ALT + L
 - changed Show sku minmap from CTRL + SHIFT + K to ALT + K
 
-## Changes in Sku Script (wow_menu) r2.11
+## Changes in Sku Script (wow_menu) r2.12
 - Numpad 9 has been changed. It now is turning your character towards the current beacon.<br>
 The I key is an alternative key bind for numpad 9.
 - Control + Shift + I / O / P have been removed as alternative keys for numpad 7, 8, 9.
