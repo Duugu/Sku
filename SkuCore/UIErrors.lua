@@ -9,14 +9,25 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 function SkuCore:UIErrorsOnInitialize()
    SkuCore:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
    SkuCore:RegisterEvent("UI_ERROR_MESSAGE")
+   SkuCore:RegisterEvent("UI_INFO_MESSAGE")
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:UI_INFO_MESSAGE(aEvent, tMessage, tMessage1)
+   SkuCore:UIErrorEventHandler(aEvent, tMessage, tMessage1)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:UI_ERROR_MESSAGE(aEvent, tMessage, tMessage1)
+   SkuCore:UIErrorEventHandler(aEvent, tMessage, tMessage1)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tPrevError
 local tPrevErrorLimit = 1
 local tPrevErrorTime = time()
-function SkuCore:UI_ERROR_MESSAGE(aEvent, tMessage, tMessage1)
-   --https://wowwiki-archive.fandom.com/wiki/WoW_Constants/Errors#ERR_SPELL
+function SkuCore:UIErrorEventHandler(aEvent, tMessage, tMessage1)
+      --https://wowwiki-archive.fandom.com/wiki/WoW_Constants/Errors#ERR_SPELL
 
    local tSoundChannel = SkuOptions.db.profile.SkuCore.UIErrors.ErrorSoundChannel or "Talking Head"
    local tOff = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3"
@@ -31,208 +42,98 @@ function SkuCore:UI_ERROR_MESSAGE(aEvent, tMessage, tMessage1)
 
    tMessage = tMessage
 
-   --OutOfRange
-   if (tMessage == ERR_BADATTACKPOS  and SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange, tSoundChannel, tMessage)
-      tIsBase = true
-   end
-   if (tMessage == ERR_SPELL_OUT_OF_RANGE and SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange, tSoundChannel, tMessage)
-      tIsBase = true
-   end
-   if (tMessage == ERR_OUT_OF_RANGE and SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange, tSoundChannel, tMessage)
-   end
-   if (tMessage == SPELL_FAILED_TOO_CLOSE and SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange, tSoundChannel, tMessage)
+   --OutOfRangeMelee
+   if (tMessage == ERR_BADATTACKPOS or tMessage == ERR_OUT_OF_RANGE) then
+      if SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeMelee ~= tOff then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeMelee, tSoundChannel, L["Range"])
+      end
       tIsBase = true
    end
 
+   --OutOfRangeCast
+   if (tMessage == ERR_SPELL_OUT_OF_RANGE or tMessage == SPELL_FAILED_TOO_CLOSE) then
+      if SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeCast ~= tOff then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeCast, tSoundChannel, L["Range"])
+      end
+      tIsBase = true
+   end
+   
    --Moving
-   if (tMessage == SPELL_FAILED_MOVING and SkuOptions.db.profile[MODULE_NAME].UIErrors.Moving ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.Moving, tSoundChannel, tMessage)
+   if (tMessage == SPELL_FAILED_MOVING) then
+      if SkuOptions.db.profile[MODULE_NAME].UIErrors.Moving ~= tOff then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.Moving, tSoundChannel, L["Move"])
+      end
       tIsBase = true
    end
 
    --NoLoS
-   if (SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS ~= tOff) then
-      if (tMessage == SPELL_FAILED_LINE_OF_SIGHT) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS, tSoundChannel, tMessage)
-         tIsBase = true
+   if (tMessage == SPELL_FAILED_LINE_OF_SIGHT or tMessage == SPELL_FAILED_VISION_OBSCURED) then
+      if (SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS ~= tOff) then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS, tSoundChannel, L["LOS"])
       end
-      if (tMessage == SPELL_FAILED_VISION_OBSCURED) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NoLoS, tSoundChannel, tMessage)
-         tIsBase = true
-      end
+      tIsBase = true
    end
 
    --BadTarget
-   if (SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget ~= tOff) then
-      if (tMessage == SPELL_FAILED_BAD_TARGETS) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget, tSoundChannel, tMessage)
-         tIsBase = true
+   if (tMessage == SPELL_FAILED_BAD_TARGETS or tMessage == ERR_INVALID_ATTACK_TARGET or tMessage == SPELL_FAILED_TARGETS_DEAD or tMessage == SPELL_FAILED_BAD_IMPLICIT_TARGETS or tMessage == ERR_NO_ATTACK_TARGET) then
+      if (SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget ~= tOff) then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget, tSoundChannel, L["Target"])
       end
-      if (tMessage == ERR_INVALID_ATTACK_TARGET) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == SPELL_FAILED_TARGETS_DEAD) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.BadTarget, tSoundChannel, tMessage)
-         tIsBase = true
-      end
+      tIsBase = true
    end
 
    --InCombat
    if (tMessage == SPELL_FAILED_AFFECTING_COMBAT and SkuOptions.db.profile[MODULE_NAME].UIErrors.InCombat ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.InCombat, tSoundChannel, tMessage)
+      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.InCombat, tSoundChannel, L["IC"])
       tIsBase = true
    end
 
    --NoMana
-   if (tMessage == ERR_OUT_OF_MANA and SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana, tSoundChannel, tMessage)
-      tIsBase = true
-   end
-   if (tMessage == ERR_OUT_OF_RAGE and SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana, tSoundChannel, tMessage)
-      tIsBase = true
-   end
-   if (tMessage == ERR_OUT_OF_ENERGY and SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana ~= tOff) then
-      SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana, tSoundChannel, tMessage)
+   if (tMessage == ERR_OUT_OF_MANA or tMessage == ERR_OUT_OF_RAGE or tMessage == ERR_OUT_OF_ENERGY) then
+      if SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana ~= tOff then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NoMana, tSoundChannel, L["Res"])
+      end
       tIsBase = true
    end
 
    --ObjectBusy
-   if (SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy ~= tOff) then
-      if (tMessage == ERR_OBJECT_IS_BUSY) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy, tSoundChannel, tMessage)
-         tIsBase = true
+
+   if (tMessage == ERR_OBJECT_IS_BUSY or tMessage == SPELL_FAILED_CHEST_IN_USE or tMessage == ERR_CHEST_IN_USE or tMessage == ERR_INV_FULL) then
+      if (SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy ~= tOff) then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy, tSoundChannel, L["Busy"])
       end
-      if (tMessage == SPELL_FAILED_CHEST_IN_USE) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == ERR_CHEST_IN_USE) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == ERR_INV_FULL) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.ObjectBusy, tSoundChannel, tMessage)
-         tIsBase = true
-      end
+      tIsBase = true
    end
 
    --NotFacing
-   if (SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing ~= tOff) then
-      if (tMessage == ERR_BADATTACKFACING) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing, tSoundChannel, tMessage)
-         tIsBase = true
+
+   if (tMessage == ERR_BADATTACKFACING or tMessage == SPELL_FAILED_UNIT_NOT_INFRONT or tMessage == ERR_BADATTACKFACING or tMessage == SPELL_FAILED_NOT_BEHIND or tMessage == SPELL_FAILED_UNIT_NOT_BEHIND) then
+      if (SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing ~= tOff) then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing, tSoundChannel, L["Dir"])
       end
-      if (tMessage == SPELL_FAILED_UNIT_NOT_INFRONT) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == ERR_BADATTACKFACING) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == SPELL_FAILED_NOT_BEHIND) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == SPELL_FAILED_UNIT_NOT_BEHIND) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.NotFacing, tSoundChannel, tMessage)
-         tIsBase = true
-      end
+      tIsBase = true
    end
 
    --CrowdControlled
-   if (SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled ~= tOff) then
-      if (tMessage == SPELL_FAILED_SILENCED) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
+
+   if (tMessage == SPELL_FAILED_SILENCED or tMessage == SPELL_FAILED_STUNNED or tMessage == ERR_ATTACK_PACIFIED or tMessage == ERR_ATTACK_CHARMED or tMessage == ERR_ATTACK_CONFUSED or tMessage == ERR_ATTACK_FLEEING or string.find(tMessage, string.sub(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, 1, string.len(ERR_ATTACK_PREVENTED_BY_MECHANIC_S) - 5))) then
+      if (SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled ~= tOff) then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, L["Stun"])
       end
-      if (tMessage == SPELL_FAILED_STUNNED) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == ERR_ATTACK_PACIFIED) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == ERR_ATTACK_CHARMED) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == ERR_ATTACK_CONFUSED) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == ERR_ATTACK_FLEEING) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_BANISH))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_CHARM))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_CONFUSE))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_CYCLONE))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_FEAR))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_HORROR))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_INCAPACITATE))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_PACIFY))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_PACIFYSILENCE))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_POLYMORPH))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_POSSESS))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_SAP))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_SLEEP))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_STUN))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
-      if (tMessage == string.format(ERR_ATTACK_PREVENTED_BY_MECHANIC_S, string.lower(LOSS_OF_CONTROL_DISPLAY_TURN_UNDEAD))) then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled, tSoundChannel, tMessage)
-         tIsBase = true
-      end
+      tIsBase = true
    end
+
+   --cd
+   if (tMessage == ERR_SPELL_COOLDOWN or tMessage == ERR_ABILITY_COOLDOWN) then
+      if (SkuOptions.db.profile[MODULE_NAME].UIErrors.CrowdControlled ~= tOff) then
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.Cooldown, tSoundChannel, L["cooldown"])
+      end
+      tIsBase = true
+   end
+   
+   --[ERR_SPELL_COOLDOWN] = true,
+	--[ERR_ABILITY_COOLDOWN] = true,
+
 
    if tMessage == 50 then --"interrupted"; unknown constant
       if SkuCore:UNIT_SPELLCAST_INTERRUPTED("UNIT_SPELLCAST_INTERRUPTED", "player") then
@@ -255,7 +156,7 @@ function SkuCore:UNIT_SPELLCAST_INTERRUPTED(aEvent, aUnit)
    --Interrupted
    if (SkuOptions.db.profile[MODULE_NAME].UIErrors.Interrupted ~= tOff) then
       if (aUnit == "player") then
-         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.Interrupted, tSoundChannel, tMessage)
+         SkuCore:OutputError(SkuOptions.db.profile[MODULE_NAME].UIErrors.Interrupted, tSoundChannel, L["Inter"])
          return true
       end
    end
@@ -264,7 +165,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OutputError(aSound, aChannel, aMessage)
-   dprint(aSound, aChannel, aMessage)
+   --print(aSound, aChannel, aMessage)
 
    if aSound and aSound ~= "voice" then
       if tPrevError == aSound and (time() - tPrevErrorTime < tPrevErrorLimit) then
@@ -276,6 +177,6 @@ function SkuCore:OutputError(aSound, aChannel, aMessage)
       tPrevError = aSound
       tPrevErrorTime = time()
    else
-      SkuOptions.Voice:OutputStringBTtts(aMessage, true, false, 0.8, nil, nil, nil, 1)
+      SkuOptions.Voice:OutputStringBTtts(aMessage, false, false, 0.8, nil, nil, nil, 1, nil, nil, true)
    end
 end

@@ -66,13 +66,16 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GameWorldObjectsCenterMouseCursor(aPos)
+   dprint("GameWorldObjectsCenterMouseCursor", aPos)
    SetCVar("CursorCenteredYPos", aPos)
    SetCVar("CursorFreelookCentering", 1)
    SetCVar("CursorStickyCentering", 1)
    MouselookStart()
-   MouselookStop()
-   SetCVar("CursorFreelookCentering", 0)
-   SetCVar("CursorStickyCentering", 0)
+   C_Timer.After(0.1, function() 
+      MouselookStop()
+      SetCVar("CursorFreelookCentering", 0)
+      SetCVar("CursorStickyCentering", 0)
+   end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -138,8 +141,11 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function GameWorldObjectsVoiceOutput(aText, aSound)
+   dprint("GameWorldObjectsVoiceOutput", aText, "------",  aSound)
    SkuOptions.Voice:OutputStringBTtts(aText, true, false, 0.2, nil, nil, nil, 4)
-   SkuOptions.Voice:OutputString(aSound, false, false, 0.2)
+   if aSound then
+      SkuOptions.Voice:OutputString(aSound, false, false, 0.2)
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -160,15 +166,24 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
    aTextLeft1 = aTextLeft1 or ""
    aTextLeft2 = aTextLeft2 or ""
    aTextLeft3 = aTextLeft3 or ""
-   local tId = UnitGUID("mouseover") or "NoId"
 
+   local tOutputText = aTextLeft1
+   if aTextLeft2 ~= "nil" then
+      tOutputText = tOutputText..", "..aTextLeft2
+   end
+   if aTextLeft3 ~= "nil" then
+      tOutputText = tOutputText..", "..aTextLeft3
+   end
+
+
+   local tId = UnitGUID("mouseover") or "NoId"
    if not SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] then
       local taTextLeft1InCreatures
       local function taTextLeft1InCreaturesCheck()
          if not taTextLeft1InCreatures then
             for i, v in pairs(SkuDB.NpcData.Names[Sku.L["locale"]]) do
                if v[1] == aTextLeft1 then
-                  GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+                  GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                   return true
                end
             end
@@ -185,7 +200,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
                SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-               GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+               GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
          end
@@ -201,7 +216,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
                SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-               GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+               GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
          end
@@ -216,7 +231,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
                SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-               GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+               GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
          end
@@ -232,7 +247,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
                SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-               GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+               GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
          end
@@ -247,7 +262,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             taTextLeft1InCreatures = taTextLeft1InCreaturesCheck()
             if taTextLeft1InCreatures then
                SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-               GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+               GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
          end
@@ -292,7 +307,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
                   local tQuestObjects = SkuQuest:GetAllQuestObjects()
                   if tQuestObjects[aTextLeft1] then
                      SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-                     GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+                     GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                      return true
                   end
                end
@@ -311,7 +326,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
                   if SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]] == aTextLeft1 then
                      if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
                         SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-                        GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+                        GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                         return true
                      end
                   end
@@ -331,7 +346,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
                   if SkuCore.RessourceTypes.mining[x][Sku.L["locale"]] == aTextLeft1 then
                      if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x] == true then
                         SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-                        GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+                        GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                         return true
                      end
                   end
@@ -348,7 +363,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1] = aTextLeft1
             SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-            GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+            GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
             return true
          end
       end
@@ -361,7 +376,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             taTextLeft1InObjects = taTextLeft1InObjectsCheck()
             if taTextLeft1InObjects then
                SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-               GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+               GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
          end
@@ -374,7 +389,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             taTextLeft1InObjects = taTextLeft1InObjectsCheck()
             if taTextLeft1InObjects then
                SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-               GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+               GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                return true
             end
          end
@@ -382,7 +397,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
 
       if tFind["Any"] then
          SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
-         GameWorldObjectsVoiceOutput(aTextLeft1..", "..aTextLeft2..", "..aTextLeft3, tSoundFile)
+         GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
          return true
       end
 
@@ -391,6 +406,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GameWorldObjectsScan(aContinue, aFindList, aHStepSizeDeg, aHStepsMax, aVMoveSpeed, aVStepsMax, aCallback, aHStart)
+   dprint("GameWorldObjectsScan", aContinue, aFindList, aHStepSizeDeg, aHStepsMax, aVMoveSpeed, aVStepsMax, aCallback, aHStart)
    local tFrame = _G["SkuCoreGameWorldObjectsScanTicker"] or CreateFrame("Frame", "SkuCoreGameWorldObjectsScanTicker", _G["UIParent"])
    tFrame:SetSize(1, 1)
    tFrame:SetPoint("TOPLEFT", _G["UIParent"], "TOPLEFT", 0, 0)

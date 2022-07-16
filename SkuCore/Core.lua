@@ -1115,6 +1115,10 @@ function SkuCore:OnEnable()
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
 		dprint("SkuCoreControlOption1", self, aKey, aB)
 
+		if SkuCore.IsMMScanning == true then
+			return
+		end
+
 		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_PANICMODE"].key then
 			SkuCore:PanicModeStart()
 		end
@@ -1178,7 +1182,7 @@ function SkuCore:OnEnable()
 		end
 
 
-		if SkuCore.inCombat ~= true then
+		if SkuCore.inCombat ~= true and (_G["SkuCoreGameWorldObjectsScanTicker"] == nil or _G["SkuCoreGameWorldObjectsScanTicker"].isScanningActive ~= true or _G["SkuCoreGameWorldObjectsScanTicker"].isScanningPaused == true) then
 			if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key then
 				SkuCore:MinimapScan(50) --120
 			end

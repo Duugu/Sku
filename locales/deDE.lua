@@ -1503,3 +1503,6 @@ L["scanning background sound"] = "scan Hintergrund Audio"
 L["scan accuracy"] = "scan genauigkeit"
 
 L["other"] = "andere"
+
+L["out of range melee"]  = "Nicht in nahkampf Reichweite" --
+L["out of range cast"]  = "Nicht in zauber Reichweite" --

@@ -250,17 +250,30 @@ SkuCore.options = {
 						return SkuOptions.db.profile[MODULE_NAME].UIErrors.ErrorSoundChannel
 					end
 				},
-				OutOfRange={
-					name = L["out of range"],
+				OutOfRangeMelee={
+					name = L["out of range melee"],
 					order = 2,
 					desc = "",
 					type = "select",
 					values = SkuCore.Errors.Sounds,
 					set = function(info,val)
-						SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange = val
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeMelee = val
 					end,
 					get = function(info)
-						return SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRange
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeMelee
+					end
+				},
+				OutOfRangeCast={
+					name = L["out of range cast"],
+					order = 2,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeCast = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.OutOfRangeCast
 					end
 				},
 				Moving={
@@ -393,7 +406,20 @@ SkuCore.options = {
 						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Other
 					end
 				},
-
+				Cooldown={
+					name = L["cooldown"],
+					order = 3,
+					desc = "",
+					type = "select",
+					values = SkuCore.Errors.Sounds,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].UIErrors.Cooldown = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].UIErrors.Cooldown
+					end
+				},				
+				
 			},
 		},
 	},
@@ -457,10 +483,11 @@ SkuCore.defaults = {
 	},
 	UIErrors = {
 		ErrorSoundChannel = "Talking Head",
-		OutOfRange = "voice",
+		OutOfRangeMelee = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
+		OutOfRangeCast = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
 		Moving = "voice",
 		NoLoS = "voice",
-		BadTarget = "voice",
+		BadTarget = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
 		InCombat = "voice",
 		NoMana = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
 		ObjectBusy = "voice",
@@ -468,6 +495,7 @@ SkuCore.defaults = {
 		CrowdControlled = "voice",
 		Interrupted = "voice",
 		Other = "voice",
+		Cooldown  = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
 	},
 }
 
@@ -580,10 +608,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function BindingHelper(aCurrentMenuEntry, aType, aButtonId, aParentEntry, aActionBarName, aBooktypeOrObjId)
 	SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2)						
-	local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
+	local f = _G["SkuCoreBindControlFrame"] or CreateFrame("Button", "SkuCoreBindControlFrame", UIParent, "UIPanelButtonTemplate")
 	f.menuTarget = aCurrentMenuEntry
 	f:SetSize(80, 22)
-	f:SetText("SkuCoreBindTest")
+	f:SetText("SkuCoreBindControlFrame")
 	f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 	f:SetPoint("CENTER")
 	f:SetScript("OnClick", function(self, aKey, aB)
@@ -619,7 +647,6 @@ local function BindingHelper(aCurrentMenuEntry, aType, aButtonId, aParentEntry, 
 				self.menuTarget.name = L["Button"].." "..aButtonId..";"..ButtonContentNameHelper("pet", aBooktypeOrObjId, subType, aActionBarName, aBooktypeOrObjId)
 			end
 
-			print(self.menuTarget.name)
 			_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "RIGHT")
 			_G["OnSkuOptionsMainOption1"]:GetScript("OnClick")(_G["OnSkuOptionsMainOption1"], "LEFT")
 			SkuOptions.Voice:OutputStringBTtts(L["New key"]..";"..aKey, true, true, 0.2)						
@@ -628,14 +655,14 @@ local function BindingHelper(aCurrentMenuEntry, aType, aButtonId, aParentEntry, 
 		end
 		ClearOverrideBindings(self)
 	end)
-	SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
+	SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 
 	for i, v in pairs(_G) do 
 		if string.find(i, "KEY_") == 1 then 
 			if not string.find(i, "ESC") then
 				--dprint(i, v, string.find(i, "KEY_"), string.sub(i, 5))
 				for x = 1, #tModifierKeys do
-					SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
+					SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
 				end
 			end
 		end 
@@ -643,12 +670,12 @@ local function BindingHelper(aCurrentMenuEntry, aType, aButtonId, aParentEntry, 
 
 	for x = 1, #tStandardChars do
 		for y = 1, #tModifierKeys do
-			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
+			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
 		end
 	end
 	for x = 1, #tStandardNumbers do
 		for y = 1, #tModifierKeys do
-			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
+			SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
 		end
 	end
 end
@@ -1566,7 +1593,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 											C_Timer.After(0.001, function()
 												SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
 
-												local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
+												local f = _G["SkuCoreBindControlFrame"] or CreateFrame("Button", "SkuCoreBindControlFrame", UIParent, "UIPanelButtonTemplate")
 												f.menuTarget = self
 												f.command = self.command
 												f.category = self.category
@@ -1574,7 +1601,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 												f.prevKey = nil
 							
 												f:SetSize(80, 22)
-												f:SetText("SkuCoreBindTest")
+												f:SetText("SkuCoreBindControlFrame")
 												f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 												f:SetPoint("CENTER")
 												f:SetScript("OnClick", function(self, aKey, aB)
@@ -1641,13 +1668,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 													ClearOverrideBindings(self)
 													SkuOptions.bindingMode = nil
 												end)
-												SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
+												SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 							
 												for i, v in pairs(_G) do 
 													if string.find(i, "KEY_") == 1 then 
 														if not string.find(i, "ESC") then
 															for x = 1, #tModifierKeys do
-																SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
+																SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
 															end
 														end
 													end 
@@ -1655,12 +1682,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 							
 												for x = 1, #tStandardChars do
 													for y = 1, #tModifierKeys do
-														SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
+														SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
 													end
 												end
 												for x = 1, #tStandardNumbers do
 													for y = 1, #tModifierKeys do
-														SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
+														SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
 													end
 												end
 											end)											
@@ -1745,22 +1772,21 @@ function SkuCore:MenuBuilder(aParentEntry)
 						C_Timer.After(0.001, function()
 							SkuOptions.Voice:OutputStringBTtts(L["Press new key or Escape to cancel"], true, true, 0.2, true, nil, nil, 2)
 
-							local f = _G["SkuCoreBindTest"] or CreateFrame("Button", "SkuCoreBindTest", UIParent, "UIPanelButtonTemplate")
+							local f = _G["SkuCoreBindControlFrame"] or CreateFrame("Button", "SkuCoreBindControlFrame", UIParent, "UIPanelButtonTemplate")
 							f.menuTarget = self
 							f.bindingConst = self.bindingConst
 							f.prevKey = nil
 		
 							f:SetSize(80, 22)
-							f:SetText("SkuCoreBindTest")
+							f:SetText("SkuCoreBindControlFrame")
 							f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 							f:SetPoint("CENTER")
 							f:SetScript("OnClick", function(self, aKey, aB)
-								print("SkuCoreBindTest OnClick", aKey, aB)
+								dprint("SkuCoreBindControlFrame OnClick", aKey, aB)
 								if aKey ~= "ESCAPE" then
 									if not self.bindingConst or not self.menuTarget then return end
 									for z = 1, #tBlockedKeysParts do
 										if string.find(aKey, tBlockedKeysParts[z]) or string.find(string.lower(aKey), string.lower(tBlockedKeysParts[z])) then 
-											print("Ungültig", tBlockedKeysParts[z])
 											SkuOptions.Voice:OutputStringBTtts(L["Ungültig. Andere Taste drücken."], true, true, 0.2, true, nil, nil, 2)
 											self.prevKey = nil
 											return 
@@ -1778,7 +1804,6 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 									local tCommand = SkuCore:CheckBound(aKey)
 									local bindingConst = SkuOptions:SkuKeyBindsCheckBound(aKey)
-									print("tCommand, bindingConst", tCommand, bindingConst)
 									if tCommand or bindingConst then
 										if not self.prevKey or self.prevKey ~= aKey then
 											self.prevKey = aKey
@@ -1821,13 +1846,13 @@ function SkuCore:MenuBuilder(aParentEntry)
 								ClearOverrideBindings(self)
 								SkuOptions.bindingMode = nil
 							end)
-							SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindTest", "ESCAPE")
+							SetOverrideBindingClick(f, true, "ESCAPE", "SkuCoreBindControlFrame", "ESCAPE")
 		
 							for i, v in pairs(_G) do 
 								if string.find(i, "KEY_") == 1 then 
 									if not string.find(i, "ESC") then
 										for x = 1, #tModifierKeys do
-											SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindTest", tModifierKeys[x]..string.sub(i, 5))
+											SetOverrideBindingClick(f, true, tModifierKeys[x]..string.sub(i, 5), "SkuCoreBindControlFrame", tModifierKeys[x]..string.sub(i, 5))
 										end
 									end
 								end 
@@ -1835,12 +1860,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 		
 							for x = 1, #tStandardChars do
 								for y = 1, #tModifierKeys do
-									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardChars[x])
+									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardChars[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardChars[x])
 								end
 							end
 							for x = 1, #tStandardNumbers do
 								for y = 1, #tModifierKeys do
-									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindTest", tModifierKeys[y]..tStandardNumbers[x])
+									SetOverrideBindingClick(f, true, tModifierKeys[y]..tStandardNumbers[x], "SkuCoreBindControlFrame", tModifierKeys[y]..tStandardNumbers[x])
 								end
 							end
 						end)											

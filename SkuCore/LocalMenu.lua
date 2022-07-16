@@ -247,7 +247,7 @@ function SkuCore:Build_BagnonGuildFrame(aParentChilds)
 				childs = {},
 				onActionFunc = function()
 					SetCurrentGuildBankTab(x) 
-					print(x)
+					--print(x)
 				end,
 				click = true,            
 			}   

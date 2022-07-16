@@ -3,11 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
-Änderungen Sku r28
+Änderungen in Sku r28
 
 	ACHTUNG!
 		Du brauchst das neue Skript (wow_menu) Version 2.11 für diese Version. Ältere Skripte kannst du mit dieser Sku-Version nicht verwenden.
-		Daher ist der Download von wow_menu r2.11 zwingend erforderlich.
+		Daher ist der zusätzliche Download von wow_menu r2.11 zwingend erforderlich.
 
 	Optionen
 		- Die Standardtastenbelegung zum Stoppen der TTS-Ausgabe wurde von der rechten SHIFT-Taste auf Steuerung + V geändert.
@@ -28,12 +28,10 @@
 			Du solltest diese Funktion mit Bedacht einsetzen. Für sehende Spieler kann die Bewegung in manchen Szenarien wie ein Bot aussehen. Vor allem, wenn die Wegpunkte sehr nahe beieinander liegen. Ich würde vorschlagen, dass du es vermeidest, in überfüllten Gebieten mit vielen Spielern zu rennen und zu spammen. Es ist kein Problem, anzuhalten und sich mit I zu drehen. Abgesehen davon, dass das Laufen und Spammen für sehende Spieler seltsam aussehen könnte, funktioniert es an Orten wie Städten nicht so gut, da die Wegpunkte dort normalerweise recht nah beieinander liegen.
 
 	Core
-		- Änderungen an den Fehlerbenachrichtigungen:
-			- Die Fehlerbenachrichtigungen (Core > Optionen > Fehlermeldungen) sind jetzt standardmäßig für neue Spieler/Profile aktiviert.
+		- Änderungen an den Fehlerbenachrichtigungen (unter Core > Optionen > Fehlermeldungen):
+			- Mehrer Fehlerbenachrichtigungen sind jetzt standardmäßig aktiviert.
 			- Die Ausgabe der Fehlermeldungen erfolgt jetzt mit der Blizzard TTS-Stimme, wenn eine Ausgabe auf "gesprochen" eingestellt ist.
-			- Der Liste der Fehlermeldungen wurde ein neuer Fehlertyp "Andere" hinzugefügt.
-				"Andere" Fehler sind alle Fehler, die nicht explizit in der Liste der konfigurierbaren Fehler aufgeführt sind.
-				Der Fehlertyp "Andere" ist standardmäßig auf "Gesprochen" eingestellt.
+			- Der Liste der Fehlermeldungen wurde ein neuer Fehlertyp "Andere" hinzugefügt. "Andere" Fehler sind alle Fehler, die nicht explizit in der Liste aufgeführt sind.
 		- Die Ressourcenscan-Funktion für Kräuter und Bergbauknoten wurde verbessert und einige Fehler wurden behoben:
 			- Es gibt immer noch zwei Scan-Typen: 
 				STRG + SHIFT + R: führt einen Scan im Umkreis von 50 Metern um deine Position aus
@@ -45,14 +43,13 @@
 				Als Faustregel gilt: Je näher eine Ressource ist, desto ungenauer sind die Richtungs-, Entfernungs- und Positionsangaben.
 				Die Genauigkeit dieser Informationen hängt auch stark von der Scangeschwindigkeit ab. Je schneller sie ist, desto unzuverlässiger sind die Angaben zu Richtung, Entfernung und Position.
 				Es gibt eine Einstellung, mit der du die Geschwindigkeit des Ressourcenscans anpassen kannst: Core > Optionen > Ressourcenscan > Genauigkeit. Der Standardwert ist 3, was einen guten Kompromiss zwischen Geschwindigkeit und Genauigkeit darstellt. Du kannst die Einstellung von 1 (sehr genau, aber sehr langsam) bis 5 (ziemlich ungenau, aber sehr schnell) anpassen, wenn du genauere oder schnellere Ressourcen-Scans haben möchtest.
-
 		- Neue Funktion: Es gibt jetzt Optionen zur Anpassung der Sku-Addon-Tastenbelegungen: Core > Sku Tastenbelegungen
 		- Sku-Addon-Tastenbelegungen sind alle Tastenbelegungen, die speziell für das Sku-Addon selbst gelten. Zum Beispiel Shift + F1 zum Öffnen des Menüs. 
 			Die Sku-Tastenbelegungen werden in den Sku-Profilen gespeichert. So haben alle Charaktere mit demselben Profil dieselben Sku-Tastenbelegungen.
 		- Shift + G für "Mit Mouseover interagieren" wurde zu den Standardtastenbelegungen im Spiel hinzugefügt. Das brauchst du für das neue Scan Plündern/Interagieren-Feature unten.
 		- Neue Funktion: Scannen und Interagieren mit Mouseover für die Interaktion mit Objekten wie Briefkästen, Objekten in der Spielwelt, Angeln, Leichen plündern und mehr.
 			Von nun an verwendest du eine Scan-Funktion und Shift + G für "Mit Mouseover interagieren", um Objekte in der Spielwelt zu finden und zu benutzen. Die alte Funktion zum Drehen und Drücken der Zifferntasten 7-9 brauchst du nicht mehr.
-			
+		
 			Wie man es benutzt:
 				Zuallererst: Wenn du das noch nicht getan hast, gehe zu Core > Spiel Tastenbelegung > Taste zuweisen > Zielfunktionen und richte eine Tastenkombination für "Mit Mouseover interagieren" ein. (Die Standardeinstellung ist Shift + G, aber du kannst auch eine andere Tastenkombination deiner Wahl verwenden).
 				Beim Scannen dreht sich deine Kamera (und damit der Mauszeiger) automatisch sehr schnell um dich herum.

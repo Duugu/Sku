@@ -6,11 +6,11 @@ SkuOptions = SkuOptions or LibStub("AceAddon-3.0"):NewAddon("SkuOptions", "AceCo
 
 SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_PANICMODE"] = {key = "CTRL-SHIFT-Y", object = "SkuCoreControlOption1", script = "OnHide",},
-   ["SKU_KEY_MMSCANWIDE"] = {key = "CTRL-SHIFT-F", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_MMSCANNARROW"] = {key = "CTRL-SHIFT-R", object = "SkuCoreControlOption3", script = "OnHide",},
+   ["SKU_KEY_MMSCANWIDE"] = {key = "CTRL-SHIFT-F", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_MMSCANNARROW"] = {key = "CTRL-SHIFT-R", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_STARTRRFOLLOW"] = {key = "CTRL-SHIFT-Z", object = "SkuNav", func = "CreateSkuNavMain",},
-   ["SKU_KEY_SKUMMOPEN"] = {key = "CTRL-SHIFT-K", object = "SkuNav", func = "CreateSkuNavMain",},
-   ["SKU_KEY_SKURTMMDISPLAY"] = {key = "CTRL-SHIFT-L", object = "SkuNav", func = "CreateSkuNavMain",},
+   ["SKU_KEY_SKUMMOPEN"] = {key = "ALT-K", object = "SkuNav", func = "CreateSkuNavMain",},
+   ["SKU_KEY_SKURTMMDISPLAY"] = {key = "ALT-L", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_MOVETONEXTWP"] = {key = "CTRL-SHIFT-W", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_MOVETOPREVWP"] = {key = "CTRL-SHIFT-S", object = "SkuNav", func = "CreateSkuNavMain",},
    ["SKU_KEY_ADDLARGEWP"] = {key = "ALT-O", object = "SkuNav", func = "CreateSkuNavMain",},
@@ -45,15 +45,15 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_CHATOPEN"] = {key = "SHIFT-F2", object = "SkuChat", func = "OnEnable",},
    ["SKU_KEY_TOGGLEREACHRANGE"] = {key = "CTRL-SHIFT-Q", object = "SkuNav", func = "CreateSkuNavMain",},
 
-   ["SKU_KEY_SCANCONTINUE"] = {key = "SHIFT-L", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_SCAN1"] = {key = "SHIFT-U", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_SCAN2"] = {key = "SHIFT-I", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_SCAN3"] = {key = "SHIFT-O", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_SCAN4"] = {key = "SHIFT-P", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_SCAN5"] = {key = "CTRL-SHIFT-U", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_SCAN6"] = {key = "CTRL-SHIFT-O", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_SCAN7"] = {key = "CTRL-SHIFT-P", object = "SkuCoreControlOption2", script = "OnHide",},
-   ["SKU_KEY_SCAN8"] = {key = "CTRL-SHIFT-I", object = "SkuCoreControlOption2", script = "OnHide",},
+   ["SKU_KEY_SCANCONTINUE"] = {key = "SHIFT-L", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN1"] = {key = "SHIFT-U", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN2"] = {key = "SHIFT-I", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN3"] = {key = "SHIFT-O", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN4"] = {key = "SHIFT-P", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN5"] = {key = "CTRL-SHIFT-U", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN6"] = {key = "CTRL-SHIFT-O", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN7"] = {key = "CTRL-SHIFT-P", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN8"] = {key = "CTRL-SHIFT-I", object = "SkuCoreControlOption1", script = "OnHide",},
 
    ["SKU_KEY_TURNTOBEACON"] = {key = "I", object = "SkuNav", func = "CreateSkuNavMain",},
 
@@ -122,8 +122,8 @@ function SkuOptions:SkuKeyBindsUpdate(aInitializeFlag)
    if not aInitializeFlag then
       local tDone = {}   
       for i, v in pairs(SkuOptions.skuDefaultKeyBindings) do
-         if not tDone[v.object..(v.func or v.script)] then
-            tDone[v.object..(v.func or v.script)] = true
+         if not tDone[i..v.object..(v.func or v.script)] then
+            tDone[i..v.object..(v.func or v.script)] = true
             if _G[v.object] then
                if v.func then
                   if _G[v.object][v.func] then
@@ -141,7 +141,7 @@ function SkuOptions:SkuKeyBindsUpdate(aInitializeFlag)
                   end
                end
             else
-               dprint("nil object", v.object)
+               dprint("  ", "nil object", v.object)
             end
          end
       end

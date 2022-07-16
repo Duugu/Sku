@@ -6,7 +6,7 @@ SkuCore.ScanTypes = {
 	[1] = {
 		name = L["180 front"],
 		desc = L["180 degrees 5-35 meters 10 seconds"],
-		hStepSizeDeg = 12,
+		hStepSizeDeg = 7,
 		hStepsMax = 7,
 		vMoveSpeed = 0.3,
 		vStepsMax = 19,
@@ -20,7 +20,7 @@ SkuCore.ScanTypes = {
 		vMoveSpeed = 1.0,
 		vStepsMax = 6,
 		hStart = 0.50,
-	},	
+	},
 	[3] = {
 		name = L["360 30 fast"],
 		desc = L["360 degrees 3-30 meters 10 seconds"],
@@ -29,7 +29,7 @@ SkuCore.ScanTypes = {
 		vMoveSpeed = 0.4,
 		vStepsMax = 9,
 		hStart = 0.65,
-	},	
+	},
 	[4] = {
 		name = L["360 10 accurate"],
 		desc = L["360 degrees 0-10 meters 10 seconds"],
@@ -38,7 +38,7 @@ SkuCore.ScanTypes = {
 		vMoveSpeed = 1.0,
 		vStepsMax = 6,
 		hStart = 0.50,
-	},		
+	},
 	[5] = {
 		name = L["360 30 accurate"],
 		desc = L["360 degrees 3-30 meters 20 seconds"],

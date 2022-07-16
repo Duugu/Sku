@@ -14,6 +14,7 @@ local SapiLangIds = {
 
 local mSkuVoiceQueue = {}
 local mSkuVoiceQueueBTTS = {}
+local mSkuVoiceQueueBTTS_Speaking = {}
 SkuVoice.LastPlayedString = ""
 --setmetatable(mSkuVoiceQueue, SkuNav.PrintMT)
 
@@ -22,7 +23,9 @@ function SkuVoice:Create()
 	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_FINISHED")
 	f:SetScript("OnEvent", function(self, aEventName)
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" then
-
+			if mSkuVoiceQueueBTTS_Speaking[1] then
+				table.remove(mSkuVoiceQueueBTTS_Speaking, 1)
+			end
 		end
 	end)
 	local fTime = 0
@@ -54,11 +57,22 @@ function SkuVoice:Create()
 				if tValue == "queuereset" then
 					table.remove(mSkuVoiceQueueBTTS, 1)
 					C_VoiceChat.StopSpeakingText()
+					mSkuVoiceQueueBTTS_Speaking = {}
 					tLastWait = 0.10
 				else
 					if #mSkuVoiceQueueBTTS > 1 or tLastWait <= 0 then
 						table.remove(mSkuVoiceQueueBTTS, 1)
-						C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tValue, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+						local tIsAlreadySpeakingThat
+						for z = 1, #mSkuVoiceQueueBTTS_Speaking do
+							--print(z, mSkuVoiceQueueBTTS_Speaking[z])
+							if mSkuVoiceQueueBTTS_Speaking[z] == tValue then
+								tIsAlreadySpeakingThat = true
+							end
+						end
+						if not tIsAlreadySpeakingThat then
+							table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
+							C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tValue, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+						end
 						--print("tLastWait = 0")
 						tLastWait = 0.1
 					else
@@ -299,9 +313,12 @@ function SkuVoice:StopAllOutputs()
 		end
 	end
 	mSkuVoiceQueue = {}
+	mSkuVoiceQueueBTTS_Speaking = {}
 	if IsMacClient() == true then
+		table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
 		C_VoiceChat.StopSpeakingText()
 	else
+		table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
 		C_VoiceChat.StopSpeakingText()
 	end	
 end
@@ -615,7 +632,11 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	tFinalStringForBTtsMac = tFinalStringForBTtsMac
 
 	if IsMacClient() == true then
-		mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
+		if aInstant then
+			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
+		else
+			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
+		end
 		--C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tFinalStringForBTtsMac, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 		if not aIgnoreLinks then
 			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTtsMac, "")
@@ -623,7 +644,12 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	else
 		--C_Timer.After(0.01, function() 
 			--print("ADD OUTPUT TO QUEUE", tFinalStringForBTts)
-			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
+			if aInstant then
+				mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
+			else
+				mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
+			end
+	
 			--C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tFinalStringForBTts, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 			if not aIgnoreLinks then
 				SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTts, "")
@@ -697,13 +723,17 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		if engine ~= 3 then
 			if IsMacClient() == true then
 				C_VoiceChat.StopSpeakingText()
+				mSkuVoiceQueueBTTS_Speaking = {}
+				table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
 				C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 				if not aIgnoreLinks then
 					SkuOptions.TTS:GetLinksTableFromString(aString, "")
 				end
 			else
 				C_VoiceChat.StopSpeakingText()
+				mSkuVoiceQueueBTTS_Speaking = {}
 				C_Timer.After(0.05, function() 
+					table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
 					C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, aString, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 					if not aIgnoreLinks then
 						SkuOptions.TTS:GetLinksTableFromString(aString, "")
@@ -1041,6 +1071,7 @@ function SkuVoice:StopOutputEmptyQueue()
 		end
 	end
 	mSkuVoiceQueue = {}
+	mSkuVoiceQueueBTTS_Speaking = {}
 	C_VoiceChat.StopSpeakingText()
 end
 

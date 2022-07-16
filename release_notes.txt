@@ -28,12 +28,10 @@ Changes in Sku r28
 			You should use this feature wisely. For sighted players it could look slightly like a bot in some scenarios. Especially if the waypoints are very close to each other. I would suggest to avoid running and spamming it in crowed placed with lots of players. Stop and using it to turn is no problem. Beside that running and spamming could look strange to sighted players, it isn't working that good at places like cities, as waypoints there are usually quite close.
 
 	Core
-		- Changes on error notifications:
-			- The error notifications (Core > Options > Error Feedback) are now enabled as default for new players/profiles.
-			- The error notifications output is now using the Blizzard TTS voice if an output is set to "spoken".
-			- A new "other" error type was added to error notifications list.
-				"Other" errors are all errors that are not explicit in the list of configurable errors.
-				The "Other" error type is set to Spoken as default.
+		- Changes on error notifications (under Core > Options > Error Feedback):
+			- Several error notification types are now enabled as default.
+			- The error notification output is now using the Blizzard TTS voice if an output is set to "spoken".
+			- A new "other" error type was added to error notifications list. "Other" errors are all error types that are not explicit in the list.
 		- The resource scan feature for herbs and mining nodes had some bug fixes and was been significantly enhanced:
 			- There are still two scan types: 
 				CTRL + SHIFT + R: do a 50 meters range scan around your position
@@ -146,6 +144,8 @@ Changes in Sku r28
 	Mapping: 
 		- changed Add small waypoint from CTRL + SHIFT + P to ALT + P
 		- changed Add large waypoint from CTRL + SHIFT + O to ALT + O
+		- changed Show routes on minmap from CTRL + SHIFT + L to ALT + L
+		- changed Show sku minmap from CTRL + SHIFT + K to ALT + K
 
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r27.14

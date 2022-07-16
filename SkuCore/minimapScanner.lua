@@ -296,6 +296,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MinimapScan(aRange)
+   dprint("MinimapScan", aRange)
    if Questie then
       Questie.db.global.enableMiniMapIcons = false
    end

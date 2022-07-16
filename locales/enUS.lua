@@ -1509,3 +1509,6 @@ L["scanning background sound"] = "scan;Background;sound"
 L["scan accuracy"] = "scan accuracy"
 
 L["other"] = "other"
+
+L["out of range melee"]  = "Not in melee range" --
+L["out of range cast"]  = "Not in cast range" --
