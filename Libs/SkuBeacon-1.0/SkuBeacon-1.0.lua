@@ -98,11 +98,24 @@ local function OnUpdate(self, aTime)
 	if tTime > 0.05 then
 		if _G["SkuBeaconSkriptRecognizerTurn"] then
 			local tDisable = false
-			if _G["ChatFrame1EditBox"] then
-				if _G["ChatFrame1EditBox"]:IsShown() then
-					tDisable = true
+			local tFrames = {
+				"SkuAuctionConfirmEditBox",
+				"SkuOptionsEditBoxEditBox",
+				"SkuOptionsEditBoxPaste",
+				"SkuNavMMMainEditBoxEditBox",
+				"SkuNavMMMainFrameEditBox",
+				"ChatFrame1EditBox",
+				"MacroFrame",
+			}
+
+			for i, v in pairs(tFrames) do
+				if _G[v] then
+					if _G[v]:IsShown() then
+						tDisable = true
+					end
 				end
 			end
+
 			if SkuOptions:IsMenuOpen() == true then
 				tDisable = true
 			end
