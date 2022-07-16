@@ -28,8 +28,8 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 Release notes in German: Diese Veröffentlichungshinweise findest im heruntergeladenen Sku-Ordner in Deutsch. Dateiname: release notes DE.txt
 
 ### ATTENTION:
-You do need the new script (wow_menu) version 2.11 for this release. You can't use older scripts with this Sku release.
-Thus downloading wow_menu r2.11 is mandatory.
+You do need the new script (wow_menu) version 2.12 for this release. You can't use older scripts with this Sku release.
+Thus downloading wow_menu r2.12 is mandatory.
 
 ### Options
 - Changed the default key bind for stopping the TTS output from Right Shift key to Control + V.
