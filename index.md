@@ -7,11 +7,12 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-[Sku Script (wow_menu) r2.10](https://github.com/Duugu/wow_menu/releases/download/r2.10/wow_menu-r2.10-bcc.zip) (23.06.2022)<br>
-[Sku r27.14](https://github.com/Duugu/Sku/releases/download/r27.14/Sku-r27.14-bcc.zip) (14.06.2022)<br> 
+**Read the release notes!** <br>
+[Sku Script (wow_menu) r2.11](https://github.com/Duugu/wow_menu/releases/download/r2.11/wow_menu-r2.11-bcc.zip) (July 16th, 2022)<br>
+[Sku r28](https://github.com/Duugu/Sku/releases/download/r28/Sku-r28-bcc.zip) (July 16th, 2022)<br> 
+[SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
 
 *Old updates:* <br>
-[SkuFluegel r5.6](https://github.com/Duugu/SkuFluegel/releases/download/r5.6/SkuFluegel-r5.6-bcc.zip)) (21.06.2022) (addon for sighted players)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
 [SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) (28.05.2022) <br>
@@ -22,6 +23,156 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28
+
+Telease notes in German: Diese Veröffentlichungshinweise findest im heruntergeladenen Sku-Ordner in Deutsch. Dateiname: release notes DE.txt
+
+### ATTENTION:
+You do need the new script (wow_menu) version 2.11 for this release. You can't use older scripts with this Sku release.
+Thus downloading wow_menu r2.11 is mandatory.
+
+### Options
+- Changed the default key bind for stopping the TTS output from Right Shift key to Control + V.
+- Added 11 new sounds to Options > Options > Background sound.
+- Fixed a bug with reseting the sku addon profiles (Options > Options > Profile > Reset).
+
+### Navigation
+- Fixed a bug with routes via quest log or shift + f10 were the routes list was empty if the entry point was the same as the destination point.
+- New feature: auto turn towards the current beacon<br>
+	Note: You need to install and use the newest script version for this feature. Wow menu 2.11 or higher.<br>
+	You now can use the I key or Numpad 9 to automatically turn your character towards the current beacon. Both keys are fixed and can't be adjusted.<br>
+	Turning your character takes around 0.3 seconds on each use. <br>
+	The feature isn't 100% accurate. It is possible, that the character sometimes isn't heading excactly at the beacon, but a few degrees left or right from the beacon. Repeatingly pressing the key could help.<br>
+	The feature heavily depends on your game frame rate. High frame rates will make it more accurate. With low frame rates it is getting less accurate.<br>
+	The feature can be used while you are moving and is spammable. You can move and constantly press I or Numpad9 to turn towards the current beacon every 0.3 seconds.<br>
+	That will work quite good if the beacons are not to close to each other or if you are moving slowly.<br>
+	Spamming it while moving can be difficult if the beacons are very close and/or you are moving fast (riding or flying).<br>
+	You should use this feature wisely. For sighted players it could look slightly like a bot in some scenarios. Especially if the waypoints are very close to each other. I would suggest to avoid running and spamming it in crowed placed with lots of players. Stop and using it to turn is no problem. Beside that running and spamming could look strange to sighted players, it isn't working that good at places like cities, as waypoints there are usually quite close.
+
+### Core
+- Changes on error notifications (under Core > Options > Error Feedback):
+	- Several error notification types are now enabled as default.
+	- The error notification output is now using the Blizzard TTS voice if an output is set to "spoken".
+	- A new "other" error type was added to error notifications list. "Other" errors are all error types that are not explicit in the list.
+- The resource scan feature for herbs and mining nodes had some bug fixes and was been significantly enhanced:
+	- There are still two scan types: <br>
+		CTRL + SHIFT + R: do a 50 meters range scan around your position<br>
+		CTRL + SHIFT + F: do a 120 meters range scan around your position
+	- The found resources (herbs, mining nodes) are now listed with a number, direction and distance for each. Example: 1 Peacebloom northwest 35 meter<br>
+		And the 4 quick waypoints are automatically set to the first 4 found resources per scan. resource one is quick waypoint one, two is two and so on.<br>
+		You then can just start a usual navigation to that quick waypoint (Shift F5 to F8 for Quick Waypoint 1 to 4) to get to the resource.
+	- The directions, distances and quick waypoint positions are not 100% accurate. Depending on the distance they could be differ by up to 10 meters from the actual position of the herb or mining node.<br>
+		As a rule of thumb: the close a resource is, the less accurate the direction, distance and position.<br>
+		The accuracy of that information also highly depends on the scan speed. The faster the scan speed, the more unreliable the direction, distance and position.<br>
+		There is a setting to adjust the resource scanning speed: Core > Options > resource scanning > Accuracy. The default value is 3, which is a good tradoff between speed and accuracy. You can adjust that setting from 1 (very accurate, but very slow) to 5 (quite inaccurate, but very fast) if you would like to have more accurate or faster resource scans.
+
+- New feature: there are now options to adjust the sku addon key binds: Core > Sku key binds
+	- Sku addon key binds are all key binds that are specific to the sku addon itself. Like Shift + F1 to open the menu. 
+	- The Sku key binds are saved in the Sku profiles. Thus all characters with the same profile share the same Sku key binds.
+- Added Shift + G for "Interact with mouseover" to the default game key binds. You need that for the new scan looting/interacting feature below.
+- New feature: Scan and interact with mouseover for interacting with objects like mailboxes, objects in the game world, fishing, finding corpses and more.<br>
+	From now on you will use a scan feature and Shift + G for "Interact with mouseover" to find and use objects in the game world. You won't need the old turning and press numpad 7-9 feature anymore.<br>
+	How to use it:<br>
+		First of all: If you haven't done that yet, go to Core > Game Key binds > Bind Key > Targeting and set up a shortcut for "Interact with mouseover". (Default is Shift + G, but you can choose any other shortcut of your choice.)<br>
+		Scanning is automatically turning your camera around you (and thus the mouse pointer) very fast.<br>
+		While doing that it is constantly checking if the mouse pointer is getting over an object.<br>
+		if that is the case it instantly stops turning, and thus your mouse pointer will be on the object.<br>
+		With the mouse pointing on the object you then can press the new shortcut Shift + G (interact with mouse over) to right click on that object.<br>
+		Shift + G is working like the known shortcut G (interact with target), except it is interacting with the object under your mouse, instead of your current target.<br>
+		Your character will either directly use the object (if you are in use range), or move to the object and use it then.<br>
+		The scan stops on the first found object (see below for what objects the different scans are looking for).<br>
+		You then can either press SHIFT + G to interact with that object, or using SHIFT + L to continue the scan to find another object of that type.<br>
+		A running scan will be instantly stopped if you do start moving.<br>
+	The different scans:<br>
+		There are 8 different scans available. They have different ranges and accuracies and they are scanning for different objects. You will find details on them below this list.<br>
+			- Scan 1: SHIFT + U, 360 10 fast, herbs, mining nodes<br>
+			- Scan 2: SHIFT + I, 100 Front, fishing bobber<br>
+			- Scan 3: SHIFT + O, 360 10 fast, usable objects<br>
+			- Scan 4: SHIFT + P, 360 10 fast, lootable corpse, skinnable corpse<br>
+			- Scan 5: CONTROL + SHIFT + U, 360 30 fast, herb, mining nodes<br>
+			- Scan 6: CONTROL + SHIFT + O, 360 30 fast, usable objects<br>
+			- Scan 7: CONTROL + SHIFT + P, 360 30 fast, lootable corpse, skinnable corpse<br>
+			- Scan 8: CONTROL + SHIFT + I, 360 30 accurate, any<br>
+	Details on the scans:<br>
+		Each scan (1-8) consists of a specific scan type and a list of objects it is scanning for.<br>
+		You can assign or adjust any combination of scan type and object(s) to each of those 8 scans. To do that go to Core > Scan settings and to the specific scan (1-8).<br>
+		There are 5 different scan types to choose from. They differ in scan range, accuracy and speed.
+			- Scan type 1: 100 front - 100 degrees in front of you, 5-45 meters range, takes up to 22 seconds. Used for fishing.<br>
+			- Scan type 2: 360 10, fast - 360 degrees around you, 0-10 meters, takes up to 10 seconds. Used for usual quick scanning of objects near you.<br>
+			- Scan type 3: 360 30, fast - 360 degrees around you, 3-30 meters, takes up to 15 seconds. Used for usual quick scanning of objects in up to 30 meters range.<br>
+			- Scan type 4: 360 10, accurate - 360 degrees degrees around you, 0-10 meters, takes up to 15 seconds. The more accurate version of scan type 2, if you can't find an object with scan 2.<br>
+			- Scan type 5: 360 30, accurate - 360 degrees degrees around you, 3-30 meters, takes up 28 seconds. The more accurate version of scan type 3, if you can't find an object with scan 3.<br>
+		And there are 12 different object types you can choose to scan for:<br>
+			- corpse lootable: any corpse that is lootable<br>
+			- corpse skinnable: any corpse that is skinnable<br>
+			- corpse not lootable: any corpse that is NOT lootable<br>
+			- any creature: any creature (mob, npc, player, etc.)<br>
+			- quest object: any object in the game world that is required for any of your current quests<br>
+			- herb: any herb for herbalism (only herbs are considered that are set to On under Core > Options > Resource scanning > Herbs)<br>
+			- vein: any mining node (only mining nodes are considered that are set to On under Core > Options > Resource scanning > Mining nodes)<br>
+			- bobber: the fishing bobber<br>
+			- usable object: any object that is usable/clickable (for example a mailbox)<br>
+			- any object: any object in the game world<br>
+			- target creature: the creature your are currently targeting (mob, npc, player, etc.)<br>
+			- any: any object in the game world<br>
+		Just go to Core > Scan settings and to the scan (1-8) you would like to configure/adjust. Then select a new scan type and/or add/remove object categories, to adjust that scan.<br>
+	Helpful information on scanning:<br>
+		Some "objects" don't count as objects. Examples are mage portals, meeting stones, dungeon portals. To find them, use a scan that is scanning for "any". (default: scan 8, Control + Shift + I)<br>
+		Scanning is turning the camera. That is working perfect on flat terrain. It can be problematic if there slopes, in buildings, etc. If a fast scan isn't detecting an object, just try an accurate scan.<br>
+		It can also be difficult if objects are covered by other objects (like mobs or players). Or if there are several objects at the same place (like 2 or 3 corpses almost at the same position).<br>
+		Small objects can be easily overlooked by fast scans. Set up scans to use an "accurate" scan type (4 or 5) to find those objects.<br>
+		Scanning can fail in some cases. Then the camera is turning slightly to far. If you do a scan, and there is an object, but nothing happens with Shift + G, just retry the scan.<br>
+		Scanning is finding a mob or object at the position where it is right now. If a mob is moving, then it naturally will move away from the mouse cursor if you don't press Shift + G as fast as possible on finding it.<br>
+		If you are continuing a scan, then only the first object of each type will be found, as the addon can't differentiate between more objects of the same type. This only applies to objects. Not to corpses, mobs, etc.<br>
+		If you would like to choose a new key binding for a specific scan, go to Core > Sku key binds > Bind key and filter for "scan".<br>
+		To change the sound on scanning go to Core > Options > Scan Background Sound<br>
+
+- Numpad 7 and numpad 8 are still available with their old functionality. But Numpad 9 isn't available anymore, as it is used for the auto turn towards the current beacon feature.
+- The old alternative "mouse click" key binds for Numpad 7-9 (CONTROL + SHIFT + I/O/P) are not longer working, as they are now assigned to scans.
+
+- New feature: Items in the character menu (C) and the bags manu (B) now have an additional submenu "Socketing" to open the socketing panel for that item. The socketing panel will be shown under Local, like all other panels.<br>
+	Workflow for socketing: <br>
+		- Pick up the gem that should be placed in some socket from your bag with left click. Then the gem is attached to the cursor.<br>
+		- Open the character panel or bags, get to the relevant item and choose Socketing.<br>
+		- Go left to the Local menu level. Get to Local > Socketing.<br>
+		- Find the intended socket for the gem and do a left click to place the gem at the cursor in that socket.<br>
+		- Go down to Socket Gems and do a left click to finally socket the new gem.<br>
+
+- Moved the All Bags menu entry in the bags menu below the single bags, to provide the option to jump to the single bags with the 1-5 keys. If you would like to get to All Bags with arrowing down, just press the A key, to jump to the first menu entry that starts with A (All Bags).
+
+- The key binding menu (Core > Game key binds) now provides a warning if you are trying to bind a key that already is bound to some other action. <br>
+	You then can either press a new key to make a new choice, or again press the already bound key, to confirm the re-binding of that already bound key.<br>
+	In the later case the already bound key will be rebound to the new action and the previously bound action will be unbound.
+- Removed the second (alternative) key for a binding from the key bind lists, as it does not provide any value.
+- Key bindings F7-F12 are now as default (for new players or on reset) assigned to the action buttons 7-12 of the left additional action bar instead to the right additional action bar buttons 1-6.
+
+- The setting to add the item quality color like grey, green, blue is now enabled as default for new players/profiles. (Core > Options > Item settings > Show item quality)
+- Added an option to the external SkuFluegel addon for sighted players to remotely set you on unfollow. That will only work if you have this update installed.
+- Fixed a bug with the panic mode. It is working again. Happy panicking.
+- Fixed a bug with the minimap scan that was breaking the "mouse over" notification on first use of the scan.
+- Fixed a bug with Escape to cancel the key binding process.
+- Fixed a bug with the overview page that was releated to the guild members list.
+- Fixed a bug with missing pet action bar in Core > Action bars.
+
+### Mapping: 
+- changed Add small waypoint from CTRL + SHIFT + P to ALT + P
+- changed Add large waypoint from CTRL + SHIFT + O to ALT + O
+- changed Show routes on minmap from CTRL + SHIFT + L to ALT + L
+- changed Show sku minmap from CTRL + SHIFT + K to ALT + K
+
+## Changes in Sku Script (wow_menu) r2.11
+- Numpad 9 has been changed. It now is turning your character towards the current beacon.<br>
+The I key is an alternative key bind for numpad 9.
+- Control + Shift + I / O / P have been removed as alternative keys for numpad 7, 8, 9.
+
+
+## Changes in SkuFluegel r5.7
+ - CAUTION: Blind players need to use Sku r27.15 to have the new features working!
+ - There is a new key bind CTRL + SHIFT + V to remotely set blind players on unfollow. 
+ - It now is possible to set all blind players or a specific blind player on follow/unfollow. If you are targeting a blind player, then only that player will be set on follow/unfollow. If you are targeting nothing, or something else than one of the blind players (tracked targets 1-4), then all blind players will follow/unfollow.	
+ - The status will now update instantly.
+ - Fixed a bug with the C status (casting). Sometimes that status wasn't updated correctly. It still can happen, if the blind player is starting a cast and stopps that cast instantly.
+
 ## Changes in Sku Script (wow_menu) r2.10
 - Added a "Delete character" menu option. 
 	The character in the currently selected slot will be deleted. 
