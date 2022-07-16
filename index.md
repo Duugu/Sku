@@ -25,7 +25,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 -------------------------------------------------------------------------------------------------------	
 ## Changes in Sku r28
 
-Telease notes in German: Diese Veröffentlichungshinweise findest im heruntergeladenen Sku-Ordner in Deutsch. Dateiname: release notes DE.txt
+Release notes in German: Diese Veröffentlichungshinweise findest im heruntergeladenen Sku-Ordner in Deutsch. Dateiname: release notes DE.txt
 
 ### ATTENTION:
 You do need the new script (wow_menu) version 2.11 for this release. You can't use older scripts with this Sku release.
