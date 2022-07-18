@@ -8,8 +8,8 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
+[Sku r28.1](https://github.com/Duugu/Sku/releases/download/r28.1/Sku-r28.1-bcc.zip) (July 18th, 2022)<br> 
 [Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
-[Sku r28](https://github.com/Duugu/Sku/releases/download/r28/Sku-r28-bcc.zip) (July 16th, 2022)<br> 
 [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
 
 *Old updates:* <br>
@@ -23,6 +23,22 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.1
+
+### Core
+- Fixed an issue with the turn to beacon feature and very low (1024x768 or lower) and very high (4k) screen resolutions.
+- Fixed an issue with minimap ressource scanning (Control + Shift F/R) and mining nodes.
+- Fixed an issue with mouseover scaSkuAuctionConfirmEditBoxnning on herbs/mining nodes (control + U, control + shift + U).
+- All "xy mouse over" readouts are now read by the Blizzard TTS voice.
+- Fixed a very rare issue with the I key and some input boxes (for example mail recipient, subject, body), that was mixing up what you typed in the input box.
+- The class trainer menu now has scroll down/up options.
+- Manually re-builded the profession trainer menu. Should now appear and work like other menu (crafting, etc.)
+- Added the tooltip of the item that will be crafted to the selected skill in the profession menu.
+- Added an option to read all tooltips. Core > Options > Read all tooltips (default: off). That will read out every single thing your mouse is getting over. Could generate a lot of audio spam.
+
+### Options
+- All option menus (xx > options) are now filterable.
+
 ## Changes in Sku r28
 
 Release notes in German: Diese Veröffentlichungshinweise findest im heruntergeladenen Sku-Ordner in Deutsch. Dateiname: release notes DE.txt
