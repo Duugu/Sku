@@ -4,8 +4,20 @@
 
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r28.1
+
 	Core
-		- Fixed a very rate issue with the I key and some input boxes.
+		- Fixed an issue with the turn to beacon feature and very low (1024x768 or lower) and very high (4k) screen resolutions.
+		- Fixed an issue with minimap ressource scanning (Control + Shift F/R) and mining nodes.
+		- Fixed an issue with mouseover scaSkuAuctionConfirmEditBoxnning on herbs/mining nodes (control + U, control + shift + U).
+		- All "xy mouse over" readouts are now read by the Blizzard TTS voice.
+		- Fixed a very rare issue with the I key and some input boxes (for example mail recipient, subject, body), that was mixing up what you typed in the input box.
+		- The class trainer menu now has scroll down/up options.
+		- Manually re-builded the profession trainer menu. Should now appear and work like other menu (crafting, etc.)
+		- Added the tooltip of the item that will be crafted to the selected skill in the profession menu.
+		- Added an option to read all tooltips. Core > Options > Read all tooltips (default: off). That will read out every single thing your mouse is getting over. Could generate a lot of audio spam.
+
+	Options
+		- All option menus (xx > options) are now filterable.
 
 
 -------------------------------------------------------------------------------------------------------	

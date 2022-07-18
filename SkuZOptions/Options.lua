@@ -289,6 +289,7 @@ SkuOptions.defaults = {
 function SkuOptions:MenuBuilder(aParentEntry)
 	--dprint("SkuOptions:MenuBuilder", aParentEntry)
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Profil"]}, SkuGenericMenuItem)

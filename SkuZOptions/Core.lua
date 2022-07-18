@@ -2998,6 +2998,8 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 	for i, v in SkuSpairs(aArgTable, function(t, a, b) if t[b].order and t[a].order then return t[b].order > t[a].order end end) do
 		if v.args and v.forAudioMenu ~= false then
 			local tParentMenu =  SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
+			--tParentMenu.dynamic = true
+			tParentMenu.filterable = true
 			SkuOptions:IterateOptionsArgs(v.args, tParentMenu, tProfileParentPath[i])
 		else
 			if v.type == "toggle" then

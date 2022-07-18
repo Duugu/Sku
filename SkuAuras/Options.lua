@@ -1022,5 +1022,6 @@ function SkuAuras:MenuBuilder(aParentEntry)
 
 	---
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuAuras.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end

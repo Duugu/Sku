@@ -1512,3 +1512,5 @@ L["other"] = "other"
 
 L["out of range melee"]  = "Not in melee range" --
 L["out of range cast"]  = "Not in cast range" --
+
+L["Read all tooltips"] = "Read all tooltips"

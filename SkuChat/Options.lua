@@ -254,6 +254,7 @@ SkuChat.defaults = {
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:MenuBuilder(aParentEntry)
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuChat.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end
 

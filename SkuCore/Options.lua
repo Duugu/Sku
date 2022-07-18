@@ -117,6 +117,18 @@ SkuCore.options = {
 				},		
 			},
 		},
+		readAllTooltips = {
+			name = L["Read all tooltips"],
+			desc = "",
+			type = "toggle",
+			set = function(info, val)
+				SkuOptions.db.profile[MODULE_NAME].readAllTooltips = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].readAllTooltips
+			end
+		},
+
 		autoFollow = {
 			name = L["Auto follow"],
 			desc = "",
@@ -461,6 +473,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.defaults = {
 	enable = true,
+	readAllTooltips = false,
 	autoFollow = false,
 	endFollowOnCast = false,
 	interactMove = true,
@@ -2040,6 +2053,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.BuildChildren = SkuCore.AuctionHouseMenuBuilder
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuCore.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end
 

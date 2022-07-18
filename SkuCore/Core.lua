@@ -100,6 +100,8 @@ SkuCore.interactFramesListManual = {
 	["GossipFrame"] = function(...) SkuCore:GossipFrame(...) end,
 	["QuestFrame"] = function(...) SkuCore:QuestFrame(...) end,
 	["ItemTextFrame"] = function(...) SkuCore:ItemTextFrame(...) end,
+	["ClassTrainerFrame"] = function(...) SkuCore:Build_ClassTrainerFrame(...) end,
+	
 }
 
 SkuCore.interactFramesList = {
@@ -1644,11 +1646,17 @@ function SkuCore:CheckInteractObjectShow()
 		if not tFirstLine or tFirstLine == "" then
 			return
 		end
+		if SkuOptions.db.profile[MODULE_NAME].readAllTooltips == true then
+			SkuOptions.Voice:OutputStringBTtts(tFirstLine, true, true, 0.2, true, nil, nil, 2)
+			C_Timer.After(0.1, function() GameTooltip:Hide() end)
+			return
+		end
+
 		for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
 			if v == tFirstLine then
 				--SkuCore.CheckInteractObjectShowIsShown = true
 				--print("show", tFirstLine)
-				SkuOptions.Voice:OutputString(tFirstLine..";"..L["cursor;on"]..";"..L["OBJECT"], true, true, 0.2)
+				SkuOptions.Voice:OutputStringBTtts(tFirstLine..";"..L["cursor;on"]..";"..L["OBJECT"], true, true, 0.2, true, nil, nil, 2)
 				break
 			end
 		end

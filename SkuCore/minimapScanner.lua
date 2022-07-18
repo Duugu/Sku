@@ -119,80 +119,78 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tFoundPositions = {}
 function SkuCore:MinimapScanFindActiveRessource(aX, aY)
+
+   local tRessourceTypes = {
+      SkuCore.RessourceTypes.mining,
+      SkuCore.RessourceTypes.herbs,
+   }
+
    for i = 1, GameTooltip:NumLines() do
       local line = string.lower(_G['GameTooltipTextLeft'..i]:GetText())
       if line then
-         for x = 1, #SkuCore.RessourceTypes.mining do
-            if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x] == true then
-               for w in string.gmatch(SkuCore.RessourceTypes.mining[x][Sku.L["locale"]], ".+") do
-                  if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w..'|'), 1, true) then
-                     return SkuCore.RessourceTypes.mining[x][Sku.L["locale"]]               
-                  end
-               end 
-            end
-         end
-
-         for x = 1, #SkuCore.RessourceTypes.herbs do
-            if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
-               for w in string.gmatch(SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]], ".+") do
-                  if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w..'|'), 1, true) then
-                     if not tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] then
-                        tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] = {}
-                     end
-                     if #tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] == 0 then
-                        tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][1] = {
-                           xMin = aX - 1,
-                           xMax = aX + 1,
-                           yMin = aY - 1,
-                           yMax = aY + 1,
-                        }
-                     else
-                        local tFoundIndex
-                        for q = 1, #tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] do
-                           dprint("q", q, #tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]], tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q])
-                           local xmax = tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q].xMax - aX
-                           local ymax = tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q].yMax - aY
-                           local xmin = tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q].xMin - aX
-                           local ymin = tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][q].yMin - aY
-                           if xmax < 0 then xmax = xmax * -1 end
-                           if ymax < 0 then ymax = ymax * -1 end
-                           if xmin < 0 then xmin = xmin * -1 end
-                           if ymin < 0 then ymin = ymin * -1 end
-
-                           dprint("  ", xmax, ymax, xmin, ymin)
-                           local tRangeNew = 20
-                           if xmax < tRangeNew and ymax < tRangeNew and xmin < tRangeNew and ymin < tRangeNew then
-                              tFoundIndex = q
-                           end
+         for r = 1, #tRessourceTypes do
+            for x = 1, #tRessourceTypes[r] do
+               if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
+                  for w in string.gmatch(tRessourceTypes[r][x][Sku.L["locale"]], ".+") do
+                     if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w..'|'), 1, true) then
+                        if not tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] then
+                           tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] = {}
                         end
-                        if tFoundIndex then
-                           dprint("found", tFoundIndex)
-                           if tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].xMin > aX then
-                              tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].xMin = aX
-                           end
-                           if tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].xMax < aX then
-                              tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].xMax = aX
-                           end
-                           if tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].yMin > aY then
-                              tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].yMin = aY
-                           end
-                           if tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].yMax < aY then
-                              tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][tFoundIndex].yMax = aY
-                           end
-                        else
-                           dprint("new", SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]], #tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] + 1)
-                           tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]][#tFoundPositions[SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]] + 1] = {
+                        if #tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] == 0 then
+                           tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][1] = {
                               xMin = aX - 1,
                               xMax = aX + 1,
                               yMin = aY - 1,
                               yMax = aY + 1,
                            }
-                        end
-                     end
+                        else
+                           local tFoundIndex
+                           for q = 1, #tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] do
+                              dprint("q", q, #tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]], tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q])
+                              local xmax = tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q].xMax - aX
+                              local ymax = tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q].yMax - aY
+                              local xmin = tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q].xMin - aX
+                              local ymin = tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q].yMin - aY
+                              if xmax < 0 then xmax = xmax * -1 end
+                              if ymax < 0 then ymax = ymax * -1 end
+                              if xmin < 0 then xmin = xmin * -1 end
+                              if ymin < 0 then ymin = ymin * -1 end
 
-                     return SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]               
-                  end
-               end 
+                              dprint("  ", xmax, ymax, xmin, ymin)
+                              local tRangeNew = 20
+                              if xmax < tRangeNew and ymax < tRangeNew and xmin < tRangeNew and ymin < tRangeNew then
+                                 tFoundIndex = q
+                              end
+                           end
+                           if tFoundIndex then
+                              dprint("found", tFoundIndex)
+                              if tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].xMin > aX then
+                                 tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].xMin = aX
+                              end
+                              if tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].xMax < aX then
+                                 tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].xMax = aX
+                              end
+                              if tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].yMin > aY then
+                                 tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].yMin = aY
+                              end
+                              if tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].yMax < aY then
+                                 tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].yMax = aY
+                              end
+                           else
+                              dprint("new", tRessourceTypes[r][x][Sku.L["locale"]], #tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] + 1)
+                              tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][#tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] + 1] = {
+                                 xMin = aX - 1,
+                                 xMax = aX + 1,
+                                 yMin = aY - 1,
+                                 yMax = aY + 1,
+                              }
+                           end
+                        end
+
+                        return tRessourceTypes[r][x][Sku.L["locale"]]               
+                     end
+                  end 
+               end
             end
          end
       end

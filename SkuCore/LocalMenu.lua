@@ -68,6 +68,10 @@ local function GetButtonTooltipLines(aButtonObj)
 
 	local tQualityString = nil
 	local itemName, ItemLink = GameTooltip:GetItem()
+	if not itemName then
+		itemName, ItemLink = GameTooltip:GetSpell()
+	end
+
 	if ItemLink then
 		for x = 0, #ITEM_QUALITY_COLORS do
 			local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
@@ -228,7 +232,6 @@ function SkuCore:Build_BagnonGuildFrame(aParentChilds)
 		BagnonGuildFrame.bagToggle:Click()
 	end
 
-
 	for x = 1, 10 do
 		local name, icon, isViewable, canDeposit, numWithdrawals, remainingWithdrawals, filtered = GetGuildBankTabInfo(x)
 
@@ -253,9 +256,6 @@ function SkuCore:Build_BagnonGuildFrame(aParentChilds)
 			}   
 		end
 	end
-	
-
-
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -540,6 +540,221 @@ function SkuCore:Build_BagnonInventoryFrame(aParentChilds)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function round(num)
+	local mult = 10^(2 or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tTradeSkillTypeColor = {
+	--[L["optimal"]] = { r = 1, g = 0.50, b = 0.25},
+	--[L["medium"]] = { r = 1, g = 1, b = 0},
+	[L["New"]] = { r = 0, g = 1, b = 0},
+	[L["bekannt"]] = { r = 0.50, g = 0.50, b = 0.50},
+	["header"] = { r = 1, g = 0.82, b = 0},
+	["subheader"] = { r = 1, g = 0.82, b = 0},
+	[L["nodifficulty"]] = { r = 0.96, g = 0.96, b = 0.96},
+	[L["selected"]] = { r = 1, g = 1, b = 1},
+}
+function SkuCore:Build_ClassTrainerFrame(aParentChilds)
+
+	local tFrameName = "ClassTrainerFrame"
+	local tFriendlyName = _G["ClassTrainerGreetingText"]:GetText()
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "FontString",
+		obj = _G[tFrameName],
+		textFirstLine = tFriendlyName,
+		textFull = "",
+		childs = {},
+	}
+
+	local tFrameName = "ClassTrainerListScrollFrameScrollBarScrollUpButton"
+	if _G[tFrameName] then
+		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+			local tFriendlyName = L["Hoch blättern"]
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G[tFrameName],
+				textFirstLine = tFriendlyName,
+				textFull = "",
+				childs = {},
+				func = function(self, aButton)
+					self:GetScript("OnClick")(self, aButton)             
+					self:GetScript("OnClick")(self, aButton)             
+				end,            
+				click = true,
+			}   
+		end
+	end
+
+
+	for x = 1, 10 do
+		local tFrameName = "ClassTrainerSkill"..x
+		if _G[tFrameName] and _G[tFrameName].text and _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then
+			if _G[tFrameName].text:GetText() then
+				local tDifficulty = ""
+				local r, g, b, a = _G[tFrameName].text:GetTextColor()
+				r, g, b, a = round(r), round(g), round(b), round(a)
+				if r == 1 and g == 1 and  b == 1 then
+					if _G["ClassTrainerHighlightFrame"] and _G["ClassTrainerHighlightFrame"]:GetRegions() then
+						r, g, b, a = _G["ClassTrainerHighlightFrame"]:GetRegions():GetVertexColor()
+						if r then
+							r, g, b, a = round(r), round(g), round(b), round(a)
+						end
+					end
+				end
+				for i, v in pairs(tTradeSkillTypeColor) do
+					if v.r == r and v.g == g and  v.b == b then
+						tDifficulty = i
+					end
+				end
+
+				local tFriendlyName = unescape(_G[tFrameName].text:GetText())
+				local tText, tFullText = "", ""
+				if _G[tFrameName]:IsEnabled() == true then
+					table.insert(aParentChilds, tFriendlyName)
+					aParentChilds[tFriendlyName] = {
+						frameName = tFrameName,
+						RoC = "Child",
+						type = "Button",
+						obj = _G[tFrameName],
+						textFirstLine = tFriendlyName,
+						textFull = "",
+						childs = {},
+						func = _G[tFrameName]:GetScript("OnClick"),
+						click = true,
+					}   
+				end
+
+				if tDifficulty == "subheader" or tDifficulty == "header" then
+					aParentChilds[tFriendlyName].click = false
+					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..L["category"]..")"
+				else
+					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
+				end
+			end
+		end
+	end
+
+	local tFrameName = "ClassTrainerListScrollFrameScrollBarScrollDownButton"
+	if _G[tFrameName] then
+		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+			local tFriendlyName = L["Runter blättern"]
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G[tFrameName],
+				textFirstLine = tFriendlyName,
+				textFull = "",
+				childs = {},
+				func = function(self, aButton)
+					self:GetScript("OnClick")(self, aButton)             
+					self:GetScript("OnClick")(self, aButton)             
+				end,            
+				click = true,
+			}   
+		end
+	end
+
+
+
+	local tName = ""
+	if _G["ClassTrainerSkillName"] then
+		tName = unescape(_G["ClassTrainerSkillName"]:GetText()) or ""
+	end
+	local tRequirements = ""
+	if _G["ClassTrainerSkillRequirements"] and _G["ClassTrainerSkillRequirements"]:IsVisible() and _G["ClassTrainerSkillRequirements"]:GetText() then
+		for i, v in string.gmatch(_G["ClassTrainerSkillRequirements"]:GetText(), "([^,]+)") do 
+			if string.sub(i, 1, 1) == " " then
+				i = string.sub(i, 2)
+			end
+			local tReqStr = unescape(i) or ""
+			if string.find(i, "ff2020") then
+				tReqStr = tReqStr.." ("..L["missing"]..")"
+			end
+			tRequirements = tRequirements..tReqStr.."\r\n"
+		end
+	end
+	local tCost = ""
+	if _G["ClassTrainerDetailMoneyFrame"] and _G["ClassTrainerDetailMoneyFrame"].staticMoney then
+		tCost = SkuGetCoinText(_G["ClassTrainerDetailMoneyFrame"].staticMoney, true)
+	end
+
+	_G["ClassTrainerSkillIcon"].type = "sku"
+	local tSkillText, tSkillFullText = GetButtonTooltipLines(_G["ClassTrainerSkillIcon"])
+	local tFrameName = "ClassTrainerDetailScrollFrame"
+	if tName and tName ~= "" then
+		local tFriendlyName = L["Ausgewählt: "]..tName
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "FontString",
+			obj = _G[tFrameName],
+			textFirstLine = tFriendlyName.."...",
+			textFull = tName..(("\r\n"..tCost) or "")..(("\r\n"..tRequirements) or "").."\r\n"..tSkillFullText,
+			childs = {},
+		}   
+	end
+
+	
+
+
+
+
+	local tFrameName = "ClassTrainerTrainButton"
+	if _G[tFrameName] then
+		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+			if _G[tFrameName]:GetText() then
+				local tFriendlyName = unescape(_G[tFrameName]:GetText())
+				table.insert(aParentChilds, tFriendlyName)
+				aParentChilds[tFriendlyName] = {
+					frameName = tFrameName,
+					RoC = "Child",
+					type = "Button",
+					obj = _G[tFrameName],
+					textFirstLine = tFriendlyName,
+					textFull = "",
+					childs = {},
+					func = _G[tFrameName]:GetScript("OnClick"),
+					click = true,
+					--containerFrameName = "ClassTrainerTrain",
+					onActionFunc = function(self, aTable, aChildName) end,
+				}   
+			end
+		end
+	end
+
+
+	local tFrameName = "ClassTrainerCancelButton"
+	local tFriendlyName = L["Schließen"]
+	if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = _G[tFrameName],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+			func = _G[tFrameName]:GetScript("OnClick"),
+			click = true,
+		}   
+	end   
+
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tTradeSkillTypeColor = {
 	[L["optimal"]] = { r = 1.00, g = 0.50, b = 0.25},
 	[L["medium"]] = { r = 1.00, g = 1.00, b = 0.00},
@@ -549,11 +764,6 @@ local tTradeSkillTypeColor = {
 	["subheader"] = { r = 1.00, g = 0.82, b = 0},
 	[L["nodifficulty"]] = { r = 0.96, g = 0.96, b = 0.96},
 }
-local function round(num)
-	local mult = 10^(2 or 0)
-	return math.floor(num * mult + 0.5) / mult
-end
-
 function SkuCore:Build_TradeSkillFrame(aParentChilds)
 
 	local tFrameName = "TradeSkillFrame"
@@ -707,6 +917,9 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 		end   
 	end
 
+	_G["TradeSkillSkillIcon"].type = "sku"
+	local tSkillText, tSkillFullText = GetButtonTooltipLines(_G["TradeSkillSkillIcon"])
+
 	local tFrameName = "TradeSkillDetailScrollChildFrame"
 	if tName and tName ~= "" then
 		local tFriendlyName = L["Ausgewählt: "]..tName
@@ -716,12 +929,12 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 			RoC = "Child",
 			type = "FontString",
 			obj = _G[tFrameName],
-			textFirstLine = tFriendlyName,
-			textFull = tName..(("\r\n"..tRequirements) or "")..(("\r\n"..tReagents) or ""),
+			textFirstLine = tFriendlyName.."...",
+			textFull = tName..(("\r\n"..tRequirements) or "")..(("\r\n"..tReagents) or "")..(("\r\n"..L["gegenstand"]..":\r\n"..tSkillFullText) or ""),
 			childs = {},
 		}   
 	end
-
+	
 	local tFrameName = "TradeSkillCreateButton"
 	if _G[tFrameName] then
 		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
@@ -738,7 +951,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 					childs = {},
 					func = _G[tFrameName]:GetScript("OnClick"),
 					click = true,
-					containerFrameName = "TradeSkillCreateButton",
+					--containerFrameName = "TradeSkillCreateButton",
 					onActionFunc = function(self, aTable, aChildName) end,
 				}   
 			end
@@ -760,7 +973,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 					childs = {},
 					func = _G[tFrameName]:GetScript("OnClick"),
 					click = true,
-					containerFrameName = "TradeSkillCreateAllButton",
+					--containerFrameName = "TradeSkillCreateAllButton",
 					onActionFunc = function(self, aTable, aChildName) end,
 				}   
 			end
@@ -946,6 +1159,10 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 		end   
 	end
 
+	_G["CraftIcon"].type = "sku"
+	local tSkillText, tSkillFullText = GetButtonTooltipLines(_G["CraftIcon"])
+
+
 	local tFrameName = "CraftDetailScrollChildFrame"
 	if tName and tName ~= "" then
 		local tFriendlyName = L["Ausgewählt: "]..tName
@@ -955,8 +1172,8 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 			RoC = "Child",
 			type = "FontString",
 			obj = _G[tFrameName],
-			textFirstLine = tFriendlyName,
-			textFull = tName..(("\r\n"..tRequirements) or "")..(("\r\n"..tCost) or "")..(("\r\n"..tDescription) or "")..(("\r\n"..tReagents) or ""),
+			textFirstLine = tFriendlyName.."...",
+			textFull = tName..(("\r\n"..tRequirements) or "")..(("\r\n"..tCost) or "")..(("\r\n"..tDescription) or "")..(("\r\n"..tReagents) or "")..(("\r\n"..L["gegenstand"]..":\r\n"..tSkillFullText) or ""),
 			childs = {},
 		}   
 	end
@@ -977,7 +1194,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 					childs = {},
 					func = _G[tFrameName]:GetScript("OnClick"),
 					click = true,
-					containerFrameName = "CraftCreateButton",
+					--containerFrameName = "CraftCreateButton",
 					onActionFunc = function(self, aTable, aChildName) end,
 				}   
 			end

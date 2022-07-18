@@ -175,7 +175,6 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
       tOutputText = tOutputText..", "..aTextLeft3
    end
 
-
    local tId = UnitGUID("mouseover") or "NoId"
    if not SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] then
       local taTextLeft1InCreatures
@@ -189,6 +188,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InCreatures = nil
       if tFind["CorpseLootable"] then
          if
             UnitName("mouseover") ~= nil and
@@ -205,6 +205,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InCreatures = nil
       if tFind["CorpseSkinnable"] then
          if
             UnitName("mouseover") ~= nil and
@@ -221,6 +222,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InCreatures = nil
       if tFind["CorpseNotLootable"] then
          if
             UnitName("mouseover") ~= nil and
@@ -237,6 +239,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          end
       end
 
+      taTextLeft1InCreatures = nil
       if tFind["CreaturePlayerTarget"] then
          if
             (UnitName("mouseover") ~= nil and UnitName("target") ~= nil and UnitName("mouseover") == UnitName("target")) and
@@ -252,6 +255,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InCreatures = nil
       if tFind["CreatureAny"] then
          if
             UnitName("mouseover") ~= nil and
@@ -283,6 +287,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InObjects = nil
       if tFind["ObjectCurrentQuest"] then
          if
             UnitName("mouseover") == nil and
@@ -314,6 +319,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InObjects = nil
       if tFind["ObjectHerb"] then
          if
             UnitName("mouseover") == nil and
@@ -334,6 +340,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InObjects = nil
       if tFind["ObjectVein"] then
          if
             UnitName("mouseover") == nil and
@@ -354,6 +361,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InObjects = nil
       if tFind["Bobber"] then
          if
             UnitName("mouseover") == nil and
@@ -367,6 +375,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             return true
          end
       end
+      taTextLeft1InObjects = nil
       if tFind["ObjectUsable"] then
          if
             UnitName("mouseover") == nil and
@@ -381,6 +390,7 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             end
          end
       end
+      taTextLeft1InObjects = nil
       if tFind["ObjectAny"] then
          if
             UnitName("mouseover") == nil and

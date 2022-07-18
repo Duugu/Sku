@@ -1506,3 +1506,5 @@ L["other"] = "andere"
 
 L["out of range melee"]  = "Nicht in nahkampf Reichweite" --
 L["out of range cast"]  = "Nicht in zauber Reichweite" --
+
+L["Read all tooltips"] = "Alle tooltips lesen"
