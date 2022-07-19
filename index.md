@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku r28.1](https://github.com/Duugu/Sku/releases/download/r28.1/Sku-r28.1-bcc.zip) (July 18th, 2022)<br> 
+[Sku r28.2](https://github.com/Duugu/Sku/releases/download/r28.2/Sku-r28.2-bcc.zip) (July 19th, 2022)<br> 
 [Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
 [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
 
@@ -23,6 +23,16 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.2
+### Navigation
+- The addon now plays a continous low volume warning sound (ping & purr) if routes on the minimap and/or the additional sku mimimap are (unintentionally) enabled. <br>
+	The current default key binds for those features are Alt + K and Alt + L. Both features are only used for mapping and do generate a lot of lag, leading to bad gameplay.<br>
+	If you hear the constant ping in the background, then please use Alt + K and/or Alt + L to disable them.<br>
+	If Alt + K/L isn't working, the features are probably bound to other keys. Go to Core > Sku key binds > Bind key > Open Sku minimap / Show routes on minimap, to check what keys they are bound to.
+
+### Auras
+- Added a new attribute and output "Your combo points" to evaluate/output your combo points on the current target.
+
 ## Changes in Sku r28.1
 
 ### Core
