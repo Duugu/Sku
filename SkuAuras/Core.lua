@@ -28,6 +28,8 @@ local CleuBase = {
 	itemID = 40,
 	missType = 41,
 }
+--key = 50
+--combo = 51
 
 SkuAuras.ItemCDRepo = {}
 SkuAuras.SpellCDRepo = {}
@@ -484,6 +486,31 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 		tEventData[36] = SkuAuras.UnitRepo[tUnitId].unitPower,		
 		SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)		
 	end
+
+	if tUnitId == "player" then
+		if SkuAuras.UnitRepo[tUnitId].unitCombo ~= GetComboPoints("player", "target") then
+			SkuAuras.UnitRepo[tUnitId].unitCombo = GetComboPoints("player", "target") or 0
+			local tEventData = {
+				GetTime(),
+				"UNIT_POWER",
+				nil,
+				tUnitId,
+				UnitName(tUnitId),
+				nil,
+				nil,
+				tUnitId,
+				UnitName(tUnitId),
+				nil,
+				nil,
+				nil,
+				nil,
+				nil,
+				nil,
+			}
+			tEventData[51] = SkuAuras.UnitRepo[tUnitId].unitCombo,		
+			SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)		
+		end
+	end	
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -607,7 +634,7 @@ end
 function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 	local tEventData = aCustomEventData or {CombatLogGetCurrentEventInfo()}
 	if aCustomEventData then
-		--dprint("CLEU", aCustomEventData[2])
+		dprint("CLEU", aCustomEventData[51])
 	else
 		--dprint("---------- CLEU", tEventData[2])
 	end
@@ -670,8 +697,8 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	end
 	tEventData[38] = tdebuffList
 
-if tEventData[2] ~= "KEY_PRESS" then
-	--[[
+if tEventData[2] == "UNIT_POWER" then
+	
 		dprint("---------------------------------------------------------------------")
 		dprint("--NEW EVENT:", tEventData[2] )
 		dprint("---------------------------------------------------------------------")
@@ -694,6 +721,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 		dprint(" 24", tEventData[24])	
 		dprint("unitHealthPlayer", tEventData[35])
 		dprint("unitPowerPlayer", tEventData[36])
+		dprint("unitComboPlayer", tEventData[51])
 		setmetatable(tEventData[37], SkuPrintMTWo)
 		dprint("buffListTarget", tEventData[37])
 		setmetatable(tEventData[38], SkuPrintMTWo)
@@ -712,7 +740,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 		dprint("SpellNamesOnCd")
 		setmetatable(SkuAuras.thingsNamesOnCd, SkuPrintMTWo)
 		dprint(SkuAuras.thingsNamesOnCd)
-		]]
+		
 	end
 
 	--evaluate all auras
@@ -738,6 +766,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 				spellName = tEventData[CleuBase.spellName],
 				unitHealthPlayer = tEventData[35],
 				unitPowerPlayer = tEventData[36],
+				unitComboPlayer = tEventData[51],
 				buffListTarget = tEventData[37],
 				debuffListTarget = tEventData[38],
 				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,

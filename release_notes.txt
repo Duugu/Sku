@@ -3,6 +3,18 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r28.2
+	Navigation
+		- The addon now plays a continous low volume warning sound (ping & purr) if routes on the minimap and/or the additional sku mimimap are (unintentionally) enabled. 
+			The current default key binds for those features are Alt + K and Alt + L. Both features are only used for mapping and do generate a lot of lag, leading to bad gameplay.
+			If you hear the constant ping in the background, then please use Alt + K and/or Alt + L to disable them.
+			If Alt + K/L isn't working, the features are probably bound to other keys. Go to Core > Sku key binds > Bind key > Open Sku minimap / Show routes on minimap, to check what keys they are bound to.
+
+	Auras
+		- Added a new attribute and output "Your combo points" to evaluate/output your combo points on the current target.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r28.1
 
 	Core

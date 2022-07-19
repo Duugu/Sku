@@ -2655,9 +2655,9 @@ end
 function SkuCore:CheckFrames(aForceLocalRoot)
 	--print("++CheckFrames", aForceLocalRoot)
 	-- temp hack to avoid the CURSOR_UPDATE spam from questie
-	if Questie then
-		Questie:UnregisterEvent("CURSOR_UPDATE")
-	end
+	--if Questie then
+		--Questie:UnregisterEvent("CURSOR_UPDATE")
+	--end
 
 	if SkuOptions.db.profile["SkuOptions"].localActive == false then
 		return

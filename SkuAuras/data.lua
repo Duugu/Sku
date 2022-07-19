@@ -276,6 +276,23 @@ SkuAuras.outputs = {
          end,
       },
    },
+   unitComboPlayer = {
+      tooltip = L["Deine combopunkte auf dein aktuelles ziel"],
+      friendlyName = L["Eigene combopunkte"],
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.unitComboPlayer then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitComboPlayer, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitComboPlayer then
+               print(tEvaluateData.unitComboPlayer)
+            end
+         end,
+      },
+   },
+
    unitHealthPlayer = {
       tooltip = L["Deine Gesundheits Menge für das ausgelöste Ereignis"],
       friendlyName = L["eigene gesundheit"],
@@ -1444,6 +1461,27 @@ SkuAuras.attributes = {
          "99",
          "100",
                  
+      },
+   },   
+   unitComboPlayer = {
+      tooltip = L["Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"],
+      friendlyName = L["Eigene combopunkte"],
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("    ","SkuAuras.attributes.unitComboPlayer.evaluate", aEventData.unitComboPlayer)
+         if aEventData.unitComboPlayer then
+            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitComboPlayer), aOperator, tonumber(aValue))
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = {
+         "0",
+         "1",
+         "2",
+         "3",
+         "4",
+         "5",
       },
    },
    unitHealthPlayer = {

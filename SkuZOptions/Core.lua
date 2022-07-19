@@ -398,50 +398,54 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aStartStop bool
-function SkuOptions:StartStopBackgroundSound(aStartStop, aSoundFile)
+function SkuOptions:StartStopBackgroundSound(aStartStop, aSoundFile, aHandle)
 	aSoundFile = aSoundFile or SkuOptions.db.profile[MODULE_NAME].backgroundSound
 
+	aHandle = aHandle or "default"
+	SkuOptions.currentBackgroundSoundTimerHandle = SkuOptions.currentBackgroundSoundTimerHandle or {}
+	SkuOptions.currentBackgroundSoundHandle = SkuOptions.currentBackgroundSoundHandle or {}
+
 	if aStartStop == true then
-		if SkuOptions.currentBackgroundSoundHandle == nil then
+		if SkuOptions.currentBackgroundSoundHandle[aHandle] == nil then
 			local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuZOptions\\assets\\audio\\background\\"..aSoundFile, "Talking Head")
 			if soundHandle then
-				SkuOptions.currentBackgroundSoundHandle = soundHandle
-				if SkuOptions.currentBackgroundSoundTimerHandle then
-					SkuOptions.currentBackgroundSoundTimerHandle:Cancel()
-					SkuOptions.currentBackgroundSoundTimerHandle = nil
+				SkuOptions.currentBackgroundSoundHandle[aHandle] = soundHandle
+				if SkuOptions.currentBackgroundSoundTimerHandle[aHandle] then
+					SkuOptions.currentBackgroundSoundTimerHandle[aHandle]:Cancel()
+					SkuOptions.currentBackgroundSoundTimerHandle[aHandle] = nil
 				end
-				if SkuOptions.currentBackgroundSoundTimerHandle == nil then
-					SkuOptions.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen[aSoundFile], function()
+				if SkuOptions.currentBackgroundSoundTimerHandle[aHandle] == nil then
+					SkuOptions.currentBackgroundSoundTimerHandle[aHandle] = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen[aSoundFile], function()
 						--StopSound(SkuOptions.currentBackgroundSoundHandle, 0)
-						SkuOptions.currentBackgroundSoundTimerHandle = nil
-						SkuOptions.currentBackgroundSoundHandle = nil
+						SkuOptions.currentBackgroundSoundTimerHandle[aHandle] = nil
+						SkuOptions.currentBackgroundSoundHandle[aHandle] = nil
 						SkuOptions:StartStopBackgroundSound(true)
 					end)
 				else
-					if SkuOptions.currentBackgroundSoundTimerHandle then
-						SkuOptions.currentBackgroundSoundTimerHandle:Cancel()
-						SkuOptions.currentBackgroundSoundTimerHandle = nil
+					if SkuOptions.currentBackgroundSoundTimerHandle[aHandle] then
+						SkuOptions.currentBackgroundSoundTimerHandle[aHandle]:Cancel()
+						SkuOptions.currentBackgroundSoundTimerHandle[aHandle] = nil
 					end
-					SkuOptions.currentBackgroundSoundTimerHandle = nil
-					SkuOptions.currentBackgroundSoundTimerHandle = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen[aSoundFile], function()
-						SkuOptions.currentBackgroundSoundTimerHandle = nil
-						SkuOptions.currentBackgroundSoundHandle = nil
+					SkuOptions.currentBackgroundSoundTimerHandle[aHandle] = nil
+					SkuOptions.currentBackgroundSoundTimerHandle[aHandle] = C_Timer.NewTimer(SkuCore.BackgroundSoundFilesLen[aSoundFile], function()
+						SkuOptions.currentBackgroundSoundTimerHandle[aHandle] = nil
+						SkuOptions.currentBackgroundSoundHandle[aHandle] = nil
 						SkuOptions:StartStopBackgroundSound(true)
 					end)
 				end
 			end
 		else
-			StopSound(SkuOptions.currentBackgroundSoundHandle, 0)
-			SkuOptions.currentBackgroundSoundHandle = nil
+			StopSound(SkuOptions.currentBackgroundSoundHandle[aHandle], 0)
+			SkuOptions.currentBackgroundSoundHandle[aHandle] = nil
 		end
 	elseif aStartStop == false then
-		if SkuOptions.currentBackgroundSoundHandle ~= nil then
-			StopSound(SkuOptions.currentBackgroundSoundHandle, 0)
-			SkuOptions.currentBackgroundSoundHandle = nil
+		if SkuOptions.currentBackgroundSoundHandle[aHandle] ~= nil then
+			StopSound(SkuOptions.currentBackgroundSoundHandle[aHandle], 0)
+			SkuOptions.currentBackgroundSoundHandle[aHandle] = nil
 		end
-		if SkuOptions.currentBackgroundSoundTimerHandle then
-			SkuOptions.currentBackgroundSoundTimerHandle:Cancel()
-			SkuOptions.currentBackgroundSoundTimerHandle = nil
+		if SkuOptions.currentBackgroundSoundTimerHandle[aHandle] then
+			SkuOptions.currentBackgroundSoundTimerHandle[aHandle]:Cancel()
+			SkuOptions.currentBackgroundSoundTimerHandle[aHandle] = nil
 		end
 	end
 end
@@ -789,6 +793,15 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.InteractMove = false
 
 	tFrame:SetScript("OnClick", function(self, a, b)
+
+		--toggle mm warning background sound
+		if SkuOptions.db.profile["SkuNav"].showSkuMM == true or SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap == true then
+			SkuOptions:StartStopBackgroundSound(false, nil, "map")
+			SkuOptions:StartStopBackgroundSound(true, "catpurrwaterdrop.mp3", "map")
+		else
+			SkuOptions:StartStopBackgroundSound(false, nil, "map")
+		end			
+
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPTTSOUTPUT"].key then
 			SkuOptions.Voice:StopOutputEmptyQueue()
 		end

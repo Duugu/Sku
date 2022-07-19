@@ -1998,6 +1998,13 @@ function SkuNav:CreateSkuNavMain()
 			SkuNav:SkuNavMMOpen()
 		end
 
+		if SkuOptions.db.profile["SkuNav"].showSkuMM == true or SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap == true then
+			SkuOptions:StartStopBackgroundSound(false, nil, "map")
+			SkuOptions:StartStopBackgroundSound(true, "catpurrwaterdrop.mp3", "map")
+		else
+			SkuOptions:StartStopBackgroundSound(false, nil, "map")
+		end		
+
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TOGGLEREACHRANGE"].key then
 			SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange = SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange + 1
 			if SkuOptions.db.profile[MODULE_NAME].standardWpReachedRange > #SkuNav.StandardWpReachedRanges then
@@ -2564,7 +2571,9 @@ function SkuNav:PLAYER_LEAVING_WORLD(...)
 	SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = {}
 	
 	if SkuOptions.currentBackgroundSoundHandle then
-		StopSound(SkuOptions.currentBackgroundSoundHandle, 0)
+		for i, v in pairs(SkuOptions.currentBackgroundSoundHandle) do
+			StopSound(v, 0)
+		end
 	end
 	if SkuCore.currentBackgroundSoundHandle then
 		StopSound(SkuCore.currentBackgroundSoundHandle, 0)
@@ -2697,6 +2706,13 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	end	
 
 	SetCVar("cameraYawSmoothSpeed", 270)
+
+	if SkuOptions.db.profile["SkuNav"].showSkuMM == true or SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap == true then
+		SkuOptions:StartStopBackgroundSound(false, nil, "map")
+		SkuOptions:StartStopBackgroundSound(true, "catpurrwaterdrop.mp3", "map")
+	else
+		SkuOptions:StartStopBackgroundSound(false, nil, "map")
+	end			
 end
 
 local old_ZONE_CHANGED_X = ""
