@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku r28.2](https://github.com/Duugu/Sku/releases/download/r28.2/Sku-r28.2-bcc.zip) (July 19th, 2022)<br> 
+[Sku r28.3](https://github.com/Duugu/Sku/releases/download/r28.3/Sku-r28.3-bcc.zip) (July 21st, 2022)<br> 
 [Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
 [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
 
@@ -23,6 +23,14 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.3
+### Core
+- Manually rebuilded the Socketing menu.
+- Fixed a bug with the trainer frame for weapon masters.
+
+### Options
+- Fixed and issue with bank bags.
+
 ## Changes in Sku r28.2
 ### Navigation
 - The addon now plays a continous low volume warning sound (ping & purr) if routes on the minimap and/or the additional sku mimimap are (unintentionally) enabled. <br>
