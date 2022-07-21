@@ -2814,7 +2814,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 							end
 
-							if aGossipListTable[index].containerFrameName then
+							if aGossipListTable[index].containerFrameName and _G[aGossipListTable[index].containerFrameName] then
 								if _G[aGossipListTable[index].containerFrameName].GetBag and _G[aGossipListTable[index].containerFrameName]:GetBag() and _G[aGossipListTable[index].containerFrameName]:GetID() then
 									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Socketing"]}, SkuGenericMenuItem)
 									tNewSubMenuEntry.macrotext = "/script SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()"

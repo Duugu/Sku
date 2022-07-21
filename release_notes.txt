@@ -3,6 +3,16 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r28.3
+	Core
+		- Manually rebuilded the Socketing menu.
+		- Fixed a bug with the trainer frame for weapon masters.
+	
+	Options
+		- Fixed and issue with bank bags.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r28.2
 	Navigation
 		- The addon now plays a continous low volume warning sound (ping & purr) if routes on the minimap and/or the additional sku mimimap are (unintentionally) enabled. 

@@ -56,20 +56,25 @@ local function ItemName_helper(aText)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function GetButtonTooltipLines(aButtonObj)
-	GameTooltip:ClearLines()
-	if aButtonObj.type then
-		if aButtonObj.type ~= "" then
-			if aButtonObj:GetScript("OnEnter") then
-				aButtonObj:GetScript("OnEnter")(aButtonObj)
+local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
+
+	local tTooltipObj = aTooltipObject or GameTooltip
+
+	if not aTooltipObject then
+		GameTooltip:ClearLines()
+		if aButtonObj.type then
+			if aButtonObj.type ~= "" then
+				if aButtonObj:GetScript("OnEnter") then
+					aButtonObj:GetScript("OnEnter")(aButtonObj)
+				end
 			end
 		end
 	end
 
 	local tQualityString = nil
-	local itemName, ItemLink = GameTooltip:GetItem()
+	local itemName, ItemLink = tTooltipObj:GetItem()
 	if not itemName then
-		itemName, ItemLink = GameTooltip:GetSpell()
+		itemName, ItemLink = tTooltipObj:GetSpell()
 	end
 
 	if ItemLink then
@@ -88,8 +93,8 @@ local function GetButtonTooltipLines(aButtonObj)
 
 
 	local tTooltipText = ""
-	for i = 1, select("#", GameTooltip:GetRegions()) do
-		local region = select(i, GameTooltip:GetRegions())
+	for i = 1, select("#", tTooltipObj:GetRegions()) do
+		local region = select(i, tTooltipObj:GetRegions())
 		if region and region:GetObjectType() == "FontString" then
 			local text = region:GetText() -- string or nil
 			if text then
@@ -103,12 +108,14 @@ local function GetButtonTooltipLines(aButtonObj)
 		end
 	end
 
-	GameTooltip:SetOwner(UIParent, "Center")
-	GameTooltip:Hide()
-	if aButtonObj:GetScript("OnLeave") then
-		aButtonObj:GetScript("OnLeave")(aButtonObj)
+	if not aTooltipObject then
+		tTooltipObj:SetOwner(UIParent, "Center")
+		tTooltipObj:Hide()
+		if aButtonObj:GetScript("OnLeave") then
+			aButtonObj:GetScript("OnLeave")(aButtonObj)
+		end
 	end
-	
+		
 	if tTooltipText ~= "asd" then
 		if tTooltipText ~= "" then
 			tTooltipText = unescape(tTooltipText)
@@ -559,7 +566,11 @@ local tTradeSkillTypeColor = {
 function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 
 	local tFrameName = "ClassTrainerFrame"
-	local tFriendlyName = _G["ClassTrainerGreetingText"]:GetText()
+	local tFriendlyName = _G["ClassTrainerNameText"]:GetText()
+	if _G["ClassTrainerGreetingText"] and _G["ClassTrainerGreetingText"].GetText and _G["ClassTrainerGreetingText"]:GetText() then
+		tFriendlyName = _G["ClassTrainerGreetingText"]:GetText()
+		print("c", tFriendlyName)
+	end
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
 		frameName = tFrameName,
@@ -593,7 +604,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 		end
 	end
 
-
+	local tHasOfSkills
 	for x = 1, 10 do
 		local tFrameName = "ClassTrainerSkill"..x
 		if _G[tFrameName] and _G[tFrameName].text and _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then
@@ -638,6 +649,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 				else
 					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
 				end
+				tHasOfSkills = true
 			end
 		end
 	end
@@ -688,23 +700,24 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 		tCost = SkuGetCoinText(_G["ClassTrainerDetailMoneyFrame"].staticMoney, true)
 	end
 
-	_G["ClassTrainerSkillIcon"].type = "sku"
-	local tSkillText, tSkillFullText = GetButtonTooltipLines(_G["ClassTrainerSkillIcon"])
-	local tFrameName = "ClassTrainerDetailScrollFrame"
-	if tName and tName ~= "" then
-		local tFriendlyName = L["Ausgewählt: "]..tName
-		table.insert(aParentChilds, tFriendlyName)
-		aParentChilds[tFriendlyName] = {
-			frameName = tFrameName,
-			RoC = "Child",
-			type = "FontString",
-			obj = _G[tFrameName],
-			textFirstLine = tFriendlyName.."...",
-			textFull = tName..(("\r\n"..tCost) or "")..(("\r\n"..tRequirements) or "").."\r\n"..tSkillFullText,
-			childs = {},
-		}   
+	if tHasOfSkills and _G["ClassTrainerSkillIcon"] then
+		_G["ClassTrainerSkillIcon"].type = "sku"
+		local tSkillText, tSkillFullText = GetButtonTooltipLines(_G["ClassTrainerSkillIcon"])
+		local tFrameName = "ClassTrainerDetailScrollFrame"
+		if tName and tName ~= "" then
+			local tFriendlyName = L["Ausgewählt: "]..tName
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "FontString",
+				obj = _G[tFrameName],
+				textFirstLine = tFriendlyName.."...",
+				textFull = tName..(("\r\n"..tCost) or "")..(("\r\n"..tRequirements) or "").."\r\n"..tSkillFullText,
+				childs = {},
+			}   
+		end
 	end
-
 	
 
 
@@ -753,6 +766,111 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 
 
 end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Build_ItemSocketingFrame(aParentChilds)
+
+	local tFriendlyName, tFullText = GetButtonTooltipLines(nil, _G["ItemSocketingDescription"])
+	local tFrameName = "ItemSocketingFrame"
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "FontString",
+		obj = _G[tFrameName],
+		textFirstLine = tFriendlyName.." ...",
+		textFull = tFullText,
+		childs = {},
+	}
+	local tSocketCount = GetNumSockets()
+	for i = 1, tSocketCount do
+		local tFrameName = "ItemSocketingSocket"..i
+
+		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+			local tCurrentGemName, tCurrentGemId = GetExistingSocketInfo(i)
+			if GetNewSocketInfo(i) then
+				tCurrentGemName, tCurrentGemId = GetNewSocketInfo(i)
+			end
+			local tCurrentGemTooltip = ""
+			_G[tFrameName].type = "Button"
+			if tCurrentGemName then
+				tCurrentGemName, tCurrentGemTooltip = GetButtonTooltipLines(_G[tFrameName])
+				tCurrentGemName = tCurrentGemName.." ..."
+			else
+				tCurrentGemName = L["Empty"]
+			end
+
+			local tFriendlyName = i.." "..GetSocketTypes(i).." "..L["socket"]..", "..L["current gem:"].." "..tCurrentGemName
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G[tFrameName],
+				textFirstLine = tFriendlyName,
+				textFull = tCurrentGemTooltip,
+				childs = {},
+				func = function(self, aButton)
+					self:Click()
+				end,            
+				click = true,
+			}   
+		end
+	
+	end
+
+	--if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+	local tFriendlyName = "Edelsteine Sockeln"
+	local tFrameName = "ItemSocketingSocketButton"
+	local tFunc = function(self, aButton)
+		self:GetScript("OnClick")(self, aButton)             
+		self:GetScript("OnClick")(self, aButton)             
+	end
+	if _G[tFrameName]:IsEnabled() ~= true then
+		tFriendlyName = tFriendlyName.." (Deaktiviert)"
+		tFunc = nil
+	end
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Button",
+		obj = _G[tFrameName],
+		textFirstLine = tFriendlyName,
+		textFull = "",
+		childs = {},
+		func = tFunc,            
+		click = true,
+	}   
+
+
+	local tFriendlyName = "Schließen"
+	local tFrameName = "ItemSocketingCloseButton"
+	local tFunc = function(self, aButton)
+		self:GetScript("OnClick")(self, aButton)             
+		self:GetScript("OnClick")(self, aButton)             
+	end
+	if _G[tFrameName]:IsEnabled() ~= true then
+		tFriendlyName = tFriendlyName.." (Deaktiviert)"
+		tFunc = nil
+	end
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Button",
+		obj = _G[tFrameName],
+		textFirstLine = tFriendlyName,
+		textFull = "",
+		childs = {},
+		func = tFunc,            
+		click = true,
+	}   	
+	
+
+end
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tTradeSkillTypeColor = {

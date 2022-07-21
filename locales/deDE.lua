@@ -1512,3 +1512,6 @@ L["Read all tooltips"] = "Alle tooltips lesen"
 L["Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"] = "Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"
 L["Eigene combopunkte"] = "Eigene combopunkte"
 L["Deine combopunkte auf dein aktuelles ziel"] = "Deine combopunkte auf dein aktuelles ziel"
+
+L["socket"] = "sockel"
+L["current gem:"] = "aktueller edelstein:"

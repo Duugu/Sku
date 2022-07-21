@@ -101,6 +101,8 @@ SkuCore.interactFramesListManual = {
 	["QuestFrame"] = function(...) SkuCore:QuestFrame(...) end,
 	["ItemTextFrame"] = function(...) SkuCore:ItemTextFrame(...) end,
 	["ClassTrainerFrame"] = function(...) SkuCore:Build_ClassTrainerFrame(...) end,
+	["ItemSocketingFrame"] = function(...) SkuCore:Build_ItemSocketingFrame(...) end,
+	
 	
 }
 

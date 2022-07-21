@@ -1518,3 +1518,6 @@ L["Read all tooltips"] = "Read all tooltips"
 L["Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"] = "Your combo points on the current target triggering the aura"
 L["Eigene combopunkte"] = "Your combo points"
 L["Deine combopunkte auf dein aktuelles ziel"] = "Your combo points on the current target"
+
+L["socket"] = "socket"
+L["current gem:"] = "current gem:"
