@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku r28.4](https://github.com/Duugu/Sku/releases/download/r28.4/Sku-r28.4-bcc.zip) (July 22st, 2022)<br> 
+[Sku r28.5](https://github.com/Duugu/Sku/releases/download/r28.5/Sku-r28.5-bcc.zip) (July 22st, 2022)<br> 
 [Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
 [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
 
@@ -23,6 +23,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.4
+
+### Auras
+- Fixed an issue with combo points.
+
 ## Changes in Sku r28.4
 ### Core
 - Fixed the German text in socketing menu.
