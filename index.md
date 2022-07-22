@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku r28.3](https://github.com/Duugu/Sku/releases/download/r28.3/Sku-r28.3-bcc.zip) (July 21st, 2022)<br> 
+[Sku r28.4](https://github.com/Duugu/Sku/releases/download/r28.4/Sku-r28.4-bcc.zip) (July 22st, 2022)<br> 
 [Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
 [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
 
@@ -23,6 +23,12 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.4
+### Core
+- Fixed the German text in socketing menu.
+- Fixed the enchanting menu. Should now work again.
+- Fixed the Popup menu. Example: yes/no on warning for enchanting an already enchanted item. Should now work as intended, without anything blocked. Even with the "Do you want to allow custom scrips..." thing and such stuff should work. But it is untested.
+
 ## Changes in Sku r28.3
 ### Core
 - Manually rebuilded the Socketing menu.
