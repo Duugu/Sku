@@ -23,7 +23,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
-## Changes in Sku r28.4
+## Changes in Sku r28.5
 
 ### Auras
 - Fixed an issue with combo points.
