@@ -435,7 +435,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 				nil,
 				nil,
 			}
-			tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth,		
+			tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth
 			SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)
 		end
 	end
@@ -460,7 +460,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			nil,
 			nil,
 		}
-		tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth,		
+		tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth
 		SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)
 	end
 
@@ -483,7 +483,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			nil,
 			nil,
 		}
-		tEventData[36] = SkuAuras.UnitRepo[tUnitId].unitPower,		
+		tEventData[36] = SkuAuras.UnitRepo[tUnitId].unitPower
 		SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)		
 	end
 
@@ -507,7 +507,7 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 				nil,
 				nil,
 			}
-			tEventData[51] = SkuAuras.UnitRepo[tUnitId].unitCombo,		
+			tEventData[51] = SkuAuras.UnitRepo[tUnitId].unitCombo
 			SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)		
 		end
 	end	
