@@ -2758,6 +2758,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 					tNewMenuEntry.BuildChildren = function(self)
 						if (aGossipListTable[index].isBag and CursorHasItem()) or not aGossipListTable[index].isBag then
 							self.children = {}
+
 							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
 								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames()"
@@ -2768,9 +2769,11 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										end
 										if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
 											if string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button1") then
-												tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button1\"]) SkuCore:CheckFrames()"
+												--tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button1\"]) SkuCore:CheckFrames()"
+												tNewSubMenuEntry.macrotext = [[/click StaticPopup1Button1 LeftButton /script SkuCore:CheckFrames()]]
 											elseif string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button2") then
-												tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button2\"]) SkuCore:CheckFrames()"
+												--tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button2\"]) SkuCore:CheckFrames()"
+												tNewSubMenuEntry.macrotext = [[/click StaticPopup1Button2 LeftButton /script SkuCore:CheckFrames()]]
 											end
 										end
 									end
@@ -2792,6 +2795,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									end
 								end
 							end
+
 							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
 								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
@@ -2813,6 +2817,8 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									end
 								end
 							end
+
+
 
 							if aGossipListTable[index].containerFrameName and _G[aGossipListTable[index].containerFrameName] then
 								if _G[aGossipListTable[index].containerFrameName].GetBag and _G[aGossipListTable[index].containerFrameName]:GetBag() and _G[aGossipListTable[index].containerFrameName]:GetID() then

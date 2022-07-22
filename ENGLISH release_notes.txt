@@ -3,6 +3,14 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r28.4
+	Core
+		- Fixed the German text in socketing menu.
+		- Fixed the enchanting menu. Should now work again.
+		- Fixed the Popup menu. Example: yes/no on warning for enchanting an already enchanted item. Should now work as intended, without anything blocked. Even with the "Do you want to allow custom scrips..." thing and such stuff should work. But it is untested.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r28.3
 	Core
 		- Manually rebuilded the Socketing menu.

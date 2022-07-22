@@ -821,14 +821,14 @@ function SkuCore:Build_ItemSocketingFrame(aParentChilds)
 	end
 
 	--if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-	local tFriendlyName = "Edelsteine Sockeln"
+	local tFriendlyName = _G["ItemSocketingSocketButton"]:GetText()
 	local tFrameName = "ItemSocketingSocketButton"
 	local tFunc = function(self, aButton)
 		self:GetScript("OnClick")(self, aButton)             
 		self:GetScript("OnClick")(self, aButton)             
 	end
 	if _G[tFrameName]:IsEnabled() ~= true then
-		tFriendlyName = tFriendlyName.." (Deaktiviert)"
+		tFriendlyName = tFriendlyName.." ("..L["disabled"]..")"
 		tFunc = nil
 	end
 	table.insert(aParentChilds, tFriendlyName)
@@ -845,14 +845,14 @@ function SkuCore:Build_ItemSocketingFrame(aParentChilds)
 	}   
 
 
-	local tFriendlyName = "Schließen"
+	local tFriendlyName = L["Close"]
 	local tFrameName = "ItemSocketingCloseButton"
 	local tFunc = function(self, aButton)
 		self:GetScript("OnClick")(self, aButton)             
 		self:GetScript("OnClick")(self, aButton)             
 	end
 	if _G[tFrameName]:IsEnabled() ~= true then
-		tFriendlyName = tFriendlyName.." (Deaktiviert)"
+		tFriendlyName = tFriendlyName.." ("..L["disabled"]..")"
 		tFunc = nil
 	end
 	table.insert(aParentChilds, tFriendlyName)
@@ -1312,7 +1312,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 					childs = {},
 					func = _G[tFrameName]:GetScript("OnClick"),
 					click = true,
-					--containerFrameName = "CraftCreateButton",
+					containerFrameName = "CraftCreateButton",
 					onActionFunc = function(self, aTable, aChildName) end,
 				}   
 			end

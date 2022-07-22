@@ -1484,12 +1484,12 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:StaticPopup_Hide(which, text_arg1, text_arg2, data, insertedFrame)
-	--dprint("StaticPopup_Hide", which, text_arg1, text_arg2, data, insertedFrame)
+	--print("StaticPopup_Hide", which, text_arg1, text_arg2, data, insertedFrame)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:StaticPopup_Show(which, text_arg1, text_arg2, data, insertedFrame)
-	--dprint("StaticPopup_Show", which, text_arg1, text_arg2, data, insertedFrame)
+	--print("StaticPopup_Show", which, text_arg1, text_arg2, data, insertedFrame)
 	SkuCore:CheckFrames()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
