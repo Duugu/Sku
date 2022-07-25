@@ -133,7 +133,7 @@
             <p>There are automated notifications in the Discord channel "Sku updates" (<a href="https://discord.com/channels/944053322434879628/944061589420662825">https://discord.com/channels/944053322434879628/944061589420662825</a>) on every new release.</p>
                <p><a href="#c0">Back to content</a></p>
             <h2 id="c2s13">Do I need a numpad to use the addon / play the game?</h2>
-            <p>Yes, you do. An example of why  that is mandatory is in How to I collect objects in the game world (like cactus apples)?.</p>
+            <p>It would be very, very helpful, but it isn't 100% required.</p>
                <p><a href="#c0">Back to content</a></p>
             <h2 id="c2s14">Can I change the key bindings from NUMPAD 7-9 to something else?</h2>
             <p>You can't, sorry.</p>
@@ -144,12 +144,75 @@
             <p>To manually check you HP / mana, press SHIFT + DOWN to open the overview page (you need to have the menu closed to have that working). Hold shift and repeatingly press DOWN to get to the "General" section. You HP and Mana should be in that section.</p>
                <p><a href="#c0">Back to content</a></p>
             <h2 id="c3s2">How to I collect objects in the game world (like cactus apples)?</h2>
-            <p>Collecting objects in the game world is a bit challenging. It's trial and error.
-            <p>First, use a waypoint to that object (there are waypoints to all objects in the game) to navigate to its position. At the destination, press NUMPAD 7 to do a right click in front of your character in the game world. If you're lucky (and navigated carefully), that right click sould hit the object and start collecting it. If that happens, the addon will say Cast (collection objects in the game world are actually casts). Wait for the object to be collected (you hear the item being added to your bag).</p>
-            <p>If you're not lucky (and that will usually be the case) the object isn't exactly at the point the script is clicking on with NUMPAD 7. It's probably slightly above, or below, or left, or right. Use NUMPAD 8 to click again. NUMPAD 8 just clicks a bit above the point of NUMPAD 7. If nothing happens, use NUMPAD 9. That again is a bit above the point of NUMPAD 8.</p>
-            <p>Important: Do not spam NUMPAD 7-9. Those clicks do take a few milliseconds. If you're spamming those buttons you never will get that item. Press NUMPAD 7, wait a second, press NUMPAD 8, and so on.</p>
-            <p>If none of the clicks work successfully you need to start turning around in very small steps, and try clicking with NUMPAD 7-9 again. Repeat that (turn a few degrees, click), until you hear Cast.</p>
-            <p>If you aren't successful, no matter how you're turning and clicking, there most probably is no item to collect. The waypoints for those items are not showing the items. Those waypoints are just spawn points. That means, there COULD be an item at that point. But it might not be there. If someone else collected that item at that waypoint before you, then it may take a while until the items respawn. In those cases just open the audio menu and navigate to another waypoint for that object. Most objects do have many spawn points.</p>
+               <p>First, use a waypoint to that object (there are waypoints to all objects in the game) to navigate to its position.</p>
+               <p>Then you are using scan and interact with mouseover for interacting with objects in the game world, fishing, finding corpses and more.</p>
+               <p>Scanning is automatically turning your camera around you (and thus the mouse pointer) very fast.</p>
+               <p>While doing that it is constantly checking if the mouse pointer is getting over an object.</p>
+               <p>If that is the case it instantly stops turning, and thus your mouse pointer will be on the object.</p>
+               <p>With the mouse pointing on the object you then can press the new shortcut Shift + G (interact with mouse over) to right click on that object.</p>
+               <p>Shift + G is working like the shortcut G (interact with target), except it is interacting with the object under your mouse, instead of your current target.</p>
+               <p>Your character will either directly use the object (if you are in use range), or move to the object and use it then.</p>
+               <p>The scan stops on the first found object (see below for what objects the different scans are looking for).</p>
+               <p>You then can either press SHIFT + G to interact with that object, or using SHIFT + L to continue the scan to find another object of that type.</p>
+               <p>A running scan will be instantly stopped if you do start moving.</p>
+               <p>The different scans:</p>
+               <p>There are 8 different scans available. They have different ranges and accuracies and they are scanning for different objects. You will find details on them below this list.</p>
+
+               <ul>
+               <li><p>Scan 1: SHIFT + U, 360 10 fast, herbs, mining nodes</p><li>
+               <li><p>Scan 2: SHIFT + I, 100 Front, fishing bobber</p><li>
+               <li><p>Scan 3: SHIFT + O, 360 10 fast, usable objects</p><li>
+               <li><p>Scan 4: SHIFT + P, 360 10 fast, lootable corpse, skinnable corpse</p><li>
+               <li><p>Scan 5: CONTROL + SHIFT + U, 360 30 fast, herb, mining nodes</p><li>
+               <li><p>Scan 6: CONTROL + SHIFT + O, 360 30 fast, usable objects</p><li>
+               <li><p>Scan 7: CONTROL + SHIFT + P, 360 30 fast, lootable corpse, skinnable corpse</p><li>
+               <li><p>Scan 8: CONTROL + SHIFT + I, 360 30 accurate, any</p><li>
+               </ul>
+
+               <p>Details on the scans:</p>
+               <p>Each scan (1-8) consists of a specific scan type and a list of objects it is scanning for.</p>
+               <p>You can assign or adjust any combination of scan type and object(s) to each of those 8 scans. To do that go to Core > Scan settings and to the specific scan (1-8).</p>
+               <p>There are 5 different scan types to choose from. They differ in scan range, accuracy and speed.</p>
+
+               <ul>
+               <li><p>Scan type 1: 100 front - 100 degrees in front of you, 5-45 meters range, takes up to 22 seconds. Used for fishing.</p><li>
+               <li><p>Scan type 2: 360 10, fast - 360 degrees around you, 0-10 meters, takes up to 10 seconds. Used for usual quick scanning of objects near you.</p><li>
+               <li><p>Scan type 3: 360 30, fast - 360 degrees around you, 3-30 meters, takes up to 15 seconds. Used for usual quick scanning of objects in up to 30 meters range.</p><li>
+               <li><p>Scan type 4: 360 10, accurate - 360 degrees degrees around you, 0-10 meters, takes up to 15 seconds. The more accurate version of scan type 2, if you can’t find an object with scan 2.</p><li>
+               <li><p>Scan type 5: 360 30, accurate - 360 degrees degrees around you, 3-30 meters, takes up 28 seconds. The more accurate version of scan type 3, if you can’t find an object with scan 3.</p><li>
+               </ul>
+
+               <p>And there are 12 different object types you can choose to scan for:</p>
+
+               <ul>
+               <li><p>corpse lootable: any corpse that is lootable</p><li>
+               <li><p>corpse skinnable: any corpse that is skinnable</p><li>
+               <li><p>corpse not lootable: any corpse that is NOT lootable</p><li>
+               <li><p>any creature: any creature (mob, npc, player, etc.)</p><li>
+               <li><p>quest object: any object in the game world that is required for any of your current quests</p><li>
+               <li><p>herb: any herb for herbalism (only herbs are considered that are set to On under Core > Options > Resource scanning > Herbs)</p><li>
+               <li><p>vein: any mining node (only mining nodes are considered that are set to On under Core > Options > Resource scanning > Mining nodes)</p><li>
+               <li><p>bobber: the fishing bobber</p><li>
+               <li><p>usable object: any object that is usable/clickable (for example a mailbox)</p><li>
+               <li><p>any object: any object in the game world</p><li>
+               <li><p>target creature: the creature your are currently targeting (mob, npc, player, etc.)</p><li>
+               <li><p>any: any object in the game world</p><li>
+               </ul>
+
+               <p>Just go to Core > Scan settings and to the scan (1-8) you would like to configure/adjust. Then select a new scan type and/or add/remove object categories, to adjust that scan.</p>
+               <p>Helpful information on scanning:</p>
+               <p>Some “objects” don’t count as objects. Examples are mage portals, meeting stones, dungeon portals. To find them, use a scan that is scanning for “any”. (default: scan 8, Control + Shift + I)</p>
+               <p>Scanning is turning the camera. That is working perfect on flat terrain. It can be problematic if there slopes, in buildings, etc. If a fast scan isn’t detecting an object, just try an accurate scan.</p>
+               <p>It can also be difficult if objects are covered by other objects (like mobs or players). Or if there are several objects at the same place (like 2 or 3 corpses almost at the same position).</p>
+               <p>Small objects can be easily overlooked by fast scans. Set up scans to use an “accurate” scan type (4 or 5) to find those objects.</p>
+               <p>Scanning can fail in some cases. Then the camera is turning slightly to far. If you do a scan, and there is an object, but nothing happens with Shift + G, just retry the scan.</p>
+               <p>Scanning is finding a mob or object at the position where it is right now. If a mob is moving, then it naturally will move away from the mouse cursor if you don’t press Shift + G as fast as possible on finding it.</p>
+               <p>If you are continuing a scan, then only the first object of each type will be found, as the addon can’t differentiate between more objects of the same type. This only applies to objects. Not to corpses, mobs, etc.</p>
+               <p>If you would like to choose a new key binding for a specific scan, go to Core > Sku key binds > Bind key and filter for “scan”.</p>
+               <p>To change the sound on scanning go to Core > Options > Scan Background Sound</p>
+
+               <p>If you aren't successful with scanning, there most probably is no item to collect. The waypoints for those items are not showing the items. Those waypoints are just spawn points. That means, there COULD be an item at that point. But it might not be there. If someone else collected that item at that waypoint before you, then it may take a while until the items respawn. In those cases just open the audio menu and navigate to another waypoint for that object. Most objects do have many spawn points.</p>
+
                <p><a href="#c0">Back to content</a></p>
             <h2 id="c3s3">How / where do I repair my equipment?</h2>
             <p>Most weapon/armor vendors do repair. Usually you don't need to do that manually. It's enough to get to such a merchant and interact with it. The addon automatically repairs your stuff if you're interacting with a merchant who provides the option to repair. If you have enough money.</p>
@@ -240,7 +303,7 @@
             <p>If a creature is dead you will stop targeting it. Just press H to re-target the last target (the dead creature). Then press G to interact with the corpse and get the loot.</p>
                <p><a href="#c0">Back to content</a></p>
             <h2 id="c5s2">How do I know what I've just looted?</h2>
-            <p>All loot, xp gains, and other stuff are listed in the chat. Press CTRL + SHIFT + F2 to open the chat. Then use DOWN / UP to read the chat lines. Press ESC or CTRL + SHIFT + F2 to close the chat.</p>
+            <p>All loot, xp gains, and other stuff are listed in the chat. Press SHIFT + F2 to open the chat. Then use DOWN / UP to read the chat lines. Press ESC or CTRL + SHIFT + F2 to close the chat.</p>
                <p><a href="#c0">Back to content</a></p>
          </article>
 
