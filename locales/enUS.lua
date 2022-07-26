@@ -1521,3 +1521,5 @@ L["Deine combopunkte auf dein aktuelles ziel"] = "Your combo points on the curre
 
 L["socket"] = "socket"
 L["current gem:"] = "current gem:"
+L["you receive loot"] = "you receive loot"; 
+L["Auto Read Loot"] = "Automatically read loot chat" 

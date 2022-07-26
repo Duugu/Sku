@@ -149,6 +149,7 @@ function SkuChat:ChatFrame1AddMessageHook(...)
 				((infor == 100 and infog == 28 and infob == 3) and SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayRaidChat == true) or
 				((infor == 100 and infog == 28 and infob == 0) and SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayRaidWarningChat == true) or
 				((infor == 100 and infog == 50 and infob == 100) and SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayTellChat == true) or
+				(string.find(string.lower(SkuChatChatBuffer[table.getn(SkuChatChatBuffer)].body), L["you receive loot"])  and SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayLootChat == true) or
 				(string.find(string.lower(SkuChatChatBuffer[table.getn(SkuChatChatBuffer)].body), "skuchat") and SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlaySkuChannelChat == true) or
 				(
 					(

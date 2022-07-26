@@ -178,8 +178,20 @@ SkuChat.options = {
 						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlaySkuChannelChat
 					end,
 				},		
+autoPlayLootChat = {
+order = 6, 
+name = L["Auto Read Loot"], 
+desc = "", 
+type = "toggle", 
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayLootChat = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoPlaySettings.autoPlayLootChat
+					end,
+},
 				autoPlayRaidChat = {
-					order = 5,
+					order = 7,
 					name = L["Raid Chat automatisch lesen"],
 					desc = "",
 					type = "toggle",
@@ -191,7 +203,7 @@ SkuChat.options = {
 					end,
 				},		
 				autoPlayRaidWarningChat = {
-					order = 5,
+					order = 8,
 					name = L["Raid Warnung automatisch lesen"],
 					desc = "",
 					type = "toggle",
