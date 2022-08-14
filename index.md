@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku r28.6](https://github.com/Duugu/Sku/releases/download/r28.6/Sku-r28.6-bcc.zip) (August 14th, 2022)<br> 
+[Sku r28.7](https://github.com/Duugu/Sku/releases/download/r28.7/Sku-r28.7-bcc.zip) (August 14th, 2022)<br> 
 
 *Old updates:* <br>
 [Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
@@ -23,6 +23,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.7
+	
+### Chat
+- Fixed a bug that caused messages to show twice in the chat.
+
 ## Changes in Sku r28.6
 
 ### Navigation
