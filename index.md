@@ -8,6 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
+[Sku Script (wow_menu) r2.13](https://github.com/Duugu/wow_menu/releases/download/r2.13/wow_menu-r2.13-bcc.zip) (August 14th, 2022)<br>
 [Sku r28.7](https://github.com/Duugu/Sku/releases/download/r28.7/Sku-r28.7-bcc.zip) (August 14th, 2022)<br> 
 
 *Old updates:* <br>
@@ -23,6 +24,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku Script (wow_menu) r2.13
+- Updated the regions and server lists to reflect the recent server changes. Switching server is working again.
+
 ## Changes in Sku r28.7
 	
 ### Chat
