@@ -4,6 +4,13 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Änderungen in Sku r28.7
+	
+	Chat
+		- Fehler behoben, durch den Nachrichten zweimal im Chat angezeigt wurden.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Sku r28.6
 
 	Navigation

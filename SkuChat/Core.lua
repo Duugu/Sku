@@ -2025,10 +2025,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:DEFAULT_CHAT_FRAME_AddMessage(...)
 	local a, b, c, d, e, f = ...
-	if SkuOptions.db.profile["SkuChat"].tabs[1] then
-		if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName] then
-			if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName].AddMessage then
-				_G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName]:AddMessage("SAY", a, 1, 1, 1, 0, 0, 0, "AddMessage")
+	--SkuCore:Debug((a or "nil").." "..(b or "nil").." "..(c or "nil").." "..(d or "nil").." "..(e or "nil").." "..(f or "nil"))
+	if SkuOptions.db.profile["SkuChat"].tabs then
+		if SkuOptions.db.profile["SkuChat"].tabs[1] then
+			if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName] then
+				if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName].AddMessage then
+					if b == nil and c == nil and  d == nil and  e == nil and  f == nil then
+						_G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName]:AddMessage("SAY", a, 1, 1, 1, 0, 0, 0, "AddMessage")
+					end
+				end
 			end
 		end
 	end
