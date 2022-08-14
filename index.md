@@ -36,7 +36,7 @@ The chat module now is already using the new chat system from the Wrath version 
 - How to use the new chat<br>
 	The chat and all features described below are now usable in combat.<br>
 	The chat now has all chat messages sorted in tabs. That way you can create different tabs for different chat content and get more overview.<br>
-	As default there is only one chat tab named "Standard", with all chat messages. You could for example create a second chat tab, named "Party and Raid", with only that chat it.<br>
+	As default there is only one chat tab named "Default", with all chat messages. You could for example create a second chat tab, named "Party and Raid", with only that chat it.<br>
 	The chat still opens with Shift + F2.<br>
 	On Shift + F2 the addon first reads the name of the current tab and then the first (newest) chat line.<br>
 	You can use arrow down/up to move to the next/previous chat line.<br>
