@@ -8,11 +8,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku r28.5](https://github.com/Duugu/Sku/releases/download/r28.5/Sku-r28.5-bcc.zip) (July 22st, 2022)<br> 
-[Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
-[SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
+[Sku r28.6](https://github.com/Duugu/Sku/releases/download/r28.6/Sku-r28.6-bcc.zip) (August 14th, 2022)<br> 
 
 *Old updates:* <br>
+[Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
+[SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
 [SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) (28.05.2022) <br>
@@ -23,6 +23,58 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.6
+
+### Navigation
+- Fixed a bug with numpad 9 / i not working with some addons that are modifying the chat input box.
+
+### Options
+- The menu now mandatory uses the Blizzard TTS. It is not possible to get back Sku TTS for the menu. The option to set Blizzard tts for the menu to on/off under Options > Options was removed.
+
+### Chat
+The chat module now is already using the new chat system from the Wrath version of the Sku addon.<br>
+- How to use the new chat<br>
+	The chat and all features described below are now usable in combat.<br>
+	The chat now has all chat messages sorted in tabs. That way you can create different tabs for different chat content and get more overview.<br>
+	As default there is only one chat tab named "Standard", with all chat messages. You could for example create a second chat tab, named "Party and Raid", with only that chat it.<br>
+	The chat still opens with Shift + F2.<br>
+	On Shift + F2 the addon first reads the name of the current tab and then the first (newest) chat line.<br>
+	You can use arrow down/up to move to the next/previous chat line.<br>
+	If you have more tabs then just Default (you need to create them), you can use arrow Right and Left to switch to those other tabs. Then just use Down/Up to read the chat lines in that tab.<br>
+- Chat tabs<br>
+	To see all current tabs go to Chat > Tabs. If you haven't created additional tabs, then the only tab there is "Default".<br>
+	You can create additional tabs using the New Tab menu under Chat > Tabs.<br>
+- Message types for tabs<br>
+	Every tab has its own settings for what messages should be shown in that specific tab.<br>
+	Go to Chat > Tabs > Default > Message Types to see what message types are shown in this tab.<br>
+	The categories like Combat, PvP, Other, etc. and the different chat types under those categories are the same that the blizzard interface is using.<br>
+	Every chat typ can have a specific action assigned. "Text" means, that the message type is shown in the specific tab. "Audio" means, the tab shows the message type, AND the messages are read out loud. And "Silent" means, that chat tab is not showning those messages, and they are not read out.<br>
+	Just browse the categories and message types of the Default chat tab, and set them to actions that you find appropiate.<br>
+- Chat channels for tabs<br>
+	The same system is there for all chat channels you've joined.<br>
+	Go to Chat > Tabs > Default > Channels and see what channels have what action for this tab.<br>
+- Whispers<br>
+	There are a bunch of new settings for the chat under Chat > Options > Chat settings.<br>
+	One of those is "Show whispers in new tab", which is On as default.<br>
+	Every whisper that your are receiving (or you are sending) will be shown in a new tab with this setting.<br>
+	So, if you do receive a whisper from Palabob, then that whisper (and the full following conversation, if there is any) is not shown in your "Default" tab, but in a new tab with the name of that player.<br>
+	Turn "Show whispers in new tab" off, to have all whispers in the default tab inline, instead in new tabs.<br>
+- chat Line context menu<br>
+	Every chat line in every tab has a new audio context menu with actions.<br>
+	To open the line context menu press Shift + Enter. Then use arrow Down/up as usual, to browse the options. To select/use an option, press Shift + Enter on that option. To leave the line context menu and get back to the chat lines use arrow left.<br>
+	Some context menu options are:<br>
+		- send message to channel<br>
+		- whisper sender<br>
+		- invite sender<br>
+		- copy sender name<br>
+		- copy this chat line<br>
+		- copy all chat lines<br>
+		- add sender to friend list<br>
+		- ignore sender<br>
+	Not all of them are always availabe. Example: "Ignore sender" isn't available for System chat messages. :D<br>
+- History<br>
+	And finally, the chat history for all tabs is saved between sessions. There are up to 100 old messages in each tab.
+
 ## Changes in Sku r28.5
 
 ### Auras
