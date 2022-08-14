@@ -104,18 +104,6 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 	if fields then
 
-		--[[
-		if fields[1] == "on" then
-			SkuOptions.db.profile[MODULE_NAME].enable = true
-			--dprint("SkuOptions on")
-		end
-
-		if fields[1] == "off" then
-			SkuOptions.db.profile[MODULE_NAME].enable = false
-			--dprint("SkuOptions off")
-		end
-		]]
-
 		if fields[1] == "version" then
 			local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo("Sku")
 			print(title)
@@ -248,10 +236,10 @@ function SkuOptions:SlashFunc(input, aSilent)
 				end
 				if tWidget:IsShown() then
 					tWidget:Hide()
-					SkuOptions.Voice:OutputStringBTtts("Chat sichtbar", false, true, 0.2)
+					SkuOptions.Voice:OutputStringBTtts("Chat sichtbar", false, true, 0.2, nil, nil, nil, 2)
 				else
 					tWidget:Show()
-					SkuOptions.Voice:OutputStringBTtts("Chat verdeckt", false, true, 0.2)
+					SkuOptions.Voice:OutputStringBTtts("Chat verdeckt", false, true, 0.2, nil, nil, nil, 2)
 				end
 			end
 
@@ -277,6 +265,7 @@ function SkuOptions:OnProfileChanged()
 	if SkuCore.AutoChange == true then return end
 
 	dprint("SkuOptions:OnProfileChanged")
+	SkuChat:PLAYER_ENTERING_WORLD()
 	SkuNav:PLAYER_ENTERING_WORLD()
 
 	SkuOptions:SkuKeyBindsUpdate(true)
@@ -309,12 +298,13 @@ function SkuOptions:OnProfileChanged()
 
 	SkuOptions:SkuKeyBindsUpdate()
 
-	SkuOptions.Voice:OutputStringBTtts(L["Profil gewechselt"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Profil gewechselt"], false, true, 0.2, nil, nil, nil, 2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnProfileCopied()
 	dprint("SkuOptions:OnProfileCopied")
+	SkuChat:PLAYER_ENTERING_WORLD()
 	SkuNav:PLAYER_ENTERING_WORLD()
 
 	SkuOptions:SkuKeyBindsUpdate(true)
@@ -347,7 +337,7 @@ function SkuOptions:OnProfileCopied()
 
 	SkuOptions:SkuKeyBindsUpdate()
 
-	SkuOptions.Voice:OutputStringBTtts(L["Profil kopiert"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Profil kopiert"], false, true, 0.2, nil, nil, nil, 2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -359,7 +349,7 @@ function SkuOptions:OnProfileReset()
 	SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
 	SkuNav:LoadLinkDataFromProfile()
 
-
+	SkuChat:PLAYER_ENTERING_WORLD()
 	SkuNav:PLAYER_ENTERING_WORLD()
 
 	SkuOptions:SkuKeyBindsResetBindings()
@@ -393,7 +383,7 @@ function SkuOptions:OnProfileReset()
 
 	SkuOptions:SkuKeyBindsUpdate()
 
-	SkuOptions.Voice:OutputStringBTtts(L["Profil zurückgesetzt"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Profil zurückgesetzt"], false, true, 0.2, nil, nil, nil, 2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -758,7 +748,7 @@ function SkuOptions:CreateControlFrame()
 		ttime = ttime + time
 		if ttime > 0.1 then
 			if SkuOptions.TTS:IsVisible() == true then
-				if IsShiftKeyDown() == false and SkuOptions.ChatOpen ~= true and SkuOptions.TTS:IsAutoRead() ~= true then
+				if IsShiftKeyDown() == false and SkuChat.ChatOpen ~= true and SkuOptions.TTS:IsAutoRead() ~= true then
 					if SkuOptions.currentMenuPosition then
 						if SkuOptions.currentMenuPosition.textFullInitial then
 							SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
@@ -1137,6 +1127,8 @@ function SkuOptions:CreateMainFrame()
 		SkuCore.openMenuAfterMoving = false
 		--dprint("SkuCore.isMoving1", SkuCore.isMoving)
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key or a == nil then
+			SkuChat:CloseChat()
+
 			if #SkuOptions.Menu == 0 then
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuNavMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
@@ -1251,15 +1243,15 @@ function SkuOptions:CreateMainFrame()
 				end
 				
 
-				SkuOptions.Voice:OutputStringBTtts(L["Menu;closed"], false, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts(L["Menu;closed"], false, true, 0.3, true, nil, nil, 2)
 				SkuCore.Debug("", L["Menu;closed"], true)
 
 			else
 				self:Show()
 				SkuOptions.currentMenuPosition = SkuOptions.Menu[1]
 				PlaySound(811)
-				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true)
-				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3)
+				SkuOptions.Voice:OutputStringBTtts(L["Menu;open"], true, true, 0.3, true, nil, nil, 2)
+				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, false, true, 0.3, nil, nil, nil, 2)
 				SkuCore.Debug("", SkuOptions.currentMenuPosition.name, true)
 			end
 		end
@@ -1291,22 +1283,22 @@ function SkuOptions:CreateMainFrame()
 
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key then
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1 = tBread
-					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3)
+					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
 				end
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key then
-					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3)
+					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2 = tBread
 				end
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key then
-					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3)
+					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3 = tBread
 				end
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key then
-					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3)
+					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
 					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4 = tBread
 				end
 			else
-				SkuOptions.Voice:OutputStringBTtts(L["Impossible. Menu is not open."], true, true, 0.3)
+				SkuOptions.Voice:OutputStringBTtts(L["Impossible. Menu is not open."], true, true, 0.3, nil, nil, nil, 2)
 			end
 		end
 
@@ -1505,7 +1497,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey == "CTRL-RIGHT" then
 			if SkuOptions.currentMenuPosition then
 				if SkuOptions.currentMenuPosition.name ~= "" then
-					SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, false, true, 0, false, nil, nil, nil, true) -- for strings with lookup in string index
+					SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, false, true, 0, false, nil, nil, 2, true) -- for strings with lookup in string index
 				end
 			end
 			return
@@ -1662,7 +1654,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey ~= "ESCAPE" and _G["OnSkuOptionsMainOption1"]:IsVisible() and aKey ~= "SHIFT-DOWN" and SkuOptions.TTS.MainFrame:IsVisible() ~= true then
 			SkuOptions:VocalizeCurrentMenuName(tVocalizeReset)
 			if string.len(SkuOptions.Filterstring) > 1  then
-				--SkuOptions.Voice:OutputStringBTtts("Filter", false, true, 0.3)
+				--SkuOptions.Voice:OutputStringBTtts("Filter", false, true, 0.3, nil, nil, nil, 2)
 			end
 		end
 
@@ -2198,7 +2190,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnInitialize()
 	dprint("SkuOptions OnInitialize")
-
+	--Sku:MetricPoint("SkuOptions:OnInitialize start")	
+	
 	if SkuOptions then
 		options.args["SkuOptions"] = SkuOptions.options
 		defaults.profile["SkuOptions"] = SkuOptions.defaults
@@ -2265,10 +2258,10 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:UpdateMovedAceDbProfileValues()
 
-	if SkuChat.options.args.audioSettings then
-		if SkuChat.options.args.audioSettings.args.audioOnNewMessage then
+	if SkuChat.options.args.chatSettings then
+		if SkuChat.options.args.chatSettings.args.audioOnNewMessage then
 			if SkuOptions.db.profile["SkuChat"].audio then
-				SkuOptions.db.profile["SkuChat"].audioSettings.audioOnNewMessage = SkuOptions.db.profile["SkuChat"].audio
+				SkuOptions.db.profile["SkuChat"].chatSettings.audioOnNewMessage = SkuOptions.db.profile["SkuChat"].audio
 				SkuOptions.db.profile["SkuChat"].audio = nil
 			end
 		end
@@ -2336,7 +2329,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		if #tChildrenFiltered == 0 then
 			table.insert(tChildrenFiltered, tOldChildren[1])
 			--SkuCore:Debug("ApplyFilter: keine Ergebnisse f�r filter, element 1 wird angezeigt")
-			SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.2)
+			SkuOptions.Voice:OutputStringBTtts(L["No results"], true, true, 0.2, nil, nil, nil, 2)
 		end
 
 		for x = 1, #tChildrenFiltered do
@@ -2355,7 +2348,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 		SkuOptions.currentMenuPosition.parent.children = tChildrenFiltered--tOldChildren)
 		SkuOptions.currentMenuPosition:OnFirst()
 
-		SkuOptions.Voice:OutputStringBTtts(L["Filter applied"], true, true, 0.3)
+		SkuOptions.Voice:OutputStringBTtts(L["Filter applied"], true, true, 0.3, nil, nil, nil, 2)
 		--SkuCore:Debug("ApplyFilter: filter applied, menu updated")
 	end
 	if aFilterstring == "" then
@@ -2376,7 +2369,7 @@ function SkuOptions:ApplyFilter(aFilterstring)
 			SkuOptions.currentMenuPosition:OnFirst()
 			tOldChildren = false
 
-			SkuOptions.Voice:OutputStringBTtts(L["Filter removed"], true, true, 0.3)
+			SkuOptions.Voice:OutputStringBTtts(L["Filter removed"], true, true, 0.3, nil, nil, nil, 2)
 			--SkuCore:Debug("ApplyFilter: filter cleared, menu updated")
 		else
 			--SkuCore:Debug("ApplyFilter: error: no old child data. this should not happen!")
@@ -2544,17 +2537,17 @@ end
 ---@param aDuration number duration of the audio
 ---@param aDoNotOverride bool if this audio could be reseted by others
 function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs)
-	--print("--VocalizeMultipartString", aStr)
+	--print("--VocalizeMultipartString", aStr, aReset, aWait, aDuration, aDoNotOverride, engine, aVocalizeAsIs)
 
 	-- don't vocalize object numbers
-	local tTempHayStack = string.gsub(aStr, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
-	aStr = tTempHayStack
+	--local tTempHayStack = string.gsub(aStr, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
+	--aStr = tTempHayStack
 
-	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu == true then
-		SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, engine, nil, aVocalizeAsIs)
-		return
-	end
-
+	--if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu == true then
+	SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, true, 2, aVocalizeAsIs)
+	return
+	--end
+--[[
 	if not engine then
 		local sep, fields = ";", {}
 		local pattern = string.format("([^%s]+)", sep)
@@ -2580,6 +2573,7 @@ function SkuOptions:VocalizeMultipartString(aStr, aReset, aWait, aDuration, aDoN
 	else
 		SkuOptions.Voice:OutputStringBTtts(aStr, aReset, aWait, 0.2, aDoNotOverride, false, nil, engine, nil, aVocalizeAsIs)
 	end
+]]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2660,7 +2654,9 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 		end
 	end
 
-	SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, SkuOptions.currentMenuPosition.ttsEngine, SkuOptions.currentMenuPosition.vocalizeAsIs)
+	--print("SkuOptions:VocalizeMultipartString", tFinalString, aReset, true, nil, nil, SkuOptions.currentMenuPosition.ttsEngine, SkuOptions.currentMenuPosition.vocalizeAsIs)
+
+	SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs)
 
 	--debug as text
 	local tBread = SkuOptions.currentMenuPosition.name
@@ -2756,7 +2752,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 
 					tNewMenuEntry.BuildChildren = function(self)
-						if (aGossipListTable[index].isBag and CursorHasItem()) or not aGossipListTable[index].isBag then
+						if ((aGossipListTable[index].isBag and CursorHasItem())) or not aGossipListTable[index].isBag or aGossipListTable[index].isPurchasable then
 							self.children = {}
 
 							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
@@ -2871,79 +2867,15 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								tItemId = aGossipListTable.itemId
 							end
 							if tItemId then
-								aGossipListTable[index].itemId = tItemId
+								if _G[aGossipListTable[index].containerFrameName] then
+									aGossipListTable[index].itemId = tItemId
 
-								if not SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds then
-									SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = {}
-								end
-								if SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] then
-									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Markierung für Auto Verkaufen entfernen"]}, SkuGenericMenuItem)
-									tNewSubMenuEntry.OnAction = function(self, a, b)
-										local tItemId
-										if aGossipListTable[index].obj.info then
-											tItemId = aGossipListTable[index].obj.info.id
-										end
-										if not tItemId then
-											tItemId = aGossipListTable.itemId
-										end
-										SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = nil
+									if not SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds then
+										SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = {}
 									end
-								else
-									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Für Auto Verkaufen markieren"]}, SkuGenericMenuItem)
-									tNewSubMenuEntry.OnAction = function(self, a, b)
-										local tItemId
-										if aGossipListTable[index].obj.info then
-											tItemId = aGossipListTable[index].obj.info.id
-										end
-										if not tItemId then
-											tItemId = aGossipListTable.itemId
-										end
-										SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = true
-									end
-								end
-							end
-
-							if tItemId then
-								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zerstören"]}, SkuGenericMenuItem)
-								tNewSubMenuEntry.OnAction = function(self, a, b)
-									local tItemId
-									if aGossipListTable[index].obj.info then
-										tItemId = aGossipListTable[index].obj.info.id
-									end
-									if not tItemId then
-										tItemId = aGossipListTable.itemId
-									end
-
-									--print(aGossipListTable[index].containerFrameName, tItemId, _G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID())
-									if tItemId then
-										aGossipListTable[index].obj:GetScript("OnDragStart")(aGossipListTable[index].obj, "LeftButton") 
-										DeleteCursorItem()
-										SkuCore:CheckFrames()
-
-										--[[
-										SkuCore:ConfirmButtonShow("Wirklich zerstören? Eingabe Ja, Escape Nein", 
-										function(self)
-											DeleteCursorItem()
-											PlaySound(89)
-											print("kill")
-										end,
-										function()
-											print("abb")
-											SkuOptions.Voice:OutputStringBTtts("abgebrochen", true, true, 0.2, false)
-										end
-										)
-										]]
-									end
-								end
-							end
-
-							if tItemId then
-								if _G[aGossipListTable[index].containerFrameName].count then
-									if _G[aGossipListTable[index].containerFrameName].count > 1 then
-										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["split"]}, SkuGenericMenuItem)
-										tNewSubMenuEntry.isSelect = true
-										tNewSubMenuEntry.dynamic = true
-										tNewSubMenuEntry.OnAction = function(self, a, amount)
+									if SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] then
+										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Markierung für Auto Verkaufen entfernen"]}, SkuGenericMenuItem)
+										tNewSubMenuEntry.OnAction = function(self, a, b)
 											local tItemId
 											if aGossipListTable[index].obj.info then
 												tItemId = aGossipListTable[index].obj.info.id
@@ -2951,18 +2883,116 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											if not tItemId then
 												tItemId = aGossipListTable.itemId
 											end
-
-											if tItemId then
-												SplitContainerItem(_G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID(), amount)
-												SkuCore:CheckFrames()
-											end
+											SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = nil
 										end
-										tNewSubMenuEntry.BuildChildren = function(self)
-											for x = 1, _G[aGossipListTable[index].containerFrameName].count do
-												local tNewMenuSubEntryNumber = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+									else
+										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Für Auto Verkaufen markieren"]}, SkuGenericMenuItem)
+										tNewSubMenuEntry.OnAction = function(self, a, b)
+											local tItemId
+											if aGossipListTable[index].obj.info then
+												tItemId = aGossipListTable[index].obj.info.id
+											end
+											if not tItemId then
+												tItemId = aGossipListTable.itemId
+											end
+											SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = true
+										end
+									end
+								end
+							end
+
+							if tItemId then
+								if _G[aGossipListTable[index].containerFrameName] then
+									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zerstören"]}, SkuGenericMenuItem)
+									tNewSubMenuEntry.OnAction = function(self, a, b)
+										local tItemId
+										if aGossipListTable[index].obj.info then
+											tItemId = aGossipListTable[index].obj.info.id
+										end
+										if not tItemId then
+											tItemId = aGossipListTable.itemId
+										end
+
+										--print(aGossipListTable[index].containerFrameName, tItemId, _G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID())
+										if tItemId then
+											aGossipListTable[index].obj:GetScript("OnDragStart")(aGossipListTable[index].obj, "LeftButton") 
+											DeleteCursorItem()
+											SkuCore:CheckFrames()
+
+											--[[
+											SkuCore:ConfirmButtonShow("Wirklich zerstören? Eingabe Ja, Escape Nein", 
+											function(self)
+												DeleteCursorItem()
+												PlaySound(89)
+												print("kill")
+											end,
+											function()
+												print("abb")
+												SkuOptions.Voice:OutputStringBTtts("abgebrochen", true, true, 0.2, false, nil, nil, 2)
+											end
+											)
+											]]
+										end
+									end
+								end
+							end
+
+							if tItemId then
+								if _G[aGossipListTable[index].containerFrameName] then
+									if _G[aGossipListTable[index].containerFrameName].count then
+										if _G[aGossipListTable[index].containerFrameName].count > 1 then
+											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["split"]}, SkuGenericMenuItem)
+											tNewSubMenuEntry.isSelect = true
+											tNewSubMenuEntry.dynamic = true
+											tNewSubMenuEntry.OnAction = function(self, a, amount)
+												local tItemId
+												if aGossipListTable[index].obj.info then
+													tItemId = aGossipListTable[index].obj.info.id
+												end
+												if not tItemId then
+													tItemId = aGossipListTable.itemId
+												end
+
+												if tItemId then
+													SplitContainerItem(_G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID(), amount)
+													SkuCore:CheckFrames()
+												end
+											end
+											tNewSubMenuEntry.BuildChildren = function(self)
+												for x = 1, _G[aGossipListTable[index].containerFrameName].count do
+													local tNewMenuSubEntryNumber = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+												end
 											end
 										end
 									end
+								else
+									if aGossipListTable[index].obj and aGossipListTable[index].obj.info.count then
+										if aGossipListTable[index].obj.info.count > 1 then
+											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["split"]}, SkuGenericMenuItem)
+											tNewSubMenuEntry.isSelect = true
+											tNewSubMenuEntry.dynamic = true
+											tNewSubMenuEntry.OnAction = function(self, a, amount)
+												local tItemId
+												if aGossipListTable[index].obj.info then
+													tItemId = aGossipListTable[index].obj.info.id
+												end
+												if not tItemId then
+													tItemId = aGossipListTable.itemId
+												end
+
+												if tItemId then
+													SplitGuildBankItem(aGossipListTable[index].obj.info.gbanktab, aGossipListTable[index].obj.info.gbankslot, amount) 
+													SkuCore:CheckFrames()
+												end
+											end
+											tNewSubMenuEntry.BuildChildren = function(self)
+												for x = 1, aGossipListTable[index].obj.info.count do
+													local tNewMenuSubEntryNumber = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+												end
+											end
+										end
+										
+									end									
 								end
 							end							
 						end
@@ -3081,12 +3111,24 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					end
 				end
 				tNewMenuEntry.BuildChildren = function(self)
-					tSortedList = {}
-					for k,v in SkuSpairs(v.values, function(t,a,b) return t[b] > t[a] end) do
-						table.insert(tSortedList, v)
+					local tFinalMenuEntries = {}
+					local tCounter = 0
+
+					--unfortunately we have value tables with number keys and holes and need to handle that
+					for key, value in pairs(v.values) do
+						tFinalMenuEntries[#tFinalMenuEntries + 1] = value
+						tCounter = tCounter + 1
 					end
 
-					for key, value in ipairs(tSortedList) do
+					--if number index and no holes, use it to sort
+					if #v.values > 0 and #v.values == tCounter then
+						tFinalMenuEntries = {}
+						for key, value in ipairs(v.values) do
+							tFinalMenuEntries[#tFinalMenuEntries + 1] = value
+						end
+					end
+
+					for key, value in ipairs(tFinalMenuEntries) do
 						SkuOptions:InjectMenuItems(self, {value}, SkuGenericMenuItem)
 					end
 				end
@@ -3643,7 +3685,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ImportWpAndLinkData()
 	PlaySound(88)
-	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2, nil, nil, nil, 2)
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)
@@ -3657,15 +3699,15 @@ function SkuOptions:ImportWpAndLinkData()
 			local tSuccess, tVersion, tLinks, tWaypoints = SkuOptions:Deserialize(tSerializedData)
 
 			if tVersion ~= 22 then
-				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2)										
+				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2, nil, nil, nil, 2)										
 				return
 			end
 			if tSuccess ~= true then
-				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Daten fehlerhaft."], false, true, 0.2)										
+				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Daten fehlerhaft."], false, true, 0.2, nil, nil, nil, 2)										
 				return
 			end
 
-			SkuOptions.Voice:OutputStringBTtts(L["Import erfolgreich"], true, true, 0.2, true)			
+			SkuOptions.Voice:OutputStringBTtts(L["Import erfolgreich"], true, true, 0.2, true, nil, nil, 2)			
 
 			--do tWaypoints 
 			local tFullCounterWps = 0
@@ -3719,15 +3761,15 @@ function SkuOptions:ImportWpAndLinkDataMerge()
 			local tSuccess, tVersion, tLinks, tWaypoints = SkuOptions:Deserialize(tSerializedData)
 
 			if tVersion ~= 22 then
-				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2)										
+				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Falsche Version."], false, true, 0.2, nil, nil, nil, 2)										
 				return
 			end
 			if tSuccess ~= true then
-				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Daten fehlerhaft."], false, true, 0.2)										
+				SkuOptions.Voice:OutputStringBTtts(L["Import fehlgeschlagen. Daten fehlerhaft."], false, true, 0.2, nil, nil, nil, 2)										
 				return
 			end
 
-			SkuOptions.Voice:OutputStringBTtts(L["Import erfolgreich"], true, true, 0.2, true)			
+			SkuOptions.Voice:OutputStringBTtts(L["Import erfolgreich"], true, true, 0.2, true, nil, nil, 2)			
 
 			--do tWaypoints 
 			local tFullCounterWps = 0
@@ -3807,7 +3849,7 @@ function SkuOptions:ExportWpAndLinkData()
 	end
 	print(L["Wegpunkte exportiert:"], tCount)
 
-	SkuOptions.Voice:OutputStringBTtts(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], false, true, 0.3)		
+	SkuOptions.Voice:OutputStringBTtts(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], false, true, 0.3, nil, nil, nil, 2)		
 
 	--setmetatable(tExportDataTable, SkuPrintMT)
 	--SkuOptions:EditBoxShow(tostring(tExportDataTable), function(self) PlaySound(89) end)
@@ -3817,7 +3859,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ImportPre22WpAndRouteData()
 	PlaySound(88)
-	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2, nil, nil, nil, 2)
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)
@@ -4048,9 +4090,9 @@ function SkuOptions:ImportPre22WpAndRouteData()
 
 				end
 
-				SkuOptions.Voice:OutputStringBTtts("Import erfolgreich", true, true, 0.2)			
-				SkuOptions.Voice:OutputStringBTtts(tImportCounterRts.." von "..#tRoutes.." Routen", false, true, 0.3, true)
-				SkuOptions.Voice:OutputStringBTtts(tImportCounterWps.." von "..#tWaypoints.." Wegpunkt", false, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts("Import erfolgreich", true, true, 0.2, nil, nil, nil, 2)			
+				SkuOptions.Voice:OutputStringBTtts(tImportCounterRts.." von "..#tRoutes.." Routen", false, true, 0.3, true, nil, nil, 2)
+				SkuOptions.Voice:OutputStringBTtts(tImportCounterWps.." von "..#tWaypoints.." Wegpunkt", false, true, 0.3, true, nil, nil, 2)
 
 				print("Routen ("..#tRoutes..")")
 				print("  Importiert: ", tImportCounterRts)
@@ -4064,7 +4106,7 @@ function SkuOptions:ImportPre22WpAndRouteData()
 
 				SkuNav:PLAYER_ENTERING_WORLD()
 			else
-				SkuOptions.Voice:OutputStringBTtts("Import fehlgeschlagen", false, true, 0.2)										
+				SkuOptions.Voice:OutputStringBTtts("Import fehlgeschlagen", false, true, 0.2, nil, nil, nil, 2)										
 			end
 			--_G["SkuOptionsEditBoxPaste"]:Hide()
 		end
@@ -4081,7 +4123,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ImportAddWpAndLinkData()
 	PlaySound(88)
-	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2)
+	SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], false, true, 0.2, nil, nil, nil, 2)
 
 	SkuOptions:EditBoxPasteShow("", function(self)
 		PlaySound(89)

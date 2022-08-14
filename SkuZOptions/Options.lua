@@ -67,6 +67,7 @@ SkuOptions.options = {
 				return SkuOptions.db.profile[MODULE_NAME].localActive
 			end
 		},
+		--[[
 		useBlizzTtsInMenu = {
 			order = 6,
 			name = L["Use Blizzard TTS for audio menu"],
@@ -79,10 +80,11 @@ SkuOptions.options = {
 				return SkuOptions.db.profile[MODULE_NAME].useBlizzTtsInMenu
 			end
 		},
+		]]
 		soundChannels={
 			name = L["Audio-Kanäle"],
 			type = "group",
-			order = 4,
+			order = 6,
 			args= {
 					MasterVolume = {
 						order = 2,
@@ -124,7 +126,7 @@ SkuOptions.options = {
 						end
 					},
 					AmbienceVolume = {
-						order = 4,
+						order = 6,
 						name = L["Umgebung Lautstärke"] ,
 						desc = "",
 						type = "range",
@@ -137,7 +139,7 @@ SkuOptions.options = {
 						end
 					},
 					DialogVolume = {
-						order = 6	,
+						order = 7	,
 						name = L["Dialog Lautstärke"] ,
 						desc = "",
 						type = "range",
@@ -150,7 +152,7 @@ SkuOptions.options = {
 						end
 					},
 					SkuChannel = {
-						order = 1,
+						order = 8,
 						name = L["Sku Kanal"] ,
 						desc = "",
 						type = "select",
@@ -167,7 +169,7 @@ SkuOptions.options = {
 		debugOptions={
 			name = L["Debug Optionen"],
 			type = "group",
-			order = 4,
+			order = 7,
 			args= {
 				soundOnError = {
 					order = 2,
@@ -182,7 +184,7 @@ SkuOptions.options = {
 					end
 				},
 				showError = {
-					order = 2,
+					order = 3,
 					name = L["Fehler anzeigen"] ,
 					desc = "",
 					type = "execute",
@@ -202,7 +204,7 @@ SkuOptions.options = {
 		allModules={
 			name = L["Schnellwahl"],
 			type = "group",
-			order = 5,
+			order = 8,
 			args={
 					MenuQuickSelect1 = {
 						order = 1,
@@ -264,7 +266,7 @@ SkuOptions.defaults = {
 	backgroundSound = "silence.mp3",
 	localActive = true,
 	visualAudioMenu = false,
-	useBlizzTtsInMenu = false,
+	--useBlizzTtsInMenu = false,
 	allModules  = {
 		MenuQuickSelect1 = L["SkuNav,Wegpunkt,Auswählen,Aktuelle Karte Entfernung"],
 		MenuQuickSelect2 = L["SkuNav,Route,Route folgen,Ziele Entfernung"],

@@ -2,6 +2,61 @@
 - Sku Addon Veröffentlichungshinweise
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Änderungen in Sku r28.6
+
+	Navigation
+		- Es wurde ein Fehler behoben, bei dem der Ziffernblock 9 / i bei einigen Addons, die das Chat-Eingabefeld verändern, nicht funktioniert.
+
+	Optionen
+		- Das Menü verwendet jetzt zwingend das Blizzard TTS. Es ist nicht mehr möglich das Sku TTS für das Menü zu verwenden. Die Option, Blizzard TTS für das Menü ein/auszuschalten, wurde unter Optionen > Optionen entfernt.
+
+	Chat
+		- Das Chatmodul verwendet jetzt bereits das neue Chatsystem aus der Wrath-Version des Sku-Addons.
+			So verwendest du den neuen Chat
+			Der Chat und alle unten beschriebenen Funktionen sind jetzt auch im Kampf nutzbar.
+			Der Chat hat jetzt alle Chat-Nachrichten in Registerkarten sortiert. So kannst du verschiedene Registerkarten für unterschiedliche Chat-Inhalte erstellen und erhältst mehr Übersicht.
+			Standardmäßig gibt es nur eine Chat-Registerkarten mit dem Namen "Standard", die alle Chat-Nachrichten enthält. Du könntest zum Beispiel eine zweite Chat-Registerkarte mit dem Namen "Gruppe und Raid" erstellen, die nur diesen Chat enthält.
+			Der Chat wird weiterhin mit SHIFT + F2 geöffnet.
+			Bei Shift + F2 liest das Addon zuerst den Namen der aktuellen Registerkarte und dann die erste (neueste) Chatzeile vor.
+			Mit Pfeil runter/oben kannst du zur nächsten/vorherigen Chat-Zeile wechseln.
+			Wenn du mehr Registerkarten als nur die Standard-Registerkarte hast (du musst sie erstellen), kannst du mit Pfeil rechts und links zu diesen anderen Registerkarten wechseln. Benutze dann einfach Pfeil runter/oben, um die Chatzeilen in dieser Registerkarte zu lesen.
+			Chat-Registerkarten
+				Um alle aktuellen Registerkarten zu sehen, gehe zu Chat > Registerkarten. Wenn du keine zusätzlichen Registerkarten erstellt hast, ist die einzige Registerkarte dort "Standard".
+				Du kannst weitere Registerkarten über das Menü "Neue Registerkarte" unter Chat > Registerkarten erstellen.
+			Nachrichtentypen für Registerkarten
+				Jede Registerkarte hat ihre eigenen Einstellungen für die Nachrichten, die in dieser Registerkarte angezeigt werden sollen.
+				Gehe zu Chat > Registerkarten > Standard > Nachrichtentypen, um zu sehen, welche Nachrichtentypen in dieser Registerkarte angezeigt werden.
+				Die Kategorien wie Kampf, PvP, Andere usw. und die verschiedenen Chat-Typen unter diesen Kategorien sind dieselben, die auch das Blizzard-Interface verwendet.
+				Jedem Chat-Typ kann eine bestimmte Aktion zugewiesen werden. "Text" bedeutet, dass der Nachrichtentyp in der jeweiligen Registerkarte angezeigt wird. "Audio" bedeutet, dass die Registerkarte den Nachrichtentyp anzeigt UND die Nachrichten laut vorgelesen werden. Und "Stumm" bedeutet, dass die Chat-Registerkarte diese Nachrichten nicht anzeigt und sie nicht vorgelesen werden.
+				Sieh dir einfach die Kategorien und Nachrichtentypen der Standard-Chat-Registerkarte an und setze sie auf Aktionen, die du für angemessen hältst.
+			Chat-Kanäle für Registerkarten
+				Das gleiche System gilt für alle Chat-Kanäle, denen du beigetreten bist.
+				Geh zu Chat > Registerkarten > Standard > Kanäle und sieh nach, welche Kanäle welche Aktion für diese Registerkarte haben.
+			Flüstern
+				Es gibt eine Reihe neuer Einstellungen für den Chat unter Chat > Optionen > Chat-Einstellungen.
+				Eine davon ist "Flüstern in neuer Registerkarte anzeigen", die standardmäßig eingeschaltet ist.
+				Mit dieser Einstellung wird jeder Flüstertext, den du empfängst (oder sendest), in einer neuen Registerkarte angezeigt.
+				Wenn du also einen Flüsterer von Palabob empfängst, wird diese Nachricht (und die gesamte nachfolgende Konversation, falls es eine gibt) nicht in deiner "Standard"-Registerkarte angezeigt, sondern in einer neuen Registerkarte mit dem Namen dieses Spielers.
+				Schalte die Option "Flüstern in neuer Registerkarte anzeigen" aus, damit alle Flüsternachrichten in der Standard-Registerkarte inline angezeigt werden, statt in neuen Registerkarten.
+			Zeilen-Kontextmenü
+				Jede Chatzeile in jeder Registerkarte hat ein neues Audio-Kontextmenü mit Aktionen.
+				Um das Zeilen-Kontextmenü zu öffnen, drücke Shift + Eingabetaste. Benutze dann wie gewohnt die Pfeiltasten, um die Optionen zu durchsuchen. Um eine Option auszuwählen/zu verwenden, drückst du erneut Shift + Eingabetaste auf dieser Option. Um das Zeilen-Kontextmenü zu verlassen und zu den Chatzeilen zurückzukehren, drücke Pfeil links.
+				Einige Optionen im Kontextmenü sind:
+					- Nachricht an den Kanal senden
+					- Absender anflüstern
+					- Absender einladen
+					- Absendernamen kopieren
+					- Diese Chatzeile kopieren
+					- Alle Chatzeilen kopieren
+					- Absender zur Freundesliste hinzufügen
+					- Absender ignorieren
+				Nicht alle dieser Funktionen sind immer verfügbar. Beispiel: "Absender ignorieren" ist für System-Chat-Nachrichten nicht verfügbar :D
+			Verlauf
+				Und schließlich wird der Chatverlauf für alle Registerkarten zwischen den Sitzungen gespeichert. Es gibt bis zu 100 alte Nachrichten in jeder Registerkarte.
+
+
 -------------------------------------------------------------------------------------------------------	
 Änderungen in Sku r28
 

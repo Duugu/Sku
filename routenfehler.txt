@@ -1,0 +1,38 @@
+- Sturmwind	östlichen Königreiche	In sturmwind fehlt das Gasthaus zum blauen Erimiten, ein Questziel für eine Magierquest.
+- Sturmwind:	östlichen Königreiche	Major Samuelsen nicht angebunden - Burg Sturmweind für Q: versetzungen
+- Arathihochland	östlichen Königreiche	Die Kobolde der Trockenstoppel sind nicht angebunden - Q: Die gefangende Prinzessin
+- Westfall	östlichen Königreiche	Schurkenquest Routen bitte anlegen
+- Nagrand	Scherbenwelt	östlicher Übergang zu den Zangarmarschen hat keinen Passagepunkt seitens nagrand.
+- Zangarmarschen	Scherbenwelt	Hordenbasis mit Zone markieren. - route drum herum legen - Problem lösen, nicht durchgeleitet zu werden. Aktuelle Karte von Ulf?
+- Zangarmarschen	Scherbenwelt	Oberanführer Schmetterfaust - Questgegner: nicht angebunden.
+- Zangarmarschen	Scherbenwelt	Quest: Geheimnisse des Dolchfeenstams die Items anbinden: Gifthandbuch und  Giftphiole der dolchfeen.
+- Vorgebirge des Hügellandes	östlichen Königreiche	Das Routennetz von Süderstade ist nicht an das restliche Netz angebunden. Da ist eine Strecke dazzwischen unterbrochen.
+- Tanaris:	Kalimdor	Q: Gadgetzan Wassersondierung - Questziel: Am Teich der Sandmarkerwache bei den Trollen am Wasser den unangezapften Wünschelmatorutenapparat benutzen - Ziel nicht auffindbar.
+- Route zu Wizbang Cranktoggle in Darkshore fehlt
+- stoffabgabe (donation of wool) npc in stormwind: route kaputt
+- It seems there is no route from the spirit healer near mudsprocket in dustwallow marsh
+- the quest "peace at last" in dustwallow marsh is missing quest target. You are supposed to place a wreath on a family monument, but there doesnt seem to be any waypoint
+- missing route for 4 gri'lek the wanderer plus for quest 3 kurzen's mystery
+- I think the route to the mayor of Darkshire is wrong. It takes me into the town hall but always runs me into something I can't get around no matter what I do
+- there's no route to a mage named Jennea in Stormwind for the mage class quest Speak to Jennea
+- Foul Magics needs more quest target options, as the warlock you're looking for in the final step can spawn in a total of 7 different locations. They were not spawned in the spot where the mod thinks they were supposed to be, so I ended up needing guideance to find them as they are near houses it's possible to get stuck around.
+- close rout to the wanted poster in cenarion refuge in zangarmarsh. takes you to the top of the tower
+- route away from the GromGOL innkeeper in Stranglethorn is broken. I keep trying to follow it, and getting trapped
+- rout inn hellfire peninsula takeing alliance players close to thrallmar. I hve tested it some more. and it turns out it takes me into thrallmar.
+- For the quest chain the towers of alphilax, one of the targets is Ilkrudmagthrull in Ashenvale.  His route gets me close to him, but there are lots of navigational obsticles in the way in the last step after going off the waypoint network.
+- From entrance to tower of azura to theocratus. Around 15 waypoints to destination I get stuck, I walk back to previous waypoint and then try to progress along to the next one, but just cant do it. I then returned to the entrance and tried again from there 3 times, but kept reaching a waypoint I just couldn't get to... Each time I was walking instead of running and stopping as soon as reaching waypoint and carefully turning towards the next one
+- if you take any route from Hillary, the quest giver, like to the innkeeper or gryphon master, it leads you through the lake and at some point there is someting in yourpath even if you follow waypoints exactly. You then have to swim around it by a couple of meters it seems.
+- in ironforge I consistently get stuck in and get in a place where I cant seem to walk in any direction. I know it is becaue this place is really really tight and sometimes I miss the waypoint by a tiny bit... but just wanted to share in case this could be looked into. Essentially always is when I am taking a route from the cooking trainer somewhere else, like just now, to the auctioneer. I get outside and then get stuck not being 100% precise, only 99% 
+- Vorental the leader of the scryers isn't ruted correctly. has a close route with the last point is 1m distance but putting me on a wrong floor next to the  keeper of artefacts.
+- Mission: possible but not probable. I'm on: 1 paulinux  the barrens  54 5  mirage raceway. I have problems with going to all objects and enemies, maybe mutated ventures are easy to find. I think that's the maps issue
+- Dolchfeng: Geheimnisse des Dolchfengstamms, das Gifthandbuch ist nicht zu erreichen, obwohl ich in den raum reinfinde so es sein sollte. Gesucht, Häuptling Mummaki der Häuptling ist gar nicht ansteuerbar, vermutlich auch irgendwo drinnen. Evtl ist bei beiden Quests die Führung in die Höle rein doof 
+- Festung der Mogrosh: Oberanführer Schmetterfaust: Die Rute führt mich ohne probleme zu einem Punkt, man kann den oberanführer von da aus auch targeten, aber man kommt auch mit viel gefummel nicht hin. 
+- Nagrant: Corki wird schon wider vermisst, also die zweite Stage der Questreihe: Corki ist nicht erreichbar. Chogar der Boss der letzten stage der Questreihe hat keine Rute und ist in einer Höle, aber das macht man ja eh nicht alleine. 
+- Segen des Inzineratus: Die Hütten haben generell nur nahe ruten und bis auf hütte 1 konnte ich so keine erreichen.
+- Quest: Don't Drink the Water on Blood Mist Isle doesn't have a linked object in the waypoints database.  The objective is to collect a water sample from the base of the waterfall at coords 34 33.  No objects show up in the database near this point, but verified through sighted assistance that this is where the sample should be collected from.
+- The rout to captain steelgut blackwater raiders, is wrong, or is very difficult to reach. I can't get closer then 8 away, the other npcs in that area seem to be the same, I can't get close enough to interact with any of them. 
+- The quest "Call of Fire" doesn't have a route or close route from Temper to the wicker ephagy that you have to light to complete that part of the quest, there's just a waypoint. However, you can navigate it, and once you get onto Silvermist Aisle, you can take a route then, but directly from Temper to the ephagy there isn't one.
+- the quest Trees Company, located in Odesyus Landing doesn't have a route or a close route to the quest target, there's just a waypoint. I could've sworn I heard this name in the past few days, so sorry if I'm not the first to report it 
+- Quest is "Need for a Cure", and the quest giver is Rhinag. The route to him shows empty, and if you try to get to him via closest route, the mod takes you via a crazy route that never leads to completion because you get stuck at what looks the bottom of a cliff.
+
+

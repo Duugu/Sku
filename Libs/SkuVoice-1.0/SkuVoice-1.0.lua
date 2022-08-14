@@ -595,6 +595,10 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 			end
 		end
 
+		--unmask bnet names
+		tStrings[x] = string.gsub(tStrings[x], "$skuk1", "|K")
+		tStrings[x] = string.gsub(tStrings[x], "$skuk2", "|k")
+
 		tStrings[x] = string.gsub(tStrings[x], "§", " ")
 		--dprint(" final",x, tStrings[x])
 

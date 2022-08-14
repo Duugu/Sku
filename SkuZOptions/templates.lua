@@ -72,42 +72,45 @@ SkuGenericMenuItem = {
 	dynamic = false,
 	filterable = false,
 	OnUpdate = function(self, aKey)
-		dprint("++ OnUpdate generic")
-		local tCurrentItemNumber
-		local tCurrentItemName = self.name
-		local tParent = self.parent
+		C_Timer.After(0.01, function()
 
-		if not self.parent then
-			return
-		end
-		if not self.parent.children then
-			return
-		end
+			dprint("++ OnUpdate generic")
+			local tCurrentItemNumber
+			local tCurrentItemName = self.name
+			local tParent = self.parent
 
-		local tMenuItems = self.parent.children
-		for x = 1, #tMenuItems do
-			if tMenuItems[x].name == tCurrentItemName then
-				tCurrentItemNumber = x
+			if not self.parent then
+				return
 			end
-		end
+			if not self.parent.children then
+				return
+			end
 
-		self.parent.children = {}
-		tParent:BuildChildren(self.parent)
+			local tMenuItems = self.parent.children
+			for x = 1, #tMenuItems do
+				if tMenuItems[x].name == tCurrentItemName then
+					tCurrentItemNumber = x
+				end
+			end
 
-		tParent:OnSelect()
-		if self.parent.children[tCurrentItemNumber] then
-			SkuOptions.currentMenuPosition = self.parent.children[tCurrentItemNumber]
-		elseif self.parent.children[tCurrentItemNumber - 1] then
-			SkuOptions.currentMenuPosition = self.parent.children[tCurrentItemNumber - 1]
-		else
-			SkuOptions.currentMenuPosition = self.parent.children[1]
-		end
+			self.parent.children = {}
+			tParent:BuildChildren(self.parent)
 
-		SkuOptions.currentMenuPosition:OnEnter()
+			tParent:OnSelect()
+			if self.parent.children[tCurrentItemNumber] then
+				SkuOptions.currentMenuPosition = self.parent.children[tCurrentItemNumber]
+			elseif self.parent.children[tCurrentItemNumber - 1] then
+				SkuOptions.currentMenuPosition = self.parent.children[tCurrentItemNumber - 1]
+			else
+				SkuOptions.currentMenuPosition = self.parent.children[1]
+			end
 
-		if SkuOptions.TTS.MainFrame:IsVisible() ~= true then
-			SkuOptions:VocalizeCurrentMenuName()
-		end
+			SkuOptions.currentMenuPosition:OnEnter()
+
+			if SkuOptions.TTS.MainFrame:IsVisible() ~= true then
+				SkuOptions:VocalizeCurrentMenuName()
+			end
+		end)
 	end,
 	OnKey = function(self, aKey)
 		if SkuOptions.bindingMode == true then
@@ -242,16 +245,18 @@ SkuGenericMenuItem = {
 			end
 		end
 
-		if self.macrotext then
-			--dprint("macrotext", self.macrotext)
-			if _G["SecureOnSkuOptionsMainOption1"] then
-				_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
-				_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", self.macrotext)
-			end
-		else
-			if _G["SecureOnSkuOptionsMainOption1"] then
-				_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","")
-				_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext","")
+		if SkuCore.inCombat ~= true then
+			if self.macrotext then
+				--dprint("macrotext", self.macrotext)
+				if _G["SecureOnSkuOptionsMainOption1"] then
+					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
+					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", self.macrotext)
+				end
+			else
+				if _G["SecureOnSkuOptionsMainOption1"] then
+					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","")
+					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext","")
+				end
 			end
 		end
 	end,

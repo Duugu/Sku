@@ -182,7 +182,7 @@ L["and"]  = "and" --
 L["percent"]  = "percent" --use the word  not the character
 L["slash"]  = "slash" --use the word  not the character
 L["comma"]  = "comma" --use the word  not the character
-L["Audio notification on chat message"]  = "Sound on chat message" --
+L["Audio notification on chat message"]  = "Audio notification on chat message" --
 L["Enables / disables audio on new chat line"]  = "Enables / disables audio on new chat line" --
 L["TTS voice"]  = "TTS voice" --
 L["TTS speed"]  = "TTS speed" --
@@ -193,8 +193,8 @@ L["Content "]  = "Content " --adjective; pet happiness
 L["Happy"]  = "Happy" --adjective; pet happiness
 L["Pet"]  = "Pet" -- noun; hunter pet
 L["Cursor"]  = "Cursor " --
-L["taxi;started"]  = "taxi;start" --
-L["taxi;ended"]  = "taxi;end" --
+L["taxi;started"]  = "flight;started" --
+L["taxi;ended"]  = "flight;ended" --
 L["cast"]  = "cast" --verb
 L["Combat start"]  = "combat start" --
 L["Combat end"]  = "combat end" --
@@ -630,6 +630,7 @@ L["Nichts"]  = "Nothing" --
 L["Klick"]  = "Click" --
 L["Ping"]  = "Ping" --
 L["1 Meter"]  = "1 meter" --
+L["2 Meter"] = "2 Meter"
 L["3 Meter"]  = "3 meters" --
 L["Auto"]  = "Auto" --
 L["Klick bei Beacons"]  = "Beacons with clicks" --
@@ -1515,9 +1516,103 @@ L["out of range cast"]  = "Not in cast range" --
 
 L["Read all tooltips"] = "Read all tooltips"
 
+L["Pets"] = "Pets"
+L["Mounts"] = "Mounts"
+L["local Bags"] = "Bags"
+
 L["Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"] = "Your combo points on the current target triggering the aura"
 L["Eigene combopunkte"] = "Your combo points"
 L["Deine combopunkte auf dein aktuelles ziel"] = "Your combo points on the current target"
 
+L["TTS alternative voice"] = "TTS alternative voice"
+
 L["socket"] = "socket"
 L["current gem:"] = "current gem:"
+
+L["keyring"] = "keyring"
+L["Reagent bank"] = "Reagent bank"
+
+L["current Bank box"] = "Current Bank box"
+
+L["anzeigen"] = "show"
+L["Barber Shop"] = "Barber Shop"
+L["Gender"] = "Gender"
+L["Face"] = "Face"
+L["Hair Style"] = "Hair Style"
+L["Hair Color"] = "Hair Color"
+L["Facial Hair"] = "Gender/race specific"
+L["Skin Color"] = "Skin Color"
+L["Male"] = "Male"
+L["Female"] = "Female"
+L["previous_generic"] = "previous"
+L["Next_generic"] = "next"
+L["no description available"] = "no description available"
+L["Apply settings"] = "Apply settings"
+
+L["SKU_KEY_CHAT_LINEPREV"] = "Chat previous line"
+L["SKU_KEY_CHAT_LINENEXT"] = "Chat next line"
+L["SKU_KEY_CHAT_TABPREV"] = "Chat previous tab"
+L["SKU_KEY_CHAT_TABNEXT"] = "Chat next tab"
+L["SKU_KEY_CHAT_LINEMENU"] = "Chat line menu"
+
+L["Enter name and press ENTER key"] = "Enter name and press ENTER key"
+
+L["Copy text with control plus C and press escape"] = "Copy text with control plus C and press escape" --
+
+L["WorldDefense"] = "WorldDefense" --channel name; take from ui
+L["WD"] = "WD"
+L["GuildRecruitment"] = "GuildRecruitment" --channel name; take from ui
+L["GR"] = "GR"
+L["LookingForGroup"] = "LookingForGroup" --channel name; take from ui
+L["LFG"] = "LFG"
+L["Guild"] = "Guild" --channel name; take from ui
+L["G"] = "G"
+L["Party"] = "Party" --channel name; take from ui
+L["P"] = "P"
+L["Raid"] = "Raid" --channel name; take from ui
+L["R"] = "R"
+L["General"] = "General" --channel name; take from ui
+L["GEN"] = "GEN"
+L["Trade"] = "Trade" --channel name; take from ui
+L["TRADE"] = "TRADE"
+L["LocalDefense"] = "LocalDefense" --channel name; take from ui
+L["LD"] = "LD"
+
+L["send to channel"] = "send message to channel"
+L["whisper sender"] = "whisper sender"
+L["invite sender"] = "invite sender"
+L["copy sender name"] = "copy sender name"
+L["copy chat line"] = "copy this chat line"
+L["copy all chat lines"] = "copy all chat lines"
+L["add sender to friend list"] = "add sender to friend list"
+L["ignore sender"] = "ignore sender"
+L["Default"] = "Default"
+L["Default Tab"] = "Default Tab"
+L["No timestamp"] = "No timestamps"
+L["Chat settings"] = "Chat settings"
+L["shorten Channel Names"] = "shorten channel names"
+L["add line numbers"] = "add line numbers"
+L["add timestamps"] = "add timestamps"
+L["add timestamp to line end"] = "move timestamp to line end"
+L["go to first line on tab switch"] = "go to first line on tab switch"
+L["delete chat history on login"] = "delete chat history on login"
+L["show Whispers In New Tab"] = "show Whispers In new tab"
+L["Tabs"] = "Tabs"
+L["Rename"] = "Rename"
+L["Enter name and press ENTER key"] = "Enter name and press ENTER key"
+L["Umbenannt"] = "Renamed"
+L["Delete"] = "Delete"
+L["Deleted"] = "Deleted"
+L["Nachrichtentypen"] = "Message Types"
+L["Text"] = "Text"
+L["Audio"] = "Audio"
+L["Inactive"] = "Silent"
+L["Channels"] = "Channels"
+L["New Tab"] = "New Tab"
+L["Erstellt"] = "Created"
+L["set all message types and channels to inactive"] = "set all message types and channels to silent"
+L["Format"] ="Layout"
+L["Clear history"] = "Clear tab history"
+L["delete whisper tabs without activity after"] = "delete whisper tabs without activity after"
+L["Never"] = "Never"
+L["Delete tab"] = "Delete tab"

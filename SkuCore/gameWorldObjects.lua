@@ -148,8 +148,10 @@ local function GameWorldObjectsVoiceOutput(aText, aSound)
    end
 end
 
+local slower = string.lower
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
+   dprint("GameWorldObjectsCheckResult", aTextLeft1, aTextLeft2, aTextLeft3)
    local tIsUpdateMouseoverUnitFrame = SkuCore.lastUpdateMouseoverUnitFrame == SkuCore.gameWorldObjectsFrameCounter
    local tIsCursorUpdate = SkuCore.lastCursorUpdateFrame == SkuCore.gameWorldObjectsFrameCounter
    
@@ -180,8 +182,9 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
       local taTextLeft1InCreatures
       local function taTextLeft1InCreaturesCheck()
          if not taTextLeft1InCreatures then
+            local tTextLeftLower = slower(aTextLeft1)
             for i, v in pairs(SkuDB.NpcData.Names[Sku.L["locale"]]) do
-               if v[1] == aTextLeft1 then
+               if slower(v[1]) == tTextLeftLower then
                   GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
                   return true
                end
@@ -275,13 +278,14 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
       local taTextLeft1InObjects
       local function taTextLeft1InObjectsCheck()
          if not taTextLeft1InObjects then
+            local tTextLeftLower = slower(aTextLeft1)
             for i, v in pairs(SkuDB.objectLookup[Sku.L["locale"]]) do
-               if v == aTextLeft1 then
+               if slower(v) == tTextLeftLower then
                   return true
                end
             end
             for i, v in pairs(SkuDB.SpellDataTBC) do
-               if v[Sku.L["locale"]][1] == aTextLeft1 then
+               if slower(v[Sku.L["locale"]][1]) == tTextLeftLower then
                   return true
                end
             end
@@ -298,13 +302,14 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
             if taTextLeft1InObjects then
                local tIsMining
                local tIsherb
+               local tTextLeftLower = slower(aTextLeft1)
                for x = 1, #SkuCore.RessourceTypes.mining do
-                  if SkuCore.RessourceTypes.mining[x][Sku.L["locale"]] == aTextLeft1 then
+                  if slower(SkuCore.RessourceTypes.mining[x][Sku.L["locale"]]) == tTextLeftLower then
                      tIsMining = true
                   end
                end
                for x = 1, #SkuCore.RessourceTypes.herbs do
-                  if SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]] == aTextLeft1 then
+                  if slower(SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]) == tTextLeftLower then
                      tIsherb = true
                   end
                end
@@ -328,8 +333,9 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InObjects = taTextLeft1InObjectsCheck()
             if taTextLeft1InObjects then
+               local tTextLeftLower = slower(aTextLeft1)
                for x = 1, #SkuCore.RessourceTypes.herbs do
-                  if SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]] == aTextLeft1 then
+                  if slower(SkuCore.RessourceTypes.herbs[x][Sku.L["locale"]]) == tTextLeftLower then
                      if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
                         SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                         GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)
@@ -349,8 +355,9 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
          then
             taTextLeft1InObjects = taTextLeft1InObjectsCheck()
             if taTextLeft1InObjects then
+               local tTextLeftLower = slower(aTextLeft1)
                for x = 1, #SkuCore.RessourceTypes.mining do
-                  if SkuCore.RessourceTypes.mining[x][Sku.L["locale"]] == aTextLeft1 then
+                  if slower(SkuCore.RessourceTypes.mining[x][Sku.L["locale"]]) == tTextLeftLower then
                      if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.miningNodes[x] == true then
                         SkuCore.gameWorldObjectsScanFrame.found[aTextLeft1..tId] = true
                         GameWorldObjectsVoiceOutput(tOutputText, tSoundFile)

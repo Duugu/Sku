@@ -110,8 +110,14 @@ local function OnUpdate(self, aTime)
 
 			for i, v in pairs(tFrames) do
 				if _G[v] then
-					if _G[v]:IsShown() then
-						tDisable = true
+					if _G[v].HasFocus then
+						if _G[v]:HasFocus() == true then
+							tDisable = true
+						end
+					else
+						if _G[v]:IsShown() then
+							tDisable = true
+						end
 					end
 				end
 			end

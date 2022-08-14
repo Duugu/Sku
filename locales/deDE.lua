@@ -629,6 +629,7 @@ L["Nichts"] = "Nichts"
 L["Klick"] = "Klick"
 L["Ping"] = "Ping"
 L["1 Meter"] = "1 Meter"
+L["2 Meter"] = "2 Meter"
 L["3 Meter"] = "3 Meter"
 L["Auto"] = "Auto"
 L["Klick bei Beacons"] = "Klick bei Beacons"
@@ -1509,9 +1510,104 @@ L["out of range cast"]  = "Nicht in zauber Reichweite" --
 
 L["Read all tooltips"] = "Alle tooltips lesen"
 
+L["Pets"] = "Haustiere"
+L["Mounts"] = "Reittiere"
+L["local Bags"] = "Taschen"
+
+
 L["Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"] = "Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"
 L["Eigene combopunkte"] = "Eigene combopunkte"
 L["Deine combopunkte auf dein aktuelles ziel"] = "Deine combopunkte auf dein aktuelles ziel"
 
+L["TTS alternative voice"] = "Alternative TTS stimme"
+
 L["socket"] = "sockel"
 L["current gem:"] = "aktueller edelstein:"
+
+L["keyring"] = "schlüsselring"
+L["Reagent bank"] = "Reagent bank"
+
+L["current Bank box"] = "Aktuelles Bankfach"
+
+L["anzeigen"] = "Anzeigen"
+L["Barber Shop"] = "Frisör"
+L["Gender"] = "Geschlecht"
+L["Face"] = "Gesicht"
+L["Hair Style"] = "Frisur"
+L["Hair Color"] = "Haarfarbe"
+L["Facial Hair"] = "Geschlechts-/Rassenspezifisch"
+L["Skin Color"] = "Hautfarbe"
+L["Male"] = "Männchen"
+L["Female"] = "Weibchen"
+L["previous_generic"] = "Zurück"
+L["Next_generic"] = "Weiter"
+L["no description available"] = "keine Beschreibung verfügbar"
+L["Apply settings"] = "Einstellungen anwenden"
+
+L["SKU_KEY_CHAT_LINEPREV"] = "Chat nächste zeile"
+L["SKU_KEY_CHAT_LINENEXT"] = "Chat vorherige line"
+L["SKU_KEY_CHAT_TABPREV"] = "Chat vorherige registerkarte"
+L["SKU_KEY_CHAT_TABNEXT"] = "Chat nächste registerkarte"
+L["SKU_KEY_CHAT_LINEMENU"] = "Chat zeilenmenü"
+
+L["Enter name and press ENTER key"] = "name eingeben und eingabe drücken"
+
+L["Copy text with control plus C and press escape"] = "Jetzt Text mit Steuerung plus C kopieren und Escape drücken" --
+
+L["WorldDefense"] = "WeltVerteidigung" --channel name; take from ui
+L["WD"] = "WV"
+L["GuildRecruitment"] = "Gildenrekrutierung" --channel name; take from ui
+L["GR"] = "GR"
+L["LookingForGroup"] = "SucheNachGruppe" --channel name; take from ui
+L["LFG"] = "SNG"
+L["Guild"] = "Gilde" --channel name; take from ui
+L["G"] = "G"
+L["Party"] = "Gruppe" --channel name; take from ui
+L["P"] = "P"
+L["Raid"] = "Raid" --channel name; take from ui
+L["R"] = "R"
+L["General"] = "Allgemein" --channel name; take from ui
+L["GEN"] = "ALL"
+L["Trade"] = "Handel" --channel name; take from ui
+L["TRADE"] = "HANDEL"
+L["LocalDefense"] = "LokaleVerteidigung" --channel name; take from ui
+L["LD"] = "LV"
+
+L["send to channel"] = "nachricht an kanal senden"
+L["whisper sender"] = "absender anflüstern"
+L["invite sender"] = "absender einladen"
+L["copy sender name"] = "absendername kopieren"
+L["copy chat line"] = "diese chat zeile kopieren"
+L["copy all chat lines"] = "alle chat zeilen kopieren"
+L["add sender to friend list"] = "absender zur freundesliste hinzufügen"
+L["ignore sender"] = "absender ignorieren"
+L["Default"] = "Standard"
+L["Default Tab"] = "Standard Registerkarte"
+L["No timestamp"] = "Keine Zeitangaben"
+L["Chat settings"] = "Chat Einstellungen"
+L["shorten Channel Names"] = "Kanalnamen kürzen"
+L["add line numbers"] = "Zeilennummern ansagen"
+L["add timestamps"] = "Uhrzeit ansagen"
+L["add timestamp to line end"] = "Uhrzeit am Zeilenende ansagen"
+L["go to first line on tab switch"] = "Bei Registerkartenwechsel zur ersten Zeile springen"
+L["delete chat history on login"] = "Chat Verlauf beim Einloggen löschen"
+L["show Whispers In New Tab"] = "Flüsternachrichten in neuer Registerkarte anzeigen"
+L["Tabs"] = "Registerkarten"
+L["Rename"] = "Umbenennen"
+L["Enter name and press ENTER key"] = "Name eingeben und Eingabe drücken"
+L["Umbenannt"] = "Umbenannt"
+L["Delete"] = "Löschen"
+L["Deleted"] = "Gelöscht"
+L["Nachrichtentypen"] = "Nachrichtentypen"
+L["Text"] = "Text"
+L["Audio"] = "Audio"
+L["Inactive"] = "Stumm"
+L["Channels"] = "Kanäle"
+L["New Tab"] = "Neue Registerkarte"
+L["Erstellt"] = "Erstellt"
+L["set all message types and channels to inactive"] = "alle nachrichtentypen und kanäle auf Stumm festlegen"
+L["Format"] ="Format"
+L["Clear history"] = "Chatverlauf von Registerkarte löschen"
+L["delete whisper tabs without activity after"] = "Flüster Registerkarten ohne Aktivität löschen nach"
+L["Never"] = "Niemals"
+L["Delete tab"] = "Registerkarte löschen"
