@@ -70,7 +70,7 @@ The chat module now is already using the new chat system from the Wrath version 
 	Turn "Show whispers in new tab" off, to have all whispers in the default tab inline, instead in new tabs.<br>
 - chat Line context menu<br>
 	Every chat line in every tab has a new audio context menu with actions.<br>
-	To open the line context menu press Shift + Enter. Then use arrow Down/up as usual, to browse the options. To select/use an option, press Shift + Enter on that option. To leave the line context menu and get back to the chat lines use arrow left.<br>
+	To open the line context menu press Control + Enter. Then use arrow Down/up as usual, to browse the options. To select/use an option, press Control + Enter on that option. To leave the line context menu and get back to the chat lines use arrow left.<br>
 	Some context menu options are:<br>
 		- send message to channel<br>
 		- whisper sender<br>
