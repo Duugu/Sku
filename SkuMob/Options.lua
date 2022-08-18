@@ -27,6 +27,17 @@ SkuMob.options = {
 				return SkuOptions.db.profile[MODULE_NAME].vocalizeRaidTargetOnly
 			end
 		},
+		vocalizePlayerNamePlaceholders  = {
+			name = L["Announce friendly and hostile players"],
+			desc = "",
+			type = "toggle",
+			set = function(info, val) 
+				SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders  = val
+			end,
+			get = function(info) 
+				return SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders 
+			end
+		},		
 		vocalizePlayerNamePlaceholdersSkuTts = {
 			name = L["Announce player controled units with generic descriptions"],
 			desc = "",
@@ -56,6 +67,7 @@ SkuMob.options = {
 SkuMob.defaults = {
 	enable = true,
 	vocalizeRaidTargetOnly = false,
+	vocalizePlayerNamePlaceholders = true,
 	vocalizePlayerNamePlaceholdersSkuTts = false,
 	repeatRaidTargetMarkers = false,
 }

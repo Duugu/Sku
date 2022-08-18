@@ -1616,3 +1616,5 @@ L["Clear history"] = "Clear tab history"
 L["delete whisper tabs without activity after"] = "delete whisper tabs without activity after"
 L["Never"] = "Never"
 L["Delete tab"] = "Delete tab"
+
+L["Announce friendly and hostile players"] = "Announce friendly and hostile players"

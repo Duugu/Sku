@@ -1611,3 +1611,5 @@ L["Clear history"] = "Chatverlauf von Registerkarte löschen"
 L["delete whisper tabs without activity after"] = "Flüster Registerkarten ohne Aktivität löschen nach"
 L["Never"] = "Niemals"
 L["Delete tab"] = "Registerkarte löschen"
+
+L["Announce friendly and hostile players"] = "Freundliche und feindliche Spieler ansagen"

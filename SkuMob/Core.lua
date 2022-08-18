@@ -179,14 +179,18 @@ function SkuMob:PLAYER_TARGET_CHANGED(arg1, arg2)
 
 	local tIsPlayerControled = false
 	if UnitIsPlayer("target") then
-		if UnitIsFriend("player", "target") then
-			tUnitName = SkuMob:GetTtsAwareUnitName("target")..", "..L["freundlicher spieler"]
-			tIsPlayerControled = true
+		if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders == true then
+			if UnitIsFriend("player", "target") then
+				tUnitName = SkuMob:GetTtsAwareUnitName("target")..", "..L["freundlicher spieler"]
+				tIsPlayerControled = true
+			else
+				tUnitName = SkuMob:GetTtsAwareUnitName("target")..", "..L["feindlicher spieler"]
+				tIsPlayerControled = true
+			end
+			noSubText = true
 		else
-			tUnitName = SkuMob:GetTtsAwareUnitName("target")..", "..L["feindlicher spieler"]
-			tIsPlayerControled = true
+			return
 		end
-		noSubText = true
 	end
 	if UnitPlayerControlled("target") == true and UnitIsPlayer("target") == false then
 		tUnitName = SkuMob:GetTtsAwareUnitName("target")..", "..L["fremder begleiter"]
