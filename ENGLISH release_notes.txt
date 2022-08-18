@@ -3,7 +3,7 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
-Changes in Sku r28.8
+Changes in Sku r28.8a
 	
 	Options
 		- Clearing the audio queue of the Blizzard tts or the Sku tts was unintentionally clearing the queue for both. That is fixed. Blizzard and sku tts should now play in parallel and not skip each others outputs. One effect is, that weypoint comments do work again.

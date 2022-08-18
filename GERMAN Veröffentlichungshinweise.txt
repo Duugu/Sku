@@ -4,7 +4,7 @@
 
 
 -------------------------------------------------------------------------------------------------------	
-Changes in Sku r28.8
+Changes in Sku r28.8a
 	
 	Options
 		- Das Löschen der Audiowarteschlange für das Blizzard tts oder das Sku tts hat ungewollt die Warteschlangen für beide gelöscht. Das wurde behoben. Blizzard und sku tts sollten jetzt, wie vorgesehen, gleichzeitg Ausgaben abspielen, ohne gegenseitig Ausgaben abzubrechen. Wegpunkthinweise sollten so z. B. wieder vorgelesen werden.
