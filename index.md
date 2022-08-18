@@ -27,7 +27,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 ## Changes in Sku r28.8
 	
 - Clearing the audio queue of the Blizzard tts or the Sku tts was unintentionally clearing the queue for both. That is fixed. Blizzard and sku tts should now play in parallel and not skip each others outputs. One effect is, that weypoint comments do work again.
-- Removed the cut-off of long menu entries with ... in audio menus. The audio menu now always reads the full text line. There's are no more ...
+- Removed the cut-off of long menu entries with ... in audio menus. The audio menu now always reads the full text line.
 - New option "generic outputs for player controled units via Sku" under Mob > Options. (Default: off) With this option outputs on targeting players or player controled units are done via the sku tts, using generic texts like "friendly player".
 
 ## Changes in Sku Script (wow_menu) r2.13
