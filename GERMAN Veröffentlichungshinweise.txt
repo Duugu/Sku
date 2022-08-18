@@ -4,6 +4,17 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r28.8
+	
+	Options
+		- Das Löschen der Audiowarteschlange für das Blizzard tts oder das Sku tts hat ungewollt die Warteschlangen für beide gelöscht. Das wurde behoben. Blizzard und sku tts sollten jetzt, wie vorgesehen, gleichzeitg Ausgaben abspielen, ohne gegenseitig Ausgaben abzubrechen. Wegpunkthinweise sollten so z. B. wieder vorgelesen werden.
+		- Removed the cut-off of long menu entries with ... in audio menus. The audio menu now always reads the full text line. There's are no more ...
+
+	Mob
+		- Neue option "generische ausgaben für Spieler einheiten via Sku" unter Mob > Options. (Standard: aus) Mit dieser Option werden nicht mehr die vollen Namen über das Blizzard tts, sondern nur noch generische Bezeichnungen wie "freundlicher Spieler" über das Sku tts ausgegeben, wenn du einen Spieler oder ein Tier ins ziel nimmst.
+
+
+-------------------------------------------------------------------------------------------------------	
 Änderungen in Sku r28.7
 	
 	Chat

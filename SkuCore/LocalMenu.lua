@@ -23,7 +23,6 @@ local function unescape(str)
 	return str
 end
 
-local maxItemNameLength = 40
 local function ItemName_helper(aText)
 	aText = unescape(aText)
 	local tShort, tLong = aText, ""
@@ -35,15 +34,15 @@ local function ItemName_helper(aText)
 		tLong = aText
 	end
 
-	if string.len(taTextWoLb) > maxItemNameLength then
+	if string.len(taTextWoLb) > SkuCore.maxItemNameLength then
 		local tBlankPos = 1
-		while (string.find(taTextWoLb, " ", tBlankPos + 1) and tBlankPos < maxItemNameLength) do
+		while (string.find(taTextWoLb, " ", tBlankPos + 1) and tBlankPos < SkuCore.maxItemNameLength) do
 			tBlankPos = string.find(taTextWoLb, " ", tBlankPos + 1)
 		end
 		if tBlankPos > 1 then
 			tShort = string.sub(taTextWoLb, 1, tBlankPos).."..."
 		else
-			tShort = string.sub(taTextWoLb, 1, maxItemNameLength).."..."
+			tShort = string.sub(taTextWoLb, 1, SkuCore.maxItemNameLength).."..."
 		end		
 		tLong = aText
 	else
@@ -569,7 +568,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 	local tFriendlyName = _G["ClassTrainerNameText"]:GetText()
 	if _G["ClassTrainerGreetingText"] and _G["ClassTrainerGreetingText"].GetText and _G["ClassTrainerGreetingText"]:GetText() then
 		tFriendlyName = _G["ClassTrainerGreetingText"]:GetText()
-		print("c", tFriendlyName)
+		--print("c", tFriendlyName)
 	end
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {

@@ -540,7 +540,6 @@ local function unescape(str)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local maxItemNameLength = 40
 local function ItemName_helper(aText)
 	aText = unescape(aText)
 	local tShort, tLong = aText, ""
@@ -552,15 +551,15 @@ local function ItemName_helper(aText)
 		tLong = aText
 	end
 
-	if string.len(taTextWoLb) > maxItemNameLength then
+	if string.len(taTextWoLb) > SkuCore.maxItemNameLength then
 		local tBlankPos = 1
-		while (string.find(taTextWoLb, " ", tBlankPos + 1) and tBlankPos < maxItemNameLength) do
+		while (string.find(taTextWoLb, " ", tBlankPos + 1) and tBlankPos < SkuCore.maxItemNameLength) do
 			tBlankPos = string.find(taTextWoLb, " ", tBlankPos + 1)
 		end
 		if tBlankPos > 1 then
 			tShort = string.sub(taTextWoLb, 1, tBlankPos).."..."
 		else
-			tShort = string.sub(taTextWoLb, 1, maxItemNameLength).."..."
+			tShort = string.sub(taTextWoLb, 1, SkuCore.maxItemNameLength).."..."
 		end		
 		tLong = aText
 	else
@@ -918,7 +917,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					ClearCursor()
 				elseif aName == L["Bind key"] then
 					SkuOptions.bindingMode = true
-					SkuOptions.Voice:StopAllOutputs()
+					SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 					C_Timer.After(0.001, function()
 						BindingHelper(self, "player", x, aParentEntry, aActionBarName, aBooktype)
 					end)
@@ -1018,7 +1017,7 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					ClearCursor()
 				elseif aName == L["Bind key"] then
 					SkuOptions.bindingMode = true
-					SkuOptions.Voice:StopAllOutputs()
+					SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 					C_Timer.After(0.001, function()				
 						BindingHelper(self, "pet", x, aParentEntry, aActionBarName, tButtonObjId)
 					end)

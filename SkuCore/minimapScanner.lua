@@ -289,7 +289,7 @@ function SkuCore:MinimapStopScan()
       tNotificationTicker:Cancel()
    end
    SkuCore.noMouseOverNotification = nil
-   SkuOptions.Voice:StopOutputEmptyQueue()
+   SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -336,7 +336,7 @@ function SkuCore:MinimapScanProcessResults()
       tNotificationTicker:Cancel()
    end
 
-   SkuOptions.Voice:StopOutputEmptyQueue()
+   SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
    SkuOptions:StartStopBackgroundSound(false)
 
    local tQuickWpNumber = 1

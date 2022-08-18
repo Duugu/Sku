@@ -301,28 +301,6 @@ function SkuVoice:GetLastPlayedString()
 	return SkuVoice.LastPlayedString
 end
 
-
----------------------------------------------------------------------------------------------------------
-function SkuVoice:StopAllOutputs()
-	--print("StopAllOutputs")
-	for i = 1, table.getn(mSkuVoiceQueue) do
-		if mSkuVoiceQueue[i] then
-			if mSkuVoiceQueue[i].soundHandle then
-				StopSound(mSkuVoiceQueue[i].soundHandle, 0)
-			end
-		end
-	end
-	mSkuVoiceQueue = {}
-	mSkuVoiceQueueBTTS_Speaking = {}
-	if IsMacClient() == true then
-		table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-		C_VoiceChat.StopSpeakingText()
-	else
-		table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-		C_VoiceChat.StopSpeakingText()
-	end	
-end
-
 ---------------------------------------------------------------------------------------------------------
 local tLinkIgnoreList = {
 	L["Link History"],
@@ -478,6 +456,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	if aOverwrite == true then
 		mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = "queuereset"
 		--print("ADD RESET TO QUEUE")
+		--[[
 		local tIt = true
 		while tIt == true do
 			tIt = false
@@ -492,6 +471,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 				end
 			end
 		end
+		]]
 --[[
 		if IsMacClient() == true then
 			C_VoiceChat.StopSpeakingText()
@@ -709,6 +689,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 	end
 
 	if engine then
+		--[[
 		--dprint("engine", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine)
 		local tIt = true
 		while tIt == true do
@@ -745,6 +726,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				end)
 			end
 		end
+		]]
 	else
 		-- don't vocalize numbers > 20000 or floats
 		-- that is for the unique auto wp ids and the coords; we don't want hear them, but we still need them in the wp names
@@ -1064,21 +1046,47 @@ function SkuVoice:CollectString(aString, aOverwrite, aWait, aLength, aDoNotOverw
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:StopOutputEmptyQueue()
-	--print("StopOutputEmptyQueue")
-	-- fade all in SkuVoiceQueue
+function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
+	if not aBlizz and not aSku then
+		aBlizz, aSku = true, true
+	end
+	if aSku then
+		for i = 1, table.getn(mSkuVoiceQueue) do
+			if mSkuVoiceQueue[i] then
+				if mSkuVoiceQueue[i].soundHandle then
+					StopSound(mSkuVoiceQueue[i].soundHandle)
+				end
+			end
+		end
+		mSkuVoiceQueue = {}
+	end
+	if aBlizz then
+		mSkuVoiceQueueBTTS_Speaking = {}
+		C_VoiceChat.StopSpeakingText()
+	end
+end
+--[[
+---------------------------------------------------------------------------------------------------------
+function SkuVoice:StopAllOutputs()
+	--print("StopAllOutputs")
 	for i = 1, table.getn(mSkuVoiceQueue) do
 		if mSkuVoiceQueue[i] then
 			if mSkuVoiceQueue[i].soundHandle then
-				StopSound(mSkuVoiceQueue[i].soundHandle)
+				StopSound(mSkuVoiceQueue[i].soundHandle, 0)
 			end
 		end
 	end
 	mSkuVoiceQueue = {}
 	mSkuVoiceQueueBTTS_Speaking = {}
-	C_VoiceChat.StopSpeakingText()
+	if IsMacClient() == true then
+		table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
+		C_VoiceChat.StopSpeakingText()
+	else
+		table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
+		C_VoiceChat.StopSpeakingText()
+	end	
 end
-
+]]
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:Release()
 

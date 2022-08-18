@@ -1303,7 +1303,7 @@ L["KommaNumbers"] = "Komma"
 
 L[";Meter"] = " Meter"
 
-L["Announce player controled units with generic descriptions"] = "Freundliche und feindliche Spieler ansagen"
+L["Announce player controled units with generic descriptions"] = "generische ausgaben für Spieler einheiten via Sku"
 
 L["Repeat raid target markers on units"] = "Ziel symbole wiederholen"
 L["Ein"] = "Ein"

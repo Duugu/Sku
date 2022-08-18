@@ -793,7 +793,7 @@ function SkuOptions:CreateMainFrame()
 		end			
 
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPTTSOUTPUT"].key then
-			SkuOptions.Voice:StopOutputEmptyQueue()
+			SkuOptions.Voice:StopOutputEmptyQueue(true, true)
 		end
 
 		if SkuCore:IsPlayerMoving() == true or SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true then
@@ -924,7 +924,7 @@ function SkuOptions:CreateMainFrame()
 		if a ~= "SHIFT-RIGHT" and a ~= "SHIFT-LEFT" and a ~= "SHIFT-ENTER" and a ~= "SHIFT-BACKSPACE" and a ~= "SHIFT-UP" and a ~= "SHIFT-DOWN" and a ~= "SHIFT-PAGEDOWN" and a ~= "CTRL-SHIFT-UP" and a ~= "CTRL-SHIFT-DOWN" then
 			if SkuOptions.TTS:IsAutoRead() == true then
 				SkuOptions.TTS:ToggleAutoRead()
-				SkuOptions.Voice:StopOutputEmptyQueue()
+				SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 			end
 			if SkuOptions.TTS:IsVisible() then
 				--SkuOptions.TTS:Output("", -1)
@@ -1643,7 +1643,7 @@ function SkuOptions:CreateMenuFrame()
 		if aKey ~= "SHIFT-RIGHT" and aKey ~= "SHIFT-LEFT" and aKey ~= "SHIFT-ENTER" and aKey ~= "SHIFT-BACKSPACE" and aKey ~= "SHIFT-UP" and aKey ~= "SHIFT-DOWN" and aKey ~= "SHIFT-PAGEDOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
 			if SkuOptions.TTS:IsAutoRead() == true then
 				SkuOptions.TTS:ToggleAutoRead()
-				SkuOptions.Voice:StopOutputEmptyQueue()
+				SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 			end
 			if SkuOptions.TTS:IsVisible() then
 				--SkuOptions.TTS:Output("", -1)

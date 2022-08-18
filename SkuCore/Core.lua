@@ -12,6 +12,7 @@ local tStartDebugTimestamp = GetTime() or 0
 
 SkuCoreDB = {}
 SkuCore = LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+SkuCore.maxItemNameLength = 1000--40
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 CLASS_IDS = {
@@ -2273,7 +2274,6 @@ local function GetTableID(aTable)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local maxItemNameLength = 40
 local function ItemName_helper(aText)
 	aText = unescape(aText)
 	local tShort, tLong = aText, ""
@@ -2285,15 +2285,15 @@ local function ItemName_helper(aText)
 		tLong = aText
 	end
 
-	if string.len(taTextWoLb) > maxItemNameLength then
+	if string.len(taTextWoLb) > SkuCore.maxItemNameLength then
 		local tBlankPos = 1
-		while (string.find(taTextWoLb, " ", tBlankPos + 1) and tBlankPos < maxItemNameLength) do
+		while (string.find(taTextWoLb, " ", tBlankPos + 1) and tBlankPos < SkuCore.maxItemNameLength) do
 			tBlankPos = string.find(taTextWoLb, " ", tBlankPos + 1)
 		end
 		if tBlankPos > 1 then
 			tShort = string.sub(taTextWoLb, 1, tBlankPos).."..."
 		else
-			tShort = string.sub(taTextWoLb, 1, maxItemNameLength).."..."
+			tShort = string.sub(taTextWoLb, 1, SkuCore.maxItemNameLength).."..."
 		end		
 		tLong = aText
 	else
@@ -2496,7 +2496,7 @@ local function IterateChildren(t, tab)
 						if tResults[fName].textFirstLine == "" and tResults[fName].textFull == "" and #tResults[fName].childs > 0 then
 							if tResults[fName].childs[tResults[fName].childs[1]].type == "FontString" then
 								local tFlag = true
-								if string.len(tResults[fName].childs[tResults[fName].childs[1]].textFirstLine) > maxItemNameLength then
+								if string.len(tResults[fName].childs[tResults[fName].childs[1]].textFirstLine) > SkuCore.maxItemNameLength then
 									tFlag = false
 								end
 								if #tResults[fName].childs > 1 then

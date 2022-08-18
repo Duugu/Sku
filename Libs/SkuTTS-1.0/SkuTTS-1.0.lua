@@ -125,7 +125,7 @@ function SkuTTS:ToggleAutoRead(aEngine, aReset)
 			SkuTTS.AutoReadEventFlag = nil
 			SkuTTS.AutoReadMode = true
 			SkuTTS.AutoReadEventFlag = nil
-			SkuOptions.Voice:StopOutputEmptyQueue()
+			SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 			C_Timer.After(0.6, function()
 				SkuTTS.AutoReadEventFlag = true
 				SkuTTS:CurrentLine(aEngine, false)
@@ -434,7 +434,7 @@ function SkuTTS:Hide()
 	--print("SkuTTS:Hide")
 	--SkuTTS.MainFrame.FS:SetText("")
 	if SkuTTS.MainFrame:IsVisible() == true then
-		SkuOptions.Voice:StopOutputEmptyQueue()
+		SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 		SkuOptions.Voice:OutputString("sound-off2", true, true, 0.2)
 	end
 	SkuTTS.MainFrame:Hide()

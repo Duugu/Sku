@@ -1567,9 +1567,11 @@ function SkuChat:OnInitialize()
 		if self.timeCounter > 5 then
 			if SkuOptions.db.profile["SkuChat"].tabs and SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteWhisperTabsAfter > 1 then
 				for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-					if SkuOptions.db.profile["SkuChat"].tabs[x].privateMessages and #SkuOptions.db.profile["SkuChat"].tabs[x].privateMessages > 0 then
-						if (SkuOptions.db.profile["SkuChat"].tabs[x].lastActivityAt or 0) + ((SkuChat.DeleteTabTimes[SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteWhisperTabsAfter] * 60)) < time() then
-							SkuChat:DeleteTab(x)
+					if SkuOptions.db.profile["SkuChat"].tabs[x] then
+						if SkuOptions.db.profile["SkuChat"].tabs[x].privateMessages and #SkuOptions.db.profile["SkuChat"].tabs[x].privateMessages > 0 then
+							if (SkuOptions.db.profile["SkuChat"].tabs[x].lastActivityAt or 0) + ((SkuChat.DeleteTabTimes[SkuOptions.db.profile[MODULE_NAME].chatSettings.deleteWhisperTabsAfter] * 60)) < time() then
+								SkuChat:DeleteTab(x)
+							end
 						end
 					end
 				end
@@ -1586,7 +1588,7 @@ function SkuChat:OnInitialize()
 		--close the line menu if open
 		CloseChatMenuHelper()
 
-		SkuOptions.Voice:StopOutputEmptyQueue()
+		SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 		SkuOptions.Voice:OutputString("sound-off2", true, true, 0.2)
 
 		--unbind chat keys
@@ -1610,7 +1612,7 @@ function SkuChat:OnInitialize()
 	a.OpenChat = function(self)
 		SkuOptions:CloseMenu()
 		SkuChat.ChatOpen = true
-		SkuOptions.Voice:StopOutputEmptyQueue()
+		SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 		SkuOptions.Voice:OutputString("sound-on3_1", true, true, 0.2, true)
 		if not SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab] then
 			SkuChat.currentTab = 1
@@ -2025,13 +2027,15 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:DEFAULT_CHAT_FRAME_AddMessage(...)
 	local a, b, c, d, e, f = ...
-	--SkuCore:Debug((a or "nil").." "..(b or "nil").." "..(c or "nil").." "..(d or "nil").." "..(e or "nil").." "..(f or "nil"))
+	if a == "" or a == " " then
+		return
+	end
 	if SkuOptions.db.profile["SkuChat"].tabs then
 		if SkuOptions.db.profile["SkuChat"].tabs[1] then
 			if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName] then
 				if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName].AddMessage then
 					if b == nil and c == nil and  d == nil and  e == nil and  f == nil then
-						_G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName]:AddMessage("SAY", a, 1, 1, 1, 0, 0, 0, "AddMessage")
+						--_G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName]:AddMessage("SAY", a, 1, 1, 1, 0, 0, 0, "AddMessage")
 					end
 				end
 			end
@@ -2151,6 +2155,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:SetEditboxToCustom(chatType, target, aMsg)
+	print("SetEditboxToCustom", chatType, target, aMsg)
 	SkuChatEditboxHookFlag = true
 
 	if chatType == "CHANNEL" then
@@ -2163,6 +2168,9 @@ function SkuChat:SetEditboxToCustom(chatType, target, aMsg)
 	elseif chatType == "BN_WHISPER" then
 		ChatFrame1EditBox:SetAttribute("tellTarget", target)
 		ChatFrame1EditBox:SetAttribute("chatType", "BN_WHISPER")
+	elseif target and target ~= "" then
+		ChatFrame1EditBox:SetAttribute("tellTarget", target)
+		ChatFrame1EditBox:SetAttribute("chatType", "WHISPER")
 	else
 		ChatFrame1EditBox:SetAttribute("chatType", chatType)
 	end
@@ -2382,6 +2390,10 @@ function SkuChat:InitTab(tNewTabIndex)
 			return
 		end
 
+		if body == "" or body == " " then
+			return
+		end
+		
 		--mask bnet names
 		local tNewBody
 		if string.find(body, "|K") then

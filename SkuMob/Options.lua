@@ -27,15 +27,15 @@ SkuMob.options = {
 				return SkuOptions.db.profile[MODULE_NAME].vocalizeRaidTargetOnly
 			end
 		},
-		vocalizePlayerNamePlaceholders = {
+		vocalizePlayerNamePlaceholdersSkuTts = {
 			name = L["Announce player controled units with generic descriptions"],
 			desc = "",
 			type = "toggle",
 			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders = val
+				SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders
+				return SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts
 			end
 		},
 		repeatRaidTargetMarkers = {
@@ -56,7 +56,7 @@ SkuMob.options = {
 SkuMob.defaults = {
 	enable = true,
 	vocalizeRaidTargetOnly = false,
-	vocalizePlayerNamePlaceholders = true,
+	vocalizePlayerNamePlaceholdersSkuTts = false,
 	repeatRaidTargetMarkers = false,
 }
 ---------------------------------------------------------------------------------------------------------------------------------------

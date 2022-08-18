@@ -206,6 +206,13 @@ SkuChat.options = {
 					get = function(info) 
 						return SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage
 					end,
+					OnAction = function() 
+						if Options.db.profile["SkuChat"].tabs then
+							for i, v in pairs(Options.db.profile["SkuChat"].tabs) do
+								v.audioOnNewMessage = SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage
+							end
+						end
+					end,
 				},
 				audioOnMessageEnd = {
 					name = L["Audio notification on the end of chat messages"],
