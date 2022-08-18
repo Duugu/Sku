@@ -8,8 +8,8 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
+[Sku r28.8](https://github.com/Duugu/Sku/releases/download/r28.8/Sku-r28.8-bcc.zip) (August 18th, 2022)<br> 
 [Sku Script (wow_menu) r2.13](https://github.com/Duugu/wow_menu/releases/download/r2.13/wow_menu-r2.13-bcc.zip) (August 14th, 2022)<br>
-[Sku r28.7](https://github.com/Duugu/Sku/releases/download/r28.7/Sku-r28.7-bcc.zip) (August 14th, 2022)<br> 
 
 *Old updates:* <br>
 [Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
@@ -24,6 +24,12 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.8
+	
+- Clearing the audio queue of the Blizzard tts or the Sku tts was unintentionally clearing the queue for both. That is fixed. Blizzard and sku tts should now play in parallel and not skip each others outputs. One effect is, that weypoint comments do work again.
+- Removed the cut-off of long menu entries with ... in audio menus. The audio menu now always reads the full text line. There's are no more ...
+- New option "generic outputs for player controled units via Sku" under Mob > Options. (Default: off) With this option outputs on targeting players or player controled units are done via the sku tts, using generic texts like "friendly player".
+
 ## Changes in Sku Script (wow_menu) r2.13
 - Updated the regions and server lists to reflect the recent server changes. Switching server is working again.
 
