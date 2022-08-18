@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku r28.8a](https://github.com/Duugu/Sku/releases/download/r28.8a/Sku-r28.8a-bcc.zip) (August 18th, 2022)<br> 
+[Sku r28.8b](https://github.com/Duugu/Sku/releases/download/r28.8b/Sku-r28.8b-bcc.zip) (August 18th, 2022)<br> 
 [Sku Script (wow_menu) r2.13](https://github.com/Duugu/wow_menu/releases/download/r2.13/wow_menu-r2.13-bcc.zip) (August 14th, 2022)<br>
 
 *Old updates:* <br>
@@ -24,6 +24,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r28.8b
+- Re-added the unintentionally removed option "Announce friendly and hostile players".
+
 ## Changes in Sku r28.8a
 	
 - Clearing the audio queue of the Blizzard tts or the Sku tts was unintentionally clearing the queue for both. That is fixed. Blizzard and sku tts should now play in parallel and not skip each others outputs. One effect is, that weypoint comments do work again.
