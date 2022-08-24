@@ -8,11 +8,10 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku r28.8b](https://github.com/Duugu/Sku/releases/download/r28.8b/Sku-r28.8b-bcc.zip) (August 18th, 2022)<br> 
-[Sku Script (wow_menu) r2.13](https://github.com/Duugu/wow_menu/releases/download/r2.13/wow_menu-r2.13-bcc.zip) (August 14th, 2022)<br>
+[Sku Script (wow_menu) r2.14](https://github.com/Duugu/wow_menu/releases/download/r2.14/wow_menu-r2.14-bcc.zip) (August 24th, 2022)<br>
 
 *Old updates:* <br>
-[Sku Script (wow_menu) r2.12](https://github.com/Duugu/wow_menu/releases/download/r2.12/wow_menu-r2.12-bcc.zip) (July 16th, 2022)<br>
+[Sku r28.8b](https://github.com/Duugu/Sku/releases/download/r28.8b/Sku-r28.8b-bcc.zip) (August 18th, 2022)<br> 
 [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
 [SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
 [SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
@@ -24,6 +23,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in wow_menu 2.14
+- Updated the server list for EU EN.
+		
 ## Changes in Sku r28.8b
 - Re-added the unintentionally removed option "Announce friendly and hostile players".
 
