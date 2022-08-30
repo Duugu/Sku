@@ -3,7 +3,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 # Updates
 
-*Neue Zpdates:* <br>
+*Neue Updates:* <br>
 **Lies die Hinweise unten** <br>
 
 *Alte Updates:* <br>
