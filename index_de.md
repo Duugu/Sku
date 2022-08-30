@@ -20,8 +20,8 @@ Achtung: Installiere das neue Addon erst Mittwoch nach der Serverwartung. Vorher
 Ein Neuanfang wäre besser. Funktionierende Versionen anderer Addons kannst du später wieder installieren.<br>
 Wichtig: Wenn du nicht alles aus Addons löschst, musst du trotzdem mindestens alle Bagnon-Addons löschen. Wir verwenden sie nicht mehr, und die neue Sku-Version wird mit installiertem Bagnon nicht funktionieren!
 - Lade das Wrath-Paket für deine Sprache herunter. Es enthält die verfügbaren Versionen aller Sku-Addons und einiger anderer Addons.
-	- Deutsch/deutsch: https://1drv.ms/u/s!Aqgp3J_s6MM7iKhn4wFgp9mgiNuLUQ?e=FFvJk9
-	- Englisch: https://1drv.ms/u/s!Aqgp3J_s6MM7iKhmJk5Dr_zbKJpNhw?e=62vJUq
+	- German/deutsch: [https://1drv.ms/u/s!Aqgp3J_s6MM7iKhn4wFgp9mgiNuLUQ?e=FFvJk9](https://1drv.ms/u/s!Aqgp3J_s6MM7iKhn4wFgp9mgiNuLUQ?e=FFvJk9)
+	- Englisch: [https://1drv.ms/u/s!Aqgp3J_s6MM7iKhmJk5Dr_zbKJpNhw?e=62vJUq](https://1drv.ms/u/s!Aqgp3J_s6MM7iKhmJk5Dr_zbKJpNhw?e=62vJUq)
 - Entpacke alles aus dem heruntergeladenen Paket in den Addons-Ordner.
 - Du musst das Skript wow_menu für Wrath neu einrichten. Es ist Teil des Pakets und sollte gerade in deinen Addons-Ordner kopiert worden sein.<br>
 Befolge die bekannten Schritte, um das Skript erneut einzurichten. Im wow_menu-Ordner gibt es ein Readme-Datei auf deutsch, falls du dich nicht mehr daran erinnern kannst.<br>
