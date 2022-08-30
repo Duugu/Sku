@@ -8,20 +8,40 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 **Read the release notes!** <br>
-[Sku Script (wow_menu) r2.14](https://github.com/Duugu/wow_menu/releases/download/r2.14/wow_menu-r2.14-bcc.zip) (August 24th, 2022)<br>
 
 *Old updates:* <br>
-[Sku r28.8b](https://github.com/Duugu/Sku/releases/download/r28.8b/Sku-r28.8b-bcc.zip) (August 18th, 2022)<br> 
 [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
-[SkuBeaconSoundsets r20](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r20/SkuBeaconSoundsets-r20-bcc.zip) (28.05.2022) <br>
-[SkuCustomBeaconsEssential 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsEssential.zip) (28.05.2022) <br>
-[SkuCustomBeaconsAdditional 0.1](https://www.iamtalon.me/sku/SkuCustomBeaconsAdditional.zip) (28.05.2022) <br>
-[SkuAudioData ENGLISH r5](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (05.05.2022)<br>
-[SkuAudioData DEUTSCH r32](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (05.05.2022)<br>
-[BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
 
 # Release notes
 
+## Initial update for the Wrath of the Lich King pre-patch
+### Setup
+- Delete all addons from your addons folder. If you really would like to keep addons, please feel free to do so. But they most probably will be broken anyway. <br>
+A fresh start would be better. You can re-install working versions of other addons later.<br>
+Important: If you don't delete everything from Addons, then you still need to delete at least all Bagnon addons. We don't use them anymore, and the new Sku version won't work with Bagnon installed!
+- Download the Wrath package for your language (en/de). It contains available versions of all sku addons and some other addons.
+	- Englisch: 
+	- German/deutsch: 
+- Extract everything from the downloaded package to the addons folder.
+- You need to setup the script wow_menu again for Wrath. It is part of the packages and should just have been copied to your addons folder.<br>
+Follow the known steps to setup the script again. There is a readme in the wow_menu folder, just in case you can't remember.<br>
+Don't forget to move the wow_menu folder out of Addons if you are done.
+### Bugs:
+- There was almost zero time to test. Errors, issues, bugs and other quirks should be expected. .
+- Blizzard will add two "fresh" servers with the pre-patch. Unfortunately they forgot to tell where. Therefore I can pre-adjust the script. if the dedice to add those server to the region where your server is located, the they most probably will mix-up the list and switching the server won't work anymore. Even with the new script. If that happens please wait for the script to be updated.
+### Not implemented yet:
+- All death knight features like runes and rune power
+- The full death knight starting area
+- Equipment manager
+- Calendar
+- Archivements
+### Good to know:
+- Mounts/pets (critters, not hunter pets): they are now added to your spellbook. Use the mount/pet item in your bag. It will disappear and appear as a new spell in your action bar configuration.
+- Bank bags are now shown under "Bags". Don't look for a "Bank" menu under local. Get to "Bags" and arrow down, if you are at a bank.
+- Hunter pets now have a talent tree. The pet talent tree is available under your talent menu if the pet is there.
+- In vehicle combat your standard action bar is replaced with up to 8 new skills. The key binds are the same. Check the actionbar menu to see the available skills if you are in a vehicle.
+
+# Old (pre Wrath) release notes
 -------------------------------------------------------------------------------------------------------	
 ## Changes in wow_menu 2.14
 - Updated the server list for EU EN.
