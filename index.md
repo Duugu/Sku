@@ -15,13 +15,16 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 ## Initial update for the Wrath of the Lich King pre-patch
+
+Caution: Do not install the new addon before the server maintenance is completed (tuesday/wednesday, depending on your region. It won't work with the current game version.
+
 ### Setup
 - Delete all addons from your addons folder. If you really would like to keep addons, please feel free to do so. But they most probably will be broken anyway. <br>
 A fresh start would be better. You can re-install working versions of other addons later.<br>
 Important: If you don't delete everything from Addons, then you still need to delete at least all Bagnon addons. We don't use them anymore, and the new Sku version won't work with Bagnon installed!
 - Download the Wrath package for your language. It contains available versions of all sku addons and some other addons.
-	- Englisch: 
-	- German/deutsch: 
+	- Englisch: https://1drv.ms/u/s!Aqgp3J_s6MM7iKhmJk5Dr_zbKJpNhw?e=62vJUq
+	- German/deutsch: https://1drv.ms/u/s!Aqgp3J_s6MM7iKhn4wFgp9mgiNuLUQ?e=FFvJk9
 - Extract everything from the downloaded package to the addons folder.
 - You need to setup the script wow_menu again for Wrath. It is part of the packages and should just have been copied to your addons folder.<br>
 Follow the known steps to setup the script again. There is a readme in the wow_menu folder, just in case you can't remember.<br>
