@@ -1,138 +1,42 @@
-If you are a first time user of the Sku addon, you need to follow the installation / setup instructions before installing updates from this page:<br>
-ENGLISH - First Steps Guide:<br>
-<a href="https://duugu.github.io/Sku/first_steps_en.html">https://duugu.github.io/Sku/first_steps_en.html</a><br>
 DEUTSCH/GERMAN - Erste Schritte:<br>
 <a href="https://duugu.github.io/Sku/first_steps_de.html">https://duugu.github.io/Sku/first_steps_de.html</a><br>
 
 # Updates
 
-*Recent updates:* <br>
-[Sku r25.8](https://github.com/Duugu/Sku/releases/download/r25.8/Sku-r25.8-bcc.zip) (18.03.2022)<br>
-[Sku-Maus Skript r1.6](https://1drv.ms/u/s!Aqgp3J_s6MM7iKVLPwM6aes725wkDg?e=X2FUPR) (15.03.2022)<br>
-[SkuFluegel r5.5](https://github.com/Duugu/SkuFluegel/releases/download/r5.5/SkuFluegel-r5.5-bcc.zip) (09.03.2022) (addon for sighted players)<br>
-[SkuAudioData ENGLISH r3](https://github.com/Duugu/SkuAudioData_en/releases/download/r3/SkuAudioData_en-r3-bcc.zip) (06.03.2022)<br>
-[Sku-Maus Skript r1.5](https://1drv.ms/u/s!Aqgp3J_s6MM7iKUcBpU5QfF5B-BcOw?e=bcapTl) (20.02.2022)<br>
-[SkuAudioData DEUTSCH r30](https://github.com/Duugu/SkuAudioData/releases/download/r30/SkuAudioData-r30-bcc.zip) <br>
-[SkuBeaconSoundsets r19.7](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r19.7/SkuBeaconSoundsets-r19.7-bcc.zip) <br>
-[BugGrabber + Bugsack](https://1drv.ms/u/s!Aqgp3J_s6MM7iKN7LiGYcuZzzTTdGw?e=c5c4c7) <br>
+*Neue Zpdates:* <br>
+**Lies die Hinweise unten** <br>
 
-# Release notes
+*Alte Updates:* <br>
+[SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip) (16.07.2022) (addon für sehende Spieler)<br>
 
--------------------------------------------------------------------------------------------------------	
+# Veröffentlichungshinweise
 
-Changes in release 25.8
+## Initiales Update für den Pre-Patch von Wrath of the Lich King
 
-SkuChat
-- The addon now leaves the Looking For Group channel on first login.
-- Changed the default value for "Sound on chat message" to "On".
+Achtung: Installiere das neue Addon erst Mittwoch nach der Serverwartung. Vorher funktioniert es nicht!
 
-SkuCore
-- Fixed a bug with missing option to choose a reward for some quests with multiple rewards.
-- Fixed a bug with missing "auto loot" and other default settings.
-- Changed "toggle auto run" in Sku default key bindings from numlock to "ALT + W".
-- Fixed a bug with constant "Pet happy" message spam. 
-- Fixed an issue with new messages if the chat is open.
+### Einrichtung
+- Lösche alle Addons aus deinem Addons-Ordner. Wenn du die Addons wirklich behalten möchtest, kannst du das gerne tun. Aber höchstwahrscheinlich werden sie sowieso kaputt sein.<br>
+Ein Neuanfang wäre besser. Funktionierende Versionen anderer Addons kannst du später wieder installieren.<br>
+Wichtig: Wenn du nicht alles aus Addons löschst, musst du trotzdem mindestens alle Bagnon-Addons löschen. Wir verwenden sie nicht mehr, und die neue Sku-Version wird mit installiertem Bagnon nicht funktionieren!
+- Lade das Wrath-Paket für deine Sprache herunter. Es enthält die verfügbaren Versionen aller Sku-Addons und einiger anderer Addons.
+	- Deutsch/deutsch: https://1drv.ms/u/s!Aqgp3J_s6MM7iKhn4wFgp9mgiNuLUQ?e=FFvJk9
+	- Englisch: https://1drv.ms/u/s!Aqgp3J_s6MM7iKhmJk5Dr_zbKJpNhw?e=62vJUq
+- Entpacke alles aus dem heruntergeladenen Paket in den Addons-Ordner.
+- Du musst das Skript wow_menu für Wrath neu einrichten. Es ist Teil des Pakets und sollte gerade in deinen Addons-Ordner kopiert worden sein.<br>
+Befolge die bekannten Schritte, um das Skript erneut einzurichten. Im wow_menu-Ordner gibt es ein Readme-Datei auf deutsch, falls du dich nicht mehr daran erinnern kannst.<br>
+Vergiss nicht, den Ordner wow_menu aus dem Ordner Addons zu verschieben, wenn du fertig bist.
+### Bugs:
+- Es gab fast keine Zeit zum Testen. Mit Fehlern, Problemen, Bugs und anderen Macken ist also zu rechnen. .
+### Noch nicht implementiert:
+- Alle Todesritter-Features wie Runen und Runenmacht
+- Das komplette Startgebiet des Todesritters
+- Ausrüstungsmanager
+- Kalender
+- Archivierungen
+### Gut zu wissen:
+- Reittiere/Haustiere: Sie werden jetzt zu deinem Zauberbuch hinzugefügt. Verwende das Reittier/Haustier in deiner Tasche. Er verschwindet und erscheint als neuer Zauberspruch in deiner Aktionsleiste.
+- Banktaschen werden jetzt unter "Taschen" angezeigt. Suche nicht nach einem "Bank"-Menü unter "Lokal". Gehe zu "Taschen" und wähle den Pfeil nach unten, wenn du dich in einer Bank befindest.
+- Jäger-Begleiter haben jetzt einen Talentbaum. Der Talentbaum des Begleiters ist unter deinem Talentmenü verfügbar, wenn der Begleiter dort ist.
+- Im Fahrzeugkampf wird deine normale Aktionsleiste durch bis zu 8 neue Fähigkeiten ersetzt. Die Tastenbelegungen entsprechen deiner Aktionsleiste. Überprüfe das Aktionsleistenmenü, um die verfügbaren Fähigkeiten zu sehen, wenn du dich in einem Fahrzeug befindest.
 
-SkuMob
-- Your pet / companion now should be read as "your companion" (instead of "other companion").
-
-SkuNav:
-- Added faction areas for Horde and Alliance to Kalimdor and Eastern Kingdoms.
-- Added the newest map data for english and german.
-- Fixed an issue with missing audio for "nah" (German only).
-- Fixed an issue with zone "The Dead Scar" / "Die Todesschneise"
-
-SkuOptions:
-- Changed the default values for "Speak menu numbers" and "Announce submenus" in "SkuOptions > Options" to "On".
-
-## Changes in Sku-Maus Skript r1.6
-
-IMPORTANT: Instead of just on script there are now 3 scripts for different languages and regions. 
-Use the correct script for your region/language:
-U.S. realms in English: wow-menu_EN_US.ahk
-EU realms in English: wow-menu_EN_EU.ahk
-U.S. realms in German: wow-menu_DE_EU.ahk
-
-- Optimized the recognition of "Login" and "Game" mode
-- Fixed a bunch of issues with mode detection
-- Added support for English
-- Added EN EU and EN US region / realm lists
-- Splitted the script into separate script for EN_EU, EN_US, DE_EU.
-
-## Changes in Sku release 25.7
-
-### SkuAuras
-*Bug fixes*
-- Next try to fix that issue with the "contains" operator. Tested with "target change with debuff" and "melee damage". Both working. But I am sure there's something else broken now. :D
-
-### SkuOptions
-*Bug fixes*
-- Fixed a bug with updating the money on the overview page.
-
-### SkuMob
-*New*
-- The addon now uses generic terms for player controlled units with unkown names, instead of playing the "beep" for missing words:
-	- "you" (targeting yourself)
-	- "your companion" (targeting your companion / pet)
-	- "friendly player" (targeting a player from your faction)
-	- "unfriendly player" (targeting a player from other faction)
-	- "other companion" (targeting a companion / pet of another player)
-
-## Changes in SkuFluegel release 5.5
-
-New:
-- Added tooltips with descriptions to the unit panels.
-
-## Changes in Sku release 25.6
-	
-### SkuAuras
-*Bug fixes*
-- (Again) fixed an issue with "contains" operator.
-
-### SkuChat
-*Bug fixes*
-- Fixed an issue with "Automatically read SkuChat channel". Should be read now.
-
-### SkuNav
-*Bug fixes*
-- Added Silvermoon to the list of words for waypoint names.
-- Fixed the zone ID for Shadowfang Keep area.
-			
-## Changes in release 25.5
-	
-### SkuNav
-*Bug fixes*
-- Fixed an issue with missing waypoints in Nagrand.
-
-## Changes in Sku release 25.4
-
-### SkuChat
-*New features*
-- The default value for "SkuChat > Options > Automatically read whisper chat" now is On.
-- There is a new option: "Automatically read SkuChat channel". The default value is On.
-
-### SkuNav
-*Bug fixes*
-- EN only: Waypoints for herbs like "Silverleaf" and minining nodes like "Copper Veign" are now filtered from all lists, as intended.
-- Waypoints with "[DND]" in their names are now filtered from any lists and should not be visible anymore.
-- Additional fix for metaroute calculation via SkuQuest.
-
-## Changes in Sku release 25.3
-	
-### SkuNav
-*Bug fixes*
-- Fixed an issue with metaroute calculation that caused lag with "SkuNav > Route > Follow route" in Hellfire Peninsula. The range for available entry waypoint was lowered from 1000 to 300 yards. That means, if there isn't any waypoint in a range of 300 meters linked to the route network, then "SkuNav > Route > Follow route" will show an empty list (no entry point). Move closer to a linked waypoint in such cases.
-
-## Changes in Sku release 25.2
-	
-### SkuNav
-*Bug fixes*
-- Fixed an issue with missing route data for first time users. Route data should be available on next login.
-
-## Changes in Sku release 25.1
-	
-The localization is completed. The addon is ready to test with language set to "English" (in the Battle.Net client). Please report all missing words and issues!<br>
-How to move from German to English:
-- You need to delete the "Account" folder in "World of Warcraft\_classic_\WTF\Account". You will lose all existing profiles, settings, etc. for all addons.
-- You need to download "SkuAudioData_en 3" via https://duugu.github.io/Sku/
-- You either need to deactivate "SkuAudioData 30" in the addon list ingame, or to delete the folder "SkuAudioData" from you addons folder.
