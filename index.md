@@ -10,7 +10,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 **Read the release notes!** <br>
 
 *Old updates:* <br>
-[SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip)) (July 16th, 2022) (addon for sighted players)<br>
+[SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip) (July 16th, 2022) (addon for sighted players)<br>
 
 # Release notes
 
@@ -19,7 +19,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - Delete all addons from your addons folder. If you really would like to keep addons, please feel free to do so. But they most probably will be broken anyway. <br>
 A fresh start would be better. You can re-install working versions of other addons later.<br>
 Important: If you don't delete everything from Addons, then you still need to delete at least all Bagnon addons. We don't use them anymore, and the new Sku version won't work with Bagnon installed!
-- Download the Wrath package for your language (en/de). It contains available versions of all sku addons and some other addons.
+- Download the Wrath package for your language. It contains available versions of all sku addons and some other addons.
 	- Englisch: 
 	- German/deutsch: 
 - Extract everything from the downloaded package to the addons folder.
