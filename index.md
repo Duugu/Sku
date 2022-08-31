@@ -30,15 +30,18 @@ Important: If you don't delete everything from Addons, then you still need to de
 - You need to setup the script wow_menu again for Wrath. It is part of the packages and should just have been copied to your addons folder.<br>
 Follow the known steps to setup the script again. There is a readme in the wow_menu folder, just in case you can't remember.<br>
 Don't forget to move the wow_menu folder out of Addons if you are done.
+
 ### Bugs:
 - There was almost zero time to test. Errors, issues, bugs and other quirks should be expected. .
 - Blizzard will add two "fresh" servers with the pre-patch. Unfortunately they forgot to tell where. Therefore I can pre-adjust the script. if the dedice to add those server to the region where your server is located, the they most probably will mix-up the list and switching the server won't work anymore. Even with the new script. If that happens please wait for the script to be updated.
+- 
 ### Not implemented yet:
 - All death knight features like runes and rune power
 - The full death knight starting area
 - Equipment manager
 - Calendar
 - Archivements
+- 
 ### Good to know:
 - Mounts/pets (critters, not hunter pets): they are now added to your spellbook. Use the mount/pet item in your bag. It will disappear and appear as a new spell in your action bar configuration.
 - Bank bags are now shown under "Bags". Don't look for a "Bank" menu under local. Get to "Bags" and arrow down, if you are at a bank.
@@ -50,13 +53,14 @@ Don't forget to move the wow_menu folder out of Addons if you are done.
 - Actions for numpad 7 and 8 changed:
 	- numpad7: right click in front of you (was right click at your feet)
 	- numpad8: left click at your feet (to use area of effect spells that need to be targeted on the ground via left clicking in the game world)
+	- 
 ## Changes in wow_menu 3.2
 - Social contract on first login will be auto accepted
 - Loading outdated addons will be auto accepted
 - Removed Shazzrah from the english EU server list
 
 # Old (pre Wrath) release notes
--------------------------------------------------------------------------------------------------------	
+
 ## Changes in wow_menu 2.14
 - Updated the server list for EU EN.
 		
