@@ -46,7 +46,9 @@ Don't forget to move the wow_menu folder out of Addons if you are done.
 - In vehicle combat your standard action bar is replaced with up to 8 new skills. The key binds are the same. Check the actionbar menu to see the available skills if you are in a vehicle.
 
 ## Changes in wow_menu 3.2
-- Updated the server list for EU EN.
+- Social contract on first login will be auto accepted
+- Loading outdated addons will be auto accepted
+- Removed Shazzrah from the english EU server list
 
 # Old (pre Wrath) release notes
 -------------------------------------------------------------------------------------------------------	
