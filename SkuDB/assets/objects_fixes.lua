@@ -715,20 +715,20 @@ local SkuObjectsFixes = {
         [objectKeys.zoneID] = zoneIDs.SHATTRATH_CITY,
     },    
 }
-function SkuDB:FixObjectsDB()
+function SkuDB:FixObjectsDB(aTargetTable)
     for i, v in pairs(SkuObjectsFixes) do
         local tNew = false
         for k, val in pairs(v) do
-            if SkuDB.objectDataTBC[i] then
-                SkuDB.objectDataTBC[i][k] = val
+            if aTargetTable.objectDataTBC[i] then
+                aTargetTable.objectDataTBC[i][k] = val
             else
-                SkuDB.objectDataTBC[i] = v
+                aTargetTable.objectDataTBC[i] = v
                 tNew = true
             end
         end
         if tNew == true then
-            SkuDB.objectLookup["deDE"][i] = SkuDB.objectDataTBC[i][objectKeys.name]
-            SkuDB.objectLookup["enUS"][i] = SkuDB.objectDataTBC[i][objectKeys.name]
+            aTargetTable.objectLookup["deDE"][i] = aTargetTable.objectDataTBC[i][objectKeys.name]
+            aTargetTable.objectLookup["enUS"][i] = aTargetTable.objectDataTBC[i][objectKeys.name]
         end
 
     end

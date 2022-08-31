@@ -30,6 +30,7 @@ SkuDB.classKeys = {
 	MAGE = 128,
 	WARLOCK = 256,
 	DRUID = 1024,
+	DEATHKNIGHT = 2048,
 }
 
 SkuDB.QuestFlags = {

@@ -288,20 +288,20 @@
         },
     }
 
-function SkuDB:FixItemDB()
+function SkuDB:FixItemDB(aTargetTable)
     for i, v in pairs(SkuItemFixes) do
         local tNew = false
         for k, val in pairs(v) do
-            if SkuDB.itemDataTBC[i] then
-               SkuDB.itemDataTBC[i][k] = val
+            if aTargetTable.itemDataTBC[i] then
+                aTargetTable.itemDataTBC[i][k] = val
             else
-                SkuDB.itemDataTBC[i] = v
+                aTargetTable.itemDataTBC[i] = v
                 tNew = true
             end
         end
         if tNew == true then
-            SkuDB.itemLookup["deDE"][i] = SkuDB.itemDataTBC[i][itemKeys.name]
-            SkuDB.itemLookup["enUS"][i] = SkuDB.itemDataTBC[i][itemKeys.name]
+            aTargetTable.itemLookup["deDE"][i] = aTargetTable.itemDataTBC[i][itemKeys.name]
+            aTargetTable.itemLookup["enUS"][i] = aTargetTable.itemDataTBC[i][itemKeys.name]
         end
 
     end

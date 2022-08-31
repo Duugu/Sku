@@ -5,17 +5,6 @@ SkuAuras.options = {
 	name = MODULE_NAME,
 	type = "group",
 	args = {
-		enable = {
-			name = L["Module enabled"],
-			desc = "",
-			type = "toggle",
-			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].enable = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].enable
-			end
-		},
 	},
 }
 
@@ -1022,6 +1011,5 @@ function SkuAuras:MenuBuilder(aParentEntry)
 
 	---
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
-	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuAuras.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end

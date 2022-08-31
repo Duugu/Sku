@@ -90,12 +90,10 @@ function SkuQuest:OnInitialize()
 	local f = _G["SkuQuestControl"] or CreateFrame("Frame", "SkuQuestControl", UIParent)
 	--[[
 	f:SetScript("OnUpdate", function(self, time) 
-		if SkuOptions.db.profile[MODULE_NAME].enable == true then
- 			ttime = ttime + time 
-			if ttime > 0.25 then 
-				
-				ttime = 0 
-			end 
+		ttime = ttime + time 
+		if ttime > 0.25 then 
+			
+			ttime = 0 
 		end
 	end)
 	]]
@@ -470,7 +468,7 @@ function SkuQuest:GetTTSText(aQuestID)
 		--table.insert(tSections, "numObjectives: "..numObjectives)
 
 		for i=1, numObjectives, 1 do
-			local string = _G["QuestLogObjective"..i]
+			local string = _G["QuestInfoObjective"..i]
 			local text
 			local ttype
 			local finished
@@ -520,11 +518,11 @@ function SkuQuest:GetTTSText(aQuestID)
 			tTtipText = tTtipText..L["\r\nFeste Gegenstände\r\n"]
 			for i=1, numRewards, 1 do
 				local link
-				local tQuestLogItem = _G["QuestLogItem"..i]
+				local tQuestLogItem = _G["QuestInfoRewardsFrameQuestInfoItem"..i]
 
-				if (tQuestLogItem.rewardType == "item") then
+				if (tQuestLogItem.objectType == "item") then
 					link = GetQuestLogItemLink(tQuestLogItem.type, tQuestLogItem:GetID())
-				elseif (self.rewardType== "spell") then
+				elseif (self.objectType== "spell") then
 					link = GetQuestLogSpellLink(tQuestLogItem:GetID())
 				end
 				if link then
@@ -544,7 +542,7 @@ function SkuQuest:GetTTSText(aQuestID)
 							if region and region:GetObjectType() == "FontString" then
 								local text = region:GetText() -- string or nil
 								if text then
-									if text == _G["QuestLogItem"..i.."Name"]:GetText() then
+									if text == _G["QuestInfoRewardsFrameQuestInfoItem"..i.."Name"]:GetText() then
 										tTtipText = tTtipText..i..": "..text.."\r\n"
 										tTtipText = tTtipText..itemRarity.."\r\n"
 									else
@@ -564,11 +562,10 @@ function SkuQuest:GetTTSText(aQuestID)
 			tTtipText = tTtipText..L["\r\nGegenstände zur Auswahl\r\n"]
 			for i=1, numChoices, 1 do
 				local link
-				local tQuestLogItem = _G["QuestLogItem"..i]
-
-				if (tQuestLogItem.rewardType == "item") then
+				local tQuestLogItem = _G["QuestInfoRewardsFrameQuestInfoItem"..i]
+				if (tQuestLogItem.objectType == "item") then
 					link = GetQuestLogItemLink(tQuestLogItem.type, tQuestLogItem:GetID())
-				elseif (self.rewardType== "spell") then
+				elseif (self.objectType== "spell") then
 					link = GetQuestLogSpellLink(tQuestLogItem:GetID())
 				end
 				if link then
@@ -588,7 +585,7 @@ function SkuQuest:GetTTSText(aQuestID)
 							if region and region:GetObjectType() == "FontString" then
 								local text = region:GetText() -- string or nil
 								if text then
-									if text == _G["QuestLogItem"..i.."Name"]:GetText() then
+									if text == _G["QuestInfoRewardsFrameQuestInfoItem"..i.."Name"]:GetText() then
 										tTtipText = tTtipText..i..": "..text.."\r\n"
 										tTtipText = tTtipText..itemRarity.."\r\n"
 									else
@@ -767,11 +764,11 @@ function SkuQuest:ShowForTTS(aQuestID)
 			tTtipText = tTtipText..L["\r\nFeste Gegenstände\r\n"]
 			for i=1, numRewards, 1 do
 				local link
-				local tQuestLogItem = _G["QuestLogItem"..i]
+				local tQuestLogItem = _G["QuestInfoRewardsFrameQuestInfoItem"..i]
 
-				if (tQuestLogItem.rewardType == "item") then
+				if (tQuestLogItem.objectType == "item") then
 					link = GetQuestLogItemLink(tQuestLogItem.type, tQuestLogItem:GetID())
-				elseif (self.rewardType== "spell") then
+				elseif (self.objectType== "spell") then
 					link = GetQuestLogSpellLink(tQuestLogItem:GetID())
 				end
 				if link then
@@ -791,7 +788,7 @@ function SkuQuest:ShowForTTS(aQuestID)
 							if region and region:GetObjectType() == "FontString" then
 								local text = region:GetText() -- string or nil
 								if text then
-									if text == _G["QuestLogItem"..i.."Name"]:GetText() then
+									if text == _G["QuestInfoRewardsFrameQuestInfoItem"..i.."Name"]:GetText() then
 										tTtipText = tTtipText..i..": "..text.."\r\n"
 										tTtipText = tTtipText..itemRarity.."\r\n"
 									else
@@ -811,11 +808,11 @@ function SkuQuest:ShowForTTS(aQuestID)
 			tTtipText = tTtipText..L["\r\nGegenstände zur Auswahl\r\n"]
 			for i=1, numChoices, 1 do
 				local link
-				local tQuestLogItem = _G["QuestLogItem"..i]
+				local tQuestLogItem = _G["QuestInfoRewardsFrameQuestInfoItem"..i]
 
-				if (tQuestLogItem.rewardType == "item") then
+				if (tQuestLogItem.objectType == "item") then
 					link = GetQuestLogItemLink(tQuestLogItem.type, tQuestLogItem:GetID())
-				elseif (self.rewardType== "spell") then
+				elseif (self.objectType== "spell") then
 					link = GetQuestLogSpellLink(tQuestLogItem:GetID())
 				end
 				if link then
@@ -835,7 +832,7 @@ function SkuQuest:ShowForTTS(aQuestID)
 							if region and region:GetObjectType() == "FontString" then
 								local text = region:GetText() -- string or nil
 								if text then
-									if text == _G["QuestLogItem"..i.."Name"]:GetText() then
+									if text == _G["QuestInfoRewardsFrameQuestInfoItem"..i.."Name"]:GetText() then
 										tTtipText = tTtipText..i..": "..text.."\r\n"
 										tTtipText = tTtipText..itemRarity.."\r\n"
 									else
@@ -985,17 +982,117 @@ function SkuQuest:UNIT_QUEST_LOG_CHANGED(...)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 end
 
---[[ Questie integration test
-local QuestieQuest
-local QuestieDB
-local QuestiePlayer
-]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:PLAYER_LOGIN(...)
-	SkuDB:FixQuestDB()
-	SkuDB:FixItemDB()
-	SkuDB:FixCreaturesDB()
-	SkuDB:FixObjectsDB()
+	--print("SkuQuest:PLAYER_LOGIN")
+
+	--apply fixed on tbc dbs
+	SkuDB:FixQuestDB(SkuDB)
+	SkuDB:FixItemDB(SkuDB)
+	SkuDB:FixCreaturesDB(SkuDB)
+	SkuDB:FixObjectsDB(SkuDB)
+
+	--apply fixed on wrath dbs
+	SkuDB:WotLKFixQuestDB(SkuDB.WotLK)
+	SkuDB:WotLKFixItemDB(SkuDB.WotLK)
+	SkuDB:WotLKFixCreaturesDB(SkuDB.WotLK)
+	SkuDB:WotLKFixObjectsDB(SkuDB.WotLK)
+
+	--merge creature dbs
+	local tcount = 0
+	for i, v in pairs(SkuDB.WotLK.NpcData.Data) do
+		if not SkuDB.NpcData.Data[i]	then
+			SkuDB.NpcData.Data[i] = v
+			tcount = tcount + 1
+		end
+	end
+
+	--take stormwind creatues from wrath data due to changed coordinates
+	for i, v in pairs(SkuDB.WotLK.NpcData.Data) do
+		if SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns] then
+			for areaid, spawndata in pairs(SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns]) do
+				if areaid == SkuDB.zoneIDs.STORMWIND_CITY then
+					if v[SkuDB.NpcData.Keys.spawns] then
+						for wareaid, wspandata in pairs(v[SkuDB.NpcData.Keys.spawns]) do
+							if wareaid == SkuDB.zoneIDs.STORMWIND_CITY then
+								SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns][wareaid] = wspandata
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	SkuDB.NpcData.Names = SkuDB.WotLK.NpcData.Names
+	--print("NpcData", tcount)
+
+	--merge items dbs
+	local tcount = 0
+	for i, v in pairs(SkuDB.WotLK.itemDataTBC) do
+		if not SkuDB.itemDataTBC[i]	then
+			SkuDB.itemDataTBC[i] = v
+			tcount = tcount + 1
+		end
+	end	
+	SkuDB.itemLookup = SkuDB.WotLK.itemLookup
+	--print("itemDataTBC", tcount)
+
+	--merge object dbs
+	local tcount = 0
+	for i, v in pairs(SkuDB.WotLK.objectDataTBC) do
+		if not SkuDB.objectDataTBC[i]	then
+			SkuDB.objectDataTBC[i] = v
+			tcount = tcount + 1
+		end
+	end	
+
+	--take stormwind objects from wrath data due to changed coordinates
+	for i, v in pairs(SkuDB.WotLK.objectDataTBC) do
+		if SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns] then
+			for areaid, spawndata in pairs(SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns]) do
+				if areaid == SkuDB.zoneIDs.STORMWIND_CITY then
+					if SkuDB.WotLK.objectDataTBC[i][SkuDB.objectKeys.spawns] then
+						for wareaid, wspandata in pairs(SkuDB.WotLK.objectDataTBC[i][SkuDB.objectKeys.spawns]) do
+							if wareaid == SkuDB.zoneIDs.STORMWIND_CITY then
+								SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns][wareaid] = wspandata
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	SkuDB.objectResourceNames = SkuDB.WotLK.objectResourceNames
+
+	for i, v in pairs(SkuDB.WotLK.objectLookup.deDE) do
+		if not SkuDB.objectLookup.deDE[i] then
+			SkuDB.objectLookup.deDE[i] = v
+		end
+	end
+
+	SkuDB.objectLookup.enUS = {}
+	for i, v in pairs(SkuDB.objectLookup.deDE) do
+		SkuDB.objectLookup.enUS[i] = SkuDB.WotLK.objectLookup.enUS[i]
+	end
+
+	--SkuDB.objectLookup = SkuDB.WotLK.objectLookup
+	--print("objectDataTBC", tcount)
+	
+	--merge quest dbs
+	local tcount = 0
+	for i, v in pairs(SkuDB.WotLK.questDataTBC) do
+		if not SkuDB.questDataTBC[i]	then
+			SkuDB.questDataTBC[i] = v
+			tcount = tcount + 1
+		end
+	end
+	SkuDB.questLookup = SkuDB.WotLK.questLookup
+	--print("questDataTBC", tcount)
+
+
+	-- do final stuff
 	SkuQuest:BuildQuestZoneCache()
 
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}

@@ -3700,7 +3700,7 @@ local SkuQuestFixes = {
     },
 
     -- Below are quests that were not originally in TBC or in a different form
-
+--[[
     [63866] = {
         [questKeys.name] = "Claiming the Light",
         [questKeys.startedBy] = {{178420},nil,nil},
@@ -4073,6 +4073,7 @@ local SkuQuestFixes = {
         [questKeys.exclusiveTo] = {64063,64064,64128},
         --[questKeys.zoneOrSort] = sortKeys.REPUTATION,
     },
+    ]]
 }
 
 local SkuQuestFixesHorde = {
@@ -4340,65 +4341,65 @@ local SkuQuestFixesSKU = {
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
-function SkuDB:FixQuestDB()
+function SkuDB:FixQuestDB(aTargetTable)
     for i, v in pairs(SkuQuestFixes) do
         local tNew = false
         for k, val in pairs(v) do
-            if SkuDB.questDataTBC[i] then
-                SkuDB.questDataTBC[i][k] = val
+            if aTargetTable.questDataTBC[i] then
+                aTargetTable.questDataTBC[i][k] = val
             else
-                SkuDB.questDataTBC[i] = v    
+                aTargetTable.questDataTBC[i] = v    
                 tNew = true
             end
         end
         if tNew == true then
-            SkuDB.questLookup["deDE"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
-            SkuDB.questLookup["enUS"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+            aTargetTable.questLookup["deDE"][i] = {aTargetTable.questDataTBC[i][questKeys.name], nil, aTargetTable.questDataTBC[i][questKeys.objectivesText],}
+            aTargetTable.questLookup["enUS"][i] = {aTargetTable.questDataTBC[i][questKeys.name], nil, aTargetTable.questDataTBC[i][questKeys.objectivesText],}
         end
     end
     for i, v in pairs(SkuQuestFixesHorde) do
         local tNew = false
         for k, val in pairs(v) do
-            if SkuDB.questDataTBC[i] then
-                SkuDB.questDataTBC[i][k] = val
+            if aTargetTable.questDataTBC[i] then
+                aTargetTable.questDataTBC[i][k] = val
             else
-                SkuDB.questDataTBC[i] = v         
+                aTargetTable.questDataTBC[i] = v         
                 tNew = true
             end
         end
         if tNew == true then
-            SkuDB.questLookup["deDE"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
-            SkuDB.questLookup["enUS"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+            aTargetTable.questLookup["deDE"][i] = {aTargetTable.questDataTBC[i][questKeys.name], nil, aTargetTable.questDataTBC[i][questKeys.objectivesText],}
+            aTargetTable.questLookup["enUS"][i] = {aTargetTable.questDataTBC[i][questKeys.name], nil, aTargetTable.questDataTBC[i][questKeys.objectivesText],}
         end
     end
     for i, v in pairs(SkuQuestFixesAlliance) do
         local tNew = false
         for k, val in pairs(v) do
-            if SkuDB.questDataTBC[i] then
-                SkuDB.questDataTBC[i][k] = val
+            if aTargetTable.questDataTBC[i] then
+                aTargetTable.questDataTBC[i][k] = val
             else
-                SkuDB.questDataTBC[i] = v         
+                aTargetTable.questDataTBC[i] = v         
                 tNew = true
             end
         end
         if tNew == true then
-            SkuDB.questLookup["deDE"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
-            SkuDB.questLookup["enUS"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+            aTargetTable.questLookup["deDE"][i] = {aTargetTable.questDataTBC[i][questKeys.name], nil, aTargetTable.questDataTBC[i][questKeys.objectivesText],}
+            aTargetTable.questLookup["enUS"][i] = {aTargetTable.questDataTBC[i][questKeys.name], nil, aTargetTable.questDataTBC[i][questKeys.objectivesText],}
         end        
     end
     for i, v in pairs(SkuQuestFixesSKU) do
         local tNew = false
         for k, val in pairs(v) do
-            if SkuDB.questDataTBC[i] then
-                SkuDB.questDataTBC[i][k] = val
+            if aTargetTable.questDataTBC[i] then
+                aTargetTable.questDataTBC[i][k] = val
             else
-                SkuDB.questDataTBC[i] = v         
+                aTargetTable.questDataTBC[i] = v         
                 tNew = true
             end
         end
         if tNew == true then
-            SkuDB.questLookup["deDE"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
-            SkuDB.questLookup["enUS"][i] = {SkuDB.questDataTBC[i][questKeys.name], nil, SkuDB.questDataTBC[i][questKeys.objectivesText],}
+            aTargetTable.questLookup["deDE"][i] = {aTargetTable.questDataTBC[i][questKeys.name], nil, aTargetTable.questDataTBC[i][questKeys.objectivesText],}
+            aTargetTable.questLookup["enUS"][i] = {aTargetTable.questDataTBC[i][questKeys.name], nil, aTargetTable.questDataTBC[i][questKeys.objectivesText],}
         end        
     end
 end

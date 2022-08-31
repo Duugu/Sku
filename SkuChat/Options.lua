@@ -207,8 +207,8 @@ SkuChat.options = {
 						return SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage
 					end,
 					OnAction = function() 
-						if Options.db.profile["SkuChat"].tabs then
-							for i, v in pairs(Options.db.profile["SkuChat"].tabs) do
+						if SkuOptions.db.profile["SkuChat"].tabs then
+							for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs) do
 								v.audioOnNewMessage = SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage
 							end
 						end

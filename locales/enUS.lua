@@ -570,8 +570,13 @@ L["Ausgewählt: "]  = "Selected: " --
 L["Schließen"]  = "Close" --
 L["Derzeitiger Begleiter"]  = "Current pet" --
 L["Stall 1 "]  = "Stable 1 " ---stable slot
+L["Stall 2 "]  = "Stable 2 " ---stable slot
+L["Stall 3 "]  = "Stable 3 " ---stable slot
+L["Stall 4 "]  = "Stable 4 " ---stable slot
 L["Stall 1"]  = "Stable 1" ---stable slot
 L["Stall 2"]  = "Stable 2" --
+L["Stall 3"]  = "Stable 3" --
+L["Stall 4"]  = "Stable 4" --
 L["Weiteren Platz kaufen"]  = "Buy another slot" --
 L["Schließen"]  = "Close" --
 L["Folgen beim Zaubern temporär beenden"]  = "Temporarily stop following upon casting" --
@@ -1304,7 +1309,7 @@ L["KommaNumbers"] = "point"
 
 L[";Meter"] = " Meter"
 
-L["Announce player controled units with generic descriptions"] = "generic outputs for player controled units via Sku"
+L["Announce player controled units with generic descriptions"] = "Announce player controled units with generic descriptions"
 
 L["Repeat raid target markers on units"] = "Repeat target markers on units"
 L["Ein"] = "On"
@@ -1617,4 +1622,22 @@ L["delete whisper tabs without activity after"] = "delete whisper tabs without a
 L["Never"] = "Never"
 L["Delete tab"] = "Delete tab"
 
+L["Equipment manager"] = "Equipment manager"
+L["Companions"] ="Companions"
+L["Equipment sets"] = "Equipment sets"
+
+L["Talent Sets"] = "Select Talent Set to show"
+L["Spent for"] = "Spent for"
+L["Role for this set"] ="Role for this set"
+
+L["DAMAGER"] = "Damage"
+L["TANK"] = "Tank"
+L["HEALER"] = "Healer"
+L["Change Role"] = "Change Role"
+
 L["Announce friendly and hostile players"] = "Announce friendly and hostile players"
+L["Major"] = "Major" --glyph type
+L["Minor"] = "Minor" --glyph type
+
+L["Vehicle Action Bar"] = "Vehicle Action Bar"
+L["Stance Action Bar"] = "Stance Action Bar"

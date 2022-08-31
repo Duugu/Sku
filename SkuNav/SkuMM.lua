@@ -202,26 +202,27 @@ local function DrawWaypoints(aFrame)
 		tWP = SkuNav:GetWaypointData2(v)
 		if tWP then
 			if tWP.worldX and tWP.worldY then
+				tWP.comments = tWP.comments or {["deDE"] = {},["enUS"] = {},}
 				local tFinalX, tFinalY = WorldPointToMinimapPoint(tWP.worldX, tWP.worldY)
 				if tWP.typeId == 1 or tWP.typeId == 4 then
 					--red
-					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments)
+					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments[Sku.Loc])
 					tWpFrames[v].hasLine = false
 				elseif tWP.typeId == 2 then
 					if tWP.spawnNr > 3 then
-						tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments)
+						tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments[Sku.Loc])
 						tWpFrames[v].hasLine = false
 					else
-						tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
+						tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY, 1,  1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments[Sku.Loc])
 						tWpFrames[v].hasLine = false
 					end
 				elseif tWP.typeId == 3 then
 					--green
-					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments)
+					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments[Sku.Loc])
 					tWpFrames[v].hasLine = false
 				else
 					--white
-					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 1, 1, 1, tWP.comments)
+					tWpFrames[v] = DrawWaypointWidget(tFinalX, tFinalY,  1,   1, 4, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 1, 1, 1, tWP.comments[Sku.Loc])
 					tWpFrames[v].hasLine = false
 				end
 
@@ -335,6 +336,8 @@ local tContintentIdDataSubstrings = {
 	[1] = "kalimdor",
 	[369] = "",
 	[530] = "expansion01",
+	[571] = "northrend",
+	[609] = "azeroth",
 }
 local currentContinentId
 local function SkuNavMMUpdateContent()
@@ -489,6 +492,7 @@ function SkuNavDrawWaypointsMM(aFrame)
 		--print(i, v)
 		tWP = SkuNav:GetWaypointData2(v)
 		if tWP then
+			tWP.comments = tWP.comments or {["deDE"] = {},["enUS"] = {},}
 			local tShow = false
 			if _G["SkuNavMMMainFrameShowFilter"].selected == true then
 				if SkuQuest.QuestWpCache[v] or tWP.typeId == 1 then
@@ -510,23 +514,23 @@ function SkuNavDrawWaypointsMM(aFrame)
 						
 						if tWP.typeId == 1 or tWP.typeId == 4 then
 							--red
-							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments)
+							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0, 0, 1, tWP.comments[Sku.Loc])
 							tWpFrames[v].hasLine = false
 						elseif tWP.typeId == 2 then
 							if tWP.spawnNr > 3 then
-								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments)
+								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0.3, 0.7, 0.7, 1, tWP.comments[Sku.Loc])
 								tWpFrames[v].hasLine = false
 							else
-								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments)
+								tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY, 1,  1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 0.3, 0.7, 1, tWP.comments[Sku.Loc])
 								tWpFrames[v].hasLine = false
 							end
 						elseif tWP.typeId == 3 then
 							--green
-							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments)
+							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 0, 0.7, 0, 1, tWP.comments[Sku.Loc])
 							tWpFrames[v].hasLine = false
 						else
 							--white
-							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 1, 1, 1, tWP.comments)
+							tWpFrames[v] = SkuNavDrawWaypointWidgetMM(tFinalX, tFinalY,  1,   1, tSize, tRouteColor.r, tRouteColor.g, tRouteColor.b, tRouteColor.a, aFrame, v, 1, 1, 1, 1, tWP.comments[Sku.Loc])
 							tWpFrames[v].hasLine = false
 						end
 

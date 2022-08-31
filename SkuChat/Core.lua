@@ -1443,10 +1443,24 @@ local escapes = {
 	["|r"] = "", -- color end
 	["|H.-|h(.-)|h"] = "%1", -- links
 	["|T.-|t"] = "", -- textures
+	["{.-}"] = "", -- raid target icons
+}
+local escapesChat = {
+	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
+	["|r"] = "", -- color end
+	["|H.-|h(.-)|h"] = "%1", -- links
+	["|T.-|t"] = "", -- textures
 	--["{.-}"] = "", -- raid target icons
 }
-local function unescape(str)
-	for k, v in pairs(escapes) do
+function SkuChat:Unescape(str, aChatSpecific)
+	if not str then return nil end
+
+	local tEscapeStrings = escapes
+	if aChatSpecific then
+		tEscapeStrings = escapesChat
+	end
+	
+	for k, v in pairs(tEscapeStrings) do
 		str = string.gsub(str, k, v)
 	end
 	return str
@@ -1612,7 +1626,7 @@ function SkuChat:OnInitialize()
 	a.OpenChat = function(self)
 		SkuOptions:CloseMenu()
 		SkuChat.ChatOpen = true
-		SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
+		SkuOptions.Voice:StopOutputEmptyQueue()
 		SkuOptions.Voice:OutputString("sound-on3_1", true, true, 0.2, true)
 		if not SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab] then
 			SkuChat.currentTab = 1
@@ -1922,6 +1936,13 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:ReadLine(aTab, aLine, aReadTabName)
+	if not SkuOptions.db.profile["SkuChat"].tabs[aTab] then
+		return
+	end
+	if not SkuOptions.db.profile["SkuChat"].tabs[aTab].history[aLine] then
+		return
+	end
+	
 	local tLineText = SkuOptions.db.profile["SkuChat"].tabs[aTab].history[aLine].body
 
 	if SkuOptions.db.profile[MODULE_NAME].chatSettings.addLineNumbers == true then
@@ -2030,12 +2051,13 @@ function SkuChat:DEFAULT_CHAT_FRAME_AddMessage(...)
 	if a == "" or a == " " then
 		return
 	end
+	--SkuCore:Debug((a or "nil").." "..(b or "nil").." "..(c or "nil").." "..(d or "nil").." "..(e or "nil").." "..(f or "nil"))
 	if SkuOptions.db.profile["SkuChat"].tabs then
 		if SkuOptions.db.profile["SkuChat"].tabs[1] then
 			if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName] then
 				if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName].AddMessage then
 					if b == nil and c == nil and  d == nil and  e == nil and  f == nil then
-						--_G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName]:AddMessage("SAY", a, 1, 1, 1, 0, 0, 0, "AddMessage")
+						_G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName]:AddMessage("SAY", a, 1, 1, 1, 0, 0, 0, "AddMessage")
 					end
 				end
 			end
@@ -2155,7 +2177,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:SetEditboxToCustom(chatType, target, aMsg)
-	print("SetEditboxToCustom", chatType, target, aMsg)
 	SkuChatEditboxHookFlag = true
 
 	if chatType == "CHANNEL" then
@@ -2168,9 +2189,6 @@ function SkuChat:SetEditboxToCustom(chatType, target, aMsg)
 	elseif chatType == "BN_WHISPER" then
 		ChatFrame1EditBox:SetAttribute("tellTarget", target)
 		ChatFrame1EditBox:SetAttribute("chatType", "BN_WHISPER")
-	elseif target and target ~= "" then
-		ChatFrame1EditBox:SetAttribute("tellTarget", target)
-		ChatFrame1EditBox:SetAttribute("chatType", "WHISPER")
 	else
 		ChatFrame1EditBox:SetAttribute("chatType", chatType)
 	end
@@ -2389,11 +2407,11 @@ function SkuChat:InitTab(tNewTabIndex)
 		if not body then
 			return
 		end
-
+		
 		if body == "" or body == " " then
 			return
 		end
-		
+
 		--mask bnet names
 		local tNewBody
 		if string.find(body, "|K") then
@@ -2432,7 +2450,7 @@ function SkuChat:InitTab(tNewTabIndex)
 				a.tab.history = {}
 			end
 
-			local tFlatBody = string.gsub(unescape(body), "|", "")
+			local tFlatBody = string.gsub(SkuChat:Unescape(body), "|", "")
 			tFlatBody = SkuChat:ShortenChannelName(tFlatBody)
 
 			--audio output

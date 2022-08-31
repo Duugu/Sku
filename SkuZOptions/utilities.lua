@@ -2,7 +2,51 @@ local MODULE_NAME = "SkuOptions"
 local L = Sku.L
 local _G = _G
 
+---------------------------------------------------------------------------------------------------------------------------------------
+-- bit shifts for 64 bit; lua don't has them; why? :D
+---------------------------------------------------------------------------------------------------------------------------------------
+local band, bor, bxor, bnot = bit.band, bit.bor, bit.bxor, bit.bnot
+local lshift, rshift, arshift = bit.lshift, bit.rshift, bit.arshift
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuU64join(hi, lo)
+	local rshift, band = rshift, band
+	hi = rshift(hi, 1) * 2 + band(hi, 1)
+	lo = rshift(lo, 1) * 2 + band(lo, 1)
+	return (hi * 0x100000000) + (lo % 0x100000000)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuU64split(x)
+	return tonumber(x / 0x100000000),  tonumber(x % 0x100000000)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuU64lshift(x, n)
+	if band(n, 0x3F) == 0 then return x end
+	local hi, lo = SkuU64split(x)
+	if band(n, 0x20) == 0 then
+		 lo, hi = lshift(lo, n), bor(lshift(hi, n), rshift(lo, 32 - n))
+	else
+		 lo, hi = 0, lshift(lo, n)
+	end
+	return SkuU64join(hi, lo)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuU64rshift(x, n)
+	if band(n, 0x3F) == 0 then return x end
+	local hi, lo = SkuU64split(x)
+	if band(n, 0x20) == 0 then
+		 lo, hi = bor(rshift(lo, n), lshift(hi, 32 - n)), rshift(hi, n)
+	else
+		 lo, hi = rshift(hi, n - 32), 0
+	end
+	return SkuU64join(hi, lo)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+--different helpers
 ---------------------------------------------------------------------------------------------------------------------------------------
 function TooltipLines_helper(...)
    local tQualityString = nil
@@ -103,8 +147,8 @@ local function tprint (tbl, indent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+--elevator timer test stuff
 ---------------------------------------------------------------------------------------------------------------------------------------
---elevator timer test
 function GetElTime()
 	local guid    = UnitGUID("target")
 	--local guid    = "Creature-0-4468-530-15-18922-0004A6D8E1"
@@ -138,6 +182,7 @@ function GetElTime()
 	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
 function GTT_CreatureInspect(self)
 	local _, unit = self:GetUnit();
 	local guid    = UnitGUID(unit or "none");
@@ -194,7 +239,9 @@ if not GTT_CreatureInspectHooked then
 	--GameTooltip:HookScript("OnTooltipSetUnit", function(...) return GTT_CreatureInspect(...); end);
 end
 
-
+---------------------------------------------------------------------------------------------------------------------------------------
+-- localization helpers
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuTranslateTest()
 	local tfoundNames = {}
 	local tnames = ""
@@ -246,9 +293,6 @@ function SkuTranslateTest()
 	--/script SkuTranslateTest()
 end
 
----------------------------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------------------
--- localization helpers
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tAdditionalTranslations = {
 	--incorrect old translations from default waypoints
@@ -588,6 +632,7 @@ function SkuTranslateStringDeToEn(aString)
 
 			--maps.lua
 			if tFound == false then
+				print("maps", str)
 				for i, v in pairs(SkuDB.ExternalMapID) do
 					local tToTest = slower(v.Name_lang.deDE)
 					if tToTest == tstrlower then
@@ -1080,3 +1125,511 @@ function SkuRtWpDataDeToEnNEW()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	end)
 	
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- rt link data
+local tSkuCoroutineControlFrameOnUpdateTimer = 0
+local tCounter = 0
+function SkutmpTrans()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	--SkuOptions.db.global["SkuNav"].Waypoints = {}
+	--SkuOptions.db.global["SkuNav"].Links = {}
+
+	SkuOptions.db.global["SkuNav"].IdWaypoints = {}
+
+	tCounter = 0
+
+	local co = coroutine.create(function ()
+		local tNumberDone = 0
+		for i, v in ipairs(SkuOptions.db.global["SkuNav"].Waypoints) do
+			--print(i, v, SkuOptions.db.global["SkuNav"].Waypoints[v], SkuOptions.db.global["SkuNav"].Waypoints[v].names["deDE"])
+			--if type(v) == "table" then
+			
+				if SkuOptions.db.global["SkuNav"].Waypoints[v].names["deDE"] ~= "" then
+					--print(SkuOptions.db.global["SkuNav"].Waypoints[v].names["deDE"])
+					SkuOptions.db.global["SkuNav"].Waypoints[v].names["enUS"] = SkuTranslateStringDeToEn(SkuOptions.db.global["SkuNav"].Waypoints[v].names["deDE"])
+					SkuOptions.db.global["SkuNav"].Waypoints[v].lComments = {
+						["deDE"] = {},
+						["enUS"] = {},
+					}
+					if SkuOptions.db.global["SkuNav"].Waypoints[v].comments then
+						for x = 1, #SkuOptions.db.global["SkuNav"].Waypoints[v].comments do
+							SkuOptions.db.global["SkuNav"].Waypoints[v].lComments["deDE"][#SkuOptions.db.global["SkuNav"].Waypoints[v].lComments["deDE"] + 1] = SkuOptions.db.global["SkuNav"].Waypoints[v].comments[x]
+							SkuOptions.db.global["SkuNav"].Waypoints[v].lComments["enUS"][#SkuOptions.db.global["SkuNav"].Waypoints[v].lComments["enUS"] + 1] = SkuTranslateStringDeToEn(SkuOptions.db.global["SkuNav"].Waypoints[v].comments[x])
+			
+						end
+					end
+
+				else
+					print("FAILT deDE empty", i, v)
+				end
+			--end
+
+			local t = SkuOptions.db.global["SkuNav"].Waypoints[v]
+			SkuOptions.db.global["SkuNav"].IdWaypoints[#SkuOptions.db.global["SkuNav"].IdWaypoints + 1] = t
+
+			tCounter = tCounter + 1
+			tNumberDone = tNumberDone + 1
+			if tNumberDone > 500 then
+				tNumberDone = 0
+				print(tCounter)
+				coroutine.yield()
+			end
+		end
+	end)
+
+	local tCoCompleted = false
+	local tSkuCoroutineControlFrame = _G["SkuCoroutineControlFrame"] or CreateFrame("Frame", "SkuCoroutineControlFrame", UIParent)
+	tSkuCoroutineControlFrame:SetPoint("CENTER")
+	tSkuCoroutineControlFrame:SetSize(50, 50)
+	tSkuCoroutineControlFrame:SetScript("OnUpdate", function(self, time)
+		tSkuCoroutineControlFrameOnUpdateTimer = tSkuCoroutineControlFrameOnUpdateTimer + time
+		if tSkuCoroutineControlFrameOnUpdateTimer < 0.01 then return end
+
+		if coroutine.status(co) == "suspended" then
+			print("res")
+			coroutine.resume(co)
+		else
+			if tCoCompleted == false then
+				print("wp completed")
+				tCoCompleted = true
+				--SkuRtLinkDataDeToEnNEW()
+			end
+		end
+
+	end)
+	
+end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- rt link data
+
+local function tGet(name)
+	for x = 1, #SkuOptions.db.global["SkuNav"].IdWaypoints do
+		if SkuOptions.db.global["SkuNav"].IdWaypoints[x].names["deDE"] == name then
+			return x
+		end
+	end
+end
+
+local tSkuCoroutineControlFrameOnUpdateTimer = 0
+local tCounter = 0
+function SkutmpLinks()--Tal!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	--SkuOptions.db.global["SkuNav"].Waypoints = {}
+	--SkuOptions.db.global["SkuNav"].Links = {}
+
+	SkuOptions.db.global["SkuNav"].IdLinks = {}
+
+	tCounter = 0
+
+	local co = coroutine.create(function ()
+		local tNumberDone = 0
+
+		for tSourceWpName, tSourceWpLinks in pairs(SkuOptions.db.global["SkuNav"].Links) do
+			local tSourceWpId = tGet(tSourceWpName)
+			if not tSourceWpId then
+				if WaypointCache[WaypointCacheLookupAll[tSourceWpName]].typeId == 2 then
+					tSourceWpId = "C"..WaypointCache[WaypointCacheLookupAll[tSourceWpName]].dbIndex
+				elseif WaypointCache[WaypointCacheLookupAll[tSourceWpName]].typeId == 3 then
+					tSourceWpId = "O"..WaypointCache[WaypointCacheLookupAll[tSourceWpName]].dbIndex
+				end
+			end
+
+			if not tSourceWpId then
+				print("not tSourceWpId", tSourceWpName)
+			else
+
+				local tLinksIds = {}
+				for i, v in pairs(tSourceWpLinks) do
+					local tTargetWpId = tGet(i)
+					if not tTargetWpId then
+						if WaypointCache[WaypointCacheLookupAll[i]].typeId == 2 then
+							tTargetWpId = "C"..WaypointCache[WaypointCacheLookupAll[i]].dbIndex
+						elseif WaypointCache[WaypointCacheLookupAll[i]].typeId == 3 then
+							tTargetWpId = "O"..WaypointCache[WaypointCacheLookupAll[i]].dbIndex
+						end
+					end
+
+					if not tTargetWpId then
+						print(" not tTargetWpId", i)
+					else
+						tLinksIds[tTargetWpId] = v
+					end
+				end
+				SkuOptions.db.global["SkuNav"].IdLinks[tSourceWpId] = tLinksIds
+			end
+
+			tCounter = tCounter + 1
+			tNumberDone = tNumberDone + 1
+			if tNumberDone > 500 then
+				tNumberDone = 0
+				print(tCounter)
+				coroutine.yield()
+			end
+		end
+	end)
+
+	local tCoCompleted = false
+	local tSkuCoroutineControlFrame = _G["SkuCoroutineControlFrame"] or CreateFrame("Frame", "SkuCoroutineControlFrame", UIParent)
+	tSkuCoroutineControlFrame:SetPoint("CENTER")
+	tSkuCoroutineControlFrame:SetSize(50, 50)
+	tSkuCoroutineControlFrame:SetScript("OnUpdate", function(self, time)
+		tSkuCoroutineControlFrameOnUpdateTimer = tSkuCoroutineControlFrameOnUpdateTimer + time
+		if tSkuCoroutineControlFrameOnUpdateTimer < 0.01 then return end
+
+		if coroutine.status(co) == "suspended" then
+			print("res")
+			coroutine.resume(co)
+		else
+			if tCoCompleted == false then
+				print("wp completed")
+				tCoCompleted = true
+				--SkuRtLinkDataDeToEnNEW()
+			end
+		end
+
+	end)
+	
+end
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- evalute new questie data
+---------------------------------------------------------------------------------------------------------------------------------------
+
+
+local function hasNumber(aName)
+	local rvalue
+	for x = 1, 10 do
+		if string.find(aName, "%("..x.."%)") then
+			rvalue = true
+		end
+	end
+
+	return rvalue
+end
+
+--/script SkuSwitchDataToLK()
+function SkuSwitchDataToLK()
+
+
+	local tcount = 0
+	for i, v in pairs(SkuDB.WotLK.NpcData.Data) do
+		if not SkuDB.NpcData.Data[i]	then
+			--print(i, v, v[1])
+			SkuDB.NpcData.Data[i] = v
+			tcount = tcount + 1
+		end
+	end
+	print("NpcData", tcount)
+	local tcount = 0
+	for i, v in pairs(SkuDB.WotLK.itemDataTBC) do
+		if not SkuDB.itemDataTBC[i]	then
+			SkuDB.itemDataTBC[i] = v
+			tcount = tcount + 1
+		end
+	end	
+	print("itemDataTBC", tcount)
+	local tcount = 0
+	for i, v in pairs(SkuDB.WotLK.objectDataTBC) do
+		if not SkuDB.objectDataTBC[i]	then
+			SkuDB.objectDataTBC[i] = v
+			tcount = tcount + 1
+		end
+	end	
+	print("objectDataTBC", tcount)
+	local tcount = 0
+	for i, v in pairs(SkuDB.WotLK.questDataTBC) do
+		if not SkuDB.questDataTBC[i]	then
+			SkuDB.questDataTBC[i] = v
+			tcount = tcount + 1
+		end
+	end
+	print("questDataTBC", tcount)
+
+	--[[
+	SkuDB.NpcData = SkuDB.WotLK.NpcData
+	SkuDB.itemDataTBC = SkuDB.WotLK.itemDataTBC
+	SkuDB.objectDataTBC = SkuDB.WotLK.objectDataTBC
+	SkuDB.questDataTBC = SkuDB.WotLK.questDataTBC
+	]]
+	SkuQuest:BuildQuestZoneCache()
+
+	--load default data if there isn't custom data
+	if aIsInitialLogin ~= true then
+		SkuNav:LoadDefaultMapData()
+	end
+
+	SkuNav:ClearWaypointsTemporary(true)
+	
+	SkuNav:CreateWaypointCache()
+	SkuNav:LoadLinkDataFromProfile()
+
+	if _G["SkuNavMMMainFrameZoneSelect"] then
+		C_Timer.NewTimer(1, function()
+			if SkuNav:GetCurrentAreaId() then
+				_G["SkuNavMMMainFrameZoneSelect"].value = SkuNav:GetCurrentAreaId()
+				_G["SkuNavMMMainFrameZoneSelect"]:SetText(SkuDB.InternalAreaTable[SkuNav:GetCurrentAreaId()].AreaName_lang[Sku.Loc])	
+			end
+		end)
+	end
+
+	for x = 1, 4 do
+		local tWaypointName = L["Quick waypoint"]..";"..x
+		SkuNav:UpdateQuickWP(tWaypointName, true)
+	end			
+end
+
+--/script getlocdata()
+local tServerQuery
+local tCurrentQueryCount = 0
+--SkuOptions.db.profile["SkuNav"].tNames = {["deDE"] = {},["enUS"] = {},}
+tcount = 0
+local toutp = 50
+function getlocdata()
+	for i, v in pairs(SkuDB.itemDataTBC) do
+		if not SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] or SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] == nil then
+			--if not hasNumber(v[1]) then
+				if not tServerQuery then
+					tServerQuery = true
+					GameTooltip:ClearLines()
+					tCurrentQueryCount = 0
+					print("looking for", i, v[1])
+					if tcount > toutp then
+						toutp = tcount + 50
+						print(tcount)
+					end
+				end
+				GameTooltip_SetDefaultAnchor(GameTooltip, UIParent) 
+				GameTooltip:SetHyperlink("quest:"..i) 
+				GameTooltip:Show()
+
+				tCurrentQueryCount = tCurrentQueryCount + 1
+				--print(i, tCurrentQueryCount)
+
+				if tCurrentQueryCount > 10 then
+					tCurrentQueryCount = 0
+
+					print(" NOT found", i, v[1], v[14])
+
+					local tText
+					if SkuDB.WotLK.questDataTBC[i][8] then
+						for q, w in pairs(SkuDB.WotLK.questDataTBC[i][8]) do
+							tText = tText or ""
+							print("   add text EN",i , q, w)
+						end
+					end
+					if tText == "" then
+						tText = nil
+					end
+					if tText then
+						tText = {tText}
+					end					
+					SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = {SkuDB.WotLK.questDataTBC[i][1], nil, tText}
+					SkuOptions.db.profile["SkuNav"].tNames["enUS"][i] = {SkuDB.WotLK.questDataTBC[i][1], nil, tText}
+
+					tcount = tcount + 1
+					tServerQuery = nil		
+				end
+
+				local tText = _G["GameTooltipTextLeft1"]:GetText()
+				if tText then
+					local tname = tText
+					
+					local tReqText
+					for x = 2, 100 do
+						if _G["GameTooltipTextLeft"..x] and _G["GameTooltipTextLeft"..x]:GetText() and _G["GameTooltipTextLeft"..x]:GetText() ~= "" then
+							if  string.find(_G["GameTooltipTextLeft"..x]:GetText(), "Anforderungen%:") then
+								print("   add text DE END", x, _G["GameTooltipTextLeft"..x]:GetText())
+								break
+							else
+								print("   add text DE", x, _G["GameTooltipTextLeft"..x]:GetText())
+								tReqText = tReqText or ""
+								tReqText = tReqText.._G["GameTooltipTextLeft"..x]:GetText().." "
+							end
+						end
+					end
+					if tReqText then
+						tReqText = string.gsub(tReqText, "\n", " ")
+					end
+
+					if tReqText == "" or tReqText == " " then
+						tReqText = nil
+					end
+
+					if tReqText then
+						tReqText = {tReqText}
+					end
+
+					if tname then
+						SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = {tname, nil, tReqText}
+
+						local tText
+						if SkuDB.WotLK.questDataTBC[i][8] then
+							for q, w in pairs(SkuDB.WotLK.questDataTBC[i][8]) do
+								tText = tText or ""
+								print(" ------- add text EN",i , q, w)
+							end
+						end
+						if tText == "" then
+							tText = nil
+						end
+						if tText then
+							tText = {tText}
+						end
+						SkuOptions.db.profile["SkuNav"].tNames["enUS"][i] = {SkuDB.WotLK.questDataTBC[i][1], nil, tText}
+						tcount = tcount + 1
+						tServerQuery = nil				
+					end
+				end
+
+				C_Timer.After(0.1, function() 
+					getlocdata()
+				end)
+				break
+			--else
+				--print("(x)", i)
+				--SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = {false}
+				--SkuOptions.db.profile["SkuNav"].tNames["enUS"][i] = {false}
+			--end
+		end
+	end
+end
+
+local tCurrentQueryCount = 0
+--SkuOptions.db.profile["SkuNav"].tNames = {["deDE"] = {},["enUS"] = {},}
+tcount = 0
+local toutp = 50
+--/script getlocdataEN()
+local tServerQuery = false
+function getlocdataEN()
+	for i, v in pairs(SkuDB.WotLK.itemDataTBC) do
+		if not SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] then
+				--print(i, "not", SkuOptions.db.profile["SkuNav"].tNames["enUS"][i], tServerQuery)
+				if tServerQuery == false then
+					tServerQuery = true
+					--print("tServerQuery = true")
+					GameTooltip:ClearLines()
+					tCurrentQueryCount = 0
+					print("looking for", i, v[1])
+				end
+				GameTooltip_SetDefaultAnchor(GameTooltip, UIParent) 
+				GameTooltip:SetHyperlink("item:"..i) 
+				GameTooltip:Show()
+
+				tCurrentQueryCount = tCurrentQueryCount + 1
+				print(i, tCurrentQueryCount)
+
+				if tCurrentQueryCount > 10 then
+					tCurrentQueryCount = 0
+					print(" NOT found", i, v[1])
+					--SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = false
+					SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = v[1]
+
+					tServerQuery = false
+				end
+
+				local tText = _G["GameTooltipTextLeft1"]:GetText()
+				if tText then
+					tText = SkuChat:Unescape(tText)
+					print("tText", tText)
+					if tText ~= "Frage Gegenstandsinformationen ab" and tText ~= "" then
+						SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = tText
+						tServerQuery = false
+					else
+						--print("----------------------------------------", tText)
+					end
+
+				end
+
+				C_Timer.After(0.1, function() 
+					getlocdataEN()
+				end)
+				break
+		end
+	end
+
+	--print("fin")
+end
+
+--/script buildennames()
+function buildennames()
+	--SkuOptions.db.profile["SkuNav"].tNames = {["deDE"] = {},["enUS"] = {},} 
+	for i, v in pairs(SkuDB.itemDataTBC) do
+		if SkuDB.itemLookup["enUS"][i] then
+			SkuOptions.db.profile["SkuNav"].tNames["enUS"][i] = SkuDB.itemLookup["enUS"][i]
+		end				
+	end
+	print("don")
+end
+
+function comparenames()
+	GameTooltip_SetDefaultAnchor(GameTooltip, UIParent) 
+	GameTooltip:Show()
+	for i,v in pairs(SkuDB.WotLK.NpcData.Names["enUS"]) do
+		if not SkuDB.WotLK.NpcData.Names["deDE"][i] and not SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] then
+			print("look", i, v[1])
+			GameTooltip:ClearLines()
+			GameTooltip:SetHyperlink("unit:Creature-0-0-0-0-"..i) 
+			local tText = _G["GameTooltipTextLeft1"]:GetText()
+			if tText then
+				local tname = tText
+				local tSubtext = _G["GameTooltipTextLeft2"]:GetText()
+				if tSubtext and string.find(tSubtext, "Stufe ") then
+					tSubtext = nil
+				end
+				if tname then
+					print("  f", tname)
+					SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = {tname, tSubtext}
+				else
+					print("  nf")
+					SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = {SkuOptions.db.profile["SkuNav"].tNames["enUS"][i][1], SkuOptions.db.profile["SkuNav"].tNames["enUS"][i][2]}
+				end
+			else
+				print("  nf1")
+				SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] = {v[1], v[2]}
+
+			end
+			C_Timer.After(1, function() 
+				comparenames()
+			end)			
+			break
+
+		end
+	end
+
+
+end
+
+
+

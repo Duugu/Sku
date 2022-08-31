@@ -6,7 +6,7 @@ local _G = _G
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function unescape(String)
+local function Unescape(String)
 	local Result = tostring(String)
 	Result = gsub(Result, "|c........", "") -- Remove color start.
 	Result = gsub(Result, "|r", "") -- Remove color end.
@@ -18,7 +18,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GameWorldObjectsOnInitialize()
-   SkuCore:RegisterEvent("CURSOR_UPDATE")
+   --SkuCore:RegisterEvent("CURSOR_UPDATE")
+   SkuCore:RegisterEvent("CURSOR_CHANGED")
    SkuCore:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 
    local tFrame = CreateFrame("Frame", "SkuCoregameWorldObjectsFrameCounter", _G["UIParent"])
@@ -48,8 +49,9 @@ function SkuCore:GameWorldObjectsOnLogin()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:CURSOR_UPDATE()
-   --print("CURSOR_UPDATE", SkuCore.gameWorldObjectsFrameCounter, GetTime())
+--function SkuCore:CURSOR_UPDATE()
+function SkuCore:CURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
+   --print("CURSOR_CHANGED", aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
    if SkuCore.gameWorldObjectsScanFrame and SkuCore.gameWorldObjectsScanFrame.isScanningActive == true and SkuCore.gameWorldObjectsScanFrame.isScanningPaused == false then
       
       SkuCore.lastCursorUpdateFrame = SkuCore.gameWorldObjectsFrameCounter
@@ -155,9 +157,9 @@ function SkuCore:GameWorldObjectsCheckResult(aTextLeft1, aTextLeft2, aTextLeft3)
    local tIsUpdateMouseoverUnitFrame = SkuCore.lastUpdateMouseoverUnitFrame == SkuCore.gameWorldObjectsFrameCounter
    local tIsCursorUpdate = SkuCore.lastCursorUpdateFrame == SkuCore.gameWorldObjectsFrameCounter
    
-   aTextLeft1 = unescape(aTextLeft1)
-   aTextLeft2 = unescape(aTextLeft2)
-   aTextLeft3 = unescape(aTextLeft3)
+   aTextLeft1 = Unescape(aTextLeft1)
+   aTextLeft2 = Unescape(aTextLeft2)
+   aTextLeft3 = Unescape(aTextLeft3)
 
    dprint("GameWorldObjectsCheckResult", aTextLeft1, aTextLeft2, aTextLeft3, tIsUpdateMouseoverUnitFrame, tIsCursorUpdate)
 

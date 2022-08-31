@@ -754,6 +754,7 @@ local SkuCreaturesFixes = {
     [26760] = {
         [npcKeys.npcFlags] = npcFlags.NONE,
     },
+    --[[
     [178420] = {
         [npcKeys.name] = "Magister Astalor Bloodsworn",
         [npcKeys.minLevel] = 60,
@@ -762,6 +763,7 @@ local SkuCreaturesFixes = {
         [npcKeys.spawns] = {[zoneIDs.SILVERMOON_CITY] = {{92.3,36.5}}},
         [npcKeys.friendlyToFaction] = "H",
     },
+    ]]
 
     --sku fixes
     [3475] = {
@@ -786,7 +788,7 @@ local SkuCreaturesFixes = {
     -- Below are fake IDs to show specific quest starts/ends only at one specific location even though the
     -- corresponding real NPC has multiple spawns (e.g. "The Kessel Run" requires you to run to Azure Watch even
     -- though "Exarch Menelaous" also spawns at Bloodmyst Isle)
-
+--[[
     [40000] = {
         [npcKeys.name] = "Exarch Menelaous",
         [npcKeys.minLevel] = 14,
@@ -811,16 +813,17 @@ local SkuCreaturesFixes = {
         [npcKeys.spawns] = {[zoneIDs.BLOODMYST_ISLE] = {{68,81},{64.9,81.6},{64.2,76.4}}},
         [npcKeys.friendlyToFaction] = "",
     },
+    ]]
 }
 
     
-function SkuDB:FixCreaturesDB()
+function SkuDB:FixCreaturesDB(aTargetTable)
     for i, v in pairs(SkuCreaturesFixes) do
        for k, val in pairs(v) do
-        if SkuDB.NpcData.Data[i] then
-            SkuDB.NpcData.Data[i][k] = val
+        if aTargetTable.NpcData.Data[i] then
+            aTargetTable.NpcData.Data[i][k] = val
         else
-            SkuDB.NpcData.Data[i] = v
+            aTargetTable.NpcData.Data[i] = v
         end
        end
     end

@@ -5,17 +5,6 @@ SkuMob.options = {
 	name = MODULE_NAME,
 	type = "group",
 	args = {
-		enable = {
-			name = L["Module enabled"],
-			desc = "",
-			type = "toggle",
-			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].enable = val
-			end,
-			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].enable
-			end
-		},
 		vocalizeRaidTargetOnly = {
 			name = L["Only raid icon for targets with icon"],
 			desc = "",

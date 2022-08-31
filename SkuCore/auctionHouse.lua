@@ -73,51 +73,6 @@ local tAIDIndex = {
 local tPage = 0
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local escapes = {
-	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
-	["|r"] = "", -- color end
-	["|H.-|h(.-)|h"] = "%1", -- links
-	["|T.-|t"] = "", -- textures
-	["{.-}"] = "", -- raid target icons
-}
-
-local function unescape(str)
-	for k, v in pairs(escapes) do
-		str = string.gsub(str, k, v)
-	end
-	return str
-end
-
-local function ItemName_helper(aText)
-	aText = unescape(aText)
-	local tShort, tLong = aText, ""
-
-	local tStart, tEnd = string.find(tShort, "\r\n")
-	local taTextWoLb = aText
-	if tStart then
-		taTextWoLb = string.sub(tShort, 1, tStart - 1)
-		tLong = aText
-	end
-
-	if string.len(taTextWoLb) > SkuCore.maxItemNameLength then
-		local tBlankPos = 1
-		while (string.find(taTextWoLb, " ", tBlankPos + 1) and tBlankPos < SkuCore.maxItemNameLength) do
-			tBlankPos = string.find(taTextWoLb, " ", tBlankPos + 1)
-		end
-		if tBlankPos > 1 then
-			tShort = string.sub(taTextWoLb, 1, tBlankPos).."..."
-		else
-			tShort = string.sub(taTextWoLb, 1, SkuCore.maxItemNameLength).."..."
-		end		
-		tLong = aText
-	else
-		tShort = taTextWoLb
-	end
-
-	return string.gsub(tShort, "\r\n", " "), tLong
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.AuctionChatMessageFailFlag = false
 function SkuCore:AuctionChatAddMessageHook(aMessage, aR, aG, aB, aA, aMessageType)
    --SkuCore:Debug("AuctionChatAddMessageHook "..(aMessage or "nil").." aR "..(aR or "nil"), true)
@@ -153,8 +108,8 @@ function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData
    local hsd, rc = _G["SkuScanningTooltip"]:SetItemByID(aItemData[17])
    if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
       if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-         local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-         tTextFirstLine, tTextFull = ItemName_helper(tText)
+         local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+         tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
       end
    end
 
@@ -1335,12 +1290,12 @@ function SkuCore:AuctionHouseMenuBuilder()
                         local aGossipItemTable = {
                            textFull = select(2, SkuCore:AuctionBuildItemTooltip({[17] = itemID}, nil, true, true)),
                            itemId = itemID,
-                           containerFrameName = "ContainerFrame"..bag.."Item"..slot,
+                           containerFrameName = "ContainerFrame"..(bag + 1).."Item"..(GetContainerNumSlots(bag) - slot + 1),
                         }
+
+                        
                         tNewMenuSubSubEntry.textFull = aGossipItemTable.textFull
-                        if _G["BagnonInventoryFrame1"] then
-                           aGossipItemTable.containerFrameName = _G["BagnonInventoryFrame1"].itemGroup.buttons[bag][slot]:GetName()
-                        end
+
                      
                         tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
                            dprint("sell OnAction", self, aValue, aName, self.selectTarget.name, self.selectTarget.price, self.price)

@@ -36,7 +36,7 @@ function SkuCore:MAIL_INBOX_UPDATE(...)
    --print("MAIL_INBOX_UPDATE", ...)
    if MailboxOpenFlag == true then
       if SkuOptions.currentMenuPosition then
-         SkuOptions.currentMenuPosition:OnUpdate()
+         SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
       else
          SkuOptions:SlashFunc(L["short"]..",Core,"..L["Mail"])
       end

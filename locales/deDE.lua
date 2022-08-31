@@ -568,9 +568,15 @@ L["Runter blättern"] = "Runter blättern"
 L["Ausgewählt: "] = "Ausgewählt: "
 L["Schließen"] = "Schließen"
 L["Derzeitiger Begleiter"] = "Derzeitiger Begleiter"
-L["Stall 1 "] = "Stall 1 "---stable slot
-L["Stall 1"] = "Stall 1"---stable slot
-L["Stall 2"] = "Stall 2"
+L["Stall 1 "]  = "Stall 1 " ---stable slot
+L["Stall 2 "]  = "Stall 2 " ---stable slot
+L["Stall 3 "]  = "Stall 3 " ---stable slot
+L["Stall 4 "]  = "Stall 4 " ---stable slot
+L["Stall 1"]  = "Stall 1" ---stable slot
+L["Stall 2"]  = "Stall 2" --
+L["Stall 3"]  = "Stall 3" --
+L["Stall 4"]  = "Stall 4" --
+
 L["Weiteren Platz kaufen"] = "Weiteren Platz kaufen"
 L["Schließen"] = "Schließen"
 L["Folgen beim Zaubern temporär beenden"] = "Folgen beim Zaubern temporär beenden"
@@ -1303,7 +1309,7 @@ L["KommaNumbers"] = "Komma"
 
 L[";Meter"] = " Meter"
 
-L["Announce player controled units with generic descriptions"] = "generische ausgaben für Spieler einheiten via Sku"
+L["Announce player controled units with generic descriptions"] = "Freundliche und feindliche Spieler ansagen"
 
 L["Repeat raid target markers on units"] = "Ziel symbole wiederholen"
 L["Ein"] = "Ein"
@@ -1612,4 +1618,23 @@ L["delete whisper tabs without activity after"] = "Flüster Registerkarten ohne 
 L["Never"] = "Niemals"
 L["Delete tab"] = "Registerkarte löschen"
 
+L["Equipment manager"] = "Ausrüstungsmanager"
+L["Companions"] ="Begleiter"
+L["Equipment sets"] = "Ausrüstungssets"
+
+L["Talent Sets"] = "Angezeigtes Talent Set auswählen"
+L["Spent for"] = "Zugewiesen zu"
+L["Role for this set"] ="Rolle für dieses Set"
+
+L["DAMAGER"] = "Schaden"
+L["TANK"] = "Tank"
+L["HEALER"] = "Heiler"
+
+L["Change Role"] = "Rolle ändern"
+
 L["Announce friendly and hostile players"] = "Freundliche und feindliche Spieler ansagen"
+L["Major"] = "Erheblich" --glyph type
+L["Minor"] = "Gering" --glyph type
+
+L["Vehicle Action Bar"] = "Fahrzeug Aktionsleiste"
+L["Stance Action Bar"] = "Haltungs Aktionsleiste"

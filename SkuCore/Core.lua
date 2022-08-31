@@ -12,7 +12,7 @@ local tStartDebugTimestamp = GetTime() or 0
 
 SkuCoreDB = {}
 SkuCore = LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
-SkuCore.maxItemNameLength = 1000--40
+SkuCore.maxItemNameLength = 1000
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 CLASS_IDS = {
@@ -92,9 +92,9 @@ SkuStatus = {
 
 SkuCore.interactFramesListHooked = {}
 SkuCore.interactFramesListManual = {
-	["BagnonInventoryFrame1"] = function(...) SkuCore:Build_BagnonInventoryFrame(...) end,
-	--["BagnonBankFrame1"] = function(...) SkuCore:Build_BagnonBankFrame(...) end,
-	--["BagnonGuildFrame1"] = function(...) SkuCore:Build_BagnonGuildFrame(...) end,
+	["ContainerFrame1"] = function(...) SkuCore:Build_BagsFrame(...) end,
+	--["BankFrame"] = function(...) SkuCore:Build_BankFrame(...) end,
+	["GuildBankFrame"] = function(...) SkuCore:Build_GuildBankFrame(...) end,
 	["CraftFrame"] = function(...) SkuCore:Build_CraftFrame(...) end,
 	["TradeSkillFrame"] = function(...) SkuCore:Build_TradeSkillFrame(...) end,
 	["PetStableFrame"] = function(...) SkuCore:Build_PetStableFrame(...) end,
@@ -103,8 +103,9 @@ SkuCore.interactFramesListManual = {
 	["ItemTextFrame"] = function(...) SkuCore:ItemTextFrame(...) end,
 	["ClassTrainerFrame"] = function(...) SkuCore:Build_ClassTrainerFrame(...) end,
 	["ItemSocketingFrame"] = function(...) SkuCore:Build_ItemSocketingFrame(...) end,
-	
-	
+	["CharacterFrame"] = function(...) SkuCore:Build_CharacterFrame(...) end,
+	["BarberShopFrame"] = function(...) SkuCore:Build_BarberShopFrame(...) end,
+	["PlayerTalentFrame"] = function(...) SkuCore:Build_TalentFrame(...) end,
 }
 
 SkuCore.interactFramesList = {
@@ -118,25 +119,26 @@ SkuCore.interactFramesList = {
 	"StaticPopup3",
 	"PetStableFrame",
 	"ContainerFrame1",
-	"ContainerFrame2",
-	"ContainerFrame3",
-	"ContainerFrame4",
-	"ContainerFrame5",
-	"ContainerFrame6",
+	--"ContainerFrame2",
+	--"ContainerFrame3",
+	--"ContainerFrame4",
+	--"ContainerFrame5",
+	--"ContainerFrame6",
 	"DropDownList1",
 	"TalentFrame",
 	--"AuctionFrame",
 	"ClassTrainerFrame",
 	"CharacterFrame",
+	"BarberShopFrame",
 	"ReputationFrame",
 	"SkillFrame",
 	"HonorFrame",
 	"PlayerTalentFrame",
 	"InspectFrame",
-	"BagnonInventoryFrame1",
-	"BagnonBankFrame1",
+	--"BagnonInventoryFrame1",
+	--"BagnonBankFrame1",
 	"GuildBankFrame",
-	"BankFrame",
+	--"BankFrame",
 	"CraftFrame",
 	--"GroupLootContainer",
 	"TradeFrame",
@@ -149,25 +151,11 @@ SkuCore.interactFramesList = {
 	--"MultiBarRight",
 	--"MultiBarBottomLeft",
 	--"MultiBarBottomRight",
-	"BagnonGuildFrame1",
+	--"BagnonGuildFrame1",
 	--"MainMenuBar",
 	"ReadyCheckFrame",
 	"ItemSocketingFrame",
 }
-
-local escapes = {
-	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
-	["|r"] = "", -- color end
-	["|H.-|h(.-)|h"] = "%1", -- links
-	["|T.-|t"] = "", -- textures
-	["{.-}"] = "", -- raid target icons
-}
-local function unescape(str)
-	for k, v in pairs(escapes) do
-		str = string.gsub(str, k, v)
-	end
-	return str
-end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
@@ -214,6 +202,12 @@ function SkuCore:OnInitialize()
 	--SkuCore:RegisterEvent("PET_STABLE_SHOW")
 	--SkuCore:RegisterEvent("PET_STABLE_CLOSED")
 
+	SkuCore:RegisterEvent("GOSSIP_SHOW")
+	SkuCore:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	SkuCore:RegisterEvent("GLYPH_ADDED")
+	SkuCore:RegisterEvent("GLYPH_REMOVED")
+	SkuCore:RegisterEvent("GLYPH_UPDATED")
+	
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
@@ -433,7 +427,7 @@ function SkuCore:PanicModeStart()
 							if SkuNav:Distance(tPlayerPosX, tPlayerPosY, tPanicData[x].x, tPanicData[x].y) > SkuCorePanicBeaconDistance then
 								SkuCorePanicCurrentPoint = x
 								if not SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanicBeaconName) then
-									local tBeaconType = SkuNav:getBeaconSoundSetName(1)
+									local tBeaconType = SkuNav:GetBeaconSoundSetName(1)
 									if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
 										return
 									end
@@ -811,7 +805,6 @@ function SkuCore:OnEnable()
 	local ttime = 0
 	local f = _G["SkuCoreControl"] or CreateFrame("Frame", "SkuCoreControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
-		if SkuOptions.db.profile[MODULE_NAME].enable ~= true then return end
 
 		if ClassTrainerFrame then
 			if ClassTrainerFrame:IsShown() == true then
@@ -881,7 +874,7 @@ function SkuCore:OnEnable()
 				if infoType == "merchant" then
 					tResult = GetMerchantItemInfo(itemID)
 				elseif infoType == "item" then
-					tResult = string.sub(unescape(itemLink), 2, string.len(unescape(itemLink))-1)
+					tResult = string.sub(SkuChat:Unescape(itemLink), 2, string.len(SkuChat:Unescape(itemLink))-1)
 				else
 					tResult = infoType
 				end
@@ -1641,6 +1634,9 @@ end
 function SkuCore:CheckInteractObjectShow()
 	--print("CheckInteractObjectShow", SkuCore.noMouseOverNotification)
 	--tSkuCoreTooltipCheckerControlPrevOpac = 1
+	if SkuOptions:IsMenuOpen() == true then
+		return
+	end	
 	if SkuCore.noMouseOverNotification ~= true then
 		if not GameTooltipTextLeft1.GetText then
 			return
@@ -2206,12 +2202,12 @@ local friendlyFrameNames = {
 	["StaticPopup3"] = L["Popup 3"],
 	["PetStableFrame"] = L["Pet Stable"],
 	["MailFrame"] = L["Mail"],
-	["ContainerFrame1"] = L["Bag 1"],
-	["ContainerFrame2"] = L["Bag 2"],
-	["ContainerFrame3"] = L["Bag 3"],
-	["ContainerFrame4"] = L["Bag 4"],
-	["ContainerFrame5"] = L["Bag 5"],
-	["ContainerFrame6"] = L["Bag 6"],
+	["ContainerFrame1"] = L["local Bags"],
+	--["ContainerFrame2"] = L["Bag 2"],
+	--["ContainerFrame3"] = L["Bag 3"],
+	--["ContainerFrame4"] = L["Bag 4"],
+	--["ContainerFrame5"] = L["Bag 5"],
+	--["ContainerFrame6"] = L["Bag 6"],
 	["DropDownList2"] = L["Dropdown List 2"],
 	["DropDownList1"] = L["Dropdown List 1"],
 	["TalentFrame"] = L["Talents"],
@@ -2219,6 +2215,7 @@ local friendlyFrameNames = {
 	["AuctionFrame"] = L["Auction house"],
 	["ClassTrainerFrame"] = L["Class Trainer"],
 	["CharacterFrame"] = L["Character"],
+	["BarberShopFrame"] = L["Barber Shop"],
 	["ReputationFrame"] = L["Reputation"],
 	["SkillFrame"] = L["Skills"],
 	["HonorFrame"] = L["Honor"],
@@ -2233,7 +2230,7 @@ local friendlyFrameNames = {
 	--["MultiBarRight"] = "",
 	--["MultiBarBottomLeft"] = "",
 	--["MultiBarBottomRight"] = "",
-	["BagnonGuildFrame1"] = L["Bagnon Guild"],
+	--["BagnonGuildFrame1"] = L["Bagnon Guild"],
 	["BagnonBankFrame1"] = L["Bagnon Bank"],
 	["BankFrame"] = L["Bank"],
 	["GuildBankFrame"] = L["Guild Bank"],
@@ -2242,6 +2239,7 @@ local friendlyFrameNames = {
 	["ItemSocketingFrame"] = L["Socketing"],
 	[""] = "",
 }
+--[[
 local containerFrames = {
 	["BagnonInventoryFrame1"] = "BagnonInventoryFrame1",
 	["BagnonBankFrame1"] = "BagnonBankFrame1",
@@ -2252,6 +2250,7 @@ local containerFrames = {
 	["ContainerFrame5"] = "ContainerFrame5",
 
 }
+]]
 local friendlyFrameNamesParts = {
 	["FrameGreetingPanel"] = L["Panel"],
 	["GreetingScrollFrame"] = L["Sub panel"],
@@ -2274,8 +2273,8 @@ local function GetTableID(aTable)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function ItemName_helper(aText)
-	aText = unescape(aText)
+function SkuCore:ItemName_helper(aText)
+	aText = SkuChat:Unescape(aText)
 	local tShort, tLong = aText, ""
 
 	local tStart, tEnd = string.find(tShort, "\r\n")
@@ -2300,11 +2299,13 @@ local function ItemName_helper(aText)
 		tShort = taTextWoLb
 	end
 
-	return string.gsub(tShort, "\r\n", " "), tLong
+	tShort = string.gsub(tShort, "\r\n", " ")
+	tShort = string.gsub(tShort, "\n", " ")
+	return tShort, tLong
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function IterateChildren(t, tab)
+function SkuCore:IterateChildren(t, tab)
 	local tResults = {}
 
 	if t.GetRegions then
@@ -2327,15 +2328,15 @@ local function IterateChildren(t, tab)
 					}
 					if dtc[x].GetText then
 						if dtc[x]:GetText() then
-							local tText = unescape(dtc[x]:GetText())
-							tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
+							local tText = SkuChat:Unescape(dtc[x]:GetText())
+							tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 							if tResults[fName].type == "Button" then
 								tResults[fName].textFirstLine = tResults[fName].textFirstLine
 							end
 						end
 					end
 
-					local tChildsResult = IterateChildren(dtc[x], tab.."  ")
+					local tChildsResult = SkuCore:IterateChildren(dtc[x], tab.."  ")
 					if #tChildsResult == 1 then
 						tResults[fName].childs = tChildsResult[tChildsResult[1]].childs
 					elseif #tChildsResult > 1 then
@@ -2345,7 +2346,7 @@ local function IterateChildren(t, tab)
 						--[[for q = 1, #tButtonsWoFontstrings do
 							if string.find(fName, tButtonsWoFontstrings[q]) then
 								local tText = tButtonsWoFontstrings[q]
-								tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
+								tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 							end
 						end
 						]]
@@ -2403,8 +2404,8 @@ local function IterateChildren(t, tab)
 						--text from fs available?
 						if dtc[x].GetText then
 							if dtc[x]:GetText() then
-								local tText = unescape(dtc[x]:GetText())
-								tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
+								local tText = SkuChat:Unescape(dtc[x]:GetText())
+								tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 							end
 						end
 
@@ -2415,19 +2416,19 @@ local function IterateChildren(t, tab)
 								local hsd, rc = _G["SkuScanningTooltip"]:SetBagItem(tResults[fName].obj:GetParent():GetID(), tResults[fName].obj:GetID())
 								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-										local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+										local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 										
 										if tResults[fName].obj.info then
 											if tResults[fName].obj.info.id then
 												tResults[fName].itemId = tResults[fName].obj.info.id
-												tResults[fName].textFirstLine = ItemName_helper(tText)
+												tResults[fName].textFirstLine = SkuCore:ItemName_helper(tText)
 												tResults[fName].textFull = SkuCore:AuctionPriceHistoryData(tResults[fName].obj.info.id, true, true)
 											end
 										end
 										if not tResults[fName].textFull then
 											tResults[fName].textFull = {}
 										end
-										local tFirst, tFull = ItemName_helper(tText)
+										local tFirst, tFull = SkuCore:ItemName_helper(tText)
 										tResults[fName].textFirstLine = tFirst
 										if type(tResults[fName].textFull) ~= "table" then
 											tResults[fName].textFull = {(tResults[fName].textFull or tResults[fName].textFirstLine or ""),}
@@ -2441,8 +2442,8 @@ local function IterateChildren(t, tab)
 									tResults[fName].obj:ShowTooltip()
 									if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 										if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-											local tText = unescape(TooltipLines_helper(GameTooltip:GetRegions()))
-											tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
+											local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+											tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 										end
 									end
 								end
@@ -2452,8 +2453,8 @@ local function IterateChildren(t, tab)
 								local hsd, rc = _G["SkuScanningTooltip"]:SetMerchantItem(tResults[fName].obj:GetID())
 								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-										local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-										tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
+										local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+										tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 									end
 								end
 							else
@@ -2463,8 +2464,8 @@ local function IterateChildren(t, tab)
 								end
 								if TooltipLines_helper(GameTooltip:GetRegions()) ~= "asd" then
 									if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
-										local tText = unescape(TooltipLines_helper(GameTooltip:GetRegions()))
-										tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
+										local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+										tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 									end
 								end
 								GameTooltip:SetOwner(UIParent, "Center")
@@ -2479,7 +2480,7 @@ local function IterateChildren(t, tab)
 						if dtc[x] then
 							if not tResults[fName].func then
 								if (dtc[x]:GetNumRegions() + dtc[x]:GetNumChildren()) > 0 then
-									local tChildsResult = IterateChildren(dtc[x], tab.."  ")
+									local tChildsResult = SkuCore:IterateChildren(dtc[x], tab.."  ")
 									--if there is only one child, set its content directly to this item; except it's a money frame, then there may just one item
 									if #tChildsResult == 1 and not string.find(fName, "Money") then
 										tResults[fName].childs = tChildsResult[tChildsResult[1]].childs
@@ -2521,7 +2522,7 @@ local function IterateChildren(t, tab)
 							if tResults[fName].textFirstLine == "" and tResults[fName].textFull == "" then
 								for iq, vq in pairs(tButtonsWoFontstrings) do
 									if string.find(fName, iq) then
-										tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(vq)
+										tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(vq)
 									end
 								end
 								--if there are childs but no text > try to find the best/friendly name via the frame name
@@ -2535,7 +2536,7 @@ local function IterateChildren(t, tab)
 										end
 									end
 									if tText ~= "" then
-										tResults[fName].textFirstLine, tResults[fName].textFull = ItemName_helper(tText)
+										tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
 									else
 										--no friendly name > name as Container x
 										tResults[fName].textFirstLine = L["Container"].." "..x --fName
@@ -2656,10 +2657,6 @@ end
 ---@param aForceLocalRoot bool force the audio menu to return to the "Local" root element if there are new childs in Local
 function SkuCore:CheckFrames(aForceLocalRoot)
 	--print("++CheckFrames", aForceLocalRoot)
-	-- temp hack to avoid the CURSOR_UPDATE spam from questie
-	--if Questie then
-		--Questie:UnregisterEvent("CURSOR_UPDATE")
-	--end
 
 	if SkuOptions.db.profile["SkuOptions"].localActive == false then
 		return
@@ -2673,7 +2670,7 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 	end
 
 	SkuCore.GossipList = {}
-	C_Timer.After(0.65, function() --This is because the content of some frames is not instantly available on show. We do need to wait a few milliseconds on it.
+	C_Timer.After(0.01, function() --This is because the content of some frames is not instantly available on show. We do need to wait a few milliseconds on it.
 		--dprint("CheckFrames", aForceLocalRoot)
 		SkuCore.GossipList = {}
 		local tOpenFrames = {}
@@ -2702,7 +2699,7 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 					childs = {},
 					}
 				if not SkuCore.interactFramesListManual[tOpenFrames[x]] then
-					tGossipList[tOpenFrames[x]].childs = IterateChildren(tGossipList[tOpenFrames[x]].obj, "")
+					tGossipList[tOpenFrames[x]].childs = SkuCore:IterateChildren(tGossipList[tOpenFrames[x]].obj, "")
 				else
 					SkuCore.interactFramesListManual[tOpenFrames[x]](tGossipList[tOpenFrames[x]].childs)
 				end

@@ -1,6 +1,5 @@
 local VANILLA = string.byte(GetBuildInfo(), 1) == 49
 
-
 SkuDB.DefaultWaypoints = {
    ["enUS"] = {
       "Innkeepers", -- [1]

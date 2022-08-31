@@ -5,8 +5,9 @@ SkuNav.ClickClackSoundsets = {}
 
 SkuNav.StandardWpReachedRanges = {
    [1] = L["1 Meter"],
-   [2] = L["3 Meter"],
-   [3] = L["Auto"],
+   [2] = L["2 Meter"],
+   [3] = L["3 Meter"],
+   [4] = L["Auto"],
 }
 
 local timeForVisitedToExpireValues = {L["disabled"], "1 "..L["minute"]}
@@ -18,17 +19,6 @@ SkuNav.options = {
 	name = MODULE_NAME,
 	type = "group",
 	args = {
-		enable = {
-			name = L["Module enabled"],
-			desc = "",
-			type = "toggle",
-			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].enable = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].enable
-			end
-		},
 		beaconVolume = {
 			order = 2,
 			name = L["Beacon Volume"],
@@ -252,10 +242,17 @@ SkuNav.options = {
 			desc = "",
 			type = "toggle",
 			OnAction = function(self, info, val)
-				SkuOptions.db.global["SkuNav"].Waypoints = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Waypoints"])
+				local t = SkuDB.routedata["global"]["Waypoints"]
+				SkuOptions.db.global["SkuNav"].Waypoints = t
+
+				local tl = SkuDB.routedata["global"]["Links"]
+				SkuOptions.db.global["SkuNav"].Links = tl
 				SkuNav:CreateWaypointCache()
-				SkuOptions.db.global["SkuNav"].Links = SkuOptions:TableCopy(SkuDB.routedata[Sku.Loc]["Links"])
-				SkuNav:LoadLinkDataFromProfile()
+
+				for x = 1, 4 do
+					local tWaypointName = L["Quick waypoint"]..";"..x
+					SkuNav:UpdateQuickWP(tWaypointName, true)
+				end			
 			end,
 			set = function(info,val)
 				SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints = val
@@ -321,7 +318,7 @@ SkuNav.defaults = {
 	showSkuMM = false,
 	nearbyWpRange = 30,
 	tomtomWp = false,
-	standardWpReachedRange = 3,
+	standardWpReachedRange = 4,
 	clickClackEnabled = true,
 	clickClackRange = 5,
 	clickClackSoundset = "beep",
@@ -480,6 +477,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 	tNewMenuEntry.OnAction = function(self, aValue, aName)
 		--dprint("Route und Wegpunkt abwählen", self.name, aName)
 		SkuNav:EndFollowingWpOrRt()
+		SkuNav:ClearWaypointsTemporary()
 		PlaySound(835)
 	end
 
@@ -802,58 +800,6 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 			end
 
-			--
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Umbenennen"]}, SkuGenericMenuItem)
-			tNewMenuEntry.dynamic = true
-			tNewMenuEntry.filterable = true
-			tNewMenuEntry.BuildChildren = function(self)
-				local tWaypointList = {}
-				local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
-				for i, v in SkuNav:ListWaypoints2(false, "custom", SkuNav:GetCurrentAreaId(), tPlayerContinentID) do --aSort, aFilter, aAreaId, aContinentId, aExcludeRoute
-					if not sfind(v, L["Quick waypoint"]) then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
-						tNewMenuEntry.dynamic = true
-						tNewMenuEntry.BuildChildren = function(self)
-							local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, L["Umbenennen"])
-							tNewMenuEntry.OnAction = function(self, aValue, aName)
-								--dprint("Wegpunkt umbenennen OnAction", self.name, aName, self.TMPSize, self.selectTarget, self.selectTarget.name, "-", self.parent.name)
-								--dprint(self.selectTarget.TMPSize)
-								if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
-									SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
-									SkuOptions.Voice:OutputStringBTtts(L["Active waypoint or route or recording"], false, true, 0.3, true)
-									return
-								end
-								if aName == L["Nothing selected"] then
-									return
-								end
-					
-								if sfind(aName, L["Selected"]..";") > 0 then
-									aName = string.sub(aName, string.len(L["Selected"]..";") + 1)
-								end
-
-								local tOldName = self.parent.name
-								local tNewName = aName
-
-								if SkuNav:GetWaypointData2(tNewName) then
-									SkuOptions.Voice:OutputStringBTtts(L["nicht umbenannt"], false, true, 0.3, true)
-									SkuOptions.Voice:OutputStringBTtts(L["name schon vorhanden"], false, true, 0.3, true)
-									return
-								end
-
-								local tSuccess = SkuNav:RenameWaypoint(tOldName, tNewName) 
-								if tSuccess == true then
-									--C_Timer.NewTimer(0.1, function() SkuOptions:SlashFunc("short,Naviation,Wegpunkt,Verwalten,Umbenennen") end)
-									SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt umbenannt"], false, true, 0.2)
-									SkuOptions:CloseMenu()
-								else
-									SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.2)
-								end
-							end
-						end
-					end
-				end
-			end
-
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Kommentar zuweisen"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
@@ -868,10 +814,13 @@ function SkuNav:MenuBuilder(aParentEntry)
 					SkuOptions:EditBoxShow("test", function(a, b, c) 
 						local tText = SkuOptionsEditBoxEditBox:GetText() 
 						if tText ~= "" then
-							if not tWpData.comments then
-								tWpData.comments = {}
+							if not tWpData.comments or not tWpData.comments[Sku.Loc] then
+								tWpData.comments = {
+									["deDE"] = {},
+									["enUS"] = {},
+								}
 							end
-							tWpData.comments[#tWpData.comments + 1] = tText
+							tWpData.comments[Sku.Loc][#tWpData.comments[Sku.Loc] + 1] = tText
 							SkuNav:SetWaypoint(aName, tWpData)
 							SkuOptions.db.global["SkuNav"].hasCustomMapData = true
 							SkuOptions.Voice:OutputStringBTtts(L["Kommentar zugewiesen"], false, true, 0.3, true)
@@ -945,7 +894,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local isUiMap = SkuNav:GetUiMapIdFromAreaId(tCurrentAreaId)
 				local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData[x][1] / 100, SkuOptions.db.profile[MODULE_NAME].metapathFollowingUnitDbWaypointData[x][2] / 100))
 				local tX, tY = worldPosition:GetXY()
-				local tNameOfNewWp = SkuNav:CreateWaypoint(L["Einheiten;Route;"]..x, tX, tY, 1, true)
+				local tNameOfNewWp = SkuNav:CreateWaypoint(L["Einheiten;Route;"]..x, tX, tY, 1, true, true)
 				if tNameOfNewWp then
 					--add to mt rt
 					SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary[#SkuOptions.db.profile[MODULE_NAME].WaypointsTemporary + 1] = tNameOfNewWp

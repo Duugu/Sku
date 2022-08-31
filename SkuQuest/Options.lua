@@ -5,17 +5,6 @@ SkuQuest.options = {
 	name = MODULE_NAME,
 	type = "group",
 	args = {
-		enable = {
-			name = L["Module enabled"] ,
-			desc = "",
-			type = "toggle",
-			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].enable = val
-			end,
-			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].enable
-			end
-		},
 		--[[
 		TestDropdown = {
 			name = "Test Dropdown" ,
@@ -29,10 +18,10 @@ SkuQuest.options = {
 			},
 			type = "select",
 			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].enable = val
+				SkuOptions.db.profile[MODULE_NAME].TestDropdown = val
 			end,
 			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].enable
+				return SkuOptions.db.profile[MODULE_NAME].TestDropdown
 			end
 		},
 		]]
@@ -239,53 +228,55 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
 					if isUiMap then
 						local tData = SkuDB.InternalAreaTable[is]
 						if tData then
-							if tData.ContinentID == tPlayerContinentID then
-								local tNumberOfSpawns = #vs
-								if tNumberOfSpawns > 3 and aOnly3 == true then
-									tNumberOfSpawns = 3
-								end
-								if SkuDB.NpcData.Names[Sku.Loc][i] then
-									local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
-									local tRolesString = ""
-									if not tSubname then
-										local tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.Names[Sku.Loc][i], i)
-										if #tRoles > 0 then
-											for i, v in pairs(tRoles) do
-												tRolesString = tRolesString..";"..v
-											end
-											tRolesString = tRolesString..""
-										end
-									else
-										tRolesString = tRolesString..";"..tSubname
+							if SkuNav:GetContinentNameFromContinentId(tData.ContinentID) then
+								if tData.ContinentID == tPlayerContinentID then
+									local tNumberOfSpawns = #vs
+									if tNumberOfSpawns > 3 and aOnly3 == true then
+										tNumberOfSpawns = 3
 									end
-									for sp = 1, tNumberOfSpawns do
+									if SkuDB.NpcData.Names[Sku.Loc][i] then
+										local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
+										local tRolesString = ""
+										if not tSubname then
+											local tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.Names[Sku.Loc][i], i)
+											if #tRoles > 0 then
+												for i, v in pairs(tRoles) do
+													tRolesString = tRolesString..";"..v
+												end
+												tRolesString = tRolesString..""
+											end
+										else
+											tRolesString = tRolesString..";"..tSubname
+										end
+										for sp = 1, tNumberOfSpawns do
+											if not aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] then
+												aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] = {}
+											end
+											table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
+										end
+									end
+								else
+									if SkuDB.NpcData.Names[Sku.Loc][i] then
+										local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
+										local tRolesString = ""
+										if not tSubname then
+											local tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.Names[Sku.Loc][i], i)
+											if #tRoles > 0 then
+												for i, v in pairs(tRoles) do
+													tRolesString = tRolesString..";"..v
+												end
+												tRolesString = tRolesString..""
+											end
+										else
+											tRolesString = tRolesString..";"..tSubname
+										end
 										if not aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] then
 											aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] = {}
 										end
-										table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
+										table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
 									end
-								end
-							else
-								if SkuDB.NpcData.Names[Sku.Loc][i] then
-									local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
-									local tRolesString = ""
-									if not tSubname then
-										local tRoles = SkuNav:GetNpcRoles(SkuDB.NpcData.Names[Sku.Loc][i], i)
-										if #tRoles > 0 then
-											for i, v in pairs(tRoles) do
-												tRolesString = tRolesString..";"..v
-											end
-											tRolesString = tRolesString..""
-										end
-									else
-										tRolesString = tRolesString..";"..tSubname
-									end
-									if not aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] then
-										aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString] = {}
-									end
-									table.insert(aTargetTable[SkuDB.NpcData.Names[Sku.Loc][i][1]..tRolesString], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
-								end
 
+								end
 							end
 						end
 					end
@@ -319,27 +310,29 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 									--if is == tCurrentAreaId then
 										local tData = SkuDB.InternalAreaTable[is]
 										if tData then
-											if tData.ContinentID == tPlayerContinentID then
-												local tNumberOfSpawns = #vs
-												if tNumberOfSpawns > 3 and aOnly3 == true then
-													tNumberOfSpawns = 3
-												end
-												for sp = 1, tNumberOfSpawns do
-													if not tResultWPs[tObjectName] then
-														tResultWPs[tObjectName] = {}
+											if SkuNav:GetContinentNameFromContinentId(tData.ContinentID) then
+												if tData.ContinentID == tPlayerContinentID then
+													local tNumberOfSpawns = #vs
+													if tNumberOfSpawns > 3 and aOnly3 == true then
+														tNumberOfSpawns = 3
 													end
-													table.insert(tResultWPs[tObjectName], L["OBJECT"]..";"..tObjectId..";"..tObjectName..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
-												end
-											else
-												local tNumberOfSpawns = #vs
-												if tNumberOfSpawns > 3 and aOnly3 == true then
-													tNumberOfSpawns = 3
-												end
-												for sp = 1, tNumberOfSpawns do
-													if not tResultWPs[tObjectName] then
-														tResultWPs[tObjectName] = {}
+													for sp = 1, tNumberOfSpawns do
+														if not tResultWPs[tObjectName] then
+															tResultWPs[tObjectName] = {}
+														end
+														table.insert(tResultWPs[tObjectName], L["OBJECT"]..";"..tObjectId..";"..tObjectName..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2])
 													end
-													table.insert(tResultWPs[tObjectName], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
+												else
+													local tNumberOfSpawns = #vs
+													if tNumberOfSpawns > 3 and aOnly3 == true then
+														tNumberOfSpawns = 3
+													end
+													for sp = 1, tNumberOfSpawns do
+														if not tResultWPs[tObjectName] then
+															tResultWPs[tObjectName] = {}
+														end
+														table.insert(tResultWPs[tObjectName], L["Anderer Kontinent"]..";"..SkuNav:GetContinentNameFromContinentId(tData.ContinentID)..";"..tData.AreaName_lang[Sku.Loc])
+													end
 												end
 											end
 										end
@@ -803,7 +796,9 @@ function SkuQuest:GetTriggerEndWps(aQuestId)
 		for zone, data in pairs(SkuDB.questDataTBC[aQuestId][SkuDB.questKeys["triggerEnd"]][2]) do
 			local _, taName = SkuNav:GetAreaData(zone)
 			if taName then
-				tWaypoints[#tWaypoints + 1] = SkuDB.questLookup[Sku.Loc][aQuestId][1]..";"..taName..";"..L["Questziel"]..";"..data[1][1]..";"..data[1][2]
+				if SkuDB.questLookup[Sku.Loc][aQuestId] then
+					tWaypoints[#tWaypoints + 1] = SkuDB.questLookup[Sku.Loc][aQuestId][1]..";"..taName..";"..L["Questziel"]..";"..data[1][1]..";"..data[1][2]
+				end
 			end
 		end
 	end
@@ -816,105 +811,107 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 	local tHasEntries
 	--parent qs
 	if aQuestID then
-		local tPreQuestTable = {}
-		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
-			local preQuestGroup = ""
-			for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestGroup"]]) do
-				tPreQuestTable[#tPreQuestTable+1] = vR
+		if SkuDB.questDataTBC[aQuestID] then
+			local tPreQuestTable = {}
+			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
+				local preQuestGroup = ""
+				for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestGroup"]]) do
+					tPreQuestTable[#tPreQuestTable+1] = vR
+				end
 			end
-		end
-		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
-			local preQuestSingle = ""
-			for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]]) do
-				tPreQuestTable[#tPreQuestTable+1] = vR
+			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
+				local preQuestSingle = ""
+				for iR, vR in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["preQuestSingle"]]) do
+					tPreQuestTable[#tPreQuestTable+1] = vR
+				end
 			end
-		end
 
-		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - one to be completed before next in series
-			local parentQuest = ""
-			tPreQuestTable[#tPreQuestTable+1] = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]]
-		end
-
-		if #tPreQuestTable > 0 then
-			tHasEntries = true
-			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Pre Quests"]}, SkuGenericMenuItem)
-			tNewMenuSubEntry.dynamic = true
-			tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-
+			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]] then -- table: {quest(int)} - one to be completed before next in series
+				local parentQuest = ""
+				tPreQuestTable[#tPreQuestTable+1] = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]]
 			end
-			tNewMenuSubEntry.BuildChildren = function(self)
-				for i, v in pairs(tPreQuestTable) do
-					local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[Sku.Loc][v][1]}, SkuGenericMenuItem)
-					tNewMenuSubEntry1.dynamic = true
-					tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
-						C_Timer.NewTimer(0.1, function()
-							SkuOptions:SlashFunc("short,"..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
-							SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
-						end)
+
+			if #tPreQuestTable > 0 then
+				tHasEntries = true
+				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Pre Quests"]}, SkuGenericMenuItem)
+				tNewMenuSubEntry.dynamic = true
+				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
+
+				end
+				tNewMenuSubEntry.BuildChildren = function(self)
+					for i, v in pairs(tPreQuestTable) do
+						local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[Sku.Loc][v][1]}, SkuGenericMenuItem)
+						tNewMenuSubEntry1.dynamic = true
+						tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
+							C_Timer.NewTimer(0.1, function()
+								SkuOptions:SlashFunc("short,"..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
+								SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
+							end)
+						end
 					end
 				end
 			end
-		end
 
-		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
-			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][2]
-			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3]
-		then
-			tHasEntries = true
-			local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
-			if tstartedBy then
+			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
+				or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][2]
+				or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3]
+			then
+				tHasEntries = true
+				local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
+				if tstartedBy then
+					local tTargets = {}
+					local tTargetType = nil
+					
+					tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
+
+					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Annahme"]}, SkuGenericMenuItem)
+					tNewMenuSubEntry.dynamic = true
+					tNewMenuSubEntry.filterable = true
+					tNewMenuSubEntry.BuildChildren = function(self)
+						tHasEntries = true
+						CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+						--CreateRtWpSubmenu(self, SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1], "creature", aQuestID)
+					end
+				end
+			end
+
+			local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
+			if tObjectives then
+				tHasEntries = true
 				local tTargets = {}
 				local tTargetType = nil
-				
-				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tstartedBy)
 
-				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Annahme"]}, SkuGenericMenuItem)
+				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
+
+				if	tTargetType then
+					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Ziel"]}, SkuGenericMenuItem)
+					tNewMenuSubEntry.dynamic = true
+					--tNewMenuSubEntry.filterable = true
+					tNewMenuSubEntry.OnAction = function(self, aValue, aName)
+					end
+					tNewMenuSubEntry.BuildChildren = function(self)
+						tHasEntries = true
+						CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+					end
+				end
+			end
+
+			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
+				tHasEntries = true
+				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Abgabe"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry.dynamic = true
 				tNewMenuSubEntry.filterable = true
-				tNewMenuSubEntry.BuildChildren = function(self)
-					tHasEntries = true
-					CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
-					--CreateRtWpSubmenu(self, SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1], "creature", aQuestID)
-				end
-			end
-		end
+				local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
+				if tFinishedBy then
+					local tTargets = {}
+					local tTargetType = nil
 
-		local tObjectives = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["objectives"]]
-		if tObjectives then
-			tHasEntries = true
-			local tTargets = {}
-			local tTargetType = nil
+					tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
 
-			tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tObjectives)
-
-			if	tTargetType then
-				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Ziel"]}, SkuGenericMenuItem)
-				tNewMenuSubEntry.dynamic = true
-				--tNewMenuSubEntry.filterable = true
-				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-				end
-				tNewMenuSubEntry.BuildChildren = function(self)
-					tHasEntries = true
-					CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
-				end
-			end
-		end
-
-		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
-			tHasEntries = true
-			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Abgabe"]}, SkuGenericMenuItem)
-			tNewMenuSubEntry.dynamic = true
-			tNewMenuSubEntry.filterable = true
-			local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
-			if tFinishedBy then
-				local tTargets = {}
-				local tTargetType = nil
-
-				tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
-
-				tNewMenuSubEntry.BuildChildren = function(self)
-					tHasEntries = true
-					CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+					tNewMenuSubEntry.BuildChildren = function(self)
+						tHasEntries = true
+						CreateRtWpSubmenu(self, tTargets, tTargetType, aQuestID)
+					end
 				end
 			end
 		end

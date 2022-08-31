@@ -1462,7 +1462,7 @@ SkuAuras.attributes = {
          "100",
                  
       },
-   },   
+   },
    unitComboPlayer = {
       tooltip = L["Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"],
       friendlyName = L["Eigene combopunkte"],
@@ -1483,7 +1483,7 @@ SkuAuras.attributes = {
          "4",
          "5",
       },
-   },
+   },   
    unitHealthPlayer = {
       tooltip = L["Dein gesundheits Level in Prozent, das die Aura auslösen soll"],
       friendlyName = L["Eigene Gesundheit"],

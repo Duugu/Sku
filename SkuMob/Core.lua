@@ -56,47 +56,45 @@ function SkuMob:OnEnable()
 	local ttime = 0
 	local f = _G["SkuMobControl"] or CreateFrame("Frame", "SkuMobControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time) 
-		if SkuOptions.db.profile[MODULE_NAME].enable == true then
- 			ttime = ttime + time 
-			if ttime > 0.25 then 
-				
-				if UnitGUID("target") then
-					if UnitCanAttack("player","target") ~= false then
-						local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
-						local hpPer = math.floor(((hp / 10)) + 1) * 10
-						if hpPer < 100 and hpPer > 0 then
-							if hpPer > 100 then hpPer = 100 end
-							if hpPer < 10 then hpPer = 0 end
-							if hp == 0 then hpPer = 0 end
+		ttime = ttime + time 
+		if ttime > 0.25 then 
+			
+			if UnitGUID("target") then
+				if UnitCanAttack("player","target") ~= false then
+					local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
+					local hpPer = math.floor(((hp / 10)) + 1) * 10
+					if hpPer < 100 and hpPer > 0 then
+						if hpPer > 100 then hpPer = 100 end
+						if hpPer < 10 then hpPer = 0 end
+						if hp == 0 then hpPer = 0 end
 
-							if (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
-								SkuMobDB.nextAudioQ = hpPer--SkuMobDB.soundFiles[hpPer]
-							end
-							
-							if  (SkuMobDB.nextAudioQ ~= hpPer) then
-								SkuMobDB.nextAudioQ = hpPer
-							end
-							
-							if SkuMobDB.nextAudioQ ~= "" then
-								if (SkuMobDB.nextAudioQ ~= SkuMobDB.lastAudioQ) or (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
-									SkuOptions.Voice:OutputString(SkuMobDB.nextAudioQ, false, false, 0.3)
-									SkuMobDB.lastAudioQ = SkuMobDB.nextAudioQ
-									SkuMobDB.nextAudioQ = ""
-								end
+						if (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
+							SkuMobDB.nextAudioQ = hpPer--SkuMobDB.soundFiles[hpPer]
+						end
+						
+						if  (SkuMobDB.nextAudioQ ~= hpPer) then
+							SkuMobDB.nextAudioQ = hpPer
+						end
+						
+						if SkuMobDB.nextAudioQ ~= "" then
+							if (SkuMobDB.nextAudioQ ~= SkuMobDB.lastAudioQ) or (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
+								SkuOptions.Voice:OutputString(SkuMobDB.nextAudioQ, false, false, 0.3)
+								SkuMobDB.lastAudioQ = SkuMobDB.nextAudioQ
+								SkuMobDB.nextAudioQ = ""
 							end
 						end
-							
-						SkuMobDB.lastTargetGuid = UnitGUID("target")
 					end
-				else
-					SkuMobDB.lastTargetGuid = 0
-					SkuMobDB.nextAudioQ = ""
-					SkuMobDB.lastAudioQ = ""
+						
+					SkuMobDB.lastTargetGuid = UnitGUID("target")
 				end
-				
-				ttime = 0 
-			end 
-		end
+			else
+				SkuMobDB.lastTargetGuid = 0
+				SkuMobDB.nextAudioQ = ""
+				SkuMobDB.lastAudioQ = ""
+			end
+			
+			ttime = 0 
+		end 
 	end)
 end
 

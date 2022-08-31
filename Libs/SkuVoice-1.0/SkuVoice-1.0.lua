@@ -408,6 +408,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
+	--print("OutputStringBTtts(aString", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 	if not aString then
 		return
 	end
@@ -420,8 +421,6 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 		return
 	end
-
-	--print("OutputStringBTtts(aString", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 
 	aDnQ = aDnQ or false
 
@@ -510,42 +509,49 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 		for x = 1, #tSplittedString do
 			if tonumber(tSplittedString[x]) then
-				--dprint(x, "  NUMBER", tSplittedString[x])
+				--print(x, "  NUMBER", tSplittedString[x])
 				if not aVocalizeAsIs then
 					if not string.find(tostring(tSplittedString[x]), "%.") and not string.find(tostring(tSplittedString[x]), ",") then
 						local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
-						--dprint("tFloatNumber", tFloatNumber)
+						--print("tFloatNumber", tFloatNumber)
 						if tonumber(tFloatNumber) < 1000000 then
 							if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
 								--float
 								local tIVal = string.format("%d", tFloatNumber)
 								local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
-								--dprint("tIVal, tFVal", tIVal, tFVal)
+								--print("float tIVal, tFVal", tIVal, tFVal)
 								--table.insert(tStrings, tIVal)
 								--table.insert(tStrings, L["KommaNumbers"])
 								--table.insert(tStrings, tFVal)
 							else
 								--int
 								local tNumber = math.floor(tonumber(tSplittedString[x]))
+								--print("int ", tNumber)
 								if tNumber == 0 then
 									table.insert(tStrings, 0)
 								else
 									local tRemaining = tNumber
 									if tNumber > 13000 then
 										--no audio available
+										tRemaining = 0
+										tNumber = 0
+										--print(1)
 									end
 									if tNumber > 999 then
 										local tRound = SkuVoice:UtilRound(tRemaining, 10000)
 										table.insert(tStrings, tRound)
 										tRemaining = tRemaining - tRound
+										--print(2)
 									end
 									if tRemaining > 99 then
 										local tRound = SkuVoice:UtilRound(tRemaining, 1000)
 										table.insert(tStrings, tRound)
 										tRemaining = tRemaining - tRound
+										--print(4)
 									end
 									if tRemaining > 0 then
 										table.insert(tStrings, tRemaining)
+										--print(4)
 									end
 								end
 							end
@@ -567,12 +573,10 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	local tFinalStringForBTtsMac = ""
 
 	for x = 1, #tStrings do
-		if tStrings[x] == "§01" then
-			if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
-				tStrings[x] = '<silence msec="100"/>'
-			else
-				tStrings[x] = " "
-			end
+		if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+			tStrings[x] = string.gsub(tStrings[x], "§01", '<silence msec="100"/>')
+		else
+			tStrings[x] = string.gsub(tStrings[x], "§01", ', ')
 		end
 
 		--unmask bnet names

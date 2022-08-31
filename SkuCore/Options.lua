@@ -44,6 +44,8 @@ local tActionBarData = {
 	MainMenuBar = {friendlyName = L["Main Action Bar"], buttonName = "ActionButton", command = "ACTIONBUTTON",},
 	PetBar = {friendlyName = L["Pet Action Bar"], buttonName = "PetActionButton", command = "BONUSACTIONBUTTON",},
 	ShapeshiftBar = {friendlyName = L["Stance Action Bar"], buttonName = "", command = "SHAPESHIFTBUTTON",},
+	OverrideActionBar = {friendlyName = L["Vehicle Action Bar"], buttonName = "OverrideActionBarButton", command = "SHAPESHIFTBUTTON",},
+	--StanceBarFrame = {friendlyName = L["Stance Action Bar"], buttonName = "StanceButton", command = "",},
 }
 
 local scanAccuracyValues = {
@@ -59,19 +61,6 @@ SkuCore.options = {
 	name = MODULE_NAME,
 	type = "group",
 	args = {
-		--[[
-		enable = {
-			name = L["Module enabled"],
-			desc = "",
-			type = "toggle",
-			set = function(info, val)
-				SkuOptions.db.profile[MODULE_NAME].enable = val
-			end,
-			get = function(info)
-				return SkuOptions.db.profile[MODULE_NAME].enable
-			end
-		},
-		]]
 		scanBackgroundSound = {
 			order = 1,
 			name = L["scanning background sound"],
@@ -523,55 +512,9 @@ do
 	end
 end
 
-
----------------------------------------------------------------------------------------------------------------------------------------
-local escapes = {
-	["|c%x%x%x%x%x%x%x%x"] = "", -- color start
-	["|r"] = "", -- color end
-	["|H.-|h(.-)|h"] = "%1", -- links
-	["|T.-|t"] = "", -- textures
-	["{.-}"] = "", -- raid target icons
-}
-local function unescape(str)
-	for k, v in pairs(escapes) do
-		str = string.gsub(str, k, v)
-	end
-	return str
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-local function ItemName_helper(aText)
-	aText = unescape(aText)
-	local tShort, tLong = aText, ""
-
-	local tStart, tEnd = string.find(tShort, "\r\n")
-	local taTextWoLb = aText
-	if tStart then
-		taTextWoLb = string.sub(tShort, 1, tStart - 1)
-		tLong = aText
-	end
-
-	if string.len(taTextWoLb) > SkuCore.maxItemNameLength then
-		local tBlankPos = 1
-		while (string.find(taTextWoLb, " ", tBlankPos + 1) and tBlankPos < SkuCore.maxItemNameLength) do
-			tBlankPos = string.find(taTextWoLb, " ", tBlankPos + 1)
-		end
-		if tBlankPos > 1 then
-			tShort = string.sub(taTextWoLb, 1, tBlankPos).."..."
-		else
-			tShort = string.sub(taTextWoLb, 1, SkuCore.maxItemNameLength).."..."
-		end		
-		tLong = aText
-	else
-		tShort = taTextWoLb
-	end
-
-	return string.gsub(tShort, "\r\n", " "), tLong
-end
-
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarName, aButtonId)
-	--dprint(aActionType, aId, aSubType, aActionBarName, aButtonId)
+	--print(aActionType, aId, aSubType, aActionBarName, aButtonId)
 	local rName = L["Empty"]
 
 	if aActionType then
@@ -586,22 +529,37 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 			rName = itemName
 		elseif aActionType == "macro" then
 			local name, icon, body, isLocal = GetMacroInfo(aId)
-			rName = L["Macro"]..";"..name
+			if name then
+				rName = L["Macro"]..";"..name
+			else
+				rName = L["Macro"]..";"..L["Unbekannt"]
+			end
 		elseif aActionType == "pet" then
 			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(aId);
 			if name then
 				rName = _G[name] or name
 			end
-		--[[
-		elseif aActionType == "mount" then
 		elseif aActionType == "companion" then
+			local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(aId)
+			rName = name
+			if GetSpellSubtext(aId) and GetSpellSubtext(aId) ~= "" then
+				rName = rName..";"..GetSpellSubtext(aId)
+			end
 		elseif aActionType == "equipmentset" then
-		elseif aActionType == "flyout" then
-		]]
+			--aId = string<setName>
+			for x = 0, C_EquipmentSet.GetNumEquipmentSets() do
+				local name, iconFileID, setID, isEquipped, numItems, numEquipped, numInInventory, numLost, numIgnored = C_EquipmentSet.GetEquipmentSetInfo(x)
+				if name == aId then
+					rName = name
+				end
+			end
 		end
 	end
 
+	--print(aActionType, aId, aSubType, aActionBarName, aButtonId, tActionBarData[aActionBarName].command..aButtonId)
+
 	local tKeysString, key1, key2 = "", GetBindingKey(tActionBarData[aActionBarName].command..aButtonId)
+	--print(tKeysString, key1, key2)
 	if key1 then
 		tKeysString = ";"..L["Key"]..";"..GetBindingText(key1)
 	end
@@ -738,6 +696,91 @@ local function MacrosMenuBuilder(aParentEntry)
 	end
 end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+local function EquipmentSetActionMenuBuilder(aParentEntry)
+	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Equipment sets"]}, SkuGenericMenuItem)
+	tNewMenuSubEntry.dynamic = true
+	tNewMenuSubEntry.filterable = true
+	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
+		self.selectTarget.equipmentSetID = nil
+	end
+	tNewMenuSubEntry.BuildChildren = function(self)
+		local tHasEntries = false
+		for x = 0, C_EquipmentSet.GetNumEquipmentSets() - 1 do
+			local name, iconFileID, setID, isEquipped, numItems, numEquipped, numInInventory, numLost, numIgnored = C_EquipmentSet.GetEquipmentSetInfo(x)
+			if name then
+				local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
+				tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
+					self.selectTarget.equipmentSetID = x
+					_G["SkuScanningTooltip"]:ClearLines()
+					_G["SkuScanningTooltip"]:SetEquipmentSet(name)
+					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+							local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+						end
+					end
+				end
+				tHasEntries = true
+			end
+		end
+
+		if tHasEntries == false then
+			SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function CompanionMenuBuilder(aParentEntry)
+	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Companions"]}, SkuGenericMenuItem)
+	tNewMenuSubEntry.dynamic = true
+	tNewMenuSubEntry.filterable = true
+	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
+		self.selectTarget.companionType = nil
+		self.selectTarget.companionID = nil
+	end
+	tNewMenuSubEntry.BuildChildren = function(self)
+		local tCompanionTypes = {
+			["CRITTER"] = L["Pets"],
+			["MOUNT"] = L["Mounts"],
+		}
+
+		for i, v in pairs(tCompanionTypes) do
+			local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+			tNewMenuSubSubEntry.dynamic = true
+			tNewMenuSubSubEntry.filterable = true
+			tNewMenuSubSubEntry.BuildChildren = function(self)
+
+				local tHasEntries = false
+				local tNumComp = GetNumCompanions(i)
+
+				for x = 1, tNumComp do
+					local creatureID, creatureName, creatureSpellID, icon, issummoned, mountType = GetCompanionInfo(i, x)
+					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {creatureName}, SkuGenericMenuItem)
+					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.companionType = i
+						self.selectTarget.companionID = x
+						self.selectTarget.companionSpellId = creatureSpellID
+						_G["SkuScanningTooltip"]:ClearLines()
+						_G["SkuScanningTooltip"]:SetSpellByID(creatureSpellID)
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+							end
+						end
+					end
+					tHasEntries = true
+				end
+
+				if tHasEntries == false then
+					SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+				end
+			end
+		end
+	end
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ItemsMenuBuilder(aParentEntry)
@@ -761,8 +804,8 @@ local function ItemsMenuBuilder(aParentEntry)
 						_G["SkuScanningTooltip"]:SetItemByID(itemID)
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 							end
 						end
 					end
@@ -823,8 +866,8 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 								_G["SkuScanningTooltip"]:SetSpellByID(spellID)
 								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-										local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+										local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 									end
 								end
 							end
@@ -835,7 +878,6 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 			end
 			if aIsPet == true then
 				for i, v in pairs(aButtonsWithCurrentPetControlAction) do
-					dprint("aButtonsWithCurrentPetControlAction", i, v, _G[i])
 					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {_G[i]}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.spellID = nil
@@ -844,8 +886,8 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 						_G["SkuScanningTooltip"]:SetPetAction(v)
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-								local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 							end
 						end						
 					end
@@ -862,6 +904,47 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function EquipmentSetsManagerMenuBuilder(aParentEntry, aSetId)
+	if not aParentEntry then return end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 	if not aParentEntry or not aActionBarName then return end
 
@@ -869,7 +952,11 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 		local tButtonObj = _G[tActionBarData[aActionBarName].buttonName..x]
 		if tButtonObj then
 			local actionType, id, subType = GetActionInfo(tButtonObj.action)
-			local tButtonName = ButtonContentNameHelper(actionType, id, subType, aActionBarName, x)
+			--print("ActionBarMenuBuilder", aParentEntry, aActionBarName, aBooktype, x, actionType, id, subType)
+			local tButtonName =""
+			--if id and id > 0 then
+				tButtonName = ButtonContentNameHelper(actionType, id, subType, aActionBarName, x)
+			--end
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Button"].." "..x..";"..tButtonName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.isSelect = true
@@ -878,13 +965,15 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				self.spellID = nil
 				self.itemID = nil
 				self.macroID = nil
+				self.companionID = nil
+				self.equipmentSetID = nil
 				if self.buttonObj.action then
 					_G["SkuScanningTooltip"]:ClearLines()
 					_G["SkuScanningTooltip"]:SetAction(self.buttonObj.action)
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+							local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 						end
 					end
 				end
@@ -915,7 +1004,32 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					PickupMacro(self.macroID)
 					PlaceAction(self.buttonObj.action)
 					ClearCursor()
-				elseif aName == L["Bind key"] then
+				elseif self.companionID then
+					ClearCursor()
+					PickupAction(self.buttonObj.action)
+					ClearCursor()
+					if self.companionSpellId then
+						PickupSpell(self.companionSpellId)
+						if CursorHasSpell() then
+							PlaceAction(self.buttonObj.action)
+							ClearCursor()
+						end
+					end
+				elseif self.macroID then
+					ClearCursor()
+					PickupMacro(self.macroID)
+					PlaceAction(self.buttonObj.action)
+					ClearCursor()
+				elseif self.equipmentSetID then
+					ClearCursor()
+					PickupAction(self.buttonObj.action)
+					ClearCursor()
+					if self.equipmentSetID then
+						C_EquipmentSet.PickupEquipmentSet(self.equipmentSetID) 
+						PlaceAction(self.buttonObj.action)
+						ClearCursor()
+					end
+				elseif aName == L["Bind key"] and aBooktype then
 					SkuOptions.bindingMode = true
 					SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
 					C_Timer.After(0.001, function()
@@ -931,18 +1045,12 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				self.macroID = nil
 			end
 			tNewMenuEntry.BuildChildren = function(self)
-				--[[
-				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {"Tastenbelegung"}, SkuGenericMenuItem)
-				tNewMenuSubEntry.dynamic = true
-				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-					--dprint(self, aValue, aName)
-					--dprint(self.parent.name)
-					--dprint(self.parent.buttonObj)
-					--dprint(self.parent.buttonObj:GetName())
+				if aBooktype then
+					SpellBookMenuBuilder(self, aBooktype)
 				end
-				]]
-				SpellBookMenuBuilder(self, aBooktype)
 				ItemsMenuBuilder(self)
+				CompanionMenuBuilder(self)
+				EquipmentSetActionMenuBuilder(self)
 				MacrosMenuBuilder(self)
 				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Bind key"]}, SkuGenericMenuItem)
 			end
@@ -992,8 +1100,8 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					_G["SkuScanningTooltip"]:SetPetAction(x)
 					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-							local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+							local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 						end
 					end
 				end
@@ -1413,8 +1521,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 													_G["SkuScanningTooltip"]:SetItemByID(itemID)
 													if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 														if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-															local tText = unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-															SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = ItemName_helper(tText)
+															local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+															SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
 														end
 													end
 												end
@@ -1432,6 +1540,25 @@ function SkuCore:MenuBuilder(aParentEntry)
 					--tNewMenuParentEntrySub.ttsEngine = 2
 				end
 			end
+		end
+	end
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Equipment manager"]}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.BuildChildren = function(self)
+		local tNumSets = C_EquipmentSet.GetNumEquipmentSets() 
+
+		if tNumSets > 0 then
+			for x = 1, tNumSets do
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Set "..x}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.filterable = true
+				tNewMenuEntry.BuildChildren = function(self)
+					EquipmentSetsManagerMenuBuilder(self, x)
+				end
+			end
+		else
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
 		end
 	end
 
@@ -1478,6 +1605,35 @@ function SkuCore:MenuBuilder(aParentEntry)
 				PetActionBarMenuBuilder(self, "PetBar", BOOKTYPE_PET)
 			end
 		end
+		if _G["OverrideActionBar"] and _G["OverrideActionBar"]:IsShown() == true then
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["OverrideActionBar"].friendlyName}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.BuildChildren = function(self)
+				ActionBarMenuBuilder(self, "OverrideActionBar", nil)
+			end
+		end
+
+		--[[
+		if _G["ShapeshiftBar"] and _G["ShapeshiftBar"]:IsShown() == true then
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["ShapeshiftBar"].friendlyName}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.BuildChildren = function(self)
+				ActionBarMenuBuilder(self, "ShapeshiftBar", nil)
+			end
+		end
+		]]
+		--[[
+		if _G["StanceBarFrame"] and _G["StanceBarFrame"]:IsShown() == true then
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["StanceBarFrame"].friendlyName}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.BuildChildren = function(self)
+				ActionBarMenuBuilder(self, "StanceBarFrame", nil)
+			end
+		end		
+		]]
 
 		--local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Einstellungen"}, SkuGenericMenuItem)
 		--tNewMenuEntry.dynamic = true
@@ -1931,9 +2087,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					for i, v in pairs(SkuCore.ScanTypes) do
 						if v.name == aName then
 							SkuOptions.db.char["SkuCore"].scanConfigs[x].type = i
-							C_Timer.After(0.01, function()
-								self:OnUpdate()
-							end)
+							self:OnUpdate(self)
 							return
 						end
 					end
@@ -1948,9 +2102,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 							end
 							if tFound == false then
 								table.insert(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects, i)
-								C_Timer.After(0.01, function()
-									self:OnUpdate()
-								end)
+								self:OnUpdate(self)
 								return
 							end
 						end
@@ -1962,9 +2114,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 							for iDb, vDb in pairs(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects) do
 								if i == vDb then
 									table.remove(SkuOptions.db.char["SkuCore"].scanConfigs[x].objects, iDb)
-									C_Timer.After(0.01, function()
-										self:OnUpdate()
-									end)
+									self:OnUpdate(self)
 									return
 								end
 							end
