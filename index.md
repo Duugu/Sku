@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [wow_menu r3.2](https://github.com/Duugu/wow_menu/releases/download/r3.2/wow_menu-r3.2-wrath.zip)
+- [wow_menu r3.3](https://github.com/Duugu/wow_menu/releases/download/r3.3/wow_menu-r3.3-wrath.zip)
 
 *Old updates:* <br>
 - [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip) (July 16th, 2022) (addon for sighted players)<br>
@@ -45,6 +45,11 @@ Don't forget to move the wow_menu folder out of Addons if you are done.
 - Hunter pets now have a talent tree. The pet talent tree is available under your talent menu if the pet is there.
 - In vehicle combat your standard action bar is replaced with up to 8 new skills. The key binds are the same. Check the actionbar menu to see the available skills if you are in a vehicle.
 
+## Changes in wow_menu 3.3
+- Tried to fix the auto accept for the contract. I can't test the fix, as I already have accepted the contract. Any feedback would be welcome.
+- Actions for numpad 7 and 8 changed:
+	- numpad7: right click in front of you (was right click at your feet)
+	- numpad8: left click at your feet (to use area of effect spells that need to be targeted on the ground via left clicking in the game world)
 ## Changes in wow_menu 3.2
 - Social contract on first login will be auto accepted
 - Loading outdated addons will be auto accepted
