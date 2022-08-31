@@ -7,11 +7,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-**Sku for Wrath of the Lich King. Read the release notes below!** <br>
-[wow_menu r3.2](https://github.com/Duugu/wow_menu/releases/download/r3.2/wow_menu-r3.2-wrath.zip)
+- **Sku for Wrath of the Lich King. Read the release notes below!** <br>
+- [wow_menu r3.2](https://github.com/Duugu/wow_menu/releases/download/r3.2/wow_menu-r3.2-wrath.zip)
 
 *Old updates:* <br>
-[SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip) (July 16th, 2022) (addon for sighted players)<br>
+- [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip) (July 16th, 2022) (addon for sighted players)<br>
 
 # Release notes
 
