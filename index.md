@@ -8,10 +8,10 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [wow_menu r3.4a](https://github.com/Duugu/wow_menu/releases/download/r3.4a/wow_menu-r3.4a-wrath.zip)
+- [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6/SkuFluegel-r6-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
+- [wow_menu r3.4a](https://github.com/Duugu/wow_menu/releases/download/r3.4a/wow_menu-r3.4a-wrath.zip) (Sep 1st, 2022)
 
 *Old updates:* <br>
-- [SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip) (July 16th, 2022) (addon for sighted players)<br>
 
 # Release notes
 
@@ -48,7 +48,11 @@ Don't forget to move the wow_menu folder out of Addons if you are done.
 - Hunter pets now have a talent tree. The pet talent tree is available under your talent menu if the pet is there.
 - In vehicle combat your standard action bar is replaced with up to 8 new skills. The key binds are the same. Check the actionbar menu to see the available skills if you are in a vehicle.
 
-## Changes in wow_menu 3.4a
+## Changes in SkuFluegel 6
+- The options to remotely set blind players on follow/unfollow has been removed. Blizzard has removed that feature for addons. (https://us.forums.blizzard.com/en/wow/t/re-addons-still-able-to-execute-remote-follow-commands/1298614)
+
+
+## Changes in wow_menu 3.4
 - Fixed a bug with the EN US version of the script.
 
 ## Changes in wow_menu 3.3
