@@ -48,7 +48,7 @@ Don't forget to move the wow_menu folder out of Addons if you are done.
 - Hunter pets now have a talent tree. The pet talent tree is available under your talent menu if the pet is there.
 - In vehicle combat your standard action bar is replaced with up to 8 new skills. The key binds are the same. Check the actionbar menu to see the available skills if you are in a vehicle.
 
-## Changes in wow_menu 3.3
+## Changes in wow_menu 3.4
 - Fixed a bug with the EN US version of the script.
 
 ## Changes in wow_menu 3.3
