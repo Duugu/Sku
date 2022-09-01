@@ -18,6 +18,8 @@ SkuCore.AuctionHouseOpen = false
 SkuCore.AuctionIsScanning = false
 SkuCore.AuctionIsFullScanning = false
 
+SkuCore.AuctionHousePostingInProgress = false
+
 SkuCore.SortByValues = {
    [1] = L["Kaufpreis für 1 Gegenstand aufsteigend"],
    [2] = L["Kaufpreis für Auktionsmenge aufsteigend"],
@@ -381,6 +383,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionScanQueueReset(aForce)
    dprint("SkuCore:AuctionScanQueueReset()")
+if SkuCore:SkuAuctionIsPosting() then return end   
    if SkuCore.AuctionIsFullScanning == true and not aForce then
       return
    end
@@ -405,11 +408,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionScanQueueRemove()
    dprint("AuctionScanQueueRemove")
+if SkuCore:SkuAuctionIsPosting() then return end   
    tremove(SkuCore.ScanQueue, 1)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionScanQueueAdd(aScanData, aResetQueue)
    dprint("AuctionScanQueueAdd", aScanData.page, aResetQueue)
+if SkuCore:SkuAuctionIsPosting() then return end   
    if aResetQueue then
       if SkuCore.AuctionIsFullScanning == true then
          return
@@ -460,7 +465,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tCurrentQuery = nil
 function SkuCore:AuctionScanQueueTicker()
-   --dprint("AuctionScanQueueTicker")
+   dprint("AuctionScanQueueTicker")
+if SkuCore:SkuAuctionIsPosting() then return end   
    if SkuCore.AuctionIsScanning == true then
       SkuOptions.Voice:OutputStringBTtts("sound-notification6", false, true)--24
       
@@ -500,8 +506,12 @@ do
    tFrame:SetScript("OnUpdate", function(self, time)
       tTime = tTime + time
       if tTime < SkuCore.AuctionTickerWait then return end
+      dprint("----------------AuctionHousePostingInProgress OnUpdate", SkuCore.AuctionHousePostingInProgress)
+      if SkuCore.AuctionHousePostingInProgress == true then
+         return
+      end      
       if SkuCore.AuctionScanQueueTicker then
-         SkuCore:AuctionScanQueueTicker()
+         --SkuCore:AuctionScanQueueTicker()
       end
       tTime = 0
    end)
@@ -509,6 +519,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
+   dprint("SkuCore:AuctionHouseBuildItemSellMenuSub(", aSelf, aGossipItemTable)
+if SkuCore:SkuAuctionIsPosting() then return end   
    aSelf.GetCurrentValue = function(self, aValue, aName)
       local tItemId
       if _G[aGossipItemTable.containerFrameName] then
@@ -602,6 +614,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseBuildItemSellMenu(aParent, aGossipItemTable)
    dprint("AuctionHouseBuildItemSellMenu", aGossipItemTable, aGossipItemTable.containerFrameName, aGossipItemTable.itemId)
+if SkuCore:SkuAuctionIsPosting() then return end   
    --we need to stop all running scans, as PostAuction will fail otherwise
    SkuCore:AuctionScanQueueReset()
 
@@ -674,22 +687,34 @@ function SkuCore:AuctionHouseBuildItemSellMenu(aParent, aGossipItemTable)
       _G[aGossipItemTable.containerFrameName]:GetScript("OnDragStart")(_G[aGossipItemTable.containerFrameName], "LeftButton") 
       ClickAuctionSellItemButton()
 
+      SkuCore:AuctionScanQueueReset()
+
+      SkuCore.AuctionHousePostingInProgress = true
+
+      print("----------------AuctionHousePostingInProgress", SkuCore.AuctionHousePostingInProgress)
+      C_Timer.After(4, function()
       PostAuction(tCopperStartBid, tCopperBuyout, tDuration, tAmount, tNumAuctions)
+      end)
 
       if tNumAuctions == 1 then
          SkuOptions.Voice:OutputStringBTtts(L["Auktion erstellt"], false, true, 1, true)
       else
          SkuOptions.Voice:OutputStringBTtts(tNumAuctions..L[" Auktionen erstellt"], false, true, 1, true)
       end
-
+--[[
       GetOwnerAuctionItems()
 
-      C_Timer.After(0.01, function()
-         SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)      
+      C_Timer.After(10, function()
+         --SkuCore.AuctionHousePostingInProgress = false
+         print("----------------10 AuctionHousePostingInProgress", SkuCore.AuctionHousePostingInProgress)
       end)
       C_Timer.After(0.01, function()
-         SkuCore:CheckFrames()
+         --SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)      
       end)
+      C_Timer.After(0.02, function()
+         --SkuCore:CheckFrames()
+      end)
+]]      
    end
 
 	tNewMenuParentEntry.BuildChildren = function(self)
@@ -716,6 +741,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionStartQuery(aCategoryIndex, aSubCategoryIndex, aSubSubCategoryIndex, aResetQueue, aMaxPage)
    dprint("SkuCore:AuctionStartQuery(", aCategoryIndex, aSubCategoryIndex, aSubSubCategoryIndex, aResetQueue, aMaxPage)
+if SkuCore:SkuAuctionIsPosting() then return end
    local text = ""
    local minLevel = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin
    local maxLevel = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax
@@ -751,6 +777,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CheckForDuplicateAndAddIf(aParentChilds, aNewMenuEntryName, aNewItemData)
+   dprint("CheckForDuplicateAndAddIf(", aParentChilds, aNewMenuEntryName, aNewItemData)
    local tNewNameWoIndex = aNewMenuEntryName
    for x = 1, #aParentChilds do
       if aParentChilds[x].name == tNewNameWoIndex then
@@ -791,6 +818,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseMenuBuilderItemList(aParent)
+   dprint("SkuCore:AuctionHouseMenuBuilderItemList(", aParent)
+if SkuCore:SkuAuctionIsPosting() then return end   
    tCurrentDBClean = {}
 
    for tIndex, tData in pairs(SkuCore.CurrentDB) do
@@ -989,7 +1018,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionListItemMenuBuilder(aParent)
-
+if SkuCore:SkuAuctionIsPosting() then return end
+   dprint("SkuCore:AuctionListItemMenuBuilder")
    if #SkuCore.ScanQueue > 0 or SkuCore.AuctionIsScanning == true  or tPage > 0 then
       tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["Warten"]}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
@@ -1024,6 +1054,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseMenuBuilder()
+   print("AuctionHouseMenuBuilder")
+if SkuCore:SkuAuctionIsPosting() then return end   
    if AuctionCategories and SkuCore.AuctionHouseOpen == true then
       --auctions
       tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Auktionen"]}, SkuGenericMenuItem)
@@ -1490,6 +1522,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tOldAuctionFrameBrowse_Update
 function SkuCore:AUCTION_HOUSE_CLOSED()
+   dprint("SkuCore:AUCTION_HOUSE_CLOSED")
    --AuctionFrameBrowse_Update = tOldAuctionFrameBrowse_Update   
    --AuctionFrame:SetScale(1)
 --[[
@@ -1827,6 +1860,8 @@ function SkuCore:AuctionCleanupAuctionDBHistory()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
+   dprint("SkuCore:AUCTION_ITEM_LIST_UPDATE(", aEventName, aRet, c)
+if SkuCore:SkuAuctionIsPosting() then return end   
    if SkuCore.AuctionIsScanning == false then
       return
    end
@@ -1925,7 +1960,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName, aRet, c)
                      local tItemIndex = x
                      local tItemName = SkuCore.IsBid[1]
                      local tItemCount = SkuCore.IsBid[3]
-print(SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])                     
+dprint(SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])                     
                      SkuCore:ConfirmButtonShow(L["Gebot "]..(SkuCore.IsBid.currentBids)..L[" von "]..SkuCore.IsBid.NumberOfBidPlacements..": "..tItemName.." "..tItemCount..L[" stück wirklich "]..SkuGetCoinText(tBidAmount, false, true)..L[" bieten? Eingabe Ja, Escape Nein"], 
                         function(self)
                            PlaySound(89)
@@ -1936,7 +1971,7 @@ print(SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])
                               SkuCore.AuctionIsScanning = false
                               if SkuCore.IsBid then
                                  SkuCore.IsBid.page = 0
-print(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])                     
+dprint(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])                     
 
                                  SkuCore:AuctionScanQueueAdd({
                                     ["text"] = SkuCore.IsBid[1],--SkuCore.IsBid.query.text, 
@@ -2141,7 +2176,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName, aRed)
    dprint("AUCTION_BIDDER_LIST_UPDATE", aEventName, aRed)
-
+if SkuCore:SkuAuctionIsPosting() then return end
    if not aRed then
       SkuCore.BidDB= {}
    end
@@ -2177,9 +2212,22 @@ function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName, aRed)
    end)
 
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:SkuAuctionIsPosting()
+   if _G["AuctionProgressFrame"] then
+      if _G["AuctionProgressFrame"]:IsVisible() == true then
+         print("SkuAuctionIsPosting true")
+         return true
+      end
+   end
+   return
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_OWNED_LIST_UPDATE(aEventName, aRed)
    dprint("AUCTION_OWNED_LIST_UPDATE", aEventName, aRed)
+   if SkuCore:SkuAuctionIsPosting() then return end
 
    if not aRed then
       SkuCore.OwnedDB= {}
