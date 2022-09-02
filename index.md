@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.9](https://github.com/Duugu/Sku/releases/download/r30.9a/Sku-r30.9a-wrath.zip) (Sep 2nd, 2022)<br>
+- [Sku r30.9a](https://github.com/Duugu/Sku/releases/download/r30.9a/Sku-r30.9a-wrath.zip) (Sep 2nd, 2022)<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 - [wow_menu r3.4a](https://github.com/Duugu/wow_menu/releases/download/r3.4a/wow_menu-r3.4a-wrath.zip) (Sep 1st, 2022)
 
@@ -50,7 +50,7 @@ Don't forget to move the wow_menu folder out of Addons if you are done.
 - Hunter pets now have a talent tree. The pet talent tree is available under your talent menu if the pet is there.
 - In vehicle combat your standard action bar is replaced with up to 8 new skills. The key binds are the same. Check the actionbar menu to see the available skills if you are in a vehicle.
 
-## Changes in Sku r30.9
+## Changes in Sku r30.9a
 - The character menu shows the Stats tab
 - The character menu shows Currencies/tokens tab
 - Added a sixth scan type: "360 10 very fast". It scans 360 degrees 0-10 meters in 2 seconds max. 
