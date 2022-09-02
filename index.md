@@ -8,6 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
+- [Sku r30.9](https://github.com/Duugu/Sku/releases/download/r30.9/Sku-r30.9-wrath.zip) (Sep 2nd, 2022)<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 - [wow_menu r3.4a](https://github.com/Duugu/wow_menu/releases/download/r3.4a/wow_menu-r3.4a-wrath.zip) (Sep 1st, 2022)
 
@@ -30,6 +31,7 @@ Important: If you don't delete everything from Addons, then you still need to de
 - You need to setup the script wow_menu again for Wrath. It is part of the packages and should just have been copied to your addons folder.<br>
 Follow the known steps to setup the script again. There is a readme in the wow_menu folder, just in case you can't remember.<br>
 Don't forget to move the wow_menu folder out of Addons if you are done.
+- Then get back to this page and download and install all latest updates listed above.
 
 ### Bugs:
 - There was almost zero time to test. Errors, issues, bugs and other quirks should be expected. .
@@ -47,6 +49,20 @@ Don't forget to move the wow_menu folder out of Addons if you are done.
 - Bank bags are now shown under "Bags". Don't look for a "Bank" menu under local. Get to "Bags" and arrow down, if you are at a bank.
 - Hunter pets now have a talent tree. The pet talent tree is available under your talent menu if the pet is there.
 - In vehicle combat your standard action bar is replaced with up to 8 new skills. The key binds are the same. Check the actionbar menu to see the available skills if you are in a vehicle.
+
+## Changes in Sku r30.9
+- The character menu shows the Stats tab
+- The character menu shows Currencies/tokens tab
+- Added a sixth scan type: "360 10 very fast". It scans 360 degrees 0-10 meters in 2 seconds max. 
+Because it is faster, it is also more inaccurate. It is good on detecting larger objects that are close to you. Results are getting words the smaller and the more far away object are.
+Go to "Core > Scan settings > [one of the 8 pre-defined scans] > type" and select the new type "360 10 very fast"" for that scan.
+- Added a new option "Core > Options > do not hide game tooltip" (default: off)
+For players with some level of sight. As default the addon is hiding the visual tooltip instantly. That is speeding up the scan feature.
+If you have some sight and would like to read the visual tooltip, set this to on, to keep the visual tooltip.
+- The addon now should load a bit faster.
+- Again tried to fix the "table constants overflow" issue that leads to losing all sku settings.
+- Core > Options > "Auto following" and "Temporarily stop following upon casting" have been removed and won't work any longer.
+Blizzard has intentionally removed the option to start/stop following for addons. (https://us.forums.blizzard.com/en/wow/t/re-addons-still-able-to-execute-remote-follow-commands/1298614)
 
 ## Changes in SkuFluegel 6
 - The options to remotely set blind players on follow/unfollow has been removed. Blizzard has removed that feature for addons. (https://us.forums.blizzard.com/en/wow/t/re-addons-still-able-to-execute-remote-follow-commands/1298614)
