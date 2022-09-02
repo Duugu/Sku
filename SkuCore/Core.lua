@@ -160,6 +160,7 @@ SkuCore.interactFramesList = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
 	SkuCore:RegisterEvent("PLAYER_ENTERING_WORLD")
+	SkuCore:RegisterEvent("PLAYER_LEAVING_WORLD")
 	SkuCore:RegisterEvent("PLAYER_LOGIN")
 	SkuCore:RegisterEvent("VARIABLES_LOADED")
 	SkuCore:RegisterEvent("PLAYER_REGEN_DISABLED")
@@ -1526,13 +1527,16 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local unfollowOnCastWasOnFollowUnitName = nil
 function SkuCore:UnfollowOnCast()
+	--[[
 	if SkuOptions.db.profile[MODULE_NAME].endFollowOnCast == true and SkuStatus.followUnitName ~= "" then
 		unfollowOnCastWasOnFollowUnitName = SkuStatus.followUnitName
 		FollowUnit("player")
 	end
+	]]
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:FollowOnCast()
+	--[[
 	if SkuOptions.db.profile[MODULE_NAME].endFollowOnCast == true and unfollowOnCastWasOnFollowUnitName then
 		if UnitName("TARGET") == unfollowOnCastWasOnFollowUnitName then
 			FollowUnit("TARGET")
@@ -1551,6 +1555,7 @@ function SkuCore:FollowOnCast()
 		end
 		unfollowOnCastWasOnFollowUnitName = nil
 	end
+	]]
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_SPELLCAST_START(aEvent, aUnitTarget, aCastGUID, aSpellID)
@@ -1660,7 +1665,9 @@ function SkuCore:CheckInteractObjectShow()
 			end
 		end
 	end
-	C_Timer.After(0.1, function() GameTooltip:Hide() end)
+	if SkuOptions.db.global[MODULE_NAME].doNotHideTooltip == true then
+		C_Timer.After(0.1, function() GameTooltip:Hide() end)
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1671,6 +1678,12 @@ function SkuCore:CheckInteractObjectHide()
 		--SkuCore.CheckInteractObjectShowIsShown = false
 		--print("hide")
 	--end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:PLAYER_LEAVING_WORLD(...)
+	local event = ...
+	SkuCore:AuctionHouseOnPLAYER_LEAVING_WORLD()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1937,7 +1950,7 @@ function SkuCore:PLAYER_REGEN_ENABLED(...)
 	if SkuOptions.db.profile[MODULE_NAME].autoFollow == true then
 		if SkuStatus.followUnitId then
 			if SkuStatus.followUnitId ~= "" then
-				FollowUnit(SkuStatus.followUnitId)
+				--FollowUnit(SkuStatus.followUnitId)
 			end
 		end
 	end

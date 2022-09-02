@@ -1638,3 +1638,14 @@ L["Minor"] = "Gering" --glyph type
 
 L["Vehicle Action Bar"] = "Fahrzeug Aktionsleiste"
 L["Stance Action Bar"] = "Haltungs Aktionsleiste"
+
+L["Resistances"] = "Widerstände"
+L["Currency"] = "Währungen"
+L["Stats"] = "Werte"
+L["Items"] = "Gegenstände"
+L["Equipment"] = "Ausrüstung"
+
+L["360 10 very fast"] = "360 10 sehr schnell"
+L["360 degrees 0-10 meters 2 second"] = "360 grad, 0 bis 10 meter 2 sekunden"
+
+L["do not hide tooltip"] = "spiel tooltip nicht ausblenden",

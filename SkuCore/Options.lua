@@ -117,7 +117,7 @@ SkuCore.options = {
 				return SkuOptions.db.profile[MODULE_NAME].readAllTooltips
 			end
 		},
-
+		--[[
 		autoFollow = {
 			name = L["Auto follow"],
 			desc = "",
@@ -140,6 +140,7 @@ SkuCore.options = {
 				return SkuOptions.db.profile[MODULE_NAME].endFollowOnCast
 			end
 		},
+		]]
 		interactMove = {
 			name = L["Bei Interagieren zum Ziel laufen"],
 			desc = "",
@@ -160,6 +161,17 @@ SkuCore.options = {
 			end,
 			get = function(info)
 				return SkuOptions.db.profile[MODULE_NAME].playNPCGreetings
+			end
+		},
+		doNotHideTooltip = {
+			name = L["do not hide tooltip"],doNotHideTooltip
+			desc = "",
+			type = "toggle",
+			set = function(info, val)
+				SkuOptions.db.profile[MODULE_NAME].doNotHideTooltip = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].doNotHideTooltip
 			end
 		},
 		classes={
@@ -463,11 +475,12 @@ end
 SkuCore.defaults = {
 	enable = true,
 	readAllTooltips = false,
-	autoFollow = false,
-	endFollowOnCast = false,
+	--autoFollow = false,
+	--endFollowOnCast = false,
 	interactMove = true,
 	playNPCGreetings = false,
 	scanBackgroundSound = "tools-ratchet.mp3",
+	doNotHideTooltip = false,
 	ressourceScanning = {
 		miningNodes = {},
 		herbs = {},

@@ -56,16 +56,14 @@ SkuNav.MaxMetaWPs = 200
 SkuNav.MaxMetaEntryRange = 300
 SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
 
-WaypointCache = {}
-WaypointCacheLookupAll = {}
-WaypointCacheLookupIdForCacheIndex = {}
-WaypointCacheLookupCacheNameForId = {}
+local WaypointCache = {}
+local WaypointCacheLookupAll = {}
+local WaypointCacheLookupIdForCacheIndex = {}
+local WaypointCacheLookupCacheNameForId = {}
 
 local WaypointCacheLookupPerContintent = {}
 function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 	--print("CreateWaypointCache")
-	local beginTime = debugprofilestop()
-
 	WaypointCache = {}
 	WaypointCacheLookupAll = {}
 	WaypointCacheLookupIdForCacheIndex = {}
@@ -76,7 +74,6 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 	end
 
 	--add creatures
-	--SkuDB.NpcData.Names[Sku.Loc]
 	for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do		
 		if SkuDB.NpcData.Data[i] then
 			local tRoles
@@ -277,9 +274,6 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 	end
 
 	SkuNav:LoadLinkDataFromProfile()
-
-	dprint("End", debugprofilestop() - beginTime)
-
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -377,7 +371,7 @@ end
 function SkuNav:SaveLinkDataToProfile(aWpName)
 	--if 1 == 1 then return end
 	--print("SaveLinkDataToProfile", aWpName)
-	local beginTime = debugprofilestop()
+	--local beginTime = debugprofilestop()
 	
 	if aWpName then
 		--SkuOptions.db.global[MODULE_NAME].Links[WaypointCacheLookupCacheNameForId[aWpName]] = WaypointCache[WaypointCacheLookupAll[aWpName]].links.byName
@@ -401,7 +395,7 @@ function SkuNav:SaveLinkDataToProfile(aWpName)
 		end
 	end
 
-	dprint("End SaveLinkDataToProfile", debugprofilestop() - beginTime)
+	--dprint("End SaveLinkDataToProfile", debugprofilestop() - beginTime)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -440,7 +434,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetAllMetaTargetsFromWp4(aStartWpName, aMaxDistance, aMaxWPs, aReturnPathForWp, aIncludeAutoWps)
 	dprint("SkuNav:GetAllMetaTargetsFromWp4", aStartWpName, aMaxDistance, aMaxWPs, aReturnPathForWp, aIncludeAutoWps)
-	local beginTime = debugprofilestop()
+	--local beginTime = debugprofilestop()
 
 	local rMetapathData = {}
 	local tToCheckList = {}
@@ -477,8 +471,8 @@ function SkuNav:GetAllMetaTargetsFromWp4(aStartWpName, aMaxDistance, aMaxWPs, aR
 		tToCheckList = tLocalToCheckList
 	end
 
-	dprint("filled", debugprofilestop() - beginTime)
-	beginTime = debugprofilestop()
+	--dprint("filled", debugprofilestop() - beginTime)
+	--beginTime = debugprofilestop()
 
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 	local tAuto = L["auto"]
@@ -555,7 +549,7 @@ function SkuNav:GetAllMetaTargetsFromWp4(aStartWpName, aMaxDistance, aMaxWPs, aR
 		end
 	end
 
-	dprint("End", debugprofilestop() - beginTime)
+	--dprint("End", debugprofilestop() - beginTime)
 	--beginTime = debugprofilestop()
 
 	return rMetapathData
@@ -2506,6 +2500,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_LEAVING_WORLD(...)
 	SkuNav:ClearWaypointsTemporary()
+	SkuOptions.db.profile["SkuNav"].metapathFollowingMetapathsTMP = {}
 	SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = {}
 
 	if SkuOptions.db.global["SkuNav"].hasCustomMapData ~= true then

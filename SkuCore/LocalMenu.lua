@@ -1588,9 +1588,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_CharacterFrame(aParentChilds)
-
 	_G["GearManagerToggleButton"]:Click(_G["GearManagerToggleButton"])
-
 
 	local tFrameName = "CharacterLevelText"
 	local tFriendlyName = _G["CharacterLevelText"]:GetText()
@@ -1607,14 +1605,14 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 
 	--items
 	local tFrameName = ""
-	local tFriendlyName = "Equipment"
+	local tFriendlyName = L["Equipment"]
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
 		frameName = tFrameName,
 		RoC = "Child",
 		type = "Button",
 		obj = _G[tFrameName],
-		textFirstLine = "Equipment",
+		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
 		--click = true,
@@ -1623,14 +1621,14 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 
 		--items submenu
 		local tFrameName = "PaperDollItemsFrame"
-		local tFriendlyName = "Items"
+		local tFriendlyName = L["Items"]
 		table.insert(tParentEquipment, tFriendlyName)
 		tParentEquipment[tFriendlyName] = {
 			frameName = tFrameName,
 			RoC = "Child",
 			type = "Button",
 			obj = _G[tFrameName],
-			textFirstLine = "Items",
+			textFirstLine = tFriendlyName,
 			textFull = "",
 			childs = {},
 			--click = true,
@@ -1649,54 +1647,133 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		
 	--stats
 	local tFrameName = ""
-	local tFriendlyName = "Stats"
+	local tFriendlyName = L["Stats"]
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
 		frameName = tFrameName,
 		RoC = "Child",
 		type = "Button",
 		obj = _G[tFrameName],
-		textFirstLine = "Stats",
+		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
 		--click = true,
 	}   
 	local tParentStats = aParentChilds[tFriendlyName].childs
 
+		for i, v in pairs(PLAYERSTAT_DROPDOWN_OPTIONS) do
+			local tFrameName = v
+			local tFriendlyName = _G[v]
+			table.insert(tParentStats, tFriendlyName)
+			tParentStats[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G[tFrameName],
+				textFirstLine = _G[v],
+				textFull = "",
+				childs = {},
+				--click = true,
+			}
+			local tParentStatsValues = tParentStats[tFriendlyName].childs
+			UpdatePaperdollStats("PlayerStatFrameLeft", v)
+			for x = 1, 6 do 
+				local button = getglobal("PlayerStatFrameLeft"..x)
+				local label = getglobal("PlayerStatFrameLeft"..x.."Label")
+				local text = getglobal("PlayerStatFrameLeft"..x.."StatText")
+
+				button.type = "stat"
+				local tName, tFullText = GetButtonTooltipLines(button)
+
+				local tFrameName = ""
+				local tFriendlyName = SkuChat:Unescape(label:GetText().." "..text:GetText())
+				table.insert(tParentStatsValues, tFriendlyName)
+				tParentStatsValues[tFriendlyName] = {
+					frameName = tFrameName,
+					RoC = "Child",
+					type = "Button",
+					obj = _G[tFrameName],
+					textFirstLine = tFriendlyName,
+					textFull = tFullText,
+					childs = {},
+					--click = true,
+				}
+			end
+		end
+
+		local tFrameName = v
+		local tFriendlyName = L["Resistances"]
+		table.insert(tParentStats, tFriendlyName)
+		tParentStats[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = _G[tFrameName],
+			textFirstLine = L["Resistances"],
+			textFull = "",
+			childs = {},
+			--click = true,
+		}
+		local tParentStatsValues = tParentStats[tFriendlyName].childs
+
+		for x = 1, NUM_RESISTANCE_TYPES do
+			local text = getglobal("MagicResText"..x);
+			local frame = getglobal("MagicResFrame"..x);
+			frame.type = "stat"
+			local tName, tFullText = GetButtonTooltipLines(frame)
+
+			local tFrameName = ""
+			local tFriendlyName = SkuChat:Unescape(tName)
+			table.insert(tParentStatsValues, tFriendlyName)
+			tParentStatsValues[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G[tFrameName],
+				textFirstLine = tFriendlyName,
+				textFull = SkuChat:Unescape(tFullText),
+				childs = {},
+				--click = true,
+			}
+		end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-	--stats
+	--Currency
 	local tFrameName = ""
-	local tFriendlyName = "Currency"
+	local tFriendlyName = L["Currency"]
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
 		frameName = tFrameName,
 		RoC = "Child",
 		type = "Button",
 		obj = _G[tFrameName],
-		textFirstLine = "Currency",
+		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
 		--click = true,
 	}   
 	local tParentCurrency = aParentChilds[tFriendlyName].childs
 
-	
-
-
-
+		for i = 1, 10 do
+			local name, isHeader, isExpanded, isUnused, isWatched, count, icon, maxQuantity, maxEarnable, quantityEarned, isTradeable, itemID = GetCurrencyListInfo(i)
+			--print(name, isHeader, isExpanded, isUnused, isWatched, count, icon, maxQuantity, maxEarnable, quantityEarned, isTradeable, itemID)
+			if name and isHeader ~= true then
+				--print(, itemID)
+				local tFrameName = ""
+				local tFriendlyName = SkuChat:Unescape(name.." "..count)
+				table.insert(tParentCurrency, tFriendlyName)
+				tParentCurrency[tFriendlyName] = {
+					frameName = tFrameName,
+					RoC = "Child",
+					type = "Button",
+					obj = _G[tFrameName],
+					textFirstLine = tFriendlyName,
+					textFull = "",
+					childs = {},
+					--click = true,
+				}				
+			end
+		end
 
 
 

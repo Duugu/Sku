@@ -4,6 +4,22 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.9
+
+	- The character menu shows the Stats tab
+	- The character menu shows Currencies/tokens tab
+	- Added a sixth scan type: "360 10 very fast". It scans 360 degrees 0-10 meters in 2 seconds max. 
+		Because it is faster, it is also more inaccurate. It is good on detecting larger objects that are close to you. Results are getting words the smaller and the more far away object are.
+		Go to "Core > Scan settings > [one of the 8 pre-defined scans] > type" and select the new type "360 10 very fast"" for that scan.
+	- Added a new option "Core > Options > do not hide game tooltip" (default: off)
+		For players with some level of sight. As default the addon is hiding the visual tooltip instantly. That is speeding up the scan feature.
+		If you have some sight and would like to read the visual tooltip, set this to on, to keep the visual tooltip.
+	- The addon now should load a bit faster.
+	- Again tried to fix the "table constants overflow" issue that leads to losing all sku settings.
+	- Core > Options > "Auto following" and "Temporarily stop following upon casting" have been removed and won't work any longer.
+		Blizzard has intentionally removed the option to start/stop following for addons. (https://us.forums.blizzard.com/en/wow/t/re-addons-still-able-to-execute-remote-follow-commands/1298614)
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r28.8b
 
 	- Re-added the unintentionally removed option "Announce friendly and hostile players".

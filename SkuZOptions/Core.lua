@@ -2188,8 +2188,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:OnInitialize()
 	dprint("SkuOptions OnInitialize")
-	--Sku:MetricPoint("SkuOptions:OnInitialize start")	
-	
 	if SkuOptions then
 		options.args["SkuOptions"] = SkuOptions.options
 		defaults.profile["SkuOptions"] = SkuOptions.defaults
@@ -3226,18 +3224,18 @@ function SkuOptions:ProcessComm(aSender, aIndex, aValue)
 		SkuOptions:SendTrackingStatusUpdates()
 	elseif aIndex == "followme" then
 		if aValue == UnitName("player") then
-			FollowUnit(aSender)
+			--FollowUnit(aSender)
 		elseif not aValue then
-			FollowUnit(aSender)
+			--FollowUnit(aSender)
 		end
 		SkuOptions:SendTrackingStatusUpdates()
 	elseif aIndex == "unfollowme" then
 		if aValue == UnitName("player") then
-			FollowUnit("player")
+			--FollowUnit("player")
 			SkuStatus.followUnitName = nil
 			SkuStatus.follow = 0
 		elseif not aValue then
-			FollowUnit("player")
+			--FollowUnit("player")
 			SkuStatus.followUnitName = nil
 			SkuStatus.follow = 0			
 		end
