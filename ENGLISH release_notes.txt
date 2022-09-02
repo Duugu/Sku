@@ -4,6 +4,12 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.10
+
+	- Fixed an issue with the The dark Portal area in Blasted lands, winterspring and a bunch of other zones. Please keep reporting broken zones/areas.
+	- Removed "Navigation > Waypoint > New.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.9
 
 	- The character menu shows the Stats tab

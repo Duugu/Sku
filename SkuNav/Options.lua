@@ -485,6 +485,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Waypoint"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
+		--[[
 		local tNewMenuEntry = SkuOptions:BuildMenuSegment_TitleBuilder(self, L["New"])
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			--dprint("Wegpunkt neu OnAction", self.name, aName, self.TMPSize, self.selectTarget, self.selectTarget.name, self.selectTarget.TMPSize)
@@ -513,7 +514,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt erstellt"], false, true, 0.2)
 			end
 		end
-
+]]
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Auswählen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.isSelect = true

@@ -930,7 +930,7 @@ function SkuNav:GetUiMapIdFromAreaId(aAreaId)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:GetAreaIdFromUiMapId(aUiMapId)
-	--dprint("GetAreaIdFromUiMapId", aUiMapId)
+	dprint("GetAreaIdFromUiMapId", aUiMapId)
 	local rAreaId
 	local tMinimapZoneText = GetMinimapZoneText()
  	if tMinimapZoneText == L["Deeprun Tram"] then --fix for strange DeeprunTram zone
@@ -2602,7 +2602,18 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuNav:SelectWP("", true)
 
 	SkuNav:ClearWaypointsTemporary(true)
-	
+
+	--routedata reset to default on first login with wrath client
+	if SkuOptions.db.profile[MODULE_NAME].wotlkMapReset ~= true then
+		SkuOptions.db.profile[MODULE_NAME].wotlkMapReset = true
+		print("FIRST")
+		local t = SkuDB.routedata["global"]["Waypoints"]
+		SkuOptions.db.global["SkuNav"].Waypoints = t
+		local tl = SkuDB.routedata["global"]["Links"]
+		SkuOptions.db.global["SkuNav"].Links = tl
+	end
+
+
 	SkuNav:CreateWaypointCache()
 	SkuNav:LoadLinkDataFromProfile()
 
