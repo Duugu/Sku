@@ -1651,4 +1651,4 @@ L["Equipment"] = "Equipment"
 L["360 10 very fast"] = "360 10 very fast"
 L["360 degrees 0-10 meters 2 second"] = "360 degrees 0-10 meters 2 seconds"
 
-L["do not hide tooltip"] = "do not hide game tooltip",
+L["do not hide tooltip"] = "do not hide game tooltip"

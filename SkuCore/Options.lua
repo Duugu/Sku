@@ -164,7 +164,7 @@ SkuCore.options = {
 			end
 		},
 		doNotHideTooltip = {
-			name = L["do not hide tooltip"],doNotHideTooltip
+			name = L["do not hide tooltip"],
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
