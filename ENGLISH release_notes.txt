@@ -4,6 +4,12 @@
 
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.11
+	- Random enchantments items in bags are shown with the actual enchantment again.
+	- Fixed the auction house sell bug. Selling is working again. But still only one auction per use. Need more time to fix it.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.10
 
 	- Fixed an issue with the The dark Portal area in Blasted lands, winterspring and a bunch of other zones. Please keep reporting broken zones/areas.

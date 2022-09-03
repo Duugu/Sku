@@ -102,14 +102,63 @@ local function getItemTooltipTextHelper(tooltipSetter)
 	end
 end
 
-local function getItemTooltipTextFromBagItem(bag, slot, itemId)
-	return getItemTooltipTextHelper(function(tooltip)
-		if itemId then
-			tooltip:SetItemByID(itemId)
-		else
-			tooltip:SetBagItem(bag, slot)
+local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
+	if button then
+		if button:GetScript("OnEnter") then
+			button:GetScript("OnEnter")(button)
+
+			local tQualityString = nil
+			local itemName, ItemLink = GameTooltip:GetItem()
+		
+			if ItemLink then
+				for x = 0, #ITEM_QUALITY_COLORS do
+					local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
+					if tItemCol == "ffa334ee" then 
+						tItemCol = "ffa335ee"
+					end
+					if string.find(ItemLink, tItemCol) then
+						if _G["ITEM_QUALITY"..x.."_DESC"] then
+							tQualityString = _G["ITEM_QUALITY"..x.."_DESC"]
+						end
+					end
+				end
+			end
+
+			local tTooltipText = ""
+			local tLineCounter = 1
+			for i = 1, select("#", GameTooltip:GetRegions()) do
+				local region = select(i, GameTooltip:GetRegions())
+				if region and region:GetObjectType() == "FontString" then
+					local text = region:GetText() -- string or nil
+					if text then
+						if tLineCounter == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
+							tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
+						else
+							tTooltipText = tTooltipText..text.."\r\n"
+						end
+						tLineCounter = tLineCounter + 1
+					end
+				end
+			end		
+			getItemTooltipTextHelper(function(tooltip)
+				if itemId then
+					tooltip:SetItemByID(itemId)
+				else
+					tooltip:SetBagItem(bag, slot)
+				end
+			end)
+			return SkuChat:Unescape(tTooltipText)
 		end
-	end)
+	else
+
+		return getItemTooltipTextHelper(function(tooltip)
+			if itemId then
+				tooltip:SetItemByID(itemId)
+			else
+				tooltip:SetBagItem(bag, slot)
+			end
+		end)
+	end
 end
 
 ---Gets tooltip text for given equipped item
@@ -691,6 +740,9 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							bagItemButton.textFull = {}
 						end
 						local tFirst, tFull = SkuCore:ItemName_helper(tText)
+
+						local tFull = getItemTooltipTextFromBagItem(bagItemButton.obj:GetParent():GetID(), bagItemButton.obj:GetID(), bagItemButton.obj.info.id, bagItemButton.obj)
+
 						bagItemButton.textFirstLine = tFirst
 						if type(bagItemButton.textFull) ~= "table" then
 							bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or ""), }
