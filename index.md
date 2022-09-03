@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.10](https://github.com/Duugu/Sku/releases/download/r30.10/Sku-r30.10-wrath.zip) (Sep 2nd, 2022)<br>
+- [Sku r30.11](https://github.com/Duugu/Sku/releases/download/r30.11/Sku-r30.11-wrath.zip) (Sep 3rd, 2022)<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 - [wow_menu r3.4a](https://github.com/Duugu/wow_menu/releases/download/r3.4a/wow_menu-r3.4a-wrath.zip) (Sep 1st, 2022)
 
@@ -50,6 +50,10 @@ Don't forget to move the wow_menu folder out of Addons if you are done.
 - Hunter pets now have a talent tree. The pet talent tree is available under your talent menu if the pet is there.
 - In vehicle combat your standard action bar is replaced with up to 8 new skills. The key binds are the same. Check the actionbar menu to see the available skills if you are in a vehicle.
 
+## Changes in Sku r30.11
+- Random enchantments items in bags are shown with the actual enchantment again.
+- Fixed the auction house sell bug. Selling is working again. But still only one auction per use. Need more time to fix it.
+	
 ## Changes in Sku r30.10
 - Fixed an issue with the The dark Portal area in Blasted lands, winterspring and a bunch of other zones. Please keep reporting broken zones/areas.
 - Removed "Navigation > Waypoint > New.
