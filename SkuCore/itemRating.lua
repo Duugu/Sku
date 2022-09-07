@@ -243,62 +243,64 @@ function SkuCore:ItemRatingGetRating(aItemIdItemToRate)
 
 	local _, _, ClassID = UnitClass("player")
 
-	-- new item
-	local tNewItemRatings = {}
-	local stats = {}
-	GetItemStats("item:"..aItemIdItemToRate, stats)
-	setmetatable(stats, SkuPrintMT)
-	for SpecID = 1, 4 do
-		if tStatRatings[ClassID][SpecID] then
-			local tResult = 0
-			for bName, value in pairs(stats) do
-				local pname = tItemStatNameToRatingValue[bName] or tItemStatNameToRatingValue[bName.."_SHORT"]
-				if pname then
-					tResult = tResult + value * tStatRatings[ClassID][SpecID][pname]
+	if tStatRatings[ClassID] and tStatRatings[ClassID][1] then
+		-- new item
+		local tNewItemRatings = {}
+		local stats = {}
+		GetItemStats("item:"..aItemIdItemToRate, stats)
+		setmetatable(stats, SkuPrintMT)
+		for SpecID = 1, 4 do
+			if tStatRatings[ClassID][SpecID] then
+				local tResult = 0
+				for bName, value in pairs(stats) do
+					local pname = tItemStatNameToRatingValue[bName] or tItemStatNameToRatingValue[bName.."_SHORT"]
+					if pname then
+						tResult = tResult + value * tStatRatings[ClassID][SpecID][pname]
+					end
+					tNewItemRatings[SpecID] = tResult
 				end
-				tNewItemRatings[SpecID] = tResult
 			end
 		end
-	end
 
-	-- old item
-	local tCurrentItemRatings = {}
-	local stats = {}
-	GetItemStats("item:"..tCurrentEqItemId, stats)
-	for SpecID = 1, 4 do
-		if tStatRatings[ClassID][SpecID] then
-			local tResult = 0
-			for bName, value in pairs(stats) do
-				local pname = tItemStatNameToRatingValue[bName] or tItemStatNameToRatingValue[bName.."_SHORT"]
-				if pname then
-					tResult = tResult + value * tStatRatings[ClassID][SpecID][pname]
+		-- old item
+		local tCurrentItemRatings = {}
+		local stats = {}
+		GetItemStats("item:"..tCurrentEqItemId, stats)
+		for SpecID = 1, 4 do
+			if tStatRatings[ClassID][SpecID] then
+				local tResult = 0
+				for bName, value in pairs(stats) do
+					local pname = tItemStatNameToRatingValue[bName] or tItemStatNameToRatingValue[bName.."_SHORT"]
+					if pname then
+						tResult = tResult + value * tStatRatings[ClassID][SpecID][pname]
+					end
+					tCurrentItemRatings[SpecID] = tResult
 				end
-				tCurrentItemRatings[SpecID] = tResult
 			end
 		end
-	end
 
-	--create rating
-	for i, v in pairs(tCurrentItemRatings) do
-		local tMod = L["Keine Bewertung möglich"]
-		if tNewItemRatings[i] then
-			local tDiff
-			if v == 0 then
-				tDiff = math.floor(((tNewItemRatings[i]) * 100) - 100)
+		--create rating
+		for i, v in pairs(tCurrentItemRatings) do
+			local tMod = L["Keine Bewertung möglich"]
+			if tNewItemRatings[i] then
+				local tDiff
+				if v == 0 then
+					tDiff = math.floor(((tNewItemRatings[i]) * 100) - 100)
+				else
+					tDiff = math.floor(((tNewItemRatings[i] / v) * 100) - 100)
+				end
+				tMod = L["plus "]..tDiff.."%"
+				if tDiff < 0 then
+					tDiff = tDiff * -1
+					tMod = L["minus "]..tDiff.."%"
+				elseif tDiff == 0 then
+					tMod = L["Keine Veränderung"]
+				end
 			else
-				tDiff = math.floor(((tNewItemRatings[i] / v) * 100) - 100)
+				tMod = L["Keine Bewertung für neuen Gegenstand möglich"]
 			end
-			tMod = L["plus "]..tDiff.."%"
-			if tDiff < 0 then
-				tDiff = tDiff * -1
-				tMod = L["minus "]..tDiff.."%"
-			elseif tDiff == 0 then
-				tMod = L["Keine Veränderung"]
-			end
-		else
-			tMod = L["Keine Bewertung für neuen Gegenstand möglich"]
+			tResultsString = tResultsString.."\r\n"..SkuCore.Specs[ClassID].specs[i].locName.." "..tMod
 		end
-		tResultsString = tResultsString.."\r\n"..SkuCore.Specs[ClassID].specs[i].locName.." "..tMod
 	end
 
 	if tResultsString == L["Wertung:"] then

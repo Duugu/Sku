@@ -106,6 +106,10 @@ SkuCore.interactFramesListManual = {
 	["CharacterFrame"] = function(...) SkuCore:Build_CharacterFrame(...) end,
 	["BarberShopFrame"] = function(...) SkuCore:Build_BarberShopFrame(...) end,
 	["PlayerTalentFrame"] = function(...) SkuCore:Build_TalentFrame(...) end,
+	["LFGListingFrame"] = function(...) SkuCore:Build_LfgFrame(...) end,
+	["LFGBrowseFrame"] = function(...) SkuCore:Build_LfgFrame(...) end,
+	["RolePollPopup"] = function(...) SkuCore:Build_RolePollPopup(...) end,
+	
 }
 
 SkuCore.interactFramesList = {
@@ -155,6 +159,9 @@ SkuCore.interactFramesList = {
 	--"MainMenuBar",
 	"ReadyCheckFrame",
 	"ItemSocketingFrame",
+	"LFGListingFrame",
+	"LFGBrowseFrame",
+	"RolePollPopup",
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -205,9 +212,13 @@ function SkuCore:OnInitialize()
 
 	SkuCore:RegisterEvent("GOSSIP_SHOW")
 	SkuCore:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	SkuCore:RegisterEvent("PLAYER_TALENT_UPDATE")
 	SkuCore:RegisterEvent("GLYPH_ADDED")
 	SkuCore:RegisterEvent("GLYPH_REMOVED")
 	SkuCore:RegisterEvent("GLYPH_UPDATED")
+
+	SkuCore:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
+	SkuCore:RegisterEvent("LFG_LIST_SEARCH_RESULT_UPDATED")
 	
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
@@ -1250,20 +1261,20 @@ function SkuCore:OnEnable()
 	hooksecurefunc("StartAutoRun", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true end)
 	hooksecurefunc("StrafeLeftStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true end)
 	hooksecurefunc("StrafeRightStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true end)
-	hooksecurefunc("TurnLeftStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true end)
-	hooksecurefunc("TurnRightStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true end)
+	hooksecurefunc("TurnLeftStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnLeftStart") end)
+	hooksecurefunc("TurnRightStart", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnRightStart") end)
 	hooksecurefunc("StopAutoRun", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
 	hooksecurefunc("StrafeLeftStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
 	hooksecurefunc("StrafeRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
-	hooksecurefunc("TurnLeftStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
-	hooksecurefunc("TurnRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
+	hooksecurefunc("TurnLeftStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnLeftStop") end)
+	hooksecurefunc("TurnRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnRightStop") end)
 
 	--For checking the players state.
 	hooksecurefunc("FollowUnit", function() SkuCoreMovement.Flags.FollowUnit = true end)
-	hooksecurefunc("MoveForwardStart", function() SkuCoreMovement.Flags.MoveForward = true end)
-	hooksecurefunc("MoveForwardStop", function() SkuCoreMovement.Flags.MoveForward = false end)
-	hooksecurefunc("MoveBackwardStart", function() SkuCoreMovement.Flags.MoveBackward = true end)
-	hooksecurefunc("MoveBackwardStop", function() SkuCoreMovement.Flags.MoveBackward = false end)
+	hooksecurefunc("MoveForwardStart", function() SkuCoreMovement.Flags.MoveForward = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("MoveForwardStart") end)
+	hooksecurefunc("MoveForwardStop", function() SkuCoreMovement.Flags.MoveForward = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("MoveForwardStop") end)
+	hooksecurefunc("MoveBackwardStart", function() SkuCoreMovement.Flags.MoveBackward = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("MoveBackwardStart") end)
+	hooksecurefunc("MoveBackwardStop", function() SkuCoreMovement.Flags.MoveBackward = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("MoveBackwardStop") end)
 	hooksecurefunc("StrafeLeftStart", function() SkuCoreMovement.Flags.StrafeLeft = true end)
 	hooksecurefunc("StrafeLeftStop", function() SkuCoreMovement.Flags.StrafeLeft = false end)
 	hooksecurefunc("StrafeRightStart", function() SkuCoreMovement.Flags.StrafeRight = true end)
@@ -2235,6 +2246,9 @@ local friendlyFrameNames = {
 	["BagnonInventoryFrame1"] = L["Bagnon Taschen"],
 	["SpellBookFrame"] = L["Spellbook"],
 	["PlayerTalentFrame"] = L["Talents"],
+	["LFGListingFrame"] = L["Looking for group"],
+	["LFGBrowseFrame"] = L["Looking for group"],
+	["RolePollPopup"] = L["Role Poll"],
 	["FriendsFrame"] = L["Friends"],
 	["TradeFrame"] = L["Trade"],
 	--["GameMenuFrame"] = L["Game Menu"],

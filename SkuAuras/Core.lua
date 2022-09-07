@@ -283,14 +283,14 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
 		local spellName = spellData[Sku.Loc][SkuDB.spellKeys["name_lang"]]
 		SkuAuras.attributes.spellId.values[#SkuAuras.attributes.spellId.values + 1] = "spell:"..tostring(spellId)
-		if not SkuAuras.values["spell:"..tostring(spellName)] then
+		--if not SkuAuras.values["spell:"..tostring(spellName)] then
 			SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
 			SkuAuras.attributes.spellNameOnCd.values[#SkuAuras.attributes.spellName.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.attributes.spellName.values[#SkuAuras.attributes.spellName.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.attributes.buffListTarget.values[#SkuAuras.attributes.buffListTarget.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.attributes.debuffListTarget.values[#SkuAuras.attributes.debuffListTarget.values + 1] = "spell:"..tostring(spellName)
 			SkuAuras.values["spell:"..tostring(spellName)] = {friendlyName = spellName,}
-		end
+		--end
 	end
 	
 	if not tItemHook then

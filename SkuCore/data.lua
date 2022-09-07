@@ -612,6 +612,29 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 39,
 		},
 	},
+	["BINDING_HEADER_VEHICLE"] = {
+		["VEHICLEEXIT"] = {
+			["index"] = 258,
+		},
+		["VEHICLEPREVSEAT"] = {
+			["index"] = 259,
+		},
+		["VEHICLENEXTSEAT"] = {
+			["index"] = 260,
+		},
+		["VEHICLEAIMUP"] = {
+			["index"] = 261,
+		},
+		["VEHICLEAIMDOWN"] = {
+			["index"] = 262,
+		},
+		["VEHICLEAIMINCREMENT"] = {
+			["index"] = 263,
+		},
+		["VEHICLEAIMDECREMENT"] = {
+			["index"] = 264,
+		},
+	},	
 	["BINDING_HEADER_INTERFACE"] = {
 		["TOGGLEBAG1"] = {
 			["index"] = 160,
@@ -728,6 +751,21 @@ SkuCore.Keys.SkuDefaultBindings = {
 		},
 		["TOGGLECHARACTER0"] = {
 			["index"] = 166,
+		},
+		["TOGGLELFGPARENT"] = {
+			["index"] = 268,
+		},
+		["TOGGLELFGLISTINGTAB"] = {
+			["index"] = 269,
+		},
+		["TOGGLELFGBROWSETAB"] = {
+			["index"] = 270,
+		},
+		["TOGGLEACHIEVEMENT"] = {
+			["index"] = 202,
+		},
+		["TOGGLESTATISTICS"] = {
+			["index"] = 203,
 		},
 	},
 	["BINDING_HEADER_TARGETING"] = {

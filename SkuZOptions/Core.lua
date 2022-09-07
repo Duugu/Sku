@@ -2753,19 +2753,19 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
-								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames()"
+								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 								if aGossipListTable[index].obj.GetParent then
 									if aGossipListTable[index].obj:GetParent() then
 										if aGossipListTable[index].obj:GetParent().rollID then
-											tNewSubMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()"
+											tNewSubMenuEntry.macrotext = "/script RollOnLoot("..aGossipListTable[index].obj:GetParent().rollID..", "..aGossipListTable[index].obj:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 										end
 										if aGossipListTable[index].obj:GetParent():GetName() == "StaticPopup1" then
 											if string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button1") then
 												--tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button1\"]) SkuCore:CheckFrames()"
-												tNewSubMenuEntry.macrotext = [[/click StaticPopup1Button1 LeftButton /script SkuCore:CheckFrames()]]
+												tNewSubMenuEntry.macrotext = [[/click StaticPopup1Button1 LeftButton /script SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)]]
 											elseif string.find(aGossipListTable[index].obj:GetName(), "StaticPopup") and string.find(aGossipListTable[index].obj:GetName(), "Button2") then
 												--tNewSubMenuEntry.macrotext = "/script StaticPopup1Button1:GetScript(\"OnClick\")(_G[\"StaticPopup1Button2\"]) SkuCore:CheckFrames()"
-												tNewSubMenuEntry.macrotext = [[/click StaticPopup1Button2 LeftButton /script SkuCore:CheckFrames()]]
+												tNewSubMenuEntry.macrotext = [[/click StaticPopup1Button2 LeftButton /script SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)]]
 											end
 										end
 									end
@@ -2785,12 +2785,13 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											SkuCore:CheckFrames()
 										end
 									end
+									C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)
 								end
 							end
 
 							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
-								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames()"
+								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 								--print("rechts mac", aGossipListTable[index].containerFrameName, aGossipListTable[index].isBag, _G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID(), tNewSubMenuEntry.macrotext)
 							else
 								tNewSubMenuEntry.OnAction = function()
@@ -2807,6 +2808,8 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											SkuCore:CheckFrames()
 										end
 									end
+
+									C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)
 								end
 							end
 
@@ -2815,7 +2818,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 							if aGossipListTable[index].containerFrameName and _G[aGossipListTable[index].containerFrameName] then
 								if _G[aGossipListTable[index].containerFrameName].GetBag and _G[aGossipListTable[index].containerFrameName]:GetBag() and _G[aGossipListTable[index].containerFrameName]:GetID() then
 									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Socketing"]}, SkuGenericMenuItem)
-									tNewSubMenuEntry.macrotext = "/script SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()"
+									tNewSubMenuEntry.macrotext = "/script SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 									--dprint("sock mac bag", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
 								else
 									local tContainerSlotIDs = {
@@ -2840,7 +2843,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									for x = 1, #tContainerSlotIDs do
 										if tContainerSlotIDs[x] == aGossipListTable[index].containerFrameName then
 											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Socketing"]}, SkuGenericMenuItem)
-											tNewSubMenuEntry.macrotext = "/script SocketInventoryItem("..x..") SkuCore:CheckFrames()"
+											tNewSubMenuEntry.macrotext = "/script SocketInventoryItem("..x..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 											--dprint("sock mac cont", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
 										end
 									end
@@ -2914,7 +2917,6 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											aGossipListTable[index].obj:GetScript("OnDragStart")(aGossipListTable[index].obj, "LeftButton") 
 											DeleteCursorItem()
 											SkuCore:CheckFrames()
-
 											--[[
 											SkuCore:ConfirmButtonShow("Wirklich zerstören? Eingabe Ja, Escape Nein", 
 											function(self)
@@ -2929,6 +2931,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											)
 											]]
 										end
+										C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)
 									end
 								end
 							end
@@ -2953,6 +2956,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 													SplitContainerItem(_G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID(), amount)
 													SkuCore:CheckFrames()
 												end
+												C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)
 											end
 											tNewSubMenuEntry.BuildChildren = function(self)
 												for x = 1, _G[aGossipListTable[index].containerFrameName].count do
@@ -2980,6 +2984,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 													SplitGuildBankItem(aGossipListTable[index].obj.info.gbanktab, aGossipListTable[index].obj.info.gbankslot, amount) 
 													SkuCore:CheckFrames()
 												end
+												C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)
 											end
 											tNewSubMenuEntry.BuildChildren = function(self)
 												for x = 1, aGossipListTable[index].obj.info.count do

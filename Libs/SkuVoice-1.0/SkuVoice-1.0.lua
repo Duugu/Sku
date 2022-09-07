@@ -55,10 +55,12 @@ function SkuVoice:Create()
 				--print("           ", tLastWait, mSkuVoiceQueueBTTS[1])
 				local tValue = mSkuVoiceQueueBTTS[1]
 				if tValue == "queuereset" then
-					table.remove(mSkuVoiceQueueBTTS, 1)
-					C_VoiceChat.StopSpeakingText()
-					mSkuVoiceQueueBTTS_Speaking = {}
-					tLastWait = 0.10
+						table.remove(mSkuVoiceQueueBTTS, 1)
+						if SkuOptions.db.profile["SkuChat"].neverResetQueues ~= true then
+							C_VoiceChat.StopSpeakingText()
+						end
+						mSkuVoiceQueueBTTS_Speaking = {}
+						tLastWait = 0.10
 				else
 					if #mSkuVoiceQueueBTTS > 1 or tLastWait <= 0 then
 						table.remove(mSkuVoiceQueueBTTS, 1)
@@ -408,10 +410,12 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
-	--print("OutputStringBTtts(aString", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
+	--print("OutputStringBTtts", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 	if not aString then
 		return
 	end
+
+	SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aString)
 
 	if SkuVoice:CheckIgnore(aString) then
 		aIgnoreLinks = true
@@ -423,6 +427,11 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	end
 
 	aDnQ = aDnQ or false
+
+	if aVocalizeAsIs then
+		aString = string.gsub(aString, "%-", "minus ")
+	end
+
 
 	aString = string.gsub(aString, "%.%.%.", ";"..L["period"]..";"..L["period"]..";"..L["period"]..";")
 
@@ -452,7 +461,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	end
 
 	--empty the queue
-	if aOverwrite == true then
+	if aOverwrite == true and SkuOptions.db.profile["SkuChat"].neverResetQueues ~= true then
 		mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = "queuereset"
 		--print("ADD RESET TO QUEUE")
 		--[[
@@ -568,7 +577,6 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		end
 	end
 
-
 	local tFinalStringForBTts = ""
 	local tFinalStringForBTtsMac = ""
 
@@ -612,12 +620,21 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		]]
 	end
 
+	if aVocalizeAsIs then
+		tFinalStringForBTts = aString
+		tFinalStringForBTtsMac = aString
+	end
+
 	--tFinalStringForBTts = '<voice required="Language='..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
 	--tFinalStringForBTts = '<LANG LANGID="'..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
 	if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
 		tFinalStringForBTts = '<pitch middle="0">'..tFinalStringForBTts..'</pitch>'
 	end
 	tFinalStringForBTtsMac = tFinalStringForBTtsMac
+
+	tFinalStringForBTts = string.gsub(tFinalStringForBTts, ";", " ")
+	tFinalStringForBTtsMac = string.gsub(tFinalStringForBTtsMac, ";", " ")
+
 
 	if IsMacClient() == true then
 		if aInstant then
@@ -1051,6 +1068,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
+	if SkuOptions.db.profile["SkuChat"].neverResetQueues == true then
+		return
+	end
+
 	if not aBlizz and not aSku then
 		aBlizz, aSku = true, true
 	end

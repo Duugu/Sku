@@ -5,6 +5,15 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
+local tRolenamesLookup = {
+	[1] = "DAMAGER",
+	[2] = "TANK",
+	[3] = "HEALER",
+	["DAMAGER"] = 1,
+	["TANK"] = 2,
+	["HEALER"] = 3,
+}	
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- helpers
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1003,18 +1012,6 @@ local function round(num)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
---Group finder
-
-
-
-
-
-
-
-
-
-
----------------------------------------------------------------------------------------------------------------------------------------
 --social
 
 
@@ -1100,6 +1097,18 @@ local function GetTooltipLines(aObj, aTooltipObject)
 
 	return tFirstText, tTooltipText
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:PLAYER_TALENT_UPDATE()
+	--print("PLAYER_TALENT_UPDATE")
+	if _G["PlayerTalentFrame"] and _G["PlayerTalentFrame"]:IsVisible() then
+		if SkuOptions:IsMenuOpen() == true then
+			C_Timer.After(0.3, function()
+				SkuOptions.currentMenuPosition:OnUpdate()
+			end)
+		end
+	end
+end	
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:ACTIVE_TALENT_GROUP_CHANGED(aEvent, aCurr, aPrev)
@@ -1244,14 +1253,6 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 	end
 
 	if not _G["GlyphFrame"] or _G["GlyphFrame"]:IsVisible() == false then
-		local tRoles = {
-			[1] = "DAMAGER",
-			[2] = "TANK",
-			[3] = "HEALER",
-			["DAMAGER"] = 1,
-			["TANK"] = 1,
-			["HEALER"] = 1,
-		}	
 		if tCurrentShownSpec < 3 then
 			local tFrameName = ""
 			local tFriendlyName = L["Change Role"].." ("..L[GetTalentGroupRole(tCurrentShownSpec)]..")"
@@ -1270,7 +1271,7 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 
 			for x = 1, 3 do
 				local tFrameName = "PlayerTalentFrameRoleButton"
-				local tFriendlyName = L[tRoles[x]]
+				local tFriendlyName = L[tRolenamesLookup[x]]
 				table.insert(tParent, tFriendlyName)
 				tParent[tFriendlyName] = {
 					frameName = tFrameName,
@@ -1281,14 +1282,14 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 					textFull = "",
 					childs = {},
 					func = function()
-						SetTalentGroupRole(tCurrentShownSpec, tRoles[x])
+						SetTalentGroupRole(tCurrentShownSpec, tRolenamesLookup[x])
 						C_Timer.After(0.01, function() 
 							SkuOptions.currentMenuPosition.parent:OnUpdate()
 						end)
 					end,
 					click = true,
 				} 
-				if GetTalentGroupRole(tCurrentShownSpec) == tRoles[x] then
+				if GetTalentGroupRole(tCurrentShownSpec) == tRolenamesLookup[x] then
 					tParent[tFriendlyName].textFirstLine = tParent[tFriendlyName].textFirstLine.." ("..L["selected"]..")"
 					tParent[tFriendlyName].func = nil
 					tParent[tFriendlyName].click = false
@@ -1639,6 +1640,1085 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------
+-- build lfg helpers
+local function SkuLFGBrowse_DoSearch(categoryID, activityIDs)
+	--print("SkuLFGBrowse_DoSearch")
+	activityIDs = activityIDs or {}
+	if (categoryID > 0) then
+		--print("  categoryID", categoryID)
+		if (#activityIDs == 0) then -- If we have no activities selected in the filter, search for everything in this category.
+			--print("   we have no activities selected in the filter, search for everything in this category.")
+			activityIDs = C_LFGList.GetAvailableActivities(categoryID);
+		end
+		for i, v in pairs(activityIDs) do
+			--print("     activityIDs", i, v)
+		end
+
+		C_LFGList.Search(categoryID, activityIDs);
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:LFG_LIST_SEARCH_RESULT_UPDATED(aEvent)
+	--SkuCore:UpdateResults(aEvent)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:LFG_LIST_SEARCH_RESULTS_RECEIVED(aEvent)
+	SkuCore:UpdateResults(aEvent)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tBrowseResultsParent
+local tBrowseResultsParentResults = nil
+local tBrowseResultsUpdate
+
+local tBrowseCatSelected = 0
+local tBrowseActsSelected = {}
+
+local tEnlistRolesSelected = nil
+local tEnlistCatSelected = 0
+local tEnlistActsSelected = {}
+local tEnlistCurrentCommentText = ""
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:UpdateResults(aEvent)
+	--print("UpdateResults", aEvent)
+
+	if tBrowseResultsParent then
+		if tBrowseResultsUpdate == true then
+			tBrowseResultsUpdate = nil
+			tBrowseResultsParentResults = {}
+
+			local totalResults, results = C_LFGList.GetFilteredSearchResults()
+			LFGBrowseUtil_SortSearchResults(results);
+			--refresh
+			local tFriendlyName = L["Refresh list"]
+			table.insert(tBrowseResultsParentResults, tFriendlyName)
+			tBrowseResultsParentResults[tFriendlyName] = {
+				frameName = "",
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGBrowseFrame"],
+				textFirstLine = SkuChat:Unescape(tFriendlyName),
+				textFull = "",
+				childs = {},
+				func = function()
+					tBrowseResultsUpdate = true
+					local tidtable = {}
+					for i, v in pairs(tBrowseActsSelected) do
+						if v == true then
+							table.insert(tidtable, i)
+						end
+					end
+
+					SkuLFGBrowse_DoSearch(tBrowseCatSelected, tidtable)
+				end,            
+				click = true,
+			}   
+
+			for x = 1, totalResults do
+				if results[x] then
+					local tSearchResultData = C_LFGList.GetSearchResultInfo(results[x])
+
+					--print(SkuLFGBrowseSearchEntryHost.Level:GetText(), SkuLFGBrowseSearchEntryHost:GetScript("OnEnter"))
+					--https://github.com/Gethe/wow-ui-source/blob/2c60503f93354eb51acc6cf8063e0314f6b03344/Interface/AddOns/Blizzard_LookingForGroupUI/Blizzard_LFGBrowse.lua#L395
+					--/dump C_LFGList.GetSearchResultInfo(192)
+						--https://wowpedia.fandom.com/wiki/API_C_LFGList.GetSearchResultInfo
+					local tFirst, tFull = "", ""
+
+					if tSearchResultData.numMembers == 1 then
+						local name, role, classFile, className, level = C_LFGList.GetSearchResultMemberInfo(results[x], 1);
+						tFull = 
+						L["solo"].."\r\n"..
+						L["name"]..": "..(tSearchResultData.leaderName or L["unknown"]).."\r\n"..
+						L["klasse"]..": "..(className or L["unknown"]).."\r\n"..
+						L["Level"]..": "..(level or L["unknown"]).."\r\n"..
+						L["comment"]..": "..(tSearchResultData.comment or L["unknown"])
+						if tSearchResultData.newPlayerFriendly == true then
+							tFull = tFull.."\r\n"..L["new Player Friendly"]
+						end
+						if tSearchResultData.requiredItemLevel > 0 then
+							tFull = tFull.."\r\n"..L["required Item Level"]..": "..tSearchResultData.requiredItemLevel
+						end
+						if tSearchResultData.requiredHonorLevel > 0 then
+							tFull = tFull.."\r\n"..L["required Honor Level"]..": "..tSearchResultData.requiredHonorLevel
+						end
+						if tSearchResultData.isDelisted == true then
+							tFull = tFull.."\r\n"..L["is Delisted"]
+						end
+					else
+						tFull = 
+						L["Party"].."\r\n"..
+						L["leader"]..": "..(tSearchResultData.leaderName or L["unknown"]).."\r\n"..
+						L["comment"]..": "..(tSearchResultData.comment or L["unknown"]).."\r\n"..
+						L["Members"]..": "..(tSearchResultData.numMembers or L["unknown"])
+						--"hasSelf: "..(tostring(tSearchResultData.hasSelf) or "nil")
+						if tSearchResultData.newPlayerFriendly == true then
+							tFull = tFull.."\r\n"..L["new Player Friendly"]
+						end
+						if tSearchResultData.requiredItemLevel > 0 then
+							tFull = tFull.."\r\n"..L["required Item Level"]..": "..tSearchResultData.requiredItemLevel
+						end
+						if tSearchResultData.requiredHonorLevel > 0 then
+							tFull = tFull.."\r\n"..L["required Honor Level"]..": "..tSearchResultData.requiredHonorLevel
+						end
+						if tSearchResultData.isDelisted == true then
+							tFull = tFull.."\r\n"..L["is Delisted"]
+						end
+
+						if tSearchResultData.numMembers > 1 then
+							tFull = tFull.."\r\n"..L["Members"]..":"
+
+							local resultID = results[x]
+							for i=1, tSearchResultData.numMembers do
+								local name, role, classFileName, className, level, isLeader = C_LFGList.GetSearchResultMemberInfo(resultID, i);
+								tFull = tFull.."\r\n"..(name or L["unknown"])..", "..(level or L["unknown"])..", "..(_G[role] or L["unknown"])..", "..(className or L["unknown"])
+							end
+						end
+					end
+
+					-- full Activities
+					local fullActivityText = "";
+					local lastActivityString = nil
+					local numActivities = #tSearchResultData.activityIDs;
+					local activeEntryInfo = C_LFGList.GetActiveEntryInfo();
+
+					if (numActivities > 0) then
+						tFull = tFull.."\r\n"..L["Activities"]..":"
+
+						local organizedActivities = LFGUtil_OrganizeActivitiesByActivityGroup(tSearchResultData.activityIDs);
+						local activityGroupIDs = GetKeysArray(organizedActivities);
+						numActivityGroups = #activityGroupIDs;
+						LFGUtil_SortActivityGroupIDs(activityGroupIDs);
+
+						for i, activityGroupID in ipairs(activityGroupIDs) do
+							local activityIDs = organizedActivities[activityGroupID];
+							if (activityGroupID == 0) then -- Free-floating activities (no group)
+								for _, activityID in ipairs(activityIDs) do
+									local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
+									if (activityInfo and activityInfo.fullName ~= "") then
+										fullActivityText = fullActivityText..activityInfo.fullName.."\r\n"
+									end
+								end
+							else -- Grouped activities
+								local activityGroupName = C_LFGList.GetActivityGroupInfo(activityGroupID);
+								for _, activityID in ipairs(activityIDs) do
+									local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
+									if (activityInfo and activityInfo.fullName ~= "") then
+										fullActivityText = fullActivityText..activityInfo.fullName.." ("..activityGroupName..")".."\r\n"
+									end
+								end
+							end
+						end
+					end
+
+					tFull = tFull.."\r\n"..fullActivityText
+
+					--short activitie for title
+					local activeEntryInfo = C_LFGList.GetActiveEntryInfo();
+					local matchingActivities = {};
+					local hasMatchingActivity = false;
+					if (activeEntryInfo) then
+						for _, activityID in ipairs(activeEntryInfo.activityIDs) do
+							if (tContains(tSearchResultData.activityIDs, activityID)) then
+								hasMatchingActivity = true;
+								tinsert(matchingActivities, activityID);
+							end
+						end
+					end
+					local activitiesToDisplay = hasMatchingActivity and matchingActivities or tSearchResultData.activityIDs;
+				
+					local activityText = "";
+					if ( tSearchResultData.hasSelf ) then
+						activityText = LFG_SELF_LISTING;
+					elseif ( #activitiesToDisplay == 1 ) then
+						local activityInfo = C_LFGList.GetActivityInfoTable(activitiesToDisplay[1]);
+						activityText = activityInfo.fullName;
+					else
+						local activityString = hasMatchingActivity and LFGBROWSE_ACTIVITY_MATCHING_COUNT or LFGBROWSE_ACTIVITY_COUNT;
+						--activityText = string.format(activityString, #activitiesToDisplay);
+						activityText = #activitiesToDisplay.." "..L["Activities"] 
+					end
+
+					--build title string
+					local tTypeText = ""
+					if tSearchResultData.numMembers == 1 then
+						tTypeText = ", "..L["solo"]..", "
+						local resultID = results[x]
+						local name, role, classFileName, className, level, isLeader = C_LFGList.GetSearchResultMemberInfo(resultID, 1);
+						tTypeText = tTypeText.." "..(level or "")..", "..(_G[role] or "")..", "..(className or "")..", "
+					else
+						tTypeText = ", "..L["Party"].." ("..tSearchResultData.numMembers..", "
+						local resultID = results[x]
+						for i=1, tSearchResultData.numMembers do
+							local name, role, classFileName, className, level, isLeader = C_LFGList.GetSearchResultMemberInfo(resultID, i);
+							tTypeText = tTypeText.." "..(_G[role] or "")..", "
+						end
+						tTypeText = tTypeText.."), "
+					end
+
+					--add entry
+					local tFriendlyName = (tSearchResultData.leaderName or L["unknown name"])..tTypeText..", "..activityText
+					table.insert(tBrowseResultsParentResults, tFriendlyName)
+					tBrowseResultsParentResults[tFriendlyName] = {
+						frameName = "",
+						RoC = "Child",
+						type = "Button",
+						obj = _G["LFGBrowseFrame"],
+						textFirstLine = SkuChat:Unescape(tFriendlyName),
+						textFull = SkuChat:Unescape(tFull),
+						childs = {},
+						func = function()
+							local tSearchResultData = C_LFGList.GetSearchResultInfo(results[x])
+							if tSearchResultData.isDelisted == true then
+								C_Timer.After(0.4, function()		
+									print(L["Not longer available. Refresh list."])						
+									SkuOptions.Voice:OutputStringBTtts(L["Not longer available. Refresh list."], true, true, 0.8, true, nil, nil, 1, nil, nil, true)
+								end)
+							else
+								EasyMenu(LFGBrowseFrame:GetSearchEntryMenu(results[x]), LFGBrowseFrame.SearchEntryDropDown, "cursor", nil, nil, "MENU");
+								C_Timer.After(0.1, function()
+									SkuOptions:SlashFunc(L["short"]..","..L["Local"]..","..L["Dropdown List 1"])
+									C_Timer.After(2.1, function()
+										SkuOptions.currentMenuPosition:OnSelect()
+									end)
+								end)
+							end
+						end,            
+						click = true,
+					}  
+				else
+					print("this should not happen; missing data")
+				end
+			end
+			SkuCore:CheckFrames()
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Build_LfgFrame(aParentChilds)
+
+	--bad hack to fully close the lfg pane
+	local ttime = 0
+	local f = _G["Build_LfgFrameControl"] or CreateFrame("Frame", "Build_LfgFrameControl", UIParent)
+	f:SetScript("OnUpdate", function(self, time)
+		ttime = ttime + time
+		if ttime > 5 then
+			if _G["LFGParentFrame"] and _G["LFGListingFrame"] and _G["LFGBrowseFrame"] then
+				if (_G["LFGListingFrame"]:IsVisible() == false and _G["LFGBrowseFrame"]:IsVisible() == false) and _G["LFGParentFrame"]:IsVisible() == true then
+					_G["LFGParentFrame"]:Hide()
+				end
+			end
+			ttime = 0
+		end
+	end)
+
+	--prep roles table
+	if not tEnlistRolesSelected then
+		tEnlistRolesSelected = {
+			[1] = {name = _G["DAMAGER"], selected = false, buttonName = "LFGListingFrameSoloRoleButtonsRoleButtonDPS"},
+			[2] = {name = _G["TANK"], selected = false, buttonName = "LFGListingFrameSoloRoleButtonsRoleButtonTank"},
+			[3] = {name = _G["HEALER"], selected = false, buttonName = "LFGListingFrameSoloRoleButtonsRoleButtonHealer"},
+			[4] = {name = L["new Player Friendly"], selected = false, buttonName = "LFGListingFrameNewPlayerFriendlyButton"},
+		}
+		tEnlistRolesSelected[tRolenamesLookup[GetTalentGroupRole(GetActiveTalentGroup())]].selected = true
+		UnitSetRole("player", GetTalentGroupRole(GetActiveTalentGroup()))
+	end
+
+	--ENLIST
+	local tFrameName = ""
+	local tFriendlyName = L["Enlist"]
+	if _G["MiniMapLFGFrame"] and _G["MiniMapLFGFrame"]:IsVisible() == true then
+		tFriendlyName = tFriendlyName.." ("..L["Enlisted"]..")"
+	end
+
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Button",
+		obj = _G["LFGListingFrame"],
+		textFirstLine = tFriendlyName,
+		textFull = "",
+		childs = {},
+	}
+	local tEnlistParent = aParentChilds[tFriendlyName].childs
+
+	if (IsInGroup("player") == true or IsInRaid("player") == true) then
+		if (UnitIsGroupLeader("player") == true) then
+			--role check button
+			if _G["LFGListingFrameGroupRoleButtonsInitiateRolePoll"] and _G["LFGListingFrameGroupRoleButtonsInitiateRolePoll"]:IsEnabled() == true then
+				local tFriendlyName = _G["LFGListingFrameGroupRoleButtonsInitiateRolePoll"]:GetText()
+				table.insert(tEnlistParent, tFriendlyName)
+				tEnlistParent[tFriendlyName] = {
+					frameName = "",
+					RoC = "Child",
+					type = "Button",
+					obj = _G["LFGListingFrame"],
+					textFirstLine = SkuChat:Unescape(tFriendlyName),
+					textFull = "",
+					childs = {},
+					func = function()
+						InitiateRolePoll()
+						C_Timer.After(0.3, function()
+							SkuOptions.currentMenuPosition.parent:OnUpdate()
+						end)
+					end,            
+					click = true,
+				}
+			end
+
+			--npf
+			local tFriendlyName = tEnlistRolesSelected[4].name
+			if tEnlistRolesSelected[4].selected == true then
+				tFriendlyName = tFriendlyName.." ("..L["selected"]..")"
+			end
+			table.insert(tEnlistParent, tFriendlyName)
+			tEnlistParent[tFriendlyName] = {
+				frameName = "",
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGListingFrame"],
+				textFirstLine = SkuChat:Unescape(tFriendlyName),
+				textFull = "",
+				childs = {},
+				func = function(self)
+					tEnlistRolesSelected[4].selected = tEnlistRolesSelected[4].selected == false
+					C_Timer.After(0.3, function()
+						SkuOptions.currentMenuPosition:OnUpdate()
+					end)
+				end,            
+				click = true,
+			}   
+
+			--to implement: update post
+
+
+
+		else
+			if _G["LFGParentFrameTab1"] then
+				_G["LFGParentFrameTab1"]:Click(_G["LFGParentFrameTab1"])
+			end
+			if _G["LFGListingFrameLockedViewErrorText"]:IsVisible() == true then
+				local tFriendlyName = _G["LFGListingFrameLockedViewErrorText"]:GetText().." ".._G["LFGListingFrameLockedViewActivityText"]:GetText()
+				local tFull = ""
+
+				for i, v in LFGListingFrameLockedView.framePool:EnumerateActive() do
+					tFull = i.Text:GetText().."\r\n"..tFull
+				end
+				tFull = _G["LFGListingFrameLockedViewErrorText"]:GetText().."\r\n".._G["LFGListingFrameLockedViewActivityText"]:GetText().."\r\n"..tFull
+
+				table.insert(tEnlistParent, tFriendlyName)
+				tEnlistParent[tFriendlyName] = {
+					frameName = "",
+					RoC = "Child",
+					type = "Button",
+					obj = _G["LFGListingFrame"],
+					textFirstLine = SkuChat:Unescape(tFriendlyName),
+					textFull = SkuChat:Unescape(tFull),
+					childs = {},
+					click = false,
+				}   
+			end
+		end
+
+		-- rolle dd 
+		local tFrameName = ""
+		local tFriendlyName = L["your role"]
+		table.insert(tEnlistParent, tFriendlyName)
+		tEnlistParent[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = _G["LFGListingFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+		}
+		local tEnlistRolestParent = tEnlistParent[tFriendlyName].childs
+
+		for x = 1, 3 do
+			local tFriendlyName = tEnlistRolesSelected[x].name
+			if tEnlistRolesSelected[x].selected == true then
+				tFriendlyName = tFriendlyName.." ("..L["selected"]..")"
+			end
+			table.insert(tEnlistRolestParent, tFriendlyName)
+			tEnlistRolestParent[tFriendlyName] = {
+				frameName = "",
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGListingFrame"],
+				textFirstLine = SkuChat:Unescape(tFriendlyName),
+				textFull = "",
+				childs = {},
+				func = function()
+					for x = 1, 3 do
+						tEnlistRolesSelected[x].selected = false
+					end
+		
+					tEnlistRolesSelected[x].selected = true
+					UnitSetRole("player", tRolenamesLookup[x])
+
+					C_Timer.After(0.3, function()
+						SkuOptions.currentMenuPosition:OnUpdate()
+					end)
+				end,            
+				click = true,
+			}   
+		end
+		
+	else
+		--no group
+		--role selection on solo
+		local tFrameName = ""
+		local tFriendlyName = L["roles"]
+		table.insert(tEnlistParent, tFriendlyName)
+		tEnlistParent[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = _G["LFGListingFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+		}
+		local tEnlistRolestParent = tEnlistParent[tFriendlyName].childs
+
+		if tEnlistRolesSelected == nil then
+			tEnlistRolesSelected = {
+				[1] = {name = _G["DAMAGER"], selected = false, buttonName = "LFGListingFrameSoloRoleButtonsRoleButtonDPS"},
+				[2] = {name = _G["TANK"], selected = false, buttonName = "LFGListingFrameSoloRoleButtonsRoleButtonTank"},
+				[3] = {name = _G["HEALER"], selected = false, buttonName = "LFGListingFrameSoloRoleButtonsRoleButtonHealer"},
+				[4] = {name = L["new Player Friendly"], selected = false, buttonName = "LFGListingFrameNewPlayerFriendlyButton"},
+			}
+
+			for x = 1, #tEnlistRolesSelected do
+				if _G[tEnlistRolesSelected[x].buttonName] then
+					_G[tEnlistRolesSelected[x].buttonName].CheckButton:SetChecked(false)
+				end
+			end
+
+			for i=1,GetNumTalentGroups() do
+				tEnlistRolesSelected[tRolenamesLookup[GetTalentGroupRole(i)]].selected = true
+				if _G[tEnlistRolesSelected[tRolenamesLookup[GetTalentGroupRole(i)]].buttonName] then
+					_G[tEnlistRolesSelected[tRolenamesLookup[GetTalentGroupRole(i)]].buttonName].CheckButton:SetChecked(true)
+				end
+			end
+		end
+
+		for x = 1, #tEnlistRolesSelected do
+			local tFriendlyName = tEnlistRolesSelected[x].name
+			if tEnlistRolesSelected[x].selected == true then
+				tFriendlyName = tFriendlyName.." ("..L["selected"]..")"
+			end
+			table.insert(tEnlistRolestParent, tFriendlyName)
+			tEnlistRolestParent[tFriendlyName] = {
+				frameName = "",
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGListingFrame"],
+				textFirstLine = SkuChat:Unescape(tFriendlyName),
+				textFull = "",
+				childs = {},
+				func = function()
+					tEnlistRolesSelected[x].selected = tEnlistRolesSelected[x].selected == false
+					if _G[tEnlistRolesSelected[x].buttonName] then
+						_G[tEnlistRolesSelected[x].buttonName].CheckButton:SetChecked(tEnlistRolesSelected[x].selected)
+					end
+
+					C_Timer.After(0.3, function()
+						SkuOptions.currentMenuPosition:OnUpdate()
+					end)
+					--SkuLFGEnlist_DoSearch(tEnlistCategories[i])
+				end,            
+				click = true,
+			}   
+		end
+	end
+
+	if ((IsInGroup("player") == true or IsInRaid("player") == true) and (UnitIsGroupLeader("player") == true)) or
+	(IsInGroup("player") == false and IsInRaid("player") == false) then
+
+		local tFrameName = ""
+		local tFriendlyName = L["category"]
+		table.insert(tEnlistParent, tFriendlyName)
+		tEnlistParent[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = _G["LFGListingFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+		}
+		local tEnlistCatParent = tEnlistParent[tFriendlyName].childs
+
+		--categories
+		local info = UIDropDownMenu_CreateInfo();
+		local categories = C_LFGList.GetAvailableCategories();
+		if (#categories == 0) then
+			-- None button
+			local tFriendlyName = LFG_TYPE_NONE
+			table.insert(tEnlistCatParent, tFriendlyName)
+			tEnlistCatParent[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGListingFrame"],
+				textFirstLine = SkuChat:Unescape(tFriendlyName),
+				textFull = SkuChat:Unescape(tCurrentGemTooltip),
+				childs = {},
+				click = false,
+			}   		
+		else
+			local currentSelectedValue = UIDropDownMenu_GetSelectedValue(self) or 0;
+			local foundChecked = false;
+			for i=1, #categories do
+				local name = C_LFGList.GetCategoryInfo(categories[i]);
+
+				info.text = name;
+				info.value = categories[i];
+
+				local tEnlistCategories = {
+					[1] = 2,
+					[2] = 114,
+					[3] = 116,
+					[4] = 118,
+					[5] = 120,
+				}
+
+				local tFriendlyName = name
+				if info.checked then
+					tFriendlyName = tFriendlyName.." ("..L["selected"]..")"
+				end
+				table.insert(tEnlistCatParent, tFriendlyName)
+				tEnlistCatParent[tFriendlyName] = {
+					frameName = "",
+					RoC = "Child",
+					type = "Button",
+					obj = _G["LFGListingFrame"],
+					textFirstLine = SkuChat:Unescape(tFriendlyName),
+					textFull = "",
+					childs = {},
+					func = function()
+						tEnlistCatSelected = tEnlistCategories[i]
+						C_Timer.After(0.3, function()
+							SkuOptions.currentMenuPosition:OnUpdate()
+						end)
+						--SkuLFGEnlist_DoSearch(tEnlistCategories[i])
+					end,            
+					click = true,
+				}   
+			end
+		end
+
+		--activities
+		local tFrameName = ""
+		local tFriendlyName = L["Activity"]
+		table.insert(tEnlistParent, tFriendlyName)
+		tEnlistParent[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = _G["LFGListingFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+		}
+		local tEnlistActParent = tEnlistParent[tFriendlyName].childs
+
+		--build list of available activities
+		local tActivityList = {}
+		local activities = C_LFGList.GetAvailableActivities(tEnlistCatSelected)
+		if (#activities > 0) then
+			local organizedActivities = LFGUtil_OrganizeActivitiesByActivityGroup(activities);
+			local activityGroupIDs = GetKeysArray(organizedActivities);
+			LFGUtil_SortActivityGroupIDs(activityGroupIDs);
+
+			for _, activityGroupID in ipairs(activityGroupIDs) do
+				local activityIDs = organizedActivities[activityGroupID];
+				if (activityGroupID == 0) then
+					local buttonInfo = {}
+					for _, activityID in pairs(activityIDs) do
+						local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
+						tActivityList[#tActivityList + 1] = {title = string.gsub(activityInfo.fullName, "  ", " "), "", id = activityID}
+					end
+				else
+					-- Grouped activities.
+					local groupButtonInfo = {}
+					--tActivityList[#tActivityList + 1] = {title = string.gsub(C_LFGList.GetActivityGroupInfo(activityGroupID), "  ", " "), id = activityGroupID}
+
+					if (#activityGroupIDs == 1) then -- If we only have one activityGroup, do everything in one menu.
+						for _, activityID in pairs(activityIDs) do
+							local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
+							tActivityList[#tActivityList + 1] = {title = string.gsub(activityInfo.fullName, "  ", " "), id = activityID}
+						end
+					else -- If we have more than one group, do submenus.
+						for _, activityID in pairs(activityIDs) do
+							local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
+							tActivityList[#tActivityList + 1] = {title = string.gsub(activityInfo.fullName.." ("..string.gsub(C_LFGList.GetActivityGroupInfo(activityGroupID), "  ", " ")..")", "  ", " "), id = activityID}
+						end
+					end
+				end
+			end
+		end
+
+		--deselect all
+		local tFriendlyName = L["Deselect all"]
+		table.insert(tEnlistActParent, tFriendlyName)
+		tEnlistActParent[tFriendlyName] = {
+			frameName = "",
+			RoC = "Child",
+			type = "Button",
+			obj = _G["LFGListingFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+			func = function()
+				tEnlistActsSelected = {}
+				C_Timer.After(0.3, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate()
+				end)
+				--tEnlistResultsUpdate = true
+				--SkuLFGEnlist_DoSearch(tEnlistCatSelected)
+			end,            
+			click = true,
+		}   
+
+		--add activities
+		for x = 1, #tActivityList do
+			local tFriendlyName = tActivityList[x].title
+			if tEnlistActsSelected[tActivityList[x].id] == true then
+				tFriendlyName = L["selected"].." "..tFriendlyName
+			end
+
+			table.insert(tEnlistActParent, tFriendlyName)
+			tEnlistActParent[tFriendlyName] = {
+				frameName = "",
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGListingFrame"],
+				textFirstLine = SkuChat:Unescape(tFriendlyName),
+				textFull = "",
+				childs = {},
+				func = function()
+					if tEnlistActsSelected[tActivityList[x].id] == true then
+						tEnlistActsSelected[tActivityList[x].id] = nil
+					else
+						tEnlistActsSelected[tActivityList[x].id] = true
+					end
+					--tEnlistResultsUpdate = true
+					local tidtable = {}
+					for i, v in pairs(tEnlistActsSelected) do
+						if v == true then
+							table.insert(tidtable, i)
+						end
+					end
+					C_Timer.After(0.3, function()
+						SkuOptions.currentMenuPosition:OnUpdate()
+					end)
+		
+					--SkuLFGEnlist_DoSearch(tEnlistCatSelected, tidtable)
+				end,            
+				click = true,
+			}   
+		end
+
+		local tFrameName = ""
+		local tFriendlyName = L["add/edit comment"]
+		table.insert(tEnlistParent, tFriendlyName)
+		tEnlistParent[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = _G["LFGListingComment"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+			func = function()
+				C_Timer.After(0.5, function()
+					SkuOptions.Voice:OutputStringBTtts("input comment text and complete with escape", false, true, 0.8, true, nil, nil, 1, nil, nil, true)
+				end)
+				if _G["LFGListingComment"] and LFGListingFrameCategoryView and LFGListingFrameCategoryView.CategoryButtons[1] then
+					LFGListingFrameCategoryView.CategoryButtons[1]:Click()
+					LFGListingComment.EditBox:SetFocus()
+					LFGListingComment.EditBox:HookScript("OnEditFocusLost", function(self)
+						C_Timer.After(0.1, function()
+							PlaySound(89) 
+							tEnlistCurrentCommentText = _G["LFGListingComment"].EditBox:GetText() or ""
+							SkuOptions.currentMenuPosition:OnUpdate()
+						end)
+
+					end)
+					
+				end
+			end,            
+			click = true,
+		}
+
+		if LFGListingFrameBackButton:IsEnabled() == true and LFGListingFramePostButton:IsEnabled() == false and (LFGListingFramePostButton:GetText() == L["Update"]) then
+			local tFrameName = ""
+			local tFriendlyName = L["Delist"]
+			table.insert(tEnlistParent, tFriendlyName)
+			tEnlistParent[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGListingFrameBackButton"],
+				textFirstLine = tFriendlyName,
+				textFull = "",
+				childs = {},
+				childs = {},
+				click = true,
+				--func = _G["LFGListingFramePostButton"]:GetScript("OnClick"),
+				func = function()
+					local tResult = C_LFGList.RemoveListing()
+				end,
+			}
+		else
+			local tFrameName = ""
+			local tFriendlyName = _G["LFGListingFramePostButton"]:GetText()
+			table.insert(tEnlistParent, tFriendlyName)
+			tEnlistParent[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGListingFramePostButton"],
+				textFirstLine = tFriendlyName,
+				textFull = "",
+				childs = {},
+				click = true,
+				--func = _G["LFGListingFramePostButton"]:GetScript("OnClick"),
+				func = function()
+					local tidtable = {}
+					local hasSelectedActivity = false
+					local x = 1
+					local selectedActivityIDs = {}
+					for i, v in pairs(tEnlistActsSelected) do
+						if v == true then
+							hasSelectedActivity = true
+							selectedActivityIDs[x] = i
+							x = x + 1
+						end
+					end
+
+					if (tEnlistCatSelected == 0) then
+						print(L["fail. no category selected"])
+						C_Timer.After(0.4, function()
+							SkuOptions.Voice:OutputStringBTtts(L["fail. no category selected"], true, true, 0.1, true, nil, nil, 1, nil, nil, true)
+						end)
+						return
+					end
+					if (hasSelectedActivity == false) then
+						print(L["fail. no activity selected"])
+						C_Timer.After(0.4, function()
+							SkuOptions.Voice:OutputStringBTtts(L["fail. no activity selected"], true, true, 0.1, true, nil, nil, 1, nil, nil, true)
+						end)
+						return
+					end
+					if (tEnlistCatSelected == 120) and (tEnlistCurrentCommentText == "") then
+						print(L["fail. no comment for category custom entered"])
+						C_Timer.After(0.4, function()
+							SkuOptions.Voice:OutputStringBTtts(L["fail. no comment for category custom entered"], true, true, 0.1, true, nil, nil, 1, nil, nil, true)
+						end)
+						return
+					end
+
+					local newPlayerFriendlyEnabled = tEnlistRolesSelected[4].selected or false
+					local tResult = C_LFGList.CreateListing(selectedActivityIDs, newPlayerFriendlyEnabled);
+					--print("listed", tResult)
+
+				end,
+			}
+		end
+	end
+
+
+	--BROWSE
+	local tFrameName = ""
+	local tFriendlyName = L["Browse"]
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Button",
+		obj = _G["LFGBrowseFrame"],
+		textFirstLine = tFriendlyName,
+		textFull = "",
+		childs = {},
+	}
+	local tBrowseParent = aParentChilds[tFriendlyName].childs
+
+		local tFrameName = ""
+		local tFriendlyName = L["category"]
+		table.insert(tBrowseParent, tFriendlyName)
+		tBrowseParent[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = _G["LFGBrowseFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+		}
+		local tBrowseCatParent = tBrowseParent[tFriendlyName].childs
+
+			--categories
+			local info = UIDropDownMenu_CreateInfo();
+			local categories = C_LFGList.GetAvailableCategories();
+			if (#categories == 0) then
+				-- None button
+				local tFriendlyName = LFG_TYPE_NONE
+				table.insert(tBrowseCatParent, tFriendlyName)
+				tBrowseCatParent[tFriendlyName] = {
+					frameName = tFrameName,
+					RoC = "Child",
+					type = "Button",
+					obj = _G["LFGBrowseFrame"],
+					textFirstLine = SkuChat:Unescape(tFriendlyName),
+					textFull = SkuChat:Unescape(tCurrentGemTooltip),
+					childs = {},
+					click = false,
+				}   		
+			else
+				local currentSelectedValue = UIDropDownMenu_GetSelectedValue(self) or 0;
+				local foundChecked = false;
+				for i=1, #categories do
+					local name = C_LFGList.GetCategoryInfo(categories[i]);
+
+					info.text = name;
+					info.value = categories[i];
+					info.func = LFGBrowseCategoryButton_OnClick;
+					info.owner = self;
+					info.checked = currentSelectedValue == info.value;
+					info.classicChecks = true;
+					if (info.checked) then
+						UIDropDownMenu_SetSelectedValue(self, info.value);
+						foundChecked = true;
+					end
+
+					local tBrowseCategories = {
+						[1] = 2,
+						[2] = 114,
+						[3] = 116,
+						[4] = 118,
+						[5] = 120,
+					}
+
+					local tFriendlyName = name
+					if info.checked then
+						tFriendlyName = tFriendlyName.." ("..L["selected"]..")"
+					end
+					table.insert(tBrowseCatParent, tFriendlyName)
+					tBrowseCatParent[tFriendlyName] = {
+						frameName = "",
+						RoC = "Child",
+						type = "Button",
+						obj = _G["LFGBrowseFrame"],
+						textFirstLine = SkuChat:Unescape(tFriendlyName),
+						textFull = "",
+						childs = {},
+						func = function()
+							tBrowseResultsUpdate = true
+							tBrowseCatSelected = tBrowseCategories[i]
+							SkuLFGBrowse_DoSearch(tBrowseCategories[i])
+						end,            
+						click = true,
+					}   
+				end
+			end
+
+			--activities
+			local tFrameName = ""
+			local tFriendlyName = L["Activity"]
+			table.insert(tBrowseParent, tFriendlyName)
+			tBrowseParent[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGBrowseFrame"],
+				textFirstLine = tFriendlyName,
+				textFull = "",
+				childs = {},
+			}
+			local tBrowseActParent = tBrowseParent[tFriendlyName].childs
+
+			--build list of available activities
+			local tActivityList = {}
+			local activities = C_LFGList.GetAvailableActivities(tBrowseCatSelected)
+			if (#activities > 0) then
+				local organizedActivities = LFGUtil_OrganizeActivitiesByActivityGroup(activities);
+				local activityGroupIDs = GetKeysArray(organizedActivities);
+				LFGUtil_SortActivityGroupIDs(activityGroupIDs);
+
+				for _, activityGroupID in ipairs(activityGroupIDs) do
+					local activityIDs = organizedActivities[activityGroupID];
+					if (activityGroupID == 0) then
+						local buttonInfo = {}
+						for _, activityID in pairs(activityIDs) do
+							local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
+							tActivityList[#tActivityList + 1] = {title = string.gsub(activityInfo.fullName, "  ", " "), "", id = activityID}
+						end
+					else
+						-- Grouped activities.
+						local groupButtonInfo = {}
+						tActivityList[#tActivityList + 1] = {title = string.gsub(C_LFGList.GetActivityGroupInfo(activityGroupID), "  ", " "), id = activityGroupID}
+	
+						if (#activityGroupIDs == 1) then -- If we only have one activityGroup, do everything in one menu.
+							for _, activityID in pairs(activityIDs) do
+								local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
+								tActivityList[#tActivityList + 1] = {title = string.gsub(activityInfo.fullName, "  ", " "), id = activityID}
+							end
+						else -- If we have more than one group, do submenus.
+							for _, activityID in pairs(activityIDs) do
+								local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
+								tActivityList[#tActivityList + 1] = {title = string.gsub(activityInfo.fullName.." ("..string.gsub(C_LFGList.GetActivityGroupInfo(activityGroupID), "  ", " ")..")", "  ", " "), id = activityID}
+							end
+						end
+					end
+				end
+			end
+
+			--deselect all
+			local tFriendlyName = L["Deselect all"]
+			table.insert(tBrowseActParent, tFriendlyName)
+			tBrowseActParent[tFriendlyName] = {
+				frameName = "",
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGBrowseFrame"],
+				textFirstLine = tFriendlyName,
+				textFull = "",
+				childs = {},
+				func = function()
+					tBrowseActsSelected = {}
+					tBrowseActsSelected = {}
+					tBrowseResultsUpdate = true
+					SkuLFGBrowse_DoSearch(tBrowseCatSelected)
+				end,            
+				click = true,
+			}   
+
+			--add activities
+			for x = 1, #tActivityList do
+				local tFriendlyName = tActivityList[x].title
+				if tBrowseActsSelected[tActivityList[x].id] == true then
+					tFriendlyName = L["selected"].." "..tFriendlyName
+				end
+
+				table.insert(tBrowseActParent, tFriendlyName)
+				tBrowseActParent[tFriendlyName] = {
+					frameName = "",
+					RoC = "Child",
+					type = "Button",
+					obj = _G["LFGBrowseFrame"],
+					textFirstLine = SkuChat:Unescape(tFriendlyName),
+					textFull = "",
+					childs = {},
+					func = function()
+						if tBrowseActsSelected[tActivityList[x].id] == true then
+							tBrowseActsSelected[tActivityList[x].id] = nil
+						else
+							tBrowseActsSelected[tActivityList[x].id] = true
+						end
+						tBrowseResultsUpdate = true
+						local tidtable = {}
+						for i, v in pairs(tBrowseActsSelected) do
+							if v == true then
+								table.insert(tidtable, i)
+							end
+						end
+
+						SkuLFGBrowse_DoSearch(tBrowseCatSelected, tidtable)
+					end,            
+					click = true,
+				}   
+			end
+
+			--results
+			local tFrameName = ""
+			local tFriendlyName = L["Results"]
+			table.insert(tBrowseParent, tFriendlyName)
+			tBrowseParent[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G["LFGBrowseFrame"],
+				textFirstLine = tFriendlyName,
+				textFull = "",
+				childs = {},
+			}
+			tBrowseResultsParent = tBrowseParent[tFriendlyName].childs			
+			if tBrowseResultsParentResults then
+				tBrowseParent[tFriendlyName].childs = tBrowseResultsParentResults
+			end
+		
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Build_RolePollPopup(aParentChilds)
+
+	
+	local tButtons = {
+		[1] = _G["RolePollPopupRoleButtonTank"],
+		[2] = _G["RolePollPopupRoleButtonHealer"],
+		[3] = _G["RolePollPopupRoleButtonDPS"],
+	}
+
+	for x = 1, #tButtons do
+		if tButtons[x].checkButton:IsVisible() == true then
+			local tFriendlyName = _G[tButtons[x].role]
+			
+			if tButtons[x].checkButton:GetChecked() == true then
+				tFriendlyName = tFriendlyName.." ("..L["selected"]..")"
+			end
+
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = "",
+				RoC = "Child",
+				type = "Button",
+				obj = tButtons[x],
+				textFirstLine = SkuChat:Unescape(tFriendlyName),
+				textFull = "",
+				childs = {},
+				func = function()
+					tButtons[x]:Click(tButtons[x])
+					C_Timer.After(0.3, function()
+						SkuOptions.currentMenuPosition:OnUpdate()
+					end)
+				end,            
+				click = true,
+			}
+		end
+	end
+
+			
+	if _G["RolePollPopupAcceptButton"]:IsEnabled() == true then
+		local tFriendlyName = _G["RolePollPopupAcceptButton"]:GetText()
+
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = "",
+			RoC = "Child",
+			type = "Button",
+			obj = _G["RolePollPopupAcceptButton"],
+			textFirstLine = SkuChat:Unescape(tFriendlyName),
+			textFull = "",
+			childs = {},
+			func = function()
+				_G["RolePollPopupAcceptButton"]:Click(_G["RolePollPopupAcceptButton"])
+			end,            
+			click = true,
+		}
+	end
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_CharacterFrame(aParentChilds)
 	_G["GearManagerToggleButton"]:Click(_G["GearManagerToggleButton"])
 
@@ -1826,13 +2906,6 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				}				
 			end
 		end
-
-
-
-
-
-
-
 
 end
 
@@ -3552,7 +4625,4 @@ function SkuCore:QuestFrame(aParentChilds)
 						
 		end
 	end
-
-
-
 end

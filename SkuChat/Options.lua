@@ -298,6 +298,18 @@ SkuChat.options = {
 				end)
 			end,
 		},
+		neverResetQueues = {
+			order = 8,
+			name = L["Never reset audio queues"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].neverResetQueues = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].neverResetQueues
+			end,
+		},
 	},
 }
 
@@ -320,6 +332,7 @@ SkuChat.defaults = {
 	WowTtsVolume = 50,
 	WowTtsTags = true,
 	joinSkuChannel = true,
+	neverResetQueues = false,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------

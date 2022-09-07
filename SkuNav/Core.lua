@@ -63,6 +63,7 @@ local WaypointCacheLookupCacheNameForId = {}
 
 local WaypointCacheLookupPerContintent = {}
 function SkuNav:CreateWaypointCache(aAddLocalizedNames)
+	local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 	--print("CreateWaypointCache")
 	WaypointCache = {}
 	WaypointCacheLookupAll = {}
@@ -111,7 +112,7 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 								tRolesString = tRolesString..";"..tSubname
 							end
 							for sp = 1, tNumberOfSpawns do
-								local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
+								local _, worldPosition = C_MapGetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
 								if worldPosition then
 									local tWorldX, tWorldY = worldPosition:GetXY()
 									local tNewIndex = #WaypointCache + 1
@@ -150,61 +151,63 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 		end
 	end
 
-	--add objects
-	for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
-		--we don't want stuff like ores, herbs, etc.
-		if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints == true then
-			if SkuDB.objectDataTBC[i] then
-				local tSpawns = SkuDB.objectDataTBC[i][4]
-				if tSpawns then
-					for is, vs in pairs(tSpawns) do
-						local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
-						--we don't care for stuff that isn't in the open world
-						if isUiMap then
-							local tData = SkuDB.InternalAreaTable[is]
-							if tData then
-								local tNumberOfSpawns = #vs
-								for sp = 1, tNumberOfSpawns do
-									local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
-									if worldPosition then
-										local tWorldX, tWorldY = worldPosition:GetXY()
-		
-										local tNewIndex = #WaypointCache + 1
 
-										local tRessourceType = ""
-										if SkuDB.objectResourceNames[Sku.Loc][v] == 1 then
-											tRessourceType = ";"..L["herbalism"]
-										elseif SkuDB.objectResourceNames[Sku.Loc][v] == 2 then
-											tRessourceType = ";"..L["mining"]
+	C_Timer.After(1, function() --this is to avoid script timeouts as the full cache building could take to long
+		--add objects
+		for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
+			--we don't want stuff like ores, herbs, etc. as default
+			if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints == true then
+				if SkuDB.objectDataTBC[i] then
+					local tSpawns = SkuDB.objectDataTBC[i][4]
+					if tSpawns then
+						for is, vs in pairs(tSpawns) do
+							local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
+							--we don't care for stuff that isn't in the open world
+							if isUiMap then
+								local tData = SkuDB.InternalAreaTable[is]
+								if tData then
+									local tNumberOfSpawns = #vs
+									for sp = 1, tNumberOfSpawns do
+										local _, worldPosition = C_Map.GetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
+										if worldPosition then
+											local tWorldX, tWorldY = worldPosition:GetXY()
+			
+											local tNewIndex = #WaypointCache + 1
+
+											local tRessourceType = ""
+											if SkuDB.objectResourceNames[Sku.Loc][v] == 1 then
+												tRessourceType = ";"..L["herbalism"]
+											elseif SkuDB.objectResourceNames[Sku.Loc][v] == 2 then
+												tRessourceType = ";"..L["mining"]
+											end
+
+											WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
+											WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(3, i, sp, is)] =  tNewIndex
+											if not WaypointCacheLookupPerContintent[tData.ContinentID] then
+												WaypointCacheLookupPerContintent[tData.ContinentID] = {}
+											end
+											WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+											WaypointCache[tNewIndex] = {
+												name = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
+												role = "",
+												typeId = 3,
+												dbIndex = i,
+												spawn = sp,
+												contintentId = tData.ContinentID,
+												areaId = is,
+												uiMapId = isUiMap,
+												worldX = tWorldX,
+												worldY = tWorldY,
+												createdAt = GetTime(),
+												createdBy = "SkuNav",
+												size = 1,
+												spawnNr = sp,
+												links = {
+													byId = nil,
+													byName = nil,
+												},
+											}
 										end
-
-
-										WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
-										WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(3, i, sp, is)] =  tNewIndex
-										if not WaypointCacheLookupPerContintent[tData.ContinentID] then
-											WaypointCacheLookupPerContintent[tData.ContinentID] = {}
-										end
-										WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
-										WaypointCache[tNewIndex] = {
-											name = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
-											role = "",
-											typeId = 3,
-											dbIndex = i,
-											spawn = sp,
-											contintentId = tData.ContinentID,
-											areaId = is,
-											uiMapId = isUiMap,
-											worldX = tWorldX,
-											worldY = tWorldY,
-											createdAt = GetTime(),
-											createdBy = "SkuNav",
-											size = 1,
-											spawnNr = sp,
-											links = {
-												byId = nil,
-												byName = nil,
-											},
-										}
 									end
 								end
 							end
@@ -213,78 +216,78 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 				end
 			end
 		end
-	end
 
-	--add custom
-	if SkuOptions.db.global[MODULE_NAME].Waypoints then
-		for tIndex, tData in ipairs(SkuOptions.db.global[MODULE_NAME].Waypoints) do
-			--check if that wp was deleted
-			if tData[1] ~= false then
-				local tName = tData.names[Sku.Loc]
+		C_Timer.After(1, function() --this is to avoid script timeouts
+			--add custom
+			if SkuOptions.db.global[MODULE_NAME].Waypoints then
+				for tIndex, tData in ipairs(SkuOptions.db.global[MODULE_NAME].Waypoints) do
+					--check if that wp was deleted
+					if tData[1] ~= false then
+						local tName = tData.names[Sku.Loc]
 
-				local tWaypointData = tData
-				if tWaypointData then
-					if tWaypointData.contintentId then
-						local isUiMap = SkuNav:GetUiMapIdFromAreaId(tWaypointData.areaId)
-						local tWpIndex = (#WaypointCache + 1)
-						local tOldLinks = {
-							byId = nil,
-							byName = nil,
-						}
-						if WaypointCacheLookupAll[tName] then
-							if WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId] then
-								WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId][WaypointCacheLookupAll[tName]] = nil
+						local tWaypointData = tData
+						if tWaypointData then
+							if tWaypointData.contintentId then
+								local isUiMap = SkuNav:GetUiMapIdFromAreaId(tWaypointData.areaId)
+								local tWpIndex = (#WaypointCache + 1)
+								local tOldLinks = {
+									byId = nil,
+									byName = nil,
+								}
+								if WaypointCacheLookupAll[tName] then
+									if WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId] then
+										WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId][WaypointCacheLookupAll[tName]] = nil
+									end
+									tOldLinks = WaypointCache[WaypointCacheLookupAll[tName]].links
+									tWpIndex = WaypointCacheLookupAll[tName]
+								end
+
+								WaypointCache[tWpIndex] = {
+									name = tName,
+									role = "",
+									typeId = 1,
+									dbIndex = tIndex,
+									spawn = 1,
+									contintentId = tWaypointData.contintentId,
+									areaId = tWaypointData.areaId,
+									uiMapId = isUiMap,
+									worldX = tWaypointData.worldX,
+									worldY = tWaypointData.worldY,
+									createdAt = tWaypointData.createdAt,
+									createdBy = tWaypointData.createdBy,
+									size = tWaypointData.size or 1,
+									comments = tWaypointData.lComments or {["deDE"] = {},["enUS"] = {},},
+									spawnNr = nil,
+									links = tOldLinks,
+								}
+
+								WaypointCacheLookupAll[tName] = tWpIndex
+								WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)] =  tWpIndex
+
+								if not WaypointCacheLookupPerContintent[tWaypointData.contintentId] then
+									WaypointCacheLookupPerContintent[tWaypointData.contintentId] = {}
+								end
+								WaypointCacheLookupPerContintent[tWaypointData.contintentId][tWpIndex] = tName
 							end
-							tOldLinks = WaypointCache[WaypointCacheLookupAll[tName]].links
-							tWpIndex = WaypointCacheLookupAll[tName]
 						end
-
-						WaypointCache[tWpIndex] = {
-							name = tName,
-							role = "",
-							typeId = 1,
-							dbIndex = tIndex,
-							spawn = 1,
-							contintentId = tWaypointData.contintentId,
-							areaId = tWaypointData.areaId,
-							uiMapId = isUiMap,
-							worldX = tWaypointData.worldX,
-							worldY = tWaypointData.worldY,
-							createdAt = tWaypointData.createdAt,
-							createdBy = tWaypointData.createdBy,
-							size = tWaypointData.size or 1,
-							comments = tWaypointData.lComments or {["deDE"] = {},["enUS"] = {},},
-							spawnNr = nil,
-							links = tOldLinks,
-						}
-
-						WaypointCacheLookupAll[tName] = tWpIndex
-						WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)] =  tWpIndex
-
-						if not WaypointCacheLookupPerContintent[tWaypointData.contintentId] then
-							WaypointCacheLookupPerContintent[tWaypointData.contintentId] = {}
-						end
-						WaypointCacheLookupPerContintent[tWaypointData.contintentId][tWpIndex] = tName
+					else
+						dprint("tried caching deleted custom wp", tIndex, tData)
 					end
 				end
-			else
-				dprint("tried caching deleted custom wp", tIndex, tData)
 			end
-		end
-	end
 
-	SkuNav:LoadLinkDataFromProfile()
+			SkuNav:LoadLinkDataFromProfile()
+		end)
+	end)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:LoadLinkDataFromProfile()
-	--if 1 == 1 then return end
-	--print("LoadLinkDataFromProfile")
 	if SkuOptions.db.global[MODULE_NAME].Links then
 		SkuNav:CheckAndUpdateProfileLinkData()
 		for tSourceWpID, tSourceWpLinks in pairs(SkuOptions.db.global[MODULE_NAME].Links) do
 			if not WaypointCacheLookupIdForCacheIndex[tSourceWpID] then
-				dprint("fail NO WaypointCacheLookupIdForCacheIndex[tSourceWpID]", tSourceWpID, tSourceWpLinks)
+				dprint("this shouldn't happen NO WaypointCacheLookupIdForCacheIndex[tSourceWpID]", tSourceWpID, tSourceWpLinks)
 			end
 			local tSourceWpName = WaypointCache[WaypointCacheLookupIdForCacheIndex[tSourceWpID]].name
 			WaypointCacheLookupCacheNameForId[tSourceWpName] = tSourceWpID
@@ -310,13 +313,11 @@ end
 function SkuNav:CheckAndUpdateProfileLinkData()
 	local tDeletedCounter = 0
 
-	--if 1 == 1 then return end
-	--print("CheckAndUpdateProfileLinkData")
 	if SkuOptions.db.global[MODULE_NAME].Links then
 		for tSourceWpID, tSourceWpLinks in pairs(SkuOptions.db.global[MODULE_NAME].Links) do
 			if not WaypointCacheLookupIdForCacheIndex[tSourceWpID] then
 				local typeId, dbIndex, spawn, areaId = SkuNav:GetWpDataFromId(tSourceWpID)
-				dprint("UPDATED source deleted, not in db", tSourceWpID, typeId, dbIndex, spawn, areaId)
+				dprint("this shouldn't happen UPDATED source deleted, not in db", tSourceWpID, typeId, dbIndex, spawn, areaId)
 				SkuOptions.db.global[MODULE_NAME].Links[tSourceWpID] = nil
 				tDeletedCounter = tDeletedCounter + 1
 			else
@@ -324,7 +325,7 @@ function SkuNav:CheckAndUpdateProfileLinkData()
 				if SkuNav:GetWaypointData2(tSourceWpName) then
 					for tTargetWpID, tTargetWpDistance in pairs(tSourceWpLinks) do
 						if not WaypointCacheLookupIdForCacheIndex[tTargetWpID] then
-							dprint("UPDATED Target deleted, not in db", tSourceWpID, tSourceWpLinks, tSourceWpName, "-", tTargetWpID, tTargetWpDistance, WaypointCacheLookupIdForCacheIndex[tTargetWpID])
+							dprint("this shouldn't happen UPDATED Target deleted, not in db", tSourceWpID, tSourceWpLinks, tSourceWpName, "-", tTargetWpID, tTargetWpDistance, WaypointCacheLookupIdForCacheIndex[tTargetWpID])
 							SkuOptions.db.global[MODULE_NAME].Links[tSourceWpID][tTargetWpID] = nil
 							tDeletedCounter = tDeletedCounter + 1
 						else
@@ -369,10 +370,6 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------
 function SkuNav:SaveLinkDataToProfile(aWpName)
-	--if 1 == 1 then return end
-	--print("SaveLinkDataToProfile", aWpName)
-	--local beginTime = debugprofilestop()
-	
 	if aWpName then
 		--SkuOptions.db.global[MODULE_NAME].Links[WaypointCacheLookupCacheNameForId[aWpName]] = WaypointCache[WaypointCacheLookupAll[aWpName]].links.byName
 		SkuOptions.db.global[MODULE_NAME].Links[WaypointCacheLookupCacheNameForId[aWpName]] = {}
@@ -394,8 +391,6 @@ function SkuNav:SaveLinkDataToProfile(aWpName)
 			end
 		end
 	end
-
-	--dprint("End SaveLinkDataToProfile", debugprofilestop() - beginTime)
 end
 
 ------------------------------------------------------------------------------------------------------------------------
@@ -607,8 +602,6 @@ function SkuNav:ListWaypoints2(aSort, aFilter, aAreaId, aContinentId, aExcludeRo
 	if not aContinentId or not WaypointCacheLookupPerContintent[aContinentId] then
 		return
 	end
-
-
 
 	local tWpList = {}
 	for tIndex, tName in pairs(WaypointCacheLookupPerContintent[aContinentId]) do
@@ -987,15 +980,17 @@ function SkuNav:GetCurrentAreaId(aUnitId)
 	local tMinimapZoneText = GetMinimapZoneText()
 	local tAreaId
 	for i, v in pairs(SkuDB.InternalAreaTable) do
-		if (v.AreaName_lang[Sku.Loc] == tMinimapZoneText)  and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
+		if (v.AreaName_lang[Sku.Loc] == tMinimapZoneText) and (SkuNav:GetUiMapIdFromAreaId(i) == tPlayerUIMap) then
 			tAreaId = i
 			break
 		end
 	end
 	if not tAreaId then
-		local tExtMapId = SkuDB.ExternalMapID[SkuNav:GetBestMapForUnit("player")]
+		local tExtMapId
 		if aUnitId then
 			tExtMapId = SkuDB.ExternalMapID[SkuNav:GetBestMapForUnit(aUnitId)]
+		else
+			tExtMapId = SkuDB.ExternalMapID[SkuNav:GetBestMapForUnit("player")]
 		end
 		if tExtMapId then
 			for i, v in pairs(SkuDB.InternalAreaTable) do
@@ -2606,7 +2601,6 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	--routedata reset to default on first login with wrath client
 	if SkuOptions.db.profile[MODULE_NAME].wotlkMapReset ~= true then
 		SkuOptions.db.profile[MODULE_NAME].wotlkMapReset = true
-		print("FIRST")
 		local t = SkuDB.routedata["global"]["Waypoints"]
 		SkuOptions.db.global["SkuNav"].Waypoints = t
 		local tl = SkuDB.routedata["global"]["Links"]
@@ -2615,7 +2609,7 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 
 
 	SkuNav:CreateWaypointCache()
-	SkuNav:LoadLinkDataFromProfile()
+	--SkuNav:LoadLinkDataFromProfile()
 
 	if _G["SkuNavMMMainFrameZoneSelect"] then
 		C_Timer.NewTimer(1, function()
@@ -2969,6 +2963,7 @@ function SkuNav:GetNpcRoles(aNpcName, aNpcId, aLocale)
 			if bit.band(i, SkuDB.NpcData.Data[aNpcId][SkuDB.NpcData.Keys["npcFlags"]]) > 0 then
 				--dprint(aNpcName, aNpcId, i, v)
 				rRoles[#rRoles+1] = v
+				break
 			end
 		end
 	end
@@ -3151,4 +3146,176 @@ function SkuNav:GetWpDataFromId(id)
 	end	
 
 	return typeId, dbIndex, spawn, areaId
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+-- special navigation tasks (if no coords)
+--------------------------------------------------------------------------------------------------------------------------------------
+local tCurrentTask = nil
+local tCurrentStep = 0
+local tCurrentMovementStartAt = 0
+local tCurrentMovementLeft = -1
+
+--control frame to register all required events to trigger tasks
+local f = _G["SkuNavNavigationModeWoCoordinatesControl"] or CreateFrame("Frame", "SkuNavNavigationModeWoCoordinatesControl", UIParent)
+f:SetScript("OnEvent", function(self, aEvent) 
+	SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aEvent)
+end)
+f:RegisterEvent("LOADING_SCREEN_ENABLED")
+
+--------------------------------------------------------------------------------------------------------------------------------------
+--helper to get the direction in degrees
+local function NavigationModeWoCoordinatesGetDirection()
+	local x, y = UnitPosition("player")
+	local a, b, afinal = SkuNav:GetDirectionTo(x, y, 30000, y)
+	return afinal + 180
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+--checks if a task should start or stopp; can be called from anywhere with a string
+function SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aStringToCheck)
+	local tTaskId
+
+	aStringToCheck = SkuChat:Unescape(aStringToCheck)
+
+	if tCurrentTask then
+		for i, v in pairs(SkuDB.Tasks[tCurrentTask].endTriggers) do
+			if v == aStringToCheck then
+				SkuNav:NavigationModeWoCoordinatesNextStep(nil, nil, true)
+				SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
+				SkuOptions.Voice:OutputStringBTtts(L["spezialaufgabe abgebrochen"], true, true, 0.2, nil, nil, nil, 2, nil, true)						
+				print(L["spezialaufgabe abgebrochen"])
+			end
+		end
+	end
+
+	if SkuDB.Tasks[aStringToCheck] then
+		tTaskId = aStringToCheck
+	end
+
+	if tTaskId then
+		SkuNav:NavigationModeWoCoordinatesNextStep(nil, nil, true)
+		SkuNav:NavigationModeWoCoordinatesNextStep(tTaskId, true)
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+--gets to next step of current task or starts/stopps a task
+function SkuNav:NavigationModeWoCoordinatesNextStep(aTaskId, aStart, aStop)
+	if aStop then
+		tCurrentStep = 0
+		tCurrentMovementStartAt = 0
+		tCurrentMovementLeft = -1
+		tCurrentTask = nil
+		return
+	end
+
+	if tCurrentStep == 0 and not aStart then
+		return
+	end
+
+	if aStart then	
+		tCurrentTask = aTaskId
+		tCurrentMovementStartAt = 0
+		tCurrentMovementLeft = -1
+		tCurrentStep = 1		
+	else
+		tCurrentStep = tCurrentStep + 1
+	end
+	
+	local tPrefix = ""
+	if tCurrentStep == 1 then
+		tPrefix = L["Achtung: Start einer spezialaufgabe. Halte dich exakt an die Anweisungen! "]
+	end
+
+	if tCurrentStep <= #SkuDB.Tasks[tCurrentTask] then
+		local tComment = SkuDB.Tasks[tCurrentTask][tCurrentStep].comment or ""
+		if SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "turn" then
+			SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
+
+			SkuOptions.Voice:OutputStringBTtts(tPrefix..L["schritt "]..tCurrentStep..L[": drehen auf "]..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..". "..tComment, true, true, 0.2, nil, nil, nil, 2, nil, true)
+			print(tPrefix..L["schritt "]..tCurrentStep..L[": drehen auf "]..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..". "..tComment)
+		elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "forward" then
+			SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
+
+			SkuOptions.Voice:OutputStringBTtts(tPrefix..L["schritt "]..tCurrentStep..L[": vorwärts von "]..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..L[" bis 0"]..". "..tComment, true, true, 0.2, nil, nil, nil, 2, nil, true)						
+			print(tPrefix..L["schritt "]..tCurrentStep..L[": vorwärts von "]..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..L[" bis 0"]..". "..tComment)
+			tCurrentMovementLeft = SkuDB.Tasks[tCurrentTask][tCurrentStep].value
+		end
+	else
+		tCurrentTask = nil
+		tCurrentStep = 0
+		tCurrentMovementStartAt = 0
+		tCurrentMovementLeft = -1
+		SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
+		SkuOptions.Voice:OutputStringBTtts(L["spezialaufgabe abgeschlossen"], true, true, 0.2, nil, nil, nil, 2, nil, true)						
+		print(L["spezialaufgabe abgeschlossen"])
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+--[[
+evaluates all valid movement actions for the current task
+	possible values for aTriggerName:
+	TurnLeftStart
+	TurnLeftStop
+	TurnRightStart
+	TurnRightStop
+	MoveForwardStart
+	MoveForwardStop
+	MoveBackwardStart
+	MoveBackwardStop
+]]
+function SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT(aTriggerName)
+	SkuNav:NavigationModeWoCoordinatesRecordForward(aTriggerName)
+
+	if tCurrentTask then
+		if SkuDB.Tasks[tCurrentTask][tCurrentStep] then
+			for i, v in pairs(SkuDB.Tasks[tCurrentTask][tCurrentStep].triggers) do
+				if v == aTriggerName then
+					if SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "turn" then
+						local tDegree = math.floor(NavigationModeWoCoordinatesGetDirection())
+						SkuOptions.Voice:OutputStringBTtts(tDegree, true, true, 0.2, nil, nil, nil, 2, nil, true)						
+						if tDegree >= SkuDB.Tasks[tCurrentTask][tCurrentStep].value - 2 and tDegree <= SkuDB.Tasks[tCurrentTask][tCurrentStep].value + 2  then
+							SkuNav:NavigationModeWoCoordinatesNextStep()
+						end
+					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "forward" then
+						if aTriggerName == "MoveForwardStart" then
+							tCurrentMovementStartAt = GetTimePreciseSec()
+						elseif aTriggerName == "MoveForwardStop" then
+							tCurrentMovementLeft = tCurrentMovementLeft - (GetTimePreciseSec() - tCurrentMovementStartAt)
+							SkuOptions.Voice:OutputStringBTtts(string.format("%.1f", tCurrentMovementLeft), true, true, 0.2, nil, nil, nil, 2, nil, true)						
+							if tCurrentMovementLeft <= 0 then
+								SkuNav:NavigationModeWoCoordinatesNextStep()
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+-- interal helpers for recording
+local tCurrentMovementStartAtRec = -1
+local tCurrentMovementDone = 0
+function SkuNav:NavigationModeWoCoordinatesRecordForwardStart()
+	tCurrentMovementStartAtRec = 0
+	tCurrentMovementDone = 0
+end
+function SkuNav:NavigationModeWoCoordinatesRecordForwardStop()
+	tCurrentMovementStartAtRec = -1
+	tCurrentMovementDone = 0
+end
+
+function SkuNav:NavigationModeWoCoordinatesRecordForward(aTriggerName)
+	if tCurrentMovementStartAtRec > -1 then
+		if aTriggerName == "MoveForwardStart" then
+			tCurrentMovementStartAtRec = GetTimePreciseSec()
+		elseif aTriggerName == "MoveForwardStop" then
+			tCurrentMovementDone = tCurrentMovementDone + (GetTimePreciseSec() - tCurrentMovementStartAtRec)
+			print(tCurrentMovementDone)
+		end
+	end
 end

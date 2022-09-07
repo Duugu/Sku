@@ -527,10 +527,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarName, aButtonId)
-	--print(aActionType, aId, aSubType, aActionBarName, aButtonId)
+	print(aActionType, aId, aSubType, aActionBarName, aButtonId)
 	local rName = L["Empty"]
 
-	if aActionType then
+	if aActionType and aId > 0 then
 		if aActionType == "spell" then
 			local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(aId)
 			rName = name
@@ -549,6 +549,7 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 			end
 		elseif aActionType == "pet" then
 			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(aId);
+			print(name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID)
 			if name then
 				rName = _G[name] or name
 			end

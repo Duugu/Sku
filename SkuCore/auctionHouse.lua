@@ -1465,6 +1465,13 @@ function SkuCore:AuctionTooltipHook()
    self:AddLine("test 3")
    ]]
 end
+
+function SkuCore:AuctionHouseOnPLAYER_LEAVING_WORLD()
+   SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = {}
+   SkuCore:AuctionCleanupAuctionDBHistory()
+
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseOnLogin()
    hooksecurefunc(DEFAULT_CHAT_FRAME, "AddMessage", SkuCore.AuctionChatAddMessageHook)

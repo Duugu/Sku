@@ -743,10 +743,10 @@ SkuAuras.valuesDefault = {
          tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Priester hat"],
          friendlyName = L["priester"],
       },
-      --["Death Knight"] = {
-         --tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Todesritter hat"],
-         --friendlyName = L["todesritter"],
-      --},
+      ["Death Knight"] = {
+         tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Todesritter hat"],
+         friendlyName = L["todesritter"],
+      },
       ["Shaman"] = {
          tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Schamane hat"],
          friendlyName = L["schamane"],

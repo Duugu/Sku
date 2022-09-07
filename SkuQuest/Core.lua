@@ -1335,6 +1335,7 @@ function SkuQuest:GetAllQuestObjects()
 	return SkuQuest.questObjects
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
+local sfind = string.find
 function SkuQuest:UpdateAllQuestObjects()
 	SkuQuest.questObjects = {}
 	if GetNumQuestLogEntries() > 0 then
@@ -1347,7 +1348,7 @@ function SkuQuest:UpdateAllQuestObjects()
 							dprint(x, y, description)
 						elseif objectiveType == "item" then
 							for i, v in pairs(SkuDB.itemLookup[Sku.L["locale"]]) do
-								if string.find(description, v) then
+								if sfind(description, v) then
 									if SkuDB.itemDataTBC[i] and SkuDB.itemDataTBC[i][SkuDB.itemKeys.objectDrops] then
 										for _, tObjectId in pairs(SkuDB.itemDataTBC[i][SkuDB.itemKeys.objectDrops]) do
 											dprint(v, tObjectId, SkuDB.objectLookup[Sku.L["locale"]][tObjectId])

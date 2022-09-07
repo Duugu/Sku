@@ -1,9 +1,9 @@
 ## Interface: 30400
 ## Interface-Wrath: 30400
-## Title: Sku (30.11)
+## Title: Sku (30.12)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 30.11
+## Version: 30.12
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
 SkuAudioData\assets\SkuAudioDataLenIndex.lua
@@ -59,6 +59,7 @@ SkuDB\assets\routedata_deDE.lua
 SkuDB\assets\routedata_enUS.lua
 SkuDB\assets\routedata_global.lua
 SkuDB\assets\wiki.lua
+SkuDB\assets\tasks.lua
 
 SkuDB\assets\WotLK\quests.lua
 SkuDB\assets\WotLK\quests_fixes.lua
