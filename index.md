@@ -8,13 +8,71 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.11](https://github.com/Duugu/Sku/releases/download/r30.11/Sku-r30.11-wrath.zip) (Sep 3rd, 2022)<br>
+- [Sku r30.12](https://github.com/Duugu/Sku/releases/download/r30.12/Sku-r30.12-wrath.zip) (Sep 7th, 2022)<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 - [wow_menu r3.4a](https://github.com/Duugu/wow_menu/releases/download/r3.4a/wow_menu-r3.4a-wrath.zip) (Sep 1st, 2022)
 
 *Old updates:* <br>
 
 # Release notes
+
+## Changes in Sku r30.12
+- There are new key bindings under Core > Game key bindings:<br>
+	- Under the existing category interface:
+		- TOGGLE LFG WINDOW
+		- TOGGLE LFG LISTING TAB
+		- TOGGLE LFG BROWSE TAB
+		- TOGGLE ACHIEVEMENT WINDOW
+		- TOGGLE STATISTICS WINDOW<
+	- Under the new category: vehicle control
+		- VEHICLE EXIT
+		- VEHICLE PREV SEAT
+		- VEHICLE NEXT SEAT
+		- VEHICLE AIM UP
+		- VEHICLE AIM DOWN
+		- VEHICLE AIM INCREMENT
+		- VEHICLE AIM DECREMENT
+- New feature: the LFG tool is accessible<br>
+The LFG tool is a very complex feature. I did a bunch of test, but of course not in every situation.<br>
+Please carefully test every possible scenario. Solo, in parties, as a leader, as a party member, etc. If possible do that with assistance of a sighted player, to check if everything is working as intended!<br>
+Usage:<br>
+The LFG window is bound to the key I as default. As that key is used by the sku addon for the "turn to beacon" feature, you need to bind the LFG windows to a new key to use it. There is a new binding named "TOGGLE LFG WINDOW" (under Core > Game key binds > assign key > interface). <br>
+	- To enlist yourself (if not in a party) or the full party (as a leader):<br>
+		- open the LFG window
+		- go to "Enlist" and select your role(s)
+		- go down and select a category for your post (dungeons, raids, Quest & zones, PvP, Custom)
+		- go down and select actions from that category. Cou can check/uncheck as much categories as you want. You need to select at least one activity.
+		- go down and enter a commen for your post (option, except for category "custom"). Caution: you need to exit the comment enter mode with Escape. Not with Enter!
+		- Go down and select "List self" or "List group" if you are in a party
+		- Your LFG request will be listed. There will be a addon error. That seems to be a bug in the Blizzard interface. Please just ignore that.<
+	- To browse the list of available LFG posts:
+		- go to browse
+		- go down and select a category
+		- (Option) select the activities you are interested in. If you don'T select activities the list will contain all activities from the selected category (for example all dungeons in the world).
+		- go down to "results", go right and down to see the list of found LFG requests. If there is only one entry "Refresh list", then the list is empty. Select another category with more LFG posts (dungeons should be quite busy). Each result entry has a tooltip with more details.
+		- Go right on any result entry and do a left click to open the context menu and select actions for that entry (Request invite, Whisper party leader, etc.)
+- The Local menu now shows options on the LFG role poll popup.
+- Added all spells from Wrath to the spell database. That should fix issues with auras using new spells.
+- Auras using "own resource" are now covering death knights rune power too.
+- Menu items like bag slots, talents, etc. are dynamically updated on changes like left/right click, split, destroy, etc.
+- Fixed the role selection in the talent menu.
+- Added a new option "Chat > Options > Never reset audio queues". Default: Off. Don't enable it if you don't know what it means.
+- Fixed a bug with item rating for death knights that was blocking item tooltips. Now there are just no ratings for this class. :)
+- Fixed an issue that was occuring on reload.
+- Fixed a bug where Core > Action bars failed to show bars/button if the player was controling a pet or vehicle and the main action bar was replaced by the pet/vehicle bar.
+- New feature: special tasks
+This feature is guiding you in tasks/quest/scenarios where no coordinates and therefore waypoints and routes available.<br>
+An example is one of the very first death knight quests, "Death comes from above", in the death knight starting area.<br>
+The feature automatically detects those scenarios and is starting the correspondant special task. It then is providing instructions via voice. All instructions are added to the chat too, if you need to re-check them.<br>
+The feature is telling you how much you need to turn left and right and move forward.<br>
+You need to exactly follow the instructions. If the feature says "do not use any other keys except left, right and forward", then do not use any other keys until the task is completed or canceled. Under no circumstances. The feature will break if you are using other movement keys (like backward, strafe, autorun, etc.).<br>
+The feature will output your direction and forward movement every time you are stopping turning/movement.<br>
+For the example quest "Death comes from above" in the death knight starting area, the special task will start if you are entering the orb, and getting control over the orb (will take a few seconds, just wait).<br>
+The first step will be to turn to 144 degrees. Use left/right to turn exactly (+/- 2 degrees) to turn to 144. DO NOT MOVE. Only turn. On turn steps do not use any other keys than left and right.<br>
+If you have hit 114 the feature detects that an moves to step 2. That will be to move forward from 3.4 to 0. 3.4 is the overall time you need to press the forward key in seconds. You can do that in small incremental steps. Press forward very short. The number will decrease. Do that again, and again, until the number is 0. Do not move further than 0. Caution! You need to hit 0 EXACTLY, or the feature will break! Do not move further. No even 0.1 seconds. On move forward steps do not use any other keys than Forward. Not backward, not left/right, not strafe... nothing. just forward.<br>
+If you reach 0 the feature will move to step 3 and will provide the relevant instructions on what to do. Step 3 will be a turning step again. Proceede as above.
+Just complete all steps, and the quest should be done.<br>
+Remember: do not use any other keys than the key or keys that are valid for the current step while on a special task. If the step is turning, use turn left/right only. If the step is moving forward, use moving forward only. If you use other keys, the feature will break. You would have to abort the quest and start over.
 
 ## Initial update for the Wrath of the Lich King pre-patch
 
