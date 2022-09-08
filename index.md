@@ -8,13 +8,20 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.12](https://github.com/Duugu/Sku/releases/download/r30.12/Sku-r30.12-wrath.zip) (Sep 7th, 2022)<br>
+- [Sku r30.13](https://github.com/Duugu/Sku/releases/download/r30.13/Sku-r30.13-wrath.zip) (Sep 8th, 2022)<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 - [wow_menu r3.4a](https://github.com/Duugu/wow_menu/releases/download/r3.4a/wow_menu-r3.4a-wrath.zip) (Sep 1st, 2022)
 
 *Old updates:* <br>
 
 # Release notes
+
+## Changes in Sku r30.13
+- Fixed the issue with closing auction house on posting multiple auctions. Thanks, @samalam.
+- Fixed the issue with closing menu on changing chat tab configs.
+- Removed the overlooked debug output on action bar configuration.
+- The "all bags" menu will not show keys from the keyring anymore.
+- The auras property "spell name" should again list each spell name only once.
 
 ## Changes in Sku r30.12
 - There are new key bindings under Core > Game key bindings:<br>
