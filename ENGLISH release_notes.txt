@@ -3,6 +3,14 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.13
+	- Fixed the issue with closing auction house on posting multiple auctions. Thanks, @samalam.
+	- Fixed the issue with closing menu on changing chat tab configs.
+	- Removed the overlooked debug output on action bar configuration.
+	- The "all bags" menu will not show keys from the keyring anymore.
+	- The auras property "spell name" should again list each spell name only once.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.12
 	- There are new key bindings under Core > Game key bindings:
 		Under the existing category interface:

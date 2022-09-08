@@ -94,7 +94,7 @@ SkuGenericMenuItem = {
 			end
 
 			self.parent.children = {}
-			SkuCore:CheckFrames()						
+			SkuCore:CheckFrames(nil, true)						
 			tParent:BuildChildren(self.parent)
 
 			tParent:OnSelect()

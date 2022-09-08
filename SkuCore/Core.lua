@@ -2682,8 +2682,8 @@ end
 
 -------------------------------------------------------------------------------------------------
 ---@param aForceLocalRoot bool force the audio menu to return to the "Local" root element if there are new childs in Local
-function SkuCore:CheckFrames(aForceLocalRoot)
-	--print("++CheckFrames", aForceLocalRoot)
+function SkuCore:CheckFrames(aForceLocalRoot, aDontClose)
+	dprint("++CheckFrames", aForceLocalRoot)
 
 	if SkuOptions.db.profile["SkuOptions"].localActive == false then
 		return
@@ -2698,7 +2698,6 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 
 	SkuCore.GossipList = {}
 	C_Timer.After(0.01, function() --This is because the content of some frames is not instantly available on show. We do need to wait a few milliseconds on it.
-		--dprint("CheckFrames", aForceLocalRoot)
 		SkuCore.GossipList = {}
 		local tOpenFrames = {}
 
@@ -2734,8 +2733,6 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 
 			CleanUpGossipList(tGossipList)
 			SkuCore.GossipList = tGossipList
-			--print("SkuOptions.currentMenuPosition", SkuOptions.currentMenuPosition)
-			--print("SkuOptions.currentMenuPosition.name", SkuOptions.currentMenuPosition.name)
 			local tIndex
 			local tBread = nil
 			local tFirstFrame = nil
@@ -2763,11 +2760,8 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 							end
 						end
 					end
-				--dprint("tBread", tBread)
-				--dprint("tFirstFrame", tFirstFrame)
 				end
 			end
-			--dprint("aForceLocalRoot", aForceLocalRoot)
 
 			local tFlag = false
 			if tBread and aForceLocalRoot ~= true and tFlag == false then
@@ -2813,13 +2807,15 @@ function SkuCore:CheckFrames(aForceLocalRoot)
 			end
 
 		else
-			SkuCore.openMenuAfterMoving = false
-			SkuCore.openMenuAfterCombat = false
-			if SkuOptions:IsMenuOpen() == true then
-				SkuCore.GossipList = {}
-				--SkuOptions:SlashFunc("short,lokal")
-				SkuOptions:CloseMenu()
-			end			
+			if not aDontClose then
+				SkuCore.openMenuAfterMoving = false
+				SkuCore.openMenuAfterCombat = false
+				if SkuOptions:IsMenuOpen() == true then
+					SkuCore.GossipList = {}
+					--SkuOptions:SlashFunc("short,lokal")
+					SkuOptions:CloseMenu()
+				end			
+			end
 		end
 	end)
 end

@@ -688,7 +688,7 @@ function SkuCore:AuctionHouseBuildItemSellMenu(aParent, aGossipItemTable)
          SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)      
       end)
       C_Timer.After(0.01, function()
-         SkuCore:CheckFrames()
+         SkuCore:CheckFrames(nil, true)
       end)
    end
 
@@ -1338,7 +1338,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                               SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)      
                            end)
                            C_Timer.After(0.01, function()
-                              SkuCore:CheckFrames()
+                              SkuCore:CheckFrames(nil, true)
                            end)
                            
                         end

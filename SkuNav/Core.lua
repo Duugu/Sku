@@ -116,14 +116,17 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 								if worldPosition then
 									local tWorldX, tWorldY = worldPosition:GetXY()
 									local tNewIndex = #WaypointCache + 1
-									WaypointCacheLookupAll[tName..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
-									WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(2, i, sp, is)] =  tNewIndex
+									local tFinalName = tName..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+									local tWpId = SkuNav:BuildWpIdFromData(2, i, sp, is)
 									if not WaypointCacheLookupPerContintent[tData.ContinentID] then
 										WaypointCacheLookupPerContintent[tData.ContinentID] = {}
 									end
-									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = tName..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = tFinalName
+									WaypointCacheLookupAll[tFinalName] = tNewIndex
+									WaypointCacheLookupIdForCacheIndex[tWpId] =  tNewIndex
+									WaypointCacheLookupCacheNameForId[tFinalName] = tWpId
 									WaypointCache[tNewIndex] = {
-										name = tName..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
+										name = tFinalName,
 										role = tRolesString,
 										typeId = 2,
 										dbIndex = i,
@@ -181,14 +184,17 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 												tRessourceType = ";"..L["mining"]
 											end
 
-											WaypointCacheLookupAll[L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]] = tNewIndex
-											WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(3, i, sp, is)] =  tNewIndex
+											local tFinalName = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+											local tWpId = SkuNav:BuildWpIdFromData(3, i, sp, is)
 											if not WaypointCacheLookupPerContintent[tData.ContinentID] then
 												WaypointCacheLookupPerContintent[tData.ContinentID] = {}
 											end
-											WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+											WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = tFinalName
+											WaypointCacheLookupAll[tFinalName] = tNewIndex
+											WaypointCacheLookupIdForCacheIndex[tWpId] =  tNewIndex
+											WaypointCacheLookupCacheNameForId[tFinalName] = tWpId										
 											WaypointCache[tNewIndex] = {
-												name = L["OBJECT"]..";"..i..";"..v..tRessourceType..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2],
+												name = tFinalName,
 												role = "",
 												typeId = 3,
 												dbIndex = i,
@@ -262,8 +268,10 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 								}
 
 								WaypointCacheLookupAll[tName] = tWpIndex
-								WaypointCacheLookupIdForCacheIndex[SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)] =  tWpIndex
-
+								local tWpId = SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)
+								WaypointCacheLookupIdForCacheIndex[tWpId] =  tWpIndex
+								WaypointCacheLookupCacheNameForId[tName] = tWpId										
+		
 								if not WaypointCacheLookupPerContintent[tWaypointData.contintentId] then
 									WaypointCacheLookupPerContintent[tWaypointData.contintentId] = {}
 								end

@@ -527,7 +527,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarName, aButtonId)
-	print(aActionType, aId, aSubType, aActionBarName, aButtonId)
+	--print(aActionType, aId, aSubType, aActionBarName, aButtonId)
 	local rName = L["Empty"]
 
 	if aActionType and aId > 0 then
@@ -549,7 +549,6 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 			end
 		elseif aActionType == "pet" then
 			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(aId);
-			print(name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID)
 			if name then
 				rName = _G[name] or name
 			end
@@ -570,10 +569,7 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 		end
 	end
 
-	--print(aActionType, aId, aSubType, aActionBarName, aButtonId, tActionBarData[aActionBarName].command..aButtonId)
-
 	local tKeysString, key1, key2 = "", GetBindingKey(tActionBarData[aActionBarName].command..aButtonId)
-	--print(tKeysString, key1, key2)
 	if key1 then
 		tKeysString = ";"..L["Key"]..";"..GetBindingText(key1)
 	end
