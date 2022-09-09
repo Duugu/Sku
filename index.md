@@ -22,7 +22,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 ## Changes in wow menu r3.6
 - Fixed a bug with creating a new character and class Mage.
-- 
+
 ## Changes in wow menu r3.5
 - Updated the US East server list.
 
