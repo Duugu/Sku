@@ -1676,7 +1676,7 @@ function SkuCore:CheckInteractObjectShow()
 			end
 		end
 	end
-	if SkuOptions.db.global[MODULE_NAME].doNotHideTooltip ~= true then
+	if SkuOptions.db.profile[MODULE_NAME].doNotHideTooltip ~= true then
 		C_Timer.After(0.1, function() GameTooltip:Hide() end)
 	end
 end

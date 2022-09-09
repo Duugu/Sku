@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.14
+	- Fixed an issue with the category list in the LFG tool.
+	- Fixed the not working do not hide tooltip feature.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.13
 	- Fixed the issue with closing auction house on posting multiple auctions. Thanks, @samalam.
 	- Fixed the issue with closing menu on changing chat tab configs.

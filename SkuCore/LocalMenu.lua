@@ -2132,7 +2132,6 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					C_Timer.After(0.3, function()
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
-					--SkuLFGEnlist_DoSearch(tEnlistCategories[i])
 				end,            
 				click = true,
 			}   
@@ -2189,6 +2188,8 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					[4] = 118,
 					[5] = 120,
 				}
+
+				tEnlistCategories = categories
 
 				local tFriendlyName = name
 				if info.checked then
@@ -2500,6 +2501,7 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 						foundChecked = true;
 					end
 
+					--[[
 					local tBrowseCategories = {
 						[1] = 2,
 						[2] = 114,
@@ -2507,6 +2509,9 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 						[4] = 118,
 						[5] = 120,
 					}
+					]]
+					
+					tBrowseCategories = categories
 
 					local tFriendlyName = name
 					if info.checked then
