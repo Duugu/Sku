@@ -8,13 +8,15 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
+- [wow_menu r3.5](https://github.com/Duugu/wow_menu/releases/download/r3.5/wow_menu-r3.5-wrath.zip) (Sep 9th, 2022)
 - [Sku r30.13](https://github.com/Duugu/Sku/releases/download/r30.13/Sku-r30.13-wrath.zip) (Sep 8th, 2022)<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
-- [wow_menu r3.4a](https://github.com/Duugu/wow_menu/releases/download/r3.4a/wow_menu-r3.4a-wrath.zip) (Sep 1st, 2022)
-
-*Old updates:* <br>
 
 # Release notes
+
+## Changes in wow menu r3.5
+- Updated the US East server list.
+
 
 ## Changes in Sku r30.13
 - Fixed the issue with closing auction house on posting multiple auctions. Thanks, @samalam.
