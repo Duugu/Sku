@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.15
+	- Added map data for stormwind harbor, ship from menethil to northrend, zeppelin from orgrimmar to thunder bluff, zeppelins from orgrimmar to northrend, and other stuff
+	- Fixed a lot of map ids with issues.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.14
 	- Fixed an issue with the category list in the LFG tool.
 	- Fixed the not working do not hide tooltip feature.

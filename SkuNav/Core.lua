@@ -1834,9 +1834,9 @@ function SkuNav:CreateSkuNavControl()
 										GameTooltip:ClearLines()
 										GameTooltip:SetOwner(i, "ANCHOR_RIGHT")
 										GameTooltip:AddLine(i.aText, 1, 1, 1)
-										if i.aComments[Sku.Loc] then
-											for x = 1, #i.aComments[Sku.Loc] do
-												GameTooltip:AddLine(i.aComments[Sku.Loc][x], 1, 1, 0)
+										if i.aComments then
+											for x = 1, #i.aComments do
+												GameTooltip:AddLine(i.aComments[x], 1, 1, 0)
 											end
 										end
 										GameTooltip:Show()
