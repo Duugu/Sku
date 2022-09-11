@@ -1732,10 +1732,10 @@ function SkuCore:UpdateResults(aEvent)
 						local name, role, classFile, className, level = C_LFGList.GetSearchResultMemberInfo(results[x], 1);
 						tFull = 
 						L["solo"].."\r\n"..
-						L["name"]..": "..(tSearchResultData.leaderName or L["unknown"]).."\r\n"..
-						L["klasse"]..": "..(className or L["unknown"]).."\r\n"..
-						L["Level"]..": "..(level or L["unknown"]).."\r\n"..
-						L["comment"]..": "..(tSearchResultData.comment or L["unknown"])
+						L["name"]..": "..(SkuChat:Unescape(tSearchResultData.leaderName) or L["unknown"]).."\r\n"..
+						L["klasse"]..": "..(SkuChat:Unescape(className) or L["unknown"]).."\r\n"..
+						L["Level"]..": "..(SkuChat:Unescape(level) or L["unknown"]).."\r\n"..
+						L["comment"]..": "..(SkuChat:Unescape(tSearchResultData.comment) or L["unknown"])
 						if tSearchResultData.newPlayerFriendly == true then
 							tFull = tFull.."\r\n"..L["new Player Friendly"]
 						end
@@ -1751,9 +1751,9 @@ function SkuCore:UpdateResults(aEvent)
 					else
 						tFull = 
 						L["Party"].."\r\n"..
-						L["leader"]..": "..(tSearchResultData.leaderName or L["unknown"]).."\r\n"..
-						L["comment"]..": "..(tSearchResultData.comment or L["unknown"]).."\r\n"..
-						L["Members"]..": "..(tSearchResultData.numMembers or L["unknown"])
+						L["leader"]..": "..(SkuChat:Unescape(tSearchResultData.leaderName) or L["unknown"]).."\r\n"..
+						L["comment"]..": "..(SkuChat:Unescape(tSearchResultData.comment) or L["unknown"]).."\r\n"..
+						L["Members"]..": "..(SkuChat:Unescape(tSearchResultData.numMembers) or L["unknown"])
 						--"hasSelf: "..(tostring(tSearchResultData.hasSelf) or "nil")
 						if tSearchResultData.newPlayerFriendly == true then
 							tFull = tFull.."\r\n"..L["new Player Friendly"]
@@ -1774,7 +1774,7 @@ function SkuCore:UpdateResults(aEvent)
 							local resultID = results[x]
 							for i=1, tSearchResultData.numMembers do
 								local name, role, classFileName, className, level, isLeader = C_LFGList.GetSearchResultMemberInfo(resultID, i);
-								tFull = tFull.."\r\n"..(name or L["unknown"])..", "..(level or L["unknown"])..", "..(_G[role] or L["unknown"])..", "..(className or L["unknown"])
+								tFull = tFull.."\r\n"..(SkuChat:Unescape(name) or L["unknown"])..", "..(level or L["unknown"])..", "..(_G[role] or L["unknown"])..", "..(SkuChat:Unescape(className) or L["unknown"])
 							end
 						end
 					end

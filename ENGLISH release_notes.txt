@@ -3,6 +3,13 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.16
+	- Fixed a map id issue for hellfire citadel and other areas.
+	- Re-added the hunter pet infos to the overview page (SHIFT + DOWN).
+	- The bag will again auto open if the trade window opens.
+	- Removed a bug with line feeds in comments of LFG entries.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.15
 	- Added map data for stormwind harbor, ship from menethil to northrend, zeppelin from orgrimmar to thunder bluff, zeppelins from orgrimmar to northrend, and other stuff
 	- Fixed a lot of map ids with issues.

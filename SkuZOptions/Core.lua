@@ -716,8 +716,8 @@ function SkuOptions:UpdateOverviewText()
 		local petSection = L["Pet"]
 		local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
 		petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
-		--[[
 		petSection = petSection .. "\r\n" .. GetPetLoyalty()
+		--[[
 		local total, spent = GetPetTrainingPoints()
 		local trainingPoints = total - spent
 		if trainingPoints < 0 then
@@ -1849,6 +1849,7 @@ function SkuOptions:CreateMenuFrame()
 		end
 
 		if aKey ~= "ESCAPE" and SkuOptions.currentMenuPosition then
+			--[[
 			SkuOptions:ShowVisualMenu()
 			local tTable = SkuOptions.currentMenuPosition
 			local tBread = SkuOptions.currentMenuPosition.name
@@ -1862,6 +1863,7 @@ function SkuOptions:CreateMenuFrame()
 				table.insert(tResult, SkuOptions.currentMenuPosition.name)
 				SkuOptions:ShowVisualMenuSelectByPath(unpack(tResult))
 			end
+			]]
 		end
 	end)
 

@@ -219,7 +219,11 @@ function SkuCore:OnInitialize()
 
 	SkuCore:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
 	SkuCore:RegisterEvent("LFG_LIST_SEARCH_RESULT_UPDATED")
-	
+
+	SkuCore:RegisterEvent("TRADE_SHOW")
+	SkuCore:RegisterEvent("TRADE_CLOSED")
+
+
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
@@ -1982,6 +1986,19 @@ end
 function SkuCore:GOSSIP_SHOW(self, event, ...)
 	dprint("GOSSIP_SHOW", self, event, ...)
 	SkuOptions:StopSounds(5)
+	SkuCore:CheckFrames()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:TRADE_SHOW(self, event, ...)
+	dprint("TRADE_SHOW", self, event, ...)
+	if _G["ContainerFrame1"] and _G["ContainerFrame1"]:IsVisible() ~= true then
+		_G["MainMenuBarBackpackButton"]:Click()
+	end
+	SkuCore:CheckFrames()
+end---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:TRADE_CLOSED(self, event, ...)
+	dprint("TRADE_CLOSED", self, event, ...)
 	SkuCore:CheckFrames()
 end
 
