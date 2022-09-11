@@ -8,13 +8,17 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.14](https://github.com/Duugu/Sku/releases/download/r30.14/Sku-r30.14-wrath.zip) (Sep 10th, 2022)<br>
+- [Sku r30.15](https://github.com/Duugu/Sku/releases/download/r30.15/Sku-r30.15-wrath.zip) (Sep 11th, 2022)<br>
 - [wow_menu r3.6](https://github.com/Duugu/wow_menu/releases/download/r3.6/wow_menu-r3.6-wrath.zip) (Sep 10th, 2022)
 
 *Older updates:* <br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 
 # Release notes
+
+## Changes in Sku r30.15
+- Added map data for stormwind harbor, ship from menethil to northrend, zeppelin from orgrimmar to thunder bluff, zeppelins from orgrimmar to northrend, and other stuff
+- Fixed a lot of map ids with issues.
 
 ## Changes in Sku r30.14
 - Fixed an issue with the category list in the LFG tool.
