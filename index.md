@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [SkuMapper r1.1](https://github.com/Duugu/SkuMapper/releases/download/r1.1/SkuMapper-r1.1-wrath.zip) (Sep 13th, 2022, mapping addon for sighted players)
+- [SkuMapper r1.2](https://github.com/Duugu/SkuMapper/releases/download/r1.2/SkuMapper-r1.2-wrath.zip) (Sep 13th, 2022, mapping addon for sighted players)
 - [Sku r30.17](https://github.com/Duugu/Sku/releases/download/r30.17/Sku-r30.17-wrath.zip) (Sep 13th, 2022)<br>
 - [wow_menu r3.6](https://github.com/Duugu/wow_menu/releases/download/r3.6/wow_menu-r3.6-wrath.zip) (Sep 10th, 2022)
 
