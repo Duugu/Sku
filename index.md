@@ -8,6 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
+- [SkuMapper r1.1](https://github.com/Duugu/SkuMapper/releases/download/r1.1/SkuMapper-r1.1-wrath.zip) (Sep 13th, 2022, mapping addon for sighted players)
 - [Sku r30.17](https://github.com/Duugu/Sku/releases/download/r30.17/Sku-r30.17-wrath.zip) (Sep 13th, 2022)<br>
 - [wow_menu r3.6](https://github.com/Duugu/wow_menu/releases/download/r3.6/wow_menu-r3.6-wrath.zip) (Sep 10th, 2022)
 
@@ -15,6 +16,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 
 # Release notes
+
+## Changes in SkuMapper r1.1
+- Initial release
 
 ## Changes in Sku r30.17
 - Fixed a bug with the overview page. Should work again.
