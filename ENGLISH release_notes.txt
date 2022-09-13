@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.17
+	- Fixed a bug with the overview page. Should work again.
+	- Added Northrend herb and mining resources to lists and waypoints.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.16
 	- Fixed a map id issue for hellfire citadel and other areas.
 	- Re-added the hunter pet infos to the overview page (SHIFT + DOWN).

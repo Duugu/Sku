@@ -815,7 +815,7 @@ L["Fertigkeiten:\r\n"]  = "Skills:\r\n" --
 L["Ruf:\r\n"]  = "Reputation:\r\n" --
 L["unbekannt"]  = "unknown" --
 L["Gilde:\r\n"]  = "Guild:\r\n" --
-L["Tier XP: "]  = "Pet XP: " --
+L["Tier XP: "]  = "XP: " --
 L["Wertung:"]  = "Rating:" --
 L["Markierung für Auto Verkaufen entfernen"]  = "Deselect for scrap auto sale" --
 L["Für Auto Verkaufen markieren"]  = "Select for scrap auto sale" --
@@ -1701,3 +1701,6 @@ L["dann aktion 1 verwenden"] = "then use action 1"
 L["dann aktion 1 verwenden, und dann aktion 5 verwenden"] = "then use action 1, and then action 5"
 
 L["Role Poll"] = "Role Poll"
+
+L["Unspent pet talent points"] = "Unspent talent points"
+L["Pet happiness"] = "Happiness"

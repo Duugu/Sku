@@ -44,6 +44,12 @@ SkuCore.RessourceTypes = {
       [18] = {deDE = "Adamantitablagerung", enUS = "Adamantite Deposit",},
       [19] = {deDE = "Reiche Adamantitablagerung", enUS = "Rich Adamantite Deposit",},
       [20] = {deDE = "Khoriumvorkommen", enUS = "Khorium Vein",},
+      [21] = {deDE = "Kobaltvorkommen", enUS = "Cobalt Deposit",},
+      [22] = {deDE = "Reiches Kobaltvorkommen", enUS = "Rich Cobalt Deposit",},
+      [23] = {deDE = "Saronitvorkommen", enUS = "Saronite Deposit",},
+      [24] = {deDE = "Reiches Saronitvorkommen", enUS = "Rich Saronite Deposit",},
+      [25] = {deDE = "Reine Saronitablagerung", enUS = "Pure Saronite Deposit",},
+      [26] = {deDE = "Titanader", enUS = "Titanium Vein",},
    },	
    herbs = {	
       [1] = {deDE = "Friedensblume", enUS = "Peacebloom",},
@@ -83,6 +89,13 @@ SkuCore.RessourceTypes = {
       [35] = {deDE = "Alptraumranke", enUS = "Nightmare Vine",},
       [36] = {deDE = "Manadistel", enUS = "Mana Thistle",},
       [37] = {deDE = "Teufelslotus", enUS = "Fel Lotus",},
+      [38] = {deDE = "Goldklee", enUS = "Goldclover",},
+      [39] = {deDE = "Tigerlilie", enUS = "Tiger Lily",},
+      [40] = {deDE = "Schlangenzunge", enUS = "Adder's Tongue",},
+      [41] = {deDE = "Talandras Rose", enUS = "Talandra's Rose",},
+      [42] = {deDE = "Lichblüte", enUS = "Lichbloom",},
+      [43] = {deDE = "Eisdorn", enUS = "Icethor",},
+      [44] = {deDE = "Frostlotus", enUS = "Frost Lotus",},
    },
 }
 

@@ -129,6 +129,21 @@ SkuDB.objectResourceNames = {
       ["Adamantitbeschlagene Truhe"] = 3,
       --["Abgenutzte Truhe"] = true,
       ["Teufelseisentruhe"] = 3,
+
+      --wrath resources
+      ["Kobaltvorkommen"] = 2,
+      ["Reiches Kobaltvorkommen"] = 2,
+      ["Saronitvorkommen"] = 2,
+      ["Reiches Saronitvorkommen"] = 2,
+      ["Reine Saronitablagerung"] = 2,
+      ["Titanader"] = 2,
+      ["Goldklee"] = 1,
+      ["Tigerlilie"] = 1,
+      ["Schlangenzunge"] = 1,
+      ["Talandras Rose"] = 1,
+      ["Lichblüte"] = 1,
+      ["Eisdorn"] = 1,
+      ["Frostlotus"] = 1,      
    },
    ["enUS"] = {
       ["Gromsblood"] = 1,
@@ -203,6 +218,22 @@ SkuDB.objectResourceNames = {
       ["Dreamfoil"] = 1,
       --["Worn Chest"] = true,
       ["Fel Lotus"] = 1,
+
+      --wrath resources
+      ["Cobalt Deposit"] = 2,
+      ["Rich Cobalt Deposit"] = 2,
+      ["Saronite Deposit"] = 2,
+      ["Rich Saronite Deposit"] = 2,
+      ["Pure Saronite Deposit"] = 2,
+      ["Titanium Vein"] = 2,
+      ["Goldclover"] = 1,
+      ["Tiger Lily"] = 1,
+      ["Adder's Tongue"] = 1,
+      ["Talandra's Rose"] = 1,
+      ["Lichbloom"] = 1,
+      ["Icethorn"] = 1,
+      ["Frost Lotus"] = 1,
+
    },      
 }
 

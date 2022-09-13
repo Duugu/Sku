@@ -715,18 +715,18 @@ function SkuOptions:UpdateOverviewText()
 	if UnitName("playerpet") and SkuCore:PlayerIsHunter() then
 		local petSection = L["Pet"]
 		local tPetcurrXP, tPetnextXP = GetPetExperience() --current XP total; XP total required for the next level
-		petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
-		petSection = petSection .. "\r\n" .. GetPetLoyalty()
-		--[[
-		local total, spent = GetPetTrainingPoints()
-		local trainingPoints = total - spent
-		if trainingPoints < 0 then
-			trainingPoints = 0
+		if tPetcurrXP then
+			petSection = petSection .. "\r\n" .. L["Tier XP: "] .. tPetcurrXP .. L[" von "] .. tPetnextXP .. L[" für "] .. UnitLevel("playerpet") + 1
 		end
-		petSection = petSection .. "\r\n" .. trainingPoints .. " " .. L["training points"]
-		]]
 		local happiness = GetPetHappiness()
-		petSection = petSection .. "\r\n" .. SkuCore.PetHappinessString[happiness]
+		if happiness then
+			petSection = petSection .. "\r\n"..L["Pet happiness"]..": "..SkuCore.PetHappinessString[happiness]
+		end
+
+		if UnitCharacterPoints("pet") then
+			petSection = petSection .. "\r\n" .. L["Unspent pet talent points"]..": "..UnitCharacterPoints("pet")
+		end
+
 		table.insert(tSections, petSection)
 	end
 	--GetPetFoodTypes
