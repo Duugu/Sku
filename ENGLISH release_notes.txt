@@ -3,6 +3,10 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.18
+	- Fixed an issue with game key bindings, that caused all key bindings to be mixed up on new installs.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.17
 	- Fixed a bug with the overview page. Should work again.
 	- Added Northrend herb and mining resources to lists and waypoints.

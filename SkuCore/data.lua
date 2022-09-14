@@ -758,9 +758,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 		["TOGGLELFGLISTINGTAB"] = {
 			["index"] = 269,
 		},
-		["TOGGLELFGBROWSETAB"] = {
-			["index"] = 270,
-		},
 		["TOGGLEACHIEVEMENT"] = {
 			["index"] = 202,
 		},

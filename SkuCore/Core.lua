@@ -2862,6 +2862,8 @@ end
 -------------------------------------------------------------------------------------------------
 function SkuCore:GetBinding(aIndex)
 	local aBindingSet = GetCurrentBindingSet()
+	print("GetBinding", aIndex, aBindingSet)
+	print(GetBinding(aIndex, aBindingSet))
 	local tCommand, tCategory, tKey1, tKey2 = GetBinding(aIndex, aBindingSet)
 
 	return tCommand, tCategory, tKey1, tKey2
