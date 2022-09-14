@@ -8,14 +8,17 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
+- [Sku r30.18](https://github.com/Duugu/Sku/releases/download/r30.18/Sku-r30.18-wrath.zip) (Sep 14th, 2022)<br>
 - [wow_menu r3.7](https://github.com/Duugu/wow_menu/releases/download/r3.7/wow_menu-r3.7-wrath.zip) (Sep 14th, 2022)
 - [SkuMapper r1.2](https://github.com/Duugu/SkuMapper/releases/download/r1.2/SkuMapper-r1.2-wrath.zip) (Sep 13th, 2022, mapping addon for sighted players)
-- [Sku r30.17](https://github.com/Duugu/Sku/releases/download/r30.17/Sku-r30.17-wrath.zip) (Sep 13th, 2022)<br>
 
 *Older updates:* <br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 
 # Release notes
+
+## Changes in Sku r30.18
+- Fixed an issue with game key bindings, that caused all key bindings to be mixed up on new installs.
 
 ## Changes in wow menu r3.7
 - Server lists for US and EU updated
