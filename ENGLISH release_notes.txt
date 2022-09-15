@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.19
+	- Removed overlooked debug chat output on login/reload.
+	- Removed a lot of virtual trigger spawn points from Northrend maps.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.18
 	- Fixed an issue with game key bindings, that caused all key bindings to be mixed up on new installs.
 

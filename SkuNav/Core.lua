@@ -91,60 +91,62 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 			end			
 			local tSpawns = SkuDB.NpcData.Data[i][7]
 			if tSpawns then
-				for is, vs in pairs(tSpawns) do
-					local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
-					--we don't care for stuff that isn't in the open world
-					if isUiMap then
-						local tData = SkuDB.InternalAreaTable[is]
-						if tData then
-							local tNumberOfSpawns = #vs
-							--local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
-							local tRolesString = ""
-							if not tSubname then
-								--local tRoles = SkuNav:GetNpcRoles(v[1], i)
-								if #tRoles > 0 then
-									for i, v in pairs(tRoles) do
-										tRolesString = tRolesString..";"..v
+				if not sfind(slower(tName), "trigger") then
+					for is, vs in pairs(tSpawns) do
+						local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
+						--we don't care for stuff that isn't in the open world
+						if isUiMap then
+							local tData = SkuDB.InternalAreaTable[is]
+							if tData then
+								local tNumberOfSpawns = #vs
+								--local tSubname = SkuDB.NpcData.Names[Sku.Loc][i][2]
+								local tRolesString = ""
+								if not tSubname then
+									--local tRoles = SkuNav:GetNpcRoles(v[1], i)
+									if #tRoles > 0 then
+										for i, v in pairs(tRoles) do
+											tRolesString = tRolesString..";"..v
+										end
+										tRolesString = tRolesString..""
 									end
-									tRolesString = tRolesString..""
+								else
+									tRolesString = tRolesString..";"..tSubname
 								end
-							else
-								tRolesString = tRolesString..";"..tSubname
-							end
-							for sp = 1, tNumberOfSpawns do
-								local _, worldPosition = C_MapGetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
-								if worldPosition then
-									local tWorldX, tWorldY = worldPosition:GetXY()
-									local tNewIndex = #WaypointCache + 1
-									local tFinalName = tName..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
-									local tWpId = SkuNav:BuildWpIdFromData(2, i, sp, is)
-									if not WaypointCacheLookupPerContintent[tData.ContinentID] then
-										WaypointCacheLookupPerContintent[tData.ContinentID] = {}
+								for sp = 1, tNumberOfSpawns do
+									local _, worldPosition = C_MapGetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
+									if worldPosition then
+										local tWorldX, tWorldY = worldPosition:GetXY()
+										local tNewIndex = #WaypointCache + 1
+										local tFinalName = tName..tRolesString..";"..tData.AreaName_lang[Sku.Loc]..";"..sp..";"..vs[sp][1]..";"..vs[sp][2]
+										local tWpId = SkuNav:BuildWpIdFromData(2, i, sp, is)
+										if not WaypointCacheLookupPerContintent[tData.ContinentID] then
+											WaypointCacheLookupPerContintent[tData.ContinentID] = {}
+										end
+										WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = tFinalName
+										WaypointCacheLookupAll[tFinalName] = tNewIndex
+										WaypointCacheLookupIdForCacheIndex[tWpId] =  tNewIndex
+										WaypointCacheLookupCacheNameForId[tFinalName] = tWpId
+										WaypointCache[tNewIndex] = {
+											name = tFinalName,
+											role = tRolesString,
+											typeId = 2,
+											dbIndex = i,
+											spawn = sp,
+											contintentId = tData.ContinentID,
+											areaId = is,
+											uiMapId = isUiMap,
+											worldX = tWorldX,
+											worldY = tWorldY,
+											createdAt = GetTime(),
+											createdBy = "SkuNav",
+											size = 1,
+											spawnNr = sp,
+											links = {
+												byId = nil,
+												byName = nil,
+											},
+										}
 									end
-									WaypointCacheLookupPerContintent[tData.ContinentID][tNewIndex] = tFinalName
-									WaypointCacheLookupAll[tFinalName] = tNewIndex
-									WaypointCacheLookupIdForCacheIndex[tWpId] =  tNewIndex
-									WaypointCacheLookupCacheNameForId[tFinalName] = tWpId
-									WaypointCache[tNewIndex] = {
-										name = tFinalName,
-										role = tRolesString,
-										typeId = 2,
-										dbIndex = i,
-										spawn = sp,
-										contintentId = tData.ContinentID,
-										areaId = is,
-										uiMapId = isUiMap,
-										worldX = tWorldX,
-										worldY = tWorldY,
-										createdAt = GetTime(),
-										createdBy = "SkuNav",
-										size = 1,
-										spawnNr = sp,
-										links = {
-											byId = nil,
-											byName = nil,
-										},
-									}
 								end
 							end
 						end

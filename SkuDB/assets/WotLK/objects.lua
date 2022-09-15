@@ -1,3 +1,4 @@
+--[[
 SkuDB.WotLK.objectResourceNames = {
    ["deDE"] = {
       ["Schwarzer Lotus"] = 1,
@@ -148,7 +149,7 @@ SkuDB.WotLK.objectResourceNames = {
       ["Fel Lotus"] = 1,
    },      
 }
-
+]]
 SkuDB.objectKeys = {
    ['name'] = 1, -- string
    ['questStarts'] = 2, -- table {questID(int),...}

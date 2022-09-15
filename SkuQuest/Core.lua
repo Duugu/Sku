@@ -1064,7 +1064,7 @@ function SkuQuest:PLAYER_LOGIN(...)
 		end
 	end
 
-	SkuDB.objectResourceNames = SkuDB.WotLK.objectResourceNames
+	--SkuDB.objectResourceNames = SkuDB.WotLK.objectResourceNames
 
 	for i, v in pairs(SkuDB.WotLK.objectLookup.deDE) do
 		if not SkuDB.objectLookup.deDE[i] then
