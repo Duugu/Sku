@@ -8,14 +8,17 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
+- [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 - [Sku r30.19](https://github.com/Duugu/Sku/releases/download/r30.19/Sku-r30.19-wrath.zip) (Sep 15th, 2022)<br>
 - [SkuMapper r1.4](https://github.com/Duugu/SkuMapper/releases/download/r1.4/SkuMapper-r1.4-wrath.zip) (Sep 15th, 2022, mapping addon for sighted players)
-- [wow_menu r3.8](https://github.com/Duugu/wow_menu/releases/download/r3.8/wow_menu-r3.8-wrath.zip) (Sep 15th, 2022)
 
 *Older updates:* <br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 
 # Release notes
+
+## Changes in wow menu 3.9
+- Fixed an issue with the EN US script.
 
 ## Changes in Sku r30.19
 - Removed overlooked debug chat output on login/reload.
