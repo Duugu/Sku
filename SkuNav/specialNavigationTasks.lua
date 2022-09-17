@@ -13,19 +13,51 @@ local tCurrentTask = nil
 local tCurrentStep = 0
 local tCurrentMovementStartAt = 0
 local tCurrentMovementLeft = -1
-
+local tPitch
+local tVHealth
+local tVPower
 --------------------------------------------------------------------------------------------------------------------------------------
 --control frame to register all required events to trigger tasks
 --register more events for start/end trigger strings if required, or send trigger strings on custom events
 local f = _G["SkuNavNavigationModeWoCoordinatesControl"] or CreateFrame("Frame", "SkuNavNavigationModeWoCoordinatesControl", UIParent)
-f:SetScript("OnEvent", function(self, aEvent) 
-	SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aEvent)
+f:SetScript("OnEvent", function(self, aEvent, arg1, arg2) 
+	if aEvent == "VEHICLE_ANGLE_UPDATE" then
+		tPitch = arg1
+	elseif aEvent == "UNIT_POWER_FREQUENT" and arg1 == "vehicle" then
+		local tCP = math.floor((UnitPower("vehicle") / UnitPowerMax("vehicle")) * 100)
+		if tVPower then
+			if tVPower - tCP > 10 or tVPower - tCP < -10 then
+				tVPower = tCP
+				SkuOptions.Voice:OutputStringBTtts(L["Vehicle Mana "]..tVPower, true, true, 0.2, nil, nil, nil, 2, nil, true)						
+			end
+		else
+			tVPower = tCP
+		end
+	elseif aEvent == "UNIT_HEALTH_FREQUENT" and arg1 == "vehicle" then
+		local tCP = math.floor((UnitHealth("vehicle") / UnitHealthMax("vehicle")) * 100)
+		if tVHealth then
+			if tVHealth - tCP > 5 or tVHealth - tCP < -5 then
+				tVHealth = tCP
+				SkuOptions.Voice:OutputStringBTtts(L["Vehicle HP "]..tVHealth, true, true, 0.2, nil, nil, nil, 2, nil, true)						
+			end
+		else
+			tVHealth = tCP
+		end
+
+	end
+
+
+	SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aEvent, arg1, arg2)
 end)
 f:RegisterEvent("LOADING_SCREEN_ENABLED")
+f:RegisterEvent("VEHICLE_ANGLE_UPDATE")
+f:RegisterEvent("UNIT_POWER_FREQUENT")
+f:RegisterEvent("UNIT_HEALTH_FREQUENT")
+f:RegisterEvent("UNIT_EXITED_VEHICLE")
 
 --------------------------------------------------------------------------------------------------------------------------------------
 --helper to get the direction in degrees
-local function NavigationModeWoCoordinatesGetDirection()
+function NavigationModeWoCoordinatesGetDirection()
 	local x, y = UnitPosition("player")
 	local a, b, afinal = SkuNav:GetDirectionTo(x, y, 30000, y)
 	return afinal + 180
@@ -33,7 +65,8 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------------
 --checks if a task should start or stopp; can be called from anywhere with a string
-function SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aStringToCheck)
+function SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aStringToCheck, arg1, arg2)
+	--print("NavigationModeWoCoordinatesCheckTaskTrigger", aStringToCheck, arg1)
 	local tTaskId
 
 	aStringToCheck = SkuChat:Unescape(aStringToCheck)
@@ -49,8 +82,11 @@ function SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aStringToCheck)
 		end
 	end
 
-	if SkuDB.Tasks[aStringToCheck] then
-		tTaskId = aStringToCheck
+	for i, v in pairs(SkuDB.Tasks) do
+		if string.find(aStringToCheck, i) then
+			tTaskId = i
+			break
+		end
 	end
 
 	if tTaskId then
@@ -63,6 +99,10 @@ end
 --gets to next step of current task or starts/stopps a task
 function SkuNav:NavigationModeWoCoordinatesNextStep(aTaskId, aStart, aStop)
 	if aStop then
+		tPitch = nil
+		tVHealth = nil
+		tVPower = nil
+		
 		tCurrentStep = 0
 		tCurrentMovementStartAt = 0
 		tCurrentMovementLeft = -1
@@ -76,6 +116,10 @@ function SkuNav:NavigationModeWoCoordinatesNextStep(aTaskId, aStart, aStop)
 
 	if aStart then	
 		tCurrentTask = aTaskId
+		tPitch = nil
+		tVHealth = nil
+		tVPower = nil
+
 		tCurrentMovementStartAt = 0
 		tCurrentMovementLeft = -1
 		tCurrentStep = 1		
@@ -92,17 +136,39 @@ function SkuNav:NavigationModeWoCoordinatesNextStep(aTaskId, aStart, aStop)
 		local tComment = SkuDB.Tasks[tCurrentTask][tCurrentStep].comment or ""
 		if SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "turn" then
 			SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
-
 			SkuOptions.Voice:OutputStringBTtts(tPrefix..L["schritt "]..tCurrentStep..L[": drehen auf "]..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..". "..tComment, true, true, 0.2, nil, nil, nil, 2, nil, true)
 			print(tPrefix..L["schritt "]..tCurrentStep..L[": drehen auf "]..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..". "..tComment)
+
 		elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "forward" then
 			SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
-
 			SkuOptions.Voice:OutputStringBTtts(tPrefix..L["schritt "]..tCurrentStep..L[": vorwärts von "]..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..L[" bis 0"]..". "..tComment, true, true, 0.2, nil, nil, nil, 2, nil, true)						
 			print(tPrefix..L["schritt "]..tCurrentStep..L[": vorwärts von "]..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..L[" bis 0"]..". "..tComment)
 			tCurrentMovementLeft = SkuDB.Tasks[tCurrentTask][tCurrentStep].value
+
+		elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "up" then
+			SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
+			SkuOptions.Voice:OutputStringBTtts(tPrefix..L["schritt "]..tCurrentStep..": hoch von "..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..L[" bis 0"]..". "..tComment, true, true, 0.2, nil, nil, nil, 2, nil, true)						
+			print(tPrefix..L["schritt "]..tCurrentStep..": hoch von "..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..L[" bis 0"]..". "..tComment)
+			tCurrentMovementLeft = SkuDB.Tasks[tCurrentTask][tCurrentStep].value
+
+		elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "pitch" then
+			SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
+
+			SkuOptions.Voice:OutputStringBTtts(tPrefix..L["schritt "]..tCurrentStep..": neigen auf "..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..". "..tComment, true, true, 0.2, nil, nil, nil, 2, nil, true)
+			print(tPrefix..L["schritt "]..tCurrentStep..": neigen auf "..SkuDB.Tasks[tCurrentTask][tCurrentStep].value..". "..tComment)
+
+		elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "pitchEndless" then
+			SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
+
+			SkuOptions.Voice:OutputStringBTtts(tComment, true, true, 0.2, nil, nil, nil, 2, nil, true)
+			print(tComment)
+						
 		end
 	else
+		tPitch = nil
+		tVHealth = nil
+		tVPower = nil
+
 		tCurrentTask = nil
 		tCurrentStep = 0
 		tCurrentMovementStartAt = 0
@@ -128,6 +194,7 @@ evaluates all valid movement actions for the current task
 ]]
 function SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT(aTriggerName)
 	SkuNav:NavigationModeWoCoordinatesRecordForward(aTriggerName)
+	SkuNav:NavigationModeWoCoordinatesRecordUp(aTriggerName)
 
 	if tCurrentTask then
 		if SkuDB.Tasks[tCurrentTask][tCurrentStep] then
@@ -139,16 +206,47 @@ function SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT(aTriggerName)
 						if tDegree >= SkuDB.Tasks[tCurrentTask][tCurrentStep].value - 2 and tDegree <= SkuDB.Tasks[tCurrentTask][tCurrentStep].value + 2  then
 							SkuNav:NavigationModeWoCoordinatesNextStep()
 						end
+
+					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "pitchEndless" then
+						if tPitch then
+							local tDegree = tPitch
+							SkuOptions.Voice:OutputStringBTtts(string.format("%.2f", tDegree), true, true, 0.2, nil, nil, nil, 2, nil, true)						
+							if tDegree >= SkuDB.Tasks[tCurrentTask][tCurrentStep].value - 0.02 and tDegree <= SkuDB.Tasks[tCurrentTask][tCurrentStep].value + 0.02  then
+								SkuNav:NavigationModeWoCoordinatesNextStep()
+							end
+						end				
+
+					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "pitch" then
+						if tPitch then
+							local tDegree = tPitch
+							SkuOptions.Voice:OutputStringBTtts(string.format("%.2f", tDegree), true, true, 0.2, nil, nil, nil, 2, nil, true)						
+							if tDegree >= SkuDB.Tasks[tCurrentTask][tCurrentStep].value - 0.02 and tDegree <= SkuDB.Tasks[tCurrentTask][tCurrentStep].value + 0.02  then
+								SkuNav:NavigationModeWoCoordinatesNextStep()
+							end
+						end
+	
 					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "forward" then
 						if aTriggerName == "MoveForwardStart" then
 							tCurrentMovementStartAt = GetTimePreciseSec()
 						elseif aTriggerName == "MoveForwardStop" then
 							tCurrentMovementLeft = tCurrentMovementLeft - (GetTimePreciseSec() - tCurrentMovementStartAt)
 							SkuOptions.Voice:OutputStringBTtts(string.format("%.1f", tCurrentMovementLeft), true, true, 0.2, nil, nil, nil, 2, nil, true)						
-							if tCurrentMovementLeft <= 0 then
+							if tCurrentMovementLeft <= 0.04 then
 								SkuNav:NavigationModeWoCoordinatesNextStep()
 							end
 						end
+
+					elseif SkuDB.Tasks[tCurrentTask][tCurrentStep].action == "up" then
+						if aTriggerName == "JumpOrAscendStart" then
+							tCurrentMovementStartAt = GetTimePreciseSec()
+						elseif aTriggerName == "AscendStop" then
+							tCurrentMovementLeft = tCurrentMovementLeft - (GetTimePreciseSec() - tCurrentMovementStartAt)
+							SkuOptions.Voice:OutputStringBTtts(string.format("%.1f", tCurrentMovementLeft), true, true, 0.2, nil, nil, nil, 2, nil, true)						
+							if tCurrentMovementLeft <= 0.04 then
+								SkuNav:NavigationModeWoCoordinatesNextStep()
+							end
+						end
+
 					end
 				end
 			end
@@ -175,7 +273,18 @@ function SkuNav:NavigationModeWoCoordinatesRecordForward(aTriggerName)
 			tCurrentMovementStartAtRec = GetTimePreciseSec()
 		elseif aTriggerName == "MoveForwardStop" then
 			tCurrentMovementDone = tCurrentMovementDone + (GetTimePreciseSec() - tCurrentMovementStartAtRec)
-			print(tCurrentMovementDone)
+			--print(tCurrentMovementDone)
+		end
+	end
+end
+
+function SkuNav:NavigationModeWoCoordinatesRecordUp(aTriggerName)
+	if tCurrentMovementStartAtRec > -1 then
+		if aTriggerName == "JumpOrAscendStart" then
+			tCurrentMovementStartAtRec = GetTimePreciseSec()
+		elseif aTriggerName == "AscendStop" then
+			tCurrentMovementDone = tCurrentMovementDone + (GetTimePreciseSec() - tCurrentMovementStartAtRec)
+			--print(tCurrentMovementDone)
 		end
 	end
 end

@@ -12,4 +12,8 @@ SkuDB.Tasks = {
       [8] = {action = "forward", triggers = {"MoveForwardStart", "MoveForwardStop"}, value = 6.2, comment = L["dann aktion 1 verwenden, und dann aktion 5 verwenden"]},
       endTriggers = {"LOADING_SCREEN_ENABLED",},
    },
+   [L["Avoid incoming Scarlet Crusade arrows and Javelins by moving out of their line of fire!"]] = {
+      [1] = {action = "pitchEndless", triggers = {"PitchDownStop", "PitchUpStop",}, value = 10.45, comment = L["Important: For this quest, first go to Sku Discord and read the post about the quest \"An End To All Things...\" that is pinned in the General channel"]},
+      endTriggers = {"UNIT_EXITED_VEHICLE",},
+   },
 }

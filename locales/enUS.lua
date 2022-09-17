@@ -1704,3 +1704,12 @@ L["Role Poll"] = "Role Poll"
 
 L["Unspent pet talent points"] = "Unspent talent points"
 L["Pet happiness"] = "Happiness"
+
+L[": neigen auf "] = ": pitch to "
+
+L["Avoid incoming Scarlet Crusade arrows and Javelins by moving out of their line of fire!"] = "Avoid incoming Scarlet Crusade arrows and Javelins by moving out of their line of fire!"
+
+L["Vehicle Mana "] = "Vehicle Mana "
+L["Vehicle HP "] = "Vehicle HP "
+
+L["Important: For this quest, first go to Sku Discord and read the post about the quest \"An End To All Things...\" that is pinned in the General channel"]  = "Important: For this quest, first go to Sku Discord and read the post about the quest \"An End To All Things...\" that is pinned in the General channel"

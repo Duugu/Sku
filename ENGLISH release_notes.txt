@@ -3,6 +3,10 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.20
+	- Added mapping data for death knight starting area.
+	
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.19
 	- Removed overlooked debug chat output on login/reload.
 	- Removed a lot of virtual trigger spawn points from Northrend maps.

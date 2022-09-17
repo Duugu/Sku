@@ -1283,14 +1283,15 @@ function SkuCore:OnEnable()
 	hooksecurefunc("StrafeLeftStop", function() SkuCoreMovement.Flags.StrafeLeft = false end)
 	hooksecurefunc("StrafeRightStart", function() SkuCoreMovement.Flags.StrafeRight = true end)
 	hooksecurefunc("StrafeRightStop", function() SkuCoreMovement.Flags.StrafeRight = false end)
-	hooksecurefunc("JumpOrAscendStart", function() SkuCoreMovement.Flags.Ascend = true end)
-	hooksecurefunc("AscendStop", function() SkuCoreMovement.Flags.Ascend = false end)
-	hooksecurefunc("SitStandOrDescendStart", function() SkuCoreMovement.Flags.Descend = true end)
-	hooksecurefunc("DescendStop", function() SkuCoreMovement.Flags.Descend = false end)
-	--hooksecurefunc("TurnLeftStart", function() dprint("TurnLeftStartf") end)
-	--hooksecurefunc("TurnLeftStop", function() dprint("TurnLeftStopf") end)
-	--hooksecurefunc("TurnRightStart", function() dprint("TurnRightStartf") end)
-	--hooksecurefunc("TurnRightStop", function() dprint("TurnRightStopf") end)
+	hooksecurefunc("JumpOrAscendStart", function() SkuCoreMovement.Flags.Ascend = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("JumpOrAscendStart") end)
+	hooksecurefunc("AscendStop", function() SkuCoreMovement.Flags.Ascend = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("AscendStop") end)
+	hooksecurefunc("SitStandOrDescendStart", function() SkuCoreMovement.Flags.Descend = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("SitStandOrDescendStart") end)
+	hooksecurefunc("DescendStop", function() SkuCoreMovement.Flags.Descend = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("DescendStop") end)
+	hooksecurefunc("PitchDownStart", function() SkuCoreMovement.Flags.PitchDown = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("PitchDownStart") end)
+	hooksecurefunc("PitchDownStop", function() SkuCoreMovement.Flags.PitchDown = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("PitchDownStop") end)
+	hooksecurefunc("PitchUpStart", function() SkuCoreMovement.Flags.PitchUp = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("PitchUpStart") end)
+	hooksecurefunc("PitchUpStop", function() SkuCoreMovement.Flags.PitchUp = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("PitchUpStop") end)
+
 	hooksecurefunc("ToggleRun", function()
 		--dprint("ToggleRun")
 		if SkuStatus.running > 0 then
@@ -1766,33 +1767,35 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			end
 
 			C_Timer.After(15, function()
-				TRAINER_FILTER_AVAILABLE = 1 
-				TRAINER_FILTER_UNAVAILABLE = 0 
-				TRAINER_FILTER_USED = 0
-				SetActionBarToggles(1,1,1,1,1) 
-				--[[
-				SHOW_MULTI_ACTIONBAR_1 = 1 
-				SHOW_MULTI_ACTIONBAR_2 = 1 
-				SHOW_MULTI_ACTIONBAR_3 = 1 
-				SHOW_MULTI_ACTIONBAR_4 = 1 
-				]]
-				MultiActionBar_Update() 
-				UIParent_ManageFramePositions() 
+				if InCombatLockdown() ~= true then
+					TRAINER_FILTER_AVAILABLE = 1 
+					TRAINER_FILTER_UNAVAILABLE = 0 
+					TRAINER_FILTER_USED = 0
+					SetActionBarToggles(1,1,1,1,1) 
+					--[[
+					SHOW_MULTI_ACTIONBAR_1 = 1 
+					SHOW_MULTI_ACTIONBAR_2 = 1 
+					SHOW_MULTI_ACTIONBAR_3 = 1 
+					SHOW_MULTI_ACTIONBAR_4 = 1 
+					]]
+					MultiActionBar_Update() 
+					UIParent_ManageFramePositions() 
 
-				C_CVar.SetCVar("instantQuestText", "1")
-				C_CVar.SetCVar("autoLootDefault", "1")
-				dprint("autoLootDefault", C_CVar.GetCVar("autoLootDefault", "1"))
-				C_CVar.SetCVar("alwaysShowActionBars", "1")
-				C_CVar.SetCVar("cameraSmoothStyle", "2")
-				C_CVar.GetCVar("removeChatDelay", "1")
+					C_CVar.SetCVar("instantQuestText", "1")
+					C_CVar.SetCVar("autoLootDefault", "1")
+					dprint("autoLootDefault", C_CVar.GetCVar("autoLootDefault", "1"))
+					C_CVar.SetCVar("alwaysShowActionBars", "1")
+					C_CVar.SetCVar("cameraSmoothStyle", "2")
+					C_CVar.GetCVar("removeChatDelay", "1")
 
-				SetCVar("cameraViewBlendStyle", 2) --Controls if the camera moves from saved positions - 1 smoothly 2 instantly 
-	
-				--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
-				--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
+					SetCVar("cameraViewBlendStyle", 2) --Controls if the camera moves from saved positions - 1 smoothly 2 instantly 
+		
+					--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
+					--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 
-				LeaveChannelByName("LookingForGroup")
-				LeaveChannelByName("SucheNachGruppe")				
+					LeaveChannelByName("LookingForGroup")
+					LeaveChannelByName("SucheNachGruppe")			
+				end	
 			end)			
 
 			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
@@ -1903,25 +1906,26 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	end
 
 	C_Timer.After(6, function()
-		TRAINER_FILTER_AVAILABLE = 1 
-		TRAINER_FILTER_UNAVAILABLE = 0 
-		TRAINER_FILTER_USED = 0
-		SetActionBarToggles(1,1,1,1,1) 
-		
-		--[[
-		SHOW_MULTI_ACTIONBAR_1 = 1 
-		SHOW_MULTI_ACTIONBAR_2 = 1 
-		SHOW_MULTI_ACTIONBAR_3 = 1 
-		SHOW_MULTI_ACTIONBAR_4 = 1 
-		]]
-		MultiActionBar_Update() 
-		UIParent_ManageFramePositions() 
-		
-		C_CVar.SetCVar("instantQuestText", "1")
-		C_CVar.SetCVar("autoLootDefault", "1")
-		C_CVar.SetCVar("alwaysShowActionBars", "1")
-		C_CVar.SetCVar("cameraSmoothStyle", "2")
-		C_CVar.GetCVar("removeChatDelay", "1")
+		if InCombatLockdown() ~= true then
+			TRAINER_FILTER_AVAILABLE = 1 
+			TRAINER_FILTER_UNAVAILABLE = 0 
+			TRAINER_FILTER_USED = 0
+			SetActionBarToggles(1,1,1,1,1) 
+			
+			--[[
+			SHOW_MULTI_ACTIONBAR_1 = 1 
+			SHOW_MULTI_ACTIONBAR_2 = 1 
+			SHOW_MULTI_ACTIONBAR_3 = 1 
+			SHOW_MULTI_ACTIONBAR_4 = 1 
+			]]
+			MultiActionBar_Update() 
+			UIParent_ManageFramePositions() 
+			C_CVar.SetCVar("instantQuestText", "1")
+			C_CVar.SetCVar("autoLootDefault", "1")
+			C_CVar.SetCVar("alwaysShowActionBars", "1")
+			C_CVar.SetCVar("cameraSmoothStyle", "2")
+			C_CVar.GetCVar("removeChatDelay", "1")
+		end
 	end)			
 
 	--hooksecurefunc(GameTooltip, "Show", SkuCore.CheckInteractObjectShow)
