@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.21](https://github.com/Duugu/Sku/releases/download/r30.21/Sku-r30.21-wrath.zip) (Sep 18th, 2022)<br>
+- [Sku r30.22](https://github.com/Duugu/Sku/releases/download/r30.22/Sku-r30.22-wrath.zip) (Sep 18th, 2022)<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Older updates:* <br>
@@ -18,6 +18,11 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [SkuMapper r1.5](https://github.com/Duugu/SkuMapper/releases/download/r1.5/SkuMapper-r1.5-wrath.zip) (Sep 16th, 2022, mapping addon for sighted players)
 
 # Release notes
+
+## Changes in Sku r30.22
+- Fixed a bunch of waypoints and waypoint names in the dk starting area to be more clear.
+- Fixed another bug with special tasks for players that don't have the pet message set to text or audio.
+- Fixed more bugs with deathknight quests not showing in the list of available quests.
 
 ## Changes in Sku r30.21
 - Fixed a bug with deathknight quests not showing in the list of available quests starting in zone.
