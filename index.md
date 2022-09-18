@@ -8,14 +8,21 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.20](https://github.com/Duugu/Sku/releases/download/r30.20/Sku-r30.20-wrath.zip) (Sep 17th, 2022)<br>
-- [SkuMapper r1.5](https://github.com/Duugu/SkuMapper/releases/download/r1.5/SkuMapper-r1.5-wrath.zip) (Sep 16th, 2022, mapping addon for sighted players)
+- [Sku r30.21](https://github.com/Duugu/Sku/releases/download/r30.21/Sku-r30.21-wrath.zip) (Sep 18th, 2022)<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Older updates:* <br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 
+*Updates for sighted players:* <br>
+- [SkuMapper r1.5](https://github.com/Duugu/SkuMapper/releases/download/r1.5/SkuMapper-r1.5-wrath.zip) (Sep 16th, 2022, mapping addon for sighted players)
+
 # Release notes
+
+## Changes in Sku r30.21
+- Fixed a bug with deathknight quests not showing in the list of available quests starting in zone.
+- Fixed a bug with special tasks for players that don't have the chat set to auto-read.
+- There is a new option under Auras: Export all auras. It is exporting all auras from the current character in one big chunk.
 
 ## Changes in Sku r30.20
 - Added mapping data for death knight starting area.
