@@ -1222,11 +1222,11 @@ L[",SkuAuras,Auren,Auren verwalten,"]  = ",Auras,Auras,Manage auras," ---menu pa
 L["Wirklich duplizieren?"]  = "Really duplicate?" --
 L["Löschen"]  = "Delete" --
 L["Exportieren"]  = "Export" --
-L["Aura exportiert"]  = "Aura exported" --
+L["Aura exportiert"]  = "Auras exported" --
 L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"]  = "Copy export data with Control plus C and press Escape" --
 L["Aura version zu alt"]  = "Aura version too old" --
-L["Aura importiert:"]  = "Aura imported:" --
-L["Aura importiert"]  = "Aura imported" --
+L["Aura importiert:"]  = "Auras imported:" --
+L["Aura importiert"]  = "Auras imported" --
 L["Aura daten defekt"]  = "Aura data corrupted" --
 L["Auren"]  = "Auras" --
 L["Neue aura"]  = "New aura" --
@@ -1246,7 +1246,7 @@ L["Aktivierte"]  = "Activated" --
 L["Deaktivierte"]  = "Deactivated" --
 
 L["Alle"]  = "All" --
-L["Aura importieren"]  = "Import aura" --
+L["Aura importieren"]  = "Import auras" --
 L["Alle Auren löschen"]  = "Delete all auras" --
 L["Alle auren gelöscht"]  = "All auras deleted" --
 L["Aura Sets verwalten"]  = "Manage aura sets" --
@@ -1713,3 +1713,5 @@ L["Vehicle Mana "] = "Vehicle Mana "
 L["Vehicle HP "] = "Vehicle HP "
 
 L["Important: For this quest, first go to Sku Discord and read the post about the quest \"An End To All Things...\" that is pinned in the General channel"]  = "Important: For this quest, first go to Sku Discord and read the post about the quest \"An End To All Things...\" that is pinned in the General channel"
+
+L["Alle Auren exportieren"] = "Export all auras"

@@ -44,6 +44,7 @@ SkuQuest.racesFriendly = {
 SkuQuest.classesFriendly = {
 	NONE = L["Keine"],
 	WARRIOR = L["Krieger"],
+	DEATHKNIGHT = L["todesritter"],
 	PALADIN = L["Paladin"],
 	HUNTER = L["Jäger"],
 	ROGUE = L["Schurke"],

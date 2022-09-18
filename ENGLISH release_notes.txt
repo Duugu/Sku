@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.21
+	- Fixed a bug with deathknight quests not showing in the list of available quests starting in zone.
+	- Fixed a bug with special tasks for players that don't have the chat set to auto-read.
+	- There is a new option under Auras: Export all auras. It is exporting all auras from the current character in one big chunk.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.20
 	- Added mapping data for death knight starting area.
 	

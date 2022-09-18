@@ -1025,6 +1025,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
 			local tUiMap = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+
 			local tPlayX, tPlayY = UnitPosition("player")
 			local tShowQuestsTable = {}
 
@@ -1039,7 +1040,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			end
 
 			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
-				if SkuDB.questDataTBC[i] then
+				if SkuDB.questDataTBC[i] and i == 12641 then
 					local tZoneId
 					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
 						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1]
@@ -1065,7 +1066,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 								tOutFlag = true
 							end
 						end
-
 						if (C_QuestLog.IsQuestFlaggedCompleted(i) == false)
 							and (SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]] <= UnitLevel("player"))
 							and not tCurrentQuestLogQuestsTable[i]
@@ -1079,7 +1079,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 							local tPlayerclassName, tPlayerclassFilename, tPlayerclassId = UnitClass("player")
 							local tmpraceName, tmpraceFile, tmpraceID = UnitRace("player")
 							local tRaceName = C_CreatureInfo.GetRaceInfo(tmpraceID)
-
 							local tCount = 0
 							if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]] then
 								for iR, vR in pairs(SkuDB.raceKeys) do
@@ -1098,6 +1097,9 @@ function SkuQuest:MenuBuilder(aParentEntry)
 											rRaces[tCleanRaceName] = true
 											tCount = tCount + 1
 										end
+									else
+										tFlagH = true
+										tFlagA = true
 									end
 								end
 							end
@@ -1131,7 +1133,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 										tFlagClass = true
 									end
 								end
-																
 								if tFlagClass == true then
 									local tPreQuestsTable = {}
 									if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series

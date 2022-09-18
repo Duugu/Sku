@@ -743,20 +743,26 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAuras:ExportAuraData(aAuraName)
-	if not SkuOptions.db.char[MODULE_NAME].Auras[aAuraName] then return end
+function SkuAuras:ExportAuraData(aAuraNamesTable)
+	if not aAuraNamesTable then
+		return
+	end
 
 	local tExportDataTable = {
-		version = 22.8,
-		auraName = aAuraName,
-		auraData = nil,
+		version = GetAddOnMetadata("Sku", "Version"),
+		auraData = {},
 	}
-	tExportDataTable.auraData = SkuOptions.db.char[MODULE_NAME].Auras[aAuraName]
-	
+
+	for i, v in pairs(aAuraNamesTable) do
+		if SkuOptions.db.char[MODULE_NAME].Auras[v] then
+			tExportDataTable.auraData[v] = SkuOptions.db.char[MODULE_NAME].Auras[v]
+		end
+	end
+
 	PlaySound(88)
 	print(L["Aura exportiert"])
 	SkuOptions.Voice:OutputStringBTtts(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], false, true, 0.3)		
-	SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.version, tExportDataTable.auraName, tExportDataTable.auraData), function(self) PlaySound(89) end)
+	SkuOptions:EditBoxShow(SkuOptions:Serialize(tExportDataTable.version, tExportDataTable.auraData), function(self) PlaySound(89) end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -770,19 +776,30 @@ function SkuAuras:ImportAuraData()
 
 		if tSerializedData ~= "" then
 			local tSuccess, version, auraName, auraData = SkuOptions:Deserialize(tSerializedData)
-			if auraName and auraData and version then
-				if version < 22.8 then
-					SkuOptions.Voice:OutputStringBTtts(L["Aura version zu alt"], false, true, 0.3)		
+			if type(auraName) == "string" then
+				if auraName and auraData and version then
+					if version < 22.8 then
+						SkuOptions.Voice:OutputStringBTtts(L["Aura version zu alt"], false, true, 0.3)		
+						return
+					end
+					auraData.enabled = true
+					SkuOptions.db.char[MODULE_NAME].Auras[auraName] = auraData
+					print(L["Aura importiert:"])
+					print(auraName)
+					SkuOptions.Voice:OutputStringBTtts(L["Aura importiert"], false, true, 0.3)		
+				else
+					SkuOptions.Voice:OutputStringBTtts(L["Aura daten defekt"], false, true, 0.3)		
 					return
 				end
-				auraData.enabled = true
-				SkuOptions.db.char[MODULE_NAME].Auras[auraName] = auraData
-				print(L["Aura importiert:"])
-				print(auraName)
+
+			elseif type(auraName) == "table" then
+				auraData = auraName
+				for i, v in pairs(auraData) do
+					print(i)
+					v.enabled = true
+					SkuOptions.db.char[MODULE_NAME].Auras[i] = v
+				end
 				SkuOptions.Voice:OutputStringBTtts(L["Aura importiert"], false, true, 0.3)		
-			else
-				SkuOptions.Voice:OutputStringBTtts(L["Aura daten defekt"], false, true, 0.3)		
-				return
 			end
 		end
 	end)
@@ -865,7 +882,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] = nil
 				SkuOptions.Voice:OutputStringBTtts(L["gelöscht"], false, true, 0.1, true)
 			elseif aName == L["Exportieren"] then				
-				SkuAuras:ExportAuraData(self.targetAuraName)
+				SkuAuras:ExportAuraData({self.targetAuraName})
 			end
 		end
 		tNewMenuEntry.BuildChildren = function(self)
@@ -928,6 +945,18 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			SkuOptions.db.char[MODULE_NAME].Auras = {}
 			SkuOptions.Voice:OutputStringBTtts(L["Alle auren gelöscht"], true, true, 0.1, true)
 		end
+
+		local tdel = SkuOptions:InjectMenuItems(self, {L["Alle Auren exportieren"]}, SkuGenericMenuItem)
+		tdel.dynamic = false
+		tdel.isSelect = true
+		tdel.OnAction = function(self, aValue, aName)
+			local aAuraNamesTable = {}
+			for i, v in pairs(SkuOptions.db.char["SkuAuras"].Auras) do 
+				table.insert(aAuraNamesTable, i)
+			end 
+			SkuAuras:ExportAuraData(aAuraNamesTable)
+		end
+
 
 		local tTypeItem = SkuOptions:InjectMenuItems(self, {L["Aura Sets verwalten"]}, SkuGenericMenuItem)
 		tTypeItem.dynamic = true

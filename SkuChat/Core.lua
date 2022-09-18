@@ -2412,6 +2412,8 @@ function SkuChat:InitTab(tNewTabIndex)
 			return
 		end
 
+		SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(body)
+
 		--mask bnet names
 		local tNewBody
 		if string.find(body, "|K") then

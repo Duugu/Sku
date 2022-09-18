@@ -646,10 +646,6 @@ if Sku.Loc == "deDE" then
                         "is", -- [1]
                         "spell:Vampirberührung", -- [2]
                      }, -- [1]
-                     {
-                        "is", -- [1]
-                        "spell:Verbesserte Vampirberührung", -- [2]
-                     }, -- [2]
                   },
                   ["tInCombat"] = {
                      {
@@ -707,10 +703,6 @@ if Sku.Loc == "deDE" then
                         "containsNot", -- [1]
                         "spell:Vampirberührung", -- [2]
                      }, -- [1]
-                     {
-                        "is", -- [1]
-                        "spell:Verbesserte Vampirberührung", -- [2]
-                     }, -- [2]
                   },
                },
                ["actions"] = {
