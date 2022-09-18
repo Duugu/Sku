@@ -1683,7 +1683,7 @@ L["Never reset audio queues"] = "Audiowarteschlangen niemals zurücksetzen"
 L["Not longer available. Refresh list."] = "Nicht mehr verfügbar. Liste aktualisieren."
 
 --special task general strings
-L["spezialaufgabe abgebrochen"] = "spezialaufgabe abgebrochen"
+L["spezialaufgabe abgebrochen"] = "spezialaufgabe beendet oder abgebrochen"
 L["Achtung: Start einer spezialaufgabe. Halte dich exakt an die Anweisungen! "] = "Achtung: Start einer spezialaufgabe. Halte dich exakt an die Anweisungen! "
 L["schritt "] = "schritt "
 L[": drehen auf "] = ": drehen auf "

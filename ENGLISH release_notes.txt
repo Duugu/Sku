@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r30.22
+	- Fixed a bunch of waypoints and waypoint names in the dk starting area to be more clear.
+	- Fixed another bug with special tasks for players that don't have the pet message set to text or audio.
+	- Fixed more bugs with deathknight quests not showing in the list of available quests.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r30.21
 	- Fixed a bug with deathknight quests not showing in the list of available quests starting in zone.
 	- Fixed a bug with special tasks for players that don't have the chat set to auto-read.

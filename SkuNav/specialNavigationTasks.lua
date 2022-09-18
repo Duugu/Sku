@@ -73,7 +73,8 @@ function SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aStringToCheck, arg1
 
 	if tCurrentTask then
 		for i, v in pairs(SkuDB.Tasks[tCurrentTask].endTriggers) do
-			if v == aStringToCheck then
+			--if v == aStringToCheck then
+			if string.find(aStringToCheck, v) then
 				SkuNav:NavigationModeWoCoordinatesNextStep(nil, nil, true)
 				SkuOptions.Voice:OutputString("sound-success1", true, true, 0.1, true)
 				SkuOptions.Voice:OutputStringBTtts(L["spezialaufgabe abgebrochen"], true, true, 0.2, nil, nil, nil, 2, nil, true)						

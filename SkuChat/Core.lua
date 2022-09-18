@@ -922,6 +922,8 @@ function SkuChat_MessageEventHandler(self, event, ...)
 	if ( strsub(event, 1, 8) == "CHAT_MSG" ) then
 		local arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = ... 
 
+		SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(arg1)
+
 		if (arg16) then
 			-- hiding sender in letterbox: do NOT even show in chat window (only shows in cinematic frame)
 			return true 
@@ -2411,8 +2413,6 @@ function SkuChat:InitTab(tNewTabIndex)
 		if body == "" or body == " " then
 			return
 		end
-
-		SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(body)
 
 		--mask bnet names
 		local tNewBody

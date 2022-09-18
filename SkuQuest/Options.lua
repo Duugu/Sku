@@ -1038,9 +1038,8 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					--dprint(title, questID)
 				end
 			end
-
 			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
-				if SkuDB.questDataTBC[i] and i == 12641 then
+				if SkuDB.questDataTBC[i] then
 					local tZoneId
 					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
 						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1]
