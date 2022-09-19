@@ -811,8 +811,8 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				end
 				
 				tBagResultsByBag[(tCurrentContainerFrameNumber)].childs[#tBagResultsByBag[(tCurrentContainerFrameNumber)].childs + 1] = bagItemButton
-				-- if the item slot isn't empty, add it to allBagResults
-				if not isEmpty and bagId ~= -2 then
+				-- if the item slot isn't empty and is in one of the bags, add it to allBagResults
+				if not isEmpty and bagId >= 0 and bagId <= 4 then
 					-- create a copy that doesn't have the numbering in textFirstLine
 					copy = {}
 					for k, v in pairs(bagItemButton) do
