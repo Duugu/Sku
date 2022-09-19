@@ -247,6 +247,22 @@ local function getItemComparisnSections(itemId, cache)
 	return comparisnSections
 end
 
+---Inserts comparisn sections if equipable item.
+---@param itemId number Item ID for item for which comparisns will be returned.
+---@param textFull string[] List of strings intwo which comparisn sections will be inserted
+---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
+local function insertComparisnSections(itemId, textFull, cache)
+	if itemId and IsEquippableItem(itemId) then
+		local comparisnSections = getItemComparisnSections(itemId, cache)
+		if comparisnSections then
+			for i, section in ipairs(comparisnSections) do
+				local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
+				table.insert(textFull, i + 1, sectionHeader .. section)
+			end
+		end
+	end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tBagSlotList = {
 	[0] = L["Bag"].." 1",
@@ -412,16 +428,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 						end
 						table.insert(bagItemButton.textFull, 1, tFull)
 						
-						local itemId = bagItemButton.itemId
-						if itemId and IsEquippableItem(itemId) then
-							local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
-							if comparisnSections then
-								for i, section in ipairs(comparisnSections) do
-									local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
-									table.insert(bagItemButton.textFull, i + 1, sectionHeader .. section)
-								end
-							end
-						end
+insertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
 					end
 
 					if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
@@ -758,16 +765,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or ""), }
 						end
 						table.insert(bagItemButton.textFull, 1, tFull)
-						local itemId = bagItemButton.itemId
-						if itemId and IsEquippableItem(itemId) then
-							local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
-							if comparisnSections then
-								for i, section in ipairs(comparisnSections) do
-									local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
-									table.insert(bagItemButton.textFull, i + 1, sectionHeader .. section)
-								end
-							end
-						end
+insertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
 					end
 
 					if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
