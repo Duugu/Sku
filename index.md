@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.23](https://github.com/Duugu/Sku/releases/download/r30.23/Sku-r30.23-wrath.zip) (Sep 21th, 2022)<br>
+- [Sku r30.24](https://github.com/Duugu/Sku/releases/download/r30.24/Sku-r30.24-wrath.zip) (Sep 21th, 2022)<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Older updates:* <br>
@@ -18,6 +18,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [SkuMapper r1.8](https://github.com/Duugu/SkuMapper/releases/download/r1.8/SkuMapper-r1.8-wrath.zip) (Sep 20th, 2022, mapping addon for sighted players)
 
 # Release notes
+
+## Changes in Sku r30.24
+- Fixed the missing map data.
 
 ## Changes in Sku r30.23
 - Removed the Import and Export menu entries under Navigation > Data
