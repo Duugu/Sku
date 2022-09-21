@@ -748,7 +748,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 		SkuNav:clearVisitedWaypoints()
 		PlaySound(835)
 	end
-
+--[[
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Verwalten"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -842,8 +842,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 			end
 		end
+		]]
 	end
-
 	--rts
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Route folgen"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
@@ -1111,6 +1111,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Daten"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
+		--[[
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Import"]}, SkuGenericMenuItem)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
@@ -1131,7 +1132,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			--SkuOptions:ExportWpAndRouteData()
 			SkuOptions:ExportWpAndLinkData()
 		end
-
+		]]
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alle Routen und Wegpunkte löschen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true or SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then

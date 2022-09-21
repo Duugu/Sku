@@ -163,9 +163,28 @@ function SkuOptions:SlashFunc(input, aSilent)
 			print("latencyWorld", latencyWorld)
 		end
 
+		if fields[1] == "skumm" then
+			SkuOptions.db.profile["SkuNav"].showSkuMM = SkuOptions.db.profile["SkuNav"].showSkuMM == false
+			SkuNav:SkuNavMMOpen()			
+		end
+
+		if fields[1] == "gamemm" then
+			SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap = SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap ~= true
+		end
+
+
 		if fields[1] == "aq" then
 			SkuCore:AqSlashHandler(fields)
 		end
+
+		if fields[1] == "import" then
+			SkuOptions:ImportWpAndLinkData()
+		end
+
+		if fields[1] == "export" then
+			SkuOptions:ExportWpAndLinkData()
+		end
+
 
 		if fields[1] == L["short"] then
 			if SkuCore.inCombat == true then

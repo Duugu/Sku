@@ -23,6 +23,7 @@ local f = _G["SkuNavNavigationModeWoCoordinatesControl"] or CreateFrame("Frame",
 f:SetScript("OnEvent", function(self, aEvent, arg1, arg2) 
 	if aEvent == "VEHICLE_ANGLE_UPDATE" then
 		tPitch = arg1
+		SkuOptions.Voice:OutputStringBTtts(tPitch, true, true, 0.2, nil, nil, nil, 2, nil, true)						
 	elseif aEvent == "UNIT_POWER_FREQUENT" and arg1 == "vehicle" then
 		local tCP = math.floor((UnitPower("vehicle") / UnitPowerMax("vehicle")) * 100)
 		if tVPower then
@@ -43,9 +44,7 @@ f:SetScript("OnEvent", function(self, aEvent, arg1, arg2)
 		else
 			tVHealth = tCP
 		end
-
 	end
-
 
 	SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aEvent, arg1, arg2)
 end)
