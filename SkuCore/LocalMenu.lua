@@ -4020,6 +4020,7 @@ function SkuCore:QuestFrame(aParentChilds)
 				end
 			end
 
+			local compCache = {}
 			if QuestInfoRewardsFrame.ItemChooseText then
 				if QuestInfoRewardsFrame.ItemChooseText:IsVisible() == true then
 					local tText = QuestInfoRewardsFrame.ItemChooseText:GetText()
@@ -4036,7 +4037,6 @@ function SkuCore:QuestFrame(aParentChilds)
 						childs = {},
 					} 
 
-					local compCache = {}
 					for x = 1, 10 do
 						local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
 						if _G[tFrameName] then
@@ -4095,8 +4095,10 @@ function SkuCore:QuestFrame(aParentChilds)
 							local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
 							if _G[tFrameName] then
 								if _G[tFrameName]:IsVisible() == true and _G[tFrameName.."Name"]:GetText() then
-									local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
+									local tText, tFullText, itemLink = GetButtonTooltipLines(_G[tFrameName])
 									if tText then
+										tFullText = {tFullText}
+										insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
 										tTaken[x] = true
 										tText = tText.." "..(_G[tFrameName].count or "")
 										local tFriendlyName = SkuChat:Unescape(tText)
