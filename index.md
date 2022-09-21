@@ -8,7 +8,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.22](https://github.com/Duugu/Sku/releases/download/r30.22/Sku-r30.22-wrath.zip) (Sep 18th, 2022)<br>
+- [Sku r30.23](https://github.com/Duugu/Sku/releases/download/r30.23/Sku-r30.23-wrath.zip) (Sep 21th, 2022)<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Older updates:* <br>
@@ -18,6 +18,12 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [SkuMapper r1.8](https://github.com/Duugu/SkuMapper/releases/download/r1.8/SkuMapper-r1.8-wrath.zip) (Sep 20th, 2022, mapping addon for sighted players)
 
 # Release notes
+
+## Changes in Sku r30.23
+- Removed the Import and Export menu entries under Navigation > Data
+- Removed the Navigation > Waypoint > Manage menu.
+- The addon is now auto deleting all customized map data that was manually imported (if there is any) on first login after starting the client. That means, if you do import custom map data, it will only exist for the current game session. If you do exit and restart the game client, you need to re-import that data.
+- Removed the key binds to open the Sku Minimap for mapping or to show routes on the game minimap.
 
 ## Changes in Sku r30.22
 - Fixed a bunch of waypoints and waypoint names in the dk starting area to be more clear.
