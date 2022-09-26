@@ -7,8 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- **Sku for Wrath of the Lich King. Read the release notes below!** <br>
-- [Sku r30.24](https://github.com/Duugu/Sku/releases/download/r30.24/Sku-r30.24-wrath.zip) (Sep 21th, 2022)<br>
+- [Sku r31](https://github.com/Duugu/Sku/releases/download/r31/Sku-r31-wrath.zip) (Sep 26th, 2022)<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Older updates:* <br>
@@ -19,6 +18,37 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 # Release notes
 
+## Changes in Sku r31
+
+This is the Northrend release update. All kind of bugs, errors, etc. are possible.
+The databases are still in a bad shape. Missing quests, missing start/target/end lists are possible.
+All routes and waypoints are 100% untested.
+There are a lot of phasing, vehicle and other quests. Those are untested too.
+Most graveyards are not linked with routes. Please report every unlinked graveyard.
+
+Please report all issues to the specific channels in discord. If you don't report them, they won't be fixed. :)
+
+- Recommendated starting areas in Northrend:
+	- Alliance: Howling Fjord or Borean Tundra
+	- Horde: Borean Tundra (or Howling Fjord if you have sighted help, as there is a silent elevator in the horde start area)
+- The item, quest, creature and object databases are updated.
+- Map data for Northrend:
+	- Mapped: 
+		- Howling Fjord (68-72)
+		- Borean Tundra (68-72)
+		- Dragonblight (71-74)
+		- Sholazar Basin (75-78)
+		- Crystalsong Forest (77-80)
+	- Partly mapped:
+		- Grizzly Hills (73-75)
+	- Unmapped:
+		- Dalaran (Sanctuary)
+		- Zul'Drak (74-77)
+		- The Storm Peaks (76-80)
+		- Hrothgar's Landing (77-80)
+		- Icecrown (77-80)
+		- Wintergrasp (77-80) (Outdoor PvP)
+	
 ## Changes in Sku r30.24
 - Fixed the missing map data.
 
