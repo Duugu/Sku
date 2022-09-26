@@ -1129,9 +1129,9 @@ function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
 	--dprint("GetAllQuestWps", aQuestID, aStart, aObjective, aFinish, aOnly3)
 
 	if aStart == true then
-		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
 			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][2]
-			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3]
+			or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3])
 		then
 			local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
 			if tstartedBy then
@@ -1169,7 +1169,7 @@ function SkuQuest:GetAllQuestWps(aQuestID, aStart, aObjective, aFinish, aOnly3)
 		end
 	end
 	if aFinish == true then
-		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
+		if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3]) then
 			local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
 			if tFinishedBy then
 				local tTargets = {}
@@ -1219,19 +1219,19 @@ function SkuQuest:BuildQuestZoneCache()
 
 			--starts
 			local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
-			if tstartedBy[1] then
+			if tstartedBy and tstartedBy[1] then
 				--creatureStart
 				for i, v in pairs(tstartedBy[1]) do
 					GetCreatureArea(aQuestID, v)
 				end
 			end
-			if tstartedBy[2] then
+			if tstartedBy and tstartedBy[2] then
 				--objectStart
 				for i, id in pairs(tstartedBy[2]) do
 					GetObjectArea(aQuestID, id)
 				end
 			end
-			if tstartedBy[3] then
+			if tstartedBy and tstartedBy[3] then
 				--itemStart
 				for i, v in pairs(tstartedBy[3]) do
 					--dprint("  itemStart", i, v)
@@ -1314,13 +1314,13 @@ function SkuQuest:BuildQuestZoneCache()
 
 			--finishs
 			local finishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
-			if finishedBy[1] then
+			if finishedBy and finishedBy[1] then
 				--creature
 				for i, v in pairs(finishedBy[1]) do
 					GetCreatureArea(aQuestID, v)
 				end
 			end
-			if finishedBy[2] then
+			if finishedBy and finishedBy[2] then
 				--object
 				for i, id in pairs(finishedBy[2]) do
 					GetObjectArea(aQuestID, id)

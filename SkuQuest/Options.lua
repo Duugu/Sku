@@ -852,9 +852,9 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				end
 			end
 
-			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
+			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
 				or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][2]
-				or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3]
+				or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3])
 			then
 				tHasEntries = true
 				local tstartedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]]
@@ -896,13 +896,13 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				end
 			end
 
-			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3] then
+			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3]) then
 				tHasEntries = true
 				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Abgabe"]}, SkuGenericMenuItem)
 				tNewMenuSubEntry.dynamic = true
 				tNewMenuSubEntry.filterable = true
 				local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
-				if tFinishedBy then
+				if tFinishedBy and tFinishedBy then
 					local tTargets = {}
 					local tTargetType = nil
 
@@ -1041,15 +1041,15 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
 				if SkuDB.questDataTBC[i] then
 					local tZoneId
-					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
+					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
 						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1]
 						tZoneId = SkuDB.NpcData.Data[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]][SkuDB.NpcData.Keys['zoneID']]
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then --objects
+					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then --objects
 						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]
 						if SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]] then
 							tZoneId = SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]]
 						end
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3] then --items
+					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3] then --items
 						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3]
 					end
 
@@ -1317,15 +1317,15 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
 				if SkuDB.questDataTBC[i] then
 					local tZoneId
-					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
+					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
 						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1]
 						tZoneId = SkuDB.NpcData.Data[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]][SkuDB.NpcData.Keys['zoneID']]
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then --objects
+					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then --objects
 						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2]
 						if SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]] then
 							tZoneId = SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]]
 						end
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3] then --items
+					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3] then --items
 						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3]
 					end
 
