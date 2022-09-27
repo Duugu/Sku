@@ -2,6 +2,23 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.2
+	- Map and quest fixes:
+		- vrykul hawk roost waypoint in howling fjord added. quest requires sighted help to get the eggs.
+		- habichtfelsen 1-x added. there are habichte on the ground at those felsen. use them for the quest.
+		- waypoints for eisenrunengravur 1 + 2 added
+		- waypoints for lebronskis teppich added
+		- routes in wyrmskull Village and utgard catacombs in howling fjord alliance starting area fixed
+		- waypoints for ring des richturteils in utgard catacombs added
+		- "Alliance Banner drop waypoint" added. Still not in quests target list. This is intended.
+		- more waypoints for Prisoners of Wormskull added
+		- waypoint named "Wyrmskull Incense Burner use point" for "The Echo of Ymiron" added
+		- waypoint named "nifflevar Incense Burner use point" for "Anguish of Nifflevar" added
+		- waypoints for ship howling fjord in to wetlands renamed
+		- fixed the route to the First Aid Supplies for "A Soldier in Need" in the tundra
+
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.1
 	- Fixed a bug with the Howling Fjord map.
