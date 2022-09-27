@@ -2584,12 +2584,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:LoadDefaultMapData(aForce)
 	dprint("LoadDefaultMapData", aForce, SkuOptions.db.global["SkuNav"].hasCustomMapData)
-	if SkuOptions.db.global["SkuNav"].hasCustomMapData ~= true or aForce then
+	--if SkuOptions.db.global["SkuNav"].hasCustomMapData ~= true or aForce then
 		local t = SkuDB.routedata["global"]["Waypoints"]
 		SkuOptions.db.global["SkuNav"].Waypoints = t
 		local tl = SkuDB.routedata["global"]["Links"]
 		SkuOptions.db.global["SkuNav"].Links = tl
-	end
+	--end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
