@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31](https://github.com/Duugu/Sku/releases/download/r31/Sku-r31-wrath.zip) (Sep 26th, 2022)<br>
+- [Sku r31.1](https://github.com/Duugu/Sku/releases/download/r31.1/Sku-r31.1-wrath.zip) (Sep 26th, 2022)<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Older updates:* <br>
@@ -18,6 +18,10 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 # Release notes
 
+-------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.1
+- Fixed a bug with the Howling Fjord map.
+	
 ## Changes in Sku r31
 
 This is the Northrend release update. All kind of bugs, errors, etc. are possible.
