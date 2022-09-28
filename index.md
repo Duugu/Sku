@@ -18,8 +18,6 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 # Release notes
 
--------------------------------------------------------------------------------------------------------	
-
 ## Changes in Sku r31.2
 - Map and quest data:
 	- vrykul hawk roost waypoint in howling fjord added. quest requires sighted help to get the eggs.
