@@ -2,10 +2,9 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
-
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.2
-	- Map and quest fixes:
+	- Map and quest:
 		- vrykul hawk roost waypoint in howling fjord added. quest requires sighted help to get the eggs.
 		- habichtfelsen 1-x added. there are habichte on the ground at those felsen. use them for the quest.
 		- waypoints for eisenrunengravur 1 + 2 added
@@ -18,6 +17,11 @@ Changes in Sku r31.2
 		- waypoint named "nifflevar Incense Burner use point" for "Anguish of Nifflevar" added
 		- waypoints for ship howling fjord in to wetlands renamed
 		- fixed the route to the First Aid Supplies for "A Soldier in Need" in the tundra
+	- Addon:
+		- Item comparison for guns/crossbows added
+		- bank items filtered fom All Bags menu
+		- Item comparison for quest rewards added
+		- Item comparison for"receive" quest rewards added
 
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.1
