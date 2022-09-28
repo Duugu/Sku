@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.1](https://github.com/Duugu/Sku/releases/download/r31.1/Sku-r31.1-wrath.zip) (Sep 26th, 2022)<br>
+- [Sku r31.2](https://github.com/Duugu/Sku/releases/download/r31.2/Sku-r31.2-wrath.zip) (Sep 27th, 2022)<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Older updates:* <br>
@@ -19,6 +19,27 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+
+## Changes in Sku r31.2
+- Map and quest data:
+	- vrykul hawk roost waypoint in howling fjord added. quest requires sighted help to get the eggs.
+	- habichtfelsen 1-x added. there are habichte on the ground at those felsen. use them for the quest.
+	- waypoints for eisenrunengravur 1 + 2 added
+	- waypoints for lebronskis teppich added
+	- routes in wyrmskull Village and utgard catacombs in howling fjord alliance starting area fixed
+	- waypoints for ring des richturteils in utgard catacombs added
+	- "Alliance Banner drop waypoint" added. Still not in quests target list. This is intended.
+	- more waypoints for Prisoners of Wormskull added
+	- waypoint named "Wyrmskull Incense Burner use point" for "The Echo of Ymiron" added
+	- waypoint named "nifflevar Incense Burner use point" for "Anguish of Nifflevar" added
+	- waypoints for ship howling fjord in to wetlands renamed
+	- fixed the route to the First Aid Supplies for "A Soldier in Need" in the tundra
+- Addon:
+	- Item comparison for guns/crossbows added
+	- bank items filtered fom All Bags menu
+	- Item comparison for quest rewards added
+	- Item comparison for"receive" quest rewards added
+
 ## Changes in Sku r31.1
 - Fixed a bug with the Howling Fjord map.
 	
