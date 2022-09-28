@@ -82,7 +82,7 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 			tTooltipText = SkuChat:Unescape(tTooltipText)
 			if tTooltipText then
 				local tText, tTextf = SkuCore:ItemName_helper(tTooltipText)
-				return tText, tTextf
+				return tText, tTextf, ItemLink
 			end
 		end
 	end
@@ -203,6 +203,7 @@ local comparableInvSlotsforInvType = {
 	INVTYPE_WEAPON = CanDualWield() and BOTH_HANDS or JUST_MAINHAND,
 	INVTYPE_SHIELD = JUST_OFFHAND,
 	INVTYPE_RANGED = RANGED,
+	INVTYPE_RANGEDRIGHT = RANGED,
 	INVTYPE_RELIC = RANGED,
 	INVTYPE_AMMO = {INVSLOT_AMMO},
 	INVTYPE_2HWEAPON = BOTH_HANDS,
@@ -244,6 +245,22 @@ local function getItemComparisnSections(itemId, cache)
 		end
 	end
 	return comparisnSections
+end
+
+---Inserts comparisn sections if equipable item.
+---@param itemId number Item ID for item for which comparisns will be returned.
+---@param textFull string[] List of strings intwo which comparisn sections will be inserted
+---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
+local function insertComparisnSections(itemId, textFull, cache)
+	if itemId and IsEquippableItem(itemId) then
+		local comparisnSections = getItemComparisnSections(itemId, cache)
+		if comparisnSections then
+			for i, section in ipairs(comparisnSections) do
+				local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
+				table.insert(textFull, i + 1, sectionHeader .. section)
+			end
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -411,16 +428,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 						end
 						table.insert(bagItemButton.textFull, 1, tFull)
 						
-						local itemId = bagItemButton.itemId
-						if itemId and IsEquippableItem(itemId) then
-							local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
-							if comparisnSections then
-								for i, section in ipairs(comparisnSections) do
-									local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
-									table.insert(bagItemButton.textFull, i + 1, sectionHeader .. section)
-								end
-							end
-						end
+insertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
 					end
 
 					if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
@@ -757,16 +765,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or ""), }
 						end
 						table.insert(bagItemButton.textFull, 1, tFull)
-						local itemId = bagItemButton.itemId
-						if itemId and IsEquippableItem(itemId) then
-							local comparisnSections = getItemComparisnSections(itemId, inventoryTooltipTextCache)
-							if comparisnSections then
-								for i, section in ipairs(comparisnSections) do
-									local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
-									table.insert(bagItemButton.textFull, i + 1, sectionHeader .. section)
-								end
-							end
-						end
+insertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
 					end
 
 					if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
@@ -810,8 +809,8 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				end
 				
 				tBagResultsByBag[(tCurrentContainerFrameNumber)].childs[#tBagResultsByBag[(tCurrentContainerFrameNumber)].childs + 1] = bagItemButton
-				-- if the item slot isn't empty, add it to allBagResults
-				if not isEmpty and bagId ~= -2 then
+				-- if the item slot isn't empty and is in one of the bags, add it to allBagResults
+				if not isEmpty and bagId >= 0 and bagId <= 4 then
 					-- create a copy that doesn't have the numbering in textFirstLine
 					copy = {}
 					for k, v in pairs(bagItemButton) do
@@ -4021,6 +4020,7 @@ function SkuCore:QuestFrame(aParentChilds)
 				end
 			end
 
+			local compCache = {}
 			if QuestInfoRewardsFrame.ItemChooseText then
 				if QuestInfoRewardsFrame.ItemChooseText:IsVisible() == true then
 					local tText = QuestInfoRewardsFrame.ItemChooseText:GetText()
@@ -4041,8 +4041,10 @@ function SkuCore:QuestFrame(aParentChilds)
 						local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
 						if _G[tFrameName] then
 							if _G[tFrameName]:IsVisible() == true  and _G[tFrameName.."Name"]:GetText() then
-								local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
+								local tText, tFullText, itemLink = GetButtonTooltipLines(_G[tFrameName])
 								if tText then
+									tFullText = {tFullText}
+									insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
 									tTaken[x] = true
 									tText = tText.." "..(_G[tFrameName].count or "")
 									local tFriendlyName = SkuChat:Unescape(tText)
@@ -4093,8 +4095,10 @@ function SkuCore:QuestFrame(aParentChilds)
 							local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
 							if _G[tFrameName] then
 								if _G[tFrameName]:IsVisible() == true and _G[tFrameName.."Name"]:GetText() then
-									local tText, tFullText = GetButtonTooltipLines(_G[tFrameName])
+									local tText, tFullText, itemLink = GetButtonTooltipLines(_G[tFrameName])
 									if tText then
+										tFullText = {tFullText}
+										insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
 										tTaken[x] = true
 										tText = tText.." "..(_G[tFrameName].count or "")
 										local tFriendlyName = SkuChat:Unescape(tText)
