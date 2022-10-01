@@ -14,7 +14,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 
 *Updates for sighted players:* <br>
-- [SkuMapper r1.8](https://github.com/Duugu/SkuMapper/releases/download/r1.8/SkuMapper-r1.8-wrath.zip) (Sep 20th, 2022, mapping addon for sighted players)
+- [SkuMapper r2.1](https://github.com/Duugu/SkuMapper/releases/download/r2.1/SkuMapper-r2.1-wrath.zip) (Oct 01tsth, 2022, mapping addon for sighted players)
 
 # Release notes
 
