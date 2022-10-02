@@ -567,9 +567,11 @@ function SkuOptions:UpdateOverviewText()
 	--bag space
 	local tFreeCount = 0
 	for x = 0, 4 do
-		local t = GetContainerFreeSlots(x)
-		if t then
-			tFreeCount = tFreeCount + #t
+		local numFreeSlots, bagType = GetContainerNumFreeSlots(x)
+		-- only count general unspecialized bags
+		-- for available bag types see https://wowwiki-archive.fandom.com/wiki/ItemFamily							q
+		if bagType == 0 then
+			tFreeCount = tFreeCount + numFreeSlots
 		end
 	end
 	tGeneral = tGeneral.."\r\n"..L["Freie Taschenplätze: "]..tFreeCount
