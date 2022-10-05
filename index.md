@@ -7,16 +7,22 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.2](https://github.com/Duugu/Sku/releases/download/r31.2/Sku-r31.2-wrath.zip) (Sep 27th, 2022)<br>
-- [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
+- [Sku r31.3](https://github.com/Duugu/Sku/releases/download/r31.3/Sku-r31.3-wrath.zip) (Oct 5th, 2022)<br>
 
 *Older updates:* <br>
-- [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
+- [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Updates for sighted players:* <br>
 - [SkuMapper r2.1](https://github.com/Duugu/SkuMapper/releases/download/r2.1/SkuMapper-r2.1-wrath.zip) (Oct 1st, 2022, mapping addon for sighted players)
+- [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
 
 # Release notes
+
+##Changes in Sku r31.3
+- Dalaran waypoints and routes are added. Dalaran is the most complex zone ever, will lots of layers and overlapping routes and waypoints. You better don't even try to start a route using an auto waypoint there. That won't work. Always use named waypoints for NPCs that you can tab target as an entry point.
+- A lot of fixes for howling fjord, tundra and dragonblight.
+- A bug with the deeprun tram is fixed. Tram will work again.
+- Free bag slots on the overview page are only counted for unspecialized bags (quiver, herbalism bag, key bag, etc. are excluded).
 
 ## Changes in Sku r31.2
 - Map and quest data:
