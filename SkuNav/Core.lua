@@ -806,6 +806,14 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 			end
 		end
 	end
+
+	if tPlayerUIMap == nil then
+		local tMMZoneText = GetMinimapZoneText()
+		if tMMZoneText == L["Deeprun Tram"] then
+			tPlayerUIMap = 2257
+		end
+	end
+
 	return tPlayerUIMap
 end
 
