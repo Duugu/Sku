@@ -22,7 +22,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - Dalaran waypoints and routes are added. Dalaran is the most complex zone ever, with lots of layers and overlapping routes and waypoints. You better don't even try to start a route using an auto waypoint there. That won't work. Always use named waypoints for NPCs that you can tab target as an entry point.
 - A lot of fixes for howling fjord, tundra and dragonblight.
 - A bug with the deeprun tram is fixed. Tram will work again.
-- Free bag slots on the overview page are only counted for unspecialized bags (quiver, herbalism bag, key bag, etc. are excluded).
+- Free bag slots on the overview page are only counted for unspecialized bags (quiver, herbalism bag, key ring, etc. are excluded).
 
 ## Changes in Sku r31.2
 - Map and quest data:
