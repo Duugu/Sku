@@ -41,6 +41,7 @@ SkuCore\itemRating.lua
 SkuCore\mail.lua
 SkuCore\aq.lua
 SkuCore\Options.lua
+SkuCore\Macro.lua
 
 SkuDB\Core.lua
 SkuDB\assets\maps.lua

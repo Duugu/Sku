@@ -1715,3 +1715,6 @@ L["Vehicle HP "] = "Vehicle HP "
 L["Important: For this quest, first go to Sku Discord and read the post about the quest \"An End To All Things...\" that is pinned in the General channel"]  = "Important: For this quest, first go to Sku Discord and read the post about the quest \"An End To All Things...\" that is pinned in the General channel"
 
 L["Alle Auren exportieren"] = "Export all auras"
+L["NewMacro"]="create new macro"
+L["MacroName"]="Macro name"
+L["EnterMacroName"]="Enter macro name"
