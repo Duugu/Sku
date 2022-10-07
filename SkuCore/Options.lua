@@ -1196,6 +1196,8 @@ local function RangecheckMenuBuilder(aParent, aType)
 	end
 
 end
+
+local Sku_Mail_OpenAll_Listener
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function pairsByKeys (t, f)
 	local a = {}
@@ -1342,22 +1344,74 @@ function SkuCore:MenuBuilder(aParentEntry)
 		--tNewMenuEntry.ttsEngine = 2
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			local numItems, totalItems = GetInboxNumItems()
-			local tToOpen = totalItems
-			local tOpened = 0
 			if totalItems > 0 then
-				local function bootlegRepeatingTimer()
-					TakeInboxMoney(1)
-					AutoLootMailItem(1)
-					DeleteInboxItem(1)
-					tOpened = tOpened + 1
-					local numItems, totalItems = GetInboxNumItems()
-					if totalItems > 0 then
-						C_Timer.After(1, bootlegRepeatingTimer)
-					else
-						SkuOptions.Voice:OutputStringBTtts(L["All opened"], false, true, 0.2)						
+				if not Sku_Mail_OpenAll_Listener then
+					Sku_Mail_OpenAll_Listener = CreateFrame("FRAME", "Sku_Mail_OpenAll_Listener")
+				end
+
+				-- since these functions refer to each other, they need to be declared ahead of time
+				local openAllLoop, continueLoopAfterNMailSuccesses
+
+				openAllLoop = function(index)
+					if index <= select(2, GetInboxNumItems()) then
+						local inboxItemInfo = { GetInboxHeaderInfo(index) }
+						-- if mail from auction house, inbox item is auto deleted after taking money/items, so 1 additional success to listen for
+						local auctionHouseAddend = string.find(string.lower(inboxItemInfo[3]), string.lower(L["Auction house"])) and 1 or 0
+						-- take money if exist
+						if (inboxItemInfo[5] or 0) > 0 then
+							continueLoopAfterNMailSuccesses(1 + auctionHouseAddend, index)
+							TakeInboxMoney(index)
+							return
+						end
+						-- take items if exist
+						local numToTake = inboxItemInfo[8] or 0
+						if numToTake > 0 then
+							continueLoopAfterNMailSuccesses(numToTake + auctionHouseAddend, index)
+							AutoLootMailItem(index)
+							return
+						end
+						-- no money or items so delete it
+						continueLoopAfterNMailSuccesses(1, index)
+						DeleteInboxItem(index)
+					else SkuOptions.Voice:OutputStringBTtts(L["All opened"], false, true, 0.2)
 					end
 				end
-				bootlegRepeatingTimer()
+
+				---Sets up listening for whether the next mail command succeeds or fails
+				continueLoopAfterNMailSuccesses = function(n, index)
+					local function deactivateListener()
+						Sku_Mail_OpenAll_Listener:UnregisterAllEvents()
+						Sku_Mail_OpenAll_Listener:SetScript("OnEvent", nil)
+					end
+
+					local function handler(self, event)
+						if event == "MAIL_CLOSED" then
+							-- player closed mailbox during open all, break loop
+							deactivateListener()
+						elseif event == "MAIL_SUCCESS" then
+							-- one of an item was received, money was received, or inbox item deleted
+							n = n - 1
+							if n == 0 then
+								-- mail command completed successfully, go to start of loop
+								deactivateListener()
+								openAllLoop(index)
+							end
+						elseif event == "MAIL_FAILED" then
+							-- failed to perform the mail command, most likely failed to take item because bags are full
+							-- skip this mail item and try next one
+							deactivateListener()
+							openAllLoop(index + 1)
+						end
+					end
+
+					Sku_Mail_OpenAll_Listener:SetScript("OnEvent", handler)
+					for _, e in pairs({ "MAIL_CLOSED", "MAIL_SUCCESS", "MAIL_FAILED" }) do
+						Sku_Mail_OpenAll_Listener:RegisterEvent(e)
+					end
+				end
+
+				openAllLoop(1)
+
 			end
 		end
 
