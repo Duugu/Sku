@@ -18,6 +18,8 @@ local tinsert = table.insert
 
 SkuNav.BeaconSoundSetNames  = {}
 
+SkuMetapathFollowingMetapathsTMP = {}
+
 SkuNav.PrintMT = {
 	__tostring = function(thisTable)
 		local tStr = ""
@@ -2628,6 +2630,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 	--print("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
+	SkuOptions.db.profile["SkuNav"].metapathFollowingMetapathsTMP = {}
+	SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = {}
+
 	SkuNav:UpdateStandardWpReachedRange()
 
 	--load default data if there isn't custom data

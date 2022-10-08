@@ -3,6 +3,10 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.5
+	- The auction history database is disabled and empty until the auction house re-work is done.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.4
 	- grizzly hills and zul'drak are mapped
 	- more map fixes for howling fjord, tundra and dragonblight	

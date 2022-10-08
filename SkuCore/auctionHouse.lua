@@ -1483,6 +1483,7 @@ function SkuCore:AuctionHouseOnLogin()
    SkuOptions.db.factionrealm[MODULE_NAME] = SkuOptions.db.factionrealm[MODULE_NAME] or {}
 
    SkuOptions.db.factionrealm[MODULE_NAME].AuctionDB = {}
+   SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = {}
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1654,6 +1655,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionUpdateAuctionDBHistory(aFromAuctionDB, aFromCurrentDB, aCustomTargetTable, aItemID)
+   if 1 == 1 then
+      return
+   end
+   
    dprint("AuctionUpdateAuctionDBHistory", aFromAuctionDB, aFromCurrentDB, aCustomTargetTable)
    if not aFromAuctionDB and not aFromCurrentDB then
       return
