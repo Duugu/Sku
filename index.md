@@ -19,7 +19,10 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Release notes
 
 ## Changes in Sku r31.4
+Changes in Sku r31.4
 - grizzly hills and zul'drak are mapped
+- more map fixes for howling fjord, tundra and dragonblight	
+- added some fix to remove disconnected waypoints that are causing empty routes lists
 
 ## Changes in Sku r31.3
 - Dalaran waypoints and routes are added. Dalaran is the most complex zone ever, with lots of layers and overlapping routes and waypoints. You better don't even try to start a route using an auto waypoint there. That won't work. Always use named waypoints for NPCs that you can tab target as an entry point.
