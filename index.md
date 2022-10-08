@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.4](https://github.com/Duugu/Sku/releases/download/r31.4/Sku-r31.4-wrath.zip) (Oct 8th, 2022)<br>
+- [Sku r31.5](https://github.com/Duugu/Sku/releases/download/r31.5/Sku-r31.5-wrath.zip) (Oct 9th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -17,6 +17,9 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
+
+## Changes in Sku r31.5
+- The auction history database is disabled and empty until the auction house re-work is done.
 
 ## SkuMapper r2.2
 - Object waypoints (green): first 3 are now shown in yellow and the "limit" filter is applied to them
