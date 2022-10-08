@@ -13,10 +13,14 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Updates for sighted players:* <br>
-- [SkuMapper r2.1](https://github.com/Duugu/SkuMapper/releases/download/r2.1/SkuMapper-r2.1-wrath.zip) (Oct 1st, 2022, mapping addon for sighted players)
-- [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022) (addon for sighted players)<br>
+- [SkuMapper r2.2](https://github.com/Duugu/SkuMapper/releases/download/r2.2/SkuMapper-r2.2-wrath.zip) (Oct 8th, 2022), mapping addon for sighted players<br>
+- [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
+
+## SkuMapper r2.2
+- Object waypoints (green): first 3 are now shown in yellow and the "limit" filter is applied to them
+- Added a check for existing names on renaming waypoints
 
 ## Changes in Sku r31.4
 Changes in Sku r31.4
