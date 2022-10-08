@@ -317,6 +317,31 @@ function SkuNav:LoadLinkDataFromProfile()
 		end
 	end
 	SkuNav:SaveLinkDataToProfile()
+	SkuNav:CleanupWaypoints()
+end
+
+------------------------------------------------------------------------------------------------------------------------
+function SkuNav:CleanupWaypoints()
+	for i, v in pairs(WaypointCache) do
+		if v.typeId == 1 then
+			local tHasLinks = false
+			if WaypointCache[i].links.byId ~= nil then
+				for id, dist in pairs(WaypointCache[i].links.byId) do
+					tHasLinks = true
+					break
+				end
+			end
+			if tHasLinks ~= true then
+				--print("disconnected custom wp:", v.name)
+				WaypointCacheLookupAll[v.name] = nil
+				WaypointCacheLookupCacheNameForId[v.name] = nil
+				local tWpId = SkuNav:BuildWpIdFromData(1, v.dbIndex, 1, v.areaId)
+				WaypointCacheLookupIdForCacheIndex[tWpId] = nil
+				WaypointCacheLookupPerContintent[v.contintentId][i] = nil
+				WaypointCache[i] = nil
+			end
+		end
+	end
 end
 
 ------------------------------------------------------------------------------------------------------------------------

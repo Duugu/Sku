@@ -2301,7 +2301,7 @@ SkuDB.InternalAreaTable = {
 [4198] = {ZoneName = "KiliuasAtoll", AreaName_lang = {["deDE"] = "Kili'uas Atoll", ["enUS"] = "Kili'ua's Atoll", }, ContinentID = 571, ParentAreaID = 65, Faction = 0, Flags = 1073759300,},
 [4199] = {ZoneName = "Silverbrook", AreaName_lang = {["deDE"] = "Silberwasser", ["enUS"] = "Silverbrook", }, ContinentID = 571, ParentAreaID = 394, Faction = 0, Flags = 1073759296,},
 [4200] = {ZoneName = "VordrassilsHeart", AreaName_lang = {["deDE"] = "Vordrassils Herz", ["enUS"] = "Vordrassil's Heart", }, ContinentID = 571, ParentAreaID = 394, Faction = 0, Flags = 1073759296,},
-[4201] = {ZoneName = "VordrassilsTears", AreaName_lang = {["deDE"] = "Vordrassils Tränen", ["enUS"] = "Vordrassil's Tears", }, ContinentID = 571, ParentAreaID = 0, Faction = 0, Flags = 64,},
+--[4201] = {ZoneName = "VordrassilsTears", AreaName_lang = {["deDE"] = "Vordrassils Tränen", ["enUS"] = "Vordrassil's Tears", }, ContinentID = 571, ParentAreaID = 0, Faction = 0, Flags = 64,},
 [4202] = {ZoneName = "VordrassilsTears", AreaName_lang = {["deDE"] = "Vordrassils Tränen", ["enUS"] = "Vordrassil's Tears", }, ContinentID = 571, ParentAreaID = 394, Faction = 0, Flags = 1073759296,},
 [4203] = {ZoneName = "VordrassilsLimb", AreaName_lang = {["deDE"] = "Vordrassils Ast", ["enUS"] = "Vordrassil's Limb", }, ContinentID = 571, ParentAreaID = 394, Faction = 0, Flags = 1073759296,},
 [4204] = {ZoneName = "AmberpineLodge", AreaName_lang = {["deDE"] = "Ammertannhütte", ["enUS"] = "Amberpine Lodge", }, ContinentID = 571, ParentAreaID = 394, Faction = 0, Flags = 1073759296,},
