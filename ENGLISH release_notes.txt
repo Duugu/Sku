@@ -3,6 +3,20 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.6
+	- Fixed a bug with missing waypoints for corpse
+
+-------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.5
+	- The auction history database is disabled and empty until the auction house re-work is done.
+
+-------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.4
+	- grizzly hills and zul'drak are mapped
+	- more map fixes for howling fjord, tundra and dragonblight	
+	- added some fix to remove disconnected waypoints that are causing empty routes lists
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.3
 	- Maps:
 		- Dalaran waypoints and routes added. Dalaran is the most complex zone ever, will lots of layers and overlapping routes and waypoints. You better don't even try to start a route using an auto waypoint there. That won't work. Always use named waypoints for NPCs that you can tab target as an entry point.
