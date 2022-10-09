@@ -333,7 +333,7 @@ function SkuNav:CleanupWaypoints()
 					break
 				end
 			end
-			if tHasLinks ~= true then
+			if tHasLinks ~= true and not string.find(v.name, L["Quick waypoint"]) then
 				--print("disconnected custom wp:", v.name)
 				WaypointCacheLookupAll[v.name] = nil
 				WaypointCacheLookupCacheNameForId[v.name] = nil
