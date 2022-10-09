@@ -74,16 +74,21 @@ function MacroMenuBuilderList(aParent, isGlobal)
     for i = from, to do
         local name, iconTexture, body, isLocal = GetMacroInfo(i)
         local tListEntry = SkuOptions:InjectMenuItems(aParent, { name }, SkuGenericMenuItem)
-        tListEntry["id"] = i
+        tListEntry["Id"] = i
         tListEntry.BuildChildren = MacroMenuBuilderEntryButtons
     end
 end
 
 function MacroMenuBuilderEntryButtons(aParent)
     local tDeleteEntry = SkuOptions:InjectMenuItems(aParent, { L["Delete"] }, SkuGenericMenuItem)
-    tDeleteEntry.OnAction = function(self)
-        DeleteMacro(aParent["id"])
+    tDeleteEntry.BuildChildren = function(menuEntry) SkuOptions:ConfirmationDialog(menuEntry, function(self)
+            DeleteMacro(aParent["Id"])
+        end)
     end
+    CreateTextBox(aParent, L["Rename"], L["Enter name and press ENTER key"], function(value) 
+        EditMacro(aParent["Id"],value,nil,1)
+        aParent.Name=value
+    end)
 end
 
 function CreateTextBox(aParent, name, message, setterFunction)

@@ -2713,6 +2713,21 @@ function SkuOptions:InjectMenuItems(aParentMenu, aNewItems, aItemTemplate)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:ConfirmationDialog(aParent,onOkFunc, message, yesText,noText)
+message=message or L["ConfirmationMessage"]
+yesText=yesText or L["Yes"]
+noText=noText or L["No"]
+messageEntry=SkuOptions:InjectMenuItems(aParent, {message }, SkuGenericMenuItem)
+yesEntry=SkuOptions:InjectMenuItems(aParent, {yesText}, SkuGenericMenuItem)
+yesEntry.OnAction=function(param) 
+	onOkFunc(param)
+	SkuOptions:CloseMenu()
+end
+noEntry=SkuOptions:InjectMenuItems(aParent, {noText}, SkuGenericMenuItem)
+noEntry.OnAction=function(self) SkuOptions:CloseMenu() end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:TableCopy(t, deep, seen)
 	seen = seen or {}
 	if t == nil then return nil end
