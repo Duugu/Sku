@@ -315,7 +315,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 	}   
 
 		for x = 1, 20 do
-			if _G["GuildBankTab"..x] and _G["GuildBankTab"..x]:IsVisible() == true then
+			if _G["GuildBankTab"..x] and _G["GuildBankTab"..x].Button.tooltip and _G["GuildBankTab"..x]:IsVisible() == true then
 				local tSelected = ""
 				if _G["GuildBankTab"..x].Button:GetChecked() == true then
 					tSelected = " ("..L["selected"]..")"

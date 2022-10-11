@@ -1,3 +1,239 @@
+--[[
+SkuAuctionHouseTypes = {
+   [0] = {
+      name = "Consumable", 
+      subtypes = {		
+         [0] = "Explosives and Devices",	
+         [1] = "Potion",	
+         [2] = "Elixir",	
+         [3] = "Scroll (OBSOLETE)",	
+         [4] = "Food & Drink",	
+         [5] = "Item Enhancement (OBSOLETE)",	
+         [6] = "Bandage",	
+         [7] = "Other",	
+      }, 
+   }, 
+   [1] = {
+      name = "Container", 
+      subtypes = {		
+         [0] = "Bag",	
+         [1] = "Soul Bag",	
+         [2] = "Herb Bag",	
+         [3] = "Enchanting Bag",	
+         [4] = "Engineering Bag",	
+         [5] = "Gem Bag",	
+         [6] = "Mining Bag",	
+         [7] = "Leatherworking Bag",	
+         [8] = "Inscription Bag",	
+         [9] = "Tackle Box",	
+         [10] = "Cooking Bag",	
+      }, 
+   }, 
+   [2] = {
+      name = "Weapon", 
+      subtypes = {		
+         [0] = "One-Handed Axes",	
+         [1] = "Two-Handed Axes",	
+         [2] = "Bows",	
+         [3] = "Guns",	
+         [4] = "One-Handed Maces",	
+         [5] = "Two-Handed Maces",	
+         [6] = "Polearms",	
+         [7] = "One-Handed Swords",	
+         [8] = "Two-Handed Swords",	
+         [9] = "Warglaives",	
+         [10] = "Staves",	
+         [11] = "Bear Claws",	
+         [12] = "CatClaws",	
+         [13] = "Fist Weapons",	
+         [14] = "Miscellaneous",	
+         [15] = "Daggers",	
+         [16] = "Thrown",	
+         [17] = "Spears",	
+         [18] = "Crossbows",	
+         [19] = "Wands",	
+         [20] = "Fishing Poles",	
+      }, 
+   }, 
+   [3] = {
+      name = "Gem", 
+      subtypes = {		
+         [0] = "Intellect",	
+         [1] = "Agility",	
+         [2] = "Strength",	
+         [3] = "Stamina",	
+         [4] = "Spirit",	
+         [5] = "Critical Strike",	
+         [6] = "Mastery",	
+         [7] = "Haste",	
+         [8] = "Versatility",	
+         [9] = "Other",	
+         [10] = "Multiple Stats",	
+         [11] = "Artifact Relic",	
+      }, 
+   }, 
+   [4] = {
+      name = "Armor", 
+      subtypes = {		
+         [0] = "Miscellaneous",	
+         [1] = "Cloth",	
+         [2] = "Leather",	
+         [3] = "Mail",	
+         [4] = "Plate",	
+         [5] = "Cosmetic",	
+         [6] = "Shields",	
+         [7] = "Librams",	
+         [8] = "Idols",	
+         [9] = "Totems",	
+         [10] = "Sigils",	
+         [11] = "Relic",	
+      }, 
+   }, 
+   [5] = {
+      name = "Reagent", 
+      subtypes = {		
+         [0] = "Reagent",	
+         [1] = "Keystone",	
+         [2] = "Context Token",	
+      }, 
+   }, 
+   [6] = {
+      name = "Projectile", 
+      subtypes = {		
+         [0] = "Wand(OBSOLETE)",	
+         [1] = "Bolt(OBSOLETE)",	
+         [2] = "Arrow",	
+         [3] = "Bullet",	
+         [4] = "Thrown(OBSOLETE)",	
+      }, 
+   }, 
+   [7] = {
+      name = "Tradegoods", 
+      subtypes = {		
+         [0] = "Trade Goods (OBSOLETE)",	
+         [1] = "Parts",	
+         [2] = "Explosives (OBSOLETE)",	
+         [3] = "Devices (OBSOLETE)",	
+         [4] = "Jewelcrafting",	
+         [5] = "Cloth",	
+         [6] = "Leather",	
+         [7] = "Metal & Stone",	
+         [8] = "Cooking",	
+         [9] = "Herb",	
+         [10] = "Elemental",	
+         [11] = "Other",	
+         [12] = "Enchanting",	
+         [13] = "Materials (OBSOLETE)",	
+         [14] = "Item Enchantment (OBSOLETE)",	
+         [15] = "Weapon Enchantment - Obsolete",	
+         [16] = "Inscription",	
+         [17] = "Explosives and Devices (OBSOLETE)",	
+      }, 
+   }, 
+   [8] = {
+      name = "Item Enhancement", 
+      subtypes = {		
+         [0] = "Head",	
+         [1] = "Neck",	
+         [2] = "Shoulder",	
+         [3] = "Cloak",	
+         [4] = "Chest",	
+         [5] = "Wrist",	
+         [6] = "Hands",	
+         [7] = "Waist",	
+         [8] = "Legs",	
+         [9] = "Feet",	
+         [10] = "Finger",	
+         [11] = "Weapon",	
+         [12] = "Two-Handed Weapon",	
+         [13] = "Shield/Off-hand",	
+         [14] = "Misc",	
+      }, 
+   }, 
+   [9] = {
+      name = "Recipe", 
+      subtypes = {		
+         [0] = "Book",	
+         [1] = "Leatherworking",	
+         [2] = "Tailoring",	
+         [3] = "Engineering",	
+         [4] = "Blacksmithing",	
+         [5] = "Cooking",	
+         [6] = "Alchemy",	
+         [7] = "First Aid",	
+         [8] = "Enchanting",	
+         [9] = "Fishing",	
+         [10] = "Jewelcrafting",	
+         [11] = "Inscription",	
+      }, 
+   }, 
+   [10] = {
+      name = "Money (OBSOLETE)", 
+      subtypes = {		
+         [0] = "Money(OBSOLETE)",	
+      }, 
+   }, 
+   [11] = {
+      name = "Quiver", 
+      subtypes = {
+         [0] = "Quiver(OBSOLETE)",	
+         [1] = "Bolt(OBSOLETE)",	
+         [2] = "Quiver",	
+         [3] = "Ammo Pouch",	
+      }, 
+   }, 
+   [12] = {
+      name = "Quest", 
+      subtypes = {		
+         [0] = "Quest",	
+      }, 
+   }, 
+   [13] = {
+      name = "Key", 
+      subtypes = {
+         [0] = "Key",	
+         [1] = "Lockpick",	
+      }, 
+   }, 
+   [14] = {
+      name = "Permanent (OBSOLETE)", 
+      subtypes = {		
+         [0] = "Permanent",	
+      }, 
+   }, 
+   [15] = {
+      name = "Miscellaneous", 
+      subtypes = {		
+         [0] = "Junk",	
+         [1] = "Reagent",	
+         [2] = "Companion Pets",	
+         [3] = "Holiday",	
+         [4] = "Other",	
+         [5] = "Mount",	
+         [6] = "Mount Equipment",	
+      }, 
+   }, 
+   [16] = {
+      name = "Glyph", 
+      subtypes = {		
+         [1] = "Warrior",	
+         [2] = "Paladin",	
+         [3] = "Hunter",	
+         [4] = "Rogue",	
+         [5] = "Priest",	
+         [6] = "Death Knight",	
+         [7] = "Shaman",	
+         [8] = "Mage",	
+         [9] = "Warlock",	
+         [10] = "Monk",	
+         [11] = "Druid",	
+         [12] = "Demon Hunter",	
+      }, 
+   }, 
+}
+
+]]
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "AuctionHouse"  
 local L = Sku.L
@@ -461,7 +697,7 @@ end
 local tCurrentQuery = nil
 function SkuCore:AuctionScanQueueTicker()
    --dprint("AuctionScanQueueTicker")
-   if SkuCore.AuctionIsScanning == true then
+   if SkuCore.AuctionIsScanning == true and (_G["SkuAuctionConfirm"] and _G["SkuAuctionConfirm"]:IsVisible() == true) then
       SkuOptions.Voice:OutputStringBTtts("sound-notification6", false, true)--24
       
       return
@@ -1025,6 +1261,147 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseMenuBuilder()
    if AuctionCategories and SkuCore.AuctionHouseOpen == true then
+      
+      --[[
+      --auctions per item TEST
+      tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"test"}, SkuGenericMenuItem)
+      tNewMenuEntry.dynamic = true
+      --tNewMenuEntry.filterable = true
+      tNewMenuEntry.BuildChildren = function(self)
+         --categories
+         for categoryIndex, categoryInfo in ipairs(AuctionCategories) do
+            if categoryInfo.name ~= L["Quest Items"] and categoryInfo.name ~= L["WoW Token (China Only)"] then
+               tNewMenuEntryCategory = SkuOptions:InjectMenuItems(self, {categoryInfo.name}, SkuGenericMenuItem)
+               tNewMenuEntryCategory.dynamic = true
+               tNewMenuEntryCategory.filterable = true
+               tNewMenuEntryCategory.OnEnter = function(self, aValue, aName, aEnterFlag)
+                  if not aValue then
+                     --SkuCore:AuctionStartQuery(categoryIndex, nil, nil, true)
+                  end
+               end
+               tNewMenuEntryCategory.BuildChildren = function(self)
+                  if categoryInfo.subCategories then
+                     for subCategoryIndex, subCategoryInfo in ipairs(categoryInfo.subCategories) do
+                        tNewMenuEntryCategorySub = SkuOptions:InjectMenuItems(self, {subCategoryInfo.name}, SkuGenericMenuItem)
+                        tNewMenuEntryCategorySub.dynamic = true
+                        tNewMenuEntryCategorySub.filterable = true
+                        tNewMenuEntryCategorySub.OnEnter = function(self, aValue, aName, aEnterFlag)
+                           print("tNewMenuEntryCategorySub", aValue, aName, aEnterFlag)
+                           if not aValue then
+                              --SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, nil, true)
+                           end
+                        end
+                        tNewMenuEntryCategorySub.BuildChildren = function(self)
+                           if subCategoryInfo.subCategories then
+                              for subSubCategoryIndex, subSubCategoryInfo in ipairs(subCategoryInfo.subCategories) do
+                                 tNewMenuEntryCategorySubSub = SkuOptions:InjectMenuItems(self, {subSubCategoryInfo.name}, SkuGenericMenuItem)
+                                 tNewMenuEntryCategorySubSub.dynamic = true
+                                 tNewMenuEntryCategorySubSub.filterable = true
+                                 tNewMenuEntryCategorySubSub.OnEnter = function(self, aValue, aName, aEnterFlag)
+                                    print("tNewMenuEntryCategorySubSub", aValue, aName, aEnterFlag)
+                                    if not aValue then
+                                       --SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, subSubCategoryIndex, true)
+                                    end
+                                 end
+                                 tNewMenuEntryCategorySubSub.BuildChildren = function(self)
+                                    -- query categoryIndex subCategoryIndex
+                                    --SkuCore:AuctionListItemMenuBuilder(self)
+
+
+                                    local classID, subClassID
+                                    if categoryIndex and subCategoryIndex and subSubCategoryIndex then
+                                       classID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].subCategories[subSubCategoryIndex].filters[1].classID
+                                       subClassID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].subCategories[subSubCategoryIndex].filters[1].subClassID
+                                    elseif categoryIndex and subCategoryIndex then
+                                       classID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].classID
+                                       subClassID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].subClassID
+                                    end
+
+                                    for i, v in pairs(SkuDB.WotLK.itemDataTBC) do
+                                       if 
+                                          v[SkuDB.WotLK.itemKeys.class] == classID
+                                          and
+                                          v[SkuDB.WotLK.itemKeys.subClass] == subClassID
+                                       then
+                                          print(i, categoryIndex, subCategoryIndex, subSubCategoryIndex, classID, subClassID, v[SkuDB.WotLK.itemKeys.name] )
+                                          tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(self, {v[SkuDB.WotLK.itemKeys.name]}, SkuGenericMenuItem)
+                                          tNewMenuEntryCategorySubSubItem.dynamic = true
+                                          tNewMenuEntryCategorySubSubItem.filterable = true
+                                          tNewMenuEntryCategorySubSubItem.OnEnter = function(self, aValue, aName, aEnterFlag)
+                                             print("tNewMenuEntryCategorySubSubItem 1", aValue, aName, aEnterFlag)
+                                             if not aValue then
+                                                SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, subSubCategoryIndex, true, nil, v[SkuDB.WotLK.itemKeys.name])
+                                             end
+                                          end
+                                          tNewMenuEntryCategorySubSubItem.BuildChildren = function(self)
+                                             -- query categoryIndex subCategoryIndex
+                                             SkuCore:AuctionListItemMenuBuilder(self)
+                                          end                                             
+
+                                       end
+                                    end
+                                 end
+                              end
+                           else
+                              -- query categoryIndex subCategoryIndex
+                              local classID, subClassID
+                              if categoryIndex and subCategoryIndex and subSubCategoryIndex then
+                                 print("categoryIndex and subCategoryIndex and subSubCategoryIndex")
+                                 classID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].subCategories[subSubCategoryIndex].filters[1].classID
+                                 subClassID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].subCategories[subSubCategoryIndex].filters[1].subClassID
+                              elseif categoryIndex and subCategoryIndex then
+                                 print("categoryIndex and subCategoryIndex", AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters)
+                                 for a, b in pairs(AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters) do
+                                    print(" ", a, b)
+                                    for a1, b1 in pairs(b) do
+                                       print("  ", a1, b1)
+                                    end
+                                 end
+                                 classID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].classID
+                                 subClassID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].subClassID
+                              end
+
+                              print("classID", AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].classID)
+                              print("subClassID", AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].subClassID)
+
+                              for i, v in pairs(SkuDB.WotLK.itemDataTBC) do
+                                 if 
+                                 v[SkuDB.WotLK.itemKeys.class] == classID
+                                 and
+                                 v[SkuDB.WotLK.itemKeys.subClass] == subClassID
+                                 then
+                                    
+                                    print(i, categoryIndex, subCategoryIndex, subSubCategoryIndex, classID, subClassID, v[SkuDB.WotLK.itemKeys.name] )
+                                    tNewMenuEntryCategorySubSubItem = SkuOptions:InjectMenuItems(self, {v[SkuDB.WotLK.itemKeys.name]}, SkuGenericMenuItem)
+                                    tNewMenuEntryCategorySubSubItem.dynamic = true
+                                    tNewMenuEntryCategorySubSubItem.filterable = true
+                                    tNewMenuEntryCategorySubSubItem.OnEnter = function(self, aValue, aName, aEnterFlag)
+                                       print("tNewMenuEntryCategorySubSubItem 2", aValue, aName, aEnterFlag)
+                                       if not aValue then
+                                          --SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, subSubCategoryIndex, true)
+                                          SkuCore:AuctionStartQuery(categoryIndex, subCategoryIndex, subSubCategoryIndex, true, nil, v[SkuDB.WotLK.itemKeys.name])
+                                       end
+                                    end
+                                    tNewMenuEntryCategorySubSubItem.BuildChildren = function(self)
+                                       -- query categoryIndex subCategoryIndex
+                                       SkuCore:AuctionListItemMenuBuilder(self)
+                                    end
+                                 end
+                              end
+
+                           end
+                        end
+                     end
+                  else
+                     --query categoryIndex
+                     SkuCore:AuctionListItemMenuBuilder(self)
+                  end
+               end
+            end
+         end
+      end
+     ]]
+
       --auctions
       tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Auktionen"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
@@ -1958,7 +2335,7 @@ print(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])
                                     ["usable"] = SkuCore.IsBid.query.usable, 
                                     ["rarity"] = SkuCore.IsBid.query.rarity, 
                                     ["getAll"] = SkuCore.IsBid.query.getAll, 
-                                    ["exactMatch"] = SkuCore.IsBid.query.exactMatch, 
+                                    ["exactMatch"] = true, 
                                     ["filterData"] = SkuCore.IsBid.query.filterData,
                                  }, true)
                               else
@@ -1970,7 +2347,7 @@ print(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])
                               SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle geboten"], true, true, 0.2, true)
                               SkuCore.IsBid = nil
                               SkuOptions:ClearFilter()
-                              --SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
+                              SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
                               SkuOptions:VocalizeCurrentMenuName()
                            end
                            C_Timer.After(0.2, function()
@@ -1978,10 +2355,10 @@ print(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])
                                  SkuCore.AuctionChatMessageFailFlag = false
                                  dprint("fehler Nicht geboten", tItemIndex, tBidAmount)
                                  SkuOptions.Voice:OutputStringBTtts(L["fehler Nicht geboten"], true, true, 0.2, false)
+                                 SkuOptions:ClearFilter()
+                                 SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
+                                 --SkuOptions:VocalizeCurrentMenuName()
                               end
-                              SkuOptions:ClearFilter()
-                              SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
-                              --SkuOptions:VocalizeCurrentMenuName()
                            end)
                         end,
                         function()
@@ -2022,7 +2399,7 @@ print(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])
                                     ["usable"] = SkuCore.IsBid.query.usable, 
                                     ["rarity"] = SkuCore.IsBid.query.rarity, 
                                     ["getAll"] = SkuCore.IsBid.query.getAll, 
-                                    ["exactMatch"] = SkuCore.IsBid.query.exactMatch, 
+                                    ["exactMatch"] = true, 
                                     ["filterData"] = SkuCore.IsBid.query.filterData,
                                  }, true)
                               else
@@ -2044,10 +2421,10 @@ print(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])
                                  SkuCore.AuctionChatMessageFailFlag = false
                                  dprint("fehler Nicht geboten", tItemIndex, tBidAmount)
                                  SkuOptions.Voice:OutputStringBTtts(L["fehler Nicht geboten"], true, true, 0.2, true)
+                                 SkuOptions:ClearFilter()
+                                 SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
+                                 --SkuOptions:VocalizeCurrentMenuName()
                               end
-                              SkuOptions:ClearFilter()
-                              SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
-                              --SkuOptions:VocalizeCurrentMenuName()
                            end)
                         end,
                         function()
@@ -2070,17 +2447,30 @@ print(1, SkuCore.IsBid.query.text, SkuCore.IsBid[1], SkuCore.IsBid[3])
                SkuCore.IsBid.page = SkuCore.IsBid.page + 1
                SkuCore.AuctionIsScanning = false
                if SkuCore.IsBid then
+                  SkuCore.IsBid.page = 0
                   SkuCore:AuctionScanQueueAdd({
-                     ["text"] = tData.query.text, 
-                     ["minLevel"] = tData.query.minLevel, 
-                     ["maxLevel"] = tData.query.maxLevel, 
+                     ["text"] = SkuCore.IsBid[1], --SkuCore.IsBid.query.text, 
+                     ["minLevel"] = SkuCore.IsBid.query.minLevel, 
+                     ["maxLevel"] = SkuCore.IsBid.query.maxLevel, 
                      ["page"] = SkuCore.IsBid.page, 
-                     ["usable"] = tData.query.usable, 
-                     ["rarity"] = tData.query.rarity, 
-                     ["getAll"] = tData.query.getAll, 
-                     ["exactMatch"] = tData.query.exactMatch, 
-                     ["filterData"] = tData.query.filterData,
-                  }, true)               
+                     ["usable"] = SkuCore.IsBid.query.usable, 
+                     ["rarity"] = SkuCore.IsBid.query.rarity, 
+                     ["getAll"] = SkuCore.IsBid.query.getAll, 
+                     ["exactMatch"] = true, 
+                     ["filterData"] = SkuCore.IsBid.query.filterData,
+                  }, true)
+               else
+                  SkuCore.IsBid = nil
+                  dprint("Keine weiteren passenden Auktionen verfügbar")
+                  SkuOptions.Voice:OutputStringBTtts(L["Keine weiteren passenden Auktionen verfügbar"], true, true, 0.2, true)
+                  --SkuOptions:VocalizeCurrentMenuName()
+               end
+               if SkuCore.IsBid.currentBids > SkuCore.IsBid.NumberOfBidPlacements then
+                  SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], true, true, 0.2, true)
+                  SkuOptions:ClearFilter()
+                  --SkuOptions.currentMenuPosition:OnBack(SkuOptions.currentMenuPosition)
+                  SkuOptions:VocalizeCurrentMenuName()
+                  SkuCore.IsBid = nil
                end
             end
          else
