@@ -5,7 +5,7 @@ local tBlockedKeysParts = {
 	"TAB",
 	"BACKSPACE",
 	"ENTER",
-	"ESCAPE",
+	--"ESCAPE",
 	"BUTTON1",
 	"BUTTON2",
 	"BUTTON3",
@@ -1062,7 +1062,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				CompanionMenuBuilder(self)
 				EquipmentSetActionMenuBuilder(self)
 				MacrosMenuBuilder(self)
-				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Bind key"]}, SkuGenericMenuItem)
+				--local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Bind key"]}, SkuGenericMenuItem)
 			end
 		end
 	end
@@ -1197,6 +1197,20 @@ local function RangecheckMenuBuilder(aParent, aType)
 
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function pairsByKeys (t, f)
+	local a = {}
+	for n in pairs(t) do table.insert(a, n) end
+	table.sort(a, f)
+	local i = 0      -- iterator variable
+	local iter = function ()   -- iterator function
+		i = i + 1
+		if a[i] == nil then return nil
+		else return a[i], t[a[i]]
+		end
+	end
+	return iter
+end
+
 function SkuCore:MenuBuilder(aParentEntry)
 	--dprint("SkuCore:MenuBuilder", aParentEntry)
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Mail"]}, SkuGenericMenuItem)
@@ -1709,7 +1723,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 			SkuOptions.db.profile[MODULE_NAME].tBindings = tBindings
 
-			for categoryConst, v in pairs(tBindings) do
+			for categoryConst, v in pairsByKeys(tBindings) do
+			--for categoryConst, v in pairs(tBindings) do
 				local tNewMenuEntryCat 
 				if _G[categoryConst] then
 					tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {_G[categoryConst]}, SkuGenericMenuItem)
@@ -1739,8 +1754,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 						tBindings[tCurrentCategory][tCommand] = {key1 = tKey1, key2 = tKey2, index = x}
 					end	
 
-					for categoryConst2, v in pairs(tBindings) do
-						for commandConst2, v1 in pairs(v) do
+					--for categoryConst2, v in pairs(tBindings) do
+					for categoryConst2, v in pairsByKeys(tBindings) do
+						--for commandConst2, v1 in pairs(v) do
+						for commandConst2, v1 in pairsByKeys(v) do
 							if categoryConst2 == categoryConst then
 								if _G["BINDING_NAME_" .. commandConst2] then
 									--local tLocKey = gsub(v1.key1, "CTRL", "STRG")

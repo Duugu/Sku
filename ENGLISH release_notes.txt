@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.8
+	- Renamed the "Assign nothing" menu entry in the action bar menu to "Assign no action"
+	- The option to bind keys under Core > Action bar is removed. The Core > Game key binds > Bind key menu has options to bind keys to all action buttons (categories "Action Bar" for the main bar and "Multi action bar" for additional action bars and side action bars).
+	- Menus under Core > Game key binds > Bind key are now sorted alphabetically.
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.7
 	- Fixed a bug with guild bank tabs that are locked for the player
 
