@@ -4,9 +4,14 @@
 
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.8
-	- Renamed the "Assign nothing" menu entry in the action bar menu to "Assign no action"
-	- The option to bind keys under Core > Action bar is removed. The Core > Game key binds > Bind key menu has options to bind keys to all action buttons (categories "Action Bar" for the main bar and "Multi action bar" for additional action bars and side action bars).
+	- Northrend Storm Peaks is mapped.
+	- There is a new key bind: Core > Sku key binds > Bind key > Announce distance to target. There is no key bound as default.
+	- There is a new menu Core > Macros to create and edit macros. Thanks a lot to Birkentau.
+	- There is a new option: Quest > Options > show colors for difficulty. Default: on. Shows the quest difficulty color in lists (grey, green, yellow, etc.).
 	- Menus under Core > Game key binds > Bind key are now sorted alphabetically.
+	- The option to bind keys under Core > Action bar is removed. The Core > Game key binds > Bind key menu has options to bind keys to all action buttons (categories "Action Bar" for the main bar and "Multi action bar" for additional action bars and side action bars).
+	- Renamed the "Assign nothing" menu entry in the action bar menu to "Assign no action"
+	- Fixed a bug with some specific quest rewards like venture coins.
 
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.7

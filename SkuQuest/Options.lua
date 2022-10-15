@@ -5,6 +5,18 @@ SkuQuest.options = {
 	name = MODULE_NAME,
 	type = "group",
 	args = {
+		showDifficultyColors = {
+			name = L["show colors for difficulty"],
+			order = 1,
+			type = "toggle",
+			desc = "",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].showDifficultyColors = val
+			end,
+			get = function(info) 
+				return SkuOptions.db.profile[MODULE_NAME].showDifficultyColors
+			end,
+		},
 		--[[
 		TestDropdown = {
 			name = "Test Dropdown" ,
@@ -30,6 +42,7 @@ SkuQuest.options = {
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuQuest.defaults = {
 	enable = true,
+	showDifficultyColors = true,
 	--TestDropdown = "Dialog",
 }
 
@@ -925,6 +938,14 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tDifficultyColors = {
+	QuestDifficulty_Trivial = L["trivial"],
+	QuestDifficulty_Standard = L["easy"],
+	QuestDifficulty_Difficult = L["medium"],
+	QuestDifficulty_VeryDifficult = L["optimal"],
+	QuestDifficulty_Impossible = L["Red"],
+}
+
 function SkuQuest:MenuBuilder(aParentEntry)
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Aktuelle Quests"]}, SkuGenericMenuItem)
 	--Alle
@@ -954,6 +975,16 @@ function SkuQuest:MenuBuilder(aParentEntry)
 			for questLogID = 1, numEntries do
 				local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
 				local tAddTitle = ""
+				local tDifficultyTitle = ""
+				if SkuOptions.db.profile["SkuQuest"].showDifficultyColors == true then
+					local tDiff = GetQuestDifficultyColor(level)
+					if tDiff and tDiff.font and tDifficultyColors[tDiff.font] then
+						tDifficultyTitle = " ("..tDifficultyColors[tDiff.font]..")"
+					else
+						tDifficultyTitle = " ("..L["nodifficulty"]..")"
+					end
+				end
+
 				if isComplete == 1 then
 					tAddTitle = L["(Fertig) "]
 				elseif isComplete == -1 then
@@ -966,7 +997,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					tAddTitle = tAddTitle..L["(Daily) "]
 				end
 				if isHeader == false then
-					tQuestsByHeader[tHeader][tAddTitle..title] = questLogID
+					tQuestsByHeader[tHeader][tAddTitle..title..tDifficultyTitle] = questLogID
 				else
 					tQuestsByHeader[title] = {}
 					tHeader = title

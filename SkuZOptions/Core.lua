@@ -2714,17 +2714,23 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:ConfirmationDialog(aParent,onOkFunc, message, yesText,noText)
-message=message or L["ConfirmationMessage"]
-yesText=yesText or L["Yes"]
-noText=noText or L["No"]
-messageEntry=SkuOptions:InjectMenuItems(aParent, {message }, SkuGenericMenuItem)
-yesEntry=SkuOptions:InjectMenuItems(aParent, {yesText}, SkuGenericMenuItem)
-yesEntry.OnAction=function(param) 
-	onOkFunc(param)
-	SkuOptions:CloseMenu()
-end
-noEntry=SkuOptions:InjectMenuItems(aParent, {noText}, SkuGenericMenuItem)
-noEntry.OnAction=function(self) SkuOptions:CloseMenu() end
+	message=message or L["ConfirmationMessage"]
+	yesText=yesText or L["Yes"]
+	noText=noText or L["No"]
+	local messageEntry = SkuOptions:InjectMenuItems(aParent, {message }, SkuGenericMenuItem)
+	messageEntry.dynamic = true
+	messageEntry.BuildChildren = function(self)
+		local yesEntry = SkuOptions:InjectMenuItems(self, {yesText}, SkuGenericMenuItem)
+		yesEntry.OnAction = function(param) 
+			onOkFunc(param)
+			--SkuOptions:CloseMenu()
+		end
+
+		local noEntry = SkuOptions:InjectMenuItems(self, {noText}, SkuGenericMenuItem)
+		noEntry.OnAction = function(self)
+			--SkuOptions:CloseMenu()
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3408,7 +3414,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aText string
 ---@param aOkScript function
-function SkuOptions:EditBoxShow(aText, aOkScript)
+function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 	if not SkuOptionsEditBox then
 		local f = CreateFrame("Frame", "SkuOptionsEditBox", UIParent, "DialogBoxFrame")
 		f:SetPoint("CENTER")
@@ -3442,7 +3448,7 @@ function SkuOptions:EditBoxShow(aText, aOkScript)
 		-- EditBox
 		local eb = CreateFrame("EditBox", "SkuOptionsEditBoxEditBox", SkuOptionsEditBoxScrollFrame)
 		eb:SetSize(sf:GetSize())
-		--eb:SetMultiLine(true)
+
 		eb:SetAutoFocus(false) -- dont automatically focus
 		eb:SetFontObject("ChatFontNormal")
 		eb:SetScript("OnEscapePressed", function() 
@@ -3485,6 +3491,12 @@ function SkuOptions:EditBoxShow(aText, aOkScript)
 		f:Show()
 	end
 
+	if aMultilineFlag == true then
+		SkuOptionsEditBoxEditBox:SetMultiLine(true)
+	else
+		SkuOptionsEditBoxEditBox:SetMultiLine(false)
+	end
+	
 	SkuOptionsEditBoxEditBox:Hide()
 	SkuOptionsEditBoxEditBox:SetText("")
 	if aText then

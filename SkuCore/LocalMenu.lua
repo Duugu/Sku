@@ -4044,7 +4044,9 @@ function SkuCore:QuestFrame(aParentChilds)
 								local tText, tFullText, itemLink = GetButtonTooltipLines(_G[tFrameName])
 								if tText then
 									tFullText = {tFullText}
-									insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
+									if itemLink then
+										insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
+									end
 									tTaken[x] = true
 									tText = tText.." "..(_G[tFrameName].count or "")
 									local tFriendlyName = SkuChat:Unescape(tText)
@@ -4098,7 +4100,9 @@ function SkuCore:QuestFrame(aParentChilds)
 									local tText, tFullText, itemLink = GetButtonTooltipLines(_G[tFrameName])
 									if tText then
 										tFullText = {tFullText}
-										insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
+										if itemLink then
+											insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
+										end
 										tTaken[x] = true
 										tText = tText.." "..(_G[tFrameName].count or "")
 										local tFriendlyName = SkuChat:Unescape(tText)

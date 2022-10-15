@@ -168,7 +168,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tRangeCheckLastTarget
 local tRangeCheckLastTargetminRange = 0
-function SkuCore:DoRangeCheck()
+function SkuCore:DoRangeCheck(aForceFlag)
    if not SkuOptions.db.char[MODULE_NAME] then
       return
    end
@@ -184,6 +184,10 @@ function SkuCore:DoRangeCheck()
          tCheckRequired = true
          tRangeCheckLastTargetminRange = tMinRange
       end
+   end
+
+   if aForceFlag == true then
+      tCheckRequired = true
    end
 
    if tCheckRequired == true then

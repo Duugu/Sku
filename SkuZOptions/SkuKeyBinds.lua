@@ -5,6 +5,7 @@ local L = Sku.L
 SkuOptions = SkuOptions or LibStub("AceAddon-3.0"):NewAddon("SkuOptions", "AceConsole-3.0", "AceEvent-3.0")
 
 SkuOptions.skuDefaultKeyBindings = {
+   ["SKU_KEY_TARGETDISTANCE"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_PANICMODE"] = {key = "CTRL-SHIFT-Y", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_MMSCANWIDE"] = {key = "CTRL-SHIFT-F", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_MMSCANNARROW"] = {key = "CTRL-SHIFT-R", object = "SkuCoreControlOption1", script = "OnHide",},
