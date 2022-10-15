@@ -1730,3 +1730,5 @@ L["MacroCreated"] = "Makro erstellt"
 
 L["show colors for difficulty"] = "farben für schwierigkeitsgrad anzeigen"
 L["Red"] = "Rot"
+
+L["Soulbound"] = "todo!!!"

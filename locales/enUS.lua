@@ -1732,3 +1732,5 @@ L["MacroCreated"] = "Macro created"
 
 L["show colors for difficulty"] = "show colors for difficulty"
 L["Red"] = "Red"
+
+L["Soulbound"] = "Soulbound"

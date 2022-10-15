@@ -1325,10 +1325,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 							local itemLink = GetContainerItemLink(bag, slot)
 							local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
 							local isQuestItem = GetContainerItemQuestInfo(bag, slot)
-							if itemLink and not isQuestItem then
+							if itemLink and not isQuestItem and not SkuCore:IsItemSoulbound(bag, slot) then
 								--dprint(bag, slot, itemLink)
 								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
-								-- print("added ", itemLink)
 							end
 						end
 					end
