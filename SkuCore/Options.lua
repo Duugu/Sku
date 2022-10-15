@@ -1373,7 +1373,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 						-- no money or items so delete it
 						continueLoopAfterNMailSuccesses(1, index)
 						DeleteInboxItem(index)
-					else SkuOptions.Voice:OutputStringBTtts(L["All opened"], false, true, 0.2)
+					else -- done opening
+						-- delay otherwise might be cut off
+						C_Timer.After(0.5, function()
+							SkuOptions.Voice:OutputStringBTtts(L["All opened"], false, true, 0.2)
+						end)
 					end
 				end
 
