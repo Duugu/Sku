@@ -7,7 +7,7 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.7](https://github.com/Duugu/Sku/releases/download/r31.7/Sku-r31.7-wrath.zip) (Oct 9th, 2022)<br>
+- [Sku r31.8](https://github.com/Duugu/Sku/releases/download/r31.8/Sku-r31.8-wrath.zip) (Oct 14th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -17,6 +17,16 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
+
+## Changes in Sku r31.8
+- Northrend Storm Peaks is mapped.
+- There is a new key bind: Core > Sku key binds > Bind key > Announce distance to target. There is no key bound as default.
+- There is a new menu Core > Macros to create and edit macros. Thanks a lot to Birkentau.
+- There is a new option: Quest > Options > show colors for difficulty. Default: on. Shows the quest difficulty color in lists (grey, green, yellow, etc.).
+- Menus under Core > Game key binds > Bind key are now sorted alphabetically.
+- The option to bind keys under Core > Action bar is removed. The Core > Game key binds > Bind key menu has options to bind keys to all action buttons (categories "Action Bar" for the main bar and "Multi action bar" for additional action bars and side action bars).
+- Renamed the "Assign nothing" menu entry in the action bar menu to "Assign no action"
+- Fixed a bug with some specific quest rewards like venture coins.
 
 ## Changes in Sku r31.7
 - Fixed a bug with guild bank tabs that are locked for the player
