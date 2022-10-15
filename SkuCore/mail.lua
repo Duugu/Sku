@@ -90,8 +90,6 @@ end
 ------------------------------------------------------------------------------------------------------------
 function SkuCore:MAIL_FAILED(...)
    --dprint("MAIL_FAILED", ...)
-   SkuOptions.Voice:OutputStringBTtts(L["Send failed"], false, true, 0.2)
-   SkuOptions.Voice:OutputStringBTtts(gLastError, false, true, 0.2)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
