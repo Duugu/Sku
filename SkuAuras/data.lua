@@ -960,6 +960,7 @@ SkuAuras.attributes = {
    destUnitId = {
       tooltip = L["Die Ziel-Einheit, bei der die Aura ausgelöst werden soll"],
       friendlyName = L["ziel (L)"],
+      type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.destUnitId.evaluate", aEventData.destUnitId)
          if aOperator == "is" then
@@ -1043,6 +1044,7 @@ SkuAuras.attributes = {
    targetTargetUnitId = {
       tooltip = L["Die Einheit des Ziels deines Ziels"],
       friendlyName = L["ziel deines ziels (L)"],
+      type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.targetTargetUnitId.evaluate", aEventData.targetTargetUnitId)
          if aOperator == "is" then
@@ -1125,6 +1127,7 @@ SkuAuras.attributes = {
    pressedKey = {
       tooltip = L["Welche Taste das Ereignis ausgelöst hat"],
       friendlyName = L["Taste"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.pressedKey then
             --dprint("    ","SkuAuras.attributes.pressedKey.evaluate", string.upper(aEventData.pressedKey), aOperator, string.upper(aValue))
@@ -1136,6 +1139,7 @@ SkuAuras.attributes = {
    tInCombat = {
       tooltip = L["Ob das Event im Kampf auftritt"],
       friendlyName = L["Im Kampf"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
          if aEventData.tInCombat then
@@ -1150,6 +1154,7 @@ SkuAuras.attributes = {
    tSourceUnitIDCannAttack = {
       tooltip = L["Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Quell Einheit angreifbar"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
          if aEventData.tSourceUnitIDCannAttack then
@@ -1164,6 +1169,7 @@ SkuAuras.attributes = {
    tDestinationUnitIDCannAttack = {
       tooltip = L["Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Ziel Einheit angreifbar"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
          if aEventData.tDestinationUnitIDCannAttack then
@@ -1178,6 +1184,7 @@ SkuAuras.attributes = {
    sourceUnitId = {
       tooltip = L["Die Quell Einheit, bei der die Aura ausgelöst werden soll"],
       friendlyName = L["Quelle (L)"],
+      type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
          if aOperator == "is" then
@@ -1268,6 +1275,7 @@ SkuAuras.attributes = {
    event = {
       tooltip = L["Das Ereignis, das die Aura auslösen soll"],
       friendlyName = L["ereignis"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.event.evaluate")
          if aEventData.event then
@@ -1327,6 +1335,7 @@ SkuAuras.attributes = {
    missType = {
       tooltip = L["Der Typ des Verfehlen Ereignisses"],
       friendlyName = L["Verfehlen Typ"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.missType.evaluate")
          if aEventData.missType then
@@ -1349,6 +1358,7 @@ SkuAuras.attributes = {
    unitPowerPlayer = {
       tooltip = L["Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc."],
       friendlyName = L["Eigene Ressource"],
+      type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.unitPowerPlayer.evaluate")
          if aEventData.unitPowerPlayer then
@@ -1466,6 +1476,7 @@ SkuAuras.attributes = {
    unitComboPlayer = {
       tooltip = L["Dein combopunkte auf das aktuelle ziel, die die Aura auslösen sollen"],
       friendlyName = L["Eigene combopunkte"],
+      type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.unitComboPlayer.evaluate", aEventData.unitComboPlayer)
          if aEventData.unitComboPlayer then
@@ -1487,6 +1498,7 @@ SkuAuras.attributes = {
    unitHealthPlayer = {
       tooltip = L["Dein gesundheits Level in Prozent, das die Aura auslösen soll"],
       friendlyName = L["Eigene Gesundheit"],
+      type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.unitHealthPlayer.evaluate")
          if aEventData.unitHealthPlayer then
@@ -1604,6 +1616,7 @@ SkuAuras.attributes = {
    spellId = {
       tooltip = L["Die Zauber-ID, die die Aura auslösen soll"],
       friendlyName = L["zauber nr"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.spellId.evaluate")
          if aEventData.spellId then
@@ -1621,6 +1634,7 @@ SkuAuras.attributes = {
    spellNameOnCd = {
       tooltip = L["Ob ein Zauber gerade auf CD ist"],
       friendlyName = L["zauber auf cd (L)"],
+      type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.spellNameOnCd.evaluate", aEventData, aOperator, aValue)
          if aOperator == "is" then
@@ -1666,6 +1680,7 @@ SkuAuras.attributes = {
    spellName = {
       tooltip = L["Der Zauber-name, der die Aura auslösen soll"],
       friendlyName = L["zauber name"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.spellName.evaluate")
          if aEventData.spellName then
@@ -1681,6 +1696,7 @@ SkuAuras.attributes = {
    buffListTarget = {
       tooltip = L["Die Liste der Buffs des Ziels"],
       friendlyName = L["Buff Liste Ziel (L)"],
+      type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.buffListTarget.evaluate", aEventData, aOperator, aValue)
          if aEventData.buffListTarget then
@@ -1697,6 +1713,7 @@ SkuAuras.attributes = {
    debuffListTarget = {
       tooltip = L["Die Liste der Debuffs  des Ziels"],
       friendlyName = L["Debuff Liste Ziel (L)"],
+      type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
          if aEventData.debuffListTarget then
@@ -1713,6 +1730,7 @@ SkuAuras.attributes = {
    itemName = {
       tooltip = L["Der Gegenstandsname, der die Aura auslösen soll"],
       friendlyName = L["gegenstand name"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.itemName.evaluate")
          if aEventData.itemName then
@@ -1726,8 +1744,10 @@ SkuAuras.attributes = {
       },      
    },
    itemId = {
+
       tooltip = L["Die Gegenstands-ID, die die Aura auslösen soll"],
       friendlyName = L["gegenstand nr"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.itemId.evaluate")
          if aEventData.itemId then
@@ -1743,6 +1763,7 @@ SkuAuras.attributes = {
    itemCount = {
       tooltip = L["Die verbleibende Menge eines Gegenstands in deinen Taschen, bei der die auslösen soll"],
       friendlyName = L["gegenstand anzahl"],
+      type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.itemCount.evaluate")
          if aEventData.itemCount then
@@ -1869,6 +1890,7 @@ SkuAuras.attributes = {
    auraType = {
       tooltip = L["Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll"],
       friendlyName = L["buff/debuff"],
+      type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.auraType.evaluate")
          if aEventData.auraType then
@@ -1886,6 +1908,7 @@ SkuAuras.attributes = {
    auraAmount = {
       tooltip = L["Die Anzahl der Stacks einer Aura (Buff oder Debuff), bei der die Aura auslösen soll"],
       friendlyName = L["aura stacks"],
+      type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.auraAmount.evaluate")
          if aEventData.auraAmount then
@@ -2003,6 +2026,7 @@ SkuAuras.attributes = {
    class = {
       tooltip = L["Der Klasse, die die Aura auslösen soll"],
       friendlyName = L["klasse"],
+      type = "CATEGORY",
       evaluate = function()
       	--dprint("    ","SkuAuras.attributes.class.evaluate")
 
@@ -2232,6 +2256,25 @@ SkuAuras.Operators = {
          return false
       end,
    },
+}
+
+---Returns a subset of the operators table, with only given operators
+local function operatorsSubset(...)
+   local subset = {}
+for i, op in pairs({...}) do
+   subset[op] = SkuAuras.Operators[op]
+end
+return subset
+end
+
+---The type of an attribute defines what operators it supports.
+SkuAuras.operatorsForAttributeType = {
+   ---Attributes that can only be checked for equality (e.g. spell name, in combat)
+   CATEGORY = operatorsSubset("is", "isNot"),
+   ---Attributes that can also be compared to be bigger/smaller (e.g. health, resource)
+   ORDINAL = operatorsSubset("is", "isNot", "bigger", "smaller"),
+   ---Supports checking if contains a given element (e.g. source, buff list)
+   SET = operatorsSubset("contains", "containsNot"),
 }
 
 ------------------------------------------------------------------------------------------------------------------
