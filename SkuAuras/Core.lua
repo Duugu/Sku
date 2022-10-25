@@ -29,6 +29,7 @@ local CleuBase = {
 	missType = 41,
 --key = 50
 --combo = 51
+--buffListPlayer
 }
 
 SkuAuras.ItemCDRepo = {}
@@ -292,6 +293,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 			SkuAuras.values["spell:"..tostring(spellName)] = {friendlyName = spellName,}
 		end
 	end
+	SkuAuras.attributes.buffListPlayer.values = SkuAuras.attributes.buffListTarget.values
 	
 	if not tItemHook then
 		hooksecurefunc("UseContainerItem", function(aBagID, aSlot, aTarget, aReagentBankAccessible) 
@@ -695,14 +697,17 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	tEventData[36] = math.floor(UnitPower("player") / (UnitPowerMax("player") / 100))
 
 	local tUnitID = "target"
-	local tBuffList = {}
-	for x = 1, 40  do
-		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitBuff(tUnitID, x)
-		if name then
-			tBuffList[name] = name
+	local function getBuffList(unit)
+		local tBuffList = {}
+		for x = 1, 40  do
+			local name = UnitBuff(unit, x)
+			if name then
+				tBuffList[name] = name
+			end
 		end
+		return tBuffList
 	end
-	tEventData[37] = tBuffList
+	tEventData[37] = getBuffList(tUnitID)
 	local tdebuffList = {}
 	for x = 1, 40  do
 		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff(tUnitID, x)
@@ -711,6 +716,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		end
 	end
 	tEventData[38] = tdebuffList
+	tEventData.buffListPlayer = getBuffList("player")
 
 if tEventData[2] ~= "KEY_PRESS" then
 	--[[
@@ -783,6 +789,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 				unitComboPlayer = tEventData[51],
 				buffListTarget = tEventData[37],
 				debuffListTarget = tEventData[38],
+				buffListPlayer = tEventData.buffListPlayer,
 				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 				tInCombat = SkuCore.inCombat,

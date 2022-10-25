@@ -1737,6 +1737,15 @@ SkuAuras.attributes = {
       values = {
       },      
    },
+   buffListPlayer = {
+      tooltip = "your list of buffs",
+      friendlyName = "your buff list (l)",
+      type = "SET",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return aEventData.buffListPlayer ~= nil and SkuAuras:ProcessEvaluate(aEventData.buffListPlayer, aOperator, SkuAuras:RemoveTags(aValue)) == true
+      end,
+      values = {},      
+   },
    itemName = {
       tooltip = L["Der Gegenstandsname, der die Aura auslösen soll"],
       friendlyName = L["gegenstand name"],
