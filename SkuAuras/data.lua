@@ -2261,12 +2261,13 @@ SkuAuras.Operators = {
 ---Returns a subset of the operators table, with only given operators
 local function operatorsSubset(...)
    local subset = {}
-for i, op in pairs({...}) do
-   subset[op] = SkuAuras.Operators[op]
-end
-return subset
+   for i, op in pairs({ ... }) do
+      subset[op] = SkuAuras.Operators[op]
+   end
+   return subset
 end
 
+------------------------------------------------------------------------------------------------------------------
 ---The type of an attribute defines what operators it supports.
 SkuAuras.operatorsForAttributeType = {
    ---Attributes that can only be checked for equality (e.g. spell name, in combat)
