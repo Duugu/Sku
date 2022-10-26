@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.12
+	Auction house
+		- The auction house history data is disabled for now as it is again leading to issues with lost setting. That means, there are not historic price data in item tooltips for now. 
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.11
 	General
 		- Action bar names under Core > Actions bars renamed to be more consistent with the names under Core > Game key bindings.

@@ -143,7 +143,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseOnLogin()
    SkuOptions.db.factionrealm[MODULE_NAME] = SkuOptions.db.factionrealm[MODULE_NAME] or {}
-   SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or {}
+   --SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or {}
+   SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory =  {}
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1727,7 +1728,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
 
          FullScanResultsDBHistory = {}
          SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, FullScanResultsDBHistory)
-         SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory)
+         --SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory)
 
          dprint("full query completed", SkuCore.QueryCallback)
          SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
@@ -2004,7 +2005,7 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
    end
 
    aCurrentPriceDataDB = aCurrentPriceDataDB or FullScanResultsDBHistory
-   aHistoryPriceDataDB = aHistoryPriceDataDB or SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory
+   aHistoryPriceDataDB = aHistoryPriceDataDB or {} --SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory
 
    local tFullTextSections = {}
    local tSuggestedSellPrice
