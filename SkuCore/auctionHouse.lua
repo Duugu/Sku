@@ -2067,7 +2067,7 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
       tText = L["Aktuelle Preisdaten (für ein Stück)"]
 
       local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aCurrentPriceDataDB[aItemID][2])
-      if not tBidSeenAmount then
+      if not tBidSeenAmount or not tBidLow then
          tText = tText..L["\r\nKeine Sofortkaufdaten vorhanden"]
       else         
          tText = tText..L["\r\nSofortkaufdaten: \r\nDatenpunkte "]..(tBidSeenAmount)..L["\r\nNiedrigster "]..SkuGetCoinText(tBidLow, true, true)..L["\r\nHöchster "]..SkuGetCoinText(tBidHigh, true, true)..L["\r\nDurchschnitt "]..SkuGetCoinText(tBidAverage, true, true)
@@ -2075,7 +2075,7 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
       end
 
       local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aCurrentPriceDataDB[aItemID][1])
-      if not tBidSeenAmount then
+      if not tBidSeenAmount or not tBidLow then
          tText = tText..L["\r\nKeine Gebotsdaten vorhanden"]
       else         
          tText = tText..L["\r\nGebotsdaten: \r\nDatenpunkte "]..(tBidSeenAmount)..L["\r\nNiedrigstes "]..SkuGetCoinText(tBidLow, true, true)..L["\r\nHöchstes "]..SkuGetCoinText(tBidHigh, true, true)..L["\r\nDurchschnitt "]..SkuGetCoinText(tBidAverage, true, true)
@@ -2091,7 +2091,7 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
       tText = L["Historische Preisdaten (für ein Stück)"]
 
       local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aHistoryPriceDataDB[aItemID][2])
-      if not tBidSeenAmount then
+      if not tBidSeenAmount or not tBidLow then
          tText = tText..L["\r\nKeine Sofortkaufdaten vorhanden"]
       else         
          tText = tText..L["\r\nSofortkaufdaten: \r\nDatenpunkte "]..(tBidSeenAmount)..L["\r\nNiedrigster "]..SkuGetCoinText(tBidLow, true, true)..L["\r\nHöchster "]..SkuGetCoinText(tBidHigh, true, true)..L["\r\nDurchschnitt "]..SkuGetCoinText(tBidAverage, true, true)
@@ -2101,7 +2101,7 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
       end
 
       local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aHistoryPriceDataDB[aItemID][1])
-      if not tBidSeenAmount then
+      if not tBidSeenAmount or not tBidLow then
          tText = tText..L["\r\nKeine Gebotsdaten vorhanden"]
       else         
          tText = tText..L["\r\nGebotsdaten: \r\nDatenpunkte "]..(tBidSeenAmount)..L["\r\nNiedrigstes "]..SkuGetCoinText(tBidLow, true, true)..L["\r\nHöchstes "]..SkuGetCoinText(tBidHigh, true, true)..L["\r\nDurchschnitt "]..SkuGetCoinText(tBidAverage, true, true)
