@@ -2481,7 +2481,7 @@ function SkuCore:IterateChildren(t, tab)
 											if tResults[fName].obj.info.id then
 												tResults[fName].itemId = tResults[fName].obj.info.id
 												tResults[fName].textFirstLine = SkuCore:ItemName_helper(tText)
-												tResults[fName].textFull = SkuCore:AuctionPriceHistoryData(tResults[fName].obj.info.id, true, true)
+												tResults[fName].textFull = SkuCore:AuctionHouseGetAuctionPriceHistoryData(tResults[fName].obj.info.id)
 											end
 										end
 										if not tResults[fName].textFull then

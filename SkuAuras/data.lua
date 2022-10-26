@@ -127,6 +127,14 @@ SkuAuras.actions = {
       end,
       single = true,
    },
+   notifyAudioAndChatSingle = {
+      tooltip = L["Die Ausgaben werden als Audio und chat ausgegeben"],
+      friendlyName = L["audio und chat ausgabe"],
+      func = function(tAuraName, tEvaluateData)
+      	----dprint("    ","action func audio benachrichtigung DING")
+      end,
+      single = true,
+   },
    --[[
    notifyAudioSingleInstant = {
       tooltip = L["Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."],
@@ -858,6 +866,14 @@ SkuAuras.valuesDefault = {
          tooltip = L[""],
          friendlyName = L["fernkampf ressource"],
       },]]
+      ["SPELL_PERIODIC_DAMAGE"] = {
+         tooltip = L["A dot spell tick has caused damage"],
+         friendlyName = L["dot tick"],
+      },
+      ["SPELL_PERIODIC_HEAL"] = {
+         tooltip = L["A hot spell tick has caused damage"],
+         friendlyName = L["hot tick"],
+      },
       ["SPELL_DAMAGE"] = {
          tooltip = L["Ein Zauber hat Schaden verursacht"],
          friendlyName = L["zauber schaden"],
@@ -955,6 +971,7 @@ SkuAuras.attributes = {
          --"notifyAudioSingleInstant",
          "notifyChat",
          "notifyChatSingle",
+         "notifyAudioAndChatSingle",
       },
    },
    destUnitId = {
@@ -1308,6 +1325,8 @@ SkuAuras.attributes = {
          "RANGE_MISSED",
          "RANGE_EXTRA_ATTACKS",
          --"RANGE_ENERGIZE",
+         "SPELL_PERIODIC_DAMAGE",
+         "SPELL_PERIODIC_HEAL",
          "SPELL_DAMAGE",
          "SPELL_MISSED",
          "SPELL_HEAL",
