@@ -170,6 +170,17 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 	end
 end
 
+---Checks if item is soulbound
+---@param bag number bag id
+---@param slot number slot id
+---@return boolean Whether item is soulbound
+function SkuCore:IsItemSoulbound(bag, slot)
+	local tooltip = getItemTooltipTextFromBagItem(bag, slot)
+	local result = tooltip and  string.find(tooltip, L["Soulbound"])
+	-- convert to boolean
+	return result and true or false
+end
+
 ---Gets tooltip text for given equipped item
 ---@param invSlot InvSlot
 ---@return string|nil

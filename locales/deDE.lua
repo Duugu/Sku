@@ -1731,6 +1731,9 @@ L["MacroCreated"] = "Makro erstellt"
 L["show colors for difficulty"] = "farben für schwierigkeitsgrad anzeigen"
 L["Red"] = "Rot"
 
+
+L["Soulbound"] = "Seelengebunden"
+
 L["Die Ausgaben werden als Audio und chat ausgegeben"] = "Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."
 L["A dot spell tick has caused damage"] = "Ein dot zauber hat schaden verursacht"
 L["dot tick"] = "dot tick"
@@ -1748,3 +1751,4 @@ L["enter search string"] = "suchbegriff eingeben"
 L["full scan not ready yet"] = "komplettscan noch nicht bereit"
 L["not possible, scan in progess"] = "Nicht möglich, scan läuft"
 L["searching for "] = "suche läuft nach "
+

@@ -1733,6 +1733,9 @@ L["MacroCreated"] = "Macro created"
 L["show colors for difficulty"] = "show colors for difficulty"
 L["Red"] = "Red"
 
+
+L["Soulbound"] = "Soulbound"
+
 L["A dot spell tick has caused damage"] = "A dot spell tick has caused damage"
 L["dot tick"] = "dot tick"
 L["A hot spell tick has caused damage"] = "A hot spell tick has caused damage"
@@ -1751,3 +1754,4 @@ L["enter search string"] = "enter search string"
 L["full scan not ready yet"] = "full scan not ready yet"
 L["not possible, scan in progess"] = "not possible, scan in progess"
 L["searching for "] = "searching for "
+
