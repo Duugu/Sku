@@ -952,14 +952,20 @@ if tEventData[2] ~= "KEY_PRESS" then
 								--dprint("  ","output", i, v)
 
 								local tAction = tAuraData.actions[1]
-								if tAction == "notifyAudioSingle" or tAction == "notifyAudioSingleInstant" then
-									tAction = "notifyAudio"
-								end
-								if tAction == "notifyChatSingle" then
-									tAction = "notifyChat"
+								if tAction ~= "notifyAudioAndChatSingle" then
+									if tAction == "notifyAudioSingle" or tAction == "notifyAudioSingleInstant" then
+										tAction = "notifyAudio"
+									end
+									if tAction == "notifyChatSingle" then
+										tAction = "notifyChat"
+									end
+
+									SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+								else
+									SkuAuras.outputs[string.gsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									SkuAuras.outputs[string.gsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								end
 
-								SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								tFirst = false
 							end
 						end
@@ -992,13 +998,19 @@ if tEventData[2] ~= "KEY_PRESS" then
 								--dprint("  ","  output", i, v)
 
 								local tAction = tAuraData.actions[1]
-								if tAction == "notifyAudioSingle" then
-									tAction = "notifyAudio"
+								if tAction ~= "notifyAudioAndChatSingle" then
+									if tAction == "notifyAudioSingle" then
+										tAction = "notifyAudio"
+									end
+									if tAction == "notifyChatSingle" then
+										tAction = "notifyChat"
+									end							
+									SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+								else
+									SkuAuras.outputs[string.gsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									SkuAuras.outputs[string.gsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								end
-								if tAction == "notifyChatSingle" then
-									tAction = "notifyChat"
-								end							
-								SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+								
 								tFirst = false
 							end
 						end

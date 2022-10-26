@@ -272,13 +272,13 @@ L["Topic missing"]  = "Subject missing" --
 L["Auto follow"]  = "Auto following" --
 L["Hunter"]  = "Hunter" --
 L["Notice on pet starving"]  = "Announce animal starvatoin" --
-L["Left Multi Bar"]  = "side action bar 2" --
-L["Right Multi Bar"]  = "side action bar 1" --
-L["Bottom Multi Bar Left"]  = "Additional action bar left" --
-L["Bottom Multi Bar Right"]  = "Additional action bar right" --
-L["Main Action Bar"]  = "Main action bar" --
+L["Left Multi Bar"]  = "right actionbar" --
+L["Right Multi Bar"]  = "right actionbar 2" --
+L["Bottom Multi Bar Left"]  = "bottomleft action bar" --
+L["Bottom Multi Bar Right"]  = "bottomright action bar" --
+L["Main Action Bar"]  = "action bar" --
 L["Pet Action Bar"]  = "Pet action bar" --
-L["Stance Action Bar"]  = "Stance action bar" --
+L["Stance Action Bar"]  = "Special Action bar" --
 L["Macros"]  = "Macros" --
 L["Menu empty"]  = "Menu empty" --
 L["Assign nothing"]  = "Assign no action" --
@@ -909,11 +909,11 @@ L["Die Ausgaben werden als Audio ausgegeben"]  = "Output are audio" --
 L["audio ausgabe"]  = "audio output" --
 L["Die Ausgaben werden als Text im Chat ausgegeben"]  = "Outputs are text in chat" --
 L["chat ausgabe"]  = "chat output" --
-L["Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."]  = "The outputs are audio. However, the aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time." --
+L["Die Ausgaben werden als Audio ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."]  = "The outputs are audio. The aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time." --
 L["audio ausgabe einmal"]  = "audio output single" --
-L["Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."]  = "The outputs are audio and will be done before any other outputs. However, the aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time." --
+L["Die Ausgaben werden als Audio ausgegeben und dabei vor allen anderen Ausgaben platziert. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."]  = "The outputs are audio and will be done before any other outputs. The aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time." --
 L["audio ausgabe einmal sofort"]  = "audio output single immediately" --
-L["Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."]  = "The output is text. However, the aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time." --
+L["Die Ausgaben werden als Text im Chat ausgegeben. Die Aura wird jedoch nur einmal ausgelöst. Die nächste Auslösung der Aura erfolgt erst dann, wenn die Aura mindestens einmal nicht zugetroffen hat."]  = "The output is text. The aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time." --
 L["chat ausgabe einmal"]  = "chat output once" --
 L["Der Name des auslösenden Ereignisses der Aura"]  = "The name of the triggering event" --
 L["ereignis"]  = "event" --
@@ -1733,4 +1733,25 @@ L["MacroCreated"] = "Macro created"
 L["show colors for difficulty"] = "show colors for difficulty"
 L["Red"] = "Red"
 
+
 L["Soulbound"] = "Soulbound"
+
+L["A dot spell tick has caused damage"] = "A dot spell tick has caused damage"
+L["dot tick"] = "dot tick"
+L["A hot spell tick has caused damage"] = "A hot spell tick has caused damage"
+L["hot tick"] = "hot tick"
+
+L["Die Ausgaben werden als Audio und chat ausgegeben"] = "The aura is triggered only once. The next activation of the aura will be when the aura was not true for at least one time."
+L["audio und chat ausgabe"]  = "Output audio and chat single"
+
+L["auctions by item"] = "auctions by item"
+L["auctions by seach string"] = "auctions by search string"
+L["auctions from full scan"] = "auctions from full scan"
+L["start full scan"] = "start full scan"
+L["Ready in"] = "Ready in"
+L["full scan"] = "full scan"
+L["enter search string"] = "enter search string"
+L["full scan not ready yet"] = "full scan not ready yet"
+L["not possible, scan in progess"] = "not possible, scan in progess"
+L["searching for "] = "searching for "
+

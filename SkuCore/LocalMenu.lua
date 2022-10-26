@@ -424,7 +424,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 							if bagItemButton.obj.info.id then
 								bagItemButton.itemId = bagItemButton.obj.info.id
 								bagItemButton.textFirstLine = SkuCore:ItemName_helper(tText)
-								bagItemButton.textFull = SkuCore:AuctionPriceHistoryData(bagItemButton.obj.info.id, true, true)
+								bagItemButton.textFull = SkuCore:AuctionHouseGetAuctionPriceHistoryData(bagItemButton.obj.info.id)
 							end
 						end
 
@@ -761,7 +761,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							if bagItemButton.obj.info.id then
 								bagItemButton.itemId = bagItemButton.obj.info.id
 								bagItemButton.textFirstLine = SkuCore:ItemName_helper(tText)
-								bagItemButton.textFull = SkuCore:AuctionPriceHistoryData(bagItemButton.obj.info.id, true, true)
+								bagItemButton.textFull = SkuCore:AuctionHouseGetAuctionPriceHistoryData(bagItemButton.obj.info.id)
 							end
 						end
 						if not bagItemButton.textFull then
@@ -776,7 +776,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or ""), }
 						end
 						table.insert(bagItemButton.textFull, 1, tFull)
-insertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
+						insertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
 					end
 
 					if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
