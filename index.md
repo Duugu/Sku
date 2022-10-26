@@ -1,13 +1,15 @@
 If you are a first time user of the Sku addon, you need to follow the installation / setup instructions before installing updates from this page:<br>
 ENGLISH - First Steps Guide:<br>
 <a href="https://duugu.github.io/Sku/first_steps_en.html">https://duugu.github.io/Sku/first_steps_en.html</a><br>
-DEUTSCH/GERMAN - Erste Schritte:<br>
+DEUTSCH - Erste Schritte:<br>
 <a href="https://duugu.github.io/Sku/first_steps_de.html">https://duugu.github.io/Sku/first_steps_de.html</a><br>
+Русский - Первые шаги:<br>
+<a href="https://duugu.github.io/Sku/first_steps_ru.html">https://duugu.github.io/Sku/first_steps_ru.html</a><br>
 
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.8](https://github.com/Duugu/Sku/releases/download/r31.8/Sku-r31.8-wrath.zip) (Oct 14th, 2022)<br>
+- [Sku r31.11](https://github.com/Duugu/Sku/releases/download/r31.11/Sku-r31.11-wrath.zip) (Oct 26th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -17,6 +19,55 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
+
+-------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.11
+### General
+- Action bar names under Core > Actions bars renamed to be more consistent with the names under Core > Game key bindings.
+
+### Maps
+- Northrend Icecrown mapped
+- Slightly changed the waypoints and added a rescue point in the deeprun tram to make riding the tram easier.
+
+### Mail
+- Quest items and soulbound items in Mail > New letter > Items are filtered out.
+- Bug with stuck in endless loop with Mail > Open all while bags are full fixed.
+
+### Auction house
+The full auction house feature was updated. The "processing" sound has been changed. An additional sound for "processing completed" has been added.<br>
+The general speed has not been changed. That is not possible. Blizzard is throtteling addons on querying the auction house. That throtteling is dynamic. It depends on the number of players on the server, on the auction house workload and more. The same query can take 5 seconds or 25 seconds. That is expected and no error. It is dynamic and depends on the current workload!<br>
+The required time for queries also depends on the amount of auctions (and therefore on the server population, as high pop servers will have much more auctions than low pop servers).<br>
+The more auctions a query is returning, the longer the query takes. Querying all auctions from "Trade goods" with tens of thousands of auctions swill of course take much more time than querying the "Shields" category with just a few auctions.<br>
+To overcome this there are new menus to show, find and filter auctions. Those will speed up the process for most items/queries by just using more specific queries.<br>
+The auctions menu still has 3 main menus: Auctions, Bids, and Sales. <br>
+Bids (auctions that you have bid on) and Sales (auctions you have posted) are unchanged. The are working as before. The Auctions menu has been changed. It now has 5 entries: 
+- Filter and sort (unchanged): <br>
+	To filter the queried auctions in the lists below.
+- Auctions by item: <br>
+	This menu is to query the auction house for a specific item that you are interested in (faster than querying all items from a category).<br>
+	It contains all auction house categories and a fixed list of all items of each category. <br>
+	The items list in each category is NOT what is in the auction house. It is just a fixed list of all items in that category from the items database. You need to go into the submenu of an item to see the actual running auctions for that item.<br>
+	The first menu entry "all" is listing all auctions from that category (as before).<br>
+	On selecting an item the addon will output the number of actual auctions for each item in that list. That may take a few seconds.
+- Auctions by seach string: <br>
+	this menu is querying the auction house for some search term of your choice. Select "enter search string", type in the search term, and wait. Go down if the search is completed, to see the returned auctions. Repeat to search for something else.
+- Auctions from full scan: 
+	This menu contains all auction house categories and all auctions in each category from the last full scan (see next bullet point below).<br>
+	As the data is from a full scan, the menu is extremly fast and there are no queries. You don't need to wait.<br>
+	However, as the data is from the last full scan, the auctions in this menu could be quite outdated. That depends on when you did the last full scan. Keep that in mind, if you are using the menu. If you want up to date data, do a full scan first.<br>
+	If you haven't done a full scan since login, the menu is empty. In that case, start a full scan first.
+- Start full scan: <br>
+	This is starting a full auction house scan. A full scan is getting all auctions at once. Therefore the full scan can take a few seconds or several minutes. That totally depends on the server population, the number of auctions, the workload, etc. If the full scan is running, just wait for it to be completed. Do not do other stuff or try to check auction house categories.<br>
+	A full scan can be done once once in 15 minutes. If you are trying to do it earlier, it will fail.<br>
+	Logging out to the character selection screen and back in with the character will reset the 15 minutes timer.
+
+Price data in item tooltips:<br>
+- The recent item price data is from the last full scan. If you haven't done a full scan in the current session, then there is no recent price data. The recent item price data is cleared on logout/reload.
+- The history item price data is from all previous full scans. Every full scan data is added to the history data (up to 500 auctions per item). The history data is saved between game sessions/reloads.
+
+### Auras
+- "dot tick" and "hot tick" events to aura attibutes added.
+- Aura output "Output audio and chat single" added.
 
 ## Changes in Sku r31.8
 - Northrend Storm Peaks is mapped.
