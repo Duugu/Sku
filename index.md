@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- (download temporary diabled) [Sku r31.11]() (Oct 26th, 2022)<br>
+- [Sku r31.12](https://github.com/Duugu/Sku/releases/download/r31.12/Sku-r31.12-wrath.zip) (Oct 26th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -21,6 +21,10 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.12
+### Auction house
+- The auction house history data is disabled for now as it is again leading to issues with lost setting. That means, there are not historic price data in item tooltips for now. 
+
 ## Changes in Sku r31.11
 ### General
 - Action bar names under Core > Actions bars renamed to be more consistent with the names under Core > Game key bindings.
