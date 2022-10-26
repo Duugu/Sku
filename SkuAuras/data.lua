@@ -1746,6 +1746,15 @@ SkuAuras.attributes = {
       end,
       values = {},      
    },
+   debuffListPlayer = {
+      tooltip = "your list of debuffs",
+      friendlyName = "your debuff list (l)",
+      type = "SET",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return aEventData.debuffListPlayer ~= nil and SkuAuras:ProcessEvaluate(aEventData.debuffListPlayer, aOperator, SkuAuras:RemoveTags(aValue)) == true
+      end,
+      values = {},      
+   },
    itemName = {
       tooltip = L["Der Gegenstandsname, der die Aura auslösen soll"],
       friendlyName = L["gegenstand name"],

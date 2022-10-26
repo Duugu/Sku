@@ -30,6 +30,7 @@ local CleuBase = {
 --key = 50
 --combo = 51
 --buffListPlayer
+-- debuffListPlayer
 }
 
 SkuAuras.ItemCDRepo = {}
@@ -294,6 +295,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		end
 	end
 	SkuAuras.attributes.buffListPlayer.values = SkuAuras.attributes.buffListTarget.values
+	SkuAuras.attributes.debuffListPlayer.values = SkuAuras.attributes.debuffListTarget.values
 	
 	if not tItemHook then
 		hooksecurefunc("UseContainerItem", function(aBagID, aSlot, aTarget, aReagentBankAccessible) 
@@ -696,27 +698,22 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	tEventData[35] = math.floor(UnitHealth("player") / (UnitHealthMax("player") / 100))
 	tEventData[36] = math.floor(UnitPower("player") / (UnitPowerMax("player") / 100))
 
-	local tUnitID = "target"
-	local function getBuffList(unit)
+	local function getAuraList(unit, filter)
 		local tBuffList = {}
 		for x = 1, 40  do
-			local name = UnitBuff(unit, x)
+			local name = UnitAura(unit, x, filter)
 			if name then
 				tBuffList[name] = name
 			end
 		end
 		return tBuffList
 	end
-	tEventData[37] = getBuffList(tUnitID)
-	local tdebuffList = {}
-	for x = 1, 40  do
-		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff(tUnitID, x)
-		if name then
-			tdebuffList[name] = name
-		end
-	end
-	tEventData[38] = tdebuffList
-	tEventData.buffListPlayer = getBuffList("player")
+
+	local tUnitID = "target"
+	tEventData[37] = getAuraList(tUnitID, "HELPFUL")
+	tEventData[38] = getAuraList(tUnitID, "HARMFUL")
+	tEventData.buffListPlayer = getAuraList("player", "HELPFUL")
+	tEventData.debuffListPlayer = getAuraList("player", "HARMFUL")
 
 if tEventData[2] ~= "KEY_PRESS" then
 	--[[
@@ -790,6 +787,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 				buffListTarget = tEventData[37],
 				debuffListTarget = tEventData[38],
 				buffListPlayer = tEventData.buffListPlayer,
+				debuffListPlayer = tEventData.debuffListPlayer,
 				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 				tInCombat = SkuCore.inCombat,
