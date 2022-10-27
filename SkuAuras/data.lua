@@ -1155,9 +1155,8 @@ SkuAuras.attributes = {
       friendlyName = L["Im Kampf"],
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
-         if aEventData.tInCombat then
-            return SkuAuras:ProcessEvaluate(aEventData.tInCombat, aOperator,true)
-         end
+         local tInCombat = aEventData.tInCombat and "true" or "false"
+         return SkuAuras:ProcessEvaluate(tInCombat, aOperator, aValue)
       end,
       values = {
          "true",
