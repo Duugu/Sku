@@ -846,25 +846,6 @@ if tEventData[2] ~= "KEY_PRESS" then
 
 			tEvaluateData.class = nil
 
-			--add spell name and item name from condition values to data for output if there are no value from eventdata
-			local tAttributesWithSpellNameData = {
-				--["spellName"] = true,
-				["spellNameOnCd"] = true,
-				["buffListTarget"] = true,
-				["debuffListTarget"] = true,
-			}
-			local tAttributesWithItemNameData = {
-				["itemName"] = true,
-			}
-			for tAttributeName, tAttributeValue in pairs(tAuraData.attributes) do
-				if tAttributesWithSpellNameData[tAttributeName] then
-					tEvaluateData.spellName = SkuAuras:RemoveTags(tAttributeValue[1][2])
-				end
-				if tAttributesWithItemNameData[tAttributeName] then
-					--tEvaluateData.itemName = SkuAuras:RemoveTags(tAttributeValue[1][2])
-				end
-			end
-
 			--evaluate attributes
 			local tSingleBuffListTargetValue
 			local tSingleDebuffListTargetValue
