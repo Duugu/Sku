@@ -957,6 +957,11 @@ end
 SkuAuras.values = {
 }
 
+local function evaluateBool(bool, operator, value)
+   local attributeValue = bool and "true" or "false"
+         return SkuAuras:ProcessEvaluate(attributeValue, operator, value)
+end
+
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.attributes = {
    action = {
@@ -1154,9 +1159,8 @@ SkuAuras.attributes = {
       tooltip = L["Ob das Event im Kampf auftritt"],
       friendlyName = L["Im Kampf"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	--dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
-         local tInCombat = aEventData.tInCombat and "true" or "false"
-         return SkuAuras:ProcessEvaluate(tInCombat, aOperator, aValue)
+         --dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
+         return evaluateBool(aEventData.tInCombat, aOperator, aValue)
       end,
       values = {
          "true",
@@ -1167,10 +1171,8 @@ SkuAuras.attributes = {
       tooltip = L["Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Quell Einheit angreifbar"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	--dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
-         if aEventData.tSourceUnitIDCannAttack then
-            return SkuAuras:ProcessEvaluate(aEventData.tSourceUnitIDCannAttack, aOperator,true)
-         end
+         --dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
+         return evaluateBool(aEventData.tSourceUnitIDCannAttack, aOperator, aValue)
       end,
       values = {
          "true",
@@ -1181,10 +1183,8 @@ SkuAuras.attributes = {
       tooltip = L["Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Ziel Einheit angreifbar"],
       evaluate = function(self, aEventData, aOperator, aValue)
-      	--dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
-         if aEventData.tDestinationUnitIDCannAttack then
-            return SkuAuras:ProcessEvaluate(aEventData.tDestinationUnitIDCannAttack, aOperator,true)
-         end
+         --dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
+         return evaluateBool(aEventData.tDestinationUnitIDCannAttack, aOperator, aValue)
       end,
       values = {
          "true",
