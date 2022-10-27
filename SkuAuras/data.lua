@@ -1139,7 +1139,7 @@ SkuAuras.attributes = {
    tInCombat = {
       tooltip = L["Ob das Event im Kampf auftritt"],
       friendlyName = L["Im Kampf"],
-      type = "CATEGORY",
+      type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
          if aEventData.tInCombat then
@@ -1154,7 +1154,7 @@ SkuAuras.attributes = {
    tSourceUnitIDCannAttack = {
       tooltip = L["Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Quell Einheit angreifbar"],
-      type = "CATEGORY",
+      type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
          if aEventData.tSourceUnitIDCannAttack then
@@ -1169,7 +1169,7 @@ SkuAuras.attributes = {
    tDestinationUnitIDCannAttack = {
       tooltip = L["Ob die Ziel-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Ziel Einheit angreifbar"],
-      type = "CATEGORY",
+      type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
          if aEventData.tDestinationUnitIDCannAttack then
@@ -2270,8 +2270,10 @@ end
 ------------------------------------------------------------------------------------------------------------------
 ---The type of an attribute defines what operators it supports.
 SkuAuras.operatorsForAttributeType = {
-   ---Attributes that can only be checked for equality (e.g. spell name, in combat)
+   ---Attributes that can only be checked for equality (e.g. spell name, class)
    CATEGORY = operatorsSubset("is", "isNot"),
+   -- Attributes with only 2 possible values (e.g. in combat)
+   BINARY = operatorsSubset("is"),
    ---Attributes that can also be compared to be bigger/smaller (e.g. health, resource)
    ORDINAL = operatorsSubset("is", "isNot", "bigger", "smaller"),
    ---Supports checking if contains a given element (e.g. source, buff list)
