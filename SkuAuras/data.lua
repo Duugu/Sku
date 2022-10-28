@@ -65,9 +65,6 @@ end
 
 ------------------------------------------------------------------------------------------------------------------
 function SkuAuras:RemoveTags(aValue)
-   if not aValue then
-      return
-   end
    if type(aValue) ~= "string" then
       return aValue
    end
@@ -957,11 +954,6 @@ end
 SkuAuras.values = {
 }
 
-local function evaluateBool(bool, operator, value)
-   local attributeValue = bool and "true" or "false"
-         return SkuAuras:ProcessEvaluate(attributeValue, operator, value)
-end
-
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.attributes = {
    action = {
@@ -1160,7 +1152,7 @@ SkuAuras.attributes = {
       friendlyName = L["Im Kampf"],
       evaluate = function(self, aEventData, aOperator, aValue)
          --dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
-         return evaluateBool(aEventData.tInCombat, aOperator, aValue)
+         return SkuAuras:ProcessEvaluate(aEventData.tInCombat, aOperator, aValue == "true")
       end,
       values = {
          "true",
@@ -1172,7 +1164,7 @@ SkuAuras.attributes = {
       friendlyName = L["Quell Einheit angreifbar"],
       evaluate = function(self, aEventData, aOperator, aValue)
          --dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
-         return evaluateBool(aEventData.tSourceUnitIDCannAttack, aOperator, aValue)
+         return SkuAuras:ProcessEvaluate(aEventData.tSourceUnitIDCannAttack, aOperator, aValue == "true")
       end,
       values = {
          "true",
@@ -1184,7 +1176,7 @@ SkuAuras.attributes = {
       friendlyName = L["Ziel Einheit angreifbar"],
       evaluate = function(self, aEventData, aOperator, aValue)
          --dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
-         return evaluateBool(aEventData.tDestinationUnitIDCannAttack, aOperator, aValue)
+         return SkuAuras:ProcessEvaluate(aEventData.tDestinationUnitIDCannAttack, aOperator, aValue == "true")
       end,
       values = {
          "true",
@@ -2072,8 +2064,8 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut entspricht dem gewählten Wert"],
       friendlyName = L["gleich"],
       func = function(aValueA, aValueB) 
-      	--dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
-         if not aValueA or not aValueB then return false end
+         --dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
+         if aValueA == nil or aValueB == nil then return false end
          --if type(aValueA) == "table" then return false end
          --dprint("type", type(aValueA))
          if type(aValueA) == "table" then 
@@ -2108,8 +2100,8 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut entspricht nicht dem gewählten Wert"],
       friendlyName = L["ungleich"],
       func = function(aValueA, aValueB) 
-      	----dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
-         if not aValueA or not aValueB then return false end
+         ----dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
+         if aValueA == nil or aValueB == nil then return false end
          --if type(aValueA) == "table" then return false end
          if type(aValueA) == "table" then 
             for tName, tValue in pairs(aValueA) do
