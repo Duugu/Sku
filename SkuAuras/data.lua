@@ -1890,7 +1890,7 @@ SkuAuras.attributes = {
    auraType = {
       tooltip = L["Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll"],
       friendlyName = L["buff/debuff"],
-      type = "CATEGORY",
+      type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.auraType.evaluate")
          if aEventData.auraType then
