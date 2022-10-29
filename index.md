@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.12](https://github.com/Duugu/Sku/releases/download/r31.12/Sku-r31.12-wrath.zip) (Oct 26th, 2022)<br>
+- [Sku r31.13](https://github.com/Duugu/Sku/releases/download/r31.13/Sku-r31.13-wrath.zip) (Oct 30th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -21,6 +21,11 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.13
+- Outlands - Blade's Edge Mountains map data added, mapped by Lironah and Emilylorange
+- The auction house history data is back. :) There _should_ be no more risk for errors with lost settings/auras/etc. However, it is a complex topic, and I would suggest to backup your WTF folder before using this update. Just to be on the safe side. Even if it shouldn't be required. :)
+- Fixed a bug that prevented the addon from loading without questie or bugsack installed.
+
 ## Changes in Sku r31.12
 ### Auction house
 - The auction house history data is disabled for now as it is again leading to issues with lost setting. That means, there are not historic price data in item tooltips for now. 
