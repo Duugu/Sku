@@ -9,6 +9,74 @@ local band, bor, bxor, bnot = bit.band, bit.bor, bit.bxor, bit.bnot
 local lshift, rshift, arshift = bit.lshift, bit.rshift, bit.arshift
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuTableToString(aTable, aCallback)
+	local tStr = "{"
+	local tPartString = ""
+	local tcounterold = 1
+	local tcounter = 1	
+	local co = coroutine.create(function()	
+		local tLocalCounter = 0
+		local function tf(ttable, tTab)
+			for k, v in pairs(ttable) do
+				if type(v) == 'table' then
+					--print(tTab.."["..k.."] = {")
+					tPartString = tPartString.."["..k.."] = {"
+					tf(v, tTab.."  ")
+					--print(tTab.."},")
+					tPartString = tPartString.."},"
+				elseif type(v) == "boolean" then
+					--print(tTab.."["..k.."] = "..tostring(v)..",")
+					tPartString = tPartString.."["..k.."] = "..tostring(v)..","
+				elseif type(v) == "string" then
+					--print(tTab.."["..k.."] = \""..tostring(v).."\",")
+					tPartString = tPartString.."["..k.."] = \""..tostring(v).."\","
+				else
+					--print(tTab.."["..k.."] = "..v..",")
+					tPartString = tPartString.."["..k.."] = "..v..","
+				end
+			end
+			if tLocalCounter > 500 then
+				tLocalCounter = 0
+				tStr = tStr..tPartString
+				tPartString = ""
+				--print("part", tcounterold)
+				tcounterold = tcounterold + 1
+				coroutine.yield()
+			end
+			--print(tLocalCounter)
+			tLocalCounter = tLocalCounter + 1
+		end
+		tf(aTable, "")
+	end)
+
+	local tCoCompleted = false
+	local tSkuCoroutineControlFrameOnUpdateTimer = 0
+	local tSkuCoroutineControlFrame = _G["SkuCoroutineControlFrame"] or CreateFrame("Frame", "SkuCoroutineControlFrame", UIParent)
+	tSkuCoroutineControlFrame:SetPoint("CENTER")
+	tSkuCoroutineControlFrame:SetSize(50, 50)
+	tSkuCoroutineControlFrame:SetScript("OnUpdate", function(self, time)
+		tSkuCoroutineControlFrameOnUpdateTimer = tSkuCoroutineControlFrameOnUpdateTimer + time
+		if tSkuCoroutineControlFrameOnUpdateTimer < 0.001 then return end
+		if coroutine.status(co) == "suspended" then
+			coroutine.resume(co)
+			--SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)--24
+		else
+			if tCoCompleted == false then
+				tCoCompleted = true
+				dprint("completed")
+				tStr = tStr..tPartString
+				aCallback("return "..tStr.."}")
+			end
+		end
+	end)	
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuStringToTable(aString)
+	return assert(loadstring(aString))()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuU64join(hi, lo)
 	local rshift, band = rshift, band
 	hi = rshift(hi, 1) * 2 + band(hi, 1)

@@ -195,7 +195,11 @@ SkuOptions.options = {
 						--return SkuOptions.db.profile[MODULE_NAME].debugOptions.showError
 					end,
 					func = function(info,val)
-						SkuOpenSack()
+						if SkuOpenSack then
+							SkuOpenSack()
+						else
+							print("bugsack addon not installed")
+						end
 					end,
 				},
 			},

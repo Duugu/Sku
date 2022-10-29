@@ -90,6 +90,7 @@ local FullScanResultsDB = {}
 local FullScanResultsDBHistory = {}
 local BidDB = {}
 local OwnDB = {}
+ AuctionDBHistory = {}
 
 local HistoryMaxValues = 500
 
@@ -113,8 +114,8 @@ function SkuCore:AuctionHouseOnInitialize()
          return
       end
       tTime = tTime + time
-      if SkuCore.QueryRunning == true then
-         if SkuCore.QueryData[tQAIindex.getAll] == true then
+      if SkuCore.QueryRunning == true or SkuCore.QuerySerializeRunning == true then
+         if SkuCore.QueryData[tQAIindex.getAll] == true or SkuCore.QuerySerializeRunning == true then
             if tTime < SkuCore.AuctionTickerWaitFull then return end
 
             SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)--24
@@ -143,8 +144,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseOnLogin()
    SkuOptions.db.factionrealm[MODULE_NAME] = SkuOptions.db.factionrealm[MODULE_NAME] or {}
-   --SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or {}
-   SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory =  {}
+   if (SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory and type(SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory) == "string") and SkuOptions.db.factionrealm[MODULE_NAME].First31_13Load == true then
+      SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory or ""--{}
+   else
+      SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = ""
+   end
+   AuctionDBHistory = SkuStringToTable(SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory) or {}
+
+   SkuOptions.db.factionrealm[MODULE_NAME].First31_13Load = true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1728,10 +1735,14 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
 
          FullScanResultsDBHistory = {}
          SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, FullScanResultsDBHistory)
-         --SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory)
-
-         dprint("full query completed", SkuCore.QueryCallback)
-         SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
+         SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, AuctionDBHistory)
+         SkuCore.QuerySerializeRunning = true
+         SkuTableToString(AuctionDBHistory, function(aString)
+            SkuCore.QuerySerializeRunning = false
+            SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = aString
+            dprint("full query completed", SkuCore.QueryCallback)
+            SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
+         end)
 
          SkuCore.QueryCallback()
          SkuCore:AuctionHouseResetQuery(true)
@@ -1950,6 +1961,8 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable)
       return
    end
 
+   local tPriceData = {}
+
    for tIndex, tData in pairs(aSourceDB) do
       if tData then
          local tItemId = tData[tAIDIndex["itemId"]]
@@ -1966,35 +1979,100 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable)
                if tBuyoutPrice == 0 then tBuyoutPrice = 1 end
             end
 
-            if not aTargetTable[tItemId] then
-               aTargetTable[tItemId] = {
+            if not tPriceData[tItemId] then
+               tPriceData[tItemId] = {
                   [1] = {},
                   [2] = {},
                }
             end
 
-            --minbid
-            if tBuyoutPrice == 0 or tMinBid < tBuyoutPrice then
-               --remove oldest value
-               if #aTargetTable[tItemId][1] > HistoryMaxValues then
-                  table.remove(aTargetTable[tItemId][1], 1)
-               end
-
-               table.insert(aTargetTable[tItemId][1], tMinBid)
-            end
-            --buyout
-            if tBuyoutPrice > 0 then
-               --remove oldest value
-               if #aTargetTable[tItemId][2] > HistoryMaxValues then
-                  table.remove(aTargetTable[tItemId][2], 1)
-               end
-
-               table.insert(aTargetTable[tItemId][2], tBuyoutPrice)
-            end
+            tPriceData[tItemId][1][#tPriceData[tItemId][1] + 1] = tMinBid
+            tPriceData[tItemId][2][#tPriceData[tItemId][2] + 1] = tBuyoutPrice
          end
       end
    end
 
+   for tItemId, tData in pairs(tPriceData) do
+      local tBidOldLow, tBidOldMedian, tBidOldHigh, tBidOldPoints
+      local tBuyOldLow, tBuyOldMedian, tBuyOldHigh, tBuyOldPoints
+
+      if aTargetTable[tItemId] then
+         if aTargetTable[tItemId][1] then
+            if aTargetTable[tItemId][1][1] then
+               tBidOldLow, tBidOldMedian, tBidOldHigh, tBidOldPoints = aTargetTable[tItemId][1][1], aTargetTable[tItemId][1][2], aTargetTable[tItemId][1][3], aTargetTable[tItemId][1][4]
+            end
+         else
+            aTargetTable[tItemId][1] = {}
+         end
+         if aTargetTable[tItemId][2] then
+            if aTargetTable[tItemId][2][1] then
+               tBuyOldLow, tBuyOldMedian, tBuyOldHigh, tBuyOldPoints = aTargetTable[tItemId][2][1], aTargetTable[tItemId][2][2], aTargetTable[tItemId][2][3], aTargetTable[tItemId][2][4]
+            end
+         else
+            aTargetTable[tItemId][2] = {}
+         end
+      else
+         aTargetTable[tItemId] = {
+            [1] = {},
+            [2] = {},
+         }
+      end
+
+      local tBidNewLow, tBidNewMedian, tBidNewHigh, tBidNewPoints
+      local tBuyNewLow, tBuyNewMedian, tBuyNewHigh, tBuyNewPoints
+
+      if tData[1][1] then
+         if tBidOldMedian then
+            tBidNewMedian = (Median(tData[1]) + tBidOldMedian) / 2
+            tBidNewPoints = #tData[1] + tBidOldPoints
+         else
+            tBidNewMedian = Median(tData[1])
+            tBidNewPoints = #tData[1]
+         end
+         for _, tPrice in pairs(tData[1]) do
+            if tPrice < tBidNewMedian * 10 then
+               if not tBidNewLow or tPrice < tBidNewLow then
+                  tBidNewLow = tPrice
+               end
+               if not tBidNewHigh or tPrice > tBidNewHigh then
+                  tBidNewHigh = tPrice
+               end
+            end
+         end
+      end
+      if tData[2][1] then
+         if tBuyOldMedian then
+            tBuyNewMedian = (Median(tData[2]) + tBuyOldMedian) / 2
+            tBuyNewPoints = #tData[2] + tBuyOldPoints
+         else
+            tBuyNewMedian = Median(tData[2])
+            tBuyNewPoints = #tData[2]
+         end
+         for _, tPrice in pairs(tData[2]) do
+            if tPrice < tBuyNewMedian * 10 then
+               if not tBuyNewLow or tPrice < tBuyNewLow then
+                  tBuyNewLow = tPrice
+               end
+               if not tBuyNewHigh or tPrice > tBuyNewHigh then
+                  tBuyNewHigh = tPrice
+               end
+            end
+         end
+      end
+      
+      if tBidNewLow or tBuyNewLow then
+         aTargetTable[tItemId] = {
+            [1] = {},
+            [2] = {},
+         }
+         if tBidNewLow then
+            aTargetTable[tItemId][1] = {tBidNewLow, tBidNewMedian, tBidNewHigh, tBidNewPoints}
+         end
+         if tBuyNewLow then
+            aTargetTable[tItemId][2] = {tBuyNewLow, tBuyNewMedian, tBuyNewHigh, tBuyNewPoints}
+         end
+      end
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2005,12 +2083,14 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
    end
 
    aCurrentPriceDataDB = aCurrentPriceDataDB or FullScanResultsDBHistory
-   aHistoryPriceDataDB = aHistoryPriceDataDB or {} --SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory
+   aHistoryPriceDataDB = aHistoryPriceDataDB or AuctionDBHistory
 
    local tFullTextSections = {}
    local tSuggestedSellPrice
-
+   --[[
    local function Calculate(tSource)
+
+
       local tSeenAmount = #tSource
       local tLastSeen
       local tLow
@@ -2049,6 +2129,7 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
 
       return tSeenAmount, tLastSeen, tLow, tHigh, tAverage
    end
+   ]]
 
    --vendor price
    local void, void, Rarity, void, void, void, void, void, void, void, copperItemPrice = GetItemInfo(aItemID)
@@ -2067,7 +2148,9 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
    else
       tText = L["Aktuelle Preisdaten (für ein Stück)"]
 
-      local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aCurrentPriceDataDB[aItemID][2])
+      --local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aCurrentPriceDataDB[aItemID][2])
+      local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = aCurrentPriceDataDB[aItemID][2][4], nil, aCurrentPriceDataDB[aItemID][2][1], aCurrentPriceDataDB[aItemID][2][3], aCurrentPriceDataDB[aItemID][2][2]
+
       if not tBidSeenAmount or not tBidLow then
          tText = tText..L["\r\nKeine Sofortkaufdaten vorhanden"]
       else         
@@ -2075,7 +2158,8 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
          tSuggestedSellPrice = tBidLow
       end
 
-      local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aCurrentPriceDataDB[aItemID][1])
+      --local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aCurrentPriceDataDB[aItemID][1])
+      local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = aCurrentPriceDataDB[aItemID][1][4], nil, aCurrentPriceDataDB[aItemID][1][1], aCurrentPriceDataDB[aItemID][1][3], aCurrentPriceDataDB[aItemID][1][2]
       if not tBidSeenAmount or not tBidLow then
          tText = tText..L["\r\nKeine Gebotsdaten vorhanden"]
       else         
@@ -2091,7 +2175,9 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
    else
       tText = L["Historische Preisdaten (für ein Stück)"]
 
-      local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aHistoryPriceDataDB[aItemID][2])
+      --local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aHistoryPriceDataDB[aItemID][2])
+      local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = aHistoryPriceDataDB[aItemID][2][4], nil, aHistoryPriceDataDB[aItemID][2][1], aHistoryPriceDataDB[aItemID][2][3], aHistoryPriceDataDB[aItemID][2][2]
+
       if not tBidSeenAmount or not tBidLow then
          tText = tText..L["\r\nKeine Sofortkaufdaten vorhanden"]
       else         
@@ -2101,7 +2187,8 @@ function SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemID, aCurrentPriceDa
          end
       end
 
-      local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aHistoryPriceDataDB[aItemID][1])
+      --local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = Calculate(aHistoryPriceDataDB[aItemID][1])
+      local tBidSeenAmount, tBidLastSeen, tBidLow, tBidHigh, tBidAverage = aHistoryPriceDataDB[aItemID][1][4], nil, aHistoryPriceDataDB[aItemID][1][1], aHistoryPriceDataDB[aItemID][1][3], aHistoryPriceDataDB[aItemID][1][2]
       if not tBidSeenAmount or not tBidLow then
          tText = tText..L["\r\nKeine Gebotsdaten vorhanden"]
       else         
