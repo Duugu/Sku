@@ -65,7 +65,6 @@ end
 
 ------------------------------------------------------------------------------------------------------------------
 function SkuAuras:RemoveTags(aValue)
-   print(aValue, type(aValue))
    if not aValue then
       return
    end
