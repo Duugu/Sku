@@ -381,7 +381,9 @@ function SkuAuras:NewAuraOperatorBuilder(self)
 				--dprint("build content of", self.name)
 			end
 		else
-			local tSortedList = TableSortByIndex(SkuAuras.Operators)
+			local attrType = SkuAuras.attributes[self.internalName].type or "CATEGORY"
+			local operators = SkuAuras.operatorsForAttributeType[attrType]
+			local tSortedList = TableSortByIndex(operators)
 			for x = 1, #tSortedList do
 				local i, v = tSortedList[x], SkuAuras.Operators[tSortedList[x]]
 				if i ~= "then" then
