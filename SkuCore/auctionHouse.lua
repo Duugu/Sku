@@ -85,12 +85,12 @@ SkuCore.QueryBuyType = nil
 SkuCore.QueryBuyAmount = nil
 SkuCore.QueryBuyBought = nil
 
-local QueryResultsDB = {}
-local FullScanResultsDB = {}
+ QueryResultsDB = {}
+ FullScanResultsDB = {}
 local FullScanResultsDBHistory = {}
 local BidDB = {}
 local OwnDB = {}
- AuctionDBHistory = {}
+local AuctionDBHistory = {}
 
 local HistoryMaxValues = 500
 
@@ -312,7 +312,13 @@ function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData
    --print("AuctionBuildItemTooltip",aItemData, aIndex, aAddCurrentPriceData, aAddHistoryPriceData)   
    local tTextFirstLine, tTextFull = "", ""
    _G["SkuScanningTooltip"]:ClearLines()
-   local hsd, rc = _G["SkuScanningTooltip"]:SetItemByID(aItemData[17])
+   local hsd, rc
+   if aItemData[21] then
+      hsd, rc = _G["SkuScanningTooltip"]:SetHyperlink(aItemData[21])
+   else
+      hsd, rc = _G["SkuScanningTooltip"]:SetItemByID(aItemData[17])
+   end
+   
    if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
       if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
          local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
@@ -1659,6 +1665,7 @@ function SkuCore:AUCTION_OWNED_LIST_UPDATE(aEventName)
    for x = 1, tCount do
       if OwnDB[x] == nil then
          OwnDB[x] = {GetAuctionItemInfo("owner", x)}
+         OwnDB[x][21] = GetAuctionItemLink("owner", x)
       end
    end
 
@@ -1668,6 +1675,7 @@ function SkuCore:AUCTION_OWNED_LIST_UPDATE(aEventName)
          if (OwnDB[x][1] or "") == "" then
             dprint(x, "empty")
             OwnDB[x] = {GetAuctionItemInfo("owner", x)}
+            OwnDB[x][21] = GetAuctionItemLink("owner", x)
          end
       end   
    end
@@ -1687,6 +1695,7 @@ function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName)
    for x = 1, tCount do
       if BidDB[x] == nil then
          BidDB[x] = {GetAuctionItemInfo("bidder", x)}
+         BidDB[x][21] = GetAuctionItemLink("bidder", x)
       end
    end
 
@@ -1696,6 +1705,7 @@ function SkuCore:AUCTION_BIDDER_LIST_UPDATE(aEventName)
          if (BidDB[x][1] or "") == "" then
             dprint(x, "empty")
             BidDB[x] = {GetAuctionItemInfo("bidder", x)}
+            BidDB[x][21] = GetAuctionItemLink("bidder", x)
          end
       end   
    end
@@ -1726,6 +1736,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          for x = 1, tCount do
             local tNextEntry = #FullScanResultsDB + 1
             FullScanResultsDB[tNextEntry] = {GetAuctionItemInfo("list", x)}
+            FullScanResultsDB[tNextEntry][21] = GetAuctionItemLink("list", x)
+
             if FullScanResultsDB[tNextEntry][1] == "" then
                if SkuDB.itemLookup[Sku.Loc][FullScanResultsDB[tNextEntry][17]] then
                   FullScanResultsDB[tNextEntry][1] = SkuDB.itemLookup[Sku.Loc][FullScanResultsDB[tNextEntry][17]]
@@ -1758,6 +1770,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          --save data
          for x = 1, tBatch do
             local tResult = {GetAuctionItemInfo("list", x)}
+            tResult[21] = GetAuctionItemLink("list", x)
             if tResult[14] == nil then
                dprint("incomplete page data")
                return
@@ -1767,6 +1780,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          for x = 1, tBatch do
             local tNextEntry = #QueryResultsDB + 1
             QueryResultsDB[tNextEntry] = {GetAuctionItemInfo("list", x)}
+            print(x, QueryResultsDB[tNextEntry][1], GetAuctionItemLink("list", x))
+            QueryResultsDB[tNextEntry][21] = GetAuctionItemLink("list", x)
             QueryResultsDB[tNextEntry].query = SkuCore.QueryData
          end
 
@@ -1803,6 +1818,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
 
    for x = 1, tBatch do
       local tResult = {GetAuctionItemInfo("list", x)}
+      tResult[21] = GetAuctionItemLink("list", x)
       if tResult[14] == nil then
          return
       end
@@ -1811,6 +1827,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
    for x = 1, tBatch do
       --check if same item
       local tCurrentResult = {GetAuctionItemInfo("list", x)}
+      tCurrentResult[21] = GetAuctionItemLink("list", x)
       local tFound = true
       for y = 1, 17 do
          dprint("COMPARE", x, y, tCurrentResult[y], SkuCore.QueryBuyData[y])

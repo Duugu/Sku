@@ -112,7 +112,6 @@ SkuCore.Keys.SkuDefaultBindings = {
 			["index"] = 237,
 		},
 	},
-
 	["BINDING_HEADER_CAMERA"] = {
 		["SAVEVIEW5"] = {
 			["index"] = 222,
