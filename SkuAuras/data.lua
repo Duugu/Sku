@@ -1738,8 +1738,8 @@ SkuAuras.attributes = {
       },      
    },
    buffListPlayer = {
-      tooltip = "your list of buffs",
-      friendlyName = "your buff list (l)",
+      tooltip = L["Your list of buffs"],
+      friendlyName = L["Your buff list (L)"],
       type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
          return aEventData.buffListPlayer ~= nil and SkuAuras:ProcessEvaluate(aEventData.buffListPlayer, aOperator, SkuAuras:RemoveTags(aValue)) == true
@@ -1747,8 +1747,8 @@ SkuAuras.attributes = {
       values = {},      
    },
    debuffListPlayer = {
-      tooltip = "your list of debuffs",
-      friendlyName = "your debuff list (l)",
+      tooltip = L["Your list of dbuffs"],
+      friendlyName = L["Your debuff list (L)"],
       type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
          return aEventData.debuffListPlayer ~= nil and SkuAuras:ProcessEvaluate(aEventData.debuffListPlayer, aOperator, SkuAuras:RemoveTags(aValue)) == true
