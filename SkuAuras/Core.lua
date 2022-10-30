@@ -29,8 +29,6 @@ local CleuBase = {
 	missType = 41,
 --key = 50
 --combo = 51
---buffListPlayer
--- debuffListPlayer
 }
 
 SkuAuras.ItemCDRepo = {}
@@ -712,8 +710,6 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	local tUnitID = "target"
 	tEventData[37] = getAuraList(tUnitID, "HELPFUL")
 	tEventData[38] = getAuraList(tUnitID, "HARMFUL")
-	tEventData.buffListPlayer = getAuraList("player", "HELPFUL")
-	tEventData.debuffListPlayer = getAuraList("player", "HARMFUL")
 
 if tEventData[2] ~= "KEY_PRESS" then
 	--[[
@@ -786,8 +782,8 @@ if tEventData[2] ~= "KEY_PRESS" then
 				unitComboPlayer = tEventData[51],
 				buffListTarget = tEventData[37],
 				debuffListTarget = tEventData[38],
-				buffListPlayer = tEventData.buffListPlayer,
-				debuffListPlayer = tEventData.debuffListPlayer,
+				buffListPlayer = getAuraList("player", "HELPFUL"),
+				debuffListPlayer = getAuraList("player", "HARMFUL"),
 				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 				tInCombat = SkuCore.inCombat,
