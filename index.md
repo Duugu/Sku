@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.14](https://github.com/Duugu/Sku/releases/download/r31.14/Sku-r31.14-wrath.zip) (Oct 30th, 2022)<br>
+- [Sku r31.15](https://github.com/Duugu/Sku/releases/download/r31.15/Sku-r31.15-wrath.zip) (Nov 1st, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -21,7 +21,30 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
-Changes in Sku r31.14
+## Changes in Sku r31.15
+### Core
+- Removed two overlooked debug outputs for auction house and actionbars
+- Fixed a bug with ascend/descend keys and the menu opening
+- Fixed the Core > Mail > x > Reply option
+- 7th available scan type named "360+180 3-10 fast" added. That is 360 degrees from top to bottom, 3-10 meters, in 15 seconds. Detection quality is medium to low.
+- Hearthstone (Scourgestone) for deathknights on overview page fixed
+- gas resources are added to the resource scan
+
+### Chat
+- There is a new chat type for addon chat outputs: SYSTEM > ADDONS. The default is "text". "Addon chat outputs" is every chat output from Sku and other addons. (Example: results for resource scans.)
+- Due to the new chat type "Addons" the settings for all chat types under "Chat types > SYSTEM" are resetted to the default values for all existing tabs.
+- New option in chat tabs menu: "set all message types and channels to text"
+- New option: Chat > Options > All voice output via blizzard tts (default: off)
+
+### Auras
+- New aura attribute: "your buff list"
+- New aura attribute: "your debuff list (l)"
+
+### Options
+- Options > Options > Profiles > New fixed
+- Options > Options > Profiles > Delete fixed
+	
+## Changes in Sku r31.14
 - The operators list in aura conditions is now showing only valid operators for the selected attribut
 - Fix for aura attributes in combat, source unit attackable, and target unit attackable to work with equal false and unequal operators
 - Option to bind a new key to action buttons re-added to the action bar menu
