@@ -23,12 +23,12 @@ DEUTSCH - Erste Schritte:<br>
 -------------------------------------------------------------------------------------------------------	
 ## Changes in Sku r31.15
 ### Core
-- Removed two overlooked debug outputs for auction house and actionbars
-- Fixed a bug with ascend/descend keys and the menu opening
-- Fixed the Core > Mail > x > Reply option
+- Two overlooked debug outputs for auction house and actionbars removed
+- Bug with ascend/descend keys and the menu opening fixed
+- Option Core > Mail > x > Reply fixed
 - 7th available scan type named "360+180 3-10 fast" added. That is 360 degrees from top to bottom, 3-10 meters, in 15 seconds. Detection quality is medium to low.
 - Hearthstone (Scourgestone) for deathknights on overview page fixed
-- gas resources are added to the resource scan
+- Gas resources are added to the resource scan
 
 ### Chat
 - There is a new chat type for addon chat outputs: SYSTEM > ADDONS. The default is "text". "Addon chat outputs" is every chat output from Sku and other addons. (Example: results for resource scans.)
