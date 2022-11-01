@@ -1,101 +1,107 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
-local MODULE_NAME, MODULE_PART = "SkuCore", "minimapScanner"  
+local MODULE_NAME, MODULE_PART = "SkuCore", "minimapScanner"
 local L = Sku.L
 local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 SkuCore.RessourceTypes = {
-   chests = {	
-      [1] = {deDE = "Beschädigte Truhe", enUS = "Damaged Chest",},
-      [2] = {deDE = "Verbeulte Truhe", enUS = "Dented Chest",},
-      [3] = {deDE = "Große ramponierte Truhe", enUS = "Large Battered Chest",},
-      [4] = {deDE = "Große eisenbeschlagene Truhe", enUS = "Large Iron Bound Chest",},
-      [5] = {deDE = "Große mithrilbeschlagene Truhe", enUS = "Large Mithril Bound Chest",},
-      [6] = {deDE = "Große robuste Truhe", enUS = "Large Solid Chest",},
-      [7] = {deDE = "Verschlossene Truhe", enUS = "Locked Chest",},
-      [8] = {deDE = "Primitive Truhe", enUS = "Primitive Chest",},
-      [9] = {deDE = "Rostige Truhe", enUS = "Rusty Chest",},
-      [10] = {deDE = "Robuste Truhe", enUS = "Solid Chest",},
-      [11] = {deDE = "Versunkene Truhe", enUS = "Sunken Chest",},
-      [12] = {deDE = "Ramponierte Truhe", enUS = "Tattered Chest",},
-      [13] = {deDE = "Abgenutzte Truhe", enUS = "Worn Chest",},
-      [14] = {deDE = "Adamantitbeschlagene Truhe", enUS = "Adamantite Bound Chest",},
-      [15] = {deDE = "Teufelseisentruhe", enUS = "Fel Iron Chest",},
-   },	
-   mining = {	
-      [1] = {deDE = "Kupfervorkommen", enUS = "Copper Vein",},
-      [2] = {deDE = "Zinnvorkommen", enUS = "Tin Vein",},
-      [3] = {deDE = "Silbervorkommen", enUS = "Silver Vein",},
-      [4] = {deDE = "Brühschlammbedecktes Silbervorkommen", enUS = "Ooze Covered Silver Vein",},
-      [5] = {deDE = "Eisenvorkommen", enUS = "Iron Deposit",},
-      [6] = {deDE = "Goldvorkommen", enUS = "Gold Vein",},
-      [7] = {deDE = "Brühschlammbedecktes Goldvorkommen", enUS = "Ooze Covered Gold Vein",},
-      [8] = {deDE = "Mithrilablagerung", enUS = "Mithril Deposit",},
-      [9] = {deDE = "Brühschlammbedeckte Mithrilablagerung", enUS = "Ooze Covered Mithril Deposit",},
-      [10] = {deDE = "Echtsilberablagerung", enUS = "Truesilver Deposit",},
-      [11] = {deDE = "Brühschlammbedeckte Echtsilberablagerung", enUS = "Ooze Covered Truesilver Deposit",},
-      [12] = {deDE = "Kleines Thoriumvorkommen", enUS = "Small Thorium Vein",},
-      [13] = {deDE = "Brühschlammbedecktes Thoriumvorkommen", enUS = "Ooze Covered Thorium Vein",},
-      [14] = {deDE = "Reiches Thoriumvorkommen", enUS = "Rich Thorium Vein",},
-      [15] = {deDE = "Brühschlammbedecktes reiches Thoriumvorkommen", enUS = "Ooze Covered Rich Thorium Vein",},
-      [16] = {deDE = "Dunkeleisenablagerung", enUS = "Dark Iron Deposit",},
-      [17] = {deDE = "Teufelseisenvorkommen", enUS = "Fel Iron Deposit",},
-      [18] = {deDE = "Adamantitablagerung", enUS = "Adamantite Deposit",},
-      [19] = {deDE = "Reiche Adamantitablagerung", enUS = "Rich Adamantite Deposit",},
-      [20] = {deDE = "Khoriumvorkommen", enUS = "Khorium Vein",},
-      [21] = {deDE = "Kobaltvorkommen", enUS = "Cobalt Deposit",},
-      [22] = {deDE = "Reiches Kobaltvorkommen", enUS = "Rich Cobalt Deposit",},
-      [23] = {deDE = "Saronitvorkommen", enUS = "Saronite Deposit",},
-      [24] = {deDE = "Reiches Saronitvorkommen", enUS = "Rich Saronite Deposit",},
-      [25] = {deDE = "Reine Saronitablagerung", enUS = "Pure Saronite Deposit",},
-      [26] = {deDE = "Titanader", enUS = "Titanium Vein",},
-   },	
-   herbs = {	
-      [1] = {deDE = "Friedensblume", enUS = "Peacebloom",},
-      [2] = {deDE = "Silberblatt", enUS = "Silverleaf",},
-      [3] = {deDE = "Erdwurzel", enUS = "Earthroot",},
-      [4] = {deDE = "Maguskönigskraut", enUS = "Mageroyal",},
-      [5] = {deDE = "Wilddornrose", enUS = "Briarthorn",},
-      [6] = {deDE = "Würgetang", enUS = "Stranglekelp",},
-      [7] = {deDE = "Beulengras", enUS = "Bruiseweed",},
-      [8] = {deDE = "Wildstahlblume", enUS = "Wild Steelbloom",},
-      [9] = {deDE = "Grabmoos", enUS = "Grave Moss",},
-      [10] = {deDE = "Königsblut", enUS = "Kingsblood",},
-      [11] = {deDE = "Lebenswurz", enUS = "Liferoot",},
-      [12] = {deDE = "Blassblatt", enUS = "Fadeleaf",},
-      [13] = {deDE = "Golddorn", enUS = "Goldthorn",},
-      [14] = {deDE = "Khadgars Schnurrbart", enUS = "Khadgar's Whisker",},
-      [15] = {deDE = "Winterbiss", enUS = "Wintersbite",},
-      [16] = {deDE = "Feuerblüte", enUS = "Firebloom",},
-      [17] = {deDE = "Lila Lotus", enUS = "Purple Lotus",},
-      [18] = {deDE = "Arthas' Tränen", enUS = "Arthas' Tears",},
-      [19] = {deDE = "Sonnengras", enUS = "Sungrass",},
-      [20] = {deDE = "Blindkraut", enUS = "Blindweed",},
-      [21] = {deDE = "Geisterpilz", enUS = "Ghost Mushroom",},
-      [22] = {deDE = "Gromsblut", enUS = "Gromsblood",},
-      [23] = {deDE = "Goldener Sansam", enUS = "Golden Sansam",},
-      [24] = {deDE = "Traumblatt", enUS = "Dreamfoil",},
-      [25] = {deDE = "Bergsilbersalbei", enUS = "Mountain Silversage",},
-      [26] = {deDE = "Pestblüte", enUS = "Plaguebloom",},
-      [27] = {deDE = "Eiskappe", enUS = "Icecap",},
-      [28] = {deDE = "Schwarzer Lotus", enUS = "Black Lotus",},
-      [29] = {deDE = "Teufelsgras", enUS = "Felweed",},
-      [30] = {deDE = "Traumwinde", enUS = "Dreaming Glory",},
-      [31] = {deDE = "Terozapfen", enUS = "Terocone",},
-      [32] = {deDE = "Zottelkappe", enUS = "Ragveil",},
-      [33] = {deDE = "Urflechte", enUS = "Ancient Lichen",},
-      [34] = {deDE = "Netherblüte", enUS = "Netherbloom",},
-      [35] = {deDE = "Alptraumranke", enUS = "Nightmare Vine",},
-      [36] = {deDE = "Manadistel", enUS = "Mana Thistle",},
-      [37] = {deDE = "Teufelslotus", enUS = "Fel Lotus",},
-      [38] = {deDE = "Goldklee", enUS = "Goldclover",},
-      [39] = {deDE = "Tigerlilie", enUS = "Tiger Lily",},
-      [40] = {deDE = "Schlangenzunge", enUS = "Adder's Tongue",},
-      [41] = {deDE = "Talandras Rose", enUS = "Talandra's Rose",},
-      [42] = {deDE = "Lichblüte", enUS = "Lichbloom",},
-      [43] = {deDE = "Eisdorn", enUS = "Icethor",},
-      [44] = {deDE = "Frostlotus", enUS = "Frost Lotus",},
+   chests = {
+      [1] = { deDE = "Beschädigte Truhe", enUS = "Damaged Chest", },
+      [2] = { deDE = "Verbeulte Truhe", enUS = "Dented Chest", },
+      [3] = { deDE = "Große ramponierte Truhe", enUS = "Large Battered Chest", },
+      [4] = { deDE = "Große eisenbeschlagene Truhe", enUS = "Large Iron Bound Chest", },
+      [5] = { deDE = "Große mithrilbeschlagene Truhe", enUS = "Large Mithril Bound Chest", },
+      [6] = { deDE = "Große robuste Truhe", enUS = "Large Solid Chest", },
+      [7] = { deDE = "Verschlossene Truhe", enUS = "Locked Chest", },
+      [8] = { deDE = "Primitive Truhe", enUS = "Primitive Chest", },
+      [9] = { deDE = "Rostige Truhe", enUS = "Rusty Chest", },
+      [10] = { deDE = "Robuste Truhe", enUS = "Solid Chest", },
+      [11] = { deDE = "Versunkene Truhe", enUS = "Sunken Chest", },
+      [12] = { deDE = "Ramponierte Truhe", enUS = "Tattered Chest", },
+      [13] = { deDE = "Abgenutzte Truhe", enUS = "Worn Chest", },
+      [14] = { deDE = "Adamantitbeschlagene Truhe", enUS = "Adamantite Bound Chest", },
+      [15] = { deDE = "Teufelseisentruhe", enUS = "Fel Iron Chest", },
+   },
+   mining = {
+      [1] = { deDE = "Kupfervorkommen", enUS = "Copper Vein", },
+      [2] = { deDE = "Zinnvorkommen", enUS = "Tin Vein", },
+      [3] = { deDE = "Silbervorkommen", enUS = "Silver Vein", },
+      [4] = { deDE = "Brühschlammbedecktes Silbervorkommen", enUS = "Ooze Covered Silver Vein", },
+      [5] = { deDE = "Eisenvorkommen", enUS = "Iron Deposit", },
+      [6] = { deDE = "Goldvorkommen", enUS = "Gold Vein", },
+      [7] = { deDE = "Brühschlammbedecktes Goldvorkommen", enUS = "Ooze Covered Gold Vein", },
+      [8] = { deDE = "Mithrilablagerung", enUS = "Mithril Deposit", },
+      [9] = { deDE = "Brühschlammbedeckte Mithrilablagerung", enUS = "Ooze Covered Mithril Deposit", },
+      [10] = { deDE = "Echtsilberablagerung", enUS = "Truesilver Deposit", },
+      [11] = { deDE = "Brühschlammbedeckte Echtsilberablagerung", enUS = "Ooze Covered Truesilver Deposit", },
+      [12] = { deDE = "Kleines Thoriumvorkommen", enUS = "Small Thorium Vein", },
+      [13] = { deDE = "Brühschlammbedecktes Thoriumvorkommen", enUS = "Ooze Covered Thorium Vein", },
+      [14] = { deDE = "Reiches Thoriumvorkommen", enUS = "Rich Thorium Vein", },
+      [15] = { deDE = "Brühschlammbedecktes reiches Thoriumvorkommen", enUS = "Ooze Covered Rich Thorium Vein", },
+      [16] = { deDE = "Dunkeleisenablagerung", enUS = "Dark Iron Deposit", },
+      [17] = { deDE = "Teufelseisenvorkommen", enUS = "Fel Iron Deposit", },
+      [18] = { deDE = "Adamantitablagerung", enUS = "Adamantite Deposit", },
+      [19] = { deDE = "Reiche Adamantitablagerung", enUS = "Rich Adamantite Deposit", },
+      [20] = { deDE = "Khoriumvorkommen", enUS = "Khorium Vein", },
+      [21] = { deDE = "Kobaltvorkommen", enUS = "Cobalt Deposit", },
+      [22] = { deDE = "Reiches Kobaltvorkommen", enUS = "Rich Cobalt Deposit", },
+      [23] = { deDE = "Saronitvorkommen", enUS = "Saronite Deposit", },
+      [24] = { deDE = "Reiches Saronitvorkommen", enUS = "Rich Saronite Deposit", },
+      [25] = { deDE = "Reine Saronitablagerung", enUS = "Pure Saronite Deposit", },
+      [26] = { deDE = "Titanader", enUS = "Titanium Vein", },
+   },
+   gasCollector = {
+      [1] = { deDE = "Arkanvortex", enUS = "Arcane Vortex", },
+      [2] = { deDE = "Teufelsnebel", enUS = "Felmist", },
+      [3] = { deDE = "Sumpfgas", enUS = "Swamp Gas", },
+      [4] = { deDE = "Windige Wolke", enUS = "Windy Cloud", },
+   },
+   herbs = {
+      [1] = { deDE = "Friedensblume", enUS = "Peacebloom", },
+      [2] = { deDE = "Silberblatt", enUS = "Silverleaf", },
+      [3] = { deDE = "Erdwurzel", enUS = "Earthroot", },
+      [4] = { deDE = "Maguskönigskraut", enUS = "Mageroyal", },
+      [5] = { deDE = "Wilddornrose", enUS = "Briarthorn", },
+      [6] = { deDE = "Würgetang", enUS = "Stranglekelp", },
+      [7] = { deDE = "Beulengras", enUS = "Bruiseweed", },
+      [8] = { deDE = "Wildstahlblume", enUS = "Wild Steelbloom", },
+      [9] = { deDE = "Grabmoos", enUS = "Grave Moss", },
+      [10] = { deDE = "Königsblut", enUS = "Kingsblood", },
+      [11] = { deDE = "Lebenswurz", enUS = "Liferoot", },
+      [12] = { deDE = "Blassblatt", enUS = "Fadeleaf", },
+      [13] = { deDE = "Golddorn", enUS = "Goldthorn", },
+      [14] = { deDE = "Khadgars Schnurrbart", enUS = "Khadgar's Whisker", },
+      [15] = { deDE = "Winterbiss", enUS = "Wintersbite", },
+      [16] = { deDE = "Feuerblüte", enUS = "Firebloom", },
+      [17] = { deDE = "Lila Lotus", enUS = "Purple Lotus", },
+      [18] = { deDE = "Arthas' Tränen", enUS = "Arthas' Tears", },
+      [19] = { deDE = "Sonnengras", enUS = "Sungrass", },
+      [20] = { deDE = "Blindkraut", enUS = "Blindweed", },
+      [21] = { deDE = "Geisterpilz", enUS = "Ghost Mushroom", },
+      [22] = { deDE = "Gromsblut", enUS = "Gromsblood", },
+      [23] = { deDE = "Goldener Sansam", enUS = "Golden Sansam", },
+      [24] = { deDE = "Traumblatt", enUS = "Dreamfoil", },
+      [25] = { deDE = "Bergsilbersalbei", enUS = "Mountain Silversage", },
+      [26] = { deDE = "Pestblüte", enUS = "Plaguebloom", },
+      [27] = { deDE = "Eiskappe", enUS = "Icecap", },
+      [28] = { deDE = "Schwarzer Lotus", enUS = "Black Lotus", },
+      [29] = { deDE = "Teufelsgras", enUS = "Felweed", },
+      [30] = { deDE = "Traumwinde", enUS = "Dreaming Glory", },
+      [31] = { deDE = "Terozapfen", enUS = "Terocone", },
+      [32] = { deDE = "Zottelkappe", enUS = "Ragveil", },
+      [33] = { deDE = "Urflechte", enUS = "Ancient Lichen", },
+      [34] = { deDE = "Netherblüte", enUS = "Netherbloom", },
+      [35] = { deDE = "Alptraumranke", enUS = "Nightmare Vine", },
+      [36] = { deDE = "Manadistel", enUS = "Mana Thistle", },
+      [37] = { deDE = "Teufelslotus", enUS = "Fel Lotus", },
+      [38] = { deDE = "Goldklee", enUS = "Goldclover", },
+      [39] = { deDE = "Tigerlilie", enUS = "Tiger Lily", },
+      [40] = { deDE = "Schlangenzunge", enUS = "Adder's Tongue", },
+      [41] = { deDE = "Talandras Rose", enUS = "Talandra's Rose", },
+      [42] = { deDE = "Lichblüte", enUS = "Lichbloom", },
+      [43] = { deDE = "Eisdorn", enUS = "Icethor", },
+      [44] = { deDE = "Frostlotus", enUS = "Frost Lotus", },
    },
 }
 
@@ -125,7 +131,7 @@ local function SetMinimapPosition(xOffset, yOffset)
    local x, y = GetCursorPosition()
    local uiScale = Minimap:GetEffectiveScale()
    Minimap:ClearAllPoints()
-   Minimap:SetPoint('CENTER', nil, 'BOTTOMLEFT', xOffset + x/uiScale, yOffset + y/uiScale)
+   Minimap:SetPoint('CENTER', nil, 'BOTTOMLEFT', xOffset + x / uiScale, yOffset + y / uiScale)
    GameTooltip:SetScale(300)
 end
 
@@ -136,21 +142,23 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
    local tRessourceTypes = {
       SkuCore.RessourceTypes.mining,
       SkuCore.RessourceTypes.herbs,
+      SkuCore.RessourceTypes.gasCollector,
    }
 
    for i = 1, GameTooltip:NumLines() do
-      local line = string.lower(_G['GameTooltipTextLeft'..i]:GetText())
+      local line = string.lower(_G['GameTooltipTextLeft' .. i]:GetText())
       if line then
          for r = 1, #tRessourceTypes do
             for x = 1, #tRessourceTypes[r] do
                if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
                   for w in string.gmatch(tRessourceTypes[r][x][Sku.L["locale"]], ".+") do
-                     if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w..'|'), 1, true) then
-                        if not tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] then
-                           tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] = {}
+                     if string.find(line, string.lower(w), 1, true) and
+                         not string.find(line, string.lower(w .. '|'), 1, true) then
+                        if not tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] then
+                           tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] = {}
                         end
-                        if #tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] == 0 then
-                           tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][1] = {
+                        if #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] == 0 then
+                           tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][1] = {
                               xMin = aX - 1,
                               xMax = aX + 1,
                               yMin = aY - 1,
@@ -158,12 +166,13 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
                            }
                         else
                            local tFoundIndex
-                           for q = 1, #tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] do
-                              dprint("q", q, #tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]], tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q])
-                              local xmax = tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q].xMax - aX
-                              local ymax = tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q].yMax - aY
-                              local xmin = tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q].xMin - aX
-                              local ymin = tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][q].yMin - aY
+                           for q = 1, #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] do
+                              dprint("q", q, #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ],
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q])
+                              local xmax = tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q].xMax - aX
+                              local ymax = tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q].yMax - aY
+                              local xmin = tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q].xMin - aX
+                              local ymin = tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q].yMin - aY
                               if xmax < 0 then xmax = xmax * -1 end
                               if ymax < 0 then ymax = ymax * -1 end
                               if xmin < 0 then xmin = xmin * -1 end
@@ -177,21 +186,23 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
                            end
                            if tFoundIndex then
                               dprint("found", tFoundIndex)
-                              if tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].xMin > aX then
-                                 tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].xMin = aX
+                              if tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].xMin > aX then
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].xMin = aX
                               end
-                              if tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].xMax < aX then
-                                 tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].xMax = aX
+                              if tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].xMax < aX then
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].xMax = aX
                               end
-                              if tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].yMin > aY then
-                                 tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].yMin = aY
+                              if tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].yMin > aY then
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].yMin = aY
                               end
-                              if tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].yMax < aY then
-                                 tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][tFoundIndex].yMax = aY
+                              if tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].yMax < aY then
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].yMax = aY
                               end
                            else
-                              dprint("new", tRessourceTypes[r][x][Sku.L["locale"]], #tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] + 1)
-                              tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]][#tFoundPositions[tRessourceTypes[r][x][Sku.L["locale"]]] + 1] = {
+                              dprint("new", tRessourceTypes[r][x][Sku.L["locale"]],
+                                 #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] + 1)
+                              tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][
+                                  #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] + 1] = {
                                  xMin = aX - 1,
                                  xMax = aX + 1,
                                  yMin = aY - 1,
@@ -200,9 +211,9 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
                            end
                         end
 
-                        return tRessourceTypes[r][x][Sku.L["locale"]]               
+                        return tRessourceTypes[r][x][Sku.L["locale"]]
                      end
-                  end 
+                  end
                end
             end
          end
@@ -215,76 +226,78 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tNotificationTicker
 local function MinimapScanStep()
-	if SkuCore.IsMMScanning == false and SkuCore.inCombat ~= true then
-		SkuCore:RestoreMinimap()
+   if SkuCore.IsMMScanning == false and SkuCore.inCombat ~= true then
+      SkuCore:RestoreMinimap()
       C_Timer.After(1.1, function()
          SkuCore.noMouseOverNotification = nil
-      end)      
-		return
-	end
+      end)
+      return
+   end
 
-	tCurrentMMPosX = tCurrentMMPosX + SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
-	if tCurrentMMPosX > (tRange / 2) then
-		tCurrentMMPosX = -(tRange / 2)
-		tCurrentMMPosY = tCurrentMMPosY + SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
-	end
+   tCurrentMMPosX = tCurrentMMPosX + SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
+   if tCurrentMMPosX > (tRange / 2) then
+      tCurrentMMPosX = -(tRange / 2)
+      tCurrentMMPosY = tCurrentMMPosY + SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
+   end
 
-	if tCurrentMMPosY > (tRange / 2) then
-		tCurrentMMPosX, tCurrentMMPosY = -(tRange / 2), -(tRange / 2)
-		SkuCore.IsMMScanning = false
+   if tCurrentMMPosY > (tRange / 2) then
+      tCurrentMMPosX, tCurrentMMPosY = -(tRange / 2), -(tRange / 2)
+      SkuCore.IsMMScanning = false
       C_Timer.After(1, function()
          SkuCore.noMouseOverNotification = true
       end)
       SkuCore:MinimapScanProcessResults()
-	end
-	
-	SetMinimapPosition(tCurrentMMPosX, tCurrentMMPosY)
+   end
 
-	C_Timer.After(0, function()
+   SetMinimapPosition(tCurrentMMPosX, tCurrentMMPosY)
+
+   C_Timer.After(0, function()
       local tResultString = SkuCore:MinimapScanFindActiveRessource(tCurrentMMPosX, tCurrentMMPosY)
-		if tResultString then
-			--fx, fy = tCurrentMMPosX, tCurrentMMPosY
-			--print(tResultString, fx, fy)
+      if tResultString then
+         --fx, fy = tCurrentMMPosX, tCurrentMMPosY
+         --print(tResultString, fx, fy)
          if not tScanResults[tResultString] then
             tScanResults[tResultString] = 0
          end
          tScanResults[tResultString] = tScanResults[tResultString] + 1
-		end
-      if SkuCore.inCombat ~= true then
-		   MinimapScanStep()
       end
-	end)
+      if SkuCore.inCombat ~= true then
+         MinimapScanStep()
+      end
+   end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:StoreMinimap()
-	tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y = Minimap:GetPoint()
-	tMinimapStore.parent = Minimap:GetParent()
-	tMinimapStore.scale = Minimap:GetScale()
-	tMinimapStore.GameTooltipScale = GameTooltip:GetScale()
-	tMinimapStore.frameLevel = MinimapCluster:GetFrameLevel()
-	tMinimapStore.frameStrata = MinimapCluster:GetFrameStrata()
+   tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y = Minimap
+       :GetPoint()
+   tMinimapStore.parent = Minimap:GetParent()
+   tMinimapStore.scale = Minimap:GetScale()
+   tMinimapStore.GameTooltipScale = GameTooltip:GetScale()
+   tMinimapStore.frameLevel = MinimapCluster:GetFrameLevel()
+   tMinimapStore.frameStrata = MinimapCluster:GetFrameStrata()
 
-	SkuCore.minimapChildren = {Minimap:GetChildren()}
-	for k, v in pairs(SkuCore.minimapChildren) do
-			v.MMA_VISIBLE = v:IsVisible()
-			v.MMA_FRAME_LEVEL = v:GetFrameLevel()
-			v.MMA_FRAME_STRATA = v:GetFrameStrata()
-	end
+   SkuCore.minimapChildren = { Minimap:GetChildren() }
+   for k, v in pairs(SkuCore.minimapChildren) do
+      v.MMA_VISIBLE = v:IsVisible()
+      v.MMA_FRAME_LEVEL = v:GetFrameLevel()
+      v.MMA_FRAME_STRATA = v:GetFrameStrata()
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:RestoreMinimap()
    Minimap:SetScale(tMinimapStore.scale)
    Minimap:ClearAllPoints()
-   Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
+   Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x,
+      tMinimapStore.y)
    MinimapCluster:SetFrameLevel(tMinimapStore.frameLevel)
    MinimapCluster:SetFrameStrata(tMinimapStore.frameStrata)
    GameTooltip:SetScale(tMinimapStore.GameTooltipScale)
 
    for k, v in pairs(SkuCore.minimapChildren) do
-      if v.MMA_VISIBLE then 
-         v:Show() 
+      if v.MMA_VISIBLE then
+         v:Show()
       end
       v:SetFrameStrata(v.MMA_FRAME_STRATA)
       v:SetFrameLevel(v.MMA_FRAME_LEVEL)
@@ -315,13 +328,13 @@ function SkuCore:MinimapScan(aRange)
    SkuCore:GameWorldObjectsCenterMouseCursor(0.5)
    Minimap:SetZoom(0)
    if GetCVar("rotateMinimap") == "1" then
-      ToggleMiniMapRotation() 
+      ToggleMiniMapRotation()
    end
    SetCVar("minimapAltitudeHintMode", 0)
-   
+
    --diable all tracking options except spells
    local tCount = GetNumTrackingTypes()
-   for i = 1, tCount do 
+   for i = 1, tCount do
       local name, texture, active, category = GetTrackingInfo(i)
       if category ~= "spell" then
          SetTracking(i, false)
@@ -335,10 +348,10 @@ function SkuCore:MinimapScan(aRange)
    tRange = aRange
    SkuCore.noMouseOverNotification = true
 
-   SkuCore:StoreMinimap() 
+   SkuCore:StoreMinimap()
    tCurrentMMPosX, tCurrentMMPosY = (aRange / 2) * -1, (aRange / 2) * -1
    tFoundPositions = {}
-   SkuCore.IsMMScanning = true 
+   SkuCore.IsMMScanning = true
 
    MinimapScanStep()
 end
@@ -367,29 +380,39 @@ function SkuCore:MinimapScanProcessResults()
             end
             xCenter = tFoundPositions[i][q].xMin + (tempX / 2) + 2.5
             yCenter = tFoundPositions[i][q].yMin + (tempY / 2) + 0.5
-            local xa, ya = UnitPosition("player") 
+            local xa, ya = UnitPosition("player")
             if xa then
                xa = xa + (yCenter * -1)
                ya = ya + xCenter
                local tDistance = SkuNav:Distance(0, 0, xCenter, yCenter)
-               
-               print((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod).." "..L["Meter"])
-               SkuOptions.Voice:OutputStringBTtts((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod).." "..L["Meter"], false, true, 0.2)
+
+               print((tQuickWpNumber or "") ..
+                  " " ..
+                  i ..
+                  " " ..
+                  SkuNav:GetDirectionToAsString(xa, ya) .. " " ..
+                  math.floor(tDistance * tMinimapYardsMod) .. " " .. L["Meter"])
+               SkuOptions.Voice:OutputStringBTtts((tQuickWpNumber or "") ..
+                  " " ..
+                  i ..
+                  " " ..
+                  SkuNav:GetDirectionToAsString(xa, ya) .. " " ..
+                  math.floor(tDistance * tMinimapYardsMod) .. " " .. L["Meter"], false, true, 0.2)
 
                if tQuickWpNumber then
                   local tAreaId = SkuNav:GetCurrentAreaId()
                   local worldx, worldy = UnitPosition("player")
                   local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())) or -1
                   local tTime = GetTime()
-                  SkuNav:SetWaypoint(L["Quick waypoint"]..";"..tQuickWpNumber, {
+                  SkuNav:SetWaypoint(L["Quick waypoint"] .. ";" .. tQuickWpNumber, {
                      ["contintentId"] = tPlayerContintentId,
                      ["areaId"] = tAreaId,
                      ["worldX"] = worldx + ((yCenter * tMinimapYardsMod)) * -1,
                      ["worldY"] = worldy + ((xCenter * tMinimapYardsMod)),
-                     ["createdAt"] = tTime, 
+                     ["createdAt"] = tTime,
                      ["createdBy"] = "SkuCore",
                      ["size"] = 1,
-                  })            
+                  })
                end
 
                tQuickWpNumber = tQuickWpNumber + 1
@@ -405,4 +428,3 @@ function SkuCore:MinimapScanProcessResults()
       end
    end
 end
-
