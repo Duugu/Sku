@@ -421,7 +421,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		aIgnoreLinks = true
 	end
 
-	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true and not engine then
+	if SkuOptions.db.profile["SkuOptions"].useBlizzTtsInMenu ~= true and not engine and SkuOptions.db.profile["SkuChat"].allChatViaBlizzardTts ~= true then
 		SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 		return
 	end
@@ -692,6 +692,12 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			tString = string.gsub(tString, ";;", ";")
 		end
 		aString = tString
+	end
+
+
+	if not (string.find(aString, "sound%-") or string.find(aString, "male%-")) and SkuOptions.db.profile["SkuChat"].allChatViaBlizzardTts == true then
+		SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
+		return
 	end
 
 

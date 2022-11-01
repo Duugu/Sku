@@ -1613,7 +1613,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 					local tNewMenuParentEntrySub = SkuOptions:InjectMenuItems(self, {L["Reply"]}, SkuGenericMenuItem)
 					tNewMenuParentEntrySub.dynamic = true
 					tNewMenuParentEntrySub.isSelect = true
-					--tNewMenuParentEntrySub.ttsEngine = 2
+					tNewMenuParentEntrySub.ttsEngine = 2
+					tNewMenuParentEntrySub.TmpTo = sender
+					tNewMenuParentEntrySub.TmpSubject = subject
 					tNewMenuParentEntrySub.OnAction = function(self, aValue, aName)
 						--dprint(aName)
 						--open the specific edit box for aname and write result to current mi.tmpx
@@ -1645,9 +1647,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 						end
 					end
 					tNewMenuParentEntrySub.BuildChildren = function(self)
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Recepient"]}, SkuGenericMenuItem)
+						--local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Recepient"]}, SkuGenericMenuItem)
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Topic"]}, SkuGenericMenuItem)
+						--local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Topic"]}, SkuGenericMenuItem)
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
 						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
@@ -1967,11 +1969,6 @@ function SkuCore:MenuBuilder(aParentEntry)
 										KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 									end
 
-									print("commandConst2", commandConst2)
-									print("categoryConst2", categoryConst2)
-									print("v1.index", v1.index)
-
-
 									tNewMenuEntryKey.command = commandConst2
 									tNewMenuEntryKey.category = categoryConst2
 									tNewMenuEntryKey.index = v1.index
@@ -2196,7 +2193,6 @@ function SkuCore:MenuBuilder(aParentEntry)
 											return
 										end
 									end
-							
 
 									dprint(self.bindingConst, self.menuTarget, self.menuTarget.name, self.prevKey)
 

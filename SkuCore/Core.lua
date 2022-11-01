@@ -507,9 +507,9 @@ function SkuCore:IsPlayerMoving()
 		SkuCoreMovement.Flags.MoveForward == true or
 		SkuCoreMovement.Flags.MoveBackward == true or
 		SkuCoreMovement.Flags.StrafeLeft == true or
-		SkuCoreMovement.Flags.StrafeRight == true --or
-		--SkuCoreMovement.Flags.Ascend == true or
-		--SkuCoreMovement.Flags.Descend == true
+		SkuCoreMovement.Flags.StrafeRight == true or
+		SkuCoreMovement.Flags.Ascend == true or
+		SkuCoreMovement.Flags.Descend == true
 	then
 		rValue = true
 	end
@@ -1280,6 +1280,10 @@ function SkuCore:OnEnable()
 	hooksecurefunc("StrafeRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
 	hooksecurefunc("TurnLeftStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnLeftStop") end)
 	hooksecurefunc("TurnRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnRightStop") end)
+	hooksecurefunc("JumpOrAscendStart", function() SkuCoreMovement.Flags.Ascend = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("JumpOrAscendStart") end)
+	hooksecurefunc("AscendStop", function() SkuCoreMovement.Flags.Ascend = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("AscendStop") end)
+	hooksecurefunc("SitStandOrDescendStart", function() SkuCoreMovement.Flags.Descend = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("SitStandOrDescendStart") end)
+	hooksecurefunc("DescendStop", function() SkuCoreMovement.Flags.Descend = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("DescendStop") end)
 
 	--For checking the players state.
 	hooksecurefunc("FollowUnit", function() SkuCoreMovement.Flags.FollowUnit = true end)

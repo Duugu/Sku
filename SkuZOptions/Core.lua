@@ -596,16 +596,13 @@ function SkuOptions:UpdateOverviewText()
 
 	--hearthstone
 	local tTmpText = L["Keiner vorhanden"]
-	local tHearthstoneId = PlayerHasHearthstone()
-	if tHearthstoneId then
-		local startTime, duration, enable = GetItemCooldown(tHearthstoneId)
-		if duration == 0 then
-			tTmpText = L[" bereit"]
-		else
-			tTmpText = math.floor((duration / 60) + ((startTime -  GetTime()) / 60))..L[" Minuten"]
-		end
-		tTmpText = tTmpText.." "..GetBindLocation()
+	local startTime, duration, enable = GetItemCooldown(40582) --Scourgestone item id is working for all
+	if duration == 0 then
+		tTmpText = L[" bereit"]
+	else
+		tTmpText = math.floor((duration / 60) + ((startTime -  GetTime()) / 60))..L[" Minuten"]
 	end
+	tTmpText = tTmpText.." "..(GetBindLocation() or "")
 	tGeneral = tGeneral.."\r\n"..L["Ruhestein: "]..tTmpText
 
 	--xp

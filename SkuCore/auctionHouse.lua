@@ -653,6 +653,9 @@ function SkuCore:AuctionHouseMenuBuilder()
             end,
             nil
          )
+         C_Timer.After(0.1, function()
+            SkuOptions.Voice:OutputStringBTtts(L["enter search string now"], true, true, 1, true)
+         end)
       end
       tNewMenuEntrysearch.BuildChildren = function(self)
          if SkuCore.QueryRunning == true then
@@ -1766,7 +1769,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
             end
             SkuOptions.Voice:OutputStringBTtts(tCount, false, true, 0.2, nil, nil, nil, 2)
          end
-
+   
          --save data
          for x = 1, tBatch do
             local tResult = {GetAuctionItemInfo("list", x)}
@@ -1780,7 +1783,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          for x = 1, tBatch do
             local tNextEntry = #QueryResultsDB + 1
             QueryResultsDB[tNextEntry] = {GetAuctionItemInfo("list", x)}
-            print(x, QueryResultsDB[tNextEntry][1], GetAuctionItemLink("list", x))
+            --print(x, QueryResultsDB[tNextEntry][1], GetAuctionItemLink("list", x))
             QueryResultsDB[tNextEntry][21] = GetAuctionItemLink("list", x)
             QueryResultsDB[tNextEntry].query = SkuCore.QueryData
          end

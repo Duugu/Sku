@@ -3,6 +3,26 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.15
+	Core
+	- Removed two overlooked debug outputs for auction house and actionbars
+	- Fixed a bug with ascend/descend keys and the menu opening
+	- Fixed the Core > Mail > x > Reply option
+	- 7th available scan type named "360+180 3-10 fast" added. That is 360 degrees from top to bottom, 3-10 meters, in 15 seconds. Detection quality is medium to low.
+	- Hearthstone (Scourgestone) for deathknights on overview page fixed
+
+	Chat
+	- There is a new chat type for addon chat outputs: SYSTEM > ADDONS. The default is "text". "Addon chat outputs" is every chat output from Sku and other addons. (Example: results for resource scans.)
+	- Due to the new chat type "Addons" the settings for all chat types under "Chat types > SYSTEM" are resetted to the default values for all existing tabs.
+	- New option in chat tabs menu: "set all message types and channels to text"
+	- New option: Chat > Options > All voice output via blizzard tts (default: off)
+
+	Options
+	- Options > Options > Profiles > New fixed
+	- Options > Options > Profiles > Delete fixed
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.14
 	- The operators list in aura conditions is now showing only valid operators for the selected attribut
 	- Fix for aura attributes in combat, source unit attackable, and target unit attackable to work with equal false and unequal operators

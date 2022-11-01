@@ -314,11 +314,30 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	end
 
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["New"]}, SkuGenericMenuItem)
-	tNewMenuSubEntry.dynamic = true
+	tNewMenuSubEntry.dynamic = false
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-		--SkuOptions.db:New(aName)
-		--https://www.wowace.com/projects/ace3/pages/api/ace-db-3-0
+		SkuOptions:EditBoxShow(
+			"",
+			function(self)
+				local tText = SkuOptionsEditBoxEditBox:GetText()
+				if tText and tText ~= "" then
+					for i, v in pairs(SkuOptions.db:GetProfiles()) do
+						if v == tText then
+							C_Timer.After(0.1, function()
+								SkuOptions.Voice:OutputStringBTtts(L["name already taken"], true, true, 1, true)
+							end)
+							return
+						end
+					end
+					SkuOptions.db:SetProfile(tText)
+				end
+			end,
+			nil
+		)
+		C_Timer.After(0.1, function()
+			SkuOptions.Voice:OutputStringBTtts(L["enter profile name now"], true, true, 1, true)
+		end)
 	end
 
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Kopieren von"]}, SkuGenericMenuItem)
@@ -335,13 +354,23 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		return SkuOptions.db:GetCurrentProfile()
 	end
 
-	--[[
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Löschen"}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
+	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-		--SkuOptions.db:DeleteProfile(name, silent)
+		SkuOptions.db:DeleteProfile(aName, silent)
 	end
-	]]
+	tNewMenuSubEntry.BuildChildren = function(self)
+		local tList = SkuOptions.db:GetProfiles()
+		local tClean = {}
+		for i, v in pairs(tList) do
+			if v ~= SkuOptions.db:GetCurrentProfile() then
+				table.insert(tClean, v)
+			end
+		end
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tClean, SkuGenericMenuItem)
+	end
+	
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Zurücksetzen"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)

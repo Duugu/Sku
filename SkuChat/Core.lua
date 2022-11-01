@@ -183,6 +183,11 @@ SkuChat.ChatFrameMessageTypes = {
 			type = "BN_INLINE_TOAST_ALERT",
 			default = true,
 		},
+		[7] = {
+			text = L["Addons"],
+			type = "ADDON",
+			default = true,
+		},		
 	},
 	
 	COMBAT = {
@@ -2059,7 +2064,7 @@ function SkuChat:DEFAULT_CHAT_FRAME_AddMessage(...)
 			if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName] then
 				if _G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName].AddMessage then
 					if b == nil and c == nil and  d == nil and  e == nil and  f == nil then
-						_G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName]:AddMessage("SAY", a, 1, 1, 1, 0, 0, 0, "AddMessage")
+						_G[SkuOptions.db.profile["SkuChat"].tabs[1].frameName]:AddMessage("ADDON", a, 1, 1, 1, 0, 0, 0, "AddMessage")
 					end
 				end
 			end
@@ -2143,6 +2148,18 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	if not SkuOptions.db.profile["SkuChat"].tabs or #SkuOptions.db.profile["SkuChat"].tabs == 0 then
 		SkuOptions.db.profile["SkuChat"].tabs = {}
 		SkuChat:NewTab(L["Default"])
+	end
+
+	--update types for existing tabs; just to add new types with new releases
+	for tCatName, tData in pairs(SkuChat.ChatFrameMessageTypes) do
+		for i, tTabData in pairs(SkuOptions.db.profile["SkuChat"].tabs) do
+			tTabData.messageTypes[tCatName] = tTabData.messageTypes[tCatName] or {}
+			if #tTabData.messageTypes[tCatName] ~= #tData then
+				for x = 1, #tData do
+					tTabData.messageTypes[tCatName][x] = tData[x].default
+				end
+			end
+		end
 	end
 
 	for x = #SkuOptions.db.profile["SkuChat"].tabs, 1, -1  do
@@ -2448,8 +2465,10 @@ function SkuChat:InitTab(tNewTabIndex)
 			end
 
 			--remove empty if this is the first line for the history
-			if a.tab.history[1].body == L["Empty"] then
-				a.tab.history = {}
+			if a.tab.history[1] then
+				if a.tab.history[1].body == L["Empty"] then
+					a.tab.history = {}
+				end
 			end
 
 			local tFlatBody = string.gsub(SkuChat:Unescape(body), "|", "")

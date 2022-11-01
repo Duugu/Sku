@@ -57,6 +57,15 @@ SkuCore.ScanTypes = {
 		vStepsMax = 8,
 		hStart = 0.50,
 	},
+	[7] = {
+		name = L["360+180 3-10 fast"],
+		desc = L["360 degrees from top to bottom 3-10 meters 15 seconds"],
+		hStepSizeDeg = 50,
+		hStepsMax = 6,
+		vMoveSpeed = 1.0,
+		vStepsMax = 18,
+		hStart = 0.8,
+	},
 
 }
 

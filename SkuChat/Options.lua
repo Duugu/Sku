@@ -310,6 +310,18 @@ SkuChat.options = {
 				return SkuOptions.db.profile[MODULE_NAME].neverResetQueues
 			end,
 		},
+		allChatViaBlizzardTts = {
+			order = 9,
+			name = L["All voice output via blizzard tts"],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].allChatViaBlizzardTts = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].allChatViaBlizzardTts
+			end,
+		},
 	},
 }
 
@@ -333,6 +345,7 @@ SkuChat.defaults = {
 	WowTtsTags = true,
 	joinSkuChannel = true,
 	neverResetQueues = false,
+	allChatViaBlizzardTts = false,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------
@@ -404,6 +417,23 @@ function SkuChat:MenuBuilder(aParentEntry)
 					end
 					for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[self.tabIndex].channels) do
 						v.status = false
+					end
+
+					SkuChat:InitTab(self.tabIndex)
+					self.parent:OnUpdate(self.parent)
+				end
+
+				local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["set all message types and channels to text"]}, SkuGenericMenuItem)
+				tNewTabEntry.isSelect = true
+				tNewTabEntry.tabIndex = x
+				tNewTabEntry.OnAction = function(self, aValue, aName)
+					for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[self.tabIndex].messageTypes) do
+						for u = 1, #v do
+							v[u] = true
+						end
+					end
+					for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[self.tabIndex].channels) do
+						v.status = true
 					end
 
 					SkuChat:InitTab(self.tabIndex)
