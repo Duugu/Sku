@@ -292,6 +292,8 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 			SkuAuras.values["spell:"..tostring(spellName)] = {friendlyName = spellName,}
 		end
 	end
+	SkuAuras.attributes.buffListPlayer.values = SkuAuras.attributes.buffListTarget.values
+	SkuAuras.attributes.debuffListPlayer.values = SkuAuras.attributes.debuffListTarget.values
 	
 	if not tItemHook then
 		hooksecurefunc("UseContainerItem", function(aBagID, aSlot, aTarget, aReagentBankAccessible) 
@@ -694,23 +696,20 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	tEventData[35] = math.floor(UnitHealth("player") / (UnitHealthMax("player") / 100))
 	tEventData[36] = math.floor(UnitPower("player") / (UnitPowerMax("player") / 100))
 
+	local function getAuraList(unit, filter)
+		local tBuffList = {}
+		for x = 1, 40  do
+			local name = UnitAura(unit, x, filter)
+			if name then
+				tBuffList[name] = name
+			end
+		end
+		return tBuffList
+	end
+
 	local tUnitID = "target"
-	local tBuffList = {}
-	for x = 1, 40  do
-		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitBuff(tUnitID, x)
-		if name then
-			tBuffList[name] = name
-		end
-	end
-	tEventData[37] = tBuffList
-	local tdebuffList = {}
-	for x = 1, 40  do
-		local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff(tUnitID, x)
-		if name then
-			tdebuffList[name] = name
-		end
-	end
-	tEventData[38] = tdebuffList
+	tEventData[37] = getAuraList(tUnitID, "HELPFUL")
+	tEventData[38] = getAuraList(tUnitID, "HARMFUL")
 
 if tEventData[2] ~= "KEY_PRESS" then
 	--[[
@@ -783,6 +782,8 @@ if tEventData[2] ~= "KEY_PRESS" then
 				unitComboPlayer = tEventData[51],
 				buffListTarget = tEventData[37],
 				debuffListTarget = tEventData[38],
+				buffListPlayer = getAuraList("player", "HELPFUL"),
+				debuffListPlayer = getAuraList("player", "HARMFUL"),
 				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
 				tInCombat = SkuCore.inCombat,
