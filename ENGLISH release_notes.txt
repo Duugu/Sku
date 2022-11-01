@@ -10,6 +10,7 @@ Changes in Sku r31.15
 	- Fixed the Core > Mail > x > Reply option
 	- 7th available scan type named "360+180 3-10 fast" added. That is 360 degrees from top to bottom, 3-10 meters, in 15 seconds. Detection quality is medium to low.
 	- Hearthstone (Scourgestone) for deathknights on overview page fixed
+	- gas resources are added to the resource scan
 
 	Chat
 	- There is a new chat type for addon chat outputs: SYSTEM > ADDONS. The default is "text". "Addon chat outputs" is every chat output from Sku and other addons. (Example: results for resource scans.)
