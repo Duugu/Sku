@@ -18,6 +18,10 @@ Changes in Sku r31.15
 	- New option in chat tabs menu: "set all message types and channels to text"
 	- New option: Chat > Options > All voice output via blizzard tts (default: off)
 
+	Auras
+	- New aura attribute: "your buff list"
+	- New aura attribute: "your debuff list (l)"
+
 	Options
 	- Options > Options > Profiles > New fixed
 	- Options > Options > Profiles > Delete fixed
