@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.16](https://github.com/Duugu/Sku/releases/download/r31.16/Sku-r31.16-wrath.zip) (Nov 2nd, 2022)<br>
+- [Sku r31.17](https://github.com/Duugu/Sku/releases/download/r31.17/Sku-r31.17-wrath.zip) (Nov 2nd, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -21,6 +21,12 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.17
+### Core
+- Fixed a bug with displayed auction bid prices (some were incorrect) and bidding on auctions (did no work in some scenarios).
+- Fixed some audio outputs in auction house to use the blizzard tts
+- Fixed a bug with not working roles assignment in LFG on enlisting without being in a party
+
 ## Changes in Sku r31.16
 ### Chat
 - Another bug with the chat output fixed: the "addon" chat type will now work with all chat tabs, not only with the first one.
