@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.16
+	Chat
+	- Another bug with the chat output fixed: the "addon" chat type will now work with all chat tabs, not only with the first one.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.15
 	Core
 	- Removed two overlooked debug outputs for auction house and actionbars
