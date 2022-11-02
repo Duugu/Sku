@@ -1936,6 +1936,12 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 		}
 		tEnlistRolesSelected[tRolenamesLookup[GetTalentGroupRole(GetActiveTalentGroup())]].selected = true
 		UnitSetRole("player", GetTalentGroupRole(GetActiveTalentGroup()))
+
+		C_LFGList.SetRoles({
+			tank   = tEnlistRolesSelected[2].selected,
+			healer = tEnlistRolesSelected[3].selected,
+			dps    = tEnlistRolesSelected[1].selected,
+		})
 	end
 
 	--ENLIST
@@ -2138,7 +2144,11 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					if _G[tEnlistRolesSelected[x].buttonName] then
 						_G[tEnlistRolesSelected[x].buttonName].CheckButton:SetChecked(tEnlistRolesSelected[x].selected)
 					end
-
+					C_LFGList.SetRoles({
+						tank   = tEnlistRolesSelected[2].selected,
+						healer = tEnlistRolesSelected[3].selected,
+						dps    = tEnlistRolesSelected[1].selected,
+					})
 					C_Timer.After(0.3, function()
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)

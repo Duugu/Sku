@@ -402,12 +402,19 @@ function SkuCore:AuctionItemNameFormat(aItemData, aIndex, aAddLevel)
 
    rName = rName.." "..aItemData[tAIDIndex["count"]]..L[" stück"]
 
+   local tNextBid = aItemData[tAIDIndex["bidAmount"]] + aItemData[tAIDIndex["minIncrement"]]
+   if tNextBid == 0 then
+      tNextBid = aItemData[tAIDIndex["minBid"]]
+   end
+
    if aItemData[tAIDIndex["minBid"]] == aItemData[tAIDIndex["buyoutPrice"]] then
       rName = rName.." §01 §01"..L[" Nur Kauf "]..SkuGetCoinText(aItemData[tAIDIndex["buyoutPrice"]], true, true)..""
-   elseif aItemData[tAIDIndex["buyoutPrice"]] > 0 then
-      rName = rName.." §01 §01"..L["Kauf "]..SkuGetCoinText(aItemData[tAIDIndex["buyoutPrice"]], true, true).." §01 §01"..L["Gebot "]..SkuGetCoinText(aItemData[tAIDIndex["minBid"]], true, true)..""  
-   elseif aItemData[tAIDIndex["buyoutPrice"]] == 0 then
-      rName = rName.." §01 §01"..L["Nur Gebot "]..SkuGetCoinText(aItemData[tAIDIndex["minBid"]], true, true)..""
+   else
+      if aItemData[tAIDIndex["buyoutPrice"]] > 0 then
+         rName = rName.." §01 §01"..L["Kauf "]..SkuGetCoinText(aItemData[tAIDIndex["buyoutPrice"]], true, true).." §01 §01"..L["Gebot "]..SkuGetCoinText(tNextBid, true, true)..""  
+      else 
+         rName = rName.." §01 §01"..L["Nur Gebot "]..SkuGetCoinText(tNextBid, true, true).."" 
+      end
    end
 
    if aItemData[12] == true then
@@ -654,7 +661,7 @@ function SkuCore:AuctionHouseMenuBuilder()
             nil
          )
          C_Timer.After(0.1, function()
-            SkuOptions.Voice:OutputStringBTtts(L["enter search string now"], true, true, 1, true)
+            SkuOptions.Voice:OutputStringBTtts(L["enter search string now"], true, true, 0.1, nil, nil, nil, 1)
          end)
       end
       tNewMenuEntrysearch.BuildChildren = function(self)
@@ -871,9 +878,9 @@ function SkuCore:AuctionHouseMenuBuilder()
                            PostAuction(tCopperStartBid, tCopperBuyout, tDuration, tAmount, tNumAuctions)
                      
                            if tNumAuctions == 1 then
-                              SkuOptions.Voice:OutputStringBTtts(L["Auktion erstellt"], false, true, 1, true)
+                              SkuOptions.Voice:OutputStringBTtts(L["Auktion erstellt"], false, true, 0.1, nil, nil, nil, 1)
                            else
-                              SkuOptions.Voice:OutputStringBTtts(tNumAuctions..L[" Auktionen erstellt"], false, true, 1, true)
+                              SkuOptions.Voice:OutputStringBTtts(tNumAuctions..L[" Auktionen erstellt"], false, true, 0.1, nil, nil, nil, 1)
                            end
 
                            GetOwnerAuctionItems()
@@ -1886,17 +1893,17 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                            SkuCore.QueryBuyAmount = nil
                            SkuCore.QueryBuyBought = nil
                            SkuCore:AuctionHouseResetQuery()
-                           SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], true, true, 0.2, false)
+                           SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], true, true, 0.1, nil, nil, nil, 1)
                         end
                      end)
                   end,
                   function()
                      dprint("abgebrochen Nicht geboten", tItemIndex, tBidAmount)
-                     SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.2, false)
+                     SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"].." test", true, true, 0.1, nil, nil, nil, 1)
                   end
                )
                PlaySound(88)
-               SkuOptions.Voice:OutputStringBTtts(L["Gebot "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück wirklich "]..SkuGetCoinText(tBidAmount, false, true)..L[" bieten? Eingabe Ja, Escape Nein"], true, true, 0.2, false)
+               SkuOptions.Voice:OutputStringBTtts(L["Gebot "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück wirklich "]..SkuGetCoinText(tBidAmount, false, true)..L[" bieten? Eingabe Ja, Escape Nein"], true, true, 0.1, nil, nil, nil, 1)
             end)
          elseif SkuCore.QueryBuyType == 2 then
             local tItemName = tCurrentResult[1]
@@ -1938,17 +1945,17 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                            SkuCore.QueryBuyAmount = nil
                            SkuCore.QueryBuyBought = nil
                            SkuCore:AuctionHouseResetQuery()
-                           SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], true, true, 0.2, false)
+                           SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], true, true, 0.1, nil, nil, nil, 1)
                         end
                      end)
                   end,
                   function()
                      dprint("abgebrochen Nicht geboten", tItemIndex, tBidAmount)
-                     SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.2, false)
+                     SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
                   end
                )
                PlaySound(88)
-               SkuOptions.Voice:OutputStringBTtts(L["Kauf "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück wirklich für "]..SkuGetCoinText(tBidAmount, false, true)..L[" kaufen? Eingabe Ja, Escape Nein."], true, true, 0.2, false)
+               SkuOptions.Voice:OutputStringBTtts(L["Kauf "]..(SkuCore.QueryBuyBought + 1)..L[" von "]..SkuCore.QueryBuyAmount..": "..tItemName.." "..tItemCount..L[" stück wirklich für "]..SkuGetCoinText(tBidAmount, false, true)..L[" kaufen? Eingabe Ja, Escape Nein."], true, true, 0.1, nil, nil, nil, 1)
             end)
          end
 

@@ -3,6 +3,14 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.17
+	Core
+	- Fixed a bug with displayed auction bid prices (some were incorrect) and bidding on auctions (did no work in some scenarios).
+	- Fixed some audio outputs in auction house to use the blizzard tts
+	- Fixed a bug with not working roles assignment in LFG on enlisting without being in a party
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.16
 	Chat
 	- Another bug with the chat output fixed: the "addon" chat type will now work with all chat tabs, not only with the first one.
