@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.17](https://github.com/Duugu/Sku/releases/download/r31.17/Sku-r31.17-wrath.zip) (Nov 2nd, 2022)<br>
+- [Sku r31.18](https://github.com/Duugu/Sku/releases/download/r31.18/Sku-r31.18-wrath.zip) (Nov 3nd, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -21,6 +21,10 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.18
+### Core
+- Achievements and Statistics frame added: Core > Achievements
+
 ## Changes in Sku r31.17
 ### Core
 - Fixed a bug with displayed auction bid prices (some were incorrect) and bidding on auctions (did no work in some scenarios).
