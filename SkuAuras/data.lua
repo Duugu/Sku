@@ -314,6 +314,22 @@ SkuAuras.outputs = {
          end,
       },
    },
+   unitHealthTarget = {
+      tooltip = "Your target's health",
+      friendlyName = "Your target's health",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.unitHealthTarget then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthTarget, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitHealthTarget then
+               print(tEvaluateData.unitHealthTarget)
+            end
+         end,
+      },
+   },
    spellName = {
       tooltip = L["Der Name des Zaubers, der die Aura ausgelöst hat"],
       friendlyName = L["zauber name"],
