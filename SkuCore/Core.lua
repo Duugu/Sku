@@ -229,6 +229,7 @@ function SkuCore:OnInitialize()
 	SkuCore:RangeCheckOnInitialize()
 	SkuCore:AqOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
+	SkuCore:AchievementsOnInitialize()
 	SkuCore:GameWorldObjectsOnInitialize()
 	SkuCore:TutorialOnInitialize()
 end
@@ -1891,8 +1892,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		end
 
 		SkuCore:ItemRatingOnLogin()
-
 		SkuCore:AuctionHouseOnLogin()
+		SkuCore:AchievementsOnLogin()
+
 		if not SkuOptions.db.char[MODULE_NAME] then
 			SkuOptions.db.char[MODULE_NAME] = {}
 		end
@@ -2273,6 +2275,7 @@ local friendlyFrameNames = {
 	["TalentFrame"] = L["Talents"],
 	["SendMailFrame"] = L["Send Mail"],
 	["AuctionFrame"] = L["Auction house"],
+	["AchievementFrame"] = L["Achievements"],
 	["ClassTrainerFrame"] = L["Class Trainer"],
 	["CharacterFrame"] = L["Character"],
 	["BarberShopFrame"] = L["Barber Shop"],

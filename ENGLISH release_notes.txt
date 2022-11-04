@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.18
+	Core
+	- Achievements and Statistics frame added: Core > Achievements
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.17
 	Core
 	- Fixed a bug with displayed auction bid prices (some were incorrect) and bidding on auctions (did no work in some scenarios).

@@ -1765,3 +1765,10 @@ L["360 degrees from top to bottom 3-10 meters 15 seconds"] = "360 grad von ganz 
 L["Addons"] = "Addons"
 
 L["All voice output via blizzard tts"] = "Alle Sprachausgaben über Blizzard tts"
+
+L["Achievements"] = "Erfolge"
+L["Statistics"] = "Statistiken"
+L["Summary"] = "Übersicht"
+L["Not completed"] = "Nicht abgeschlossen"
+L["Not implemented yet"] = "noch nicht implementiert"
+L["NA"] = "NV"

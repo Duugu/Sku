@@ -1752,6 +1752,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end
 
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Achievements"]}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.filterable = true
+	tNewMenuParentEntry.BuildChildren = SkuCore.AchievementsMenuBuilder
+
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Equipment manager"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
