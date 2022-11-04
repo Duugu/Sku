@@ -780,6 +780,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 				unitHealthPlayer = tEventData[35],
 				unitPowerPlayer = tEventData[36],
 				unitComboPlayer = tEventData[51],
+				unitHealthTarget = UnitName("target") and math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
 				buffListTarget = tEventData[37],
 				debuffListTarget = tEventData[38],
 				buffListPlayer = getAuraList("player", "HELPFUL"),

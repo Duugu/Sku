@@ -1522,6 +1522,15 @@ SkuAuras.attributes = {
       end,
       values = zeroToOneHundred,      
    },
+   unitHealthTarget = {
+      tooltip = "Your target's health",
+      friendlyName = "Your target's health",
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return aEventData.unitHealthTarget and SkuAuras:ProcessEvaluate(aEventData.unitHealthTarget, aOperator, tonumber(aValue))
+      end,
+      values = zeroToOneHundred,
+   },
    spellId = {
       tooltip = L["Die Zauber-ID, die die Aura auslösen soll"],
       friendlyName = L["zauber nr"],
