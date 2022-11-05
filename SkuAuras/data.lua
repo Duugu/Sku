@@ -330,6 +330,23 @@ SkuAuras.outputs = {
          end,
       },
    },
+   unitPowerTarget = {
+      tooltip = L["Your target's resource percentage"],
+      friendlyName = L["Your target's resource"],
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.unitPowerTarget then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitPowerTarget, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitPowerTarget then
+               print(tEvaluateData.unitPowerTarget)
+            end
+         end,
+      },
+   },
+
    spellName = {
       tooltip = L["Der Name des Zaubers, der die Aura ausgelöst hat"],
       friendlyName = L["zauber name"],
@@ -1547,6 +1564,17 @@ SkuAuras.attributes = {
       end,
       values = zeroToOneHundred,
    },
+   unitPowerTarget = {
+      tooltip = L["Your target's resource percentage"],
+      friendlyName = L["Your target's resource"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return aEventData.unitPowerTarget and
+             SkuAuras:ProcessEvaluate(aEventData.unitPowerTarget, aOperator, tonumber(aValue))
+      end,
+      values = zeroToOneHundred,
+   },
+
    spellId = {
       tooltip = L["Die Zauber-ID, die die Aura auslösen soll"],
       friendlyName = L["zauber nr"],
