@@ -331,7 +331,7 @@ SkuAuras.outputs = {
       },
    },
    unitPowerTarget = {
-      tooltip = L["Your target's resource percentage"],
+      tooltip = L["Percentage of your target's primary resource, for example mana or rage"],
       friendlyName = L["Your target's resource"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
@@ -1577,7 +1577,7 @@ SkuAuras.attributes = {
       values = zeroToOneHundred,
    },
    unitPowerTarget = {
-      tooltip = L["Your target's resource percentage"],
+      tooltip = L["Percentage of your target's primary resource, for example mana or rage"],
       friendlyName = L["Your target's resource"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
