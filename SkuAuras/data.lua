@@ -315,8 +315,8 @@ SkuAuras.outputs = {
       },
    },
    unitHealthTarget = {
-      tooltip = "Your target's health",
-      friendlyName = "Your target's health",
+      tooltip = L["Your target's health percentage"],
+      friendlyName = L["Your target's health"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthTarget then
@@ -1539,8 +1539,8 @@ SkuAuras.attributes = {
       values = zeroToOneHundred,      
    },
    unitHealthTarget = {
-      tooltip = "Your target's health",
-      friendlyName = "Your target's health",
+      tooltip = L["Your target's health percentage"],
+      friendlyName = L["Your target's health"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
          return aEventData.unitHealthTarget and SkuAuras:ProcessEvaluate(aEventData.unitHealthTarget, aOperator, tonumber(aValue))
