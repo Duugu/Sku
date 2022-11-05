@@ -1327,6 +1327,18 @@ SkuAuras.attributes = {
          "false",
       },
    },
+   targetCannAttack = {
+      tooltip = L["Whether you can attack your target"],
+      friendlyName = L["Your target is attackable"],
+      type = "BINARY",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return SkuAuras:ProcessEvaluate(aEventData.targetCanAttack, aOperator, aValue == "true")
+      end,
+      values = {
+         "true",
+         "false",
+      },
+   },
    sourceUnitId = {
       tooltip = L["Die Quell Einheit, bei der die Aura ausgelöst werden soll"],
       friendlyName = L["Quelle (L)"],

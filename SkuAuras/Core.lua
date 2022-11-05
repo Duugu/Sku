@@ -788,6 +788,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 				debuffListPlayer = getAuraList("player", "HARMFUL"),
 				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
 				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
+				targetCanAttack = UnitCanAttack("player", "target"),
 				tInCombat = SkuCore.inCombat,
 				pressedKey = tEventData[50],
 				spellsNamesOnCd = SkuAuras.thingsNamesOnCd,
