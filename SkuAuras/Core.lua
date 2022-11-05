@@ -138,26 +138,24 @@ function SkuAuras:GetBestUnitId(aUnitName, aReturnAll)
 
 	local tUnitIds = {}
 
+	local function checkUnit(unit)
+		if aUnitName == UnitName(unit) then
+			if not aReturnAll then
+				return unit
+			else
+				tUnitIds[#tUnitIds + 1] = unit
+			end
+		end
+	end
+
 	if IsInRaid() then
 		for x = 1, 40 do 
-			if aUnitName == UnitName("raid"..x) then
-				if not aReturnAll then
-					return "raid"..x
-				else
-					tUnitIds[#tUnitIds + 1] = "raid"..x
-				end
-			end
+			checkUnit("raid"..x)
 		end
 	end
 	if IsInGroup() then
 		for x = 1, 4 do 
-			if aUnitName == UnitName("party"..x) then
-				if not aReturnAll then
-					return "party"..x
-				else
-					tUnitIds[#tUnitIds + 1] = "party"..x
-				end
-			end
+			checkUnit("party"..x)
 		end
 	end
 	if aUnitName == UnitName("player") and (UnitName("party1") or UnitName("raid1")) then
@@ -167,20 +165,8 @@ function SkuAuras:GetBestUnitId(aUnitName, aReturnAll)
 			tUnitIds[#tUnitIds + 1] = "party0"
 		end
 	end
-	if aUnitName== UnitName("target") then
-		if not aReturnAll then
-			return "target"
-		else
-			tUnitIds[#tUnitIds + 1] = "target"
-		end
-	end
-	if aUnitName == UnitName("player") then
-		if not aReturnAll then
-			return "player"
-		else
-			tUnitIds[#tUnitIds + 1] = "player"
-		end
-	end
+	checkUnit("target")
+	checkUnit("player")
 
 	if aReturnAll then
 		return tUnitIds
