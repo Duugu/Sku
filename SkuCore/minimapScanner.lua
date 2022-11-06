@@ -56,6 +56,9 @@ SkuCore.RessourceTypes = {
       [2] = { deDE = "Teufelsnebel", enUS = "Felmist", },
       [3] = { deDE = "Sumpfgas", enUS = "Swamp Gas", },
       [4] = { deDE = "Windige Wolke", enUS = "Windy Cloud", },
+      [5] = { deDE = "Dampfwolke", enUS = "Steam Cloud", },
+      [6] = { deDE = "Aschewolke", enUS = "Cinder Cloud", },
+      [7] = { deDE = "Arktische Wolke", enUS = "Arctic Cloud", },
    },
    herbs = {
       [1] = { deDE = "Friedensblume", enUS = "Peacebloom", },
