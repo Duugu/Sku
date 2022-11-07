@@ -346,6 +346,22 @@ SkuAuras.outputs = {
          end,
       },
    },
+   unitHealthOrPowerUpdate = {
+      tooltip = L["The updated health or resource percentage from a health update or resource update event"],
+      friendlyName = L["Health/Resource update"],
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.unitHealthOrPowerUpdate then
+               SkuOptions.Voice:OutputString(tEvaluateData.unitHealthOrPowerUpdate, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.unitHealthOrPowerUpdate then
+               print(tEvaluateData.unitHealthOrPowerUpdate)
+            end
+         end,
+      },
+   },
 
    spellName = {
       tooltip = L["Der Name des Zaubers, der die Aura ausgelöst hat"],
@@ -1583,6 +1599,16 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
          return aEventData.unitPowerTarget and
              SkuAuras:ProcessEvaluate(aEventData.unitPowerTarget, aOperator, tonumber(aValue))
+      end,
+      values = zeroToOneHundred,
+   },
+   unitHealthOrPowerUpdate = {
+      tooltip = L["The updated health or resource percentage from a health update or resource update event"],
+      friendlyName = L["Health/Resource update"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return aEventData.unitHealthOrPowerUpdate and
+             SkuAuras:ProcessEvaluate(aEventData.unitHealthOrPowerUpdate, aOperator, tonumber(aValue))
       end,
       values = zeroToOneHundred,
    },

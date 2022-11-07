@@ -671,6 +671,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		end
 	end
 
+	local unitHealthOrPowerUpdate = tEventData[35] or tEventData[36]
 	tEventData[35] = math.floor(UnitHealth("player") / (UnitHealthMax("player") / 100))
 	tEventData[36] = math.floor(UnitPower("player") / (UnitPowerMax("player") / 100))
 
@@ -760,6 +761,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 				unitComboPlayer = tEventData[51],
 				unitHealthTarget = UnitName("target") and math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
 				unitPowerTarget = UnitName("target") and math.floor(UnitPower("target") / (UnitPowerMax("target") / 100)),
+				unitHealthOrPowerUpdate = unitHealthOrPowerUpdate,
 				buffListTarget = tEventData[37],
 				debuffListTarget = tEventData[38],
 				buffListPlayer = getAuraList("player", "HELPFUL"),
