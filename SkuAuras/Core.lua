@@ -72,28 +72,6 @@ function SkuAuras:OnEnable()
 			nil,
 		}
 		aEventData[50] = aKey
-		aEventData[35] = math.floor(UnitHealth("player") / (UnitHealthMax("player") / 100))
-		aEventData[36] = math.floor(UnitPower("player") / (UnitPowerMax("player") / 100))
-
-		local tUnitID = "target"
-		if UnitName(tUnitID) then
-			local tBuffList = {}
-			for x = 1, 40  do
-				local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitBuff(tUnitID, x)
-				if name then
-					tBuffList[name] = name
-				end
-			end
-			aEventData[37] = tBuffList
-			local tdebuffList = {}
-			for x = 1, 40  do
-				local name, icon, count, dispelType, duration, expirationTime, source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, timeMod = UnitDebuff(tUnitID, x)
-				if name then
-					tdebuffList[name] = name
-				end
-			end
-			aEventData[38] = tdebuffList
-		end
 
 		SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
 	end)
