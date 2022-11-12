@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.18](https://github.com/Duugu/Sku/releases/download/r31.18/Sku-r31.18-wrath.zip) (Nov 3rd, 2022)<br>
+- [Sku r31.19](https://github.com/Duugu/Sku/releases/download/r31.19/Sku-r31.19-wrath.zip) (Nov 12th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -21,6 +21,19 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.19
+- Control + Shift + Alt + F5 to F8 is now updating the quick waypoint with the position of the party member and auto-starting a close route to that waypoint.
+- Tried to fix some issues with chat line context menu and Battle.net names. No idea if that worked.
+- Fixed an auction house bug with buying/bidding via Auctions > auctions from full scan
+- Quests now can be flagged as "blacklisted". Blacklisted quests are impossible to do for blind players or only with sighted help. The blacklisted flag and optional details on the cause are shown in all quest tooltips/details and in accept dialogs.
+- Quests now can have extra sku comments. Those comments contain information that you should know to complete the quest. The sku extra comments are shown in all quest tooltips/details.
+- Added the item level to item tooltips
+- Added a new Sku key binding: stop following route or waypoint. Default: not bound
+- Added a lot of map fixes for quest in howling fjord
+- Added blacklist flag for some quest in howling fjord
+- New aura attributes: Your target's health, Your target's resource, Your target is attackable
+- New aura outputs: Your target's health, Your target's resource
+	
 ## Changes in Sku r31.18
 ### Core
 - Achievements and Statistics frame added: Core > Achievements
