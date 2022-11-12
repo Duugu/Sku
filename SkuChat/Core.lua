@@ -406,6 +406,15 @@ for category, sublist in pairs(SkuChatCHAT_CATEGORY_LIST) do
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function MaskBattleNetNames(aString)
+	if string.find(aString, "|K") then
+		aString = string.gsub(aString, "|K", "$skuk1")
+		aString = string.gsub(aString, "|k", "$skuk2")
+	end
+	return aString
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChatChat_GetChatCategory(chatType)
 	return SkuChatCHAT_INVERTED_CATEGORY_LIST[chatType] or chatType 
 end
@@ -1675,7 +1684,7 @@ function SkuChat:OnInitialize()
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["whisper sender"]}, SkuGenericMenuItem)
 					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
-						SkuChat:SetEditboxToCustom(tLineData.messageTypeGroup, tLineData.arg2, "")
+						SkuChat:SetEditboxToCustom(tLineData.messageTypeGroup, MaskBattleNetNames(tLineData.arg2), "")
 						C_Timer.After(0.01, function() CloseChatMenuHelper() end)
 					end
 				end
@@ -1685,7 +1694,7 @@ function SkuChat:OnInitialize()
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["invite sender"]}, SkuGenericMenuItem)
 					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
-						InviteUnit(tLineData.arg2)
+						InviteUnit(MaskBattleNetNames(tLineData.arg2))
 						C_Timer.After(0.01, function() CloseChatMenuHelper() end)
 					end
 				end
@@ -1704,7 +1713,7 @@ function SkuChat:OnInitialize()
 					tNewMenuEntry.OnAction = function(self)
 						PlaySound(88)
 						SkuOptions.Voice:OutputStringBTtts(L["Copy text with control plus C and press escape"], true, true, 0.2, nil, nil, nil, 2)
-						SkuOptions:EditBoxShow(SkuChat:GetOnlyPlayerName(tLineData.arg2), function(self)
+						SkuOptions:EditBoxShow(SkuChat:GetOnlyPlayerName(MaskBattleNetNames(tLineData.arg2)), function(self)
 							PlaySound(89)
 						end)					
 						C_Timer.After(0.01, function() CloseChatMenuHelper() end)
@@ -1717,7 +1726,7 @@ function SkuChat:OnInitialize()
 				tNewMenuEntry.OnAction = function(self)
 					PlaySound(88)
 					SkuOptions.Voice:OutputStringBTtts(L["Copy text with control plus C and press escape"], true, true, 0.2, nil, nil, nil, 2)
-					SkuOptions:EditBoxShow(tLineData.body, function(self)
+					SkuOptions:EditBoxShow(MaskBattleNetNames(tLineData.body), function(self)
 						PlaySound(89)
 					end)					
 					C_Timer.After(0.01, function() CloseChatMenuHelper() end)
@@ -2431,10 +2440,7 @@ function SkuChat:InitTab(tNewTabIndex)
 
 		--mask bnet names
 		local tNewBody
-		if string.find(body, "|K") then
-			body = string.gsub(body, "|K", "$skuk1")
-			body = string.gsub(body, "|k", "$skuk2")
-		end
+		body = MaskBattleNetNames(body)
 
 		--get output type
 		local tAudio

@@ -2029,6 +2029,12 @@ function SkuNav:CreateSkuNavMain()
 			end
 		end
 
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPROUTEORWAYPOINT"].key then
+			SkuNav:EndFollowingWpOrRt()
+			SkuNav:ClearWaypointsTemporary()
+			PlaySound(835)
+		end
+
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP1"].key then
 			SkuNav:EndFollowingWpOrRt()
 			SkuNav:SelectWP(L["Quick waypoint"]..";1")
@@ -2079,6 +2085,7 @@ function SkuNav:CreateSkuNavMain()
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP3SET"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUICKWP4SET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPROUTEORWAYPOINT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STOPROUTEORWAYPOINT"].key)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
@@ -2532,6 +2539,101 @@ function SkuNav:UpdateQuickWP(aWpName, aSilent)
 	})
 	if not aSilent then
 		SkuOptions:VocalizeMultipartString(aWpName..";"..L["updated"], true, true, 0.2)
+	end
+
+	if IsAltKeyDown() == true then
+		C_Timer.After(0.1, function()
+			SkuNav:EndFollowingWpOrRt()
+			C_Timer.After(0.1, function()
+				SkuOptions.db.profile["SkuNav"].metapathFollowing = false
+				local worldx, worldy = UnitPosition("player")
+				local tPName = UnitName("player")
+				local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())) or -1			
+				SkuOptions.db.profile[MODULE_NAME].metapathFollowingStartTMP = nil
+				SkuMetapathFollowingMetapathsTMP = nil
+				local tPlayX, tPlayY = UnitPosition("player")
+				local tRoutesInRange = SkuNav:GetAllLinkedWPsInRangeToCoords(worldx, worldy, SkuNav.MaxMetaEntryRange)--SkuOptions.db.profile[MODULE_NAME].nearbyWpRange)
+
+				local tSortedWaypointList = {}
+				for k, v in SkuSpairs(tRoutesInRange, function(t,a,b) return t[b].nearestWpRange > t[a].nearestWpRange end) do --nach wert
+					local tFnd = false
+					for tK, tV in pairs(tSortedWaypointList) do
+						if tV == v.nearestWP then
+							tFnd = true
+						end
+					end
+					if tFnd == false then
+						table.insert(tSortedWaypointList, v.nearestWP)
+						break
+					end
+				end
+
+				if #tSortedWaypointList > 0 then
+					local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuNav:GetCleanWpName(tSortedWaypointList[1]), 10000, 1000, nil, true)
+					local tResults = {}
+					local tNearWps = SkuNav:GetNearestWpsWithLinksToWp(aWpName, 10, 100000)
+					local tBestRouteWeightedLength = 100000
+					for x = 1, #tNearWps do
+						if tMetapaths[tNearWps[x].wpName] then
+							local EndMetapathWpObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
+							local tEndTargetWpObj = SkuNav:GetWaypointData2(aWpName)
+							local tDistToEndTargetWp = SkuNav:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+
+							-- add direction to wp
+							local tDirectionTargetWp = ""
+							if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+								local tDirectionString = SkuNav:GetDirectionToAsString(tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+								if tDirectionString then
+									tDirectionTargetWp = ";"..tDirectionString
+								end
+							end	
+															
+							if (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp < tBestRouteWeightedLength then
+								tBestRouteWeightedLength = (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp
+								tResults[aWpName] = {
+									metarouteIndex = tNearWps[x].wpName, 
+									metapathLength = tMetapaths[tNearWps[x].wpName].distance, 
+									distanceTargetWp = tNearWps[x].distance,
+									targetWpName = aWpName,
+									weightedDistance = tBestRouteWeightedLength,
+									direction = tDirectionTargetWp,
+								}
+							end
+						end
+					end
+					
+					local tSortedList = {}
+					for k,v in SkuSpairs(tResults, function(t,a,b) return t[b].weightedDistance > t[a].weightedDistance end) do
+						table.insert(tSortedList, k)
+					end
+					if #tSortedList > 0 then
+						SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tSortedList[1]].metarouteIndex
+						SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tSortedList[1]].targetWpName
+						SkuOptions.SkuNav_MenuBuilder_WaypointSelectionMenu_CloseRoute = true
+						--tCoveredWps[tSortedList[1]] = true
+					end
+
+					SkuOptions.db.profile["SkuNav"].metapathFollowingStart = tSortedWaypointList[1]
+
+					SkuOptions.db.profile["SkuNav"].metapathFollowing = false
+					if SkuOptions.db.profile["SkuNav"].metapathFollowingStart then
+						if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") then
+							SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") + 1)
+						end
+						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, 10000, 1000, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
+						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[#SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths+1] = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
+						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget] = SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingTarget]
+						table.insert(SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget].pathWps, SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget)
+						SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
+						SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
+						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
+						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
+						SkuOptions.Voice:OutputStringBTtts(L["Metaroute folgen gestartet"], false, true, 0.2)
+					end
+
+				end
+			end)
+		end)
 	end
 end
 

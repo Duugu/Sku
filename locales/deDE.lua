@@ -1447,6 +1447,7 @@ L["Sku Tastenbelegung"]  = "sku Tastenbelegung" --
 L["SKU_KEY_CHATOPEN"] = "chat öffnen"
 L["SKU_KEY_DEBUGMODE"] = "debug modus"
 L["SKU_KEY_TOGGLEREACHRANGE"] = "wegpunkt erreicht reichweite umschalten"
+L["SKU_KEY_STOPROUTEORWAYPOINT"] = "route oder wegpunkt folgen beenden"
 
 L["Warning! That key is already bound to"] = "Warnung! Diese Taste ist bereit zugewiesen zu"
 L[". Press the key again to confirm new binding. The current bound action will be unbound!"] = ". Drück die Taste erneut, um die Zuweisung zu bestätigen. Die bisher zugewiesene Aktion ist danach unzugewiesen!"
@@ -1772,3 +1773,9 @@ L["Summary"] = "Übersicht"
 L["Not completed"] = "Nicht abgeschlossen"
 L["Not implemented yet"] = "noch nicht implementiert"
 L["NA"] = "NV"
+
+L["Warning: This quest is blacklisted"] = "Warnung! Diese Quest steht auf der Blacklist:"
+L["Sku quest comments:"] = "Sku Quest Kommentare:"
+L["Blacklisted"] = "Blacklisted"
+
+L["Item Level"] = "Gegenstandslevel"

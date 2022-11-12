@@ -58,6 +58,8 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_TURNTOBEACON"] = {key = "I", object = "SkuNav", func = "CreateSkuNavMain",},
 
+   ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
+
    --["SKU_KEY_CHAT_LINEPREV"] = {key = "UP", object = "SkuChat", func = "OnEnable",},
    --["SKU_KEY_CHAT_LINENEXT"] = {key = "DOWN", object = "SkuChat", func = "OnEnable",},
    --["SKU_KEY_CHAT_TABPREV"] = {key = "LEFT", object = "SkuChat", func = "OnEnable",},

@@ -81,6 +81,7 @@ SkuDB.questKeys = {
    ['parentQuest'] = 25, -- int, the ID of the parent quest that needs to be active for the current one to be available. See also 'childQuests' (field 14)
    ['reputationReward'] = 26, -- table: {{FACTION,VALUE}, ...}, A list of reputation reward for factions
    ['extraObjectives'] = 27, -- X table: {{spawnlist, iconFile, text, objectiveIndex (optional), {{dbReferenceType, id}, ...} (optional)},...}, a list of hidden special objectives for a quest. Similar to requiredSourceItems
+	['skuData'] = 28, -- table: {{isBlacklist, {blacklistComments}}, {extraComments}}
 }
 
 SkuDB.questLookup = {

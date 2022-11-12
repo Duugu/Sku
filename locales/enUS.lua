@@ -1450,6 +1450,7 @@ L["Sku Tastenbelegung"]  = "sku Key binds" --
 L["SKU_KEY_CHATOPEN"] = "open chat"
 L["SKU_KEY_DEBUGMODE"] = "debug mode"
 L["SKU_KEY_TOGGLEREACHRANGE"] = "toggle waypoint reach range"
+L["SKU_KEY_STOPROUTEORWAYPOINT"] = "stop following route or waypoint"
 
 
 L["Warning! That key is already bound to"] = "Warning! That key is already bound to"
@@ -1775,3 +1776,9 @@ L["Summary"] = "Summary"
 L["Not completed"] = "Not completed"
 L["Not implemented yet"] = "Not implemented yet"
 L["NA"] = "NA"
+
+L["Warning: This quest is blacklisted"] = "Warning! This quest is blacklisted:"
+L["Sku quest comments:"] = "Sku quest comments:"
+L["Blacklisted"] = "Blacklisted"
+
+L["Item Level"] = "Item Level"

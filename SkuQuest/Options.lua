@@ -76,6 +76,30 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 
 		table.insert(tSections, SkuDB.questLookup[Sku.Loc][i][1]) --de name
 
+		if aQuestID and SkuDB.questDataTBC[aQuestID] then
+			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.skuData] then
+				local tTemptext = ""
+				if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.skuData][1][1] == true then
+					tTemptext = L["Warning: This quest is blacklisted"]
+					if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.skuData][1][2] then
+						for _, blacklistComment in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.skuData][1][2][Sku.Loc]) do
+							tTemptext = tTemptext.."\r\n"..blacklistComment
+						end
+					end
+				end
+				if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.skuData][2] then
+					if tTemptext ~= "" then
+						tTemptext = tTemptext.."\r\n"
+					end
+					tTemptext = tTemptext..L["Sku quest comments:"]
+					for _, skuComment in pairs(SkuDB.questDataTBC[aQuestID][SkuDB.questKeys.skuData][2][Sku.Loc]) do
+						tTemptext = tTemptext.."\r\n"..skuComment
+					end
+				end
+				table.insert(tSections, tTemptext)
+			end
+		end
+
 		local tCurrentQuestLogQuestsTable = {}
 		local numEntries = GetNumQuestLogEntries()
 		if (numEntries > 0) then
@@ -1321,6 +1345,8 @@ function SkuQuest:MenuBuilder(aParentEntry)
 						local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {vS}, SkuGenericMenuItem)
 						tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
 							SkuOptions.currentMenuPosition.textFull = GetQuestDataStringFromDB(tIdTable[vS])
+
+
 						end
 						CreateQuestSubmenu(tNewSubMenuEntry2, tIdTable[vS])--iS)
 						tcount = tcount + 1

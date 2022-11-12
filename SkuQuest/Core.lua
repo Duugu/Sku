@@ -403,11 +403,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:GetTTSText(aQuestID)
-
---dprint("============================")
-	--if 1 == 1 then return end
-
-
 	local questID = aQuestID--SkuQuest.SelectedQuest
 	local id = questID - FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
 
@@ -440,14 +435,14 @@ function SkuQuest:GetTTSText(aQuestID)
 	--questDescription = questDescription:gsub("[\n\r]", " ")
 	questTag = questTag or ""
 
-	local tText = ""
+	--local tText = ""
 	local tSections = {}
 	local tTextObjectives = ""
 	local tTextFailedCompleted = ""
 	local tTextProgresss = ""
 
 	if isHeader then
-		tText = L["Nr: "]..SkuQuest.SelectedQuest.."\r\n\r\n"..L["Zone: "]..questLogTitleText
+		--tText = L["Nr: "]..SkuQuest.SelectedQuest.."\r\n\r\n"..L["Zone: "]..questLogTitleText
 		table.insert(tSections, SkuQuest.SelectedQuest..L[" Zone "]..questLogTitleText)
 	else
 		if ( isComplete and isComplete < 0 ) then
@@ -465,7 +460,7 @@ function SkuQuest:GetTTSText(aQuestID)
 
 		local numObjectives = GetNumQuestLeaderBoards()
 
-		tText = tText.."\r\n".."numObjectives: "..numObjectives
+		--tText = tText.."\r\n".."numObjectives: "..numObjectives
 		--table.insert(tSections, "numObjectives: "..numObjectives)
 
 		for i=1, numObjectives, 1 do
@@ -538,17 +533,26 @@ function SkuQuest:GetTTSText(aQuestID)
 					--dprint("Rew ---- "..i)
 					--dprint(link)
 					local function EnumerateTooltipLines_helper(...)
+						local tEffectiveILvl
+						if itemLink then
+							tEffectiveILvl = GetDetailedItemLevelInfo(itemLink)
+						end
+						local tCounter = 1
 						for x = 1, select("#", ...) do
 							local region = select(x, ...)
 							if region and region:GetObjectType() == "FontString" then
 								local text = region:GetText() -- string or nil
 								if text then
+									if tCounter == 2 and tEffectiveILvl then
+										tTtipText = tTtipText..L["Item Level"]..": "..tEffectiveILvl.."\r\n"
+									end
 									if text == _G["QuestInfoRewardsFrameQuestInfoItem"..i.."Name"]:GetText() then
 										tTtipText = tTtipText..i..": "..text.."\r\n"
 										tTtipText = tTtipText..itemRarity.."\r\n"
 									else
 										tTtipText = tTtipText..text.."\r\n"
 									end
+									tCounter = tCounter + 1
 								end
 							end
 						end
@@ -602,31 +606,57 @@ function SkuQuest:GetTTSText(aQuestID)
 			end
 		end
 
-		tText = "\r\n"..L["Nr: "]..SkuQuest.SelectedQuest.."\r\n\r\n"
+		--tText = "\r\n"..L["Nr: "]..SkuQuest.SelectedQuest.."\r\n\r\n"
 		local tTemptext = ""
 		--table.insert(tSections, "Nr: "..SkuQuest.SelectedQuest)
 		if tTextFailedCompleted then
-			tText = tText..L["Titel: "]..questLogTitleText.." ("..tTextFailedCompleted..")\r\n\r\n"
+			--tText = tText..L["Titel: "]..questLogTitleText.." ("..tTextFailedCompleted..")\r\n\r\n"
 			--table.insert(tSections, "Titel: "..questLogTitleText.." ("..tTextFailedCompleted..")")
 			tTemptext = tTemptext..questLogTitleText.." ("..tTextFailedCompleted..")"
 		else
-			tText = tText..L["Titel: "]..questLogTitleText.."\r\n\r\n"
+			--tText = tText..L["Titel: "]..questLogTitleText.."\r\n\r\n"
 			--table.insert(tSections, "Titel: "..questLogTitleText)
 			tTemptext = tTemptext..questLogTitleText
 		end
 		table.insert(tSections, tTemptext)
-		tText = tText..L["Level: "]..level.."\r\n\r\n"
+
+		if questID and SkuDB.questDataTBC[questID] then
+			if SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData] then
+				--table: {{isBlacklist, {blacklistComments}}, {extraComments}}
+				local tTemptext = ""
+				if SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData][1][1] == true then
+					tTemptext = L["Warning: This quest is blacklisted"]
+					if SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData][1][2] then
+						for _, blacklistComment in pairs(SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData][1][2][Sku.Loc]) do
+							tTemptext = tTemptext.."\r\n"..blacklistComment
+						end
+					end
+				end
+				if SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData][2] then
+					if tTemptext ~= "" then
+						tTemptext = tTemptext.."\r\n"
+					end
+					tTemptext = tTemptext..L["Sku quest comments:"]
+					for _, skuComment in pairs(SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData][2][Sku.Loc]) do
+						tTemptext = tTemptext.."\r\n"..skuComment
+					end
+				end
+				table.insert(tSections, tTemptext)
+			end
+		end
+
+		--tText = tText..L["Level: "]..level.."\r\n\r\n"
 		table.insert(tSections, L["Level "]..level)
 		--tText = tText.."Tag: "..questTag.."\r\n\r\n"
 		if tTextProgresss ~= "" then
-			tText = tText..L["Fortschritt:\r\n"]..tTextProgresss.."\r\n\r\n"
+			--tText = tText..L["Fortschritt:\r\n"]..tTextProgresss.."\r\n\r\n"
 			table.insert(tSections, L["Fortschritt\r\n"]..tTextProgresss)
 		end
 		if table.getn(tRewardsText) > 0 then
-			tText = tText..L["Belohnungen:\r\n"]
+			--tText = tText..L["Belohnungen:\r\n"]
 			local tmpText = L["Belohnungen\r\n"]
 			for y = 1, table.getn(tRewardsText) do
-				tText = tText..y..". "..tRewardsText[y].."\r\n"
+				--tText = tText..y..". "..tRewardsText[y].."\r\n"
 				tmpText = tmpText..y..". "..tRewardsText[y].."\r\n"
 				--dprint(y, tRewardsText[y])
 			end
@@ -637,10 +667,10 @@ function SkuQuest:GetTTSText(aQuestID)
 		end
 
 
-		tText = tText..L["Ziele:\r\n"]..questObjectives.."\r\n"
+		--tText = tText..L["Ziele:\r\n"]..questObjectives.."\r\n"
 		table.insert(tSections, L["Ziele\r\n"]..questObjectives)
 		-- Die Belohnungen mit Nummerierung - Kopf, Leder, RÃ¼stung, Stats (+1 Int, +2 Ausdauer) in textform
-		tText = tText..L["Questtext:\r\n"]..questDescription.."\r\n\r\n"
+		--tText = tText..L["Questtext:\r\n"]..questDescription.."\r\n\r\n"
 		table.insert(tSections, L["Questtext\r\n"]..questDescription)
 	end
 

@@ -120,9 +120,12 @@ function TooltipLines_helper(...)
    local tQualityString = nil
 
 	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
+	local tEffectiveILvl
+
 	if not ItemLink then
 		itemName, ItemLink = GameTooltip:GetItem()
 	end
+
 	if ItemLink then
       for x = 0, #ITEM_QUALITY_COLORS do
          local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
@@ -135,8 +138,10 @@ function TooltipLines_helper(...)
             end
          end
       end
+		tEffectiveILvl = GetDetailedItemLevelInfo(ItemLink)
    end
 
+	local tCounter = 1
 	local tHasTextFlag = false
 	local rText = ""
    for i = 1, select("#", ...) do
@@ -144,12 +149,17 @@ function TooltipLines_helper(...)
 		if region and region:GetObjectType() == "FontString" then
 			local text = region:GetText() -- string or nil
 			if text then
+				if tCounter == 2 and tEffectiveILvl then
+					rText = rText..L["Item Level"]..": "..tEffectiveILvl.."\r\n"
+				end
+
             if tHasTextFlag == false and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
                rText = rText..text.." ("..tQualityString..")\r\n"
             else
 				   rText = rText..text.."\r\n"
             end
 				tHasTextFlag = true
+				tCounter = tCounter + 1
 			end
 		end
 	end

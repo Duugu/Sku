@@ -2594,7 +2594,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aReset bool reset queue
-function SkuOptions:VocalizeCurrentMenuName(aReset)
+function SkuOptions:VocalizeCurrentMenuName(aReset, aReturnAsString)
 	--print("--VocalizeCurrentMenuName", aReset, debugstack())
 	
 	if aReset == nil then aReset = true end
@@ -2672,7 +2672,11 @@ function SkuOptions:VocalizeCurrentMenuName(aReset)
 
 	--print("SkuOptions:VocalizeMultipartString", tFinalString, aReset, true, nil, nil, SkuOptions.currentMenuPosition.ttsEngine, SkuOptions.currentMenuPosition.vocalizeAsIs)
 
-	SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs)
+	if aReturnAsString then
+		return tFinalString
+	else
+		SkuOptions:VocalizeMultipartString(tFinalString, aReset, true, nil, nil, 2, SkuOptions.currentMenuPosition.vocalizeAsIs)
+	end
 
 	--debug as text
 	local tBread = SkuOptions.currentMenuPosition.name

@@ -982,6 +982,133 @@ local SkuQuestFixesAlliance = {
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 local SkuQuestFixesSKU = {
+    --[[
+    [11252] = {
+        [questKeys.skuData] = {{true, {"blacklist Comment 1", "blacklist Comment 2",...}}, {"extra Comment 1", "extra Comment 2", "extra Comment 3",...}},
+    },
+    ]]
+    [11292] = {[questKeys.skuData] = {
+        {
+            nil, 
+            nil,
+        },
+        {
+            enUS = {"search for trapped animal waypoints"},
+            deDE = {"suche nach gefangenes tier wegpunkte"},
+        }
+    },},
+    [11460] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {"This chain of 4 quests is extremly annoing and provides no mentionable rewards.", "The final quest is impossible without sighted help at your computer (other players in party will not help)"},
+                deDE = {"Diese Kette aus 4 Quests ist extrem mühsam und hat keine erwähnenswerten Belohnungen.", "Die vierte Quest kann nicht ohne sehende Hilfe direkt an deinem Computer abgeschlossen werden (andere Spieler in Gruppe reicht nicht)."},
+            }
+        },
+        {
+        nil
+        },
+    },},
+    [11188] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {"requires sighted help"},
+                deDE = {"sehende mitspieler erforderlich"},
+            }
+        },
+        {
+        nil
+        },
+    },},
+    [11153] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {"requires sighted help"},
+                deDE = {"sehende mitspieler erforderlich"},
+            }
+        },
+        {
+        nil
+        },
+    },},
+
+    [11494] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {"incluses vehicles. extremly difficult."},
+                deDE = {"mit fahrzeugen. extrem schwierig."},
+            }
+        },
+        {
+        nil
+        },
+    },},
+    [11421] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {"requires sighted help"},
+                deDE = {"sehende mitspieler erforderlich"},
+            }
+        },
+        {
+        nil
+        },
+    },},    
+    [11434] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {"requires sighted help."},
+                deDE = {"sehende mitspieler erforderlich"},
+            }
+        },
+        {
+        nil
+        },
+    },},    
+    [11472] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {"requires sighted help."},
+                deDE = {"sehende mitspieler erforderlich"},
+            }
+        },
+        {
+        nil
+        },
+    },},  
+    [11519] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {"requires sighted help."},
+                deDE = {"sehende mitspieler erforderlich"},
+            }
+        },
+        {
+        nil
+        },
+    },},      
+--[[
+        [] = {[questKeys.skuData] = {
+        {
+            true, 
+            {
+                enUS = {""},
+                deDE = {""},
+            }
+        },
+        {
+        nil
+        },
+    },},
+]]
+
 }
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------

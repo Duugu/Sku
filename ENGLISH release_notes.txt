@@ -3,6 +3,19 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.19
+	- Control + Shift + Alt + F5 to F8 is now updating the quick waypoint with the position of the party member and auto-starting a close route to that waypoint.
+	- Tried to fix some issues with chat line context menu and Battle.net names. No idea if that worked.
+	- Fixed an auction house bug with buying/bidding via Auctions > auctions from full scan
+	- Quests now can be flagged as "blacklisted". Blacklisted quests are impossible to do for blind players or only with sighted help. The blacklisted flag and optional details on the cause are shown in all quest tooltips/details and in accept dialogs.
+	- Quests now can have extra sku comments. Those comments contain information that you should know to complete the quest. The sku extra comments are shown in all quest tooltips/details.
+	- Added the item level to item tooltips
+	- Added a new Sku key binding: stop following route or waypoint. Default: not bound
+	- Added a lot of map fixes for quest in howling fjord
+	- Added blacklist flag for some quest in howling fjord
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.18
 	Core
 	- Achievements and Statistics frame added: Core > Achievements

@@ -34,6 +34,8 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 
 	local tQualityString = nil
 	local itemName, ItemLink = tTooltipObj:GetItem()
+	local tEffectiveILvl
+
 	if not itemName then
 		itemName, ItemLink = tTooltipObj:GetSpell()
 	end
@@ -50,6 +52,7 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 				end
 			end
 		end
+		tEffectiveILvl = GetDetailedItemLevelInfo(ItemLink)
 	end
 
 	local tTooltipText = ""
@@ -61,6 +64,9 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 			if text then
 				if tLineCounter == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
 					tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
+				elseif tLineCounter == 2 and tEffectiveILvl then
+					tTooltipText = tTooltipText..L["Item Level"]..": "..tEffectiveILvl.."\r\n"
+					tTooltipText = tTooltipText..text.."\r\n"
 				else
 					tTooltipText = tTooltipText..text.."\r\n"
 				end
@@ -118,7 +124,8 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 
 			local tQualityString = nil
 			local itemName, ItemLink = GameTooltip:GetItem()
-		
+			local tEffectiveILvl
+
 			if ItemLink then
 				for x = 0, #ITEM_QUALITY_COLORS do
 					local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
@@ -131,6 +138,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 						end
 					end
 				end
+				tEffectiveILvl = GetDetailedItemLevelInfo(ItemLink)
 			end
 
 			local tTooltipText = ""
@@ -142,6 +150,9 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 					if text then
 						if tLineCounter == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
 							tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
+						elseif tLineCounter == 2 and tEffectiveILvl then
+							tTooltipText = tTooltipText..L["Item Level"]..": "..tEffectiveILvl.."\r\n"
+							tTooltipText = tTooltipText..text.."\r\n"
 						else
 							tTooltipText = tTooltipText..text.."\r\n"
 						end
@@ -3924,15 +3935,27 @@ function SkuCore:GossipFrame(aParentChilds)
 		[132048] = L["Accepted Quest"],
 		[132049] = L["Available Quest"],
 	}
-
 	for x = 1, GossipFrame.buttonIndex - 1 do
 		local tFrameName = "GossipTitleButton"..x
 		if _G[tFrameName] then
 			if _G[tFrameName]:IsShown() == true  then
 				if _G[tFrameName]:GetText() then
 					local tFriendlyName = SkuChat:Unescape(_G[tFrameName]:GetText())
+					local tBl = ""
+					for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
+						if v[1] == tFriendlyName then
+							if SkuDB.questDataTBC[i][SkuDB.questKeys.skuData] then
+								if SkuDB.questDataTBC[i][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[i][SkuDB.questKeys.skuData][1][1] == true then
+									tBl = L["Blacklisted"]
+									break
+								end
+							end
+						end
+					end					
+					tFriendlyName = tFriendlyName..tBl
+
 					if _G["GossipTitleButton"..x.."GossipIcon"]:IsShown() == true then
-						tFriendlyName = (tIconStrings[_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID()] or "").." "..SkuChat:Unescape(_G[tFrameName]:GetText())
+						tFriendlyName = (tIconStrings[_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID()] or "").." "..SkuChat:Unescape(_G[tFrameName]:GetText()).." "..tBl
 					end
 					local tText, tFullText = "", ""
 					if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
@@ -4463,11 +4486,22 @@ function SkuCore:QuestFrame(aParentChilds)
 
 			local tDetailChilds = aParentChilds[tFriendlyName].childs
 			local dtc = { _G["QuestDetailScrollChildFrame"]:GetRegions() }
-
 			local tFrameName = "QuestInfoTitleHeader"
 			if _G[tFrameName] then
 				local tText = _G[tFrameName]:GetText()
 				if tText then
+
+					for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
+						if v[1] == tText then
+							if SkuDB.questDataTBC[i][SkuDB.questKeys.skuData] then
+								if SkuDB.questDataTBC[i][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[i][SkuDB.questKeys.skuData][1][1] == true then
+									tText = tText.." "..L["Blacklisted"]
+									break
+								end
+							end
+						end
+					end
+
 					local tFriendlyName = tText
 					local tFrst, tFll = SkuCore:ItemName_helper(tText)
 					table.insert(tDetailChilds, tFriendlyName)

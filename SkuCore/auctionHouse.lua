@@ -678,6 +678,8 @@ function SkuCore:AuctionHouseMenuBuilder()
       --auctions from full scan 
       tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["auctions from full scan"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
+      tNewMenuEntry.isSelect = true
+
       tNewMenuEntry.BuildChildren = function(self)
          --categories
          SkuCore:AuctionHouseResetQuery()
@@ -1048,6 +1050,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, subCategoryIndex, subSubCategoryIndex)
+   --print("AuctionHouseBuildItemFullScanDBMenu", categoryIndex, subCategoryIndex, subSubCategoryIndex)
    local classID, subClassID, inventoryType
    if categoryIndex and subCategoryIndex and subSubCategoryIndex then
       classID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].subCategories[subSubCategoryIndex].filters[1].classID
@@ -1057,6 +1060,15 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
       classID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].classID
       subClassID = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].subClassID
       inventoryType = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters[1].inventoryType
+   end
+
+   local filterData
+   if categoryIndex and subCategoryIndex and subSubCategoryIndex then
+      filterData = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].subCategories[subSubCategoryIndex].filters
+   elseif categoryIndex and subCategoryIndex then
+      filterData = AuctionCategories[categoryIndex].subCategories[subCategoryIndex].filters
+   elseif categoryIndex then
+      filterData = AuctionCategories[categoryIndex].filters
    end
 
    if #FullScanResultsDB == 0 then
@@ -1229,7 +1241,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                                  tNewMenuEntryCOptionNo.data = self.parent.data
                                  tNewMenuEntryCOptionNo.OnAction = function(self, aValue, aName)
                                     local tData = self.data
-
+                                    tData.query = self.data
                                     SkuCore.QueryBuyData = tData
                                     SkuCore.QueryBuyAmount = x
                                     SkuCore.QueryBuyBought = 0
@@ -1246,7 +1258,7 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                                        SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality, 
                                        false, 
                                        true, 
-                                       tData.query.filterData,
+                                       nil,--tData.query.filterData,
                                        function()
 
                                        end            
@@ -1726,7 +1738,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_ITEM_LIST_UPDATE(aEventName)
    if SkuCore.QueryRunning == true and SkuCore.QueryCurrentType == "AUCTION_ITEM_LIST_UPDATE" then
-      dprint("AUCTION_ITEM_LIST_UPDATE")
+      dprint("AUCTION_ITEM_LIST_UPDATE", SkuCore.QueryBuyData)
 
       if SkuCore.QueryBuyData == nil then
          SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
@@ -1790,7 +1802,6 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          for x = 1, tBatch do
             local tNextEntry = #QueryResultsDB + 1
             QueryResultsDB[tNextEntry] = {GetAuctionItemInfo("list", x)}
-            --print(x, QueryResultsDB[tNextEntry][1], GetAuctionItemLink("list", x))
             QueryResultsDB[tNextEntry][21] = GetAuctionItemLink("list", x)
             QueryResultsDB[tNextEntry].query = SkuCore.QueryData
          end
@@ -1830,6 +1841,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
       local tResult = {GetAuctionItemInfo("list", x)}
       tResult[21] = GetAuctionItemLink("list", x)
       if tResult[14] == nil then
+         dprint("tResult[14] == nil return")
          return
       end
    end
@@ -1841,7 +1853,7 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
       local tFound = true
       for y = 1, 17 do
          dprint("COMPARE", x, y, tCurrentResult[y], SkuCore.QueryBuyData[y])
-         if tCurrentResult[y] ~= SkuCore.QueryBuyData[y] then
+         if tCurrentResult[y] ~= SkuCore.QueryBuyData[y] and y ~= 14 then
             tFound = false
          end
       end
@@ -1893,13 +1905,17 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                            SkuCore.QueryBuyAmount = nil
                            SkuCore.QueryBuyBought = nil
                            SkuCore:AuctionHouseResetQuery()
-                           SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], true, true, 0.1, nil, nil, nil, 1)
+                           SkuOptions.currentMenuPosition.parent.parent.parent.parent:OnSelect()
+                           C_Timer.After(0.65, function()
+                              SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"].." "..SkuOptions:VocalizeCurrentMenuName(), true, true, 0.1, nil, nil, nil, 1)
+                           end)
+      
                         end
                      end)
                   end,
                   function()
                      dprint("abgebrochen Nicht geboten", tItemIndex, tBidAmount)
-                     SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"].." test", true, true, 0.1, nil, nil, nil, 1)
+                     SkuOptions.Voice:OutputStringBTtts(L["abgebrochen Nicht geboten"], true, true, 0.1, nil, nil, nil, 1)
                   end
                )
                PlaySound(88)
@@ -1945,7 +1961,11 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                            SkuCore.QueryBuyAmount = nil
                            SkuCore.QueryBuyBought = nil
                            SkuCore:AuctionHouseResetQuery()
-                           SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], true, true, 0.1, nil, nil, nil, 1)
+                           SkuOptions.currentMenuPosition.parent.parent.parent.parent:OnSelect()
+                           C_Timer.After(0.65, function()
+                              SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"].." "..SkuOptions:VocalizeCurrentMenuName(), true, true, 0.1, nil, nil, nil, 1)
+                           end)
+
                         end
                      end)
                   end,
