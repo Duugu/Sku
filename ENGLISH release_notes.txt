@@ -13,6 +13,8 @@ Changes in Sku r31.19
 	- Added a new Sku key binding: stop following route or waypoint. Default: not bound
 	- Added a lot of map fixes for quest in howling fjord
 	- Added blacklist flag for some quest in howling fjord
+	- New aura attributes: Your target's health, Your target's resource, Your target is attackable
+	- New aura outputs: Your target's health, Your target's resource
 
 
 -------------------------------------------------------------------------------------------------------	
