@@ -1270,7 +1270,7 @@ L["Bearbeiten"]  = "Edit" --
 L["Exportieren"]  = "Export" --
 L["Löschen"]  = "Delete" --
 
-L["noch nicht implementiert"]  = "not yet implemented" --
+L["noch nicht implementiert"]  = "not implemented yet" --
 L["Aura Set importieren"]  = "Import Aura Set" --
 
 L["Gesamt"]  = "Overall" --
@@ -1790,3 +1790,19 @@ L["Sku quest comments:"] = "Sku quest comments:"
 L["Blacklisted"] = "Blacklisted"
 
 L["Item Level"] = "Item Level"
+
+L["Social"] = "Social"
+L["Contacts"] = "Contacts"
+L["Ignore List"] ="Ignore List"
+L["Friend List"] = "Friends List"
+L["Who"] = "Who"
+L["Notiz eingeben und Enter drücken"] = "add note and press enter"
+
+L["edit note"] = "edit note"
+L["remove"] = "remove"
+L["invite"] = "invite"
+L["whisper"] = "whisper"
+L["note"] = "note"
+L["last online"] = "last online"
+L["add friend"] = "add friend"
+L["name eingeben und Enter drücken"] = "enter name and press enter"

@@ -3,6 +3,13 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.20
+	- Added a basic social menu under Core > Social. At the moment only Core > Social > Contacts > Friend list is implemented. Every friend has more info in the tooltip and a sub menu with remove, invite, send whisper and take note. Ignore list, who, guild and other sub menus will be added later.
+	- Fixed a bug with Chat context menu "Whisper to sender".
+	- Fixed a bug with the Quest database > Start in Zone menu.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.19
 	- Control + Shift + Alt + F5 to F8 is now updating the quick waypoint with the position of the party member and auto-starting a close route to that waypoint.
 	- Tried to fix some issues with chat line context menu and Battle.net names. No idea if that worked.

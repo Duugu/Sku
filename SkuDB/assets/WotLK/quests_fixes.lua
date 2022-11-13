@@ -982,16 +982,8 @@ local SkuQuestFixesAlliance = {
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 local SkuQuestFixesSKU = {
-    --[[
-    [11252] = {
-        [questKeys.skuData] = {{true, {"blacklist Comment 1", "blacklist Comment 2",...}}, {"extra Comment 1", "extra Comment 2", "extra Comment 3",...}},
-    },
-    ]]
     [11292] = {[questKeys.skuData] = {
-        {
-            nil, 
-            nil,
-        },
+        nil,
         {
             enUS = {"search for trapped animal waypoints"},
             deDE = {"suche nach gefangenes tier wegpunkte"},
@@ -1005,9 +997,7 @@ local SkuQuestFixesSKU = {
                 deDE = {"Diese Kette aus 4 Quests ist extrem mühsam und hat keine erwähnenswerten Belohnungen.", "Die vierte Quest kann nicht ohne sehende Hilfe direkt an deinem Computer abgeschlossen werden (andere Spieler in Gruppe reicht nicht)."},
             }
         },
-        {
-        nil
-        },
+        nil,
     },},
     [11188] = {[questKeys.skuData] = {
         {
@@ -1017,9 +1007,7 @@ local SkuQuestFixesSKU = {
                 deDE = {"sehende mitspieler erforderlich"},
             }
         },
-        {
-        nil
-        },
+        nil,
     },},
     [11153] = {[questKeys.skuData] = {
         {
@@ -1029,9 +1017,7 @@ local SkuQuestFixesSKU = {
                 deDE = {"sehende mitspieler erforderlich"},
             }
         },
-        {
-        nil
-        },
+        nil,
     },},
 
     [11494] = {[questKeys.skuData] = {
@@ -1042,9 +1028,7 @@ local SkuQuestFixesSKU = {
                 deDE = {"mit fahrzeugen. extrem schwierig."},
             }
         },
-        {
-        nil
-        },
+        nil,
     },},
     [11421] = {[questKeys.skuData] = {
         {
@@ -1054,9 +1038,7 @@ local SkuQuestFixesSKU = {
                 deDE = {"sehende mitspieler erforderlich"},
             }
         },
-        {
-        nil
-        },
+        nil,
     },},    
     [11434] = {[questKeys.skuData] = {
         {
@@ -1066,9 +1048,7 @@ local SkuQuestFixesSKU = {
                 deDE = {"sehende mitspieler erforderlich"},
             }
         },
-        {
-        nil
-        },
+        nil,
     },},    
     [11472] = {[questKeys.skuData] = {
         {
@@ -1078,9 +1058,7 @@ local SkuQuestFixesSKU = {
                 deDE = {"sehende mitspieler erforderlich"},
             }
         },
-        {
-        nil
-        },
+        nil,
     },},  
     [11519] = {[questKeys.skuData] = {
         {
@@ -1090,25 +1068,8 @@ local SkuQuestFixesSKU = {
                 deDE = {"sehende mitspieler erforderlich"},
             }
         },
-        {
-        nil
-        },
+        nil,
     },},      
---[[
-        [] = {[questKeys.skuData] = {
-        {
-            true, 
-            {
-                enUS = {""},
-                deDE = {""},
-            }
-        },
-        {
-        nil
-        },
-    },},
-]]
-
 }
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------

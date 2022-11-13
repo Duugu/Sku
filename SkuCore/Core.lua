@@ -229,6 +229,7 @@ function SkuCore:OnInitialize()
 	SkuCore:RangeCheckOnInitialize()
 	SkuCore:AqOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
+	SkuCore:FriendsOnInitialize()
 	SkuCore:AchievementsOnInitialize()
 	SkuCore:GameWorldObjectsOnInitialize()
 	SkuCore:TutorialOnInitialize()
@@ -2288,7 +2289,7 @@ local friendlyFrameNames = {
 	["LFGListingFrame"] = L["Looking for group"],
 	["LFGBrowseFrame"] = L["Looking for group"],
 	["RolePollPopup"] = L["Role Poll"],
-	["FriendsFrame"] = L["Friends"],
+	["FriendsFrame"] = L["Social"],
 	["TradeFrame"] = L["Trade"],
 	--["GameMenuFrame"] = L["Game Menu"],
 	--["MainMenuBar"] = "",

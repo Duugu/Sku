@@ -242,7 +242,7 @@ L["Honor"] = "Ehre"  -- noun  menu entry
 L["Bagnon Taschen"] = "Bagnon Taschen"  -- noun  menu entry
 L["Spellbook"] = "Zauberbuch"  -- noun  menu entry
 L["Player Talents"] = "Spieler Talente"  -- noun  menu entry
-L["Friends"] = "Geselligkeit"  -- noun  menu entry
+L["Friends"] = "Freunde"  -- noun  menu entry
 L["Trade"] = "Handeln"  -- noun  menu entry
 L["Game Menu"] = "Spielmenü"  -- noun  menu entry
 L["Bagnon Bank"] = "Bagnon Bank"  -- noun  menu entry
@@ -1787,3 +1787,19 @@ L["Sku quest comments:"] = "Sku Quest Kommentare:"
 L["Blacklisted"] = "Blacklisted"
 
 L["Item Level"] = "Gegenstandslevel"
+
+L["Social"] = "Geselligkeit"
+L["Contacts"] = "Kontakte"
+L["Ignore List"] ="Ignore Liste"
+L["Friend List"] = "Freundesliste"
+L["Who"] = "Wer"
+L["Notiz eingeben und Enter drücken"] = "Notiz eingeben und Enter drücken"
+
+L["edit note"] = "notiz bearbeiten"
+L["remove"] = "entfernen"
+L["invite"] = "einladen"
+L["whisper"] = "flüstern"
+L["note"] = "notiz"
+L["last online"] = "zuletzt online"
+L["add friend"] = "freund hinzufügen"
+L["name eingeben und Enter drücken"] = "name eingeben und eingabe drücken"

@@ -406,7 +406,7 @@ for category, sublist in pairs(SkuChatCHAT_CATEGORY_LIST) do
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function MaskBattleNetNames(aString)
+function MaskBattleNetNames(aString)
 	if string.find(aString, "|K") then
 		aString = string.gsub(aString, "|K", "$skuk1")
 		aString = string.gsub(aString, "|k", "$skuk2")
@@ -1684,7 +1684,11 @@ function SkuChat:OnInitialize()
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["whisper sender"]}, SkuGenericMenuItem)
 					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
-						SkuChat:SetEditboxToCustom(tLineData.messageTypeGroup, MaskBattleNetNames(tLineData.arg2), "")
+						if tLineData.messageTypeGroup ~= "BN_WHISPER" then
+							SkuChat:SetEditboxToCustom("WHISPER", MaskBattleNetNames(tLineData.arg2), "")
+						else
+							SkuChat:SetEditboxToCustom(tLineData.messageTypeGroup, MaskBattleNetNames(tLineData.arg2), "")
+						end
 						C_Timer.After(0.01, function() CloseChatMenuHelper() end)
 					end
 				end
@@ -1763,7 +1767,7 @@ function SkuChat:OnInitialize()
 					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
 						PlaySound(88)
-						SkuOptions.Voice:OutputStringBTtts("Notiz eingeben und Enter drücken", true, true, 0.2, nil, nil, nil, 2)
+						SkuOptions.Voice:OutputStringBTtts(L["Notiz eingeben und Enter drücken"], true, true, 0.2, nil, nil, nil, 2)
 						SkuOptions:EditBoxShow("", function(self)
 							if tLineData.arg2 and self:GetText() then
 								C_FriendList.AddFriend(tLineData.arg2, self:GetText())

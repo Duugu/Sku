@@ -622,7 +622,6 @@ function SkuQuest:GetTTSText(aQuestID)
 
 		if questID and SkuDB.questDataTBC[questID] then
 			if SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData] then
-				--table: {{isBlacklist, {blacklistComments}}, {extraComments}}
 				local tTemptext = ""
 				if SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[questID][SkuDB.questKeys.skuData][1][1] == true then
 					tTemptext = L["Warning: This quest is blacklisted"]

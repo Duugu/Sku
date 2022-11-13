@@ -364,7 +364,7 @@ function SkuGetCoinText(aCopper, aShort, aVeryShort)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function EpochValueHelper(aValue)
+function SkuEpochValueHelper(aValue)
    aValue = GetServerTime() - aValue
 
    if aValue < 60 then
