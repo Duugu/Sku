@@ -15,12 +15,15 @@ DEUTSCH - Erste Schritte:<br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
 
 *Updates for sighted players:* <br>
-- [SkuMapper r2.2](https://github.com/Duugu/SkuMapper/releases/download/r2.2/SkuMapper-r2.2-wrath.zip) (Oct 8th, 2022), mapping addon for sighted players<br>
+- [SkuMapper r2.3](https://github.com/Duugu/SkuMapper/releases/download/r2.3/SkuMapper-r2.3-wrath.zip) (Nov 13th, 2022), mapping addon for sighted players<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in SkuMapper r2.3
+- There is a new input box to enter filter terms for waypoints. Found waypoints are shown in white with double size.
+	
 ## Changes in Sku r31.19
 - Control + Shift + Alt + F5 to F8 is now updating the quick waypoint with the position of the party member and auto-starting a close route to that waypoint.
 - Tried to fix some issues with chat line context menu and Battle.net names. No idea if that worked.
