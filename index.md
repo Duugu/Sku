@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.19](https://github.com/Duugu/Sku/releases/download/r31.19/Sku-r31.19-wrath.zip) (Nov 12th, 2022)<br>
+- [Sku r31.20](https://github.com/Duugu/Sku/releases/download/r31.20/Sku-r31.20-wrath.zip) (Nov 13th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -21,6 +21,11 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.20
+- Added a basic social menu under Core > Social. At the moment only Core > Social > Contacts > Friend list is implemented. Every friend has more info in the tooltip and a sub menu with remove, invite, send whisper and take note. Ignore list, who, guild and other sub menus will be added later.
+- Fixed a bug with Chat context menu "Whisper to sender".
+- Fixed a bug with the Quest database > Start in Zone menu.
+	
 ## Changes in SkuMapper r2.3
 - There is a new input box to enter filter terms for waypoints. Found waypoints are shown in white with double size.
 	
