@@ -21,7 +21,7 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
-Changes in Sku r31.20
+## Changes in Sku r31.20
 - Added a basic social menu under Core > Social. At the moment only Core > Social > Contacts > Friend list is implemented. Every friend has more info in the tooltip and a sub menu with remove, invite, send whisper and take note. Ignore list, who, guild and other sub menus will be added later.
 - Fixed a bug with Chat context menu "Whisper to sender".
 - Fixed a bug with the Quest database > Start in Zone menu.
