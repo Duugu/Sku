@@ -1317,6 +1317,18 @@ SkuAuras.attributes = {
          "false",
       },
    },
+   critical = {
+      tooltip = "Whether the damage or heal was critical",
+      friendlyName = "Critical",
+      type = "BINARY",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return SkuAuras:ProcessEvaluate(aEventData.critical, aOperator, aValue == "true")
+      end,
+      values = {
+         "true",
+         "false",
+      },
+   },
    tSourceUnitIDCannAttack = {
       tooltip = L["Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Quell Einheit angreifbar"],

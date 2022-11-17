@@ -800,6 +800,12 @@ if tEventData[2] ~= "KEY_PRESS" then
 			if string.find(tEventData[CleuBase.subevent], "_MISSED") then
 				--dprint("  ","----------- _MISSED -----------", tEventData[12])
 				tEvaluateData.missType = tEventData[12]
+			elseif tEventData[CleuBase.subevent] == "SWING_DAMAGE" then
+				tEvaluateData.critical = tEventData[18]
+			elseif string.find(tEventData[CleuBase.subevent], "_DAMAGE") then
+				tEvaluateData.critical = tEventData[21]
+			elseif string.find(tEventData[CleuBase.subevent], "_HEAL") then
+				tEvaluateData.critical = tEventData[18]
 			end
 
 
