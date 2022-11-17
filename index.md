@@ -9,6 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [SkuAudioData r35](https://github.com/Duugu/SkuAudioData/releases/download/r32/SkuAudioData-r32-bcc.zip) (Nov 17th, 2022)<br>
+- [SkuAudioData_en r8](https://github.com/Duugu/SkuAudioData_en/releases/download/r5/SkuAudioData_en-r5-bcc.zip) (Nov 17th, 2022)<br>
 - [Sku r31.21](https://github.com/Duugu/Sku/releases/download/r31.21/Sku-r31.21-wrath.zip) (Nov 17th, 2022)<br>
 
 *Older updates:* <br>
