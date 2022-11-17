@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.20](https://github.com/Duugu/Sku/releases/download/r31.20/Sku-r31.20-wrath.zip) (Nov 13th, 2022)<br>
+- [Sku r31.21](https://github.com/Duugu/Sku/releases/download/r31.21/Sku-r31.21-wrath.zip) (Nov 17th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -21,6 +21,15 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.21
+- Removed some currency icon links in the statistics menu.
+- Core > Social menu will now auto-open on the wow default key for Open Social Pane (O).
+- Added 6 more menu quick access key binds (5-10). Default: bound to nothing.
+- Sorted the list of sku key binds.
+- Added the description to the selected enchantments tooltip.
+- Added a "Have materials" filter checkbox to the crafting/profession menus. Default: disabled.
+- Added a "Filter" option to enter filter terms to the crafting/profession menus. Do a left click on "Filter" and just follow the instructions.
+
 ## Changes in Sku r31.20
 - Added a basic social menu under Core > Social. At the moment only Core > Social > Contacts > Friend list is implemented. Every friend has more info in the tooltip and a sub menu with remove, invite, send whisper and take note. Ignore list, who, guild and other sub menus will be added later.
 - Fixed a bug with Chat context menu "Whisper to sender".
