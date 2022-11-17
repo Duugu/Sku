@@ -78,8 +78,7 @@ function SkuCore:AchievementsInsertStatistic(aParent, aCatId, aAvmtId)
       if value == "--" then
          value = L["NA"]
       end
-      local tName = name..": "..value
-      local tNewMenuEntryAvmt = SkuOptions:InjectMenuItems(aParent, {tName}, SkuGenericMenuItem)
+      local tNewMenuEntryAvmt = SkuOptions:InjectMenuItems(aParent, {AchievementsCleanupQuantityString(name)..": "..AchievementsCleanupQuantityString(value)}, SkuGenericMenuItem)
       tNewMenuEntryAvmt.OnEnter = function(self, aValue, aName)
          SkuOptions.currentMenuPosition.textFull = tCriteriaString
       end

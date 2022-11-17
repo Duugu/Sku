@@ -1275,46 +1275,26 @@ function SkuOptions:CreateMainFrame()
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENADVGUIDE"].key then
 			SkuOptions:SlashFunc(L["short"]..","..L["SkuAdventureGuideMenuEntry"]..","..L["Wiki"]..","..L["Link History"])
 		end
-		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1"].key then
-			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1)
-		end
-		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2"].key then
-			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2)
-		end
-		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3"].key then
-			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3)
-		end
-		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4"].key then
-			SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4)
-		end
 
-		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key or a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key or a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key or a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key then
-			if self:IsVisible() then
-				local tTable = SkuOptions.currentMenuPosition
-				local tBread = SkuOptions.currentMenuPosition.name
-				while tTable.parent.name do
-					tTable = tTable.parent
-					tBread = tTable.name..","..tBread
+		for q = 1, 10 do
+			if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK"..q].key then
+				if SkuOptions.db.profile[MODULE_NAME].allModules["MenuQuickSelect"..q] and SkuOptions.db.profile[MODULE_NAME].allModules["MenuQuickSelect"..q] ~= "" then
+					SkuOptions:SlashFunc(L["short"]..","..SkuOptions.db.profile[MODULE_NAME].allModules["MenuQuickSelect"..q])
 				end
+			end
 
-				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key then
-					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect1 = tBread
-					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F9;"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
+			if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK"..q.."SET"].key then
+				if self:IsVisible() then
+					local tTable = SkuOptions.currentMenuPosition
+					local tBread = SkuOptions.currentMenuPosition.name
+					while tTable.parent.name do
+						tTable = tTable.parent
+						tBread = tTable.name..","..tBread
+					end
+	
+					SkuOptions.db.profile[MODULE_NAME].allModules["MenuQuickSelect"..q] = tBread
+					SkuOptions.Voice:OutputStringBTtts(L["SKU_KEY_MENUQUICK"..q]..";"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
 				end
-				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key then
-					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F10;"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
-					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect2 = tBread
-				end
-				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key then
-					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F11;"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
-					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect3 = tBread
-				end
-				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key then
-					SkuOptions.Voice:OutputStringBTtts(L["Shortcut"]..";F12;"..L["updated;to"]..";"..tBread, true, true, 0.3, nil, nil, nil, 2)
-					SkuOptions.db.profile[MODULE_NAME].allModules.MenuQuickSelect4 = tBread
-				end
-			else
-				SkuOptions.Voice:OutputStringBTtts(L["Impossible. Menu is not open."], true, true, 0.3, nil, nil, nil, 2)
 			end
 		end
 
@@ -1357,14 +1337,11 @@ function SkuOptions:CreateMainFrame()
 
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENADVGUIDE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENADVGUIDE"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK1SET"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK2SET"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK3SET"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK4SET"].key)
+
+	for q = 1, 10 do
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK"..q].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK"..q].key)
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK"..q.."SET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MENUQUICK"..q.."SET"].key)
+	end
 
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLNEED"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLNEED"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLGREED"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLGREED"].key)
@@ -1961,6 +1938,12 @@ function SkuOptions:CreateMenuFrame()
 		ClearOverrideBindings(UIParent)
 		PlaySound(89)
 
+		if _G["FriendsFrame"] then
+			if _G["FriendsFrame"]:IsVisible() == true then
+				--_G["QuestFrameDetailPanel"]:Hide()
+				_G["FriendsFrameCloseButton"]:GetScript("OnClick")(_G["FriendsFrameCloseButton"])
+			end
+		end		
 		if _G["CraftFrame"] then
 			if _G["CraftFrame"]:IsVisible() == true then
 				--_G["QuestFrameDetailPanel"]:Hide()

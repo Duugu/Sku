@@ -8,6 +8,13 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:FriendsOnInitialize()
    SkuCore:RegisterEvent("FRIENDLIST_UPDATE")
+   
+   hooksecurefunc(FriendsFrame, "Show", SkuCore.ONSHOW)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:ONSHOW()
+   SkuOptions:SlashFunc(L["short"]..",Core,"..L["Social"])
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

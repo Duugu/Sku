@@ -60,6 +60,20 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_STOPROUTEORWAYPOINT"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
 
+   ["SKU_KEY_MENUQUICK5"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK5SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK6"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK6SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK7"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK7SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK8"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK8SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK9"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK9SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK10"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_MENUQUICK10SET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   
+
    --["SKU_KEY_CHAT_LINEPREV"] = {key = "UP", object = "SkuChat", func = "OnEnable",},
    --["SKU_KEY_CHAT_LINENEXT"] = {key = "DOWN", object = "SkuChat", func = "OnEnable",},
    --["SKU_KEY_CHAT_TABPREV"] = {key = "LEFT", object = "SkuChat", func = "OnEnable",},

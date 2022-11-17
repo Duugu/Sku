@@ -2137,8 +2137,14 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
-			--dprint("Taste zuweisen 2 BuildChildren")
-			for tBindingConst, v in pairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds) do
+			local tSortedList = {}
+			for k, v in SkuSpairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds, function(t,a,b) 
+				return L[b] > L[a] end) do
+				tSortedList[#tSortedList+1] = k
+			end
+
+			for _, tBindingConst in pairs(tSortedList) do
+				local v = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[tBindingConst]
 				local tFriendlyKey1
 				if v.key == "" then
 					tFriendlyKey1 = L["nichts"]

@@ -2371,8 +2371,8 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 			textFull = "",
 			childs = {},
 			func = function()
-				C_Timer.After(0.5, function()
-					SkuOptions.Voice:OutputStringBTtts("input comment text and complete with escape", false, true, 0.8, true, nil, nil, 1, nil, nil, true)
+				C_Timer.After(0.8, function()
+					SkuOptions.Voice:OutputStringBTtts(L["input comment text and complete with escape"], false, true, 0.8, true, nil, nil, 1, nil, nil, true)
 				end)
 				if _G["LFGListingComment"] and LFGListingFrameCategoryView and LFGListingFrameCategoryView.CategoryButtons[1] then
 					LFGListingFrameCategoryView.CategoryButtons[1]:Click()
@@ -3281,6 +3281,79 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 		childs = {},
 	}
 
+	local tFrameName = ""
+	local tSearchText = TradeSkillFrameEditBox:GetText() or ""
+	local tFriendlyName = L["Filter"]
+	local tLabel = tFriendlyName
+	if tSearchText ~= "" and tSearchText ~= L["Search"] then
+		tLabel = tLabel.." = "..tSearchText
+	end
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Button",
+		obj = _G["TradeSkillFrameEditBox"],
+		textFirstLine = tLabel,
+		textFull = "",
+		childs = {},
+		func = function()
+			C_Timer.After(0.8, function()
+				SkuOptions.Voice:OutputStringBTtts(L["Enter search term and complete with enter or press escape to clear the search term"], true, true, 0.8, true, nil, nil, 1, nil, nil, true)
+			end)
+			if _G["TradeSkillFrameEditBox"] then
+				TradeSkillFrameEditBox:SetFocus()
+				TradeSkillFrameEditBox:HookScript("OnEscapePressed", function(self)
+					C_Timer.After(0.1, function()
+						PlaySound(89) 
+						TradeSkillFrameEditBox:SetText("")
+						SkuOptions.currentMenuPosition:OnUpdate()
+					end)
+
+				end)
+				TradeSkillFrameEditBox:HookScript("OnEnterPressed", function(self)
+					C_Timer.After(0.1, function()
+						PlaySound(89) 
+						SkuOptions.currentMenuPosition:OnUpdate()
+					end)
+
+				end)
+				
+			end
+		end,            
+		click = true,
+	}
+
+	local tFrameName = "TradeSkillFrameAvailableFilterCheckButton"
+	if _G[tFrameName] then
+		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
+			local tChecked = L["not checked"]
+			if _G[tFrameName]:GetChecked() == true then
+				tChecked = L["checked"]
+			end
+			local tFriendlyName = L["Have materials"]
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = _G[tFrameName],
+				textFirstLine = tFriendlyName.." ("..tChecked..")",
+				textFull = "",
+				childs = {},
+				func = function(self, aButton)
+					if self:GetChecked() == true then
+						self:SetChecked(false)
+					else
+						self:SetChecked(true)
+					end
+
+					self:GetScript("OnClick")(self, aButton)             
+				end,            
+				click = true,
+			}   
+		end
+	end
 
 	local tFrameName = "TradeSkillListScrollFrameScrollBarScrollUpButton"
 	if _G[tFrameName] then
@@ -3334,6 +3407,11 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 				if tCountText then
 					tFriendlyName = tFriendlyName.." "..tCountText
 				end
+
+				if tDifficulty == "subheader" or tDifficulty == "header" then
+					tFriendlyName = tFriendlyName.." ("..L["category"]..")"
+				end
+
 				local tText, tFullText = "", ""
 				if _G[tFrameName]:IsEnabled() == true then
 					table.insert(aParentChilds, tFriendlyName)
@@ -3350,10 +3428,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 					}   
 				end
 
-				if tDifficulty == "subheader" or tDifficulty == "header" then
-					aParentChilds[tFriendlyName].click = false
-					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..L["category"]..")"
-				else
+				if tDifficulty ~= "subheader" and tDifficulty ~= "header" then
 					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
 				end
 			end
@@ -3404,11 +3479,12 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	if _G["CraftCost"] and _G["CraftCost"]:GetText() then
 		tCost = SkuChat:Unescape(_G["CraftCost"]:GetText()) or ""
 	end
+]]	
 	local tDescription = ""
-	if _G["CraftDescription"] and _G["CraftDescription"]:GetText() then
-		tDescription = SkuChat:Unescape(_G["CraftDescription"]:GetText()) or ""
+	if _G["TradeSkillDescription"] and _G["TradeSkillDescription"]:GetText() then
+		tDescription = SkuChat:Unescape(_G["TradeSkillDescription"]:GetText()) or ""
 	end
-	]]
+	
 
 	local tReagents = ""
 	if _G["TradeSkillReagentLabel"] and _G["TradeSkillReagentLabel"]:IsVisible() == true then
@@ -3436,7 +3512,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 			type = "FontString",
 			obj = _G[tFrameName],
 			textFirstLine = tFriendlyName.."...",
-			textFull = tName..(("\r\n"..tRequirements) or "")..(("\r\n"..tReagents) or "")..(("\r\n"..L["gegenstand"]..":\r\n"..tSkillFullText) or ""),
+			textFull = tName..(("\r\n"..tRequirements) or "")..(("\r\n"..tReagents) or "")..(("\r\n"..L["gegenstand"]..":\r\n"..tSkillFullText) or "")..(("\r\n"..L["description"]..": "..tDescription) or ""),
 			childs = {},
 		}   
 	end
