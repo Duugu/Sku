@@ -746,6 +746,8 @@ if tEventData[2] ~= "KEY_PRESS" then
 			local tOverallResult = true
 			local tHasApplicableAttributes = false
 
+			local subevent = tEventData[CleuBase.subevent]
+
 			--build event related data to evaluate
 			local tEvaluateData = {
 				sourceUnitId = tSourceUnitID,
@@ -753,7 +755,7 @@ if tEventData[2] ~= "KEY_PRESS" then
 				destUnitId = tDestinationUnitID,
 				targetTargetUnitId = tTargetTargetUnitId,
 				destName = tEventData[CleuBase.destName],
-				event = tEventData[CleuBase.subevent],
+				event = subevent,
 				spellId = tEventData[CleuBase.spellId],
 				spellName = tEventData[CleuBase.spellName],
 				unitHealthPlayer = tEventData[35],
@@ -792,19 +794,19 @@ if tEventData[2] ~= "KEY_PRESS" then
 			_CAST_FAILED			failedType
 			]]
 
-			if string.find(tEventData[CleuBase.subevent], "_AURA_") then
+			if string.find(subevent, "_AURA_") then
 				tEvaluateData.auraType = tEventData[15]
 				tEvaluateData.auraAmount = tEventData[16]
 			end
 
-			if string.find(tEventData[CleuBase.subevent], "_MISSED") then
+			if string.find(subevent, "_MISSED") then
 				--dprint("  ","----------- _MISSED -----------", tEventData[12])
 				tEvaluateData.missType = tEventData[12]
-			elseif tEventData[CleuBase.subevent] == "SWING_DAMAGE" then
+			elseif subevent == "SWING_DAMAGE" then
 				tEvaluateData.critical = tEventData[18]
-			elseif string.find(tEventData[CleuBase.subevent], "_DAMAGE") then
+			elseif string.find(subevent, "_DAMAGE") then
 				tEvaluateData.critical = tEventData[21]
-			elseif string.find(tEventData[CleuBase.subevent], "_HEAL") then
+			elseif string.find(subevent, "_HEAL") then
 				tEvaluateData.critical = tEventData[18]
 			end
 
