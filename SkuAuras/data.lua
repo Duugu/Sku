@@ -362,7 +362,22 @@ SkuAuras.outputs = {
          end,
       },
    },
-
+   damageAmount = {
+      tooltip = "The amount of damage from a spell, melee, or ranged attack",
+      friendlyName = "Damage amount",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.damageAmount then
+               SkuOptions.Voice:OutputString(tEvaluateData.damageAmount, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.damageAmount then
+               print(tEvaluateData.damageAmount)
+            end
+         end,
+      },
+   },
    spellName = {
       tooltip = L["Der Name des Zaubers, der die Aura ausgelöst hat"],
       friendlyName = L["zauber name"],

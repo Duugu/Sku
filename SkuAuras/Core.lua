@@ -804,10 +804,14 @@ if tEventData[2] ~= "KEY_PRESS" then
 				tEvaluateData.missType = tEventData[12]
 			elseif subevent == "SWING_DAMAGE" then
 				tEvaluateData.critical = tEventData[18]
+				tEvaluateData.damageAmount = tEventData[12]
 			elseif string.find(subevent, "_DAMAGE") then
 				tEvaluateData.critical = tEventData[21]
+				tEvaluateData.damageAmount = tEventData[15]
 			elseif string.find(subevent, "_HEAL") then
 				tEvaluateData.critical = tEventData[18]
+				tEvaluateData.healAmount = tEventData[15]
+				tEvaluateData.overhealing = tEventData[16]
 			end
 
 
