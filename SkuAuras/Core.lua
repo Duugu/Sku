@@ -811,7 +811,10 @@ if tEventData[2] ~= "KEY_PRESS" then
 			elseif string.find(subevent, "_HEAL") then
 				tEvaluateData.critical = tEventData[18]
 				tEvaluateData.healAmount = tEventData[15]
-				tEvaluateData.overhealing = tEventData[16]
+				tEvaluateData.overhealingAmount = tEventData[16]
+				if tEvaluateData.healAmount > 0 then
+					tEvaluateData.overhealingPercentage = math.floor((tEvaluateData.overhealingAmount / tEvaluateData.healAmount) * 100)
+				end
 			end
 
 

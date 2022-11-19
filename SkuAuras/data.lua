@@ -394,6 +394,38 @@ SkuAuras.outputs = {
          end,
       },
    },
+   overhealingAmount = {
+      tooltip = "The amount of overhealing",
+      friendlyName = "OverhealingAmount",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.overhealingAmount then
+               SkuOptions.Voice:OutputString(tEvaluateData.overhealingAmount, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.overhealingAmount then
+               print(tEvaluateData.overhealingAmount)
+            end
+         end,
+      },
+   },
+   overhealingPercentage = {
+      tooltip = "How much of the healing amount was overhealing",
+      friendlyName = "Overhealing percentage",
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.overhealingPercentage then
+               SkuOptions.Voice:OutputString(tEvaluateData.overhealingPercentage, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.overhealingPercentage then
+               print(tEvaluateData.overhealingPercentage)
+            end
+         end,
+      },
+   },
    spellName = {
       tooltip = L["Der Name des Zaubers, der die Aura ausgelöst hat"],
       friendlyName = L["zauber name"],
