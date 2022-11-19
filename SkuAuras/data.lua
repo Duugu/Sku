@@ -363,8 +363,8 @@ SkuAuras.outputs = {
       },
    },
    damageAmount = {
-      tooltip = "The amount of damage from a spell, melee, or ranged attack",
-      friendlyName = "Damage amount",
+      tooltip = L["The amount of damage from a spell, melee, or ranged attack"],
+      friendlyName = L["Damage amount"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.damageAmount then
@@ -379,8 +379,8 @@ SkuAuras.outputs = {
       },
    },
    healAmount = {
-      tooltip = "The amount of healing",
-      friendlyName = "Healing amount",
+      tooltip = L["The amount of healing"],
+      friendlyName = L["Healing amount"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.healAmount then
@@ -395,8 +395,8 @@ SkuAuras.outputs = {
       },
    },
    overhealingAmount = {
-      tooltip = "The amount of overhealing",
-      friendlyName = "OverhealingAmount",
+      tooltip = L["The amount of overhealing"],
+      friendlyName = L["Overhealing amount"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.overhealingAmount then
@@ -411,8 +411,8 @@ SkuAuras.outputs = {
       },
    },
    overhealingPercentage = {
-      tooltip = "How much of the healing amount was overhealing",
-      friendlyName = "Overhealing percentage",
+      tooltip = L["How much of the healing amount was overhealing"],
+      friendlyName = L["Overhealing percentage"],
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.overhealingPercentage then
@@ -1381,8 +1381,8 @@ SkuAuras.attributes = {
       },
    },
    critical = {
-      tooltip = "Whether the damage or heal was critical",
-      friendlyName = "Critical",
+      tooltip = L["Whether the damage or heal was critical"],
+      friendlyName = L["Critical"],
       type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
          return SkuAuras:ProcessEvaluate(aEventData.critical, aOperator, aValue == "true")
@@ -1688,8 +1688,8 @@ SkuAuras.attributes = {
       values = zeroToOneHundred,
    },
    overhealingPercentage = {
-      tooltip = "How much of the healing amount was overhealing",
-      friendlyName = "Overhealing percentage",
+      tooltip = L["How much of the healing amount was overhealing"],
+      friendlyName = L["Overhealing percentage"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
          return aEventData.overhealingPercentage and
