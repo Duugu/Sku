@@ -34,7 +34,7 @@ DEUTSCH - Erste Schritte:<br>
 	- Zone Music No Delay: This immediately plays music when changing zones, and also stops random silence between music tracks when a music track for a zone finishes playing.
 - Fixed a bug with the minimap resource scanner (control + shift + r) where setting herbs to Off under Core > Options > resource scanning > Herbs were disabling the scans for mining nodes too.
 - Added gas resources to Core > Options > resource scanning.
-- There is a new experimental feature: notify on resources (mining nodes, herbs). If you are moving the feature is permanently scanning for resource that are popping up on the minimap. You are notified If there are new resources, and can then to the usual resource scan to get it.
+- There is a new experimental feature: notify on resources (mining nodes, herbs). If you are moving the feature is permanently scanning for resource that are popping up on the minimap. You are notified If there are new resources, and can then do the usual resource scan to get it.
 	- The default setting is Off. Enable it under core > options > resource scanning > notify on resources.
 	- There is a new key bind for this feature: core > sku key binds > bind key > toggle notify on resources
 	- It is scanning for the same resources that are enabled for the usual scans (core > options > resource scanning > mining/herbs).
