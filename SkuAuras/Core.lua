@@ -160,7 +160,8 @@ function SkuAuras:GetBestUnitId(aUnitGUID, aReturnAll)
 	end
 	checkUnit("target")
 	checkUnit("player")
-
+	checkUnit("pet")
+	
 	if aReturnAll then
 		return tUnitIds
 	end
