@@ -154,15 +154,8 @@ function SkuAuras:GetBestUnitId(aUnitGUID, aReturnAll)
 		end
 	end
 	if IsInGroup() then
-		for x = 1, 4 do 
+		for x = 0, 4 do 
 			checkUnit("party"..x)
-		end
-	end
-	if aUnitGUID == UnitGUID("player") and (UnitName("party1") or UnitName("raid1")) then
-		if not aReturnAll then
-			return "party0"
-		else
-			tUnitIds[#tUnitIds + 1] = "party0"
 		end
 	end
 	checkUnit("target")
