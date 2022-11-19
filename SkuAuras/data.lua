@@ -1687,6 +1687,16 @@ SkuAuras.attributes = {
       end,
       values = zeroToOneHundred,
    },
+   overhealingPercentage = {
+      tooltip = "How much of the healing amount was overhealing",
+      friendlyName = "Overhealing percentage",
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return aEventData.overhealingPercentage and
+             SkuAuras:ProcessEvaluate(aEventData.overhealingPercentage, aOperator, tonumber(aValue))
+      end,
+      values = zeroToOneHundred,
+   },
 
    spellId = {
       tooltip = L["Die Zauber-ID, die die Aura auslösen soll"],
