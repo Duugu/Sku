@@ -127,19 +127,19 @@ function SkuAuras:OnDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAuras:GetBestUnitId(aUnitName, aReturnAll)
+function SkuAuras:GetBestUnitId(aUnitGUID, aReturnAll)
 
-	if not aUnitName then
+	if not aUnitGUID then
 		if aReturnAll then return {} else return end
 	end
-	if aUnitName == "" then
+	if aUnitGUID == "" then
 		if aReturnAll then return {} else return end
 	end
 
 	local tUnitIds = {}
 
 	local function checkUnit(unit)
-		if aUnitName == UnitName(unit) then
+		if aUnitGUID == UnitGUID(unit) then
 			if not aReturnAll then
 				return unit
 			else
@@ -158,7 +158,7 @@ function SkuAuras:GetBestUnitId(aUnitName, aReturnAll)
 			checkUnit("party"..x)
 		end
 	end
-	if aUnitName == UnitName("player") and (UnitName("party1") or UnitName("raid1")) then
+	if aUnitGUID == UnitGUID("player") and (UnitName("party1") or UnitName("raid1")) then
 		if not aReturnAll then
 			return "party0"
 		else
@@ -392,22 +392,22 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			SkuAuras.UnitRepo[tUnitId].unitPower = tPower
 		end
 
-		if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= UnitGUID(tUnitId.."target") then
-			SkuAuras.UnitRepo[tUnitId].unitTargetName = UnitGUID(tUnitId.."target")
+		local unitTargetGUID = UnitGUID(tUnitId.."target")
+		if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= unitTargetGUID then
+			SkuAuras.UnitRepo[tUnitId].unitTargetName = unitTargetGUID
 
 			--dprint("ooooooooooooooo target change for ", tUnitId)
 			--dprint("changed to", UnitName(tUnitId.."target"))
 			if UnitName(tUnitId.."target") then
-				local tNewTargetUnitId = SkuAuras:GetBestUnitId(UnitName(tUnitId.."target"))
 				local tEventData = {
 					GetTime(),
 					"UNIT_TARGETCHANGE",
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
-					tNewTargetUnitId,
+					unitTargetGUID,
 					UnitName(tUnitId.."target"),
 					nil,
 					nil,
@@ -415,7 +415,6 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 					nil,
 					nil,
 				}
-				tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth
 				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)
 			end
 		end
@@ -428,11 +427,11 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 				GetTime(),
 				"UNIT_HEALTH",
 				nil,
-				tUnitId,
+				UnitGUID(tUnitId),
 				UnitName(tUnitId),
 				nil,
 				nil,
-				tUnitId,
+				UnitGUID(tUnitId),
 				UnitName(tUnitId),
 				nil,
 				nil,
@@ -450,11 +449,11 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 					GetTime(),
 					"UNIT_POWER",
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
@@ -475,11 +474,11 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 					GetTime(),
 					"UNIT_POWER",
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
@@ -642,8 +641,8 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		SkuOptions.db.char[MODULE_NAME].Auras = {}
 	end
 	--build non event related data to evaluate
-	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceName], true)
-	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destName], true)
+	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceGUID], true)
+	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destGUID], true)
 	if tDestinationUnitID and tDestinationUnitID[1] then
 		if tDestinationUnitID ~= "party0" then
 			tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID[1])
@@ -652,7 +651,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 
 	local tTargetTargetUnitId = {}
 	if UnitName("playertargettarget") then
-		tTargetTargetUnitId = SkuAuras:GetBestUnitId(UnitName("playertargettarget"), true)
+		tTargetTargetUnitId = SkuAuras:GetBestUnitId(UnitGUID("playertargettarget"), true)
 	end
 
 	if tSourceUnitID and tSourceUnitID[1] then
