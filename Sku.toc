@@ -1,9 +1,9 @@
 ## Interface: 30400
 ## Interface-Wrath: 30400
-## Title: Sku (31.21)
+## Title: Sku (31.22)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 31.21
+## Version: 31.22
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
 SkuAudioData\assets\SkuAudioDataLenIndex.lua
@@ -70,7 +70,7 @@ SkuDB\assets\WotLK\items.lua
 SkuDB\assets\WotLK\items_fixes.lua
 SkuDB\assets\WotLK\objects.lua
 SkuDB\assets\WotLK\objects_fixes.lua
-
+SkuDB\assets\WotLK\enchantIDs.lua
 
 SkuMob\Core.lua
 SkuMob\Options.lua

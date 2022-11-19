@@ -56,6 +56,7 @@ function SkuCore:CURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType,
       
       SkuCore.lastCursorUpdateFrame = SkuCore.gameWorldObjectsFrameCounter
    end
+   SkuCore:MinimapScannerCURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

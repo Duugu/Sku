@@ -3,6 +3,25 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.22
+	- Added weapon buffs (for example from shaman totems) to values for your buff/debuff aura conditions. Example aura to check if the player has shamans Windfury buffed: If your buff list (L) contains Windfury Weapon (Passive) then audio output single and sound brass 5. Weapon buffs are only working for the player. Not for your target.
+	- Added weapon buffs to the buff list on the overview page (shift + down)
+	- Added a new sub menu: Options > Options > Sound Settings. It has 5 different game sound settings. All are Off as default:
+		- Reverb: Enables reverb in certain areas that have reverb zones such as some indoors, underwater, etc.
+		- Positional Low Pass Filter: This cuts off highs from sounds as you get further away from them. It's a subtle change, but neat nonetheless.
+		- DSP Effects: This has to be enabled for the lowpass to work.
+		- Sound When Game Is In Background: This plays sounds while the game is not in focus.
+		- Zone Music No Delay: This immediately plays music when changing zones, and also stops random silence between music tracks when a music track for a zone finishes playing.
+	- Fixed a bug with the minimap resource scanner (control + shift + r) where setting herbs to Off under Core > Options > resource scanning > Herbs were disabling the scans for mining nodes too.
+	- Added gas resources to Core > Options > resource scanning.
+	- There is a new experimental feature: notify on resources (mining nodes, herbs). If you are moving the feature is permanently scanning for resource that are popping up on the minimap. You are notified If there are new resources, and can then to the usual resource scan to get it.
+		- The default setting is Off. Enable it under core > options > resource scanning > notify on resources.
+		- There is a new key bind for this feature: core > sku key binds > bind key > toggle notify on resources
+		- It is scanning for the same resources that are enabled for the usual scans (core > options > resource scanning > mining/herbs).
+		- As stated, it is experimental. I've tested it, but issues with mouseover notifications wouldn't be totally unexpected. Please test and report. Thanks!
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.21
 	- Removed some currency icon links in the statistics menu.
 	- Core > Social menu will now auto-open on the wow default key for Open Social Pane (O).

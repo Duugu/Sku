@@ -80,9 +80,9 @@ SkuCore.options = {
 			order = 1,
 			args= {
 				miningNodes={
+					order = 1,
 					name = L["mining nodes"],
 					type = "group",
-					order = 1,
 					args= {},
 				},
 				herbs={
@@ -91,8 +91,14 @@ SkuCore.options = {
 					order = 2,
 					args= {},
 				},
+				gasCollector={
+					name = L["Gas"],
+					type = "group",
+					order = 3,
+					args= {},
+				},
 				scanAccuracyS = {
-					order = 1,
+					order = 4,
 					name = L["scan accuracy"],
 					desc = "",
 					type = "select",
@@ -103,7 +109,19 @@ SkuCore.options = {
 					get = function(info)
 						return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.scanAccuracyS
 					end
-				},		
+				},	
+				notifyOnRessources = {
+					order = 5,
+					name = L["notify On Ressources"],
+					desc = "",
+					type = "toggle",
+					set = function(info, val)
+						SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources
+					end
+				},					
 			},
 		},
 		readAllTooltips = {
@@ -471,6 +489,24 @@ do
 		}
 	end
 end
+
+do
+	for x = 1, #SkuCore.RessourceTypes.gasCollector do
+		SkuCore.options.args.ressourceScanning.args.gasCollector.args[x] = {
+			order = x,
+			name = SkuCore.RessourceTypes.gasCollector[x][Sku.L["locale"]],
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.gasCollector[x] = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].ressourceScanning.gasCollector[x]
+			end
+		}
+	end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuCore.defaults = {
 	enable = true,
@@ -484,7 +520,9 @@ SkuCore.defaults = {
 	ressourceScanning = {
 		miningNodes = {},
 		herbs = {},
+		gasCollector = {},
 		scanAccuracyS = 3,
+		notifyOnRessources = false,
 	},
 	classes = {
 		hunter = {
@@ -524,6 +562,12 @@ do
 		SkuCore.defaults.ressourceScanning.herbs[x] = true
 	end
 end
+do
+	for x = 1, #SkuCore.RessourceTypes.gasCollector do
+		SkuCore.defaults.ressourceScanning.gasCollector[x] = true
+	end
+end
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)

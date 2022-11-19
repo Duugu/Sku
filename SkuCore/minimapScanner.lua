@@ -140,9 +140,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tFoundPositions = {}
-function SkuCore:MinimapScanFindActiveRessource(aX, aY)
+toptionTypes = {
+   "miningNodes",
+   "herbs",
+   "gasCollector",
+}
 
-   local tRessourceTypes = {
+function SkuCore:MinimapScanFindActiveRessource(aX, aY)
+    tRessourceTypes = {
       SkuCore.RessourceTypes.mining,
       SkuCore.RessourceTypes.herbs,
       SkuCore.RessourceTypes.gasCollector,
@@ -153,10 +158,9 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
       if line then
          for r = 1, #tRessourceTypes do
             for x = 1, #tRessourceTypes[r] do
-               if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.herbs[x] == true then
+               if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
                   for w in string.gmatch(tRessourceTypes[r][x][Sku.L["locale"]], ".+") do
-                     if string.find(line, string.lower(w), 1, true) and
-                         not string.find(line, string.lower(w .. '|'), 1, true) then
+                     if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w .. '|'), 1, true) then
                         if not tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] then
                            tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] = {}
                         end
@@ -231,6 +235,7 @@ local tNotificationTicker
 local function MinimapScanStep()
    if SkuCore.IsMMScanning == false and SkuCore.inCombat ~= true then
       SkuCore:RestoreMinimap()
+      SkuCore.noMouseOverNotification = nil
       C_Timer.After(1.1, function()
          SkuCore.noMouseOverNotification = nil
       end)
@@ -272,8 +277,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:StoreMinimap()
-   tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y = Minimap
-       :GetPoint()
+   tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y = Minimap:GetPoint()
    tMinimapStore.parent = Minimap:GetParent()
    tMinimapStore.scale = Minimap:GetScale()
    tMinimapStore.GameTooltipScale = GameTooltip:GetScale()
@@ -290,10 +294,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:RestoreMinimap()
+   Minimap:SetParent(tMinimapStore.parent)
    Minimap:SetScale(tMinimapStore.scale)
    Minimap:ClearAllPoints()
-   Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x,
-      tMinimapStore.y)
+   Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
    MinimapCluster:SetFrameLevel(tMinimapStore.frameLevel)
    MinimapCluster:SetFrameStrata(tMinimapStore.frameStrata)
    GameTooltip:SetScale(tMinimapStore.GameTooltipScale)
@@ -305,15 +309,17 @@ function SkuCore:RestoreMinimap()
       v:SetFrameStrata(v.MMA_FRAME_STRATA)
       v:SetFrameLevel(v.MMA_FRAME_LEVEL)
    end
-   SkuCore.noMouseOverNotification = nil
+   --SkuCore.noMouseOverNotification = nil
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MinimapStopScan()
    SkuOptions:StartStopBackgroundSound(false)
    SkuCore:RestoreMinimap()
+   SkuCore.noMouseOverNotification = nil
    SkuCore.IsMMScanning = false
    SkuCore:RestoreMinimap()
+   SkuCore.noMouseOverNotification = nil
    if tNotificationTicker then
       tNotificationTicker:Cancel()
    end
@@ -389,18 +395,8 @@ function SkuCore:MinimapScanProcessResults()
                ya = ya + xCenter
                local tDistance = SkuNav:Distance(0, 0, xCenter, yCenter)
 
-               print((tQuickWpNumber or "") ..
-                  " " ..
-                  i ..
-                  " " ..
-                  SkuNav:GetDirectionToAsString(xa, ya) .. " " ..
-                  math.floor(tDistance * tMinimapYardsMod) .. " " .. L["Meter"])
-               SkuOptions.Voice:OutputStringBTtts((tQuickWpNumber or "") ..
-                  " " ..
-                  i ..
-                  " " ..
-                  SkuNav:GetDirectionToAsString(xa, ya) .. " " ..
-                  math.floor(tDistance * tMinimapYardsMod) .. " " .. L["Meter"], false, true, 0.2)
+               print((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod) .. " " .. L["Meter"])
+               SkuOptions.Voice:OutputStringBTtts((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod).." ".. L["Meter"], false, true, 0.2)
 
                if tQuickWpNumber then
                   local tAreaId = SkuNav:GetCurrentAreaId()
@@ -430,4 +426,131 @@ function SkuCore:MinimapScanProcessResults()
          end
       end
    end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tRessourceTypes = {
+   SkuCore.RessourceTypes.mining,
+   SkuCore.RessourceTypes.herbs,
+   SkuCore.RessourceTypes.gasCollector,
+}
+local tInitialCenterMouse
+local tPrevResult = ""
+local mmx, mmy
+function SkuCore:MinimapScanFast()
+   --print("MinimapScanFast")
+   if Questie then
+      Questie.db.global.enableMiniMapIcons = false
+   end
+
+   if not tInitialCenterMouse then
+      tInitialCenterMouse = true
+      SkuCore:GameWorldObjectsCenterMouseCursor(0.5)
+   end
+
+   Minimap:SetAlpha(0)
+   Minimap:SetZoom(0)
+   if GetCVar("rotateMinimap") == "1" then
+      ToggleMiniMapRotation()
+   end
+   SetCVar("minimapAltitudeHintMode", 0)
+
+   --diable all tracking options except spells
+   local tCount = GetNumTrackingTypes()
+   for i = 1, tCount do
+      local name, texture, active, category = GetTrackingInfo(i)
+      if category ~= "spell" then
+         SetTracking(i, false)
+      end
+   end
+
+   SkuCore.noMouseOverNotification = true
+
+   SkuCore.MinimapScanFastRunning = true
+
+   SkuCore:StoreMinimap()
+   mmx, mmy = Minimap:GetSize()
+   Minimap:SetSize(15, 15)
+   --Minimap:SetParent(UIParent)
+   Minimap:ClearAllPoints()
+   local x, y = GetCursorPosition()
+   Minimap:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x / UIParent:GetScale(), y / UIParent:GetScale())
+      
+   C_Timer.After(0.1, function()
+      GameTooltip:SetAlpha(0)
+      for i = 1, GameTooltip:NumLines() do
+         local line = _G['GameTooltipTextLeft' .. i]:GetText()
+         if line then
+            for r = 1, #tRessourceTypes do
+               for x = 1, #tRessourceTypes[r] do
+                  if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
+                     for w in string.gmatch(tRessourceTypes[r][x][Sku.L["locale"]], ".+") do
+                        if string.find(line, w, 1, true) and not string.find(line, w .. '|', 1, true) then
+                           SkuCore:MinimapScanFastStop(line)
+                           return
+                        end
+                     end
+                  end
+               end
+            end
+         end
+      end
+   
+      SkuCore:MinimapScanFastStop()
+   end)   
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MinimapScanFastStop(aResult)
+   Minimap:SetSize(mmx, mmy)
+   SkuCore:RestoreMinimap()
+   Minimap:SetAlpha(1)
+   if aResult then
+      if tPrevResult ~= aResult then
+         aResult = string.gsub(aResult, "\\", " slash")
+         aResult = string.gsub(aResult, "|", " slash")
+         --print(L["found"].." "..aResult)
+         SkuOptions.Voice:OutputStringBTtts(aResult, false, true, 0.2)
+         tPrevResult = aResult
+      end
+   else
+      tPrevResult = ""
+   end
+   C_Timer.After(0.1, function()
+      GameTooltip:SetAlpha(1)
+      SkuCore.noMouseOverNotification = nil
+      SkuCore.IsMMScanning = false
+      SkuCore.MinimapScanFastRunning = false
+   end)
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MinimapScannerOnLogin()
+   local a = _G["OnMinimapScanner"] or CreateFrame("Button", "OnMinimapScanner", UIParent, "SecureActionButtonTemplate")
+   a.timeCounter = 0
+   a:SetScript("OnUpdate", function(self, atime)
+      if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources ~= true then
+         return
+      end
+      if SkuCore.inCombat == true then
+         return
+      end
+      if SkuCore:IsPlayerMoving() ~= true then
+         return
+      end      
+      self.timeCounter = self.timeCounter + atime
+      if self.timeCounter > 0.5 then
+         if SkuCore.IsMMScanning ~= true then
+            SkuCore.IsMMScanning = true
+            SkuCore:MinimapScanFast()
+            self.timeCounter = 0
+         end
+      end
+   end)
+end
+
+function SkuCore:MinimapScannerCURSOR_CHANGED(aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
+   --print("CURSOR_CHANGED", aEvent, isDefault, newCursorType, oldCursorType, oldCursorVirtualID)
+
 end

@@ -636,6 +636,85 @@ function SkuOptions:UpdateOverviewText()
 			tBuffs = tBuffs.."\r\n"..name.." "..tTimeString
 		end
 	end
+	local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantID = GetWeaponEnchantInfo()
+	if hasMainHandEnchant == true then
+		if mainHandEnchantID and mainHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[mainHandEnchantID] then
+			local tName
+			if Sku.Loc == "enUS" then
+				tName = SkuDB.WotLK.enchantIDs[mainHandEnchantID][1]
+			elseif Sku.Loc == "deDE" then
+				tName = SkuDB.WotLK.enchantIDs[mainHandEnchantID][2]
+			end
+			if tName and SkuDB.WotLK.enchantIDs[mainHandEnchantID][3] ~= nil then
+				if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][3]] then
+					tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][3]][Sku.Loc][1]
+				end
+			elseif tName and SkuDB.WotLK.enchantIDs[mainHandEnchantID][4] ~= nil then
+				if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][4]] then
+					tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][4]][Sku.Loc][1]
+				end
+			end
+
+			if tName then
+				local tTimeString = ""
+				if mainHandExpiration and mainHandExpiration > 0 then
+					local tRemainingSec = mainHandExpiration / 1000
+					if tRemainingSec > 60 then
+						if tRemainingSec > 3600 then
+							tTimeString = (math.floor(tRemainingSec / 3600) + 1)..L[" Stunden"]
+						else
+							tTimeString = (math.floor(tRemainingSec / 60) + 1)..L[" Minuten"]
+						end
+					else
+						tTimeString = tRemainingSec..L[" Sekunden"]
+					end
+	
+				end
+				tFound = true
+				tBuffs = tBuffs.."\r\n"..tName.." "..tTimeString.." "..L["Main Hand"]
+			end
+		end
+	end
+	if hasOffHandEnchant == true then
+		if hasOffHandEnchantID and hasOffHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID] then
+			local tName
+			if Sku.Loc == "enUS" then
+				tName = SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][1]
+			elseif Sku.Loc == "deDE" then
+				tName = SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][2]
+			end
+			if tName and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3] ~= nil then
+				if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3]] then
+					tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3]][Sku.Loc][1]
+				end
+			elseif tName and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4] ~= nil then
+				if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4]] then
+					tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4]][Sku.Loc][1]
+				end
+			end
+
+			if tName then
+				local tTimeString = ""
+				if hasOffHandExpiration and hasOffHandExpiration > 0 then
+					local tRemainingSec = hasOffHandExpiration / 1000
+					if tRemainingSec > 60 then
+						if tRemainingSec > 3600 then
+							tTimeString = (math.floor(tRemainingSec / 3600) + 1)..L[" Stunden"]
+						else
+							tTimeString = (math.floor(tRemainingSec / 60) + 1)..L[" Minuten"]
+						end
+					else
+						tTimeString = tRemainingSec..L[" Sekunden"]
+					end
+	
+				end
+				tFound = true
+				tBuffs = tBuffs.."\r\n"..tName.." "..tTimeString.." "..L["Off Hand"]
+			end
+		end
+	end
+
+
 	if not tFound then
 		tBuffs = tBuffs.."\r\n"..L["Keine"]
 	end
@@ -816,15 +895,6 @@ function SkuOptions:CreateMainFrame()
 			SkuCore.openMenuAfterMoving = true
 			return
 		end
-
-		--[[
-		if a == "SHIFT-U" then
-			SkuCore:MinimapScan(60)
-		end
-		if a == "SHIFT-J" then
-			SkuCore:MinimapScan(20)
-		end
-		]]
 
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key then
 			Sku.debug = Sku.debug == false
@@ -2390,6 +2460,13 @@ function SkuOptions:OnEnable()
 		SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume = math.floor(BlizzardOptionsPanel_GetCVarSafe("Sound_MusicVolume") * 100)
 		SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume = math.floor(BlizzardOptionsPanel_GetCVarSafe("Sound_AmbienceVolume") * 100)
 		SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume = math.floor(BlizzardOptionsPanel_GetCVarSafe("Sound_DialogVolume") * 100)
+
+		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableReverb = C_CVar.GetCVar("Sound_EnableReverb") == "1"
+		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnablePositionalLowPassFilter = C_CVar.GetCVar("Sound_EnablePositionalLowPassFilter") == "1"
+		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableDSPEffects = C_CVar.GetCVar("Sound_EnableDSPEffects") == "1"
+		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableSoundWhenGameIsInBG = C_CVar.GetCVar("Sound_EnableSoundWhenGameIsInBG") == "1"
+		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_ZoneMusicNoDelay = C_CVar.GetCVar("Sound_ZoneMusicNoDelay") == "1"
+
 	end
 
 	--set the sound channel volumes
@@ -2398,6 +2475,15 @@ function SkuOptions:OnEnable()
 	BlizzardOptionsPanel_SetCVarSafe("Sound_MusicVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume / 100)
 	BlizzardOptionsPanel_SetCVarSafe("Sound_AmbienceVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume / 100)
 	BlizzardOptionsPanel_SetCVarSafe("Sound_DialogVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume / 100)
+
+	--set more sound options
+	local tbValues = {["true"] = "1", ["false"] = "0"}
+	print(tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableReverb)])
+	C_CVar.SetCVar("Sound_EnableReverb", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableReverb)])
+	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnablePositionalLowPassFilter)])
+	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableDSPEffects)])
+	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableSoundWhenGameIsInBG)])
+	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_ZoneMusicNoDelay)])
 
 end
 
@@ -3095,7 +3181,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					end
 					
 					if self.optionsPath[self.profileIndex].OnAction then
-						self.optionsPath[self.profileIndex]:OnAction()
+						self.optionsPath[self.profileIndex]:OnAction(nil, self.profilePath[self.profileIndex])
 					end
 					--PlaySound(835)
 				end

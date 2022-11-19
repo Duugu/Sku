@@ -166,10 +166,139 @@ SkuOptions.options = {
 					},
 				},
 			},
+		soundSettings={
+			name = L["Sound Settings"],
+			type = "group",
+			order = 7,
+			args= {
+				Sound_EnableReverb = {
+					order = 1,
+					name = L["Reverb"],
+					desc = "",
+					type = "toggle",
+					OnAction = function(self, info, val)
+						if val == true then
+							C_CVar.SetCVar("Sound_EnableReverb", 1)
+						else
+							C_CVar.SetCVar("Sound_EnableReverb", 0)
+						end
+					end,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableReverb = val
+						if val == true then
+							C_CVar.SetCVar("Sound_EnableReverb", 1)
+						else
+							C_CVar.SetCVar("Sound_EnableReverb", 0)
+						end
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableReverb
+					end
+				},
+				Sound_EnablePositionalLowPassFilter = {
+					order = 2,
+					name = L["Positional Low Pass Filter"],
+					desc = "",
+					type = "toggle",
+					OnAction = function(self, info, val)
+						if val == true then
+							C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", 1)
+						else
+							C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", 0)
+						end
+					end,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnablePositionalLowPassFilter = val
+						if val == true then
+							C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", 1)
+						else
+							C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", 0)
+						end
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnablePositionalLowPassFilter
+					end
+				},
+				Sound_EnableDSPEffects = {
+					order = 3,
+					name = L["DSP Effects"],
+					desc = "",
+					type = "toggle",
+					OnAction = function(self, info, val)
+						if val == true then
+							C_CVar.SetCVar("Sound_EnableDSPEffects", 1)
+						else
+							C_CVar.SetCVar("Sound_EnableDSPEffects", 0)
+						end
+					end,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableDSPEffects = val
+						if val == true then
+							C_CVar.SetCVar("Sound_EnableDSPEffects", 1)
+						else
+							C_CVar.SetCVar("Sound_EnableDSPEffects", 0)
+						end
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableDSPEffects
+					end
+				},
+				Sound_EnableSoundWhenGameIsInBG = {
+					order = 4,
+					name = L["Sound When Game Is In Background"],
+					desc = "",
+					type = "toggle",
+					OnAction = function(self, info, val)
+						if val == true then
+							C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", 1)
+						else
+							C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", 0)
+						end
+					end,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableSoundWhenGameIsInBG = val
+						if val == true then
+							C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", 1)
+						else
+							C_CVar.SetCVar("Sound_EnableSoundWhenGameIsInBG", 0)
+						end
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_EnableSoundWhenGameIsInBG
+					end
+				},
+				Sound_ZoneMusicNoDelay = {
+					order = 5,
+					name = L["Zone Music No Delay"],
+					desc = "",
+					type = "toggle",
+					OnAction = function(self, info, val)
+						if val == true then
+							C_CVar.SetCVar("Sound_ZoneMusicNoDelay", 1)
+						else
+							C_CVar.SetCVar("Sound_ZoneMusicNoDelay", 0)
+						end
+					end,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_ZoneMusicNoDelay = val
+						if val == true then
+							C_CVar.SetCVar("Sound_ZoneMusicNoDelay", 1)
+						else
+							C_CVar.SetCVar("Sound_ZoneMusicNoDelay", 0)
+						end
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].soundSettings.Sound_ZoneMusicNoDelay
+					end
+				},
+			},
+		},
+
+						
 		debugOptions={
 			name = L["Debug Optionen"],
 			type = "group",
-			order = 7,
+			order = 8,
 			args= {
 				soundOnError = {
 					order = 2,
@@ -208,7 +337,7 @@ SkuOptions.options = {
 		allModules={
 			name = L["Schnellwahl"],
 			type = "group",
-			order = 8,
+			order = 9,
 			args={
 					MenuQuickSelect1 = {
 						order = 1,
@@ -284,6 +413,13 @@ SkuOptions.defaults = {
 		AmbienceVolume = 100,
 		DialogVolume = 100,
 		SkuChannel = "Talking Head",
+		},
+	soundSettings  = {
+		Sound_EnableReverb = false, --this is to check if the profile has sound settings. take the current blizz settings, if not.
+		Sound_EnablePositionalLowPassFilter = false,
+		Sound_EnableDSPEffects = false,
+		Sound_EnableSoundWhenGameIsInBG = false,
+		Sound_ZoneMusicNoDelay = false,
 		},
 	debugOptions = {
 		soundOnError = false,

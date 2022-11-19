@@ -1155,7 +1155,15 @@ function SkuCore:OnEnable()
 				tScanObjects[SkuCore.ScanObjects[v]] = true
 			end
 			local tScanParameters = SkuCore.ScanTypes[SkuOptions.db.char[MODULE_NAME].scanConfigs[aScanNumber].type]
-			SkuCore:GameWorldObjectsScan(false, tScanObjects, tScanParameters.hStepSizeDeg, tScanParameters.hStepsMax, tScanParameters.vMoveSpeed, tScanParameters.vStepsMax, nil, tScanParameters.hStart)
+
+			if SkuCore.MinimapScanFastRunning == true then
+				SkuCore:MinimapScanFastStop()
+				C_Timer.After(2.2, function()
+					SkuCore:GameWorldObjectsScan(false, tScanObjects, tScanParameters.hStepSizeDeg, tScanParameters.hStepsMax, tScanParameters.vMoveSpeed, tScanParameters.vStepsMax, nil, tScanParameters.hStart)
+				end)
+			else
+				SkuCore:GameWorldObjectsScan(false, tScanObjects, tScanParameters.hStepSizeDeg, tScanParameters.hStepsMax, tScanParameters.vMoveSpeed, tScanParameters.vStepsMax, nil, tScanParameters.hStart)
+			end
 		end
 		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key then
 			dprint("SKU_KEY_SCAN1", L["SKU_KEY_SCAN1"])
@@ -1190,7 +1198,16 @@ function SkuCore:OnEnable()
 			tStartScan(8)
 		end
 
-
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_NOTIFYONRESOURCES"].key then
+			dprint("SKU_KEY_NOTIFYONRESOURCES")
+			if SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources == true then
+				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources = false
+				SkuOptions.Voice:OutputStringBTtts(L["notify On Ressources"].." "..L["Off"], true, true, 0.2, true, nil, nil, 2)
+			else
+				SkuOptions.db.profile[MODULE_NAME].ressourceScanning.notifyOnRessources = true
+				SkuOptions.Voice:OutputStringBTtts(L["notify On Ressources"].." "..L["On"], true, true, 0.2, true, nil, nil, 2)
+			end
+		end
 
 		if SkuCore.inCombat == true then
 			--SkuCore.openMenuAfterCombat = true
@@ -1204,10 +1221,25 @@ function SkuCore:OnEnable()
 
 		if SkuCore.inCombat ~= true and (_G["SkuCoreGameWorldObjectsScanTicker"] == nil or _G["SkuCoreGameWorldObjectsScanTicker"].isScanningActive ~= true or _G["SkuCoreGameWorldObjectsScanTicker"].isScanningPaused == true) then
 			if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key then
-				SkuCore:MinimapScan(50) --120
+				if SkuCore.MinimapScanFastRunning == true then
+					SkuCore:MinimapScanFastStop()
+					C_Timer.After(2.2, function()
+						SkuCore:MinimapScan(50) --120
+					end)
+				else
+					SkuCore:MinimapScan(50) --120
+				end
 			end
 			if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key then
-				SkuCore:MinimapScan(20) --50
+				--SkuCore:MinimapScan(20) --50
+				if SkuCore.MinimapScanFastRunning == true then
+					SkuCore:MinimapScanFastStop()
+					C_Timer.After(2.2, function()
+						SkuCore:MinimapScan(20) --120
+					end)
+				else
+					SkuCore:MinimapScan(20) --120
+				end
 			end
 		end
 
@@ -1265,6 +1297,8 @@ function SkuCore:OnEnable()
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN6"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN6"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN7"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN7"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN8"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN8"].key)
+
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_NOTIFYONRESOURCES"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_NOTIFYONRESOURCES"].key)
 
 	end)
 	
@@ -1895,6 +1929,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:ItemRatingOnLogin()
 		SkuCore:AuctionHouseOnLogin()
 		SkuCore:AchievementsOnLogin()
+		SkuCore:MinimapScannerOnLogin()
 
 		if not SkuOptions.db.char[MODULE_NAME] then
 			SkuOptions.db.char[MODULE_NAME] = {}

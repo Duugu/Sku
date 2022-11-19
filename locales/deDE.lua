@@ -1828,3 +1828,21 @@ L["Search"] = "Suchen"
 
 L["input comment text and complete with escape"] = "kommentartext eingeben und mit escape abschließen"
 L["Enter search term and complete with enter or press escape to clear the search term"] = "filterbegriff eingeben und eingabe drücken, oder filterbegriff mit escape löschen"
+
+L["Main Hand"] = "Haupthand"
+L["Off Hand"] = "Nebenhand"
+
+L["Sound Settings"] = "Soundeinstellungen"
+L["Reverb"] = "Hall"
+L["Positional Low Pass Filter"] = "Positionsbezogener Tiefpassfilter"
+L["DSP Effects"] = "DSP Effekte"
+L["Sound When Game Is In Background"] = "Sound Wenn Spiel im Hintergrund"
+L["Zone Music No Delay"] = "Zonenmusik ohne Verzögerung"
+
+L["Gas"] = "Gas"
+
+L["found"] = "gefunden"
+
+L["notify On Ressources"] = "bei ressourcen benachrichten"
+
+L["SKU_KEY_NOTIFYONRESOURCES"] = "bei ressourcen benachrichten umschalten"

@@ -1831,3 +1831,21 @@ L["Search"] = "Search"
 
 L["input comment text and complete with escape"] = "input comment text and complete with escape"
 L["Enter search term and complete with enter or press escape to clear the search term"] = "Enter filter term and complete with enter or press escape to clear the filter term"
+
+L["Main Hand"] = "Main Hand"
+L["Off Hand"] = "Off Hand"
+
+L["Sound Settings"] = "Sound Settings"
+L["Reverb"] = "Reverb"
+L["Positional Low Pass Filter"] = "Positional Low Pass Filter"
+L["DSP Effects"] = "DSP Effects"
+L["Sound When Game Is In Background"] = "Sound When Game Is In Background"
+L["Zone Music No Delay"] = "Zone Music No Delay"
+
+L["Gas"] = "Gas"
+
+L["found"] = "found"
+
+L["notify On Ressources"] = "notify On Ressources"
+
+L["SKU_KEY_NOTIFYONRESOURCES"] = "toggle notify on resources"

@@ -683,6 +683,58 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 				tBuffList[name] = name
 			end
 		end
+
+		--add weapon enchants
+		if unit == "player" and filter == "HELPFUL" then
+			local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantID = GetWeaponEnchantInfo()
+			if hasMainHandEnchant == true then
+				if mainHandEnchantID and mainHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[mainHandEnchantID] then
+					local tName
+					if Sku.Loc == "enUS" then
+						tName = SkuDB.WotLK.enchantIDs[mainHandEnchantID][1]
+					elseif Sku.Loc == "deDE" then
+						tName = SkuDB.WotLK.enchantIDs[mainHandEnchantID][2]
+					end
+					if tName and SkuDB.WotLK.enchantIDs[mainHandEnchantID][3] ~= nil then
+						if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][3]] then
+							tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][3]][Sku.Loc][1]
+						end
+					elseif tName and SkuDB.WotLK.enchantIDs[mainHandEnchantID][4] ~= nil then
+						if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][4]] then
+							tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[mainHandEnchantID][4]][Sku.Loc][1]
+						end
+					end
+
+					if tName then
+						tBuffList[tName] = tName
+					end
+				end
+			end
+			if hasOffHandEnchant == true then
+				if hasOffHandEnchantID and hasOffHandEnchantID > 0 and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID] then
+					local tName
+					if Sku.Loc == "enUS" then
+						tName = SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][1]
+					elseif Sku.Loc == "deDE" then
+						tName = SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][2]
+					end
+					if tName and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3] ~= nil then
+						if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3]] then
+							tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][3]][Sku.Loc][1]
+						end
+					elseif tName and SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4] ~= nil then
+						if SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4]] then
+							tName = SkuDB.SpellDataTBC[SkuDB.WotLK.enchantIDs[hasOffHandEnchantID][4]][Sku.Loc][1]
+						end
+					end
+		
+					if tName then
+						tBuffList[tName] = tName
+					end
+				end
+			end
+		end
+
 		return tBuffList
 	end
 
@@ -690,7 +742,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	tEventData[37] = getAuraList(tUnitID, "HELPFUL")
 	tEventData[38] = getAuraList(tUnitID, "HARMFUL")
 
-if tEventData[2] ~= "KEY_PRESS" then
+	if tEventData[2] ~= "KEY_PRESS" then
 	--[[
 		dprint("---------------------------------------------------------------------")
 		dprint("--NEW EVENT:", tEventData[2] )
