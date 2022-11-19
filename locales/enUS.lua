@@ -981,6 +981,8 @@ L["dein aktuelles Ziel. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausge
 L["dein ziel"]  = "your target" --
 L["du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde"]  = "yourself. Example: A buff that was cast on you" --
 L["selbst"]  = "yourself" --
+L["The player character's active pet"] = "The player character's active pet" -- aura value tooltip
+L["Your pet"] = "Your pet" -- aura value friendly name
 L["dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde"]  = "your focus. example: a buff cast on your focus target" --
 L["fokus"]  = "focus" --
 L["ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist"]  = "any party member. Example: A buff cast on a party member" --

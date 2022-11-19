@@ -981,6 +981,8 @@ L["dein aktuelles Ziel. Beispiel: Ein Debuff, der auf deinem aktuelle Ziel ausge
 L["dein ziel"] = "dein ziel"
 L["du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde"] = "du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde"
 L["selbst"] = "selbst"
+L["The player character's active pet"] = "to do!!!" -- aura value tooltip
+L["Your pet"] = "to do!!!" -- aura value friendly name
 L["dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde"] = "dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde"
 L["fokus"] = "fokus"
 L["ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist"] = "ein beliebiges Gruppenmitglied. Beispiel: Ein Buff, der auf einem Gruppenmitglied ausgelaufen ist"
