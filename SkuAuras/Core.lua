@@ -805,14 +805,14 @@ if tEventData[2] ~= "KEY_PRESS" then
 			elseif subevent == "SWING_DAMAGE" then
 				tEvaluateData.critical = tEventData[18]
 				tEvaluateData.damageAmount = tEventData[12]
-			elseif string.find(subevent, "_DAMAGE") then
+			elseif string.match(subevent, "_DAMAGE$") then
 				tEvaluateData.critical = tEventData[21]
 				tEvaluateData.damageAmount = tEventData[15]
-			elseif string.find(subevent, "_HEAL") then
+			elseif string.match(subevent, "_HEAL$") then
 				tEvaluateData.critical = tEventData[18]
 				tEvaluateData.healAmount = tEventData[15]
 				tEvaluateData.overhealingAmount = tEventData[16]
-				if tEvaluateData.healAmount > 0 then
+				if tEvaluateData.healAmount and tEvaluateData.overhealingAmount then
 					tEvaluateData.overhealingPercentage = math.floor((tEvaluateData.overhealingAmount / tEvaluateData.healAmount) * 100)
 				end
 			end
