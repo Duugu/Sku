@@ -154,13 +154,18 @@ function SkuAuras:GetBestUnitId(aUnitGUID, aReturnAll)
 		end
 	end
 	if IsInGroup() then
-		for x = 0, 4 do 
+		checkUnit("party0")
+		for x = 1, 4 do 
 			checkUnit("party"..x)
+			checkUnit("party"..x.."target")
 		end
 	end
 	checkUnit("target")
 	checkUnit("player")
 	checkUnit("pet")
+	checkUnit("focus")
+	checkUnit("focustarget")
+	checkUnit("targettarget")
 	
 	if aReturnAll then
 		return tUnitIds
