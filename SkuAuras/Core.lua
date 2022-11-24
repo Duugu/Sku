@@ -127,37 +127,33 @@ function SkuAuras:OnDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAuras:GetBestUnitId(aUnitGUID, aReturnAll)
+function SkuAuras:GetBestUnitId(aUnitGUID)
 
 	if not aUnitGUID then
-		if aReturnAll then return {} else return end
+		return {}
 	end
 	if aUnitGUID == "" then
-		if aReturnAll then return {} else return end
+		return {}
 	end
 
 	local tUnitIds = {}
 
 	local function checkUnit(unit)
 		if aUnitGUID == UnitGUID(unit) then
-			if not aReturnAll then
-				return unit
-			else
-				tUnitIds[#tUnitIds + 1] = unit
-			end
+			tUnitIds[#tUnitIds + 1] = unit
 		end
 	end
 
 	if IsInRaid() then
-		for x = 1, 40 do 
-			checkUnit("raid"..x)
+		for x = 1, 40 do
+			checkUnit("raid" .. x)
 		end
 	end
 	if IsInGroup() then
 		checkUnit("party0")
-		for x = 1, 4 do 
-			checkUnit("party"..x)
-			checkUnit("party"..x.."target")
+		for x = 1, 4 do
+			checkUnit("party" .. x)
+			checkUnit("party" .. x .. "target")
 		end
 	end
 	checkUnit("target")
@@ -166,10 +162,8 @@ function SkuAuras:GetBestUnitId(aUnitGUID, aReturnAll)
 	checkUnit("focus")
 	checkUnit("focustarget")
 	checkUnit("targettarget")
-	
-	if aReturnAll then
-		return tUnitIds
-	end
+
+	return tUnitIds
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -640,8 +634,8 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		SkuOptions.db.char[MODULE_NAME].Auras = {}
 	end
 	--build non event related data to evaluate
-	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceGUID], true)
-	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destGUID], true)
+	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceGUID])
+	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destGUID])
 	if tDestinationUnitID and tDestinationUnitID[1] then
 		if tDestinationUnitID ~= "party0" then
 			tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID[1])
@@ -650,7 +644,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 
 	local tTargetTargetUnitId = {}
 	if UnitName("playertargettarget") then
-		tTargetTargetUnitId = SkuAuras:GetBestUnitId(UnitGUID("playertargettarget"), true)
+		tTargetTargetUnitId = SkuAuras:GetBestUnitId(UnitGUID("playertargettarget"))
 	end
 
 	if tSourceUnitID and tSourceUnitID[1] then
