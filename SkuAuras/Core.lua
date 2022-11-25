@@ -628,6 +628,12 @@ function SkuAuras:ProcessEvaluate(aValueA, aOperator, aValueB)
 	return SkuAuras.Operators[aOperator].func(aValueA, aValueB)
 end
 
+local CombatLogFilterAttackable =  bit.bor(
+	COMBATLOG_FILTER_HOSTILE_UNITS,
+	COMBATLOG_FILTER_HOSTILE_PLAYERS,
+	COMBATLOG_FILTER_NEUTRAL_UNITS
+)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:EvaluateAllAuras(tEventData)
 	if not SkuOptions.db.char[MODULE_NAME].Auras then
@@ -642,6 +648,8 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		if tDestinationUnitID ~= "party0" then
 			tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID[1])
 		end
+	elseif tEventData[CleuBase.destFlags] then
+		tDestinationUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.destFlags], CombatLogFilterAttackable)
 	end
 
 	local tTargetTargetUnitId = {}
@@ -654,6 +662,8 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		if tSourceUnitID ~= "party0" then
 			tSourceUnitIDCannAttack = UnitCanAttack("player", tSourceUnitID[1])
 		end
+	elseif tEventData[CleuBase.sourceFlags] then
+		tSourceUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.sourceFlags], CombatLogFilterAttackable)
 	end
 
 	local unitHealthOrPowerUpdate = tEventData[35] or tEventData[36]
