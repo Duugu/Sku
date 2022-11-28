@@ -702,6 +702,10 @@ SkuAuras.valuesDefault = {
          tooltip = L["du selbst. Beispiel: Ein Buff, der auf dich gezaubert wurde"],
          friendlyName = L["selbst"],
       },
+      ["pet"] = {
+         tooltip = L["The player character's active pet"],
+         friendlyName = L["Your pet"],
+      },
       ["focus"] = {
          tooltip = L["dein fokus. Beispiel: Ein Buff, der auf deinen focus gezaubert wurde"],
          friendlyName = L["fokus"],
@@ -1108,6 +1112,28 @@ local zeroToOneHundred = {
            
 }
 
+local unitIDValues = {
+   "target",
+   "player",
+   "pet",
+   "party",
+   "partyWoPlayer",
+   "all",
+   "focus",
+   "party0",
+   "party1",
+   "party2",
+   "party3",
+   "party4",
+   "targettarget",
+   "focustarget",
+   "party0target",
+   "party1target",
+   "party2target",
+   "party3target",
+   "party4target",
+}
+
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.attributes = {
    action = {
@@ -1187,27 +1213,7 @@ SkuAuras.attributes = {
             end
          end
       end,
-      values = {
-         "target",
-         "player",
-         "party",
-         "partyWoPlayer",
-         "all",
-         "focus",
-         "party0",
-         "party1",
-         "party2",
-         "party3",
-         "party4",
-         "targettarget",
-         "focustarget",
-         "party0target",
-         "party1target",
-         "party2target",
-         "party3target",
-         "party4target",
-         
-      },
+      values = unitIDValues,
    },
    targetTargetUnitId = {
       tooltip = L["Die Einheit des Ziels deines Ziels"],
@@ -1270,27 +1276,7 @@ SkuAuras.attributes = {
             end
          end
       end,
-      values = {
-         "target",
-         "player",
-         "party",
-         "partyWoPlayer",
-         "all",
-         "focus",
-         "party0",
-         "party1",
-         "party2",
-         "party3",
-         "party4",
-         "targettarget",
-         "focustarget",
-         "party0target",
-         "party1target",
-         "party2target",
-         "party3target",
-         "party4target",
-         
-      },
+      values = unitIDValues,
    },   
    pressedKey = {
       tooltip = L["Welche Taste das Ereignis ausgelöst hat"],
@@ -1424,27 +1410,7 @@ SkuAuras.attributes = {
             end
          end
       end,
-      values = {
-         "target",
-         "player",
-         "party",
-         "partyWoPlayer",
-         "all",
-         "focus",
-         "party0",
-         "party1",
-         "party2",
-         "party3",
-         "party4",
-         "targettarget",
-         "focustarget",
-         "party0target",
-         "party1target",
-         "party2target",
-         "party3target",
-         "party4target",
-         
-      },
+      values = unitIDValues,
    },
    event = {
       tooltip = L["Das Ereignis, das die Aura auslösen soll"],

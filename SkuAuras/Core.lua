@@ -127,60 +127,43 @@ function SkuAuras:OnDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAuras:GetBestUnitId(aUnitName, aReturnAll)
+function SkuAuras:GetBestUnitId(aUnitGUID)
 
-	if not aUnitName then
-		if aReturnAll then return {} else return end
+	if not aUnitGUID then
+		return {}
 	end
-	if aUnitName == "" then
-		if aReturnAll then return {} else return end
+	if aUnitGUID == "" then
+		return {}
 	end
 
 	local tUnitIds = {}
 
-		for x = 1, 40 do 
-			if aUnitName == UnitName("raid"..x) then
-				if not aReturnAll then
-					return "raid"..x
-				else
-					tUnitIds[#tUnitIds + 1] = "raid"..x
-				end
-			end
+	local function checkUnit(unit)
+		if aUnitGUID == UnitGUID(unit) then
+			tUnitIds[#tUnitIds + 1] = unit
 		end
-		for x = 1, 4 do 
-			if aUnitName == UnitName("party"..x) then
-				if not aReturnAll then
-					return "party"..x
-				else
-					tUnitIds[#tUnitIds + 1] = "party"..x
-				end
-			end
-		end
-		if aUnitName == UnitName("player") and (UnitName("party1") or UnitName("raid1")) then
-			if not aReturnAll then
-				return "party0"
-			else
-				tUnitIds[#tUnitIds + 1] = "party0"
-			end
-		end
-		if aUnitName== UnitName("target") then
-			if not aReturnAll then
-				return "target"
-			else
-				tUnitIds[#tUnitIds + 1] = "target"
-			end
-		end
-		if aUnitName == UnitName("player") then
-			if not aReturnAll then
-				return "player"
-			else
-				tUnitIds[#tUnitIds + 1] = "player"
-			end
-		end
-
-	if aReturnAll then
-		return tUnitIds
 	end
+
+	if IsInRaid() then
+		for x = 1, 40 do
+			checkUnit("raid" .. x)
+		end
+	end
+	if IsInGroup() then
+		checkUnit("party0")
+		for x = 1, 4 do
+			checkUnit("party" .. x)
+			checkUnit("party" .. x .. "target")
+		end
+	end
+	checkUnit("target")
+	checkUnit("player")
+	checkUnit("pet")
+	checkUnit("focus")
+	checkUnit("focustarget")
+	checkUnit("targettarget")
+
+	return tUnitIds
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -402,22 +385,22 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 			SkuAuras.UnitRepo[tUnitId].unitPower = tPower
 		end
 
-		if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= UnitGUID(tUnitId.."target") then
-			SkuAuras.UnitRepo[tUnitId].unitTargetName = UnitGUID(tUnitId.."target")
+		local unitTargetGUID = UnitGUID(tUnitId.."target")
+		if SkuAuras.UnitRepo[tUnitId].unitTargetName ~= unitTargetGUID then
+			SkuAuras.UnitRepo[tUnitId].unitTargetName = unitTargetGUID
 
 			--dprint("ooooooooooooooo target change for ", tUnitId)
 			--dprint("changed to", UnitName(tUnitId.."target"))
 			if UnitName(tUnitId.."target") then
-				local tNewTargetUnitId = SkuAuras:GetBestUnitId(UnitName(tUnitId.."target"))
 				local tEventData = {
 					GetTime(),
 					"UNIT_TARGETCHANGE",
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
-					tNewTargetUnitId,
+					unitTargetGUID,
 					UnitName(tUnitId.."target"),
 					nil,
 					nil,
@@ -425,7 +408,6 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 					nil,
 					nil,
 				}
-				tEventData[35] = SkuAuras.UnitRepo[tUnitId].unitHealth
 				SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", tEventData)
 			end
 		end
@@ -438,11 +420,11 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 				GetTime(),
 				"UNIT_HEALTH",
 				nil,
-				tUnitId,
+				UnitGUID(tUnitId),
 				UnitName(tUnitId),
 				nil,
 				nil,
-				tUnitId,
+				UnitGUID(tUnitId),
 				UnitName(tUnitId),
 				nil,
 				nil,
@@ -460,11 +442,11 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 					GetTime(),
 					"UNIT_POWER",
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
@@ -485,11 +467,11 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 					GetTime(),
 					"UNIT_POWER",
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
-					tUnitId,
+					UnitGUID(tUnitId),
 					UnitName(tUnitId),
 					nil,
 					nil,
@@ -646,29 +628,42 @@ function SkuAuras:ProcessEvaluate(aValueA, aOperator, aValueB)
 	return SkuAuras.Operators[aOperator].func(aValueA, aValueB)
 end
 
+local CombatLogFilterAttackable =  bit.bor(
+	COMBATLOG_FILTER_HOSTILE_UNITS,
+	COMBATLOG_FILTER_HOSTILE_PLAYERS,
+	COMBATLOG_FILTER_NEUTRAL_UNITS
+)
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:EvaluateAllAuras(tEventData)
 	if not SkuOptions.db.char[MODULE_NAME].Auras then
 		SkuOptions.db.char[MODULE_NAME].Auras = {}
 	end
 	--build non event related data to evaluate
-	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceName], true)
-	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destName], true)
+	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceGUID])
+	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destGUID])
+	
+	local tDestinationUnitIDCannAttack
 	if tDestinationUnitID and tDestinationUnitID[1] then
 		if tDestinationUnitID ~= "party0" then
 			tDestinationUnitIDCannAttack = UnitCanAttack("player", tDestinationUnitID[1])
 		end
+	elseif tEventData[CleuBase.destFlags] then
+		tDestinationUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.destFlags], CombatLogFilterAttackable)
 	end
 
 	local tTargetTargetUnitId = {}
 	if UnitName("playertargettarget") then
-		tTargetTargetUnitId = SkuAuras:GetBestUnitId(UnitName("playertargettarget"), true)
+		tTargetTargetUnitId = SkuAuras:GetBestUnitId(UnitGUID("playertargettarget"))
 	end
 
+	local tSourceUnitIDCannAttack
 	if tSourceUnitID and tSourceUnitID[1] then
 		if tSourceUnitID ~= "party0" then
 			tSourceUnitIDCannAttack = UnitCanAttack("player", tSourceUnitID[1])
 		end
+	elseif tEventData[CleuBase.sourceFlags] then
+		tSourceUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.sourceFlags], CombatLogFilterAttackable)
 	end
 
 	local unitHealthOrPowerUpdate = tEventData[35] or tEventData[36]
