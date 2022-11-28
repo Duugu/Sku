@@ -596,7 +596,13 @@ function SkuOptions:UpdateOverviewText()
 
 	--hearthstone
 	local tTmpText = L["Keiner vorhanden"]
-	local startTime, duration, enable = GetItemCooldown(40582) --Scourgestone item id is working for all
+	local startTime, duration, enable
+	if Sku.toc >= 30401 then
+		startTime, duration, enable = 0, 0, 0
+	else
+		startTime, duration, enable = GetItemCooldown(40582) --Scourgestone item id is working for all
+	end
+	
 	if duration == 0 then
 		tTmpText = L[" bereit"]
 	else
@@ -2043,7 +2049,11 @@ function SkuOptions:CreateMenuFrame()
 			_G["StaticPopup1"]:Hide()
 		end
 		if _G["GossipFrame"]:IsVisible() == true then
-			_G["GossipFrameGreetingGoodbyeButton"]:GetScript("OnClick")(_G["GossipFrameGreetingGoodbyeButton"])
+			if GossipFrame.GreetingPanel and GossipFrame.GreetingPanel.GoodbyeButton then
+				GossipFrame.GreetingPanel.GoodbyeButton:GetScript("OnClick")(GossipFrame.GreetingPanel.GoodbyeButton)
+			else
+				_G["GossipFrameGreetingGoodbyeButton"]:GetScript("OnClick")(_G["GossipFrameGreetingGoodbyeButton"])
+			end
 		end
 		if _G["QuestFrameGreetingPanel"]:IsVisible() == true then
 			_G["QuestFrameGoodbyeButton"]:GetScript("OnClick")(_G["QuestFrameGoodbyeButton"])
@@ -3533,7 +3543,11 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 
 		-- Resizable
 		f:SetResizable(true)
-		f:SetMinResize(150, 100)
+      if Sku.toc < 30401 then
+         f:SetMinResize(150, 100)
+      else
+         f:SetResizeBounds(150, 100)
+      end
 
 		local rb = CreateFrame("Button", "SkuOptionsEditBoxResizeButton", SkuOptionsEditBox)
 		rb:SetPoint("BOTTOMRIGHT", -6, 7)

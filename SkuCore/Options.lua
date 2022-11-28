@@ -1394,7 +1394,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.isSelect = true
 		--tNewMenuEntry.ttsEngine = 2
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			--dprint(aName)
+			print(aName)
 			--open the specific edit box for aname and write result to current mi.tmpx
 			
 			
@@ -1495,8 +1495,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 							local itemLink = GetContainerItemLink(bag, slot)
 							local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
 							local isQuestItem = GetContainerItemQuestInfo(bag, slot)
-							if itemLink and not isQuestItem and not SkuCore:IsItemSoulbound(bag, slot) then
-								--dprint(bag, slot, itemLink)
+							if itemLink and isQuestItem ~= true and SkuCore:IsItemSoulbound(bag, slot) ~= true then
 								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
 							end
 						end

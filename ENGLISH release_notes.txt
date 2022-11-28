@@ -3,6 +3,13 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.23
+	- Lot of fixes for upcoming Ulduar patch
+
+
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.22
 	- Added weapon buffs (for example from shaman totems) to values for your buff/debuff aura conditions. Example aura to check if the player has shamans Windfury buffed: If your buff list (L) contains Windfury Weapon (Passive) then audio output single and sound brass 5. Weapon buffs are only working for the player. Not for your target.
 	- Added weapon buffs to the buff list on the overview page (shift + down)
