@@ -793,6 +793,8 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			local tOverallResult = true
 			local tHasApplicableAttributes = false
 
+			local subevent = tEventData[CleuBase.subevent]
+
 			--build event related data to evaluate
 			local tEvaluateData = {
 				sourceUnitId = tSourceUnitID,
@@ -800,7 +802,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 				destUnitId = tDestinationUnitID,
 				targetTargetUnitId = tTargetTargetUnitId,
 				destName = tEventData[CleuBase.destName],
-				event = tEventData[CleuBase.subevent],
+				event = subevent,
 				spellId = tEventData[CleuBase.spellId],
 				spellName = tEventData[CleuBase.spellName],
 				unitHealthPlayer = tEventData[35],
@@ -839,14 +841,27 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			_CAST_FAILED			failedType
 			]]
 
-			if string.find(tEventData[CleuBase.subevent], "_AURA_") then
+			if string.find(subevent, "_AURA_") then
 				tEvaluateData.auraType = tEventData[15]
 				tEvaluateData.auraAmount = tEventData[16]
 			end
 
-			if string.find(tEventData[CleuBase.subevent], "_MISSED") then
+			if string.find(subevent, "_MISSED") then
 				--dprint("  ","----------- _MISSED -----------", tEventData[12])
 				tEvaluateData.missType = tEventData[12]
+			elseif subevent == "SWING_DAMAGE" then
+				tEvaluateData.critical = tEventData[18]
+				tEvaluateData.damageAmount = tEventData[12]
+			elseif string.match(subevent, "_DAMAGE$") then
+				tEvaluateData.critical = tEventData[21]
+				tEvaluateData.damageAmount = tEventData[15]
+			elseif string.match(subevent, "_HEAL$") then
+				tEvaluateData.critical = tEventData[18]
+				tEvaluateData.healAmount = tEventData[15]
+				tEvaluateData.overhealingAmount = tEventData[16]
+				if tEvaluateData.healAmount and tEvaluateData.overhealingAmount then
+					tEvaluateData.overhealingPercentage = math.floor((tEvaluateData.overhealingAmount / tEvaluateData.healAmount) * 100)
+				end
 			end
 
 

@@ -362,7 +362,70 @@ SkuAuras.outputs = {
          end,
       },
    },
-
+   damageAmount = {
+      tooltip = L["The amount of damage from a spell, melee, or ranged attack"],
+      friendlyName = L["Damage amount"],
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.damageAmount then
+               SkuOptions.Voice:OutputString(tEvaluateData.damageAmount, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.damageAmount then
+               print(tEvaluateData.damageAmount)
+            end
+         end,
+      },
+   },
+   healAmount = {
+      tooltip = L["The amount of healing"],
+      friendlyName = L["Healing amount"],
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.healAmount then
+               SkuOptions.Voice:OutputString(tEvaluateData.healAmount, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.healAmount then
+               print(tEvaluateData.healAmount)
+            end
+         end,
+      },
+   },
+   overhealingAmount = {
+      tooltip = L["The amount of overhealing"],
+      friendlyName = L["Overhealing amount"],
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.overhealingAmount then
+               SkuOptions.Voice:OutputString(tEvaluateData.overhealingAmount, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.overhealingAmount then
+               print(tEvaluateData.overhealingAmount)
+            end
+         end,
+      },
+   },
+   overhealingPercentage = {
+      tooltip = L["How much of the healing amount was overhealing"],
+      friendlyName = L["Overhealing percentage"],
+      functs = {
+         ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
+            if tEvaluateData.overhealingPercentage then
+               SkuOptions.Voice:OutputString(tEvaluateData.overhealingPercentage, aFirst, true, 0.1, true)
+            end
+         end,
+         ["notifyChat"] = function(tAuraName, tEvaluateData)
+            if tEvaluateData.overhealingPercentage then
+               print(tEvaluateData.overhealingPercentage)
+            end
+         end,
+      },
+   },
    spellName = {
       tooltip = L["Der Name des Zaubers, der die Aura ausgelöst hat"],
       friendlyName = L["zauber name"],
@@ -1303,6 +1366,18 @@ SkuAuras.attributes = {
          "false",
       },
    },
+   critical = {
+      tooltip = L["Whether the damage or heal was critical"],
+      friendlyName = L["Critical"],
+      type = "BINARY",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return SkuAuras:ProcessEvaluate(aEventData.critical, aOperator, aValue == "true")
+      end,
+      values = {
+         "true",
+         "false",
+      },
+   },
    tSourceUnitIDCannAttack = {
       tooltip = L["Ob die Quell-Einheit, für die Aura ausgelöst wird, angreifbar ist"],
       friendlyName = L["Quell Einheit angreifbar"],
@@ -1575,6 +1650,16 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
          return aEventData.unitHealthOrPowerUpdate and
              SkuAuras:ProcessEvaluate(aEventData.unitHealthOrPowerUpdate, aOperator, tonumber(aValue))
+      end,
+      values = zeroToOneHundred,
+   },
+   overhealingPercentage = {
+      tooltip = L["How much of the healing amount was overhealing"],
+      friendlyName = L["Overhealing percentage"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         return aEventData.overhealingPercentage and
+             SkuAuras:ProcessEvaluate(aEventData.overhealingPercentage, aOperator, tonumber(aValue))
       end,
       values = zeroToOneHundred,
    },
