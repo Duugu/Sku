@@ -1861,3 +1861,8 @@ L["found"] = "found"
 L["notify On Ressources"] = "notify On Ressources"
 
 L["SKU_KEY_NOTIFYONRESOURCES"] = "toggle notify on resources"
+
+L["Set Quick Waypoint to coordinates"] = "Set Quick Waypoint to coordinates"
+L[" invalid. canceled."] = " invalid. canceled."
+L["enter y value"] = "enter y value"
+L["enter x value"] = "enter x value"

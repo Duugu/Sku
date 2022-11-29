@@ -2474,7 +2474,7 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:UpdateQuickWP(aWpName, aSilent)
+function SkuNav:UpdateQuickWP(aWpName, aSilent, x, y)
 	dprint("UpdateQuickWP", aWpName)
 	if not aWpName then
 		return
@@ -2492,6 +2492,9 @@ function SkuNav:UpdateQuickWP(aWpName, aSilent)
 	end
 
 	local worldx, worldy = UnitPosition("player")
+	if x and y then
+		worldx, worldy = x, y
+	end
 	local tPName = UnitName("player")
 	local tPlayerContintentId = select(3, SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())) or -1
 	local tInitialPlayerContintentId = tPlayerContintentId

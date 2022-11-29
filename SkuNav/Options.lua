@@ -744,10 +744,58 @@ function SkuNav:MenuBuilder(aParentEntry)
 		end
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Clear visited"]}, SkuGenericMenuItem)
-	tNewMenuEntry.OnAction = function(self, aValue, aName)
-		SkuNav:clearVisitedWaypoints()
-		PlaySound(835)
-	end
+		tNewMenuEntry.OnAction = function(self, aValue, aName)
+			SkuNav:clearVisitedWaypoints()
+			PlaySound(835)
+		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set Quick Waypoint to coordinates"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.isSelect = true
+		tNewMenuEntry.tQWPNumber = nil
+		tNewMenuEntry.OnAction = function(self, aValue, aName)
+			local tCoords = {x = nil, y = nil,}
+			SkuOptions:EditBoxShow("", function(a, b, c) 
+				local tText = SkuOptionsEditBoxEditBox:GetText() 
+				tText = string.gsub(tText, ",", "%.")
+				if self.tQWPNumber and tText ~= "" and tonumber(tText) ~= nil and tonumber(tText) > 0 and tonumber(tText) < 100 then
+					tCoords.x = tonumber(tText)
+					C_Timer.After(0.1, function()
+						SkuOptions:EditBoxShow("", function(a, b, c) 
+							local tText = SkuOptionsEditBoxEditBox:GetText() 
+							tText = string.gsub(tText, ",", "%.")
+							if tText ~= "" and tonumber(tText) ~= nil and tonumber(tText) > 0 and tonumber(tText) < 100 then
+								tCoords.y = tonumber(tText)
+								if SkuNav:GetCurrentAreaId() then
+									if SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()) then
+										local tx, ty = SkuOptions.HBD:GetWorldCoordinatesFromZone(tCoords.x / 100, tCoords.y / 100, SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()))
+										SkuNav:UpdateQuickWP(L["Quick waypoint"]..";"..self.tQWPNumber, false, ty, tx)
+									end
+								end
+							else
+								SkuOptions.Voice:OutputStringBTtts("y"..L[" invalid. canceled."].." "..SkuOptions.currentMenuPosition.name, true, true, 0.3, true, nil, nil, 2)
+							end
+						end)
+						SkuOptions.Voice:OutputStringBTtts(L["enter y value"], true, true, 0.3, true, nil, nil, 2)
+					end)
+		
+				else
+					SkuOptions.Voice:OutputStringBTtts("x"..L[" invalid. canceled."].." "..SkuOptions.currentMenuPosition.name, true, true, 0.3, true, nil, nil, 2)
+				end
+			end)
+			C_Timer.After(0.1, function()
+				SkuOptions.Voice:OutputStringBTtts(L["enter x value"], true, true, 0.3, true, nil, nil, 2)
+			end)
+		end
+		tNewMenuEntry.BuildChildren = function(self)
+			for i = 1, 4 do
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Quick waypoint"].." "..i}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self)
+					self.parent.tQWPNumber = i
+				end
+			end
+		end
+
 --[[
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Verwalten"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true

@@ -4,9 +4,15 @@
 
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.23
-	- Lot of fixes for upcoming Ulduar patch
-
-
+	- New menu option Navigation > Waypoints > Set Quick Waypoint to coordinates. To set quick waypoints to x and y coordinates. Coordinates are always for your current zone! It is not possible to set waypoints to coordinates in other zones.
+	- Added the value Your pet to Source (L), Target (L), and Target of yor target (L)
+	- Evaluation of auras for units throttled to 2 times per second (from evaluation on every game tick), to increase performance on slow computers.
+	- Fixed Source (L), Target (L), and Target of yor target (L) sometimes giving false positives when there are multiple units with the same name
+	- Source (L), Target (L), and Target of yor target (L) should now work with all available values
+	- Source unit attackable and Target unit attackable should now be available for all events
+	- New aura attributes: Critical, Overhealing percentage
+	- New aura outputs: Damage amount, Healing amount, Overhealing amount, Overhealing percentage
+	- Lots of fixes in preparation for stuff that will break with the upcoming Ulduar patch changes.
 
 
 -------------------------------------------------------------------------------------------------------	
