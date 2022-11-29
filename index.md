@@ -10,8 +10,8 @@ DEUTSCH - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - [Sku r31.23](https://github.com/Duugu/Sku/releases/download/r31.23/Sku-r31.23-wrath.zip) (Nov 29th, 2022)<br>
-- [SkuAudioData r35] (GERMAN) (https://github.com/Duugu/SkuAudioData/releases/download/r35/SkuAudioData-r35-wrath.zip) (Nov 17th, 2022)<br>
-- [SkuAudioData_en r8] (ENGLISH) (https://github.com/Duugu/SkuAudioData_en/releases/download/r8/SkuAudioData_en-r8-wrath.zip) (Nov 17th, 2022)<br>
+- [SkuAudioData r35 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r35/SkuAudioData-r35-wrath.zip) (Nov 17th, 2022)<br>
+- [SkuAudioData_en r8 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r8/SkuAudioData_en-r8-wrath.zip) (Nov 17th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
