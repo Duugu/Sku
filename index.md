@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.22](https://github.com/Duugu/Sku/releases/download/r31.22/Sku-r31.22-wrath.zip) (Nov 19th, 2022)<br>
-- [SkuAudioData r35](https://github.com/Duugu/SkuAudioData/releases/download/r35/SkuAudioData-r35-wrath.zip) (Nov 17th, 2022)<br>
-- [SkuAudioData_en r8](https://github.com/Duugu/SkuAudioData_en/releases/download/r8/SkuAudioData_en-r8-wrath.zip) (Nov 17th, 2022)<br>
+- [Sku r31.23](https://github.com/Duugu/Sku/releases/download/r31.23/Sku-r31.23-wrath.zip) (Nov 29th, 2022)<br>
+- [SkuAudioData r35] (GERMAN) (https://github.com/Duugu/SkuAudioData/releases/download/r35/SkuAudioData-r35-wrath.zip) (Nov 17th, 2022)<br>
+- [SkuAudioData_en r8] (ENGLISH) (https://github.com/Duugu/SkuAudioData_en/releases/download/r8/SkuAudioData_en-r8-wrath.zip) (Nov 17th, 2022)<br>
 
 *Older updates:* <br>
 - [wow_menu r3.9](https://github.com/Duugu/wow_menu/releases/download/r3.9/wow_menu-r3.9-wrath.zip) (Sep 16th, 2022)
@@ -23,6 +23,17 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.23
+- New menu option Navigation > Waypoints > Set Quick Waypoint to coordinates. To set quick waypoints to x and y coordinates. Coordinates are always for your current zone! It is not possible to set waypoints to coordinates in other zones.
+- Added the value Your pet to Source (L), Target (L), and Target of yor target (L)
+- Evaluation of auras for units throttled to 2 times per second (from evaluation on every game tick), to increase performance on slow computers.
+- Fixed Source (L), Target (L), and Target of yor target (L) sometimes giving false positives when there are multiple units with the same name
+- Source (L), Target (L), and Target of yor target (L) should now work with all available values
+- Source unit attackable and Target unit attackable should now be available for all events
+- New aura attributes: Critical, Overhealing percentage
+- New aura outputs: Damage amount, Healing amount, Overhealing amount, Overhealing percentage
+- Lots of fixes in preparation for stuff that will break with the upcoming Ulduar patch changes.
+
 ## Changes in Sku r31.22
 - Added weapon buffs (for example from shaman totems) to values for your buff/debuff aura conditions. Example aura to check if the player has shamans Windfury buffed: If your buff list (L) contains Windfury Weapon (Passive) then audio output single and sound brass 5. Weapon buffs are only working for the player. Not for your target.
 - Added weapon buffs to the buff list on the overview page (shift + down)
