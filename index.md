@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.23](https://github.com/Duugu/Sku/releases/download/r31.23/Sku-r31.23-wrath.zip) (Nov 29th, 2022)<br>
+- [Sku r31.24](https://github.com/Duugu/Sku/releases/download/r31.24/Sku-r31.24-wrath.zip) (Dec 2nd, 2022)<br>
 - [SkuAudioData r35 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r35/SkuAudioData-r35-wrath.zip) (Nov 17th, 2022)<br>
 - [SkuAudioData_en r8 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r8/SkuAudioData_en-r8-wrath.zip) (Nov 17th, 2022)<br>
 
@@ -23,6 +23,13 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.24
+- Enhanced the aura output code to improve the addon performance in raids with 25 players and/or aoe scenarios with a lot of events/mobs
+- Fixed an issue with item use events in auras
+- Updated map data: a lot of fixes for borean tundra, more ashenvale routes, more darkshore routes, Mayor Quimby in DK starting area fixed, inscription trainer darnasus linked, minor corrections Darkshore
+- Removed an overlooked debug chat output for sending mail
+- Added more item price values (1k-10k gold in steps of 100 gold) to the auction house sell menu
+	
 ## Changes in Sku r31.23
 - New menu option Navigation > Waypoints > Set Quick Waypoint to coordinates. To set quick waypoints to x and y coordinates. Coordinates are always for your current zone! It is not possible to set waypoints to coordinates in other zones.
 - Added the value Your pet to Source (L), Target (L), and Target of yor target (L)
