@@ -10,7 +10,7 @@ DEUTSCH - Erste Schritte:<br>
 
 *Recent updates:* <br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
-- [Sku r31.24](https://github.com/Duugu/Sku/releases/download/r31.24/Sku-r31.24-wrath.zip) (Dec 2nd, 2022)<br>
+- [Sku r31.25](https://github.com/Duugu/Sku/releases/download/r31.25/Sku-r31.25-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
 - [SkuAudioData_en r8 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r8/SkuAudioData_en-r8-wrath.zip) (Nov 17th, 2022)<br>
@@ -23,6 +23,9 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.25
+- Fixed the German names of some mining nodes for scanning
+
 ## Changes in Sku r31.24
 - Enhanced the aura output code to improve the addon performance in raids with 25 players and/or aoe scenarios with a lot of events/mobs
 - Fixed an issue with item use events in auras
