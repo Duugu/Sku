@@ -672,43 +672,53 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		return
 	end
 	
-	if SkuVoice:CheckIgnore(aString) then
-		aIgnoreLinks = true
+	--we need to skip checks, etc. for sounds to get better performance on aura output
+	local tIsSound
+	if string.sub(aString, 1, 6) == "sound-" then
+		tIsSound = true
 	end
 
-	aDnQ = aDnQ or false
-
-	local tString = ""
-	if aSpell == true then
-		aString = string.lower(aString)
-		for tChr in aString:gmatch("[\33-\127\192-\255]?[\128-\191]*") do
-			tString = tString..tChr..";"
+	if not tIsSound then
+		if SkuVoice:CheckIgnore(aString) then
+			aIgnoreLinks = true
 		end
-		while string.find(tString, ";;") do
-			tString = string.gsub(tString, ";;", ";")
+
+		aDnQ = aDnQ or false
+
+		local tString = ""
+		if aSpell == true then
+			aString = string.lower(aString)
+			for tChr in aString:gmatch("[\33-\127\192-\255]?[\128-\191]*") do
+				tString = tString..tChr..";"
+			end
+			while string.find(tString, ";;") do
+				tString = string.gsub(tString, ";;", ";")
+			end
+			aString = tString
 		end
-		aString = tString
-	end
 
 
-	if not (string.find(aString, "sound%-") or string.find(aString, "male%-")) and SkuOptions.db.profile["SkuChat"].allChatViaBlizzardTts == true then
-		SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
-		return
-	end
+		if not (string.find(aString, "sound%-") or string.find(aString, "male%-")) and SkuOptions.db.profile["SkuChat"].allChatViaBlizzardTts == true then
+			SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
+			return
+		end
 
 
-	aSoundChannel = aSoundChannel or SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head"
+		aSoundChannel = aSoundChannel or SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head"
 
-	aIsMulti = aIsMulti or false
-	if string.find(aString, ";") then
-		aIsMulti = true
-	end
+		aIsMulti = aIsMulti or false
+		if string.find(aString, ";") then
+			aIsMulti = true
+		end
 
-	if not aString or not SkuAudioDataLenIndex or not SkuAudioFileIndex then
-		return
-	end
-	if aString == "" then
-		return
+		if not aString or not SkuAudioDataLenIndex or not SkuAudioFileIndex then
+			return
+		end
+		if aString == "" then
+			return
+		end
+	else
+		aSoundChannel = aSoundChannel or SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head"
 	end
 
 	if engine then
@@ -751,14 +761,16 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		end
 		]]
 	else
-		-- don't vocalize numbers > 20000 or floats
-		-- that is for the unique auto wp ids and the coords; we don't want hear them, but we still need them in the wp names
-		if not aVocalizeAsIs then
-			local tNumberTest = tonumber(aString)
-			if tNumberTest then
-				local tFloat = math.floor(tNumberTest)
-				if (tNumberTest > 20000) or (tNumberTest - tFloat > 0) then
-					return
+		if not tIsSound then
+			-- don't vocalize numbers > 20000 or floats
+			-- that is for the unique auto wp ids and the coords; we don't want hear them, but we still need them in the wp names
+			if not aVocalizeAsIs then
+				local tNumberTest = tonumber(aString)
+				if tNumberTest then
+					local tFloat = math.floor(tNumberTest)
+					if (tNumberTest > 20000) or (tNumberTest - tFloat > 0) then
+						return
+					end
 				end
 			end
 		end
@@ -781,19 +793,21 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			end
 		end
 
-		while string.find(aString, "|n") do
-			aString = string.gsub(aString, "|n", ";")
-		end
-		while string.find(aString, "|") do
-			aString = string.gsub(aString, "|", " ")
-		end
+		if not tIsSound then
+			while string.find(aString, "|n") do
+				aString = string.gsub(aString, "|n", ";")
+			end
+			while string.find(aString, "|") do
+				aString = string.gsub(aString, "|", " ")
+			end
 
-		aString = Unescape(aString)
-		aString = aString:gsub("\"", "")
+			aString = Unescape(aString)
+			aString = aString:gsub("\"", "")
 
-		--collect links
-		if not aIgnoreLinks then
-			SkuOptions.TTS:GetLinksTableFromString(aString:gsub(";", " "), "")
+			--collect links
+			if not aIgnoreLinks then
+				SkuOptions.TTS:GetLinksTableFromString(aString:gsub(";", " "), "")
+			end
 		end
 
 		local tStrings = {}
@@ -860,38 +874,42 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			end
 		end
 
-
 		for x = 1, #tStrings do
-			--dprint("tStrings[x] sku", tStrings[x])
-			if tStrings[x] == "§01" then
-				tStrings[x] = "sound-silence0.1"
-			end
-			local tFile = SkuAudioFileIndex[tostring(tStrings[x])]
-
-			if tFile == nil then
-				local tModString = string.lower(tostring(tStrings[x]))
-				tFile = SkuAudioFileIndex[tModString]
-			end
-			if tFile == nil then
-				local tModString = string.upper(string.sub(tostring(tStrings[x]),1,1))..string.sub(tostring(tStrings[x]),2)
-				tFile = SkuAudioFileIndex[tModString]
-			end
-			--dprint(tStrings[x], "tFile", tFile)
-
-			if tFile == nil then
-				tFile = SkuAudioFileIndex["sound-audiofehltbeep"]
-				if SkuOptions.db then
-
-					if SkuOptions.db.realm.missingAudio == nil then
-						SkuOptions.db.realm.missingAudio = {}
-					end
-					if not SkuOptions.db.realm.missingAudio[tStrings[x]] then
-						SkuOptions.db.realm.missingAudio[tStrings[x]] = 1
-					else
-						SkuOptions.db.realm.missingAudio[tStrings[x]] = SkuOptions.db.realm.missingAudio[tStrings[x]] + 1
-					end
-
+			local tFile
+			if not tIsSound then
+				--dprint("tStrings[x] sku", tStrings[x])
+				if tStrings[x] == "§01" then
+					tStrings[x] = "sound-silence0.1"
 				end
+				tFile = SkuAudioFileIndex[tostring(tStrings[x])]
+
+				if tFile == nil then
+					local tModString = string.lower(tostring(tStrings[x]))
+					tFile = SkuAudioFileIndex[tModString]
+				end
+				if tFile == nil then
+					local tModString = string.upper(string.sub(tostring(tStrings[x]),1,1))..string.sub(tostring(tStrings[x]),2)
+					tFile = SkuAudioFileIndex[tModString]
+				end
+				--dprint(tStrings[x], "tFile", tFile)
+
+				if tFile == nil then
+					tFile = SkuAudioFileIndex["sound-audiofehltbeep"]
+					if SkuOptions.db then
+
+						if SkuOptions.db.realm.missingAudio == nil then
+							SkuOptions.db.realm.missingAudio = {}
+						end
+						if not SkuOptions.db.realm.missingAudio[tStrings[x]] then
+							SkuOptions.db.realm.missingAudio[tStrings[x]] = 1
+						else
+							SkuOptions.db.realm.missingAudio[tStrings[x]] = SkuOptions.db.realm.missingAudio[tStrings[x]] + 1
+						end
+
+					end
+				end
+			else
+				tFile = SkuAudioFileIndex[tStrings[x]]
 			end
 			if tFile then
 				if tFile ~= "" then

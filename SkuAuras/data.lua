@@ -1492,7 +1492,7 @@ SkuAuras.attributes = {
       friendlyName = L["ereignis"],
       type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	--dprint("    ","SkuAuras.attributes.event.evaluate")
+      	--print("    ","SkuAuras.attributes.event.evaluate")
          if aEventData.event then
             local tEvaluation
             if string.find(aValue, ";") then

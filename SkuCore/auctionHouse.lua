@@ -1002,15 +1002,19 @@ function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Sofortkauf Preis pro Stack"]}, SkuGenericMenuItem)
 
       local x = 100
-      while x <= 10000000 do
+      while x <= 100000000 do
          if x < 10000 then
             tNewMenuEntry = SkuOptions:InjectMenuItems(self, {(x / 100).."#"..L["Silber"]}, SkuGenericMenuItem)
             tNewMenuEntry.copperValue = x
             x = x + 100
-         else
+         elseif x < 10000000 then
             tNewMenuEntry = SkuOptions:InjectMenuItems(self, {(x / 10000).."#"..L["Gold"]}, SkuGenericMenuItem)
             tNewMenuEntry.copperValue = x
             x = x + 10000
+         else
+            tNewMenuEntry = SkuOptions:InjectMenuItems(self, {(x / 10000).."#"..L["Gold"]}, SkuGenericMenuItem)
+            tNewMenuEntry.copperValue = x
+            x = x + 1000000
          end
          tNewMenuEntry.filterable = true
          tNewMenuEntry.dynamic = true

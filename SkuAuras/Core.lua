@@ -59,11 +59,11 @@ function SkuAuras:OnEnable()
 			GetTime(),
 			"KEY_PRESS",
 			nil,
-			nil,
+			UnitGUID("player"),
 			UnitName("player"),
 			nil,
 			nil,
-			nil,
+			UnitGUID("playertarget"),
 			UnitName("playertarget"),
 			nil,
 			nil,
@@ -256,7 +256,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 					GetTime(),
 					"ITEM_USE",
 					nil,
-					nil,
+					UnitGUID("player"),
 					UnitName("player"),
 					nil,
 					nil,
@@ -280,7 +280,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 					GetTime(),
 					"ITEM_USE",
 					nil,
-					nil,
+					UnitGUID("player"),
 					UnitName("player"),
 					nil,
 					nil,
@@ -518,7 +518,7 @@ local tAddFunc = function(itemID, startTime, duration, isEnabled, event)
 				GetTime(),
 				event,
 				nil,
-				nil,
+				UnitGUID("player"),
 				UnitName("player"),
 				nil,
 				nil,
@@ -796,8 +796,6 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 					tEvaluateData.overhealingPercentage = math.floor((tEvaluateData.overhealingAmount / tEvaluateData.healAmount) * 100)
 				end
 			end
-
-
 
 			tEvaluateData.itemId = tEventData[40]
 			if tEventData[40] then

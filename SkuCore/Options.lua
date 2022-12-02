@@ -1394,10 +1394,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.isSelect = true
 		--tNewMenuEntry.ttsEngine = 2
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			print(aName)
 			--open the specific edit box for aname and write result to current mi.tmpx
-			
-			
 			if string.find(aName, L["KommaNumbers"]) and tonumber(string.sub(aName, 0, 1)) == 0 then
 				local tFormatted = string.gsub(aName, ";"..L["KommaNumbers"]..";", ".")
 				tFormatted = string.gsub(tFormatted, ";", "")
