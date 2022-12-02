@@ -2,6 +2,12 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.25
+	- Fixed the German names of some mining resources for scanning
+
+
 -------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.24
 	- Enhanced the aura output code to improve the addon performance in raids with 25 players and/or aoe scenarios with a lot of events/mobs
