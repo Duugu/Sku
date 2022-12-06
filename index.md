@@ -23,8 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 ## Changes in Sku r31.26
+- A lot of map fixes for Dragonblight by emilylorange
 - More fixes for German mining resources names
 - More big performance fixes for auras
+- More fixes for upcoming Ulduar patch
 	
 ## Changes in Sku r31.25
 - Fixed the German names of some mining nodes for scanning
