@@ -777,16 +777,29 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 		--empty the queue
 		if aOverwrite == true then
+			--[[
+			for i = 1, table.getn(mSkuVoiceQueue) do
+				if mSkuVoiceQueue[i] then
+					if mSkuVoiceQueue[i].soundHandle then
+						StopSound(mSkuVoiceQueue[i].soundHandle)
+					end
+				end
+			end
+			mSkuVoiceQueue = {}
+			]]
 			local tIt = true
 			while tIt == true do
 				tIt = false
 				for i, v in pairs(mSkuVoiceQueue) do
-					if v.doNotOverwrite ~= true then
+					--print(i, v.text, aString, v.text == aString, #mSkuVoiceQueue)
+					if v.doNotOverwrite ~= true or v.text == aString then
 						--stop it first; just to be sure
 						if v.soundHandle then
 							StopSound(v.soundHandle, 0)
 						end
+						--mSkuVoiceQueue[i] = nil
 						table.remove(mSkuVoiceQueue, i)
+						--print(#mSkuVoiceQueue)
 						tIt = true
 					end
 				end
@@ -815,7 +828,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			table.insert(tStrings, aString)
 		else
 			aString = string.lower(aString)
-			aString= SplitString(aString)
+			aString = SplitString(aString)
 
 			local sep, tSplittedString = ";", {}
 			if type(aString) == "string" then

@@ -44,8 +44,8 @@ SkuCore.RessourceTypes = {
       [18] = { deDE = "Adamantitablagerung", enUS = "Adamantite Deposit", },
       [19] = { deDE = "Reiche Adamantitablagerung", enUS = "Rich Adamantite Deposit", },
       [20] = { deDE = "Khoriumvorkommen", enUS = "Khorium Vein", },
-      [21] = { deDE = "Kobaltvorkommen", enUS = "Cobalt Deposit", },
-      [22] = { deDE = "Reiches Kobaltvorkommen", enUS = "Rich Cobalt Deposit", },
+      [21] = { deDE = "Kobaltablagerung", enUS = "Cobalt Deposit", },
+      [22] = { deDE = "Reiche Kobaltablagerung", enUS = "Rich Cobalt Deposit", },
       [23] = { deDE = "Saronitablagerung", enUS = "Saronite Deposit", },
       [24] = { deDE = "Reiche Saronitablagerung", enUS = "Rich Saronite Deposit", },
       [25] = { deDE = "Reine Saronitablagerung", enUS = "Pure Saronite Deposit", },
@@ -395,7 +395,12 @@ function SkuCore:MinimapScanProcessResults()
                xa = xa + (yCenter * -1)
                ya = ya + xCenter
                local tDistance = SkuNav:Distance(0, 0, xCenter, yCenter)
-
+               if i == "Kobaltablagerung" then
+                  i = "Kobaltvorkommen"
+               end
+               if i == "Reiche Kobaltablagerung" then
+                  i = "Reiches Kobaltvorkommen"
+               end
                print((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod) .. " " .. L["Meter"])
                SkuOptions.Voice:OutputStringBTtts((tQuickWpNumber or "").." "..i.." "..SkuNav:GetDirectionToAsString(xa, ya).." "..math.floor(tDistance * tMinimapYardsMod).." ".. L["Meter"], false, true, 0.2)
 
@@ -487,6 +492,13 @@ function SkuCore:MinimapScanFast()
                   if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
                      for w in string.gmatch(tRessourceTypes[r][x][Sku.L["locale"]], ".+") do
                         if string.find(line, w, 1, true) and not string.find(line, w .. '|', 1, true) then
+                           if line == "Kobaltablagerung" then
+                              line = "Kobaltvorkommen"
+                           end
+                           if line == "Reiche Kobaltablagerung" then
+                              line = "Reiches Kobaltvorkommen"
+                           end
+
                            SkuCore:MinimapScanFastStop(line)
                            return
                         end

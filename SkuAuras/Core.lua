@@ -3,6 +3,14 @@ local MODULE_NAME = "SkuAuras"
 local _G = _G
 local L = Sku.L
 
+local sgsub = string.gsub
+local sfind = string.find
+local smatch = string.match
+local GetTime = GetTime
+local UnitGUID = UnitGUID
+local UnitName = UnitName
+local mfloor = math.floor
+
 SkuAuras = LibStub("AceAddon-3.0"):NewAddon("SkuAuras", "AceConsole-3.0", "AceEvent-3.0")
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +62,6 @@ function SkuAuras:OnEnable()
 	f:SetPropagateKeyboardInput(true)
 	f:SetPoint("TOP", _G["SkuAurasControl"], "BOTTOM", 0, 0)
 	f:SetScript("OnKeyDown", function(self, aKey)
-		--print(aKey)
 		local aEventData =  {
 			GetTime(),
 			"KEY_PRESS",
@@ -80,7 +87,7 @@ function SkuAuras:OnEnable()
 	local f = _G["SkuAurasControl"] or CreateFrame("Frame", "SkuAurasControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
 		ttime = ttime + time
-		if ttime < 0.5 then return end
+		if ttime < 0.25 then return end
 
 		SkuAuras:COOLDOWN_TICKER()
 		SkuAuras:UNIT_TICKER("player")
@@ -361,11 +368,11 @@ function SkuAuras:UNIT_TICKER(aUnitId)
 	if tUnitId and UnitHealthMax(tUnitId) > 0 then
 		local tHealth
 		if UnitHealthMax(tUnitId) and UnitHealthMax(tUnitId) > 0 then
-			tHealth = math.floor(UnitHealth(tUnitId) / (UnitHealthMax(tUnitId) / 100))
+			tHealth = mfloor(UnitHealth(tUnitId) / (UnitHealthMax(tUnitId) / 100))
 		end
 		local tPower
 		if UnitPowerMax(tUnitId) and UnitPowerMax(tUnitId) > 0 then
-			tPower = math.floor(UnitPower(tUnitId) / (UnitPowerMax(tUnitId) / 100))
+			tPower = mfloor(UnitPower(tUnitId) / (UnitPowerMax(tUnitId) / 100))
 		end
 
 		if not SkuAuras.UnitRepo[tUnitId] then
@@ -606,17 +613,11 @@ function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAuras:ProcessEvaluate(aValueA, aOperator, aValueB)
-	return SkuAuras.Operators[aOperator].func(aValueA, aValueB)
-end
-
 local CombatLogFilterAttackable =  bit.bor(
 	COMBATLOG_FILTER_HOSTILE_UNITS,
 	COMBATLOG_FILTER_HOSTILE_PLAYERS,
 	COMBATLOG_FILTER_NEUTRAL_UNITS
 )
-
----------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:EvaluateAllAuras(tEventData)
 	if not SkuOptions.db.char[MODULE_NAME].Auras then
 		SkuOptions.db.char[MODULE_NAME].Auras = {}
@@ -647,10 +648,6 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	elseif tEventData[CleuBase.sourceFlags] then
 		tSourceUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.sourceFlags], CombatLogFilterAttackable)
 	end
-
-	local unitHealthOrPowerUpdate = tEventData[35] or tEventData[36]
-	tEventData[35] = math.floor(UnitHealth("player") / (UnitHealthMax("player") / 100))
-	tEventData[36] = math.floor(UnitPower("player") / (UnitPowerMax("player") / 100))
 
 	local function getAuraList(unit, filter)
 		local tBuffList = {}
@@ -715,113 +712,107 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		return tBuffList
 	end
 
-	local tUnitID = "target"
-	tEventData[37] = getAuraList(tUnitID, "HELPFUL")
-	tEventData[38] = getAuraList(tUnitID, "HARMFUL")
+	local subevent = tEventData[CleuBase.subevent]
+
+	--build event related data to evaluate
+	local tEvaluateData = {
+		sourceUnitId = tSourceUnitID,
+		sourceName = tEventData[CleuBase.sourceName],
+		destUnitId = tDestinationUnitID,
+		targetTargetUnitId = tTargetTargetUnitId,
+		destName = tEventData[CleuBase.destName],
+		event = subevent,
+		spellId = tEventData[CleuBase.spellId],
+		spellName = tEventData[CleuBase.spellName],
+		unitHealthPlayer = mfloor(UnitHealth("player") / (UnitHealthMax("player") / 100)),
+		unitPowerPlayer = mfloor(UnitPower("player") / (UnitPowerMax("player") / 100)),
+		unitComboPlayer = tEventData[51],
+		unitHealthTarget = UnitName("target") and mfloor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
+		unitPowerTarget = UnitName("target") and mfloor(UnitPower("target") / (UnitPowerMax("target") / 100)),
+		unitHealthOrPowerUpdate = tEventData[35] or tEventData[36],
+		buffListTarget = getAuraList("target", "HELPFUL"),
+		debuffListTarget = getAuraList("target", "HARMFUL"),
+		buffListPlayer = getAuraList("player", "HELPFUL"),
+		debuffListPlayer = getAuraList("player", "HARMFUL"),
+		tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
+		tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
+		targetCanAttack = UnitCanAttack("player", "target"),
+		tInCombat = SkuCore.inCombat,
+		pressedKey = tEventData[50],
+		spellsNamesOnCd = SkuAuras.thingsNamesOnCd,
+	}		
+	tEvaluateData.spellId = tEventData[CleuBase.spellId]
+	tEvaluateData.spellName = tEventData[CleuBase.spellName]
+
+	--[[						15					16						17					18					19					20						21					22						23					24
+	_DAMAGE					amount			overkill				school			resisted			blocked			absorbed				critical			glancing				crushing			isOffHand
+	_MISSED					missType			isOffHand			amountMissed	critical
+	_HEAL						amount			overhealing			absorbed			critical
+	_HEAL_ABSORBED			extraGUID		extraName			extraFlags		extraRaidFlags	extraSpellID	extraSpellName		extraSchool		absorbedAmount		#totalAmount
+	_ENERGIZE				amount			overEnergize		powerType		#maxPower
+	_DRAIN					amount			powerType			extraAmount		#maxPower
+	_LEECH					amount			powerType			extraAmount
+	_INTERRUPT				extraSpellId	extraSpellName		extraSchool
+	_DISPEL					extraSpellId	extraSpellName		extraSchool		auraType
+	_DISPEL_FAILED			extraSpellId	extraSpellName		extraSchool
+	_STOLEN					extraSpellId	extraSpellName		extraSchool		auraType
+	_EXTRA_ATTACKS			amount
+	_CAST_FAILED			failedType
+	]]
+
+	if sfind(subevent, "_AURA_") then
+		tEvaluateData.auraType = tEventData[15]
+		tEvaluateData.auraAmount = tEventData[16]
+	end
+	if sfind(subevent, "_MISSED") then
+		tEvaluateData.missType = tEventData[12]
+	elseif subevent == "SWING_DAMAGE" then
+		tEvaluateData.critical = tEventData[18]
+		tEvaluateData.damageAmount = tEventData[12]
+	elseif smatch(subevent, "_DAMAGE$") then
+		tEvaluateData.critical = tEventData[21]
+		tEvaluateData.damageAmount = tEventData[15]
+	elseif smatch(subevent, "_HEAL$") then
+		tEvaluateData.critical = tEventData[18]
+		tEvaluateData.healAmount = tEventData[15]
+		tEvaluateData.overhealingAmount = tEventData[16]
+		if tEvaluateData.healAmount and tEvaluateData.overhealingAmount then
+			tEvaluateData.overhealingPercentage = mfloor((tEvaluateData.overhealingAmount / tEvaluateData.healAmount) * 100)
+		end
+	end
+
+	tEvaluateData.itemId = tEventData[40]
+	if tEventData[40] then
+		tEvaluateData.itemName = SkuDB.itemLookup[Sku.Loc][tEventData[40]]
+		for bagId = 0, 4 do
+			local tNumberOfSlots = GetContainerNumSlots(bagId)
+			for slotId = 1, tNumberOfSlots do
+				local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
+				if itemCount then
+					if itemID == tEvaluateData.itemId then
+						if not tEvaluateData.itemCount then
+							tEvaluateData.itemCount = itemCount - 1
+						else
+							tEvaluateData.itemCount = tEvaluateData.itemCount + itemCount
+						end
+					end
+				end
+			end
+		end					
+	end
+
+	if tEventData[CleuBase.subevent] == "UNIT_DESTROYED" then
+		tEvaluateData.spellName = tEventData[9]
+	end
+
+	tEvaluateData.class = nil
 
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
 		if tAuraData.enabled == true then
-
 			local tOverallResult = true
 			local tHasApplicableAttributes = false
-
-			local subevent = tEventData[CleuBase.subevent]
-
-			--build event related data to evaluate
-			local tEvaluateData = {
-				sourceUnitId = tSourceUnitID,
-				sourceName = tEventData[CleuBase.sourceName],
-				destUnitId = tDestinationUnitID,
-				targetTargetUnitId = tTargetTargetUnitId,
-				destName = tEventData[CleuBase.destName],
-				event = subevent,
-				spellId = tEventData[CleuBase.spellId],
-				spellName = tEventData[CleuBase.spellName],
-				unitHealthPlayer = tEventData[35],
-				unitPowerPlayer = tEventData[36],
-				unitComboPlayer = tEventData[51],
-				unitHealthTarget = UnitName("target") and math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
-				unitPowerTarget = UnitName("target") and math.floor(UnitPower("target") / (UnitPowerMax("target") / 100)),
-				unitHealthOrPowerUpdate = unitHealthOrPowerUpdate,
-				buffListTarget = tEventData[37],
-				debuffListTarget = tEventData[38],
-				buffListPlayer = getAuraList("player", "HELPFUL"),
-				debuffListPlayer = getAuraList("player", "HARMFUL"),
-				tSourceUnitIDCannAttack = tSourceUnitIDCannAttack,
-				tDestinationUnitIDCannAttack = tDestinationUnitIDCannAttack,
-				targetCanAttack = UnitCanAttack("player", "target"),
-				tInCombat = SkuCore.inCombat,
-				pressedKey = tEventData[50],
-				spellsNamesOnCd = SkuAuras.thingsNamesOnCd,
-			}		
-			tEvaluateData.spellId = tEventData[CleuBase.spellId]
-			tEvaluateData.spellName = tEventData[CleuBase.spellName]
-
-			--[[						15					16						17					18					19					20						21					22						23					24
-			_DAMAGE					amount			overkill				school			resisted			blocked			absorbed				critical			glancing				crushing			isOffHand
-			_MISSED					missType			isOffHand			amountMissed	critical
-			_HEAL						amount			overhealing			absorbed			critical
-			_HEAL_ABSORBED			extraGUID		extraName			extraFlags		extraRaidFlags	extraSpellID	extraSpellName		extraSchool		absorbedAmount		#totalAmount
-			_ENERGIZE				amount			overEnergize		powerType		#maxPower
-			_DRAIN					amount			powerType			extraAmount		#maxPower
-			_LEECH					amount			powerType			extraAmount
-			_INTERRUPT				extraSpellId	extraSpellName		extraSchool
-			_DISPEL					extraSpellId	extraSpellName		extraSchool		auraType
-			_DISPEL_FAILED			extraSpellId	extraSpellName		extraSchool
-			_STOLEN					extraSpellId	extraSpellName		extraSchool		auraType
-			_EXTRA_ATTACKS			amount
-			_CAST_FAILED			failedType
-			]]
-
-			if string.find(subevent, "_AURA_") then
-				tEvaluateData.auraType = tEventData[15]
-				tEvaluateData.auraAmount = tEventData[16]
-			end
-
-			if string.find(subevent, "_MISSED") then
-				tEvaluateData.missType = tEventData[12]
-			elseif subevent == "SWING_DAMAGE" then
-				tEvaluateData.critical = tEventData[18]
-				tEvaluateData.damageAmount = tEventData[12]
-			elseif string.match(subevent, "_DAMAGE$") then
-				tEvaluateData.critical = tEventData[21]
-				tEvaluateData.damageAmount = tEventData[15]
-			elseif string.match(subevent, "_HEAL$") then
-				tEvaluateData.critical = tEventData[18]
-				tEvaluateData.healAmount = tEventData[15]
-				tEvaluateData.overhealingAmount = tEventData[16]
-				if tEvaluateData.healAmount and tEvaluateData.overhealingAmount then
-					tEvaluateData.overhealingPercentage = math.floor((tEvaluateData.overhealingAmount / tEvaluateData.healAmount) * 100)
-				end
-			end
-
-			tEvaluateData.itemId = tEventData[40]
-			if tEventData[40] then
-				tEvaluateData.itemName = SkuDB.itemLookup[Sku.Loc][tEventData[40]]
-				for bagId = 0, 4 do
-					local tNumberOfSlots = GetContainerNumSlots(bagId)
-					for slotId = 1, tNumberOfSlots do
-						local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
-						if itemCount then
-							if itemID == tEvaluateData.itemId then
-								if not tEvaluateData.itemCount then
-									tEvaluateData.itemCount = itemCount - 1
-								else
-									tEvaluateData.itemCount = tEvaluateData.itemCount + itemCount
-								end
-							end
-						end
-					end
-				end					
-			end
-
-			if tEventData[CleuBase.subevent] == "UNIT_DESTROYED" then
-				tEvaluateData.spellName = tEventData[9]
-			end
-
-			tEvaluateData.class = nil
 
 			--evaluate attributes
 			local tSingleBuffListTargetValue
@@ -854,6 +845,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 					end
 					if tLocalResult ~= true then
 						tOverallResult = false
+						break
 					end
 				else
 					local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2])
@@ -871,17 +863,18 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 
 					if tResult ~= true then
 						tOverallResult = false
+						break
 					end
 				end
 
 				if tAttributeName == "buffListTarget" then
-					tSingleBuffListTargetValue = string.gsub(tAttributeValue[1][2], "spell:", "")
+					tSingleBuffListTargetValue = sgsub(tAttributeValue[1][2], "spell:", "")
 				end
 				if tAttributeName == "debuffListTarget" then
-					tSingleDebuffListTargetValue = string.gsub(tAttributeValue[1][2], "spell:", "")
+					tSingleDebuffListTargetValue = sgsub(tAttributeValue[1][2], "spell:", "")
 				end
 				if tAttributeName == "spellNameOnCd" then
-					tSpellNameOnCdValue = string.gsub(tAttributeValue[1][2], "spell:", "")
+					tSpellNameOnCdValue = sgsub(tAttributeValue[1][2], "spell:", "")
 				end
 			end				
 
@@ -897,7 +890,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 						tAuraData.used = true
 
 						for i, v in pairs(tAuraData.outputs) do
-							if SkuAuras.outputs[string.gsub(v, "output:", "")] then
+							if SkuAuras.outputs[sgsub(v, "output:", "")] then
 								local tAction = tAuraData.actions[1]
 								if tAction ~= "notifyAudioAndChatSingle" then
 									if tAction == "notifyAudioSingle" or tAction == "notifyAudioSingleInstant" then
@@ -907,10 +900,10 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 										tAction = "notifyChat"
 									end
 
-									SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									SkuAuras.outputs[sgsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								else
-									SkuAuras.outputs[string.gsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
-									SkuAuras.outputs[string.gsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								end
 
 								tFirst = false
@@ -935,7 +928,7 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 						tAuraData.used = true
 
 						for i, v in pairs(tAuraData.outputs) do
-							if SkuAuras.outputs[string.gsub(v, "output:", "")] then
+							if SkuAuras.outputs[sgsub(v, "output:", "")] then
 								local tAction = tAuraData.actions[1]
 								if tAction ~= "notifyAudioAndChatSingle" then
 									if tAction == "notifyAudioSingle" then
@@ -944,10 +937,10 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 									if tAction == "notifyChatSingle" then
 										tAction = "notifyChat"
 									end							
-									SkuAuras.outputs[string.gsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									SkuAuras.outputs[sgsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								else
-									SkuAuras.outputs[string.gsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
-									SkuAuras.outputs[string.gsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
 								end
 								
 								tFirst = false
@@ -957,10 +950,6 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 				else
 					--set aura to unused
 					tAuraData.used = false
-
-
-
-
 				end	
 			end
 		end
@@ -1020,8 +1009,8 @@ function SkuAuras:CreateAura(aType, aAttributes)
 	tAuraName = tAuraName..L["dann;"]..SkuAuras.actions[tActions[1]].friendlyName..";"
 
 	for tOutputIndex, tOutputName in pairs(tOutputs) do
-		tAuraName = tAuraName..L[";und;"]..SkuAuras.outputs[string.gsub(tOutputName, "output:", "")].friendlyName..";"
-		tAuraName = string.gsub(tAuraName, "aura;sound#", "sound;")
+		tAuraName = tAuraName..L[";und;"]..SkuAuras.outputs[sgsub(tOutputName, "output:", "")].friendlyName..";"
+		tAuraName = sgsub(tAuraName, "aura;sound#", "sound;")
 	end
 
 	--add aura
@@ -1035,3 +1024,51 @@ function SkuAuras:CreateAura(aType, aAttributes)
 
 	return true
 end
+
+skutest = false
+local ttime1 = 0
+local f = _G["SkuAurasControlTest"] or CreateFrame("Frame", "SkuAurasControlTest", UIParent)
+f:SetScript("OnUpdate", function(self, time)
+	ttime1 = ttime1 + time
+	--if ttime1 < 0.5 then return end
+	if skutest == true then
+		for x = 1, 100 do
+			local aEventData =  {
+				GetTime(),
+				"SPELL_DAMAGE",
+				nil,
+				UnitGUID("player")..x,
+				UnitName("player")..x,
+				nil,
+				nil,
+				UnitGUID("player")..x,
+				UnitName("player")..x,
+				nil,
+				nil,
+				8092,--spellId
+				"Gedankenschlag",--spellName
+				nil,
+				2000 + x,--amount
+			}
+			SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
+		end
+	end
+	ttime1 = 0
+end)
+f:Show()
+
+			--[[						15					16						17					18					19					20						21					22						23					24
+			_DAMAGE					amount			overkill				school			resisted			blocked			absorbed				critical			glancing				crushing			isOffHand
+			_MISSED					missType			isOffHand			amountMissed	critical
+			_HEAL						amount			overhealing			absorbed			critical
+			_HEAL_ABSORBED			extraGUID		extraName			extraFlags		extraRaidFlags	extraSpellID	extraSpellName		extraSchool		absorbedAmount		#totalAmount
+			_ENERGIZE				amount			overEnergize		powerType		#maxPower
+			_DRAIN					amount			powerType			extraAmount		#maxPower
+			_LEECH					amount			powerType			extraAmount
+			_INTERRUPT				extraSpellId	extraSpellName		extraSchool
+			_DISPEL					extraSpellId	extraSpellName		extraSchool		auraType
+			_DISPEL_FAILED			extraSpellId	extraSpellName		extraSchool
+			_STOLEN					extraSpellId	extraSpellName		extraSchool		auraType
+			_EXTRA_ATTACKS			amount
+			_CAST_FAILED			failedType
+			]]

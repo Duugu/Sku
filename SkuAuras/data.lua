@@ -2,29 +2,11 @@
 local _G = _G
 local L = Sku.L
 
-
-
---[[
-["sound-silence_0.5s"] = L["silent"].." "..L["0.5s"],
-["sound-silence_1s"] = L["silent"].." "..L["1s"],
-["sound-silence0.1"] = L["silent"].." "..L["0.1s"],
-]]
-
-SkuAuras.OutputSounds = {
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\Brass1.mp3"] = L["aura;sound"].."#".."Brass1",
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\Glass1.mp3"] = L["aura;sound"].."#".."Glass1",
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aura\\WaterDrop1.mp3"] = L["aura;sound"].."#".."WaterDrop1",
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_brang.ogg"] = L["aura;sound"].."#"..L["brang"],
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_bring.ogg"] = L["aura;sound"].."#"..L["bring"],
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_dang.ogg"] = L["aura;sound"].."#"..L["dang"],
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_drmm.ogg"] = L["aura;sound"].."#"..L["drmm"],
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_shhhup.ogg"] = L["aura;sound"].."#"..L["shhhup"],
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_spoing.ogg"] = L["aura;sound"].."#"..L["spoing"],
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_swoosh.ogg"] = L["aura;sound"].."#"..L["swoosh"],
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_tsching.ogg"] = L["aura;sound"].."#"..L["tsching"],
-   ["Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3"] = L["aura;sound"].."#"..L["silent"],
-}
-
+local tonumber = tonumber
+local sgsub = string.gsub
+local supper = string.upper
+local sfind = string.find
+local ssplit = string.split
 
 ------------------------------------------------------------------------------------------------------------------
 local function KeyValuesHelper()
@@ -43,18 +25,18 @@ local function KeyValuesHelper()
    local tResultTable = {}
 
    for x = 1, #tKeys do
-      if SkuCore.Keys.LocNames[string.upper(tKeys[x])] then
-         tResultTable[tKeys[x]] = SkuCore.Keys.LocNames[string.upper(tKeys[x])]
+      if SkuCore.Keys.LocNames[supper(tKeys[x])] then
+         tResultTable[tKeys[x]] = SkuCore.Keys.LocNames[supper(tKeys[x])]
       else
          tResultTable[tKeys[x]] = tKeys[x]
       end
    end
 
    for y = 1, #tModifiers do
-      local tLocModifier = string.gsub(tModifiers[y], "CTRL", SkuCore.Keys.LocNames["CTRL"])
+      local tLocModifier = sgsub(tModifiers[y], "CTRL", SkuCore.Keys.LocNames["CTRL"])
       for x = 1, #tKeys do
-         if SkuCore.Keys.LocNames[string.upper(tKeys[x])] then
-            tResultTable[tModifiers[y]..tKeys[x]] = tLocModifier..SkuCore.Keys.LocNames[string.upper(tKeys[x])]
+         if SkuCore.Keys.LocNames[supper(tKeys[x])] then
+            tResultTable[tModifiers[y]..tKeys[x]] = tLocModifier..SkuCore.Keys.LocNames[supper(tKeys[x])]
          else
             tResultTable[tModifiers[y]..tKeys[x]] = tLocModifier..tKeys[x]
          end
@@ -68,9 +50,9 @@ function SkuAuras:RemoveTags(aValue)
    if type(aValue) ~= "string" then
       return aValue
    end
-   local tCleanValue = string.gsub(aValue, "item:", "")
-   tCleanValue = string.gsub(tCleanValue, "spell:", "")
-   tCleanValue = string.gsub(tCleanValue, "output:", "")
+   local tCleanValue = sgsub(aValue, "item:", "")
+   tCleanValue = sgsub(tCleanValue, "spell:", "")
+   tCleanValue = sgsub(tCleanValue, "output:", "")
    return tCleanValue
 end
 
@@ -154,7 +136,7 @@ SkuAuras.actions = {
 }
 
 ------------------------------------------------------------------------------------------------------------------
-local tPrevAuraPlaySoundFileHandle
+--local tPrevAuraPlaySoundFileHandle
 SkuAuras.outputs = {
    event = {
       tooltip = L["Der Name des auslösenden Ereignisses der Aura"],
@@ -567,13 +549,15 @@ for tOutputString, tFriendlyName in pairs(tOutputSoundFiles) do
       friendlyName = tFriendlyName,
       functs = {
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
-            if aFirst == true then
+            --if aFirst == true then
+               --[[
                if tPrevAuraPlaySoundFileHandle then
                   StopSound(tPrevAuraPlaySoundFileHandle)
                end
-               SkuOptions.Voice:OutputString("sound-silence0.1", true, false, 0.3, true)
-            end
-            SkuOptions.Voice:OutputString(tOutputString, false, true, 0.3, true)
+               ]]
+               --SkuOptions.Voice:OutputString("sound-silence0.1", true, false, 0.3, true)
+            --end
+            SkuOptions.Voice:OutputString(tOutputString, aFirst, true, 0.3, true)
          end,
          ["notifyChat"] = function(tAuraName, tEvaluateData)
             print(tFriendlyName)
@@ -835,14 +819,6 @@ SkuAuras.valuesDefault = {
          tooltip = L["ziel von Gruppenmitglied 4."],
          friendlyName = L["ziel von gruppenmitglied 4"],
       },      
-
-
-
-
-
-
-
-
    --class
       ["Warrior"] = {
          tooltip = L["Reagiert, wenn die Zieleinheit die Klasse Krieger hat"],
@@ -1066,7 +1042,6 @@ for i, v in pairs (tKeys) do
    SkuAuras.valuesDefault[i] = {friendlyName = v}
 end
 
-
 SkuAuras.values = {
 }
 
@@ -1236,11 +1211,11 @@ SkuAuras.attributes = {
             if aOperator == "containsNot" or aOperator == "contains" then
                
                if aValue == "party" then
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, {"player", "party0", "party1", "party2", "party3", "party4"})
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.destUnitId, {"player", "party0", "party1", "party2", "party3", "party4"})
                elseif aValue == "partyWoPlayer" then
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, {"party1", "party2", "party3", "party4"})
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.destUnitId, {"party1", "party2", "party3", "party4"})
                else
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId, aOperator, aValue)
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.destUnitId, aValue)
                end
             else
                for x = 1, #aEventData.destUnitId do
@@ -1248,7 +1223,7 @@ SkuAuras.attributes = {
                      return true
                   elseif aValue == "party" or aValue == "partyWoPlayer" then
                      if aValue == "party" then
-                        if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "player") == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.destUnitId[x], "player") == true then
                            tEvaluation = true
                         end
                      end
@@ -1257,17 +1232,17 @@ SkuAuras.attributes = {
                         tStart = 1
                      end
                      for x = tStart, 4 do 
-                        if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "party"..x) == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.destUnitId[x], "party"..x) == true then
                            tEvaluation = true
                         end
                      end
                      for x = 1, MAX_RAID_MEMBERS do 
-                        if SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, "raid"..x) == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.destUnitId[x], "raid"..x) == true then
                            tEvaluation = true
                         end
                      end
                   else
-                     tEvaluation = SkuAuras:ProcessEvaluate(aEventData.destUnitId[x], aOperator, aValue)
+                     tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.destUnitId[x], aValue)
                   end
                end
             end
@@ -1299,11 +1274,11 @@ SkuAuras.attributes = {
             if aOperator == "containsNot" or aOperator == "contains" then
                
                if aValue == "party" then
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId, aOperator, {"player", "party0", "party1", "party2", "party3", "party4"})
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId, {"player", "party0", "party1", "party2", "party3", "party4"})
                elseif aValue == "partyWoPlayer" then
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId, aOperator, {"party1", "party2", "party3", "party4"})
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId, {"party1", "party2", "party3", "party4"})
                else
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId, aOperator, aValue)
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId, aValue)
                end
             else            
                for x = 1, #aEventData.targetTargetUnitId do
@@ -1311,7 +1286,7 @@ SkuAuras.attributes = {
                      return true
                   elseif aValue == "party" then
                      if aValue == "party" then
-                        if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "player") == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId[x], "player") == true then
                            tEvaluation = true
                         end
                      end
@@ -1320,17 +1295,17 @@ SkuAuras.attributes = {
                         tStart = 1
                      end
                      for x = tStart, 4 do 
-                        if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "party"..x) == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId[x], "party"..x) == true then
                            tEvaluation = true
                         end
                      end
                      for x = 1, MAX_RAID_MEMBERS do 
-                        if SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, "raid"..x) == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId[x], "raid"..x) == true then
                            tEvaluation = true
                         end
                      end
                   else
-                     tEvaluation = SkuAuras:ProcessEvaluate(aEventData.targetTargetUnitId[x], aOperator, aValue)
+                     tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.targetTargetUnitId[x], aValue)
                   end
                end
             end
@@ -1347,8 +1322,8 @@ SkuAuras.attributes = {
       type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
          if aEventData.pressedKey then
-            --dprint("    ","SkuAuras.attributes.pressedKey.evaluate", string.upper(aEventData.pressedKey), aOperator, string.upper(aValue))
-            return SkuAuras:ProcessEvaluate(string.upper(aEventData.pressedKey), aOperator,string.upper(aValue))
+            --dprint("    ","SkuAuras.attributes.pressedKey.evaluate", supper(aEventData.pressedKey), aOperator, supper(aValue))
+            return SkuAuras.Operators[aOperator].func(supper(aEventData.pressedKey), supper(aValue))
          end
       end,
       values = {}, --values are added below the attributes table
@@ -1359,7 +1334,7 @@ SkuAuras.attributes = {
       type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
          --dprint("    ","SkuAuras.attributes.tInCombat.evaluate", aEventData.tInCombat, aOperator, true)
-         return SkuAuras:ProcessEvaluate(aEventData.tInCombat, aOperator, aValue == "true")
+         return SkuAuras.Operators[aOperator].func(aEventData.tInCombat, aValue == "true")
       end,
       values = {
          "true",
@@ -1371,7 +1346,7 @@ SkuAuras.attributes = {
       friendlyName = L["Critical"],
       type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return SkuAuras:ProcessEvaluate(aEventData.critical, aOperator, aValue == "true")
+         return SkuAuras.Operators[aOperator].func(aEventData.critical, aValue == "true")
       end,
       values = {
          "true",
@@ -1384,7 +1359,7 @@ SkuAuras.attributes = {
       type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
          --dprint("    ","SkuAuras.attributes.tSourceUnitIDCannAttack.evaluate", aEventData.tSourceUnitIDCannAttack, aOperator, true)
-         return SkuAuras:ProcessEvaluate(aEventData.tSourceUnitIDCannAttack, aOperator, aValue == "true")
+         return SkuAuras.Operators[aOperator].func(aEventData.tSourceUnitIDCannAttack, aValue == "true")
       end,
       values = {
          "true",
@@ -1397,7 +1372,7 @@ SkuAuras.attributes = {
       type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
          --dprint("    ","SkuAuras.attributes.tDestinationUnitIDCannAttack.evaluate", aEventData.tDestinationUnitIDCannAttack, aOperator, true)
-         return SkuAuras:ProcessEvaluate(aEventData.tDestinationUnitIDCannAttack, aOperator, aValue == "true")
+         return SkuAuras.Operators[aOperator].func(aEventData.tDestinationUnitIDCannAttack, aValue == "true")
       end,
       values = {
          "true",
@@ -1409,7 +1384,7 @@ SkuAuras.attributes = {
       friendlyName = L["Your target is attackable"],
       type = "BINARY",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return SkuAuras:ProcessEvaluate(aEventData.targetCanAttack, aOperator, aValue == "true")
+         return SkuAuras.Operators[aOperator].func(aEventData.targetCanAttack, aValue == "true")
       end,
       values = {
          "true",
@@ -1442,21 +1417,19 @@ SkuAuras.attributes = {
             local tEvaluation = false
 
             if aOperator == "containsNot" or aOperator == "contains" then
-               
                if aValue == "party" then
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, {"player", "party0", "party1", "party2", "party3", "party4"})
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.sourceUnitId, {"player", "party0", "party1", "party2", "party3", "party4"})
+
                elseif aValue == "partyWoPlayer" then
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, {"party1", "party2", "party3", "party4"})
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.sourceUnitId, {"party1", "party2", "party3", "party4"})
                else
-                  tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId, aOperator, aValue)
+                  tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.sourceUnitId, aValue)
                end
-
-
             else
                for x = 1, #aEventData.sourceUnitId do
                   if aValue == "party" then
                      if aValue == "party" then
-                        if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "player") == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.sourceUnitId[x], "player") == true then
                            tEvaluation = true
                         end
                      end
@@ -1465,17 +1438,17 @@ SkuAuras.attributes = {
                         tStart = 1
                      end
                      for x = tStart, 4 do 
-                        if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "party"..x) == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.sourceUnitId[x], "party"..x) == true then
                            tEvaluation = true
                         end
                      end
                      for x = 1, MAX_RAID_MEMBERS do 
-                        if SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, "raid"..x) == true then
+                        if SkuAuras.Operators[aOperator].func(aEventData.sourceUnitId[x], "raid"..x) == true then
                            tEvaluation = true
                         end
                      end
                   else
-                     tEvaluation = SkuAuras:ProcessEvaluate(aEventData.sourceUnitId[x], aOperator, aValue)
+                     tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.sourceUnitId[x], aValue)
                   end
                end
             end
@@ -1495,16 +1468,16 @@ SkuAuras.attributes = {
       	--print("    ","SkuAuras.attributes.event.evaluate")
          if aEventData.event then
             local tEvaluation
-            if string.find(aValue, ";") then
-               local tEvents = {string.split(";", aValue)}
+            if sfind(aValue, ";") then
+               local tEvents = {ssplit(";", aValue)}
                for i, v in pairs(tEvents) do
-                  local tSingleEvaluation = SkuAuras:ProcessEvaluate(aEventData.event, aOperator, v)
+                  local tSingleEvaluation = SkuAuras.Operators[aOperator].func(aEventData.event, v)
                   if tSingleEvaluation == true then
                      tEvaluation = true
                   end
                end
             else
-               tEvaluation = SkuAuras:ProcessEvaluate(aEventData.event, aOperator, aValue)
+               tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.event, aValue)
             end
             if tEvaluation == true then
                return true
@@ -1556,7 +1529,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.missType.evaluate")
          if aEventData.missType then
-            return SkuAuras:ProcessEvaluate(aEventData.missType, aOperator, aValue)
+            return SkuAuras.Operators[aOperator].func(aEventData.missType, aValue)
          end
       end,
       values = {
@@ -1579,7 +1552,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.unitPowerPlayer.evaluate")
          if aEventData.unitPowerPlayer then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitPowerPlayer), aOperator, tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.unitPowerPlayer), tonumber(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1594,7 +1567,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	dprint("    ","SkuAuras.attributes.unitComboPlayer.evaluate", aEventData.unitComboPlayer)
          if aEventData.unitComboPlayer then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitComboPlayer), aOperator, tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.unitComboPlayer), tonumber(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1616,7 +1589,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.unitHealthPlayer.evaluate")
          if aEventData.unitHealthPlayer then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.unitHealthPlayer), aOperator, tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.unitHealthPlayer), tonumber(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1629,7 +1602,7 @@ SkuAuras.attributes = {
       friendlyName = L["Your target's health"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return aEventData.unitHealthTarget and SkuAuras:ProcessEvaluate(aEventData.unitHealthTarget, aOperator, tonumber(aValue))
+         return aEventData.unitHealthTarget and SkuAuras.Operators[aOperator].func(aEventData.unitHealthTarget, tonumber(aValue))
       end,
       values = zeroToOneHundred,
    },
@@ -1638,8 +1611,7 @@ SkuAuras.attributes = {
       friendlyName = L["Your target's resource"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return aEventData.unitPowerTarget and
-             SkuAuras:ProcessEvaluate(aEventData.unitPowerTarget, aOperator, tonumber(aValue))
+         return aEventData.unitPowerTarget and SkuAuras.Operators[aOperator].func(aEventData.unitPowerTarget, tonumber(aValue))
       end,
       values = zeroToOneHundred,
    },
@@ -1648,8 +1620,7 @@ SkuAuras.attributes = {
       friendlyName = L["Health/Resource update"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return aEventData.unitHealthOrPowerUpdate and
-             SkuAuras:ProcessEvaluate(aEventData.unitHealthOrPowerUpdate, aOperator, tonumber(aValue))
+         return aEventData.unitHealthOrPowerUpdate and SkuAuras.Operators[aOperator].func(aEventData.unitHealthOrPowerUpdate, tonumber(aValue))
       end,
       values = zeroToOneHundred,
    },
@@ -1658,12 +1629,10 @@ SkuAuras.attributes = {
       friendlyName = L["Overhealing percentage"],
       type = "ORDINAL",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return aEventData.overhealingPercentage and
-             SkuAuras:ProcessEvaluate(aEventData.overhealingPercentage, aOperator, tonumber(aValue))
+         return aEventData.overhealingPercentage and SkuAuras.Operators[aOperator].func(aEventData.overhealingPercentage, tonumber(aValue))
       end,
       values = zeroToOneHundred,
    },
-
    spellId = {
       tooltip = L["Die Zauber-ID, die die Aura auslösen soll"],
       friendlyName = L["zauber nr"],
@@ -1671,7 +1640,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.spellId.evaluate")
          if aEventData.spellId then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.spellId), aOperator, tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.spellId), tonumber(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1680,8 +1649,6 @@ SkuAuras.attributes = {
       values = {
       },      
    },
-
-
    spellNameOnCd = {
       tooltip = L["Ob ein Zauber gerade auf CD ist"],
       friendlyName = L["zauber auf cd (L)"],
@@ -1695,7 +1662,7 @@ SkuAuras.attributes = {
          end
 
          if aEventData.spellsNamesOnCd then
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellsNamesOnCd, aOperator, SkuAuras:RemoveTags(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.spellsNamesOnCd, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1704,8 +1671,6 @@ SkuAuras.attributes = {
       values = {
       },      
    },
-
-
 --[[
    spellNameNotOnCd = {
       tooltip = L["Ob ein Zauber gerade nicht auf CD ist"],
@@ -1717,7 +1682,7 @@ SkuAuras.attributes = {
             setmetatable(aEventData.spellsNamesOnCd, SkuPrintMTWo)
             --dprint(aEventData.spellsNamesOnCd)
       
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellsNamesOnCd[aValue], aOperator, aValue)
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.spellsNamesOnCd[aValue], aValue)
             if tEvaluation == false then
                return true
             end
@@ -1727,7 +1692,6 @@ SkuAuras.attributes = {
       },      
    },
 ]]
-
    spellName = {
       tooltip = L["Der Zauber-name, der die Aura auslösen soll"],
       friendlyName = L["zauber name"],
@@ -1735,7 +1699,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.spellName.evaluate")
          if aEventData.spellName then
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.spellName, aOperator, aValue)
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.spellName, aValue)
             if tEvaluation == true then
                return true
             end
@@ -1751,7 +1715,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.buffListTarget.evaluate", aEventData, aOperator, aValue)
          if aEventData.buffListTarget then
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.buffListTarget, aOperator, SkuAuras:RemoveTags(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.buffListTarget, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1768,7 +1732,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.debuffListTarget.evaluate", aEventData.debuffListTarget)
          if aEventData.debuffListTarget then
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.debuffListTarget, aOperator, SkuAuras:RemoveTags(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.debuffListTarget, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1783,7 +1747,7 @@ SkuAuras.attributes = {
       friendlyName = L["Your buff list (L)"],
       type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return aEventData.buffListPlayer ~= nil and SkuAuras:ProcessEvaluate(aEventData.buffListPlayer, aOperator, SkuAuras:RemoveTags(aValue)) == true
+         return aEventData.buffListPlayer ~= nil and SkuAuras.Operators[aOperator].func(aEventData.buffListPlayer, SkuAuras:RemoveTags(aValue)) == true
       end,
       values = {},      
    },
@@ -1792,7 +1756,7 @@ SkuAuras.attributes = {
       friendlyName = L["Your debuff list (L)"],
       type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
-         return aEventData.debuffListPlayer ~= nil and SkuAuras:ProcessEvaluate(aEventData.debuffListPlayer, aOperator, SkuAuras:RemoveTags(aValue)) == true
+         return aEventData.debuffListPlayer ~= nil and SkuAuras.Operators[aOperator].func(aEventData.debuffListPlayer, SkuAuras:RemoveTags(aValue)) == true
       end,
       values = {},      
    },
@@ -1803,7 +1767,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.itemName.evaluate")
          if aEventData.itemName then
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.itemName, aOperator, aValue)
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.itemName, aValue)
             if tEvaluation == true then
                return true
             end
@@ -1813,14 +1777,13 @@ SkuAuras.attributes = {
       },      
    },
    itemId = {
-
       tooltip = L["Die Gegenstands-ID, die die Aura auslösen soll"],
       friendlyName = L["gegenstand nr"],
       type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.itemId.evaluate")
          if aEventData.itemId then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.itemId), aOperator, tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.itemId), tonumber(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1836,125 +1799,13 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.itemCount.evaluate")
          if aEventData.itemCount then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.itemCount), aOperator, tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.itemCount), tonumber(aValue))
             if tEvaluation == true then
                return true
             end
          end
       end,
-      values = {
-         "0",
-         "1",
-         "2",
-         "3",
-         "4",
-         "5",
-         "6",
-         "7",
-         "8",
-         "9",
-         "10",
-         "11",
-         "12",
-         "13",
-         "14",
-         "15",
-         "16",
-         "17",
-         "18",
-         "19",
-         "20",
-         "21",
-         "22",
-         "23",
-         "24",
-         "25",
-         "26",
-         "27",
-         "28",
-         "29",
-         "30",
-         "31",
-         "32",
-         "33",
-         "34",
-         "35",
-         "36",
-         "37",
-         "38",
-         "39",
-         "40",
-         "41",
-         "42",
-         "43",
-         "44",
-         "45",
-         "46",
-         "47",
-         "48",
-         "49",
-         "50",
-         "51",
-         "52",
-         "53",
-         "54",
-         "55",
-         "56",
-         "57",
-         "58",
-         "59",
-         "60",
-         "61",
-         "62",
-         "63",
-         "64",
-         "65",
-         "66",
-         "67",
-         "68",
-         "69",
-         "70",
-         "71",
-         "72",
-         "73",
-         "74",
-         "75",
-         "76",
-         "77",
-         "78",
-         "79",
-         "80",
-         "81",
-         "82",
-         "83",
-         "84",
-         "85",
-         "86",
-         "87",
-         "88",
-         "89",
-         "90",
-         "91",
-         "92",
-         "93",
-         "94",
-         "95",
-         "96",
-         "97",
-         "98",
-         "99",
-         "100",
-         "110",
-         "120",
-         "130",
-         "140",
-         "150",
-         "200",
-         "300",
-         "400",
-         "500",
-         
-      },      
+      values = zeroToOneHundred,      
    },
    auraType = {
       tooltip = L["Der Aura-Typ (Buff oder Debuff), der die Aura auslösen soll"],
@@ -1963,7 +1814,7 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.auraType.evaluate")
          if aEventData.auraType then
-            local tEvaluation = SkuAuras:ProcessEvaluate(aEventData.auraType, aOperator, aValue)
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.auraType, aValue)
             if tEvaluation == true then
                return true
             end
@@ -1981,116 +1832,13 @@ SkuAuras.attributes = {
       evaluate = function(self, aEventData, aOperator, aValue)
       	--dprint("    ","SkuAuras.attributes.auraAmount.evaluate")
          if aEventData.auraAmount then
-            local tEvaluation = SkuAuras:ProcessEvaluate(tonumber(aEventData.auraAmount), aOperator, tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.auraAmount), tonumber(aValue))
             if tEvaluation == true then
                return true
             end
          end
       end,
-      values = {
-         "0",
-         "1",
-         "2",
-         "3",
-         "4",
-         "5",
-         "6",
-         "7",
-         "8",
-         "9",
-         "10",
-         "11",
-         "12",
-         "13",
-         "14",
-         "15",
-         "16",
-         "17",
-         "18",
-         "19",
-         "20",
-         "21",
-         "22",
-         "23",
-         "24",
-         "25",
-         "26",
-         "27",
-         "28",
-         "29",
-         "30",
-         "31",
-         "32",
-         "33",
-         "34",
-         "35",
-         "36",
-         "37",
-         "38",
-         "39",
-         "40",
-         "41",
-         "42",
-         "43",
-         "44",
-         "45",
-         "46",
-         "47",
-         "48",
-         "49",
-         "50",
-         "51",
-         "52",
-         "53",
-         "54",
-         "55",
-         "56",
-         "57",
-         "58",
-         "59",
-         "60",
-         "61",
-         "62",
-         "63",
-         "64",
-         "65",
-         "66",
-         "67",
-         "68",
-         "69",
-         "70",
-         "71",
-         "72",
-         "73",
-         "74",
-         "75",
-         "76",
-         "77",
-         "78",
-         "79",
-         "80",
-         "81",
-         "82",
-         "83",
-         "84",
-         "85",
-         "86",
-         "87",
-         "88",
-         "89",
-         "90",
-         "91",
-         "92",
-         "93",
-         "94",
-         "95",
-         "96",
-         "97",
-         "98",
-         "99",
-         "100",
-         
-      },      
+      values = zeroToOneHundred,      
    },
    class = {
       tooltip = L["Der Klasse, die die Aura auslösen soll"],
@@ -2118,7 +1866,7 @@ SkuAuras.attributes = {
          "Hunter",
          "Rogue",
          "Priest",
-         --"Death Knight",
+         "Death Knight",
          "Shaman",
          "Mage",
          "Warlock",
@@ -2147,23 +1895,17 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut entspricht dem gewählten Wert"],
       friendlyName = L["gleich"],
       func = function(aValueA, aValueB) 
-         --dprint("      ","SkuAuras.Operators is", aValueA, aValueB)
          if aValueA == nil or aValueB == nil then return false end
-         --if type(aValueA) == "table" then return false end
-         --dprint("type", type(aValueA))
          if type(aValueA) == "table" then 
-            --dprint("      ","TABLE")
             for tName, tValue in pairs(aValueA) do
                if type(aValueB) == "table" then
                   for tNameB, tValueB in pairs(aValueB) do
-                     --dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB))
                      local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                      if tResult == true then
                         return true
                      end
                   end
                else
-                  --dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, tValue, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(aValueB), SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(aValueB))
                   local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(aValueB)
                   if tResult == true then
                      return true
@@ -2171,7 +1913,6 @@ SkuAuras.Operators = {
                end
             end
          else
-            --dprint("      ","SINGLE")
             if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(aValueB) then 
                return true 
             end
@@ -2183,21 +1924,17 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut entspricht nicht dem gewählten Wert"],
       friendlyName = L["ungleich"],
       func = function(aValueA, aValueB) 
-         ----dprint("      ","SkuAuras.Operators isNot", aValueA, aValueB)
          if aValueA == nil or aValueB == nil then return false end
-         --if type(aValueA) == "table" then return false end
          if type(aValueA) == "table" then 
             for tName, tValue in pairs(aValueA) do
                if type(aValueB) == "table" then
                   for tNameB, tValueB in pairs(aValueB) do
-                     --dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB))
                      local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                      if tResult == true then
                         return true
                      end
                   end
                else
-                  --dprint("      ","SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(tValueB)", tName, SkuAuras:RemoveTags(tValue), SkuAuras:RemoveTags(aValueB))
                   local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(aValueB)
                   if tResult == true then
                      return true
@@ -2217,23 +1954,13 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut enthält den gewählten Wert"],
       friendlyName = L["enthält"],
       func = function(aValueA, aValueB) 
-      	----dprint("      ","SkuAuras.Operators contains", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
-
          if type(aValueB) ~= "table" then 
             aValueB = {aValueB}
          end
-         --dprint("      contains")
-         --dprint("      ","type(aValueA) type(aValueB)", type(aValueA), type(aValueB))
          if type(aValueA) == "table" then 
-            --dprint("      TABLE")
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  --dprint("      tValue", SkuAuras:RemoveTags(tValue))
-                  --dprint("      tValueB", SkuAuras:RemoveTags(tValueB))
-                  --dprint("      tName", SkuAuras:RemoveTags(tName))
-                  --dprint("      tNameB", SkuAuras:RemoveTags(tNameB))
-                  --dprint("       result", SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB))
                   local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      return true
@@ -2241,37 +1968,27 @@ SkuAuras.Operators = {
                end
             end
          else
-            --dprint("      SINGLE")
             for tNameB, tValueB in pairs(aValueB) do
-               --dprint("      ", SkuAuras:RemoveTags(tValueA))
-               --dprint("      ", SkuAuras:RemoveTags(tValueB))
-               --dprint("      ", SkuAuras:RemoveTags(tNameB))
-               --dprint("        ", SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB))
                if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(tValueB) then 
                   return true 
                end
             end
          end
-         --return false
       end,
    },   
    ["containsNot"] = {
       tooltip = L["Gewähltes Attribut enthält nicht den gewählten Wert"],
       friendlyName = L["enthält nicht"],
       func = function(aValueA, aValueB) 
-      	----dprint("      ","SkuAuras.Operators containsNot", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
-
          if type(aValueB) ~= "table" then 
             aValueB = {aValueB}
          end
-
 
          if type(aValueA) == "table" then 
             local tFound = false
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  --dprint("    ","tName", tName, tValue, tNameB, tValueB)
                   local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      tFound = true
@@ -2296,14 +2013,12 @@ SkuAuras.Operators = {
                return false
             end            
          end
-         --return true
       end,
    },   
    ["bigger"] = {
       tooltip = L["Gewähltes Attribut ist größer als der gewählte Wert"],
       friendlyName = L["größer"],
       func = function(aValueA, aValueB) 
-      	----dprint("      ","SkuAuras.Operators >", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
          if tonumber(SkuAuras:RemoveTags(aValueA)) > tonumber(SkuAuras:RemoveTags(aValueB)) then 
@@ -2316,7 +2031,6 @@ SkuAuras.Operators = {
       tooltip = L["Gewähltes Attribut ist kleiner als der gewählte Wert"],
       friendlyName = L["kleiner"],
       func = function(aValueA, aValueB) 
-      	----dprint("      ","SkuAuras.Operators <", aValueA, aValueB)
          if not aValueA or not aValueB then return false end
          if type(aValueA) == "table" then return false end
          if tonumber(SkuAuras:RemoveTags(aValueA)) < tonumber(SkuAuras:RemoveTags(aValueB)) then 
@@ -2360,73 +2074,3 @@ SkuAuras.Types = {
       friendlyName = L["Wenn nicht"],
    },
 }
---[[
-------------------------------------------------------------------------------------------------------------------
-SkuAuras.Types = {
-   aura = {
-      tooltip = L["Ein Ereignis im Zusammenhang mit einem Buff oder Debuff löst die Aura aus",
-      friendlyName = L["Aura",
-      attributes = {
-         "auraType",
-         "sourceUnitId",
-         "destUnitId",
-         "spellName",
-         "spellId",
-         "event",
-         "auraAmount",
-         "unitHealthPlayer",
-         "unitPowerPlayer",
-         "buffListTarget",
-         "debuffListTarget",
-         "action",
-      },
-   },
-   spell = {
-      tooltip = L["Ein Ereignis im Zusammenhang mit einem Zauber löst die Aura aus",
-      friendlyName = L["Zauber",
-      attributes = {
-         "spellName",
-         "spellId",
-         "sourceUnitId",
-         "destUnitId",
-         "event",
-         "unitHealthPlayer",
-         "unitPowerPlayer",
-         "buffListTarget",
-         "debuffListTarget",
-         "action",
-      },
-   },
-   item = {
-      tooltip = L["Ein Ereignis im Zusammenhang mit einem Gegenstand löst die Aura aus",
-      friendlyName = L["gegenstand",
-      attributes = {
-         "itemName",
-         "itemId",
-         "itemCount",
-         "sourceUnitId",
-         "destUnitId",
-         "event",
-         "unitHealthPlayer",
-         "unitPowerPlayer",
-         "buffListTarget",
-         "debuffListTarget",
-         "action",
-      },
-   },
-   unit = {
-      tooltip = L["Ein Ereignis im Zusammenhang mit einer Einheit (Spieler, NPC, Mob) löst die Aura aus",
-      friendlyName = L["Einheit",
-      attributes = {
-         "sourceUnitId",
-         "destUnitId",
-         "class",
-         "event",
-         "unitPowerPlayer",
-         "unitHealthPlayer",
-         "buffListTarget",
-         "debuffListTarget",
-         "action",
-      },
-   },   
-}]]

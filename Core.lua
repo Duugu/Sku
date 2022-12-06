@@ -46,6 +46,10 @@ if Sku.toc >= 30401 then
 	SplitContainerItem = C_Container.SplitContainerItem
 	GetContainerItemLink = C_Container.GetContainerItemLink
 	GetContainerItemCooldown = C_Container.GetContainerItemCooldown
+
+	SetTracking = C_Minimap.SetTracking
+	GetTrackingInfo = C_Minimap.GetTrackingInfo
+	GetNumTrackingTypes = C_Minimap.GetNumTrackingTypes
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
