@@ -9,8 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku r31.26](https://github.com/Duugu/Sku/releases/download/r31.26/Sku-r31.26-wrath.zip) (Dec 6th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
-- [Sku r31.25](https://github.com/Duugu/Sku/releases/download/r31.25/Sku-r31.25-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
 - [SkuAudioData_en r8 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r8/SkuAudioData_en-r8-wrath.zip) (Nov 17th, 2022)<br>
@@ -23,6 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 
 -------------------------------------------------------------------------------------------------------	
+##Changes in Sku r31.26
+- More fixes for German mining resources names
+- More big performance fixes for auras
+	
 ## Changes in Sku r31.25
 - Fixed the German names of some mining nodes for scanning
 
