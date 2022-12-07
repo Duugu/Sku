@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.26](https://github.com/Duugu/Sku/releases/download/r31.26/Sku-r31.26-wrath.zip) (Dec 6th, 2022)<br>
+- [Sku r31.27](https://github.com/Duugu/Sku/releases/download/r31.27/Sku-r31.27-wrath.zip) (Dec 7th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.27
+- Chat context menu "send to channel" now is available for additional channels like guild, party, say etc.
+- There is a new chat context menu entry: send item link to channel. There is a sub menu with a list of all items in your bags and all currently equiped items. Select an item in that list (as usual with Control + Enter) to open the chat edit box with the channel selected and the item link pasted in the edit box.
+- There is a new sub menu entry for bag items and equipped items in the character menu: Add Link to chat. It is opening the chat edit box with the last used channel selected and the item link pasted in the edit box. Then add your message text or just send the link via enter.
+- Fixed a bug with action bars (Core > Action bars) and equipment sets
+- Added Bloodthistle to the list of resources for scanning
+
 ## Changes in Sku r31.26
 - A lot of map fixes for Dragonblight by emilylorange
 - More fixes for German mining resources names
