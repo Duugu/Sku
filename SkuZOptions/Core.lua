@@ -2968,7 +2968,19 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										if tContainerSlotIDs[x] == aGossipListTable[index].containerFrameName then
 											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Socketing"]}, SkuGenericMenuItem)
 											tNewSubMenuEntry.macrotext = "/script SocketInventoryItem("..x..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
-											--dprint("sock mac cont", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
+
+											local itemLink = GetInventoryItemLink("player", x)
+											if itemLink then
+												local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {L["Add Link to chat"]}, SkuGenericMenuItem)
+												tNewMenuEntryItem.OnAction = function(self, a, b)
+													if itemLink then
+														ChatFrame1EditBox:Show()
+														ChatFrame1EditBox:SetFocus() 
+														ChatFrame1EditBox:SetText(itemLink)
+													end
+													C_Timer.After(0.35, function() SkuOptions:CloseMenu() end)
+												end					
+											end
 										end
 									end
 								end
@@ -3088,6 +3100,17 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 												end
 											end
 										end
+									end
+
+									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Link to chat"]}, SkuGenericMenuItem)
+									tNewSubMenuEntry.OnAction = function(self, a, amount)
+										local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(_G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID())
+										if itemLink then
+											ChatFrame1EditBox:Show()
+											ChatFrame1EditBox:SetFocus() 
+											ChatFrame1EditBox:SetText(itemLink)
+										end
+										C_Timer.After(0.35, function() SkuOptions:CloseMenu() end)
 									end
 								else
 									if aGossipListTable[index].obj and aGossipListTable[index].obj.info.count then

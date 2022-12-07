@@ -1863,3 +1863,7 @@ L["Set Quick Waypoint to coordinates"] = "Schnellwegpunkt auf Koordinaten festle
 L[" invalid. canceled."] = " ungültig. abgebrochen."
 L["enter y value"] = "y wert eingeben"
 L["enter x value"] = "x wert eingeben"
+
+L["send item link to channel"] = "gegenstandslink an kanal senden"
+L["Equipped"] = "ausgerüstet"
+L["Add Link to chat"] = "Link zu chat hinzufügen"

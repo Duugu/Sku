@@ -106,6 +106,7 @@ SkuCore.RessourceTypes = {
       [42] = { deDE = "Lichblüte", enUS = "Lichbloom", },
       [43] = { deDE = "Eisdorn", enUS = "Icethor", },
       [44] = { deDE = "Frostlotus", enUS = "Frost Lotus", },
+      [44] = { deDE = "Blutdistel", enUS = "Bloodthistle", },
    },
 }
 

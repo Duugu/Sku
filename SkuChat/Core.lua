@@ -1670,15 +1670,77 @@ function SkuChat:OnInitialize()
 				if not tAccessID then
 					tAccessID = SkuChat:GetChannelAccessIdFromChannelName(tLineData.messageTypeGroup)
 				end
-				if tAccessID then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["send to channel"]}, SkuGenericMenuItem)
-					tNewMenuEntry.isSelect = true
-					tNewMenuEntry.OnAction = function(self)
+
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["send to channel"]}, SkuGenericMenuItem)
+				tNewMenuEntry.isSelect = true
+				tNewMenuEntry.OnAction = function(self)
+					if tAccessID then
 						SkuChat:SetEditboxToCustom("CHANNEL", tAccessID, "")
+						C_Timer.After(0.01, function() CloseChatMenuHelper() end)
+					elseif tLineData.messageTypeGroup then
+						SkuChat:SetEditboxToCustom(tLineData.messageTypeGroup)
 						C_Timer.After(0.01, function() CloseChatMenuHelper() end)
 					end
 				end
-	
+
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["send item link to channel"]}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.BuildChildren = function(self)
+					local tBagSlotListSorted = {
+						[1] = 0,
+						[2] = 1,
+						[3] = 2,
+						[4] = 3,
+						[5] = 4,
+						[6] = -1,
+						[7] = 5,
+						[8] = 6,
+						[9] = 7,
+						[10] = 8,
+						[11] = 9,
+						[12] = 10,
+						[13] = 11,
+						[14] = -2,
+						[15] = -3,
+					}
+					local allBagResults = {}
+					for q = 1, #tBagSlotListSorted do
+						local bagId = tBagSlotListSorted[q]
+						local tNumSlots = GetContainerNumSlots(bagId)
+						for slotId = 1, tNumSlots do
+							local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
+							if itemLink then
+								local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(itemLink).." ("..L["Bag"]..")"}, SkuGenericMenuItem)
+								tNewMenuEntryItem.OnAction = function(self, a, b)
+									if tAccessID then
+										SkuChat:SetEditboxToCustom("CHANNEL", tAccessID, itemLink)
+										C_Timer.After(0.01, function() CloseChatMenuHelper() end)
+									elseif tLineData.messageTypeGroup then
+										SkuChat:SetEditboxToCustom(tLineData.messageTypeGroup, nil, itemLink)
+										C_Timer.After(0.01, function() CloseChatMenuHelper() end)
+									end
+								end					
+		
+							end
+						end  
+					end
+					for slotId = 1, 40 do
+						local itemLink = GetInventoryItemLink("player", slotId)
+						if itemLink then
+							local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(itemLink).." ("..L["Equipped"]..")"}, SkuGenericMenuItem)
+							tNewMenuEntryItem.OnAction = function(self, a, b)
+								if tAccessID then
+									SkuChat:SetEditboxToCustom("CHANNEL", tAccessID, itemLink)
+									C_Timer.After(0.01, function() CloseChatMenuHelper() end)
+								elseif tLineData.messageTypeGroup then
+									SkuChat:SetEditboxToCustom(tLineData.messageTypeGroup, nil, itemLink)
+									C_Timer.After(0.01, function() CloseChatMenuHelper() end)
+								end
+							end					
+						end
+					end  
+				end
+
 				--whisper
 				if tLineData.arg2 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["whisper sender"]}, SkuGenericMenuItem)
@@ -1873,6 +1935,10 @@ function SkuChat:OnInitialize()
 
 			--more menu navigation
 			if self.menuOpen == true then
+				if aKey == "RIGHT" then
+					SkuOptions.currentMenuPosition:OnSelect()
+					SkuOptions:VocalizeCurrentMenuName(true)
+				end
 				if aKey == "UP" then
 				--if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEPREV"].key then
 					SkuOptions.currentMenuPosition:OnPrev()
@@ -2208,7 +2274,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:SetEditboxToCustom(chatType, target, aMsg)
 	SkuChatEditboxHookFlag = true
-
 	if chatType == "CHANNEL" then
 		local channelNum, channelName = GetChannelName(target)
 		ChatFrame1EditBox:SetAttribute("channelTarget", channelNum)
@@ -2221,11 +2286,15 @@ function SkuChat:SetEditboxToCustom(chatType, target, aMsg)
 		ChatFrame1EditBox:SetAttribute("chatType", "BN_WHISPER")
 	else
 		ChatFrame1EditBox:SetAttribute("chatType", chatType)
+		ChatFrame1EditBox:SetAttribute("stickyType", chatType)
 	end
 	
 	ChatEdit_UpdateHeader(ChatFrame1EditBox)
 	ChatFrame1EditBox:Show()
 	ChatFrame1EditBox:SetFocus() 
+	if aMsg then
+		ChatFrame1EditBox:SetText(aMsg)
+	end
 
 	SkuChatEditboxHookFlag = false
 end

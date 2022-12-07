@@ -689,10 +689,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarName, aButtonId)
-	--print(aActionType, aId, aSubType, aActionBarName, aButtonId)
+	--print("ButtonContentNameHelper", aActionType, aId, aSubType, aActionBarName, aButtonId)
 	local rName = L["Empty"]
 
-	if aActionType and aId > 0 then
+	if aActionType and aId then
 		if aActionType == "spell" then
 			local name, rank, icon, castTime, minRange, maxRange, spellID = GetSpellInfo(aId)
 			rName = name

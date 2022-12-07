@@ -1866,3 +1866,7 @@ L["Set Quick Waypoint to coordinates"] = "Set Quick Waypoint to coordinates"
 L[" invalid. canceled."] = " invalid. canceled."
 L["enter y value"] = "enter y value"
 L["enter x value"] = "enter x value"
+
+L["send item link to channel"] = "send item link to channel"
+L["Equipped"] = "Equipped"
+L["Add Link to chat"] = "Add Link to chat"
