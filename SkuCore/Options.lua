@@ -724,7 +724,7 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 			--aId = string<setName>
 			for x = 0, C_EquipmentSet.GetNumEquipmentSets() do
 				local name, iconFileID, setID, isEquipped, numItems, numEquipped, numInInventory, numLost, numIgnored = C_EquipmentSet.GetEquipmentSetInfo(x)
-				if name == aId then
+				if name and name == aId then
 					rName = name
 				end
 			end
@@ -878,7 +878,7 @@ local function EquipmentSetActionMenuBuilder(aParentEntry)
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tHasEntries = false
-		for x = 0, C_EquipmentSet.GetNumEquipmentSets() - 1 do
+		for x = 0, C_EquipmentSet.GetNumEquipmentSets() do
 			local name, iconFileID, setID, isEquipped, numItems, numEquipped, numInInventory, numLost, numIgnored = C_EquipmentSet.GetEquipmentSetInfo(x)
 			if name then
 				local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
@@ -1079,41 +1079,64 @@ end
 local function EquipmentSetsManagerMenuBuilder(aParentEntry, aSetId)
 	if not aParentEntry then return end
 
+	local tNewMenuSubSubEntry
+	if aSetId then
+		tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Equip"]}, SkuGenericMenuItem)
+		tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
+			C_EquipmentSet.UseEquipmentSet(aSetId) 
+			C_Timer.After(0.001, function()
+				SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+			end)
+		end
 
+		tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Update"]}, SkuGenericMenuItem)
+	else
+		tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["erstellen"]}, SkuGenericMenuItem)
+	end
 
+	tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
+		if aSetId then
+			--saved
+			C_EquipmentSet.SaveEquipmentSet(aSetId)
+			C_Timer.After(0.001, function()
+				SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+			end)
+		else
+			PlaySound(89)
+			SkuOptions.Voice:OutputStringBTtts(L["Enter name and press ENTER key"], true, true, 0.2, true, nil, nil, 2)
+			SkuOptions:EditBoxShow("", function(self)
+				PlaySound(89)
+				local tText = self:GetText()
+				if tText and tText ~= "" then
+					local tExistingEquipmentSetID = C_EquipmentSet.GetEquipmentSetID(tText)
+					if not tExistingEquipmentSetID then
+						--created
+						C_EquipmentSet.CreateEquipmentSet(tText)
+						C_Timer.After(0.001, function()
+							SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+						end)
+					else
+						--already exists
+						C_Timer.After(0.001, function()
+							SkuOptions.Voice:OutputStringBTtts(L["name already exists"], true, true, 0.2, true, nil, nil, 2)
+						end)
+					end
+				end
+			end)
+		end
+	end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	if aSetId then
+		tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Delete"]}, SkuGenericMenuItem)
+		tNewMenuSubSubEntry.isSelect = true
+		tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
+			--deleted
+			C_EquipmentSet.DeleteEquipmentSet(aSetId)
+			C_Timer.After(0.001, function()
+				SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+			end)
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1800,19 +1823,29 @@ function SkuCore:MenuBuilder(aParentEntry)
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Equipment manager"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNumSets = C_EquipmentSet.GetNumEquipmentSets() 
-
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["New set"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.BuildChildren = function(self)
+			EquipmentSetsManagerMenuBuilder(self)
+		end
+		local tNumSets = C_EquipmentSet.GetNumEquipmentSets()
 		if tNumSets > 0 then
-			for x = 1, tNumSets do
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Set "..x}, SkuGenericMenuItem)
-				tNewMenuEntry.dynamic = true
-				tNewMenuEntry.filterable = true
-				tNewMenuEntry.BuildChildren = function(self)
-					EquipmentSetsManagerMenuBuilder(self, x)
+			for x = 0, tNumSets do
+				local name, iconFileID, setID, isEquipped, numItems, numEquipped, numInInventory, numLost, numIgnored = C_EquipmentSet.GetEquipmentSetInfo(x)
+				if name then
+					local tise = ""
+					if isEquipped == true then
+						tise = " ("..L["Equipped"]..")"
+					end
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {name..tise}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.filterable = true
+					tNewMenuEntry.BuildChildren = function(self)
+						EquipmentSetsManagerMenuBuilder(self, x)
+					end
 				end
 			end
-		else
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
 		end
 	end
 

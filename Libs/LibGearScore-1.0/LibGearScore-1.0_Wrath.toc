@@ -1,0 +1,14 @@
+## Interface: 30400
+## Version: 1.0.r6
+## Title: Lib: GearScore-1.0
+## Notes: Uses the original GearScore Formula by Mirrikat45 (based on: ItemLevel, ItemRarity and PlayerClass/ItemSlot)
+## Author: Road-block
+## X-Website: https://github.com/Road-block/LibGearScore-1.0
+## X-Category: Library
+## X-License: Limited BSD
+## X-Credits: Mirrikat45
+## X-Curse-Project-ID: 724320
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+LibGearScore.lua

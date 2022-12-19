@@ -1870,3 +1870,8 @@ L["enter x value"] = "enter x value"
 L["send item link to channel"] = "send item link to channel"
 L["Equipped"] = "Equipped"
 L["Add Link to chat"] = "Add Link to chat"
+L[", average item level "] = ", average item level "
+L["Gearscore: "] = "Gearscore: "
+
+L["New set"] = "New set"
+L["Equip"] = "Equip"

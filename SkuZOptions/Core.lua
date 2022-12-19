@@ -15,6 +15,7 @@ SkuOptions.HBD = LibStub("HereBeDragons-2.0")
 SkuOptions.BeaconLib = LibStub("SkuBeacon-1.0"):Create("SkuOptions", false)
 SkuOptions.Serializer = LibStub("AceSerializer-3.0")
 SkuOptions.RangeCheck = LibStub("LibRangeCheck-2.0")
+SkuOptions.LGS = LibStub:GetLibrary("LibGearScore.1000",true)
 
 SkuOptions.Menu = {}
 SkuOptions.currentMenuPosition = nil
@@ -617,6 +618,12 @@ function SkuOptions:UpdateOverviewText()
 	local tPlayercurrXP, tPlayernextXP = UnitXP("player"), UnitXPMax("player")
 	tGeneral = tGeneral.."\r\n"..L["XP: "]..(math.floor(tPlayercurrXP / (tPlayernextXP / 100)))..L[" Prozent ("]..tPlayercurrXP..L[" von "]..tPlayernextXP..L[" für "]..(UnitLevel("player") + 1)..L[")\r\nRuhebonus: "]..tPlayerXPExhaustion
 
+	--gs
+	local guid, gearScore = SkuOptions.LGS:GetScore("player")
+	if gearScore and gearScore.Description then
+		tGeneral = tGeneral.."\r\n"..L["Gearscore: "]..gearScore.GearScore.." ("..gearScore.Description..L[", average item level "]..gearScore.AvgItemLevel..")"
+	end
+
 	table.insert(tSections, tGeneral)
 
 	--buffs/debuffs
@@ -639,7 +646,24 @@ function SkuOptions:UpdateOverviewText()
 					tTimeString = tRemainingSec..L[" Sekunden"]
 				end
 			end
-			tBuffs = tBuffs.."\r\n"..name.." "..tTimeString
+			if tTimeString ~= "" then
+				tTimeString = ", "..tTimeString
+			end
+
+			GameTooltip:SetOwner(UIParent, "Center")
+			GameTooltip:SetUnitAura("player", x, "HELPFUL")
+			local tToolstring = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+			if tToolstring then
+				if string.find(tToolstring, "\r\n") then
+					tToolstring = string.sub(tToolstring, string.find(tToolstring, "\r\n") + 2)
+					tToolstring = string.gsub(tToolstring, "\r\n", ". ")
+				end
+				tToolstring = ". "..tToolstring
+			else
+				tToolstring = tToolstring or ""
+			end
+
+			tBuffs = tBuffs.."\r\n"..name..tTimeString..tToolstring
 		end
 	end
 	local hasMainHandEnchant, mainHandExpiration, mainHandCharges, mainHandEnchantID, hasOffHandEnchant, offHandExpiration, offHandCharges, offHandEnchantID = GetWeaponEnchantInfo()
@@ -677,7 +701,24 @@ function SkuOptions:UpdateOverviewText()
 	
 				end
 				tFound = true
-				tBuffs = tBuffs.."\r\n"..tName.." "..tTimeString.." "..L["Main Hand"]
+				if tTimeString ~= "" then
+					tTimeString = ", "..tTimeString
+				end
+
+				GameTooltip:SetOwner(UIParent, "Center")
+				GameTooltip:SetSpellByID(mainHandEnchantID)
+				local tToolstring = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+				if tToolstring then
+					if string.find(tToolstring, "\r\n") then
+						tToolstring = string.sub(tToolstring, string.find(tToolstring, "\r\n") + 2)
+						tToolstring = string.gsub(tToolstring, "\r\n", ". ")
+					end
+					tToolstring = ". "..tToolstring
+				else
+					tToolstring = tToolstring or ""
+				end			
+
+				tBuffs = tBuffs.."\r\n"..tName..tTimeString.." "..L["Main Hand"]..tToolstring
 			end
 		end
 	end
@@ -715,7 +756,23 @@ function SkuOptions:UpdateOverviewText()
 	
 				end
 				tFound = true
-				tBuffs = tBuffs.."\r\n"..tName.." "..tTimeString.." "..L["Off Hand"]
+				if tTimeString ~= "" then
+					tTimeString = ", "..tTimeString
+				end
+
+				GameTooltip:SetOwner(UIParent, "Center")
+				GameTooltip:SetSpellByID(offHandEnchantID)
+				local tToolstring = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+				if tToolstring then
+					if string.find(tToolstring, "\r\n") then
+						tToolstring = string.sub(tToolstring, string.find(tToolstring, "\r\n") + 2)
+						tToolstring = string.gsub(tToolstring, "\r\n", ". ")
+					end
+					tToolstring = ". "..tToolstring
+				else
+					tToolstring = tToolstring or ""
+				end							
+				tBuffs = tBuffs.."\r\n"..tName..tTimeString.." "..L["Off Hand"]..tToolstring
 			end
 		end
 	end
@@ -745,7 +802,24 @@ function SkuOptions:UpdateOverviewText()
 					tTimeString = tRemainingSec..L[" Sekunden"]
 				end
 			end
-			tDebuffs = tDebuffs.."\r\n"..name.." "..tTimeString
+			if tTimeString ~= "" then
+				tTimeString = ", "..tTimeString
+			end
+
+			GameTooltip:SetOwner(UIParent, "Center")
+			GameTooltip:SetUnitAura("player", x, "HARMFUL")
+			local tToolstring = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
+			if tToolstring then
+				if string.find(tToolstring, "\r\n") then
+					tToolstring = string.sub(tToolstring, string.find(tToolstring, "\r\n") + 2)
+					tToolstring = string.gsub(tToolstring, "\r\n", ". ")
+				end
+				tToolstring = ". "..tToolstring
+			else
+				tToolstring = tToolstring or ""
+			end			
+
+			tDebuffs = tDebuffs.."\r\n"..name..tTimeString..tToolstring
 		end
 	end
 	if not tFound then

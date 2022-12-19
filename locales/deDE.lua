@@ -1867,3 +1867,9 @@ L["enter x value"] = "x wert eingeben"
 L["send item link to channel"] = "gegenstandslink an kanal senden"
 L["Equipped"] = "ausgerüstet"
 L["Add Link to chat"] = "Link zu chat hinzufügen"
+
+L[", average item level "] = ", durschnittliches gegenstandslevel "
+L["Gearscore: "] = "Gearscore: "
+
+L["New set"] = "Neues Set"
+L["Equip"] = "Anziehen"
