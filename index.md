@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.27](https://github.com/Duugu/Sku/releases/download/r31.27/Sku-r31.27-wrath.zip) (Dec 7th, 2022)<br>
+- [Sku r31.28](https://github.com/Duugu/Sku/releases/download/r31.28/Sku-r31.28-wrath.zip) (Dec 19th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.28
+- Implemented the equipment manager features under Core > Equipment manager
+- Bug with equipment sets on action buttons fixed
+- Added the players gearscore to the overview page (General section)
+- Appended the buffs and debuffs tooltip text to the buffs/debuffs list on overview page.
+
 ## Changes in Sku r31.27
 - Chat context menu "send to channel" now is available for additional channels like guild, party, say etc.
 - There is a new chat context menu entry: send item link to channel. There is a sub menu with a list of all items in your bags and all currently equiped items. Select an item in that list (as usual with Control + Enter) to open the chat edit box with the channel selected and the item link pasted in the edit box.
