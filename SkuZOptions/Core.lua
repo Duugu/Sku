@@ -173,8 +173,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 			SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap = SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap ~= true
 		end
 
-
-		if fields[1] == "aq" then
+		if fields[1] == "mon" then
 			SkuCore:AqSlashHandler(fields)
 		end
 

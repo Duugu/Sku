@@ -2511,6 +2511,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.AuctionHouseMenuBuilder
 
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Monitor"]}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.filterable = true
+	tNewMenuParentEntry.BuildChildren = SkuCore.MonitorMenuBuilder
+
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Social"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true

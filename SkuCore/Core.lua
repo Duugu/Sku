@@ -1954,6 +1954,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 
 		SkuCore:GameWorldObjectsOnLogin()
 
+		SkuCore:AqOnLogin()
+
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 	end
