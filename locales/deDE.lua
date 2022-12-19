@@ -1886,3 +1886,9 @@ L["Event volume"] = "Ereignis Lautstärke"
 L["Voice"] = "Stimme"
 L[" ice cream"] = " ein Eis"
 L["Buy "] = "Kauf "
+
+
+L["Blood"] = "Blut"
+L["Frost (tank)"] = "Frost (tank)"
+L["Unholy"] = "Unheilig"
+L["Death Knight"] ="Todesritter"

@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.30
+	- Fixed the item rating issue with death knights and item tooltips in bags.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.29
 	- Lil Kimberly and Justin are there to monitor your health.
 		- There is a new feature under Core > Monitor to monitor different values. Right now there only is Player > Health. There could be more in future.

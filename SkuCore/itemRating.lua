@@ -135,6 +135,12 @@ SkuCore.Specs = {
 			[3] = {"Protection", locName = L["Schutz"]},
 		},
 	},
+	[6] = {"Death Knight", locName = L["Death Knight"], specs = {
+			[1] = {"Blood", locName = L["Blood"]},
+			[2] = {"Frost (tank)", locName = L["Frost (tank)"]},
+			[3] = {"Unholy", locName = L["Unholy"]},
+		},
+	},
 }
 
 ----------------------------------------------------------------------------------------------------------------------------------------

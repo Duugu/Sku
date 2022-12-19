@@ -1888,3 +1888,8 @@ L["Event volume"] = "Event volume"
 L["Voice"] = "Voice"
 L[" ice cream"] = " some ice cream"
 L["Buy "] = "Buy "
+
+L["Blood"] = "Blood"
+L["Frost (tank)"] = "Frost (tank)"
+L["Unholy"] = "Unholy"
+L["Death Knight"] ="Death Knight"
