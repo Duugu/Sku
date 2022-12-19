@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.29](https://github.com/Duugu/Sku/releases/download/r31.29a/Sku-r31.29a-wrath.zip) (Dec 19th, 2022)<br>
+- [Sku r31.30](https://github.com/Duugu/Sku/releases/download/r31.30/Sku-r31.30-wrath.zip) (Dec 19th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.30
+- Fixed the item rating issue with death knights and item tooltips in bags.
+	
 ## Changes in Sku r31.29
 - Lil Kimberly and Justin are here to monitor your health.
 	- There is a new feature under Core > Monitor to monitor different values. Right now there only is Player > Health. There could be more in future.
