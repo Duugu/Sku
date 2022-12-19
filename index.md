@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.28](https://github.com/Duugu/Sku/releases/download/r31.28/Sku-r31.28-wrath.zip) (Dec 19th, 2022)<br>
+- [Sku r31.29](https://github.com/Duugu/Sku/releases/download/r31.29/Sku-r31.29-wrath.zip) (Dec 19th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,16 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.29
+- Lil Kimberly and Justin are here to monitor your health.
+	- There is a new feature under Core > Monitor to monitor different values. Right now there only is Player > Health. There could be more in future.
+	- Core > Monitor > Player > Health is to output your current health. It is mainly intended for raid scenarios, where AudioQs isn't that useful. It is disabled as default.
+	- There are two output volumes (Continuous, Event) that are adjustable from 10% to 100%.
+	- The feature is continuously outputting your health from 0 to 9 using the "Continuous" volume, where 0 means 0% and 9 means 90% health. 100% health is announced as "full". If you health actually changes it is outputting your new health using the "Event" volume. The default value for "Continuous" is 50%, the default for "Event" is 80%.
+	- There are some more settings, like the voice, only in dungeons/raids, etc.
+	- All settings are saved per character.
+	- The slash command to enable/disable the feature is "/sku mon,health"
+
 ## Changes in Sku r31.28
 - Implemented the equipment manager features under Core > Equipment manager
 - Bug with equipment sets on action buttons fixed
