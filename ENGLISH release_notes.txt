@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.32
+	- Removed overlooked debug outputs
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.31
 	- Fixed a bug with Core > Action bars in vehicles.
 	- Renamed the incorreclty "share quest" sku keybind to "show tooltip for current loot item"

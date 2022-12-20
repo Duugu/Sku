@@ -2516,8 +2516,6 @@ function SkuCore:IterateChildren(t, tab)
 						--text from tooltip available?
 						if tResults[fName].textFirstLine == "" and tResults[fName].textFull == "" then
 							if string.find(fName, "ContainerFrame") then
-print("tft ContainerFrame")
-
 								_G["SkuScanningTooltip"]:ClearLines()
 								local hsd, rc = _G["SkuScanningTooltip"]:SetBagItem(tResults[fName].obj:GetParent():GetID(), tResults[fName].obj:GetID())
 								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
@@ -2555,7 +2553,6 @@ print("tft ContainerFrame")
 								end
 
 							elseif string.find(fName, "ItemButton") and string.find(fName, "MerchantItem") then
-print("tft ItemButton MerchantItem")
 								_G["SkuScanningTooltip"]:ClearLines()
 								local hsd, rc = _G["SkuScanningTooltip"]:SetMerchantItem(tResults[fName].obj:GetID())
 								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
@@ -2565,7 +2562,6 @@ print("tft ItemButton MerchantItem")
 									end
 								end
 							else
-print("tft ")								
 								GameTooltip:ClearLines()
 								if tResults[fName].obj:GetScript("OnEnter") then
 									tResults[fName].obj:GetScript("OnEnter")(tResults[fName].obj)
@@ -2672,7 +2668,6 @@ print("tft ")
 						end
 
 						if string.find(fName, "ContainerFrame") or string.find(fName, "ItemButton") or string.find(fName, "QuestInfoItem")  then
-print("ContainerFrame ItemButton QuestInfoItem")
 							if _G[fName.."Count"] and not _G[fName].info then
 								if tResults[fName] and _G[fName.."Count"]:GetText() then
 									if not string.find(tResults[fName].textFirstLine, L["Empty"].." ") then
