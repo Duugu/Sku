@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.31](https://github.com/Duugu/Sku/releases/download/r31.31/Sku-r31.31-wrath.zip) (Dec 20th, 2022)<br>
+- [Sku r31.32](https://github.com/Duugu/Sku/releases/download/r31.32/Sku-r31.32-wrath.zip) (Dec 20th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.32
+- Removed overlooked debug outputs
+
 ## Changes in Sku r31.31
 - Fixed a bug with Core > Action bars in vehicles.
 - Renamed the incorreclty "share quest" sku keybind to "show tooltip for current loot item"
