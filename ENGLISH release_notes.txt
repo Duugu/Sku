@@ -3,6 +3,13 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.31
+	- Fixed a bug with Core > Action bars in vehicles.
+	- Renamed the incorreclty "share quest" sku keybind to "show tooltip for current loot item"
+	- Added the currently equipped item to the current loot roll tooltip
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.30
 	- Fixed the item rating issue with death knights and item tooltips in bags.
 

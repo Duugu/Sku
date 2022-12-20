@@ -1060,7 +1060,16 @@ function SkuOptions:CreateMainFrame()
 							local tText = SkuChat:Unescape(TooltipLines_helper(SkuScanningTooltip:GetRegions()))
 							if tText then
 								if string.len(tText) > 0 then
-									SkuOptions.TooltipReaderText = tText
+									SkuOptions.TooltipReaderText =  {tText}
+									local t = {}
+									local comparisnSections = SkuCore:getItemComparisnSections(tItem.itemId, t)
+									if comparisnSections then
+										for i, section in ipairs(comparisnSections) do
+											local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"
+											table.insert(SkuOptions.TooltipReaderText, i + 1, sectionHeader .. section)
+										end
+									end
+
 									SkuOptions.TTS:Output(SkuOptions.TooltipReaderText, 1000)
 									SkuOptions.TTS:PreviousLine()
 								end

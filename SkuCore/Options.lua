@@ -744,6 +744,10 @@ local function ButtonContentNameHelper(aActionType, aId, aSubType, aActionBarNam
 		tKeysString = ";"..L["Key;not;assigned"]
 	end
 
+	if rName == nil then
+		rName = L["Empty"]
+	end
+
 	return rName..tKeysString
 end
 

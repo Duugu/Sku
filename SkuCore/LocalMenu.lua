@@ -242,7 +242,7 @@ local comparableInvSlotsforInvType = {
 ---@param itemId number Item ID for item for which comparisns will be returned.
 ---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
 ---@return string[]|nil List of tooltip texts or nil if no slots to compare found
-local function getItemComparisnSections(itemId, cache)
+function SkuCore:getItemComparisnSections(itemId, cache)
 	local invType = select(4, GetItemInfoInstant(itemId))
 	local invSlotsToCompare = comparableInvSlotsforInvType[invType]
 	--if offhand slot and equipped a 2H weapon, compare both hands instead
@@ -275,7 +275,7 @@ end
 ---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
 local function insertComparisnSections(itemId, textFull, cache)
 	if itemId and IsEquippableItem(itemId) then
-		local comparisnSections = getItemComparisnSections(itemId, cache)
+		local comparisnSections = SkuCore:getItemComparisnSections(itemId, cache)
 		if comparisnSections then
 			for i, section in ipairs(comparisnSections) do
 				local sectionHeader = #comparisnSections > 1 and L["currently equipped"].." "..i.."\r\n" or L["currently equipped"].."\r\n"

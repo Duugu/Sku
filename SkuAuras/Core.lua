@@ -728,7 +728,6 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		unitPowerPlayer = mfloor(UnitPower("player") / (UnitPowerMax("player") / 100)),
 		unitComboPlayer = tEventData[51],
 		unitHealthTarget = UnitName("target") and mfloor(UnitHealth("target") / (UnitHealthMax("target") / 100)),
-		unitPowerTarget = UnitName("target") and mfloor(UnitPower("target") / (UnitPowerMax("target") / 100)),
 		unitHealthOrPowerUpdate = tEventData[35] or tEventData[36],
 		buffListTarget = getAuraList("target", "HELPFUL"),
 		debuffListTarget = getAuraList("target", "HARMFUL"),
@@ -741,6 +740,9 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		pressedKey = tEventData[50],
 		spellsNamesOnCd = SkuAuras.thingsNamesOnCd,
 	}		
+	if UnitPowerMax("target") > 0 then
+		tEvaluateData.unitPowerTarget = UnitName("target") and mfloor(UnitPower("target") / (UnitPowerMax("target") / 100))
+	end	
 	tEvaluateData.spellId = tEventData[CleuBase.spellId]
 	tEvaluateData.spellName = tEventData[CleuBase.spellName]
 
