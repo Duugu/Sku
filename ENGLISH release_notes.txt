@@ -8,7 +8,7 @@ Changes in Sku r31.33
 	- Added an "Event Steps" setting to Core > Monitor > Player > Health and Power. That is the number of steps on from 0 to 100 the addon is announcing values. 10 means every 10 percent, 5 means every 20 percent, 2 means every 50 percent. The default value for Health is 10, the default for Power is 5.
 	- Added a new experimental feature to monitor the health of party members: Core > Monitor > Party > Health
 		This is just a first test on an idea for an audio concept. Not a final feature. I would appreciate feedback if the concept provides any value and if it is worth or not to put more work into it.
-		The feature is constantly outputting the health of all 5 party members by playing 5 fast beep sounds in different pitches. The first beep stands for party member 1, the second beep for party member two, and so on. The last beep (the fifth in a full party) is you.
+		The feature is constantly outputting the health of all 5 party members by playing 5 fast beep sounds in different pitches. The first beep stands for party member 1, the second beep for party member two, and so on. The last beep (the fifth in a full party) is you. If there are less than 5 party members you are always the last one.
 		The pitch of each beep indicates the health of the specific party member. Very low pitch means 100% health. Very high pitch means very low health. Reverted sound with very high pitch means dead / 0% health. There are 8 different pitch levels from 0 to 100 percent health.
 		Example: low, low, low, high, low means, party member 1, 2, 3 are at 100% health. party member 4 is at low health, party member 5 (you) is at 100% health.
 		As default the monitor starts if at least one party member is below 100% health and stops of everyone is at 100%.
