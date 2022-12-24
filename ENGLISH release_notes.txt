@@ -3,6 +3,23 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.33
+	- Added Core > Monitor > Player > Power to monitor your power ressource (Mana, Rage, Energy, Runic Power). Works the same way as Player > Health, except there is an option to choose the power/resource type. The default is your main resource. Default voice is Kimberly. To avoid extensive audio clutter the addon tries to speak both, continuous health and power at the same time, if both are enabled. That of course only works if the "Continuous output seconds" setting for both is the same or a multiple. (hp 3 secs / power 3 secs, 3 / 6, 3 / 9, etc.)
+	- Added an "Event Steps" setting to Core > Monitor > Player > Health and Power. That is the number of steps on from 0 to 100 the addon is announcing values. 10 means every 10 percent, 5 means every 20 percent, 2 means every 50 percent. The default value for Health is 10, the default for Power is 5.
+	- Added a new experimental feature to monitor the health of party members: Core > Monitor > Party > Health
+		This is just a first test on an idea for an audio concept. Not a final feature. I would appreciate feedback if the concept provides any value and if it is worth or not to put more work into it.
+		The feature is constantly outputting the health of all 5 party members by playing 5 fast beep sounds in different pitches. The first beep stands for party member 1, the second beep for party member two, and so on. The last beep (the fifth in a full party) is you.
+		The pitch of each beep indicates the health of the specific party member. Very low pitch means 100% health. Very high pitch means very low health. Reverted sound with very high pitch means dead / 0% health. There are 8 different pitch levels from 0 to 100 percent health.
+		Example: low, low, low, high, low means, party member 1, 2, 3 are at 100% health. party member 4 is at low health, party member 5 (you) is at 100% health.
+		As default the monitor starts if at least one party member is below 100% health and stops of everyone is at 100%.
+		The feature is off by default. There are options to enable it and more under Core > Monitor > Party > Health.
+		Remember: This is a test to evaluate different concepts for party (and probably raid) health status. Please provide feedback on the value of this specific concept. Suggestion on enhancements or changes, or even different concepts, are more than welcome.
+		The idea is to have a more constant, less cluttered/annoying, and more intuitive output than the one, one, one, etc. from Audio QS.
+		I would assume that, if one gets used to the output style, the output speed could be much faster (if you would like to try, lower the "Speed" option to 20, the default is 50).
+		I could add more options, like volume settings, and an "event" setting where the output isn't continously but event based (if party health actually changes), as with the player > health outputs, and more.
+
+
+-------------------------------------------------------------------------------------------------------	
 Changes in Sku r31.32
 	- Removed overlooked debug outputs
 

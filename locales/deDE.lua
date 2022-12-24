@@ -1892,3 +1892,18 @@ L["Blood"] = "Blut"
 L["Frost (tank)"] = "Frost (tank)"
 L["Unholy"] = "Unheilig"
 L["Death Knight"] ="Todesritter"
+
+L["Power"] = "Ressource"
+L["Event Steps"] = "Ereignis Schritte"
+
+L["MANA"] = "Mana"
+L["RAGE"] = "Wut"
+L["ENERGY"] = "Energie"
+L["FOCUS"] = "Fokus"
+L["HAPPINESS"] = "Zufriedenheit"
+L["RUNIC_POWER"] = "Runenmacht"
+L["Power Type"] = "Ressourcentyp"
+
+L["Silent on all at 100 percent"] = "Stumm bei alle 100 Prozent"
+L["Include self"] = "Selbst einbeziehen"
+L["Speed"] = "Geschwindigkeit"

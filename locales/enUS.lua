@@ -1893,3 +1893,18 @@ L["Blood"] = "Blood"
 L["Frost (tank)"] = "Frost (tank)"
 L["Unholy"] = "Unholy"
 L["Death Knight"] ="Death Knight"
+
+L["Power"] = "Power"
+L["Event Steps"] = "Event Steps"
+
+L["MANA"] = "Mana"
+L["RAGE"] = "Rage"
+L["ENERGY"] = "Energy"
+L["FOCUS"] = "Focus"
+L["HAPPINESS"] = "Happiness"
+L["RUNIC_POWER"] = "Runic Power"
+L["Power Type"] = "Power Type"
+
+L["Silent on all at 100 percent"] = "Silent on all at 100 percent"
+L["Include self"] = "Include self"
+L["Speed"] = "Speed"
