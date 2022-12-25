@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.33](https://github.com/Duugu/Sku/releases/download/r31.33/Sku-r31.33-wrath.zip) (Dec 24th, 2022)<br>
+- [Sku r31.34](https://github.com/Duugu/Sku/releases/download/r31.34/Sku-r31.34-wrath.zip) (Dec 25th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.34
+- Added Shaman totem sets to Core > Action bars. There are 3 sets, with 4 totem buttons each.
+- Added the set number to all totem button key bindings under Core > Game Key Binds, for clearification.
+
 ## Changes in Sku r31.33
 - Added Core > Monitor > Player > Power to monitor your power ressource (Mana, Rage, Energy, Runic Power). Works the same way as Player > Health, except there is an option to choose the power/resource type. The default is your main resource. Default voice is Kimberly. To avoid extensive audio clutter the addon tries to speak both, continuous health and power at the same time, if both are enabled. That of course only works if the "Continuous output seconds" setting for both is the same or a multiple. (hp 3 secs / power 3 secs, 3 / 6, 3 / 9, etc.)
 - Added an "Event Steps" setting to Core > Monitor > Player > Health and Power. That is the number of steps on from 0 to 100 the addon is announcing values. 10 means every 10 percent, 5 means every 20 percent, 2 means every 50 percent. The default value for Health is 10, the default for Power is 5.
