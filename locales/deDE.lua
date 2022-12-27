@@ -1915,3 +1915,6 @@ L["Earth"] = "Erde"
 L["Fire"] = "Feuer"
 L["Water"] = "Wasser"
 L["Air"] = "Luft"
+
+L["Continuous output start at"] = "Fortlaufende Ausgabe starten bei"
+L["Cooldowns"] = "Cooldowns"

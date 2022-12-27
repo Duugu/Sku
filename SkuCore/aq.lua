@@ -122,12 +122,12 @@ local function AqCreateControlFrame()
 
 		if SkuOptions.db.char[MODULE_NAME].aq then
 			if SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled == true then
-				if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyEnabled == true then
-					ttimeMonHp = ttimeMonHp + time
-					if ttimeMonHp > (SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyTimer) and tHealthMonitorPause == false then
-						local health = UnitHealth("player")
-						local healthMax = UnitHealthMax("player")
-						local healthPer = math.floor((health / healthMax) * 100)
+				ttimeMonHp = ttimeMonHp + time
+				if ttimeMonHp > (SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyTimer) and tHealthMonitorPause == false then
+					local health = UnitHealth("player")
+					local healthMax = UnitHealthMax("player")
+					local healthPer = math.floor((health / healthMax) * 100)
+					if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt >= 0 and (math.floor(healthPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt) then
 						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.player.health.steps)
 						local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
 						tPrevHpDir = healthPer > tPrevHpPer
@@ -138,22 +138,23 @@ local function AqCreateControlFrame()
 						if SkuOptions.db.char[MODULE_NAME].aq.player.health.silentOn100and0 == false or (tNumberToUtterance < 10 and tNumberToUtterance > 0) then
 							SkuCore:MonitorOutputPlayer(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
 						end							
-						ttimeMonHp = 0
+					end
 
-						if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyTimer == SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyTimer then
-							ttimeMonPwr = 10000000
-						end
+					ttimeMonHp = 0
+
+					if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyTimer == SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyTimer then
+						ttimeMonPwr = 10000000
 					end
 				end
 			end
 
 			if SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled == true then
-				if SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyEnabled == true then
-					ttimeMonPwr = ttimeMonPwr + time
-					if ttimeMonPwr > (SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyTimer) and tPowerMonitorPause == false then
-						local power = UnitPower("player", tPowerTypes[SkuOptions.db.char[MODULE_NAME].aq.player.power.type].number)
-						local powerMax = UnitPowerMax("player", tPowerTypes[SkuOptions.db.char[MODULE_NAME].aq.player.power.type].number)
-						local pwrPer = math.floor((power / powerMax) * 100)
+				ttimeMonPwr = ttimeMonPwr + time
+				if ttimeMonPwr > (SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyTimer) and tPowerMonitorPause == false then
+					local power = UnitPower("player", tPowerTypes[SkuOptions.db.char[MODULE_NAME].aq.player.power.type].number)
+					local powerMax = UnitPowerMax("player", tPowerTypes[SkuOptions.db.char[MODULE_NAME].aq.player.power.type].number)
+					local pwrPer = math.floor((power / powerMax) * 100)
+					if SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt >= 0 and (math.floor(pwrPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt) then
 						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.player.power.steps)
 						local tNumberToUtterance = ((math.floor(pwrPer / tsinglestep)) * tsinglestep) / 10
 						tPrevPwrDir = pwrPer > tPrevPwrPer
@@ -166,8 +167,8 @@ local function AqCreateControlFrame()
 								SkuCore:MonitorOutputPlayer(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
 							end)
 						end							
-						ttimeMonPwr = 0
 					end
+					ttimeMonPwr = 0
 				end
 			end
 
@@ -304,11 +305,11 @@ function SkuCore:AqOnLogin()
 	if SkuOptions.db.char[MODULE_NAME].aq.player.health.silentOn100and0 == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.health.silentOn100and0 = true
 	end
-	if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyEnabled == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyEnabled = true
-	end
 	if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyTimer == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyTimer = 3
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt = -1
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyVolume == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyVolume = 50
@@ -340,11 +341,11 @@ function SkuCore:AqOnLogin()
 	if SkuOptions.db.char[MODULE_NAME].aq.player.power.silentOn100and0 == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.power.silentOn100and0 = true
 	end
-	if SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyEnabled == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyEnabled = true
-	end
 	if SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyTimer == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyTimer = 6
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt = -1
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyVolume == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyVolume = 30
@@ -551,27 +552,29 @@ function SkuCore:MonitorMenuBuilder()
 				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-				if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyEnabled == true then
-					return L["Yes"]
+				if aName == -1 then
+					return L["Never"]
 				else
-					return L["No"]
+					return SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt
 				end
 			end
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
-				if aName == L["No"] then
-					SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyEnabled = false
-				elseif aName == L["Yes"] then
-					SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyEnabled = true
+				if aName == L["Never"] then
+					SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt = -1
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt = tonumber(aName)
 				end
 			end
 			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+				for x = 0, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output seconds"]}, SkuGenericMenuItem)
@@ -765,27 +768,29 @@ function SkuCore:MonitorMenuBuilder()
 				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-				if SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyEnabled == true then
-					return L["Yes"]
+				if aName == -1 then
+					return L["Never"]
 				else
-					return L["No"]
+					return SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt
 				end
 			end
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
-				if aName == L["No"] then
-					SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyEnabled = false
-				elseif aName == L["Yes"] then
-					SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyEnabled = true
+				if aName == L["Never"] then
+					SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt = -1
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt = tonumber(aName)
 				end
 			end
 			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+				for x = 0, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output seconds"]}, SkuGenericMenuItem)

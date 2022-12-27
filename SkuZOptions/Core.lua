@@ -385,7 +385,8 @@ function SkuOptions:OnProfileReset()
 	SkuOptions:SkuKeyBindsResetBindings()
 	SkuOptions:SkuKeyBindsUpdate(true)
 	SkuCore:GameWorldObjectsOnLogin()
-
+	SkuCore:AqOnLogin()
+	
   	if SkuCore then
 		SkuCore:OnEnable()
 	end
@@ -905,11 +906,34 @@ function SkuOptions:UpdateOverviewText()
 
 		table.insert(tSections, petSection)
 	end
-	--GetPetFoodTypes
 
-
-	--consumables
-
+	--CDs
+	local tTmpText = ""
+	local tNumSpellTabs = GetNumSpellTabs()
+	local tFound = {}
+	for x = 1, tNumSpellTabs do
+		local name, texture, offset, numEntries, isGuild, offspecID = GetSpellTabInfo(x)
+		if numEntries > 0 then
+			for y = offset + 1, offset + numEntries do
+				local spellName, spellSubName, spellID = GetSpellBookItemName(y, "BOOKTYPE_SPELL") --BOOKTYPE_PET
+				if spellName then
+					local tIsPassive = IsPassiveSpell(spellID)
+					local isKnown = IsSpellKnown(spellID, aIsPet)
+					if not tIsPassive and isKnown then
+						if not tFound[spellName] then
+							tFound[spellName] = true
+							local start, duration, enabled, modRate = GetSpellCooldown(spellID)
+							if ( start > 0 and duration > 0) then
+								tTmpText = tTmpText..spellName.." "..SkuEpochValueHelper(GetServerTime() - math.floor(start + duration - GetTime())).."\r\n"
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	tTmpText = tTmpText or ""
+	table.insert(tSections, L["Cooldowns"]..":\r\n"..tTmpText)
 
 	return tSections
 end

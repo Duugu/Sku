@@ -162,6 +162,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_HOUSE_SHOW()
+   print("AUCTION_HOUSE_SHOW")
    SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime = SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime or 0
    SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
       ["LevelMin"] = nil,

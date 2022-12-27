@@ -2189,6 +2189,7 @@ end
 ]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:GENERIC_OnClose(self)
+	--print("GENERIC_OnClose", _G["AuctionFrame"]:IsShown())
 	SkuCore:CheckFrames()
 	SkuOptions:SendTrackingStatusUpdates()
 end
@@ -2772,7 +2773,7 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose)
 		end)
 		return
 	end
-
+	
 	SkuCore.GossipList = {}
 	C_Timer.After(0.01, function() --This is because the content of some frames is not instantly available on show. We do need to wait a few milliseconds on it.
 		SkuCore.GossipList = {}
@@ -2785,10 +2786,9 @@ function SkuCore:CheckFrames(aForceLocalRoot, aDontClose)
 				end
 			end
 		end
-
-		if #tOpenFrames > 0 then
+		
+		if #tOpenFrames > 0 or (_G["AuctionFrame"] and _G["AuctionFrame"]:IsVisible() == true) then
 			local tGossipList = {}
-
 			for x = 1, #tOpenFrames do
 				--dprint(x, tOpenFrames[x])
 				table.insert(tGossipList, tOpenFrames[x])

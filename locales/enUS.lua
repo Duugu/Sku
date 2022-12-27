@@ -1916,3 +1916,6 @@ L["Earth"] = "Earth"
 L["Fire"] = "Fire"
 L["Water"] = "Water"
 L["Air"] = "Air"
+
+L["Continuous output start at"] = "Continuous output start at"
+L["Cooldowns"] = "Cooldowns"
