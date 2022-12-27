@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.34](https://github.com/Duugu/Sku/releases/download/r31.34/Sku-r31.34-wrath.zip) (Dec 25th, 2022)<br>
+- [Sku r31.35](https://github.com/Duugu/Sku/releases/download/r31.35/Sku-r31.35-wrath.zip) (Dec 27th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.35
+- Fixed the broken engineer auction house in Dalaran.
+- Added a new option to Core > Monitor > Player > Health/Power: "Continuous output start at". Possible values are "Never" and 0-10. The default is never. The continuous output starts if the health/mana is equal/below the value. The old "Continuous output" Yes/No option was removed, as it is not longer required with this change. If you had "Continuous output" enabled, you need to set up that again via the new "Continuous output start at".
+- Added a new section "Cooldowns" to the bottom of the overview page with all spells from your spellbook that are currently on cooldown and their remaining cooldown.
+
 ## Changes in Sku r31.34
 - Added Shaman totem sets to Core > Action bars. There are 3 sets, with 4 totem buttons each.
 - Added the set number to all totem button key bindings under Core > Game Key Binds, for clarification.
