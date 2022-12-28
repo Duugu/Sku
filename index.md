@@ -28,7 +28,7 @@ DEUTSCH - Erste Schritte:<br>
 - Removed an overlooked debug output on login
 	
 ## Changes in Sku r31.36
-- Added basic support for the Details! damage meter addon to Sku. Download the Details! addon here: https://www.curseforge.com/wow/addons/details/download/4175900
+- Added basic support for the Details! damage meter addon to Sku. Download the Details! addon here: [https://www.curseforge.com/wow/addons/details/download/4175900](https://www.curseforge.com/wow/addons/details/download/4175900)
 	- The Details! addon has a setup assistent, that is shown on first login and that isn't accessible. The sku addon is auto-completing the assistent for your and is hiding the visual Details! window.
 	- There is a new menu entry: Core > Damage meter. Under Reports are all fights. Each fight has a tooltip with damage data (DPS, damage total, damage taken).
 	- Please test. I will add more stuff later.
