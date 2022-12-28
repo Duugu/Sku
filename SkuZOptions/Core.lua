@@ -474,7 +474,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:UpdateOverviewText()
-	local tSections = {}
+--SkuOptions.db.profile["SkuOptions"].overviewSections
+	local tSectionRepo = {}
+	--local tSections = {}
 
 	--party
 	local tTmpText
@@ -525,7 +527,8 @@ function SkuOptions:UpdateOverviewText()
 	local lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
 
 	if tTmpText then
-		table.insert(tSections, L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod])
+		--table.insert(tSections, L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod])
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["party"].pos] = L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod]
 	end
 
 	--general
@@ -625,7 +628,9 @@ function SkuOptions:UpdateOverviewText()
 		tGeneral = tGeneral.."\r\n"..L["Gearscore: "]..gearScore.GearScore.." ("..gearScore.Description..L[", average item level "]..gearScore.AvgItemLevel..")"
 	end
 
-	table.insert(tSections, tGeneral)
+	--table.insert(tSections, tGeneral)
+	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["general"].pos] = tGeneral
+
 
 	--buffs/debuffs
 	local tBuffs = L["Buffs"]
@@ -782,7 +787,8 @@ function SkuOptions:UpdateOverviewText()
 	if not tFound then
 		tBuffs = tBuffs.."\r\n"..L["Keine"]
 	end
-	table.insert(tSections, tBuffs)
+	--table.insert(tSections, tBuffs)
+	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["buffs"].pos] = tBuffs
 
 	local tDebuffs = L["Debuffs"]
 	local tFound
@@ -826,7 +832,8 @@ function SkuOptions:UpdateOverviewText()
 	if not tFound then
 		tDebuffs = tDebuffs.."\r\n"..L["Keine"]
 	end
-	table.insert(tSections, tDebuffs)
+	--table.insert(tSections, tDebuffs)
+	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["debuffs"].pos] = tDebuffs
 
 	--skills
 	local tTmpText = ""
@@ -836,7 +843,8 @@ function SkuOptions:UpdateOverviewText()
 			tTmpText = tTmpText.."\r\n"..skillName.." ("..skillRank.." / "..skillMaxRank..")"
 		end
 	end
-	table.insert(tSections, L["Fertigkeiten:\r\n"]..tTmpText)
+	--table.insert(tSections, L["Fertigkeiten:\r\n"]..tTmpText)
+	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["skills"].pos] = L["Fertigkeiten:\r\n"]..tTmpText
 
 	--reputation
 	ExpandAllFactionHeaders()
@@ -867,7 +875,8 @@ function SkuOptions:UpdateOverviewText()
 			end
 		end
 	end
-	table.insert(tSections, L["Ruf:\r\n"]..tTmpText)
+	--table.insert(tSections, L["Ruf:\r\n"]..tTmpText)
+	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["reputation"].pos] = L["Ruf:\r\n"]..tTmpText
 
 	--guild members
 	SetGuildRosterShowOffline(false)
@@ -887,7 +896,8 @@ function SkuOptions:UpdateOverviewText()
 	end
 
 	tTmpText = tTmpText or ""
-	table.insert(tSections, L["Gilde:\r\n"]..tTmpText)
+	--table.insert(tSections, L["Gilde:\r\n"]..tTmpText)
+	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["guild"].pos] = L["Gilde:\r\n"]..tTmpText
 
 	--pet
 	if UnitName("playerpet") and SkuCore:PlayerIsHunter() then
@@ -905,7 +915,8 @@ function SkuOptions:UpdateOverviewText()
 			petSection = petSection .. "\r\n" .. L["Unspent pet talent points"]..": "..UnitCharacterPoints("pet")
 		end
 
-		table.insert(tSections, petSection)
+		--table.insert(tSections, petSection)
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["pet"].pos] = petSection
 	end
 
 	--CDs
@@ -934,7 +945,13 @@ function SkuOptions:UpdateOverviewText()
 		end
 	end
 	tTmpText = tTmpText or ""
-	table.insert(tSections, L["Cooldowns"]..":\r\n"..tTmpText)
+	--table.insert(tSections, L["Cooldowns"]..":\r\n"..tTmpText)
+	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["Cooldowns"].pos] = L["Cooldowns"]..":\r\n"..tTmpText
+
+	local tSections = {}
+	for x = 1, #tSectionRepo do
+		table.insert(tSections, tSectionRepo[x])
+	end
 
 	return tSections
 end
@@ -2602,6 +2619,26 @@ function SkuOptions:OnEnable()
 	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableSoundWhenGameIsInBG)])
 	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_ZoneMusicNoDelay)])
 
+	if not SkuOptions.db.profile["SkuOptions"].overviewSections then
+		SkuOptions.db.profile["SkuOptions"].overviewSections = {}
+	end
+	local overviewSectionsDefaults = {
+		["party"] = {pos = 1, locName = L["Party"], },
+		["general"] = {pos = 2, locName = L["Allgemeines"], },
+		["buffs"] = {pos = 3, locName = L["Buffs"], },
+		["debuffs"] = {pos = 4, locName = L["Debuffs"], },
+		["skills"] = {pos = 5, locName = L["Skills"], },
+		["reputation"] = {pos = 6, locName = L["Reputation"], },
+		["guild"] = {pos = 7, locName = L["Guild"], },
+		["pet"] = {pos = 8, locName = L["Pet"], },
+		["Cooldowns"] = {pos = 9, locName = L["Cooldowns"], },
+	}
+	for i, v in pairs(overviewSectionsDefaults) do
+		if not SkuOptions.db.profile["SkuOptions"].overviewSections[i] then
+			SkuOptions.db.profile["SkuOptions"].overviewSections[i] = v
+		end
+		SkuOptions.db.profile["SkuOptions"].overviewSections[i].locName = v.locName
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
