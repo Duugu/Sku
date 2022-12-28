@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.35](https://github.com/Duugu/Sku/releases/download/r31.35/Sku-r31.35-wrath.zip) (Dec 27th, 2022)<br>
+- [Sku r31.36](https://github.com/Duugu/Sku/releases/download/r31.36/Sku-r31.36-wrath.zip) (Dec 28th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.36
+- Added basic support for the Details! damage meter addon to Sku. Download the Details! addon here: https://www.curseforge.com/wow/addons/details/download/4175900
+	- The Details! addon has a setup assistent, that is shown on first login and that isn't accessible. The sku addon is auto-completing the assistent for your and is hiding the visual Details! window.
+	- There is a new menu entry: Core > Damage meter. Under Reports are all fights. Each fight has a tooltip with damage data (DPS, damage total, damage taken).
+	- Please test. I will add more stuff later.
+
 ## Changes in Sku r31.35
 - Fixed the broken engineer auction house in Dalaran.
 - Added a new option to Core > Monitor > Player > Health/Power: "Continuous output start at". Possible values are "Never" and 0-10. The default is never. The continuous output starts if the health/mana is equal/below the value. The old "Continuous output" Yes/No option was removed, as it is not longer required with this change. If you had "Continuous output" enabled, you need to set up that again via the new "Continuous output start at".
