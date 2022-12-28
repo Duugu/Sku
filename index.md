@@ -24,7 +24,7 @@ DEUTSCH - Erste Schritte:<br>
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
 ## Changes in Sku r31.37
-- Added a new submenu Options > Options > Overview page sections to configurate what sections in what order are shown on the overview page (Shift + Down). Get to the sections submenu, there are options to move each section up/down or hide/show.
+- Added a new submenu Options > Options > Overview page sections to set up what sections in what order are shown on the overview page (Shift + Down). Get to the sections submenu, there are options to move each section up/down or hide/show.
 - Removed an overlooked debug output on login
 	
 ## Changes in Sku r31.36
