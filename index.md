@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.36](https://github.com/Duugu/Sku/releases/download/r31.36/Sku-r31.36-wrath.zip) (Dec 28th, 2022)<br>
+- [Sku r31.37](https://github.com/Duugu/Sku/releases/download/r31.37/Sku-r31.37-wrath.zip) (Dec 28th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -22,6 +22,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.37
+- Added a new submenu Options > Options > Overview page sections to configurate what sections in what order are shown on the overview page (Shift + Down). Get to the sections submenu, there are options to move each section up/down or hide/show.
+- Removed an overlooked debug output on login
+	
 ## Changes in Sku r31.36
 - Added basic support for the Details! damage meter addon to Sku. Download the Details! addon here: https://www.curseforge.com/wow/addons/details/download/4175900
 	- The Details! addon has a setup assistent, that is shown on first login and that isn't accessible. The sku addon is auto-completing the assistent for your and is hiding the visual Details! window.
