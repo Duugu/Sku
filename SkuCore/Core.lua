@@ -228,6 +228,7 @@ function SkuCore:OnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
 	SkuCore:AqOnInitialize()
+	SkuCore:DamageMeterOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
 	SkuCore:FriendsOnInitialize()
 	SkuCore:AchievementsOnInitialize()
@@ -1955,6 +1956,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:GameWorldObjectsOnLogin()
 
 		SkuCore:AqOnLogin()
+
+		SkuCore:DamageMeterOnLogin()
 
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)

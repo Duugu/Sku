@@ -386,6 +386,7 @@ function SkuOptions:OnProfileReset()
 	SkuOptions:SkuKeyBindsUpdate(true)
 	SkuCore:GameWorldObjectsOnLogin()
 	SkuCore:AqOnLogin()
+	SkuCore:DamageMeterOnLogin()
 	
   	if SkuCore then
 		SkuCore:OnEnable()
