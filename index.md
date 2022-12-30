@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.37](https://github.com/Duugu/Sku/releases/download/r31.37/Sku-r31.37-wrath.zip) (Dec 28th, 2022)<br>
+- [Sku r31.39](https://github.com/Duugu/Sku/releases/download/r31.39/Sku-r31.39-wrath.zip) (Dec 31th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,28 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.39
+- Removed not longer required map files. Should have reduced the download size and the required time for extracting the .zip file a lot.
+- Sku now is auto-hiding the Details News window on first login and the default details panel for alts.
+- Added a dispell / debuff monitor under Core > Monitor > Player / Party > Debuffs. Default: disabled.<br>
+	It is basically working as Health, Mana, etc. and is announcing dispellable debuffs for you and/or group members.<br>
+	No debuffs types are enabled as default. You explicit need to select the debuff types that you would like to monitor. (Magic, Diseases, Poison, Curse)<br>
+	There is only a single output if a debuff of some type is applied, renewed, or if the stack number changes. No continous output as default. Use "Continuous output starts after seconds" to have a continous output started if the debuff type wasn't removed after x seconds.<br>
+	The default output for Player is the full word (Magic, Disease, Poison, Curse).<br>
+	The default output for Party is just the first character (M for Magic, D for Disease, P for Poison, C for Curse) and the party members number. Example: D3 means, party member 3 has some disease debuff. There is on option to switch to full words instead of just the first character.<br>
+	For Party you are always party member 1. Other party members are 2 to 5<br>
+	I did a lot of test for the debuff / dispell monitor feature, but it is of course difficult to test. Even more for parties. Please test and provide feedback / report errors
+- Added a health monitor for your pet under Core > Monitor > Pet > Health
+- Added a new voice for monitor outputs: Kevin
+- Changed monitor voice Kimberly a little bit, to better distinguish from Justin
+- Changed the output for 100% from "full" to "10"
+- Added slash commands for monitors to switch them on/off:<br>
+	/sku mon player health<br>
+	/sku mon player power<br>
+	/sku mon player debuffs<br>
+	/sku mon pet health<br>
+	/sku mon party debuffs
+		
 ## Changes in Sku r31.37
 - Added a new submenu Options > Options > Overview page sections to set up what sections in what order are shown on the overview page (Shift + Down). Get to the sections submenu, there are options to move each section up/down or hide/show.
 - Removed an overlooked debug output on login
