@@ -383,12 +383,14 @@ function SkuTTS:Output(text, duration)
 
 	for i, v in pairs(tSections) do
 		local tBuildSection = {}
-		if v ~= "" then
+		if v ~= "" and  v ~= "\r\n" and v ~= " \r\n" then
 			if string.find(v, "\r\n") then
 				local sep = "\r\n"
 				if type(v) == "string" then
+					local tTv = string.gsub(v, "\r\n \r\n", "\r\n")
+					tTv = string.gsub(tTv, "\r\n\r\n", "\r\n")
 					local pattern = string.format("([^%s]+)", sep)
-					v:gsub(pattern, function(c) 
+					tTv:gsub(pattern, function(c) 
 						if c ~= "\r" then
 							tBuildSection[#tBuildSection+1] = c
 						end
@@ -399,8 +401,8 @@ function SkuTTS:Output(text, duration)
 			else
 				tBuildSection = {v}
 			end
+			table.insert(sections, tBuildSection)
 		end
-		table.insert(sections, tBuildSection)
 	end
 
 	--build string to show from sections

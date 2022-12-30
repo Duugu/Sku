@@ -164,6 +164,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 			print("latencyWorld", latencyWorld)
 		end
 
+		--[[
 		if fields[1] == "skumm" then
 			SkuOptions.db.profile["SkuNav"].showSkuMM = SkuOptions.db.profile["SkuNav"].showSkuMM == false
 			SkuNav:SkuNavMMOpen()			
@@ -172,6 +173,7 @@ function SkuOptions:SlashFunc(input, aSilent)
 		if fields[1] == "gamemm" then
 			SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap = SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap ~= true
 		end
+		]]
 
 		if fields[1] == "mon" then
 			SkuCore:AqSlashHandler(fields)

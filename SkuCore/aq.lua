@@ -1,5 +1,5 @@
 --[[
-   Interface\AddOns\Sku\SkuCore\assets\audio\heal\numbers
+Interface\AddOns\Sku\SkuCore\assets\audio\heal\numbers
 	Interface\AddOns\Sku\SkuCore\assets\audio\heal\other
 	/sku 
 		aq		on/off
@@ -28,7 +28,13 @@ SkuCore.aq.mirrorBars = {}
 
 local tVoices = {
 	[1] = {name = "Justin", path = "jus"},
-	[2] = {name = "Kimberly", path = "yve"},
+	[2] = {name = "Kimberly", path = "kim"},
+	[3] = {name = "Kevin", path = "kev"},
+}
+
+local tOutputStyles = {
+	[1] = L["long"],
+	[2] = L["short"],
 }
 
 local tPowerTypes = {
@@ -38,6 +44,22 @@ local tPowerTypes = {
 	["ENERGY"] = {name = L["ENERGY"], number = 3},
 	["RUNIC_POWER"] = {name = L["RUNIC_POWER"], number = 6},
 }
+
+local tDebuffTypes = {
+	["magic"] = L["magic"],
+	["curse"] = L["curse"],
+	["poison"] = L["poison"],
+	["disease"] = L["disease"],
+}
+local tDebuffTypesShort = {
+	["magic"] = L["magic_short"],
+	["curse"] = L["curse_short"],
+	["poison"] = L["poison_short"],
+	["disease"] = L["disease_short"],
+}
+local tAuraRepo = {}
+
+
 --[[
 -------------------------- party test
 tTestParty = {
@@ -52,11 +74,17 @@ tTestParty = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tHealthMonitorPause = false
+local tDebuffMonitorPause = false
 local tPowerMonitorPause = false
+local tPlayerDebuffsMonitorPause = false
+local tPartyDebuffsMonitorPause = false
 local tPrevHpPer = 100
 local tPrevHpDir = false
 local tPrevPwrPer = 100
 local tPrevPwrDir = false
+local tPrevHpPetPer = 100
+local tPrevHpPetDir = false
+
 local function AqCreateControlFrame()
 	--[[
 	-------------------------- party test
@@ -98,8 +126,11 @@ local function AqCreateControlFrame()
    local f = _G["SkuCoreAqControl"] or CreateFrame("Frame", "SkuCoreAqControl", UIParent)
    local ttime = 0
    local ttimeMonHp = 0
+   local ttimeMonHpPet = 0
    local ttimeMonPwr = 0
 	local ttimeMonParty = 0
+	local ttimeMonPlayerDebuff = 0
+	local ttimeMonPartyDebuff = 0
    f:SetScript("OnUpdate", function(self, time)
       ttime = ttime + time
       if ttime > 0.05 then
@@ -136,7 +167,7 @@ local function AqCreateControlFrame()
 						end
 		
 						if SkuOptions.db.char[MODULE_NAME].aq.player.health.silentOn100and0 == false or (tNumberToUtterance < 10 and tNumberToUtterance > 0) then
-							SkuCore:MonitorOutputPlayer(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
+							SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
 						end							
 					end
 
@@ -147,6 +178,30 @@ local function AqCreateControlFrame()
 					end
 				end
 			end
+
+			if SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled == true and UnitName("pet") then
+				ttimeMonHpPet = ttimeMonHpPet + time
+				if ttimeMonHpPet > (SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyTimer) and tHealthMonitorPause == false then
+					local health = UnitHealth("pet")
+					local healthMax = UnitHealthMax("pet")
+					local healthPer = math.floor((health / healthMax) * 100)
+					if SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt >= 0 and (math.floor(healthPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt) then
+						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps)
+						local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
+						tPrevHpPetDir = healthPer > tPrevHpPetPer
+						if tPrevHpPetDir == false then
+							tNumberToUtterance = tNumberToUtterance + 1
+						end
+		
+						if SkuOptions.db.char[MODULE_NAME].aq.pet.health.silentOn100and0 == false or (tNumberToUtterance < 10 and tNumberToUtterance > 0) then
+							SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice].path, "pet")
+						end							
+					end
+
+					ttimeMonHpPet = 0
+				end
+			end
+
 
 			if SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled == true then
 				ttimeMonPwr = ttimeMonPwr + time
@@ -164,7 +219,7 @@ local function AqCreateControlFrame()
 
 						if SkuOptions.db.char[MODULE_NAME].aq.player.power.silentOn100and0 == false or (tNumberToUtterance < 10 and tNumberToUtterance > 0) then
 							C_Timer.After(0.25, function()
-								SkuCore:MonitorOutputPlayer(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
+								SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
 							end)
 						end							
 					end
@@ -214,13 +269,85 @@ local function AqCreateControlFrame()
 						end
 
 						if SkuOptions.db.char[MODULE_NAME].aq.party.health.silentAtAll100 == false or tAll100 == false then
-							SkuCore:MonitorOutputParty(tUtterances, SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.party.health.instancesOnly, SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslySpeed)
+							SkuCore:MonitorOutputPartyPercent(tUtterances, SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.party.health.instancesOnly, SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslySpeed)
 						end
 
 						ttimeMonParty = 0
 					end
 				end
 			end
+
+			if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled == true then
+				ttimeMonPlayerDebuff = ttimeMonPlayerDebuff + time
+				if ttimeMonPlayerDebuff > SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyTimer and tPlayerDebuffsMonitorPause == false then
+					if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyStartAfter > -1 then
+						local tUnitGUID = UnitGUID("player")
+						if tAuraRepo["player"] and tAuraRepo["player"][tUnitGUID] then
+							local tPause = 0
+							for i, v in pairs(tDebuffTypes) do
+								if tAuraRepo["player"][tUnitGUID][i].start > 0 and tAuraRepo["player"][tUnitGUID][i].count > 0 and (GetTime() - tAuraRepo["player"][tUnitGUID][i].start > SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyStartAfter) then
+									if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types[i] == true then									
+										C_Timer.After(tPause, function()
+											SkuCore:MonitorOutputPlayerStatus({[1] = i}, SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.voice].path)
+										end)
+										tPause = tPause + 0.3
+									end
+								end
+							end
+						end
+					end
+					ttimeMonPlayerDebuff = 0
+				end
+			end
+
+			if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled == true then
+				ttimeMonPartyDebuff = ttimeMonPartyDebuff + time
+				if ttimeMonPartyDebuff > SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyTimer and tPartyDebuffsMonitorPause == false then
+					if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyStartAfter > -1 then
+						local tUnitIdList = SkuCore:UnitIsInUnitGroup("party", "player")
+						if tUnitIdList then
+							local tPause = 0
+							for _, tUnitID in pairs(tUnitIdList) do
+								local tUnitGUID = UnitGUID(tUnitID)
+								if tAuraRepo["party"] and tAuraRepo["party"][tUnitGUID] then
+									for i, v in pairs(tDebuffTypes) do
+										if tAuraRepo["party"][tUnitGUID][i].start > 0 and tAuraRepo["party"][tUnitGUID][i].count > 0 and (GetTime() - tAuraRepo["party"][tUnitGUID][i].start > SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyStartAfter) then
+											if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types[i] == true then		
+												local tNumber
+												if string.sub(tUnitID, 1, 6) == "player" then
+													tNumber = 1
+												elseif string.sub(tUnitID, 1, 5) == "party" then
+													tNumber = tonumber(string.sub(tUnitID, 6))
+													if tNumber then
+														tNumber = tNumber + 1
+													end
+												elseif string.sub(tUnitID, 1, 4) == "raid" then
+													tNumber = tonumber(string.sub(tUnitID, 5))
+													if tNumber then
+														tNumber = tNumber + 1
+													end
+												end
+												if tNumber then
+													local tTypeString = tDebuffTypesShort[i]
+													if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.outputStyle == 1 then
+														tTypeString = i
+													end
+													C_Timer.After(tPause, function()
+														SkuCore:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber}, SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.voice].path)
+													end)
+													tPause = tPause + ((string.len(tTypeString) + string.len(tNumber)) * 0.4)
+												end
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+					ttimeMonPartyDebuff = 0
+				end
+			end
+
 		end
    end)
 end
@@ -262,14 +389,18 @@ function SkuCore:AqOnInitialize()
 	SkuCore:RegisterEvent("UNIT_HEALTH")
 	SkuCore:RegisterEvent("UNIT_POWER_FREQUENT")
 	SkuCore:RegisterEvent("UNIT_POWER_UPDATE")
+
+	SkuCore:RegisterEvent("UNIT_AURA")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AqOnLogin()
 	SkuOptions.db.char[MODULE_NAME].aq = SkuOptions.db.char[MODULE_NAME].aq or {}
-
+	SkuOptions.db.char[MODULE_NAME].aq.player = SkuOptions.db.char[MODULE_NAME].aq.player or {}
+	SkuOptions.db.char[MODULE_NAME].aq.pet = SkuOptions.db.char[MODULE_NAME].aq.pet or {}
 	SkuOptions.db.char[MODULE_NAME].aq.party = SkuOptions.db.char[MODULE_NAME].aq.party or {}
 
+	--party health
 	SkuOptions.db.char[MODULE_NAME].aq.party.health = SkuOptions.db.char[MODULE_NAME].aq.party.health or {}
 	if SkuOptions.db.char[MODULE_NAME].aq.party.health.enabled == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.health.enabled = false
@@ -293,8 +424,7 @@ function SkuCore:AqOnLogin()
 		SkuOptions.db.char[MODULE_NAME].aq.party.health.includeSelf = true
 	end
 
-	SkuOptions.db.char[MODULE_NAME].aq.player = SkuOptions.db.char[MODULE_NAME].aq.player or {}
-
+	--player health
 	SkuOptions.db.char[MODULE_NAME].aq.player.health = SkuOptions.db.char[MODULE_NAME].aq.player.health or {}
 	if SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled = false
@@ -324,11 +454,42 @@ function SkuCore:AqOnLogin()
 		SkuOptions.db.char[MODULE_NAME].aq.player.health.voice = 1
 	end
 
+	--pet health
+	SkuOptions.db.char[MODULE_NAME].aq.pet.health = SkuOptions.db.char[MODULE_NAME].aq.pet.health or {}
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled = false
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly = false
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.silentOn100and0 == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.silentOn100and0 = true
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyTimer == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyTimer = 3
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt = -1
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyVolume = 50
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.eventVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.eventVolume = 80
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps = 10
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice = 1
+	end
+
+	--player power
 	SkuOptions.db.char[MODULE_NAME].aq.player.power = SkuOptions.db.char[MODULE_NAME].aq.player.power or {}
 	if SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled = false
 	end
-	if SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly == nil then
+	if SkuOptions.db.char[MODULE_NAME].aq.player.power.type == nil then
 		local _, powerToken = UnitPowerType("player")
 		if not powerToken or tPowerTypes[powerToken] == nil then
 			powerToken = "NOTHING"
@@ -359,16 +520,95 @@ function SkuCore:AqOnLogin()
 	if SkuOptions.db.char[MODULE_NAME].aq.player.power.voice == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.power.voice = 2
 	end	
+
+	--player debuffs
+	SkuOptions.db.char[MODULE_NAME].aq.player.debuffs = SkuOptions.db.char[MODULE_NAME].aq.player.debuffs or {}
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled = false
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types = {
+			["magic"] = false,
+			["curse"] = false,
+			["poison"] = false,
+			["disease"] = false,
+		}
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly = false
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyStartAfter == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyStartAfter = -1
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyTimer == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyTimer = 6
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyVolume = 30
+	end	
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.eventVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.eventVolume = 60
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.voice == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.voice = 2
+	end
+
+	--party debuffs
+	SkuOptions.db.char[MODULE_NAME].aq.party.debuffs = SkuOptions.db.char[MODULE_NAME].aq.party.debuffs or {}
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled = false
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types = {
+			["magic"] = false,
+			["curse"] = false,
+			["poison"] = false,
+			["disease"] = false,
+		}
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly = false
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyStartAfter == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyStartAfter = -1
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.outputStyle == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.outputStyle = 2
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyTimer == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyTimer = 6
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyVolume = 30
+	end	
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.eventVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.eventVolume = 60
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.voice == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.voice = 3
+	end
 end
 
 --Monitor
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AqSlashHandler(aFieldsTable)
-	if aFieldsTable[2] == "health" then
+	if aFieldsTable[2] == "player" and aFieldsTable[3] == "health" then
 		SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled = SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled == false		
 	end
-	if aFieldsTable[2] == "power" then
+	if aFieldsTable[2] == "player" and aFieldsTable[3] == "power" then
 		SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled = SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled == false		
+	end
+	if aFieldsTable[2] == "player" and aFieldsTable[3] == "debuffs" then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled = SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled == false		
+	end
+	if aFieldsTable[2] == "pet" and aFieldsTable[3] == "health" then
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled = SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled == false		
+	end
+	if aFieldsTable[2] == "party" and aFieldsTable[2] == "debuffs" then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled = SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled == false		
 	end
 end
 
@@ -377,12 +617,9 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 	if aUnitID == "player" then
 		if SkuOptions.db.char[MODULE_NAME].aq then
 			if SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled == true then
-
-
 				local health = UnitHealth("player")
 				local healthMax = UnitHealthMax("player")
 				local healthPer = math.floor((health / healthMax) * 100)
-
 				local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.player.health.steps)
 				local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
 				tPrevHpDir = healthPer > tPrevHpPer
@@ -391,7 +628,7 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 				end
 
 				if tNumberToUtterance ~= tPrevHpPer then
-					SkuCore:MonitorOutputPlayer(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.health.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
+					SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.health.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
 					tHealthMonitorPause = true
 					tPowerMonitorPause = true
 					C_Timer.After(SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyTimer, function()
@@ -402,7 +639,33 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 				end
 			end
 		end
+	elseif aUnitID == "playerpet" or aUnitID == "pet" then
+		if SkuOptions.db.char[MODULE_NAME].aq then
+			if SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled == true and UnitName("pet") then
+				local health = UnitHealth("pet")
+				local healthMax = UnitHealthMax("pet")
+				local healthPer = math.floor((health / healthMax) * 100)
+				local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps)
+				local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
+				tPrevHpPetDir = healthPer > tPrevHpPetPer
+				if tPrevHpPetDir == false then
+					tNumberToUtterance = tNumberToUtterance + 1
+				end
+
+				if tNumberToUtterance ~= tPrevHpPetPer then
+					SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.pet.health.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice].path, "pet")
+					tHealthMonitorPause = true
+					tPowerMonitorPause = true
+					C_Timer.After(SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyTimer, function()
+						tHealthMonitorPause = false
+						tPowerMonitorPause = false
+					end)
+					tPrevHpPetPer = tNumberToUtterance
+				end
+			end
+		end
 	end
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -426,7 +689,7 @@ function SkuCore:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
 					end
 
 					if tNumberToUtterance ~= tPrevPwrPer then
-						SkuCore:MonitorOutputPlayer(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.power.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
+						SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.power.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
 						tHealthMonitorPause = true
 						tPowerMonitorPause = true
 						C_Timer.After(SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyTimer, function()
@@ -442,6 +705,190 @@ function SkuCore:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+---@param aFilter string "player"
+---@param aFilter string "playerpet"
+---@param aFilter string "party"
+---@param aFilter string "partyandpets"
+---@param aFilter string "raid"
+---@param aFilter string "raidandpets"
+---@param aUnitID string
+function SkuCore:UnitIsInUnitGroup(aFilter, aUnitID)
+	if not aUnitID then
+		return
+	end
+
+	if not string.find(aUnitID, "player") and not string.find(aUnitID, "party") and not string.find(aUnitID, "raid") then
+		return
+	end
+
+	if aFilter == "player" then
+		local tUnit = UnitGUID(aUnitID)
+		local tPlayer = UnitGUID("player")
+		if tUnit == tPlayer then
+			return {"player",}
+		end
+	elseif aFilter == "playerpet" then
+		local tUnit = UnitGUID(aUnitID)
+		local tPet = UnitGUID("playerpet")
+		if tUnit == tPet then
+			return {"playerpet",}
+		end	
+	elseif aFilter == "party" then
+		if UnitPlayerOrPetInParty(aUnitID) and UnitIsPlayer(aUnitID) then
+			return {"player", "party1", "party2", "party3", "party4"}
+		end
+	elseif aFilter == "partyandpets" then
+		if UnitPlayerOrPetInParty(aUnitID) then
+			return {"player", "party1", "party2", "party3", "party4", "playerpet", "party1pet", "party2pet", "party3pet", "party4pet"}
+		end
+	elseif aFilter == "raid" then
+		if UnitPlayerOrPetInRaid(aUnitID) and UnitIsPlayer(aUnitID) then
+			local tTable = {}
+			for x = 1, 25 do
+				tTable[x] = "raid"..x
+			end
+			return tTable
+		end
+	elseif aFilter == "raidandpets" then
+		if UnitPlayerOrPetInRaid(aUnitID) then
+			local tTable = {}
+			for x = 1, 25 do
+				tTable[x] = "raid"..x
+			end
+			for x = 26, 50 do
+				tTable[x] = "raid"..x.."pet"
+			end
+			return tTable
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+--[[
+local function UnitDebuffTest(x)
+	if x == 1 then
+		return "TestMagie1 2", "icon", 2, "Magic"
+	elseif x == 2 then
+		return "TestMagie2 1", "icon", 1, "Magic"
+	elseif x == 3 then
+		return "TestCurse2 1", "icon", 1, "Curse"
+	end
+end
+]]
+function SkuCore:UNIT_AURA(aEventName, aUnitID)
+	local tSubR
+	local tUnitIdList = {}
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled == true and SkuCore:UnitIsInUnitGroup("player", aUnitID) then
+		tSubR = "player"
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled == true and SkuCore:UnitIsInUnitGroup("party", aUnitID) then
+		tSubR = "party"
+	end
+
+	if tSubR == nil then
+		return
+	end
+
+	local tUnitGUID = UnitGUID(aUnitID)
+	local tUnitName = UnitName(aUnitID) 
+	local tDebuff = UnitDebuff(aUnitID, 1)
+	
+	tAuraRepo[tSubR] = tAuraRepo[tSubR] or {}
+
+	if tDebuff == nil then
+		tAuraRepo[tSubR][tUnitGUID] = nil
+	else
+		local tPause = 0
+
+		local tCurrentDebuffType = {
+			["magic"] = 0,
+			["curse"] = 0,
+			["poison"] = 0,
+			["disease"] = 0,
+		}
+		local tFound
+		for x = 1, 100 do
+			local name, icon, count, dispelType, duration, expirationTime,	source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer = UnitDebuff(aUnitID, x) --UnitDebuffTest(x)
+			if name then
+				if dispelType then
+					tCurrentDebuffType[string.lower(dispelType)] = tCurrentDebuffType[string.lower(dispelType)] + count
+					tFound = true
+				end
+			end
+		end
+		if tFound then
+			tAuraRepo[tSubR][tUnitGUID] = tAuraRepo[tSubR][tUnitGUID] or {
+				["magic"] = {count = 0, start = 0,},
+				["curse"] = {count = 0, start = 0,},
+				["poison"] = {count = 0, start = 0,},
+				["disease"] = {count = 0, start = 0,},
+			}
+			for i, v in pairs(tDebuffTypes) do
+				if tCurrentDebuffType[i] > 0 and tCurrentDebuffType[i] ~= tAuraRepo[tSubR][tUnitGUID][i].count then
+					tAuraRepo[tSubR][tUnitGUID][i].count = tCurrentDebuffType[i]
+					tAuraRepo[tSubR][tUnitGUID][i].start = GetTime()
+					if SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.types[i] == true then
+						C_Timer.After(tPause, function()
+							if tSubR == "player" then
+								SkuCore:MonitorOutputPlayerStatus({[1] = i,}, SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.eventVolume, SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.voice].path)
+							elseif tSubR == "party" then
+								local tNumber
+								if string.sub(aUnitID, 1, 6) == "player" then
+									tNumber = 1
+								elseif string.sub(aUnitID, 1, 5) == "party" then
+									tNumber = tonumber(string.sub(aUnitID, 6))
+									if tNumber then
+										tNumber = tNumber + 1
+									end
+								elseif string.sub(aUnitID, 1, 4) == "raid" then
+									tNumber = tonumber(string.sub(aUnitID, 5))
+									if tNumber then
+										tNumber = tNumber + 1
+									end
+								end
+								if tNumber then
+									local tTypeString = tDebuffTypesShort[i]
+									if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.outputStyle == 1 then
+										tTypeString = i
+									end
+
+									SkuCore:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber,}, SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.eventVolume, SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.voice].path)								
+									tPause = tPause + 0.3
+								end
+							end
+						end)
+						tPartyDebuffsMonitorPause = true
+						tPlayerDebuffsMonitorPause = true
+						C_Timer.After(SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.continouslyTimer, function()
+							tPartyDebuffsMonitorPause = false
+							tPlayerDebuffsMonitorPause = false
+							end)
+					end
+				elseif tCurrentDebuffType[i] == 0 then
+					tAuraRepo[tSubR][tUnitGUID][i].count = 0
+					tAuraRepo[tSubR][tUnitGUID][i].start = 0
+				end
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MonitorOutputPlayerStatus(aStatusTable, aVol, aInstancesOnly, aVoice)
+	local inInstance = IsInInstance() 
+	if aInstancesOnly == true and inInstance ~= true then
+		return
+	end
+	local tPause = 0
+	for x = 1, #aStatusTable do
+		C_Timer.After(tPause, function()
+			PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..aStatusTable[x].."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+		end)
+		tPause = tPause + (string.len(aStatusTable[x]) * 0.03) + 0.3
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tSounds = {
 	[0] = {min = 0, max = 0,},
 	[1] = {min = 1, max = 17,},
@@ -452,7 +899,7 @@ local tSounds = {
 	[6] = {min = 84, max = 99,},
 	[7] = {min = 100, max = 100,},
 }
-function SkuCore:MonitorOutputParty(aHealthValues, aVolume, aInstancesOnly, aSpeed)
+function SkuCore:MonitorOutputPartyPercent(aHealthValues, aVolume, aInstancesOnly, aSpeed)
 	local inInstance = IsInInstance() 
 	if aInstancesOnly == true and inInstance ~= true then
 		return
@@ -477,23 +924,30 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tPrevOutputHandle = {}
-function SkuCore:MonitorOutputPlayer(aValuePercent, aVol, aInstancesOnly, aVoice)
+function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice, aPrefix)
 	local inInstance = IsInInstance() 
 	if aInstancesOnly == true and inInstance ~= true then
 		return
 	end
 
-	if aValuePercent >= 10 then
-		aValuePercent = "full"
-	elseif aValuePercent < 0 then
-		aValuePercent = 0
+	if aValue >= 10 then
+		aValue = 10--"full"
+	elseif aValue < 0 then
+		aValue = 0
 	end
 
 	if tPrevOutputHandle[aVoice] then
 		StopSound(tPrevOutputHandle[aVoice])
 	end
 
-	_, tPrevOutputHandle[aVoice] = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."-"..aValuePercent.."-"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+	local tPause = 0
+	if aPrefix then
+		PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..aPrefix.."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")	
+		tPause = tPause + (string.len(aPrefix) * 0.03) + 0.2	
+	end
+	C_Timer.After(tPause, function()
+		_, tPrevOutputHandle[aVoice] = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..aValue.."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+	end)
 end
 
 --menu
@@ -577,7 +1031,7 @@ function SkuCore:MonitorMenuBuilder()
 				end
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output seconds"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
@@ -793,7 +1247,7 @@ function SkuCore:MonitorMenuBuilder()
 				end
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output seconds"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
@@ -904,8 +1358,379 @@ function SkuCore:MonitorMenuBuilder()
 				end
 			end
 		end
+		--debuffs
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Debuffs"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["Enabled"] then
+					SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types[self.itemName] = true
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types[self.itemName] = false
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for i, v in pairs(tDebuffTypes) do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.itemName = i
+					end
+					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+						if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types[i] == true then
+							return L["Enabled"]
+						else
+							return L["disabled"]
+						end
+					end
+					tNewMenuEntry.BuildChildren = function(self)
+						SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+						SkuOptions:InjectMenuItems(self, {L["disabled"]}, SkuGenericMenuItem)
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+			
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output starts after seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if aName == -1 then
+					return L["Never"]
+				else
+					return SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyStartAfter
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["Never"] then
+					SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyStartAfter = -1
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyStartAfter = tonumber(aName)
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+				for x = 0, 50 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyTimer
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyTimer = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, 60 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.continouslyVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+			
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.eventVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.eventVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.voice].name
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				for x = 1, #tVoices do
+					if aName == tVoices[x].name then
+						SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.voice = x
+					end
+				end
+				C_Timer.After(0.001, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+				end)				
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tVoices do
+					SkuOptions:InjectMenuItems(self, {tVoices[x].name}, SkuGenericMenuItem)
+				end
+			end
+		end		
 	end
 
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Pet"]}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.BuildChildren = function(self)
+		--health
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Health"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if aName == -1 then
+					return L["Never"]
+				else
+					return SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["Never"] then
+					SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt = -1
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt = tonumber(aName)
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+				for x = 0, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyTimer
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyTimer = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, 60 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.pet.health.silentOn100and0 == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.pet.health.silentOn100and0 = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.pet.health.silentOn100and0 = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+			
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.pet.health.eventVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.pet.health.eventVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+			
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event Steps"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {"10"}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {"5"}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {"2"}, SkuGenericMenuItem)
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return tVoices[SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice].name
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				for x = 1, #tVoices do
+					if aName == tVoices[x].name then
+						SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice = x
+					end
+				end
+				C_Timer.After(0.001, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+				end)				
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tVoices do
+					SkuOptions:InjectMenuItems(self, {tVoices[x].name}, SkuGenericMenuItem)
+				end
+			end
+		end
+	end
+
+
+	--party
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Party"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
@@ -982,7 +1807,7 @@ function SkuCore:MonitorMenuBuilder()
 				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output seconds"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
@@ -1037,10 +1862,6 @@ function SkuCore:MonitorMenuBuilder()
 				end
 			end
 
-
-
-
-
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Include self"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
@@ -1064,6 +1885,207 @@ function SkuCore:MonitorMenuBuilder()
 				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end			
 		end
+		--debuffs
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Debuffs"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["Enabled"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types[self.itemName] = true
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types[self.itemName] = false
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for i, v in pairs(tDebuffTypes) do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.itemName = i
+					end
+					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+						if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types[i] == true then
+							return L["Enabled"]
+						else
+							return L["disabled"]
+						end
+					end
+					tNewMenuEntry.BuildChildren = function(self)
+						SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+						SkuOptions:InjectMenuItems(self, {L["disabled"]}, SkuGenericMenuItem)
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+			
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output starts after seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if aName == -1 then
+					return L["Never"]
+				else
+					return SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyStartAfter
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["Never"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyStartAfter = -1
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyStartAfter = tonumber(aName)
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+				for x = 0, 50 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output style"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.toutputStyle = 1
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return tOutputStyles[SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.outputStyle]
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.outputStyle = self.toutputStyle
+				C_Timer.After(0.001, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+				end)				
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tOutputStyles do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tOutputStyles[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.toutputStyle = x
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyTimer
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyTimer = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, 60 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.continouslyVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+			
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.eventVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.eventVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return tVoices[SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.voice].name
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				for x = 1, #tVoices do
+					if aName == tVoices[x].name then
+						SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.voice = x
+					end
+				end
+				C_Timer.After(0.001, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+				end)				
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tVoices do
+					SkuOptions:InjectMenuItems(self, {tVoices[x].name}, SkuGenericMenuItem)
+				end
+			end
+		end			
 	end
 
 end

@@ -14,6 +14,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SkuDetailsCloseAssistant()
+   if not Details then
+      return
+   end
+
    if DetailsWelcomeWindow and DetailsWelcomeWindow:IsShown() == true then
       for i, v in pairs({DetailsWelcomeWindow:GetChildren()}) do
          if v.GetNormalTexture and v:IsEnabled() == true then 
@@ -36,12 +40,25 @@ local function SkuDetailsCloseAssistant()
                   v:Click()
                end)
                C_Timer.After(2, function()
-                  Details:ShutDownAllInstances() DetailsBaseFrame1:Hide()
+                  Details:ShutDownAllInstances()
+                  if DetailsBaseFrame1 and DetailsBaseFrame1:IsShown() then
+                     DetailsBaseFrame1:Hide()
+                  end
                end)
-               return
+               --return
             end
          end
       end
+   end
+   Details:ShutDownAllInstances()
+   if DetailsBaseFrame1 then
+      DetailsBaseFrame1:Hide()
+   end
+   if DetailsNewsWindowCloseButton then
+      DetailsNewsWindowCloseButton:Click()
+   end
+   if DetailsProfilerProfileConfirmButton then
+      DetailsProfilerProfileConfirmButton:GetParent():Hide()
    end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
