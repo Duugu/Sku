@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.39](https://github.com/Duugu/Sku/releases/download/r31.39/Sku-r31.39-wrath.zip) (Dec 31th, 2022)<br>
+- [Sku r31.39](https://github.com/Duugu/Sku/releases/download/r31.39/Sku-r31.39-wrath.zip) (Dec 31st, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
