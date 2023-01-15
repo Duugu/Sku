@@ -1986,3 +1986,5 @@ L["Overview page "] = "Overview page "
 
 L["Raid"] = "Raid"
 L["Your group"] = "Your group"
+L["Add sound on 100 percent"] = "Add sound on 100 percent"
+L["Add Dead on 0 percent"] = "Add Dead on 0 percent"

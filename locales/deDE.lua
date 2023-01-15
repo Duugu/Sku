@@ -1983,3 +1983,5 @@ L["Hide"] = "Ausblenden"
 
 L["Raid"] = "Raid"
 L["Your group"] = "Deine Gruppe"
+L["Add sound on 100 percent"] = "Sound bei 100 Prozent anhängen"
+L["Add Dead on 0 percent"] = "Tot bei 0 Prozent anhängen"

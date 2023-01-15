@@ -71,7 +71,13 @@ local tUnitNumbers = {
 	["party3"] = 4,
 	["party4"] = 5,
 }
-
+local tUnitNumbersIndexed = {
+	[1] = "player",
+	[2] = "party1",
+	[3] = "party2",
+	[4] = "party3",
+	[5] = "party4",
+}
 local tEventOutputFilters = {
 	minAbsoluteSincePrevEvent = {name = L["minimum percent difference since previous event"], values = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,22,25,30}, defaults = {5, 5, 0, 0}, id = 1, },
 	minStepsSincePrevEvent = {name = L["minimum steps difference since previous event"], values = {0,1,2,3,4,5,6,7,}, defaults = {0, 0, 1, 1}, id = 2, },
@@ -83,11 +89,11 @@ local ttimeMonParty2QueueCurrentTime = 0
 local ttimeMonParty2QueueDefaultOutputLength = 0.2
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole)
-	aLength = 0.2
+local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio)
+	aLength = aLength or ttimeMonParty2QueueDefaultOutputLength
 
 	if #ttimeMonParty2Queue > 0 then
-		if SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput[aRole] == true then
+		if SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput[aRole] == true and aIgnorePrio ~= true then
 			local tFound
 			local tFoundVol
 			for x = 1, #ttimeMonParty2Queue do
@@ -102,6 +108,11 @@ local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRo
 			if tFoundVol and tFoundVol > aVolume then
 				aVolume = tFoundVol
 			end
+			if SkuOptions.db.char[MODULE_NAME].aq.party.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+				table.insert(ttimeMonParty2Queue, 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
+			elseif SkuOptions.db.char[MODULE_NAME].aq.party.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+				table.insert(ttimeMonParty2Queue, 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
+			end
 			table.insert(ttimeMonParty2Queue, 1, {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,})
 			return
 		else
@@ -112,6 +123,12 @@ local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRo
 						ttimeMonParty2Queue[x].tVolume = aVolume
 					end
 					ttimeMonParty2Queue[x].lenght = aLength
+					if SkuOptions.db.char[MODULE_NAME].aq.party.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+						table.insert(ttimeMonParty2Queue, x + 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
+					elseif SkuOptions.db.char[MODULE_NAME].aq.party.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+						table.insert(ttimeMonParty2Queue, x + 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
+					end
+		
 					return
 				end
 			end
@@ -119,12 +136,23 @@ local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRo
 	end
 
 	ttimeMonParty2Queue[#ttimeMonParty2Queue + 1] = {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,}
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+		ttimeMonParty2Queue[#ttimeMonParty2Queue + 1] = {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,}
+	elseif SkuOptions.db.char[MODULE_NAME].aq.party.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+		ttimeMonParty2Queue[#ttimeMonParty2Queue + 1] = {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,}
+	end	
 end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function monitorPartyHealth2ContiOutput(aForce)
-	for tUnitID, _ in pairs(tUnitNumbers) do
+	if aForce == true then
+		ttimeMonParty2Queue = {}
+		ttimeMonParty2QueueCurrentTime = 0
+	end
+
+	for x = 1, #tUnitNumbersIndexed do
+		local tIndex, tUnitID = x, tUnitNumbersIndexed[x]
 		local tUnitGUID = UnitGUID(tUnitID)
 		if tUnitGUID then
 			local tRoleID = SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[tUnitNumbers[tUnitID]]
@@ -149,8 +177,11 @@ local function monitorPartyHealth2ContiOutput(aForce)
 
 					local tUnitNumber, tVolume, tPitch = tUnitNumbers[tUnitID], SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyVolume, (((tHealthStepsValue * 5) - 35) * -1)
 					if tPitch == 0 then tPitch = 0 end --dnd, we need this in case of -0
-					
-					ttimeMonParty2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonParty2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay / 100)), tRoleID)
+					local tAddlSpeedMod = 1
+					if aForce then
+						tAddlSpeedMod = 0.5
+					end
+					ttimeMonParty2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonParty2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay / 100)) * tAddlSpeedMod, tRoleID, tHealthAbsoluteValue, true)
 				end
 			end
 		end
@@ -526,6 +557,13 @@ function SkuCore:AqOnLogin()
 	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 = true
 	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.addDeadOn0Percent == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.addDeadOn0Percent = true
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.addSoundOn100Percent == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.addSoundOn100Percent = true
+	end
+
 	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyTimer == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyTimer = 3
 	end
@@ -705,18 +743,29 @@ end
 function SkuCore:AqSlashHandler(aFieldsTable)
 	if aFieldsTable[2] == "player" and aFieldsTable[3] == "health" then
 		SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled = SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled == false		
-	end
-	if aFieldsTable[2] == "player" and aFieldsTable[3] == "power" then
+	elseif aFieldsTable[2] == "player" and aFieldsTable[3] == "power" then
 		SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled = SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled == false		
-	end
-	if aFieldsTable[2] == "player" and aFieldsTable[3] == "debuffs" then
+	elseif aFieldsTable[2] == "player" and aFieldsTable[3] == "debuffs" then
 		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled = SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled == false		
-	end
-	if aFieldsTable[2] == "pet" and aFieldsTable[3] == "health" then
+	elseif aFieldsTable[2] == "pet" and aFieldsTable[3] == "health" then
 		SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled = SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled == false		
-	end
-	if aFieldsTable[2] == "party" and aFieldsTable[2] == "debuffs" then
+	elseif aFieldsTable[2] == "party" and aFieldsTable[3] == "debuffs" then
 		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled = SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled == false		
+	elseif aFieldsTable[2] == "party" and aFieldsTable[3] == "health" then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled = SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled == false		
+	elseif aFieldsTable[2] == "party" and aFieldsTable[3] == "roles" and aFieldsTable[4] == "reset" then
+		SkuAuras:RoleCheckerResetData()
+	elseif aFieldsTable[2] == "party" and aFieldsTable[3] == "roles" and aFieldsTable[4] == "print" then
+		for x = 1, #tUnitNumbersIndexed do
+			local tUnitGUID = UnitGUID(tUnitNumbersIndexed[x])
+			if tUnitGUID then
+				local tRoleID = SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[tUnitNumbers[aUnitID]]
+				if tRoleID == 0 or tRoleID == nil then
+					tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+				end
+				print(x, UnitName(tUnitNumbersIndexed[x]), tRoles[tRoleID] or L["Unknown"])
+			end
+		end
 	end
 end
 
@@ -793,9 +842,9 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 				}
 
 				local tHealthAbsoluteValue = math.floor((UnitHealth(aUnitID) / UnitHealthMax(aUnitID)) * 100)
-				if SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == true and (tHealthAbsoluteValue < 1 or tHealthAbsoluteValue > 99) then
-					return
-				end
+				--if SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == true and (tHealthAbsoluteValue < 1 or tHealthAbsoluteValue > 99) then
+					--return
+				--end
 
 				local tHealthStepsValue = math.floor(tHealthAbsoluteValue / (100 / 15))
 				if tHealthStepsValue > 14 then
@@ -824,7 +873,7 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 					local tUnitNumber, tVolume, tPitch = tUnitNumbers[aUnitID], SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventVolume, (((tHealthStepsValue * 5) - 35) * -1)
 					if tPitch == 0 then tPitch = 0 end --dnd, we need this in case of -0
 
-					ttimeMonParty2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonParty2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay / 100)), tRoleID)
+					ttimeMonParty2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonParty2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay / 100)), tRoleID, tHealthAbsoluteValue)
 				end
 			end
 		end
@@ -2249,6 +2298,52 @@ function SkuCore:MonitorMenuBuilder()
 				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
 				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add sound on 100 percent"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.party.health2.addSoundOn100Percent == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.addSoundOn100Percent = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.addSoundOn100Percent = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end		
+			
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Dead on 0 percent"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.party.health2.addDeadOn0Percent == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.addDeadOn0Percent = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.addDeadOn0Percent = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end				
 			
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
