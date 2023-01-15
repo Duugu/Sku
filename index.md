@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.40](https://github.com/Duugu/Sku/releases/download/r31.40/Sku-r31.40-wrath.zip) (Jan 15th, 2022)<br>
+- [Sku r31.41](https://github.com/Duugu/Sku/releases/download/r31.41/Sku-r31.41-wrath.zip) (Jan 15th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,16 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r31.41
+- Changes for Core > Monitor > Party > Health Pitch style:
+	- Renamed "Silent on 100 and 0 percent" to "Continous silent on 100 and 0 percent", as it applies on continous outputs only and not on event outputs.
+	- Added a new setting: Add sound on 100 percent. Default: Yes. Adds a very short pop sound to the number if the party member is at 100 percent health.
+	- Added a new setting: Add Dead on 0 percent. Default: Yes. Adds the word Dead  to the number if the party member is at 0 percent health.
+	- A triggered full output (via the "Trigger monitor party continous output" key bind) now ignores the Prio settings and outputs members ordered from 1-5.
+	- Added a new slash command to enable/disable the party health monitor: /sku mon,party,health
+	- Added a new slash command to print the auto-detected roles to chat: /sku mon,party,roles,print
+	- Added a new slash command to reset the auto-detected roles: /sku mon,party,roles,reset
+
 ## Changes in Sku r31.40
 - Added a new slash command: /sku errors. It is printing the last 5 errors as single lines to chat. (If Buggrabber and Bugsack are installed.)
 - Fixed an issue with Core > Action Bars > Totem Set 1-3 > Key Binding. Should work now.
