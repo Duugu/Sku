@@ -86,6 +86,44 @@ SkuCore.ScanObjects = {
 
 SkuCore.Keys = {}
 SkuCore.Keys.SkuDefaultBindings = {
+	["BINDING_HEADER_MULTICASTFUNCTIONS"] = {
+		["MULTICASTACTIONBUTTON1"] = {
+			["index"] = 112,
+		},
+		["MULTICASTACTIONBUTTON2"] = {
+			["index"] = 113,
+		},
+		["MULTICASTACTIONBUTTON3"] = {
+			["index"] = 114,
+		},
+		["MULTICASTACTIONBUTTON4"] = {
+			["index"] = 115,
+		},
+		["MULTICASTACTIONBUTTON5"] = {
+			["index"] = 116,
+		},
+		["MULTICASTACTIONBUTTON6"] = {
+			["index"] = 117,
+		},
+		["MULTICASTACTIONBUTTON7"] = {
+			["index"] = 118,
+		},
+		["MULTICASTACTIONBUTTON8"] = {
+			["index"] = 119,
+		},
+		["MULTICASTACTIONBUTTON9"] = {
+			["index"] = 120,
+		},
+		["MULTICASTACTIONBUTTON10"] = {
+			["index"] = 121,
+		},
+		["MULTICASTACTIONBUTTON11"] = {
+			["index"] = 122,
+		},
+		["MULTICASTACTIONBUTTON12"] = {
+			["index"] = 123,
+		},
+	},		
 	["BINDING_HEADER_RAID_TARGET"] = {
 		["RAIDTARGET1"] = {
 			["index"] = 236,

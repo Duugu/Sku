@@ -57,20 +57,112 @@ local tDebuffTypesShort = {
 	["poison"] = L["poison_short"],
 	["disease"] = L["disease_short"],
 }
-local tAuraRepo = {}
-
-
---[[
--------------------------- party test
-tTestParty = {
-	[1] = 100,
-	[2] = 100,
-	[3] = 70,
-	[4] = 100,
-	[5] = 30,
+local tRoles = {
+	[1] = L["Tanks"],
+	[2] = L["Healers"],
+	[3] = L["Damagers"],
+	[4] = L["No role"],
 }
---------------------------
-]]
+
+local tUnitNumbers = {
+	["player"] = 1,
+	["party1"] = 2,
+	["party2"] = 3,
+	["party3"] = 4,
+	["party4"] = 5,
+}
+
+local tEventOutputFilters = {
+	minAbsoluteSincePrevEvent = {name = L["minimum percent difference since previous event"], values = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,22,25,30}, defaults = {5, 5, 0, 0}, id = 1, },
+	minStepsSincePrevEvent = {name = L["minimum steps difference since previous event"], values = {0,1,2,3,4,5,6,7,}, defaults = {0, 0, 1, 1}, id = 2, },
+}
+
+local tAuraRepo = {}
+local ttimeMonParty2Queue = {}
+local ttimeMonParty2QueueCurrentTime = 0
+local ttimeMonParty2QueueDefaultOutputLength = 0.2
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole)
+	aLength = 0.2
+
+	if #ttimeMonParty2Queue > 0 then
+		if SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput[aRole] == true then
+			local tFound
+			local tFoundVol
+			for x = 1, #ttimeMonParty2Queue do
+				if ttimeMonParty2Queue[x].tUnitNumber == aUnitNumber then
+					tFound = x
+					tFoundVol = ttimeMonParty2Queue[x].tVolume
+				end
+			end
+			if tFound then
+				table.remove(ttimeMonParty2Queue, tFound)
+			end
+			if tFoundVol and tFoundVol > aVolume then
+				aVolume = tFoundVol
+			end
+			table.insert(ttimeMonParty2Queue, 1, {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,})
+			return
+		else
+			for x = 1, #ttimeMonParty2Queue do
+				if ttimeMonParty2Queue[x].tUnitNumber == aUnitNumber then
+					ttimeMonParty2Queue[x].tPitch = aPitch	
+					if ttimeMonParty2Queue[x].tVolume < aVolume	then
+						ttimeMonParty2Queue[x].tVolume = aVolume
+					end
+					ttimeMonParty2Queue[x].lenght = aLength
+					return
+				end
+			end
+		end
+	end
+
+	ttimeMonParty2Queue[#ttimeMonParty2Queue + 1] = {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,}
+end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function monitorPartyHealth2ContiOutput(aForce)
+	for tUnitID, _ in pairs(tUnitNumbers) do
+		local tUnitGUID = UnitGUID(tUnitID)
+		if tUnitGUID then
+			local tRoleID = SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[tUnitNumbers[tUnitID]]
+			if tRoleID == 0 then
+				tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+			end
+			local tHealthAbsoluteValue = math.floor((UnitHealth(tUnitID) / UnitHealthMax(tUnitID)) * 100)
+			local tHealthStepsValue = math.floor(tHealthAbsoluteValue / (100 / 15))
+			if tHealthStepsValue > 14 then
+				tHealthStepsValue = 14
+			end
+		
+			if tRoleID and ((SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == false or (SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == true and tHealthAbsoluteValue ~= 0 and tHealthAbsoluteValue ~= 100)) or aForce== true) then
+				if tHealthAbsoluteValue <= SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt[tRoleID] or aForce== true then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth = SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth or {
+						["player"] = {absolute = 100, steps = 14, lastOutput = 0, },
+						["party1"] = {absolute = 100, steps = 14, lastOutput = 0, },
+						["party2"] = {absolute = 100, steps = 14, lastOutput = 0, },
+						["party3"] = {absolute = 100, steps = 14, lastOutput = 0, },
+						["party4"] = {absolute = 100, steps = 14, lastOutput = 0, },
+					}
+
+					local tUnitNumber, tVolume, tPitch = tUnitNumbers[tUnitID], SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyVolume, (((tHealthStepsValue * 5) - 35) * -1)
+					if tPitch == 0 then tPitch = 0 end --dnd, we need this in case of -0
+					
+					ttimeMonParty2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonParty2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay / 100)), tRoleID)
+				end
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MonitorPartyHealth2Conti()
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled == true then
+		monitorPartyHealth2ContiOutput(true)
+	end
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tHealthMonitorPause = false
@@ -86,52 +178,29 @@ local tPrevHpPetPer = 100
 local tPrevHpPetDir = false
 
 local function AqCreateControlFrame()
-	--[[
-	-------------------------- party test
-	local f = CreateFrame("Frame", "tTestPartyFrame", UIParent, BackdropTemplateMixin and "BackdropTemplate")
-	f:SetFrameStrata("TOOLTIP")
-	f:SetFrameLevel(129)
-	f:SetPoint("CENTER", UIParent, "CENTER")
-	f:SetBackdrop({
-		bgFile = "Interface\\ChatFrame\\ChatFrameBackground",
-		edgeFile = "",
-		tile = false,
-		tileSize = 0,
-		edgeSize = 32,
-		insets = {left = 0, right = 0, top = 0, bottom = 0}
-	})
-	f:SetBackdropColor(0, 0, 0, 0.25)
-	f:SetClampedToScreen(true)
-	f:SetSize(150, 250)
-
-	for x = 1, 5 do
-		local MySlider = CreateFrame("Slider", "MySlider"..x, ParentFrame, "OptionsSliderTemplate")
-		MySlider:SetPoint("LEFT", f, "LEFT", 20 * (x - 1), 0)
-		MySlider:SetWidth(20)
-		MySlider:SetHeight(200)
-		MySlider:SetOrientation('VERTICAL')
-		MySlider:Show()
-		MySlider:SetMinMaxValues(0, 100)
-		MySlider:SetStepsPerPage(4)
-		MySlider:SetValueStep(1)
-		MySlider:SetValue(tTestParty[x])
-		MySlider:SetScript("OnValueChanged", function(self, value, userInput) 
-			tTestParty[x] = math.floor(value)
-		end)
-
-	end
-	--/script SkuOptions.db.char["SkuCore"].aq.party.health.continouslySpeed = 100
-	--------------------------
-	]]
    local f = _G["SkuCoreAqControl"] or CreateFrame("Frame", "SkuCoreAqControl", UIParent)
    local ttime = 0
    local ttimeMonHp = 0
    local ttimeMonHpPet = 0
    local ttimeMonPwr = 0
 	local ttimeMonParty = 0
+	local ttimeMonParty2 = 0
 	local ttimeMonPlayerDebuff = 0
 	local ttimeMonPartyDebuff = 0
+
    f:SetScript("OnUpdate", function(self, time)
+		--party health 2 queue manager
+		if #ttimeMonParty2Queue > 0 then
+			if ttimeMonParty2QueueCurrentTime <= 0 then
+				local tUnitNumber, tVolume, tPitch, tLength = ttimeMonParty2Queue[1].tUnitNumber , ttimeMonParty2Queue[1].tVolume , ttimeMonParty2Queue[1].tPitch , ttimeMonParty2Queue[1].lenght
+				ttimeMonParty2QueueCurrentTime = tLength
+				SkuCore:MonitorOutputPartyPercent2(tUnitNumber, tVolume, tPitch)
+				table.remove(ttimeMonParty2Queue, 1)
+			else
+				ttimeMonParty2QueueCurrentTime = ttimeMonParty2QueueCurrentTime - time
+			end
+		end
+
       ttime = ttime + time
       if ttime > 0.05 then
 			--mirror bars
@@ -348,6 +417,13 @@ local function AqCreateControlFrame()
 				end
 			end
 
+			if SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled == true then
+				ttimeMonParty2 = ttimeMonParty2 + time
+				if ttimeMonParty2 > SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyTimer then
+					monitorPartyHealth2ContiOutput()
+					ttimeMonParty2 = 0
+				end
+			end
 		end
    end)
 end
@@ -422,6 +498,48 @@ function SkuCore:AqOnLogin()
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.party.health.includeSelf == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.health.includeSelf = true
+	end
+
+	--party health 2
+	SkuOptions.db.char[MODULE_NAME].aq.party.health2 = SkuOptions.db.char[MODULE_NAME].aq.party.health2 or {}
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled = false
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments = {[1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, }
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt = {}
+		for x = 1, #tRoles do
+			SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt[x] = 0
+		end
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventOutputFilters == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventOutputFilters = {}
+		for x = 1, #tRoles do
+			SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventOutputFilters[x] = {}
+			for i, v in pairs(tEventOutputFilters) do
+				SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventOutputFilters[x][v.id] = v.defaults[x]
+			end
+		end
+	end	
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 = true
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyTimer == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyTimer = 3
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyVolume = 50
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventVolume = 100
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay = 100
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput = {[1] = false, [2] = false, [3] = false, [4] = false, }
 	end
 
 	--player health
@@ -527,12 +645,7 @@ function SkuCore:AqOnLogin()
 		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled = false
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types = {
-			["magic"] = false,
-			["curse"] = false,
-			["poison"] = false,
-			["disease"] = false,
-		}
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types = {["magic"] = false, ["curse"] = false, ["poison"] = false, ["disease"] = false, }
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly = false
@@ -560,12 +673,7 @@ function SkuCore:AqOnLogin()
 		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled = false
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types = {
-			["magic"] = false,
-			["curse"] = false,
-			["poison"] = false,
-			["disease"] = false,
-		}
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types = {["magic"] = false, ["curse"] = false, ["poison"] = false, ["disease"] = false, }
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly = false
@@ -666,6 +774,61 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 		end
 	end
 
+	--party health 2
+	if SkuOptions.db.char[MODULE_NAME].aq then
+		if SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled == true then
+			if aUnitID == "player" or aUnitID == "party1" or aUnitID == "party2" or aUnitID == "party3" or aUnitID == "party4" then
+				local tUnitGUID = UnitGUID(aUnitID)
+				local tRoleID = SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[tUnitNumbers[aUnitID]]
+				if tRoleID == 0 then
+					tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+				end
+				
+				SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth = SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth or {
+					["player"] = {absolute = 100, steps = 14, lastOutput = 0, },
+					["party1"] = {absolute = 100, steps = 14, lastOutput = 0, },
+					["party2"] = {absolute = 100, steps = 14, lastOutput = 0, },
+					["party3"] = {absolute = 100, steps = 14, lastOutput = 0, },
+					["party4"] = {absolute = 100, steps = 14, lastOutput = 0, },
+				}
+
+				local tHealthAbsoluteValue = math.floor((UnitHealth(aUnitID) / UnitHealthMax(aUnitID)) * 100)
+				if SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == true and (tHealthAbsoluteValue < 1 or tHealthAbsoluteValue > 99) then
+					return
+				end
+
+				local tHealthStepsValue = math.floor(tHealthAbsoluteValue / (100 / 15))
+				if tHealthStepsValue > 14 then
+					tHealthStepsValue = 14
+				end
+
+				local tminAbsoluteSincePrevEventValue = SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventOutputFilters[tRoleID][tEventOutputFilters["minAbsoluteSincePrevEvent"].id]
+				local tminStepsSincePrevEventValue = SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventOutputFilters[tRoleID][tEventOutputFilters["minStepsSincePrevEvent"].id]
+
+				if (
+						SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth[aUnitID].absolute - tHealthAbsoluteValue >= tminAbsoluteSincePrevEventValue 
+						or 
+						SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth[aUnitID].absolute - tHealthAbsoluteValue <= -tminAbsoluteSincePrevEventValue 
+					)
+					and
+					(
+						SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth[aUnitID].steps - tHealthStepsValue >= tminStepsSincePrevEventValue 
+						or 
+						SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth[aUnitID].steps - tHealthStepsValue <= -tminStepsSincePrevEventValue 
+					)
+				then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth[aUnitID].absolute = tHealthAbsoluteValue
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth[aUnitID].steps = tHealthStepsValue
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth[aUnitID].lastOutput = GetTime()
+
+					local tUnitNumber, tVolume, tPitch = tUnitNumbers[aUnitID], SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventVolume, (((tHealthStepsValue * 5) - 35) * -1)
+					if tPitch == 0 then tPitch = 0 end --dnd, we need this in case of -0
+
+					ttimeMonParty2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonParty2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay / 100)), tRoleID)
+				end
+			end
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -811,6 +974,7 @@ function SkuCore:UNIT_AURA(aEventName, aUnitID)
 			local name, icon, count, dispelType, duration, expirationTime,	source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer = UnitDebuff(aUnitID, x) --UnitDebuffTest(x)
 			if name then
 				if dispelType then
+					if count == 0 then count = 1 end
 					tCurrentDebuffType[string.lower(dispelType)] = tCurrentDebuffType[string.lower(dispelType)] + count
 					tFound = true
 				end
@@ -920,6 +1084,11 @@ function SkuCore:MonitorOutputPartyPercent(aHealthValues, aVolume, aInstancesOnl
 		end
 		tStartTime = tStartTime + tSpeed
 	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MonitorOutputPartyPercent2(aUnitNumber, aVolume, aPitch)
+	PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\jus\\pitch\\jus_"..aUnitNumber.."_"..aVolume.."_"..aPitch..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1358,6 +1527,7 @@ function SkuCore:MonitorMenuBuilder()
 				end
 			end
 		end
+
 		--debuffs
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Debuffs"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
@@ -1729,13 +1899,12 @@ function SkuCore:MonitorMenuBuilder()
 		end
 	end
 
-
 	--party
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Party"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
 		--health
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Health"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Health Chord Style"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
@@ -1885,6 +2054,251 @@ function SkuCore:MonitorMenuBuilder()
 				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end			
 		end
+
+		--health 2
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Health Pitch style"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.enabled = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Role assignment"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				local tPartyMembers = {
+					[1] = L["party member"].." "..1,
+					[2] = L["party member"].." "..2,
+					[3] = L["party member"].." "..3,
+					[4] = L["party member"].." "..4,
+					[5] = L["party member"].." "..5,
+				}
+
+				for x = 1, #tPartyMembers do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tPartyMembers[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnAction = function(self, aValue, aName)
+						SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[x] = 0
+						for w = 1, #tRoles do
+							if aName == tRoles[w] then
+								SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[x] = w
+							end
+						end
+					end
+					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+						if SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[x] == 0 then
+							return L["Auto"]
+						else
+							return tRoles[SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[x]]
+						end
+					end
+					tNewMenuEntry.BuildChildren = function(self)
+						SkuOptions:InjectMenuItems(self, {L["Auto"]}, SkuGenericMenuItem)
+						for q = 1, #tRoles do
+							SkuOptions:InjectMenuItems(self, {tRoles[q]}, SkuGenericMenuItem)
+						end
+					end
+				end
+
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set all to auto"]}, SkuGenericMenuItem)
+				tNewMenuEntry.isSelect = true
+				tNewMenuEntry.OnAction = function(self, aValue, aName)
+					for x = 1, #tPartyMembers do
+						SkuOptions.db.char[MODULE_NAME].aq.party.health2.roleAssigments[x] = 0
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tRoles do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tRoles[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnAction = function(self, aValue, aName)
+						if aName == L["Never"] then
+							SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt[x] = 0
+						else
+							SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt[x] = tonumber(aName)
+						end
+					end
+					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+						return SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt[x]
+					end
+					tNewMenuEntry.BuildChildren = function(self)
+						SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+						for x = 10, 100, 10 do
+							SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+						end
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyTimer
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyTimer = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 2, 60 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event output filters"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tRoles do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tRoles[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.BuildChildren = function(self)
+						for i, v in pairs(tEventOutputFilters) do
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v.name}, SkuGenericMenuItem)
+							tNewMenuEntry.dynamic = true
+							tNewMenuEntry.isSelect = true
+							tNewMenuEntry.OnAction = function(self, aValue, aName)
+								SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventOutputFilters[x][v.id] = tonumber(aName)
+							end
+							tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+								return SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventOutputFilters[x][v.id]
+							end
+							tNewMenuEntry.BuildChildren = function(self)
+								for i1, v1 in pairs(v.values) do
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v1}, SkuGenericMenuItem)
+								end
+							end
+						end
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Prio output"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tRoles do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tRoles[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnAction = function(self, aValue, aName)
+						if aName == L["No"] then
+							SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput[x] = false
+						elseif aName == L["Yes"] then
+							SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput[x] = true
+						end
+					end
+					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+						if SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput[x] == false then
+							return L["No"]
+						elseif SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput[x] == true then
+							return L["Yes"]
+						end
+					end
+					tNewMenuEntry.BuildChildren = function(self)
+						SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+						SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+			
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.party.health2.eventVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Percent delay for next output in queue"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 20, 150, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+		end		
+
 		--debuffs
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Debuffs"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
@@ -2087,5 +2501,4 @@ function SkuCore:MonitorMenuBuilder()
 			end
 		end			
 	end
-
 end

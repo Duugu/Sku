@@ -1486,6 +1486,7 @@ L["SKU_KEY_DEBUGMODE"] = "debug mode"
 L["SKU_KEY_TOGGLEREACHRANGE"] = "toggle waypoint reach range"
 L["SKU_KEY_STOPROUTEORWAYPOINT"] = "stop following route or waypoint"
 
+L["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"] = "Trigger monitor party continous output"
 
 L["Warning! That key is already bound to"] = "Warning! That key is already bound to"
 L[". Press the key again to confirm new binding. The current bound action will be unbound!"] = ". Press the key again to confirm new binding. The current bound action will be unbound!"
@@ -1953,3 +1954,35 @@ L["poison_short"] = "p"
 L["disease_short"] = "p"
 L["long"] = "long"
 L["Output style"] = "Output style"
+
+L["Tanks"] = "Tanks"
+L["Healers"] = "Healers"
+L["Damagers"] = "Damagers"
+L["No role"] = "No role"
+L["Event output on"] = "Event output on"
+L["Every event"] = "Every event"
+L["Event with new step"] = "Event with new output step"
+
+L["Event output filters"] = "Event output limitation"
+L["minimum percent difference since previous output"] = "minimum percent health difference since previous output"
+L["minimum percent difference since previous event"] = "minimum percent health difference since previous event"
+L["minimum steps difference since previous output"] = "minimum pitch steps difference since previous output"
+L["minimum steps difference since previous event"] = "minimum pitch steps difference since previous event"
+
+L["Role assignment"] = "Role assignment"
+L["party member"] = "party member"
+L["Set all to auto"] = "Set all to auto"
+
+L["Battle Net whisper"] = "Battle Net whisper"
+
+L["Percent delay for next output in queue"] = "Percent delay for next output in queue"
+L["Prio output"] = "Prio output"
+
+L["Health Chord Style"] = "Health Chord Style"
+L["Health Pitch style"] = "Health Pitch style"
+
+L["Overview pages"] = "Overview pages"
+L["Overview page "] = "Overview page "
+
+L["Raid"] = "Raid"
+L["Your group"] = "Your group"

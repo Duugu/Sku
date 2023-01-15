@@ -87,10 +87,10 @@ SkuCore.QueryBuyBought = nil
 
  QueryResultsDB = {}
  FullScanResultsDB = {}
-local FullScanResultsDBHistory = {}
+ FullScanResultsDBHistory = {}
 local BidDB = {}
 local OwnDB = {}
-local AuctionDBHistory = {}
+ AuctionDBHistory = {}
 
 local HistoryMaxValues = 500
 
@@ -162,7 +162,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AUCTION_HOUSE_SHOW()
-   print("AUCTION_HOUSE_SHOW")
    SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime = SkuOptions.db.char[MODULE_NAME].AuctionLastFullScanTime or 0
    SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter = {
       ["LevelMin"] = nil,
@@ -835,7 +834,7 @@ function SkuCore:AuctionHouseMenuBuilder()
             for slot = 1, GetContainerNumSlots(bag) do
                --local itemLink = GetContainerItemLink(bag, slot)
                local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bag, slot)
-               if icon then
+               if icon and itemID then
                   isBound = C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(bag, slot))
                   if isBound == false then
                      local tName = C_Item.GetItemName(ItemLocation:CreateFromBagAndSlot(bag, slot))
@@ -2087,7 +2086,7 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable)
          end
          for _, tPrice in pairs(tData[1]) do
             if tPrice < tBidNewMedian * 10 then
-               if not tBidNewLow or tPrice < tBidNewLow then
+               if not tBidNewLow or (tPrice > 0 and tPrice < tBidNewLow) then
                   tBidNewLow = tPrice
                end
                if not tBidNewHigh or tPrice > tBidNewHigh then
@@ -2106,7 +2105,7 @@ function SkuCore:AuctionUpdateAuctionDBHistory(aSourceDB, aTargetTable)
          end
          for _, tPrice in pairs(tData[2]) do
             if tPrice < tBuyNewMedian * 10 then
-               if not tBuyNewLow or tPrice < tBuyNewLow then
+               if not tBuyNewLow or (tPrice > 0 and tPrice < tBuyNewLow) then
                   tBuyNewLow = tPrice
                end
                if not tBuyNewHigh or tPrice > tBuyNewHigh then

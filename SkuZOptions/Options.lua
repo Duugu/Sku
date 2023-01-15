@@ -429,89 +429,97 @@ SkuOptions.defaults = {
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilder(aParentEntry)
-	--dprint("SkuOptions:MenuBuilder", aParentEntry)
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Overview page sections"]}, SkuGenericMenuItem)
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Overview pages"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.isSelect = true
-	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
-		local tlName, tPos = string.split(";", self.tEntry)
-		for i, v in pairs(SkuOptions.db.profile[MODULE_NAME].overviewSections) do
-			if v.locName == tlName then
-				if aName == L["Up"] then
-					for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewSections) do
-						if v1.pos == (tonumber(tPos) - 1) then
-							v1.pos = tonumber(tPos)
-							SkuOptions.db.profile[MODULE_NAME].overviewSections[i].pos = tonumber(tPos) - 1
-							break
-						end
-					end
-				elseif aName == L["Down"] then
-					for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewSections) do
-						if v1.pos == (tonumber(tPos) + 1) then
-							v1.pos = tonumber(tPos)
-							SkuOptions.db.profile[MODULE_NAME].overviewSections[i].pos = tonumber(tPos) + 1
-							break
-						end
-					end
-				elseif aName == L["Show"] then
-					local tMax = 0
-					for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewSections) do
-						if tonumber(v1.pos) > tMax and tonumber(v1.pos) ~= 999 then
-							tMax = v1.pos
-						end
-					end
-					v.pos = tMax + 1
-				elseif aName == L["Hide"] then
-					local tFrom = tonumber(v.pos)
-					for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewSections) do
-						if v1.pos >= tFrom and v1.pos ~= 999 then
-							v1.pos = v1.pos - 1
-						end
-					end
-					v.pos = 999
-				end
-
-				return
-			end
-		end
-	end
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tSorted = {}
-		for k, v in SkuSpairs(SkuOptions.db.profile[MODULE_NAME].overviewSections, function(t,a,b) return t[b].pos > t[a].pos end) do --nach wert
-			table.insert(tSorted, k)
-		end
+		for q = 1, 2 do
+			local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(self, {L["Overview page "]..q}, SkuGenericMenuItem)
+			tNewMenuParentEntry.dynamic = true
+			tNewMenuParentEntry.isSelect = true
+			tNewMenuParentEntry.pageId = nil
+			tNewMenuParentEntry.tEntry = nil
+			tNewMenuParentEntry.OnAction = function(self, aValue, aName)
+				local tlName, tPos = string.split(";", self.tEntry)
+				for i, v in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+					if v.locName == tlName then
+						if aName == L["Up"] then
+							for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+								if v1.pos == (tonumber(tPos) - 1) then
+									v1.pos = tonumber(tPos)
+									SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections[i].pos = tonumber(tPos) - 1
+									break
+								end
+							end
+						elseif aName == L["Down"] then
+							for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+								if v1.pos == (tonumber(tPos) + 1) then
+									v1.pos = tonumber(tPos)
+									SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections[i].pos = tonumber(tPos) + 1
+									break
+								end
+							end
+						elseif aName == L["Show"] then
+							local tMax = 0
+							for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+								if tonumber(v1.pos) > tMax and tonumber(v1.pos) ~= 999 then
+									tMax = v1.pos
+								end
+							end
+							v.pos = tMax + 1
+						elseif aName == L["Hide"] then
+							local tFrom = tonumber(v.pos)
+							for i1, v1 in pairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[self.pageId].overviewSections) do
+								if v1.pos >= tFrom and v1.pos ~= 999 then
+									v1.pos = v1.pos - 1
+								end
+							end
+							v.pos = 999
+						end
 
-		local tNumberItems = #tSorted
-		for x = 1, #tSorted do
-			local tPos = SkuOptions.db.profile[MODULE_NAME].overviewSections[tSorted[x]].pos
-			local tPosName = tPos
-			if tPosName == 999 then
-				tPosName = L["hidden"]
-				tNumberItems = tNumberItems - 1
+						return
+					end
+				end
 			end
-			local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {SkuOptions.db.profile[MODULE_NAME].overviewSections[tSorted[x]].locName..";"..tPosName}, SkuGenericMenuItem)
-			tNewMenuSubEntry.dynamic = true
-         tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
-				self.parent.tEntry = self.name
-         end
+			tNewMenuParentEntry.BuildChildren = function(self)
+				local tSorted = {}
+				for k, v in SkuSpairs(SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections, function(t,a,b) return t[b].pos > t[a].pos end) do
+					table.insert(tSorted, k)
+				end
+				local tNumberItems = #tSorted
+				for x = 1, #tSorted do
+					local tPos = SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections[tSorted[x]].pos
+					local tPosName = tPos
+					if tPosName == 999 then
+						tPosName = L["hidden"]
+						tNumberItems = tNumberItems - 1
+					end
+					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections[tSorted[x]].locName..";"..tPosName}, SkuGenericMenuItem)
+					tNewMenuSubEntry.dynamic = true
+					tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.pageId = q
+						self.selectTarget.tEntry = SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections[tSorted[x]].locName..";"..tPosName
+					end
 
-			tNewMenuSubEntry.BuildChildren = function(self)
-				if tPos > 1 and tPos < 999 then
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Up"]}, SkuGenericMenuItem)
-				end
-				if tPos < tNumberItems then
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Down"]}, SkuGenericMenuItem)
-				end
-				if tPos == 999 then
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Show"]}, SkuGenericMenuItem)
-				else
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Hide"]}, SkuGenericMenuItem)
-				end
+					tNewMenuSubEntry.BuildChildren = function(self)
+						if tPos > 1 and tPos < 999 then
+							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Up"]}, SkuGenericMenuItem)
+						end
+						if tPos < tNumberItems then
+							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Down"]}, SkuGenericMenuItem)
+						end
+						if tPos == 999 then
+							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Show"]}, SkuGenericMenuItem)
+						else
+							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Hide"]}, SkuGenericMenuItem)
+						end
 
+					end
+				end
 			end
 		end
 	end

@@ -370,6 +370,8 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:MenuBuilder(aParentEntry)
+	BN_WHISPER = L["Battle Net whisper"]
+
 	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Tabs"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.filterable = true

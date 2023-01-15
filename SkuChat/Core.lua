@@ -1223,10 +1223,10 @@ function SkuChat_MessageEventHandler(self, event, ...)
 						return 
 					end
 					--Add Blizzard Icon, this was sent by a GM
-					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t " 
+					pflag = "Blizzard Gamemaster (approved by Sku): " 
 				elseif ( arg6 == "DEV" ) then
 					--Add Blizzard Icon, this was sent by a Dev
-					pflag = "|TInterface\\ChatFrame\\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t " 
+					pflag = "Blizzard Gamemaster (approved by Sku): " 
 				else
 					pflag = _G["CHAT_FLAG_"..arg6] 
 				end

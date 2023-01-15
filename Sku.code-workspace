@@ -44,5 +44,20 @@
 			"name": "Libs",
 			"path": "Libs"
 		}
-	]
+	],
+	"settings": {
+		"Lua.diagnostics.globals": [
+			"SkuNav",
+			"SkuCore",
+			"SkuOptions",
+			"SkuQuest",
+			"SkuDB",
+			"SkuAudiodata",
+			"SkuMob",
+			"SPELL_PERIODIC_HEAL_COMBATLOG_TOOLTIP"
+		],
+		"Lua.diagnostics.disable": [
+			"param-type-mismatch"
+		]
+	}
 }

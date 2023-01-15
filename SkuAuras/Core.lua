@@ -50,6 +50,11 @@ function SkuAuras:OnInitialize()
 	SkuAuras:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
 	SkuAuras:RegisterEvent("BAG_UPDATE_COOLDOWN")
 	SkuAuras:RegisterEvent("UNIT_INVENTORY_CHANGED")
+
+	SkuAuras:RegisterEvent("GROUP_FORMED")
+	SkuAuras:RegisterEvent("GROUP_JOINED")
+	SkuAuras:RegisterEvent("UNIT_OTHER_PARTY_CHANGED")
+	SkuAuras:RegisterEvent("GROUP_ROSTER_UPDATE")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -602,6 +607,10 @@ end
 function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 	local tEventData = aCustomEventData or {CombatLogGetCurrentEventInfo()}
 
+	SkuAuras:LogRecorder(aEventName, tEventData)
+
+	SkuAuras:RoleChecker(aEventName, tEventData)
+
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
 		C_Timer.After(0.1, function()
 			SkuAuras:SPELL_COOLDOWN_START(tEventData)
@@ -1027,50 +1036,132 @@ function SkuAuras:CreateAura(aType, aAttributes)
 	return true
 end
 
-skutest = false
-local ttime1 = 0
-local f = _G["SkuAurasControlTest"] or CreateFrame("Frame", "SkuAurasControlTest", UIParent)
-f:SetScript("OnUpdate", function(self, time)
-	ttime1 = ttime1 + time
-	--if ttime1 < 0.5 then return end
-	if skutest == true then
-		for x = 1, 100 do
-			local aEventData =  {
-				GetTime(),
-				"SPELL_DAMAGE",
-				nil,
-				UnitGUID("player")..x,
-				UnitName("player")..x,
-				nil,
-				nil,
-				UnitGUID("player")..x,
-				UnitName("player")..x,
-				nil,
-				nil,
-				8092,--spellId
-				"Gedankenschlag",--spellName
-				nil,
-				2000 + x,--amount
-			}
-			SkuAuras:COMBAT_LOG_EVENT_UNFILTERED("customCLEU", aEventData)
+---------------------------------------------------------------------------------------------------------------------------------------
+tUnitRoles = {}
+function SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(aUnitGUID)
+	if not aUnitGUID then
+		return
+	end
+	if aUnitGUID == UnitGUID("player") then
+		return "player"
+	end
+	for x = 1, 4 do
+		if aUnitGUID == UnitGUID("party"..x) then
+			return "party"..x
 		end
 	end
-	ttime1 = 0
-end)
-f:Show()
+	for x = 1, 25 do
+		if aUnitGUID == UnitGUID("raid"..x) then
+			return "raid"..x
+		end
+	end
+end
 
-			--[[						15					16						17					18					19					20						21					22						23					24
-			_DAMAGE					amount			overkill				school			resisted			blocked			absorbed				critical			glancing				crushing			isOffHand
-			_MISSED					missType			isOffHand			amountMissed	critical
-			_HEAL						amount			overhealing			absorbed			critical
-			_HEAL_ABSORBED			extraGUID		extraName			extraFlags		extraRaidFlags	extraSpellID	extraSpellName		extraSchool		absorbedAmount		#totalAmount
-			_ENERGIZE				amount			overEnergize		powerType		#maxPower
-			_DRAIN					amount			powerType			extraAmount		#maxPower
-			_LEECH					amount			powerType			extraAmount
-			_INTERRUPT				extraSpellId	extraSpellName		extraSchool
-			_DISPEL					extraSpellId	extraSpellName		extraSchool		auraType
-			_DISPEL_FAILED			extraSpellId	extraSpellName		extraSchool
-			_STOLEN					extraSpellId	extraSpellName		extraSchool		auraType
-			_EXTRA_ATTACKS			amount
-			_CAST_FAILED			failedType
-			]]
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:RoleChecker(aEventName, tEventData)
+	if aEventName == "COMBAT_LOG_EVENT_UNFILTERED" then
+		local tSourceUnitID, tTargetUnitID = SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(tEventData[4]), SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(tEventData[8])
+
+		if tTargetUnitID then
+			if not tUnitRoles[tEventData[8]] then
+				tUnitRoles[tEventData[8]] = {dmg = 0, heal = 0,}
+			end
+			tUnitRoles[tEventData[8]].maxHealth = UnitHealthMax(tTargetUnitID)
+			if tEventData[2] == "SWING_DAMAGE" then
+				tUnitRoles[tEventData[8]].dmg = tUnitRoles[tEventData[8]].dmg + tEventData[12]
+			elseif tEventData[2] == "RANGE_DAMAGE" then
+				tUnitRoles[tEventData[8]].dmg = tUnitRoles[tEventData[8]].dmg + tEventData[12]
+			elseif tEventData[2] == "SPELL_DAMAGE" then
+				tUnitRoles[tEventData[8]].dmg = tUnitRoles[tEventData[8]].dmg + tEventData[15]
+			elseif tEventData[2] == "SPELL_PERIODIC_DAMAGE" then
+				tUnitRoles[tEventData[8]].dmg = tUnitRoles[tEventData[8]].dmg + tEventData[15]
+			end
+		end
+		
+		if tSourceUnitID then
+			if not tUnitRoles[tEventData[4]] then
+				tUnitRoles[tEventData[4]] = {dmg = 0, heal = 0,}
+			end
+			tUnitRoles[tEventData[4]].maxHealth = UnitHealthMax(tSourceUnitID)			
+			if tEventData[2] == "SPELL_HEAL" then
+				tUnitRoles[tEventData[4]].heal = tUnitRoles[tEventData[4]].heal + tEventData[15]
+			elseif tEventData[2] == "SPELL_PERIODIC_HEAL" then
+				tUnitRoles[tEventData[4]].heal = tUnitRoles[tEventData[4]].heal + tEventData[15]
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:GROUP_FORMED()
+	SkuAuras:RoleCheckerUpdateRoster()
+end
+function SkuAuras:GROUP_JOINED()
+	SkuAuras:RoleCheckerUpdateRoster()
+end
+function SkuAuras:UNIT_OTHER_PARTY_CHANGED()
+	SkuAuras:RoleCheckerUpdateRoster()
+end
+function SkuAuras:GROUP_ROSTER_UPDATE()
+	SkuAuras:RoleCheckerUpdateRoster()
+end
+function SkuAuras:RoleCheckerUpdateRoster()
+	tUnitRoles = {}
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:RoleCheckerResetData()
+	SkuAuras:RoleCheckerUpdateRoster()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:RoleCheckerGetUnitRole(aUnitGUID)
+	if tUnitRoles[aUnitGUID] then
+		local tDmgAvg, tHealAvg = 0, 0
+		local tGroupMemberCount = 0
+		local tUnitID
+
+		--calculate averages and remove non-group units
+		local tMaxHealth
+		for i, v in pairs(tUnitRoles) do
+			local tThisUnitID = SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(i)
+			if not tThisUnitID then
+				tUnitRoles[i] = nil
+			else
+				if aUnitGUID == i then
+					tUnitID = tThisUnitID
+				end
+				tGroupMemberCount = tGroupMemberCount + 1
+				tDmgAvg = tDmgAvg + v.dmg
+				tHealAvg = tHealAvg + v.heal
+				if not tMaxHealth or UnitHealthMax(tThisUnitID) > tMaxHealth then
+					tMaxHealth = UnitHealthMax(tThisUnitID)
+				end
+			end
+		end
+
+		if tGroupMemberCount > 0 then
+			tDmgAvg = tDmgAvg / tGroupMemberCount
+			tHealAvg = tHealAvg / tGroupMemberCount
+			if (tUnitRoles[aUnitGUID].heal) >= (tHealAvg * 2) then --if the healing done is > the groups average healing done we assume the unit is a healer
+				return 2, tUnitID
+			elseif (tUnitRoles[aUnitGUID].dmg * (UnitHealthMax(tUnitID) / tMaxHealth)) >= ((tDmgAvg * 1.5)) then --if the damage taken is > the groups average damage taken we assume the unit is a tank
+				return 1, tUnitID
+			else --if the unit is not a tank or healer it must be dps
+				return 3, tUnitID
+			end
+		end
+	end
+
+	--found nothing, must be non-group or no action so far
+	return 4, tUnitID
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:LogRecorder(aEventName, aEventData)
+	if SkuOptions.db.global[MODULE_NAME].log then
+		if SkuOptions.db.global[MODULE_NAME].log.enabled == true then
+			SkuOptions.db.global[MODULE_NAME].log.data[#SkuOptions.db.global[MODULE_NAME].log.data + 1] = {event = aEventName, data = aEventData,}
+		end
+	end
+end

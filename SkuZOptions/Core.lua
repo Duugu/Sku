@@ -70,6 +70,28 @@ function SkuOptions:IsMenuOpen()
 	return false
 end
 
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:PrintLastBugsackErrors(aNumberOfErrors)
+	aNumberOfErrors = aNumberOfErrors or 5
+	if BugSack then
+		local tErrors = BugSack:GetErrors()
+		if #tErrors > 0 then
+			local tNumber = 1
+			for x = #tErrors, #tErrors - aNumberOfErrors + 1, -1 do
+				if tErrors[x] then
+					print(tNumber, tErrors[x].message)
+					tNumber = tNumber + 1
+				end
+			end
+		else
+			print("No errors")
+		end
+	else
+		print("BugSack not installed")
+	end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param input string
 function SkuOptions:SlashFuncSkuChat(input)
@@ -98,18 +120,34 @@ function SkuOptions:SlashFunc(input, aSilent)
 	input = input:gsub( " ,", ",")
 
 	input = slower(input)
-	--dprint(input)
 	local sep, fields = ",", {}
 	local pattern = string.format("([^%s]+)", sep)
 	input:gsub(pattern, function(c) fields[#fields+1] = c end)
 
 	if fields then
-
 		if fields[1] == "version" then
 			local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo("Sku")
 			print(title)
 		end
 
+		
+		if fields[1] == "errors" then
+			SkuOptions:PrintLastBugsackErrors(fields[2])
+		end
+		
+		if fields[1] == "record" then
+			if fields[2] == "start" then
+				SkuOptions.db.global["SkuAuras"].log = SkuOptions.db.global["SkuAuras"].log or {}
+				SkuOptions.db.global["SkuAuras"].log.enabled = true
+				SkuOptions.db.global["SkuAuras"].log.data = {}
+				print("aura log recording enabled")
+			end
+
+			if fields[2] == "stop" then
+				SkuOptions.db.global["SkuAuras"].log.enabled = false
+				print("aura log recording disabled")
+			end
+		end
 
 		-- NAMEPLATE TEST -->
 		if fields[1] == "test" then
@@ -475,10 +513,51 @@ function SkuOptions:StartStopBackgroundSound(aStartStop, aSoundFile, aHandle)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:UpdateOverviewText()
---SkuOptions.db.profile["SkuOptions"].overviewSections
+function SkuOptions:UpdateOverviewText(aPageId)
+--SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections
+	aPageId = aPageId or 1
 	local tSectionRepo = {}
-	--local tSections = {}
+
+	--raid
+	local tTmpText
+	if UnitInRaid("player") then
+		local tCount = 1
+		local tPlayersSubgroup 
+		for x = 1, 40 do
+			local name, rank, subgroup = GetRaidRosterInfo(x)
+			if name then
+				local tPlayerName = UnitName("player")
+				if name == tPlayerName then
+					tPlayersSubgroup = subgroup
+				end
+			end
+		end
+		tTmpText = L["Your group"]..": "..tPlayersSubgroup.."\r\n"
+
+		local tSubgroups = {}
+		for x = 1, 40 do
+			local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
+			if name then
+				if not tSubgroups[subgroup] then
+					tSubgroups[subgroup] = {}
+				end
+				tSubgroups[subgroup][name] = {level = level, class = class, zone = zone, online = online, isDead = isDead,}
+			end
+		end
+
+		for i, v in pairs(tSubgroups) do
+			tTmpText = tTmpText.." "..L["Gruppe"].." "..i.."\r\n"
+			for iUnit, vUnit in pairs(v) do
+				if vUnit.online then vUnit.online = L["online"] else vUnit.online = L["offline"] end
+				if vUnit.isDead then vUnit.isDead = L["tot"] else vUnit.isDead = L["lebt"] end
+				tTmpText = tTmpText.." "..iUnit..", "..vUnit.class..", "..vUnit.level..", "..vUnit.zone..", "..vUnit.online..", "..vUnit.isDead.."\r\n"
+			end
+		end
+	end
+
+	if tTmpText and SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["raid"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["raid"].pos] = L["Raid"].."\r\n"..tTmpText
+	end
 
 	--party
 	local tTmpText
@@ -528,9 +607,8 @@ function SkuOptions:UpdateOverviewText()
 	}
 	local lootmethod, masterlooterPartyID, masterlooterRaidID = GetLootMethod()
 
-	if tTmpText then
-		--table.insert(tSections, L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod])
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["party"].pos] = L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod]
+	if tTmpText and SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["party"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["party"].pos] = L["Gruppe"].."\r\n"..tTmpText..L["\r\nPlündern: "]..lootStrings[lootmethod]
 	end
 
 	--general
@@ -631,7 +709,9 @@ function SkuOptions:UpdateOverviewText()
 	end
 
 	--table.insert(tSections, tGeneral)
-	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["general"].pos] = tGeneral
+	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["general"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["general"].pos] = tGeneral
+	end
 
 
 	--buffs/debuffs
@@ -789,8 +869,9 @@ function SkuOptions:UpdateOverviewText()
 	if not tFound then
 		tBuffs = tBuffs.."\r\n"..L["Keine"]
 	end
-	--table.insert(tSections, tBuffs)
-	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["buffs"].pos] = tBuffs
+	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["buffs"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["buffs"].pos] = tBuffs
+	end
 
 	local tDebuffs = L["Debuffs"]
 	local tFound
@@ -834,8 +915,9 @@ function SkuOptions:UpdateOverviewText()
 	if not tFound then
 		tDebuffs = tDebuffs.."\r\n"..L["Keine"]
 	end
-	--table.insert(tSections, tDebuffs)
-	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["debuffs"].pos] = tDebuffs
+	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["debuffs"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["debuffs"].pos] = tDebuffs
+	end
 
 	--skills
 	local tTmpText = ""
@@ -845,8 +927,9 @@ function SkuOptions:UpdateOverviewText()
 			tTmpText = tTmpText.."\r\n"..skillName.." ("..skillRank.." / "..skillMaxRank..")"
 		end
 	end
-	--table.insert(tSections, L["Fertigkeiten:\r\n"]..tTmpText)
-	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["skills"].pos] = L["Fertigkeiten:\r\n"]..tTmpText
+	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["skills"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["skills"].pos] = L["Fertigkeiten:\r\n"]..tTmpText
+	end
 
 	--reputation
 	ExpandAllFactionHeaders()
@@ -877,8 +960,9 @@ function SkuOptions:UpdateOverviewText()
 			end
 		end
 	end
-	--table.insert(tSections, L["Ruf:\r\n"]..tTmpText)
-	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["reputation"].pos] = L["Ruf:\r\n"]..tTmpText
+	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["reputation"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["reputation"].pos] = L["Ruf:\r\n"]..tTmpText
+	end
 
 	--guild members
 	SetGuildRosterShowOffline(false)
@@ -898,8 +982,9 @@ function SkuOptions:UpdateOverviewText()
 	end
 
 	tTmpText = tTmpText or ""
-	--table.insert(tSections, L["Gilde:\r\n"]..tTmpText)
-	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["guild"].pos] = L["Gilde:\r\n"]..tTmpText
+	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["guild"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["guild"].pos] = L["Gilde:\r\n"]..tTmpText
+	end
 
 	--pet
 	if UnitName("playerpet") and SkuCore:PlayerIsHunter() then
@@ -917,8 +1002,9 @@ function SkuOptions:UpdateOverviewText()
 			petSection = petSection .. "\r\n" .. L["Unspent pet talent points"]..": "..UnitCharacterPoints("pet")
 		end
 
-		--table.insert(tSections, petSection)
-		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["pet"].pos] = petSection
+		if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["pet"].pos ~= 999 then
+			tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["pet"].pos] = petSection
+		end
 	end
 
 	--CDs
@@ -947,12 +1033,17 @@ function SkuOptions:UpdateOverviewText()
 		end
 	end
 	tTmpText = tTmpText or ""
-	--table.insert(tSections, L["Cooldowns"]..":\r\n"..tTmpText)
-	tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewSections["Cooldowns"].pos] = L["Cooldowns"]..":\r\n"..tTmpText
+	if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["Cooldowns"].pos ~= 999 then
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["Cooldowns"].pos] = L["Cooldowns"]..":\r\n"..tTmpText
+	end
 
 	local tSections = {}
-	for x = 1, #tSectionRepo do
-		table.insert(tSections, tSectionRepo[x])
+	if #tSectionRepo > 0 then
+		for x = 1, #tSectionRepo do
+			table.insert(tSections, tSectionRepo[x])
+		end
+	else
+		table.insert(tSections, L["Empty"])
 	end
 
 	return tSections
@@ -990,6 +1081,7 @@ function SkuOptions:CreateControlFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tCurrentOverviewPage
 function SkuOptions:CreateMainFrame()
 	local tFrame = CreateFrame("Button", "OnSkuOptionsMain", UIParent, "UIPanelButtonTemplate")
 	tFrame:SetSize(80, 22)
@@ -1001,6 +1093,21 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.InteractMove = false
 
 	tFrame:SetScript("OnClick", function(self, a, b)
+		if not SkuOptions.TTS:IsVisible() then
+			tCurrentOverviewPage = nil
+			if a == "SHIFT-UP" then
+				tCurrentOverviewPage = 2
+			elseif a == "SHIFT-DOWN" then
+				tCurrentOverviewPage = 1
+			--[[
+			elseif a == "SHIFT-LEFT" then
+				tCurrentOverviewPage = 3
+			elseif a == "SHIFT-RIGHT" then
+				tCurrentOverviewPage = 4
+			]]
+			end
+		end
+
 
 		--toggle mm warning background sound
 		if SkuOptions.db.profile["SkuNav"].showSkuMM == true or SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap == true then
@@ -1127,7 +1234,7 @@ function SkuOptions:CreateMainFrame()
 		end
 
 		if a == "SHIFT-UP" then 
-			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText()
+			SkuOptions.TooltipReaderText = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.TooltipReaderText then
 				if SkuOptions.TooltipReaderText ~= "" then
 					if not SkuOptions.TTS:IsVisible() then
@@ -1151,7 +1258,7 @@ function SkuOptions:CreateMainFrame()
 		end
 		if a == "SHIFT-UP" then
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				if not SkuOptions.TTS:IsVisible() then
 					SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
@@ -1167,7 +1274,7 @@ function SkuOptions:CreateMainFrame()
 		end
 		if a == "SHIFT-DOWN" then
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				if not SkuOptions.TTS:IsVisible() then
 					SkuOptions.TTS:Output(SkuOptions.currentMenuPosition.textFull, 1000)
@@ -1183,7 +1290,7 @@ function SkuOptions:CreateMainFrame()
 		end
 		if a == "CTRL-SHIFT-UP" then
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
 				if not SkuOptions.TTS:IsVisible() then
@@ -1200,7 +1307,7 @@ function SkuOptions:CreateMainFrame()
 		end
 		if a == "CTRL-SHIFT-DOWN" then
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
 				if not SkuOptions.TTS:IsVisible() then
@@ -1217,7 +1324,7 @@ function SkuOptions:CreateMainFrame()
 		end
 		if a == "SHIFT-PAGEDOWN" then
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, SkuOptions.currentMenuPosition.itemId)
 				if not SkuOptions.TTS:IsVisible() then
@@ -1232,7 +1339,7 @@ function SkuOptions:CreateMainFrame()
 		end
 		if a == "SHIFT-RIGHT" then
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				if SkuOptions.currentMenuPosition.links then
 					if #SkuOptions.currentMenuPosition.links > 0 then
@@ -1252,7 +1359,7 @@ function SkuOptions:CreateMainFrame()
 		end
 		if a == "SHIFT-LEFT" then
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				if SkuOptions.currentMenuPosition.links then
 					if #SkuOptions.currentMenuPosition.links > 0 then
@@ -1272,7 +1379,7 @@ function SkuOptions:CreateMainFrame()
 		end
 		if a == "SHIFT-ENTER" then
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.textFull ~= "" then
 				if not SkuOptions.currentMenuPosition.textFullInitial then
 					SkuOptions.currentMenuPosition.textFullInitial = SkuOptions.currentMenuPosition.textFull
@@ -1294,7 +1401,7 @@ function SkuOptions:CreateMainFrame()
 		if a == "SHIFT-BACKSPACE" then
 			local tHasHistory = false
 			SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
-			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText()
+			SkuOptions.currentMenuPosition.textFull = SkuOptions:UpdateOverviewText(tCurrentOverviewPage)
 			if SkuOptions.currentMenuPosition.linksHistory then
 				if #SkuOptions.currentMenuPosition.linksHistory > 1 then
 					table.remove(SkuOptions.currentMenuPosition.linksHistory, 1)
@@ -2621,10 +2728,7 @@ function SkuOptions:OnEnable()
 	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableSoundWhenGameIsInBG)])
 	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_ZoneMusicNoDelay)])
 
-	if not SkuOptions.db.profile["SkuOptions"].overviewSections then
-		SkuOptions.db.profile["SkuOptions"].overviewSections = {}
-	end
-	local overviewSectionsDefaults = {
+	local overviewSectionsAll = {
 		["party"] = {pos = 1, locName = L["Party"], },
 		["general"] = {pos = 2, locName = L["Allgemeines"], },
 		["buffs"] = {pos = 3, locName = L["Buffs"], },
@@ -2634,12 +2738,50 @@ function SkuOptions:OnEnable()
 		["guild"] = {pos = 7, locName = L["Guild"], },
 		["pet"] = {pos = 8, locName = L["Pet"], },
 		["Cooldowns"] = {pos = 9, locName = L["Cooldowns"], },
+		["raid"] = {pos = 999, locName = L["Raid"], },
 	}
-	for i, v in pairs(overviewSectionsDefaults) do
-		if not SkuOptions.db.profile["SkuOptions"].overviewSections[i] then
-			SkuOptions.db.profile["SkuOptions"].overviewSections[i] = v
+	local overviewSectionsDefaults = {
+		[1] = {
+			["party"] = {pos = 1, locName = L["Party"], },
+			["general"] = {pos = 2, locName = L["Allgemeines"], },
+			["buffs"] = {pos = 3, locName = L["Buffs"], },
+			["debuffs"] = {pos = 4, locName = L["Debuffs"], },
+			["skills"] = {pos = 5, locName = L["Skills"], },
+			["reputation"] = {pos = 6, locName = L["Reputation"], },
+			["guild"] = {pos = 7, locName = L["Guild"], },
+			["pet"] = {pos = 8, locName = L["Pet"], },
+			["Cooldowns"] = {pos = 9, locName = L["Cooldowns"], },
+		},
+		[2] = {
+			["raid"] = {pos = 1, locName = L["Raid"], },
+		},
+		[3] = {
+		},
+		[4] = {
+		},
+	}
+
+	if not SkuOptions.db.profile["SkuOptions"].overviewPages then
+		SkuOptions.db.profile["SkuOptions"].overviewPages = {}
+	end
+
+	for x = 1, 4 do
+		if not SkuOptions.db.profile["SkuOptions"].overviewPages[x] then
+			SkuOptions.db.profile["SkuOptions"].overviewPages[x] = {}
 		end
-		SkuOptions.db.profile["SkuOptions"].overviewSections[i].locName = v.locName
+		for i, v in pairs(overviewSectionsAll) do
+			if not SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections then
+				SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections = {}
+			end
+			if not SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections[i] then
+				SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections[i] = {pos = 999, locName = v.locName, }
+				if overviewSectionsDefaults[x][i] then
+					SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections[i].pos = overviewSectionsDefaults[x][i].pos
+				end
+			end
+			SkuOptions.db.profile["SkuOptions"].overviewPages[x].overviewSections[i].locName = v.locName
+		end
+
 	end
 end
 
@@ -2721,6 +2863,8 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 			tWidget:SetPoint("BOTTOMLEFT")
 			tWidget:Show()
 		end
+
+		SkuOptions.db.global["SkuAuras"] = {}
 	end
 end
 

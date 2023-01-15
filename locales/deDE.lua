@@ -1483,6 +1483,8 @@ L["SKU_KEY_DEBUGMODE"] = "debug modus"
 L["SKU_KEY_TOGGLEREACHRANGE"] = "wegpunkt erreicht reichweite umschalten"
 L["SKU_KEY_STOPROUTEORWAYPOINT"] = "route oder wegpunkt folgen beenden"
 
+L["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"] = "Monitor gruppe forlaufende Ausgabe auslösen"
+
 L["Warning! That key is already bound to"] = "Warnung! Diese Taste ist bereit zugewiesen zu"
 L[". Press the key again to confirm new binding. The current bound action will be unbound!"] = ". Drück die Taste erneut, um die Zuweisung zu bestätigen. Die bisher zugewiesene Aktion ist danach unzugewiesen!"
 
@@ -1944,3 +1946,40 @@ L["curse_short"] = "c"
 L["poison_short"] = "p"
 L["disease_short"] = "d"
 L["Output style"] = "Ausgabestil"
+
+L["Tanks"] = "Tanks"
+L["Healers"] = "Heiler"
+L["Damagers"] = "Schaden"
+L["No role"] = "Keine Rolle"
+L["Event output on"] = "Ereignis Ausgabe bei"
+L["Every event"] = "Jedes Ereignis"
+L["Event with new step"] = "Ereignis mit neuem Ausgabe Schritt"
+
+L["Event output filters"] = "Ereignis Ausgabebeschränkung"
+L["minimum percent difference since previous output"] = "minimaler unterschied gesundheit in Prozent seit vorheriger ausgabe"
+L["minimum percent difference since previous event"] = "minimaler unterschied gesundheit in Prozent seit vorherigem ereignis"
+L["minimum steps difference since previous output"] = "minimaler unterschied tonhöhenschritte seit vorheriger ausgabe"
+L["minimum steps difference since previous event"] = "minimaler unterschied tonhöhenschritte seit vorherigem ereignis"
+
+L["Role assignment"] = "Rollenzuweisung"
+L["party member"] = "gruppenmitglied"
+L["Set all to auto"] = "Alle auf auto festlegen"
+
+L["Battle Net whisper"] = "Battle Net flüstern"
+
+L["Percent delay for next output in queue"] = "Prozent Verzögerungen für nächste Ausgabe in Warteschlange"
+L["Prio output"] = "Ausgabe mit priorität"
+
+L["Health Chord Style"] = "Gesundheit Akkord Stil"
+L["Health Pitch style"] = "Gesundheit Tonhöhen Stil"
+
+L["Overview pages"] = "Übersichtsseiten"
+L["Overview page "] = "Übersichtsseite "
+L["hidden"] = "ausgeblendet"
+L["Up"] = "Hoch"
+L["Down"] = "Runter"
+L["Show"] = "Anzeigen"
+L["Hide"] = "Ausblenden"
+
+L["Raid"] = "Raid"
+L["Your group"] = "Deine Gruppe"
