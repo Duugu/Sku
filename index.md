@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.39](https://github.com/Duugu/Sku/releases/download/r31.39/Sku-r31.39-wrath.zip) (Dec 31st, 2022)<br>
+- [Sku r31.40](https://github.com/Duugu/Sku/releases/download/r31.40/Sku-r31.40-wrath.zip) (Jan 15th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,48 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r31.40
+- Added a new slash command: /sku errors. It is printing the last 5 errors as single lines to chat. (If Buggrabber and Bugsack are installed.)
+- Fixed an issue with Core > Action Bars > Totem Set 1-3 > Key Binding. Should work now.
+- Map updates
+	- Added waypoints for Ulduar flight master and repair
+	- Added a lot of Argent Tournament Grounds waypoints
+	- Added a waypoint for ulduar meeting stone
+- Added the raid members list to the overview page(s) (see next bullet)
+- Added a second overview page. The second overview page is exactly working as the first one, except that you need to press SHIFT + UP instead of SHIFT + DOWN to open it. The idea is to split information on to pages, instead of having a long and growing list on a single page. As default the second page only shows the raid members, if you are in a raid. Get to Options > Options > Overview pages, to show/hide contents on the second or first page.
+- Jus, Kim and Kev got their overall voice volume raised by ~20%.
+- Renamed the "Blizzard whisper" chat type to "Battle net whisper"
+- Fixed a bug with auction house full scan data where the lowest buyout price was 0 copper
+- Added a aura log recorder to debug lag issues. Don't use it without being requested to do so. Enable with /sku record,start and disable with /sku record,stop. All data is cleared on login/reload.
+- Fixed a bug with missing outputs for some debuffs in Core > Monitor > Party > Debuffs. Should now work with all debuffs and debuff types.
+- Renamed "Core > Monitor > Party > Health" to "Health Chord Style"
+- Added a second experimental style to monitor the health of party members: "Core > Monitor > Party > Health Pitch style".<br>
+	This concept again is to lower the clutter and output spam to a level where you would be able to use it to monitor and heal even in raids of 10, 15 or even more members without being overloaded by the audio outputs. At the moment it is just for partys with 5 players. I will extend it to 10 player raids in the next step, if the concept turns out to be usefull.<br>
+	This party health output style is outputting numbers (1, 2, 3, 4, 5) in different pitch levels for party members.<br>
+	However, is it not speed up on low health like Audio QS. Instead it is outputting the party members number once on every event (damage or healing). Example: if party member 2 is taking damage (or is healed) it doing a single "2" output.<br>
+	Each number is recorded in 15 different pitch levels. There is a very, very low pitched "2" and a very high pitched "2" (and 13 pitch levels in between). Very low means very high health. Very high means very low heals.<br>
+	So, the output for party member 2 starts with a very low "2" at 100% and gets higher and higher every time the party member 2 is taking damage. <br>
+	That way there is less audio spam, as the addon has not to constantly repeat the unit number, but you are still able to get the current health from the outputs pitch level if something happens.<br>
+	To conclude: The outputs are not continously, as with Audio QS. Instead they are event based. There is (or can be, depending on your setting) a single output on every event (unit is getting damage or is being healed). If nothing happens, a unit taking damage or heal, there is no output for that unit.<br>
+	There are several settings to control/restrict the output, to minimize the amount of outputs to what you actually need to know, avoiding clutter from stuff that isn't important.<br>
+	Most of those setting are per role (tank, heal, damager). That way are able to set different values per role. Example: Output on every event for tanks, only on +/- 5% health change for healers, and only on +/- 20% heal change for damagers.<br>
+	The addon is auto detecting the role of each party member. It is using a combination of amount of damage taken in all previous fights and overall max health for each member. <br>
+	As there is no damage if you just joined a party, there will be no role assigned during the first few fights. If the addon "learns" more, it will start to assign roles to party members.<br>
+	The auto role assignment may not be 100% accurate at all times. (For example if there boosting groups and players with much higher levels and therefore much more health than the tank. Or of some non-tank party member is taking massive amounts of damage. Or if there just isn't enough data from fights.) Your can alternatively use the Role assignment option to manually assign fixed roles to the party members.<br>
+	Additionally to the single party member number output on each event (damage or heal) you can set up a continous output starting at a specific health percentage at a specific rate. Example: You can set up the pitched number output starting from 50% or less health every 3 seconds.<br>
+	The "Continuous output start at" setting is role specific, and provides an option to set the percent health value to start the continous output from.<br>
+	The "Continuous output every seconds" settings is for all roles, and just is the amount of seconds between the continuous outputs.<br>
+	The "Event output limitation" setting again is role specific. It is to limit the amount of events (damage/healing) with outputs. It provides two settings per role:<br>	
+		  - "minimum percent health difference since previous event": This is the minimum percentage of health change since the previous output. Example: if a unit has 100% health, and this is set to 15, then the first output will be at 85%, the second at 70%, and so on.<br>
+		  - "minimum pitch steps difference since previous event": As mentioned, there are 15 different pitch levels (roughly every 6% health). This is the minimum pitch level change since the previous output. Example: If a unit has 100% health, and this is set to 2, then the first output will be at 88% (2 x 6 = 12), the next at 76%, and so on.<br>
+	The two event output setting need to be both true to have an output triggered. If percent health is set to 1% and pitch steps is set to 0, there would be an output on every 1% change (percent is >= 1, and step is >= 0). However, if pitch steps is set to 1, then there won't be any output if the pitch hasn't been changing by at least 1 step, no matter if the percent health has been changed by 1% or more.<br>
+	Both setting may sound similar, but they are not. Always consider both values, and what will happen if you are changing them.
+	The "Prio output" setting is role specific. It controls if outputs for roles are priorized. Usually outputs will happen in the order they are occurring. If the damager is hitted first, and then the tank, the addon will ouput the damagers number and than the tanks number. If you set Prio Output for some role to Yes, then those outputs are always placed at the first position of the output queue.<br>
+	The "Percent delay for next output in queue" setting is for all roles. It controls how "fast" the addon is outputting numbers if there is more than one output in the queue (for example if all party members are taking aoe damage at the same time). The addon tries to not overlap the outputs. There is a delay of 0.2 seconds after each output before the next number is outputted. That is 100%. If you lower this setting the next number will be outputted early. The outputs can start overlapping at ~80%. <br>
+	As usual you are always party member 1. The party leader is always party member 2 (except if your are the leader, of course). Therefore it could be a great idea to make the tank the party leader. That way you always have the tank as party member 2.<br>
+	As stated, the outputs are event based. If nothing happens, there is no output. But sometimes it can be helpful to have a quick overview of the partys health, even if nothing happens. Therefore there is a new Sku key bind for this feature, Trigger monitor party continous output, that is not bound as default. Bind it, to trigger a single full party health output on request at any time.
+
+
 ## Changes in Sku r31.39
 - Removed not longer required map files. Should have reduced the download size and the required time for extracting the .zip file a lot.
 - Sku now is auto-hiding the Details News window on first login and the default details panel for alts.
