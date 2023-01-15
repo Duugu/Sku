@@ -23,7 +23,7 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
-Changes in Sku r31.40
+## Changes in Sku r31.40
 - Added a new slash command: /sku errors. It is printing the last 5 errors as single lines to chat. (If Buggrabber and Bugsack are installed.)
 - Fixed an issue with Core > Action Bars > Totem Set 1-3 > Key Binding. Should work now.
 - Map updates
