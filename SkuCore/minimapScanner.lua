@@ -7,106 +7,106 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 
 SkuCore.RessourceTypes = {
    chests = {
-      [1] = { deDE = "Beschädigte Truhe", enUS = "Damaged Chest", },
-      [2] = { deDE = "Verbeulte Truhe", enUS = "Dented Chest", },
-      [3] = { deDE = "Große ramponierte Truhe", enUS = "Large Battered Chest", },
-      [4] = { deDE = "Große eisenbeschlagene Truhe", enUS = "Large Iron Bound Chest", },
-      [5] = { deDE = "Große mithrilbeschlagene Truhe", enUS = "Large Mithril Bound Chest", },
-      [6] = { deDE = "Große robuste Truhe", enUS = "Large Solid Chest", },
-      [7] = { deDE = "Verschlossene Truhe", enUS = "Locked Chest", },
-      [8] = { deDE = "Primitive Truhe", enUS = "Primitive Chest", },
-      [9] = { deDE = "Rostige Truhe", enUS = "Rusty Chest", },
-      [10] = { deDE = "Robuste Truhe", enUS = "Solid Chest", },
-      [11] = { deDE = "Versunkene Truhe", enUS = "Sunken Chest", },
-      [12] = { deDE = "Ramponierte Truhe", enUS = "Tattered Chest", },
-      [13] = { deDE = "Abgenutzte Truhe", enUS = "Worn Chest", },
-      [14] = { deDE = "Adamantitbeschlagene Truhe", enUS = "Adamantite Bound Chest", },
-      [15] = { deDE = "Teufelseisentruhe", enUS = "Fel Iron Chest", },
+      [1] = { deDE = "Beschädigte Truhe", enUS = "Damaged Chest", zhCN = "破损的箱子",},
+      [2] = { deDE = "Verbeulte Truhe", enUS = "Dented Chest", zhCN = "凹陷的箱子",},
+      [3] = { deDE = "Große ramponierte Truhe", enUS = "Large Battered Chest", zhCN = "破碎的大箱子",},
+      [4] = { deDE = "Große eisenbeschlagene Truhe", enUS = "Large Iron Bound Chest", zhCN = "大型铁箍储物箱",},
+      [5] = { deDE = "Große mithrilbeschlagene Truhe", enUS = "Large Mithril Bound Chest", zhCN = "大型秘银储物箱",},
+      [6] = { deDE = "Große robuste Truhe", enUS = "Large Solid Chest", zhCN = "兼顾的大宝箱",},
+      [7] = { deDE = "Verschlossene Truhe", enUS = "Locked Chest", zhCN = "锁定的宝箱",},
+      [8] = { deDE = "Primitive Truhe", enUS = "Primitive Chest", zhCN = "粗糙的箱子",},
+      [9] = { deDE = "Rostige Truhe", enUS = "Rusty Chest", zhCN = "生锈的箱子",},
+      [10] = { deDE = "Robuste Truhe", enUS = "Solid Chest", zhCN = "兼顾的宝箱",},
+      [11] = { deDE = "Versunkene Truhe", enUS = "Sunken Chest", zhCN = "沉默的宝箱",},
+      [12] = { deDE = "Ramponierte Truhe", enUS = "Tattered Chest", zhCN = "破损的箱子",},
+      [13] = { deDE = "Abgenutzte Truhe", enUS = "Worn Chest", zhCN = "旧箱子",},
+      [14] = { deDE = "Adamantitbeschlagene Truhe", enUS = "Adamantite Bound Chest", zhCN = "加固的精金宝箱",},
+      [15] = { deDE = "Teufelseisentruhe", enUS = "Fel Iron Chest", zhCN = "魔铁宝箱",},
    },
    mining = {
-      [1] = { deDE = "Kupfervorkommen", enUS = "Copper Vein", },
-      [2] = { deDE = "Zinnvorkommen", enUS = "Tin Vein", },
-      [3] = { deDE = "Silbervorkommen", enUS = "Silver Vein", },
-      [4] = { deDE = "Brühschlammbedecktes Silbervorkommen", enUS = "Ooze Covered Silver Vein", },
-      [5] = { deDE = "Eisenvorkommen", enUS = "Iron Deposit", },
-      [6] = { deDE = "Goldvorkommen", enUS = "Gold Vein", },
-      [7] = { deDE = "Brühschlammbedecktes Goldvorkommen", enUS = "Ooze Covered Gold Vein", },
-      [8] = { deDE = "Mithrilablagerung", enUS = "Mithril Deposit", },
-      [9] = { deDE = "Brühschlammbedeckte Mithrilablagerung", enUS = "Ooze Covered Mithril Deposit", },
-      [10] = { deDE = "Echtsilberablagerung", enUS = "Truesilver Deposit", },
-      [11] = { deDE = "Brühschlammbedeckte Echtsilberablagerung", enUS = "Ooze Covered Truesilver Deposit", },
-      [12] = { deDE = "Kleines Thoriumvorkommen", enUS = "Small Thorium Vein", },
-      [13] = { deDE = "Brühschlammbedecktes Thoriumvorkommen", enUS = "Ooze Covered Thorium Vein", },
-      [14] = { deDE = "Reiches Thoriumvorkommen", enUS = "Rich Thorium Vein", },
-      [15] = { deDE = "Brühschlammbedecktes reiches Thoriumvorkommen", enUS = "Ooze Covered Rich Thorium Vein", },
-      [16] = { deDE = "Dunkeleisenablagerung", enUS = "Dark Iron Deposit", },
-      [17] = { deDE = "Teufelseisenvorkommen", enUS = "Fel Iron Deposit", },
-      [18] = { deDE = "Adamantitablagerung", enUS = "Adamantite Deposit", },
-      [19] = { deDE = "Reiche Adamantitablagerung", enUS = "Rich Adamantite Deposit", },
-      [20] = { deDE = "Khoriumvorkommen", enUS = "Khorium Vein", },
-      [21] = { deDE = "Kobaltablagerung", enUS = "Cobalt Deposit", },
-      [22] = { deDE = "Reiche Kobaltablagerung", enUS = "Rich Cobalt Deposit", },
-      [23] = { deDE = "Saronitablagerung", enUS = "Saronite Deposit", },
-      [24] = { deDE = "Reiche Saronitablagerung", enUS = "Rich Saronite Deposit", },
-      [25] = { deDE = "Reine Saronitablagerung", enUS = "Pure Saronite Deposit", },
-      [26] = { deDE = "Titanvorkommen", enUS = "Titanium Vein", },
-      [27] = { deDE = "Reine Adamantitablagerung", enUS = "Pure Adamantite Deposit", },
+      [1] = { deDE = "Kupfervorkommen", enUS = "Copper Vein", zhCN = "铜矿脉",},
+      [2] = { deDE = "Zinnvorkommen", enUS = "Tin Vein", zhCN = "锡矿脉",},
+      [3] = { deDE = "Silbervorkommen", enUS = "Silver Vein", zhCN = "银矿脉",},
+      [4] = { deDE = "Brühschlammbedecktes Silbervorkommen", enUS = "Ooze Covered Silver Vein", zhCN = "软泥覆盖的银矿脉",},
+      [5] = { deDE = "Eisenvorkommen", enUS = "Iron Deposit", zhCN = "铁矿床",},
+      [6] = { deDE = "Goldvorkommen", enUS = "Gold Vein", zhCN = "金矿脉",},
+      [7] = { deDE = "Brühschlammbedecktes Goldvorkommen", enUS = "Ooze Covered Gold Vein", zhCN = "软泥覆盖的金矿脉",},
+      [8] = { deDE = "Mithrilablagerung", enUS = "Mithril Deposit", zhCN = "秘银矿床",},
+      [9] = { deDE = "Brühschlammbedeckte Mithrilablagerung", enUS = "Ooze Covered Mithril Deposit", zhCN = "软泥覆盖的秘银矿床",},
+      [10] = { deDE = "Echtsilberablagerung", enUS = "Truesilver Deposit", zhCN = "真银矿床",},
+      [11] = { deDE = "Brühschlammbedeckte Echtsilberablagerung", enUS = "Ooze Covered Truesilver Deposit", zhCN = "软泥覆盖的真银矿床",},
+      [12] = { deDE = "Kleines Thoriumvorkommen", enUS = "Small Thorium Vein", zhCN = "瑟银矿脉",},
+      [13] = { deDE = "Brühschlammbedecktes Thoriumvorkommen", enUS = "Ooze Covered Thorium Vein", zhCN = "软泥覆盖的瑟银矿脉",},
+      [14] = { deDE = "Reiches Thoriumvorkommen", enUS = "Rich Thorium Vein", zhCN = "富瑟银矿脉",},
+      [15] = { deDE = "Brühschlammbedecktes reiches Thoriumvorkommen", enUS = "Ooze Covered Rich Thorium Vein", zhCN = "软泥覆盖的瑟银矿脉",},
+      [16] = { deDE = "Dunkeleisenablagerung", enUS = "Dark Iron Deposit", zhCN = "黑铁矿床",},
+      [17] = { deDE = "Teufelseisenvorkommen", enUS = "Fel Iron Deposit", zhCN = "魔铁矿床",},
+      [18] = { deDE = "Adamantitablagerung", enUS = "Adamantite Deposit", zhCN = "精金矿床",},
+      [19] = { deDE = "Reiche Adamantitablagerung", enUS = "Rich Adamantite Deposit", zhCN = "富精金矿床",},
+      [20] = { deDE = "Khoriumvorkommen", enUS = "Khorium Vein", zhCN = "氪金矿脉",},
+      [21] = { deDE = "Kobaltablagerung", enUS = "Cobalt Deposit", zhCN = "钴矿床",},
+      [22] = { deDE = "Reiche Kobaltablagerung", enUS = "Rich Cobalt Deposit", zhCN = "富钴矿床",},
+      [23] = { deDE = "Saronitablagerung", enUS = "Saronite Deposit", zhCN = "萨隆邪铁矿床",},
+      [24] = { deDE = "Reiche Saronitablagerung", enUS = "Rich Saronite Deposit", zhCN = "富萨隆邪铁矿床",},
+      [25] = { deDE = "Reine Saronitablagerung", enUS = "Pure Saronite Deposit", zhCN = "纯萨隆邪铁矿床",},
+      [26] = { deDE = "Titanvorkommen", enUS = "Titanium Vein", zhCN = "钛矿脉",},
+      [27] = { deDE = "Reine Adamantitablagerung", enUS = "Pure Adamantite Deposit", zhCN = "纯钛矿床",},
    },
    gasCollector = {
-      [1] = { deDE = "Arkanvortex", enUS = "Arcane Vortex", },
-      [2] = { deDE = "Teufelsnebel", enUS = "Felmist", },
-      [3] = { deDE = "Sumpfgas", enUS = "Swamp Gas", },
-      [4] = { deDE = "Windige Wolke", enUS = "Windy Cloud", },
-      [5] = { deDE = "Dampfwolke", enUS = "Steam Cloud", },
-      [6] = { deDE = "Aschewolke", enUS = "Cinder Cloud", },
-      [7] = { deDE = "Arktische Wolke", enUS = "Arctic Cloud", },
+      [1] = { deDE = "Arkanvortex", enUS = "Arcane Vortex", zhCN = "奥数漩涡",},
+      [2] = { deDE = "Teufelsnebel", enUS = "Felmist", zhCN = "魔物",},
+      [3] = { deDE = "Sumpfgas", enUS = "Swamp Gas", zhCN = "沼泽气体",},
+      [4] = { deDE = "Windige Wolke", enUS = "Windy Cloud", zhCN = "气体云雾",},
+      [5] = { deDE = "Dampfwolke", enUS = "Steam Cloud", zhCN = "蒸汽云雾",},
+      [6] = { deDE = "Aschewolke", enUS = "Cinder Cloud", zhCN = "灰烬云雾",},
+      [7] = { deDE = "Arktische Wolke", enUS = "Arctic Cloud", zhCN = "北极云雾",},
    },
    herbs = {
-      [1] = { deDE = "Friedensblume", enUS = "Peacebloom", },
-      [2] = { deDE = "Silberblatt", enUS = "Silverleaf", },
-      [3] = { deDE = "Erdwurzel", enUS = "Earthroot", },
-      [4] = { deDE = "Maguskönigskraut", enUS = "Mageroyal", },
-      [5] = { deDE = "Wilddornrose", enUS = "Briarthorn", },
-      [6] = { deDE = "Würgetang", enUS = "Stranglekelp", },
-      [7] = { deDE = "Beulengras", enUS = "Bruiseweed", },
-      [8] = { deDE = "Wildstahlblume", enUS = "Wild Steelbloom", },
-      [9] = { deDE = "Grabmoos", enUS = "Grave Moss", },
-      [10] = { deDE = "Königsblut", enUS = "Kingsblood", },
-      [11] = { deDE = "Lebenswurz", enUS = "Liferoot", },
-      [12] = { deDE = "Blassblatt", enUS = "Fadeleaf", },
-      [13] = { deDE = "Golddorn", enUS = "Goldthorn", },
-      [14] = { deDE = "Khadgars Schnurrbart", enUS = "Khadgar's Whisker", },
-      [15] = { deDE = "Winterbiss", enUS = "Wintersbite", },
-      [16] = { deDE = "Feuerblüte", enUS = "Firebloom", },
-      [17] = { deDE = "Lila Lotus", enUS = "Purple Lotus", },
-      [18] = { deDE = "Arthas' Tränen", enUS = "Arthas' Tears", },
-      [19] = { deDE = "Sonnengras", enUS = "Sungrass", },
-      [20] = { deDE = "Blindkraut", enUS = "Blindweed", },
-      [21] = { deDE = "Geisterpilz", enUS = "Ghost Mushroom", },
-      [22] = { deDE = "Gromsblut", enUS = "Gromsblood", },
-      [23] = { deDE = "Goldener Sansam", enUS = "Golden Sansam", },
-      [24] = { deDE = "Traumblatt", enUS = "Dreamfoil", },
-      [25] = { deDE = "Bergsilbersalbei", enUS = "Mountain Silversage", },
-      [26] = { deDE = "Pestblüte", enUS = "Plaguebloom", },
-      [27] = { deDE = "Eiskappe", enUS = "Icecap", },
-      [28] = { deDE = "Schwarzer Lotus", enUS = "Black Lotus", },
-      [29] = { deDE = "Teufelsgras", enUS = "Felweed", },
-      [30] = { deDE = "Traumwinde", enUS = "Dreaming Glory", },
-      [31] = { deDE = "Terozapfen", enUS = "Terocone", },
-      [32] = { deDE = "Zottelkappe", enUS = "Ragveil", },
-      [33] = { deDE = "Urflechte", enUS = "Ancient Lichen", },
-      [34] = { deDE = "Netherblüte", enUS = "Netherbloom", },
-      [35] = { deDE = "Alptraumranke", enUS = "Nightmare Vine", },
-      [36] = { deDE = "Manadistel", enUS = "Mana Thistle", },
-      [37] = { deDE = "Teufelslotus", enUS = "Fel Lotus", },
-      [38] = { deDE = "Goldklee", enUS = "Goldclover", },
-      [39] = { deDE = "Tigerlilie", enUS = "Tiger Lily", },
-      [40] = { deDE = "Schlangenzunge", enUS = "Adder's Tongue", },
-      [41] = { deDE = "Talandras Rose", enUS = "Talandra's Rose", },
-      [42] = { deDE = "Lichblüte", enUS = "Lichbloom", },
-      [43] = { deDE = "Eisdorn", enUS = "Icethor", },
-      [44] = { deDE = "Frostlotus", enUS = "Frost Lotus", },
-      [44] = { deDE = "Blutdistel", enUS = "Bloodthistle", },
+      [1] = { deDE = "Friedensblume", enUS = "Peacebloom", zhCN = "宁神花",},
+      [2] = { deDE = "Silberblatt", enUS = "Silverleaf", zhCN = "银叶草",},
+      [3] = { deDE = "Erdwurzel", enUS = "Earthroot", zhCN = "地根草",},
+      [4] = { deDE = "Maguskönigskraut", enUS = "Mageroyal", zhCN = "魔皇草",},
+      [5] = { deDE = "Wilddornrose", enUS = "Briarthorn", zhCN = "石南草",},
+      [6] = { deDE = "Würgetang", enUS = "Stranglekelp", zhCN = "荆棘藻",},
+      [7] = { deDE = "Beulengras", enUS = "Bruiseweed", zhCN = "跌打草",},
+      [8] = { deDE = "Wildstahlblume", enUS = "Wild Steelbloom", zhCN = "野钢花",},
+      [9] = { deDE = "Grabmoos", enUS = "Grave Moss", zhCN = "墓地苔",},
+      [10] = { deDE = "Königsblut", enUS = "Kingsblood", zhCN = "皇血草",},
+      [11] = { deDE = "Lebenswurz", enUS = "Liferoot", zhCN = "活根草",},
+      [12] = { deDE = "Blassblatt", enUS = "Fadeleaf", zhCN = "枯叶草",},
+      [13] = { deDE = "Golddorn", enUS = "Goldthorn", zhCN = "荆棘草",},
+      [14] = { deDE = "Khadgars Schnurrbart", enUS = "Khadgar's Whisker", zhCN = "卡德加的胡须",},
+      [15] = { deDE = "Winterbiss", enUS = "Wintersbite", zhCN = "冬刺草",},
+      [16] = { deDE = "Feuerblüte", enUS = "Firebloom", zhCN = "火焰花",},
+      [17] = { deDE = "Lila Lotus", enUS = "Purple Lotus", zhCN = "紫莲花",},
+      [18] = { deDE = "Arthas' Tränen", enUS = "Arthas' Tears", zhCN = "阿尔萨斯之泪",},
+      [19] = { deDE = "Sonnengras", enUS = "Sungrass", zhCN = "太阳草",},
+      [20] = { deDE = "Blindkraut", enUS = "Blindweed", zhCN = "盲目草",},
+      [21] = { deDE = "Geisterpilz", enUS = "Ghost Mushroom", zhCN = "幽灵菇",},
+      [22] = { deDE = "Gromsblut", enUS = "Gromsblood", zhCN = "格罗姆之血",},
+      [23] = { deDE = "Goldener Sansam", enUS = "Golden Sansam", zhCN = "黄金参",},
+      [24] = { deDE = "Traumblatt", enUS = "Dreamfoil", zhCN = "梦叶草",},
+      [25] = { deDE = "Bergsilbersalbei", enUS = "Mountain Silversage", zhCN = "山鼠草",},
+      [26] = { deDE = "Pestblüte", enUS = "Plaguebloom", zhCN = "瘟疫花",},
+      [27] = { deDE = "Eiskappe", enUS = "Icecap", zhCN = "冰盖草",},
+      [28] = { deDE = "Schwarzer Lotus", enUS = "Black Lotus", zhCN = "黑莲花",},
+      [29] = { deDE = "Teufelsgras", enUS = "Felweed", zhCN = "魔化藻",},
+      [30] = { deDE = "Traumwinde", enUS = "Dreaming Glory", zhCN = "梦露花",},
+      [31] = { deDE = "Terozapfen", enUS = "Terocone", zhCN = "泰罗果",},
+      [32] = { deDE = "Zottelkappe", enUS = "Ragveil", zhCN = "邪雾草",},
+      [33] = { deDE = "Urflechte", enUS = "Ancient Lichen", zhCN = "远古苔",},
+      [34] = { deDE = "Netherblüte", enUS = "Netherbloom", zhCN = "虚空花",},
+      [35] = { deDE = "Alptraumranke", enUS = "Nightmare Vine", zhCN = "噩梦藤",},
+      [36] = { deDE = "Manadistel", enUS = "Mana Thistle", zhCN = "法力蓟",},
+      [37] = { deDE = "Teufelslotus", enUS = "Fel Lotus", zhCN = "魔莲花",},
+      [38] = { deDE = "Goldklee", enUS = "Goldclover", zhCN = "金苜蓿",},
+      [39] = { deDE = "Tigerlilie", enUS = "Tiger Lily", zhCN = "卷丹",},
+      [40] = { deDE = "Schlangenzunge", enUS = "Adder's Tongue", zhCN = "蛇信草",},
+      [41] = { deDE = "Talandras Rose", enUS = "Talandra's Rose", zhCN = "塔兰德拉的玫瑰",},
+      [42] = { deDE = "Lichblüte", enUS = "Lichbloom", zhCN = "巫妖花",},
+      [43] = { deDE = "Eisdorn", enUS = "Icethor", zhCN = "冰极草",},
+      [44] = { deDE = "Frostlotus", enUS = "Frost Lotus", zhCN = "雪莲花",},
+      [44] = { deDE = "Blutdistel", enUS = "Bloodthistle", zhCN = "血蓟",},
    },
 }
 
@@ -161,13 +161,13 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
          for r = 1, #tRessourceTypes do
             for x = 1, #tRessourceTypes[r] do
                if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
-                  for w in string.gmatch(tRessourceTypes[r][x][Sku.L["locale"]], ".+") do
+                  for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
                      if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w .. '|'), 1, true) then
-                        if not tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] then
-                           tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] = {}
+                        if not tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] then
+                           tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] = {}
                         end
-                        if #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] == 0 then
-                           tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][1] = {
+                        if #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] == 0 then
+                           tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][1] = {
                               xMin = aX - 1,
                               xMax = aX + 1,
                               yMin = aY - 1,
@@ -175,13 +175,13 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
                            }
                         else
                            local tFoundIndex
-                           for q = 1, #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] do
-                              dprint("q", q, #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ],
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q])
-                              local xmax = tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q].xMax - aX
-                              local ymax = tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q].yMax - aY
-                              local xmin = tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q].xMin - aX
-                              local ymin = tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][q].yMin - aY
+                           for q = 1, #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] do
+                              dprint("q", q, #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ],
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q])
+                              local xmax = tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q].xMax - aX
+                              local ymax = tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q].yMax - aY
+                              local xmin = tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q].xMin - aX
+                              local ymin = tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q].yMin - aY
                               if xmax < 0 then xmax = xmax * -1 end
                               if ymax < 0 then ymax = ymax * -1 end
                               if xmin < 0 then xmin = xmin * -1 end
@@ -195,23 +195,23 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
                            end
                            if tFoundIndex then
                               dprint("found", tFoundIndex)
-                              if tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].xMin > aX then
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].xMin = aX
+                              if tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].xMin > aX then
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].xMin = aX
                               end
-                              if tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].xMax < aX then
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].xMax = aX
+                              if tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].xMax < aX then
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].xMax = aX
                               end
-                              if tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].yMin > aY then
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].yMin = aY
+                              if tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].yMin > aY then
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].yMin = aY
                               end
-                              if tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].yMax < aY then
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][tFoundIndex].yMax = aY
+                              if tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].yMax < aY then
+                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].yMax = aY
                               end
                            else
-                              dprint("new", tRessourceTypes[r][x][Sku.L["locale"]],
-                                 #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] + 1)
-                              tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ][
-                                  #tFoundPositions[ tRessourceTypes[r][x][Sku.L["locale"]] ] + 1] = {
+                              dprint("new", tRessourceTypes[r][x][Sku.LocP],
+                                 #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] + 1)
+                              tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][
+                                  #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] + 1] = {
                                  xMin = aX - 1,
                                  xMax = aX + 1,
                                  yMin = aY - 1,
@@ -220,7 +220,7 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
                            end
                         end
 
-                        return tRessourceTypes[r][x][Sku.L["locale"]]
+                        return tRessourceTypes[r][x][Sku.LocP]
                      end
                   end
                end
@@ -491,7 +491,7 @@ function SkuCore:MinimapScanFast()
             for r = 1, #tRessourceTypes do
                for x = 1, #tRessourceTypes[r] do
                   if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
-                     for w in string.gmatch(tRessourceTypes[r][x][Sku.L["locale"]], ".+") do
+                     for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
                         if string.find(line, w, 1, true) and not string.find(line, w .. '|', 1, true) then
                            if line == "Kobaltablagerung" then
                               line = "Kobaltvorkommen"

@@ -219,7 +219,7 @@ local function tAddBnetFriend(aParent, aIndex, aOnline)
       BNET_CLIENT_DI	ANBS	Diablo Immortal
       BNET_CLIENT_ARCLIGHT	GRY	Warcraft Arclight Rumble
    ]]
-   if accountInfo.gameAccountInfo.isOnline == true and aOnline == true then
+   if accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline == true and aOnline == true then
       local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {"Bnet: "..accountInfo.battleTag.." - online"}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       local tText = accountInfo.battleTag.."\r\n"
