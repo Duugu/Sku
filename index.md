@@ -24,8 +24,8 @@ DEUTSCH - Erste Schritte:<br>
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
 ## Changes in Sku r32
-	- Updated the interface version to Ulduar patch.
-	- Added support for resource scanning (mining, herbalism) for Chinese (Simplified).
+- Updated the interface version to Ulduar patch.
+- Added support for resource scanning (mining, herbalism) for Chinese (Simplified).
 
 ## Changes in Sku r31.41
 - Changes for Core > Monitor > Party > Health Pitch style:
