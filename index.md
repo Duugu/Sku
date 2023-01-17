@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r31.41](https://github.com/Duugu/Sku/releases/download/r31.41/Sku-r31.41-wrath.zip) (Jan 15th, 2022)<br>
+- [Sku r32](https://github.com/Duugu/Sku/releases/download/r32/Sku-r32-wrath.zip) (Jan 17th, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32
+	- Updated the interface version to Ulduar patch.
+	- Added support for resource scanning (mining, herbalism) for Chinese (Simplified).
+
 ## Changes in Sku r31.41
 - Changes for Core > Monitor > Party > Health Pitch style:
 	- Renamed "Silent on 100 and 0 percent" to "Continous silent on 100 and 0 percent", as it applies on continous outputs only and not on event outputs.
