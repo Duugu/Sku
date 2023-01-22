@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r32.2
+	- Changed the default setting for "Options > Options > Soft targeting > Interact > Output sound for" from "Objects and lootable/skinnable and units" to "Objects and lootable/skinnable"
+	- Fixed a bug with minimap scanning and notifications on resources	
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r32.1
 	- Added AtlasLoot integration/accessibility. There is a new menu entry Core > Atlas Loot to access AtlasLoot database. You need to have AtlasLootClassic installed for that (https://www.curseforge.com/wow/addons/atlaslootclassic/download/4352422). All data is directly taken from the AtlasLoot addon. The Search submenu has just a long list of all items to filter for any specific item. The Lists submenu has the AtlasLoot categories, etc. Item Sets and Items have the usual Sku tooltips with more info (set item list, set bonus, dropped by, currently equipped, etc.). This is just the first implementation with raw access to the data. I will add more features like favorites, filters, etc. in a later step.
 	- Fixed a bug with Core > Auction house > Sales > New Auction. Menu shouldn't show "Empty" anymore
