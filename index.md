@@ -23,8 +23,8 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
-## Changes in Sku r32
-[Deutsche Patch-Notes / German patch notes](https://duugu.github.io/Sku/index_de) hier: [https://duugu.github.io/Sku/index_de](https://duugu.github.io/Sku/index_de)
+## Changes in Sku r32.1
+[Deutsche Patch-Notes / German patch notes](https://duugu.github.io/Sku/index_de): [https://duugu.github.io/Sku/index_de](https://duugu.github.io/Sku/index_de)
 - Added AtlasLoot integration/accessibility. There is a new menu entry Core > Atlas Loot to access AtlasLoot database. You need to have AtlasLootClassic installed for that [https://www.curseforge.com/wow/addons/atlaslootclassic/download/4352422](https://www.curseforge.com/wow/addons/atlaslootclassic/download/4352422). All data is directly taken from the AtlasLoot addon. The Search submenu has just a long list of all items to filter for any specific item. The Lists submenu has the AtlasLoot categories, etc. Item Sets and Items have the usual Sku tooltips with more info (set item list, set bonus, dropped by, currently equipped, etc.). This is just the first implementation with raw access to the data. I will add more features like favorites, filters, etc. in a later step.
 - Fixed a bug with Core > Auction house > Sales > New Auction. Menu shouldn't show "Empty" anymore
 - Fixed a bug with the overview pages and some section that were cutting the page off (raid, pet)
