@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32](https://github.com/Duugu/Sku/releases/download/r32/Sku-r32-wrath.zip) (Jan 17th, 2022)<br>
+- [Sku r32.1](https://github.com/Duugu/Sku/releases/download/r32.1/Sku-r32.1-wrath.zip) (Jan 22nd, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,43 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32
+[Deutsche Patch-Notes / German patch notes](https://duugu.github.io/Sku/index_de) hier: [https://duugu.github.io/Sku/index_de](https://duugu.github.io/Sku/index_de)
+- Added AtlasLoot integration/accessibility. There is a new menu entry Core > Atlas Loot to access AtlasLoot database. You need to have AtlasLootClassic installed for that [https://www.curseforge.com/wow/addons/atlaslootclassic/download/4352422](https://www.curseforge.com/wow/addons/atlaslootclassic/download/4352422). All data is directly taken from the AtlasLoot addon. The Search submenu has just a long list of all items to filter for any specific item. The Lists submenu has the AtlasLoot categories, etc. Item Sets and Items have the usual Sku tooltips with more info (set item list, set bonus, dropped by, currently equipped, etc.). This is just the first implementation with raw access to the data. I will add more features like favorites, filters, etc. in a later step.
+- Fixed a bug with Core > Auction house > Sales > New Auction. Menu shouldn't show "Empty" anymore
+- Fixed a bug with the overview pages and some section that were cutting the page off (raid, pet)
+- Fixed a bug with hearthstone cooldown on overview page
+- Fixed a bug with the friends list that was cause a single error on login.
+- Fixed a bug with trainer windows, that was showing not available skills
+- Fixed a bug with role check buttons
+- Added settings to enable and configure soft targeting. Please read the whole description below. I know it is a lot of text. But it is important to understand the feature!<br>
+	Soft Targeting is a new way to automatically target items like enemies, players, NPCs and objects without scanning or pressing a button. With Soft Targeting, the game will automatically target anything that is in a certain area in front of you.<br>
+	<br>
+	Overview:<br>
+	In traditional targeting, you press TAB or CTRL + TAB to target something. This target is locked until you remove it with ESC or switch to another target with TAB. All your activities (spells, attacks, etc.) are performed on this locked target. This traditional target or targeting still exists. From now on, however, we no longer call it „target“ (or „targeting“) but „Hard Target“ or „Hard Targeting“ for better differentiation.<br>
+	Soft Targeting is an additional target or an additional way to target something. With the old Hard Target and the new Soft Target you can have two targets at the same time.<br>
+	You do not actively select the Soft Target via TAB. It is always automatically the next appropiate item in your line of sight. If Soft Targeting is enabled, the game permanently selects the next item in front of you as the Soft Target. The Hard Target, the one you select using TAB, remains unaffected. If you have not selected a Hard Target with TAB, all actions go to the automatically selected Soft Target. If you have explicitly selected a Hard Target, all actions go to this Hard Target as before.<br>
+	If Soft Targeting is activated, you can always make the automatically selected Soft Target become your Hard Target by pressing TAB (or CTRL + TAB for friends).
+	So, there are now two "targets". The previous Hard Target that you select, and a dynamically changing Soft Target that the game automatically selects and changes.<br>
+	<br>
+	How it works:<br>
+	Soft Targeting is performed separately for enemies (mobs, hostile players), friends (NPCs, friendly players) and interaction items (quest items, herbs, mining nodes, portals, quest givers, etc. - simply everything you can interact with) and can be separately enabled and configured for all three categories. So, for example, you can enable it for enemies, disable it for friends and enable it for interaction items. By default, it is disabled for enemies and friends, and enabled for interaction items.<br>
+	You can enable and disable Soft Targeting via three new key bindings. These are not assigned by default. You will find them under Core > Sku key bindings. And you can enable/disable Soft Targeting via the menu under Options > Options > Soft Targeting. In this menu you will also find settings for the Soft Targeting categories (enemy, friend, interaction). The settings are mostly the same for all three. You can set a range in front of you in which the game selects Soft Targets (5, 15 or 180 degrees) and a max distance (enemy and friend up to 60 meters, interact up to 18 meters).<br>
+	Since the Soft Targets are selected automatically by the game without your intervention, the addon announces the Soft Target in the same way as the Hard Targets (that are explicitly selected by you), with name, level, etc., when the Soft Target is changing. In addition, it does play a short sound before each Soft Target output so that you can distinguish between the hard and soft target outputs.<br>
+	The settings in the menu are mostly to control when and how the game plays these outputs on new soft targets. You can disable the sound. Or use only the sound and disable the name. Or change the sound. Or have no announcement at all for certain Soft Targets. (For example, Friend Soft Targets have "Players" and "Pets" disabled by default. Otherwise you would have a lot of spam in crowded places with a lot of Soft Target changes). Just review the settings. <br>
+	As there can now be two targets with (the Hard Target and the Soft Target), and there could be a lot of Soft Target changes, depending on the amount of items around you, there are also two new key bindings under Core > Sku Key Bindings to provide more overview. One to announce your current Hard Target again, and one to announce the current Soft Target again. Both are unassigned by default.<br>
+	There are also two general settings for Soft Targeting in the menu:
+	- "Auto set hard target to soft target for". By default, the game does not automatically make a new Soft Target your Hard Target. With this option you can activate this for enemies or friends (not for both). Your Hard Target will automatically change with every Soft Target change. Unless you have locked a Hard Target by pressing TAB or CTRL + TAB. In this case, the Hard Target will no longer change automatically.
+	- "No soft targeting if". As mentioned, as long as Soft Targeting is enabled, the game permanently selects the items in front of you as Soft Targets. Even if you have actively selected (locked) a Hard Target. If new/more items enter or leave the field of view, the Soft Target changes automatically. And the new Soft Target is announced. With this setting, this no longer happens as long as you have a locked Hard Target (i.e. you have actively pressed TAB or CTRL + TAB to hard target something).<br>
+	<br>
+	Additional information:
+	
+	- Important: If you exclude specific items (e.g. "units" in interaction, or „players“ in enemies), then Soft Targeting for these items will still be done by the game, and may block other Soft Targets. There is just no announcement of the Soft Target change anymore. That's all. Example: If you have enabled Soft Targeting for Interaction, the game automatically is soft targeting all interactable items. This could be a mailbox or a quest giver. If you are turning towards a mailbox, it becomes the Soft Target (because you can interact with it). However, if there is a quest giver in straight line between you and the mailbox, then the quest giver becomes the Soft Target (because you can interact with it too, and Soft Targeting always selects the closest matching item in line of sight). The quest giver therefore blocks the mailbox as a soft target. This happens _even_ if you have only selected "Objects and lootable/skinnable" for Interact and not "Objects and lootable/skinnable and _units_". This setting only applies to the outputs. Not to the actual selection of targets by the soft targeting feature.
+	- You can interact with Interact Soft Targets as usual with the G key. Without having to take them to the Hard Target with TAB / CTRL+ TAB. However, this is not possible with enemies or friends Soft Targets. You have to take them to your Hard Target using TAB / CTRL + TAB.
+	- As mentioned, Interact Soft Targeting applies not only to objects in the game world, but also to NPCs you can interact with in some way. Vendors, quest givers, guards (they have a dialogue), corpses (can be looted), etc.
+	- When fishing, Interact Soft Targeting immediately will find the bobber (and you can press G without scanning). However, sometimes the the bobber will fly a little further than the maximum range of 18 meters for Interact Soft Targeting. In this case, Soft Targeting will not detect it. Just cast again until the bobber ends up within the 18 meters range.
+	- All old scan features are still available. You usually just should don’t need them anymore.
+
 ## Changes in Sku r32
 - Updated the interface version to Ulduar patch.
 - Added support for resource scanning (mining, herbalism) for Chinese (Simplified).
