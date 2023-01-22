@@ -3,40 +3,45 @@ DEUTSCH/GERMAN - Erste Schritte:<br>
 
 # Updates
 
-*Neue Updates:* <br>
-**Lies die Hinweise unten** <br>
+*Download unter:* <br>
+[https://duugu.github.io/Sku/](https://duugu.github.io/Sku/)
 
-*Alte Updates:* <br>
-[SkuFluegel r5.7](https://github.com/Duugu/SkuFluegel/releases/download/r5.7/SkuFluegel-r5.7-bcc.zip) (16.07.2022) (addon für sehende Spieler)<br>
 
 # Veröffentlichungshinweise
 
-## Initiales Update für den Pre-Patch von Wrath of the Lich King
+## Änderungen in Sku r32.1
 
-Achtung: Installiere das neue Addon erst Mittwoch nach der Serverwartung. Vorher funktioniert es nicht!
-
-### Einrichtung
-- Lösche alle Addons aus deinem Addons-Ordner. Wenn du die Addons wirklich behalten möchtest, kannst du das gerne tun. Aber höchstwahrscheinlich werden sie sowieso kaputt sein.<br>
-Ein Neuanfang wäre besser. Funktionierende Versionen anderer Addons kannst du später wieder installieren.<br>
-Wichtig: Wenn du nicht alles aus Addons löschst, musst du trotzdem mindestens alle Bagnon-Addons löschen. Wir verwenden sie nicht mehr, und die neue Sku-Version wird mit installiertem Bagnon nicht funktionieren!
-- Lade das Wrath-Paket für deine Sprache herunter. Es enthält die verfügbaren Versionen aller Sku-Addons und einiger anderer Addons.
-	- German/deutsch: [https://1drv.ms/u/s!Aqgp3J_s6MM7iKhn4wFgp9mgiNuLUQ?e=FFvJk9](https://1drv.ms/u/s!Aqgp3J_s6MM7iKhn4wFgp9mgiNuLUQ?e=FFvJk9)
-	- Englisch: [https://1drv.ms/u/s!Aqgp3J_s6MM7iKhmJk5Dr_zbKJpNhw?e=62vJUq](https://1drv.ms/u/s!Aqgp3J_s6MM7iKhmJk5Dr_zbKJpNhw?e=62vJUq)
-- Entpacke alles aus dem heruntergeladenen Paket in den Addons-Ordner.
-- Du musst das Skript wow_menu für Wrath neu einrichten. Es ist Teil des Pakets und sollte gerade in deinen Addons-Ordner kopiert worden sein.<br>
-Befolge die bekannten Schritte, um das Skript erneut einzurichten. Im wow_menu-Ordner gibt es ein Readme-Datei auf deutsch, falls du dich nicht mehr daran erinnern kannst.<br>
-Vergiss nicht, den Ordner wow_menu aus dem Ordner Addons zu verschieben, wenn du fertig bist.
-### Bugs:
-- Es gab fast keine Zeit zum Testen. Mit Fehlern, Problemen, Bugs und anderen Macken ist also zu rechnen. .
-### Noch nicht implementiert:
-- Alle Todesritter-Features wie Runen und Runenmacht
-- Das komplette Startgebiet des Todesritters
-- Ausrüstungsmanager
-- Kalender
-- Archivierungen
-### Gut zu wissen:
-- Reittiere/Haustiere: Sie werden jetzt zu deinem Zauberbuch hinzugefügt. Verwende das Reittier/Haustier in deiner Tasche. Er verschwindet und erscheint als neuer Zauberspruch in deiner Aktionsleiste.
-- Banktaschen werden jetzt unter "Taschen" angezeigt. Suche nicht nach einem "Bank"-Menü unter "Lokal". Gehe zu "Taschen" und wähle den Pfeil nach unten, wenn du dich in einer Bank befindest.
-- Jäger-Begleiter haben jetzt einen Talentbaum. Der Talentbaum des Begleiters ist unter deinem Talentmenü verfügbar, wenn der Begleiter dort ist.
-- Im Fahrzeugkampf wird deine normale Aktionsleiste durch bis zu 8 neue Fähigkeiten ersetzt. Die Tastenbelegungen entsprechen deiner Aktionsleiste. Überprüfe das Aktionsleistenmenü, um die verfügbaren Fähigkeiten zu sehen, wenn du dich in einem Fahrzeug befindest.
-
+- AtlasLoot wurde integriert und zugänglich gemacht. Es gibt einen neuen Menüeintrag Core > Atlas Loot, um auf die AtlasLoot-Datenbank zuzugreifen. Dafür musst du AtlasLootClassic installiert haben (https://www.curseforge.com/wow/addons/atlaslootclassic/download/4352422). Alle Daten werden direkt aus dem AtlasLoot-Addon übernommen. Das Untermenü "Suche" enthält nur eine lange Liste aller Gegenstände, die du nach einem bestimmten Gegenstand filtern kannst. Das Untermenü "Listen" enthält die AtlasLoot-Kategorien, usw. Gegenstandssets und Gegenstände haben die üblichen Sku-Tooltips mit weiteren Informationen (Set-Gegenstandsliste, Set-Bonus, Drop-by, aktuelle Ausrüstung usw.). Dies ist nur die erste Implementierung mit einfachem Zugriff auf die Daten. Ich werde in einem späteren Schritt weitere Funktionen wie Favoriten, Filter usw. hinzufügen.
+- Ein Fehler in Core > Auktionshaus > Verkauf > Neue Auktion wurde behoben. Das Menü sollte nicht mehr "Leer" anzeigen.
+- Ein Fehler mit den Übersichtsseiten und einigen Abschnitten, die die Seite abgeschnitten haben (Schlachtzug, Begleiter), wurde behoben
+- Ein Fehler mit der Abklingzeit des Ruhesteins auf der Übersichtsseite wurde behoben
+- Ein Fehler in der Freundesliste wurde behoben, der beim Einloggen einen einzelnen Fehler verursachte.
+- Ein Fehler im Lehrerfenster wurde behoben, der nicht verfügbare Fertigkeiten anzeigte
+- Ein Fehler mit den Schaltflächen beim Rollencheck wurde behoben
+- Es wurden Einstellungen zur Aktivierung und Konfiguration von Soft Targeting hinzugefügt. Lies bitte die gesamte Beschreibung unten. Ich weiß, es ist viel Text. Aber er ist wichtig, um die Funktion zu verstehen!
+	Soft Targeting ist eine neue Möglichkeit, um automatisch und ohne Scan oder Tastendruck Dinge wie Feinde, Spieler, NPCs und Objekte ins Ziel zu nehmen. Beim Soft Targeting nimmt das Spiel automatisch Dinge, die in einem bestimmten Bereich vor dir sind, ins Ziel.<br>
+	<br>
+	Überblick:<br>
+	Beim traditionellen Targeting drückst du TAB oder STRG TAB, um etwas ins Ziel zu nehmen. Dieses Ziel ist fest ausgewählt, bis du es mit ESC entfernst oder mit TAB auf ein anderes Ziel wechselst. Alle deine Aktivitäten (Zauber, Angriffe etc.) werden auf dieses feste Ziel ausgeführt. Dieses traditionelle Ziel bzw. Targeting gibt es auch weiterhin. Wir nennen es ab sofort jedoch zur besseren Unterscheidung nicht mehr Target (bzw. Ziel) sondern Hard Target bzw. Hard Targeting.<br>
+	Das Soft Targeting bzw. das Soft Target ist ein zusätzliches Ziel bzw. eine zusätzliche Möglichkeit, um etwas ins Ziel zu nehmen. Mit dem alten Hard Target und dem neuen Soft Target kannst du also sozusagen gleichzeitig zwei Ziele haben.<br>
+	Das Soft Target wählst du nicht aktiv per TAB aus, sondern dieses ist immer automatisch das nächste Objekt in deiner Sichtlinie. Wenn Soft Targeting aktiviert ist, wählt das Spiel also permanent als Soft Target das nächste passende Objekt vor dir aus. Das Hard Target, also dass welches du mit TAB selbst auswählst, bleibt davon unberührt. Hast du mit TAB kein Hard Target ausgewählt, so gehen alle Aktionen auf das automatisch ausgewählte Soft Target. Hast du explizit ein Hard Target ausgewählt, so gehen alle Aktionen wie bisher auf dieses Hard Target.<br>
+	Wenn das Soft Targeting aktiviert ist, kannst du jederzeit das automatisch ausgewählte Soft Target mit einem Druck auf TAB (bzw. STRG + TAB bei Freunden) zu deinem neuen Hard Target machen.<br>
+	Also, es gibt jetzt zwei "Ziele". Das bisherige Hard Target, das du auswählst, und ein dynamisch wechselndes Soft Target, dass das Spiel automatisch auswählt und wechselt.<br>
+	<br>
+	Funktionsweise:<br>
+	Das Soft Targeting wird für Feinde (Mobs, feindliche Spieler), Freunde (NPCs, freundliche Spieler) und Interaktionselemente (Questgegenstände, Blumen, Erze, Portale, Questgeber etc. – einfach alles mit dem du interagieren kannst) getrennt ausgeführt und ist auch getrennt aktivierbar und konfigurierbar. Du kannst es also z. B. für Feinde einschalten, für Freunde ausschalten und für Interaktionselemente einschalten. Standardmäßig ist es für Feinde und Freunde aus, und für Interaktionselemente an.<br>
+	Ein- und Ausschalten kannst du das Soft Targeting über drei neue Tastenbelegungen. Diese sind standardmäßig nicht belegt. Du findest sie unter Core > Sku Tastenbelegung. Und du kannst das Soft Targeting im Menu über Optionen > Optionen > Soft Targeting ein- und ausschalten. In diesem Menü findest du auch Einstellungsmöglichkeiten für die verschiedenen Soft Targeting Kategorien (Feind, Freund, Interaktion). Die Einstellungsmöglichkeiten sind bei allen drei weitestgehend identisch. Du kannst einen Bereich vor dir festlegen, in dem das Spiel Soft Targets auswählt (5, 15 oder 180 Grad) und eine Reichweite dafür (Feind und Freund bis zu 60 Meter, Interaktion bis zu 18 Meter).<br>
+	Da die Soft Targets vom Spiel automatisch und ohne dein Zutun ausgewählt werden, sagt das Addon beim Soft Target-Wechsel das Soft Target genauso an wie von dir explizit ausgewählte Hard Targets, mit Name, Level usw. Außerdem spielt es vor jeder Soft Target-Ausgabe einen kurzen Ton ab, damit du die Hard- und Soft Target-Ausgaben unterscheiden kannst.<br>
+	Die weiteren Einstellungen im Menü beziehen sich vor allem darauf, wann und wie das Spiel diese Ausgaben beim Soft Target-Wechsel macht. Du kannst den Ton ausschalten. Oder nur den Ton verwenden und die Namensansage ausschalten. Oder den Ton ändern. Oder bei bestimmten Soft Targets gar keine Ansage machen lassen. Zum Beispiel sind bei Freund-Soft Targets standardmäßig Spieler und Pets deaktiviert, da du ansonsten in vollen Städten mit sehr vielen Soft Target-Wechseln enormen Spam hättest. Sieh dir einfach die Einstellungen an. <br>
+	Da es mit Soft Targeting nun zwei Ziele geben kann (das Hard Target und das Soft Target), und der Soft Target-Wechsel je nach Menge der Ziele sehr viel werden kann, gibt es außerdem für mehr Überblick zwei weitere neue Tastenbelegungen unter Core > Sku Tastenbelegung. Eine, um dein aktuelles Hard Target erneut anzusagen, und eine, um das das aktuelle Soft Target erneut anzusagen. Beide sind standardmäßig nicht belegt.<br>
+	Es gibt im Menü außerdem zwei allgemeine Einstellungen für das komplette Soft Targeting: 
+	- "Hard Target automatisch von Soft Target übernehmen für": Normalerweise übernimmt das Spiel beim Soft Targeting ein neues Soft Target nicht automatisch in dein Hard Target. Mit dieser Option kannst du dies für Feinde oder Freunde aktivieren (nicht für beides). Dein Hard Target wird sich dann also bei jedem Soft Target Wechsel ebenfalls automatisch ändern. Es sein denn, du hast ein Hard Target mit einem Druck auf TAB bzw. STRG + TAB fixiert. Dann ändert sich auch bei dieser Einstellung das Hard Target nicht mehr automatisch.
+	- "Kein soft targeting wenn": Wie gesagt, solange Soft Targeting aktiviert ist, wählt das Spiel permanent die Dinge vor dir als Soft Target aus. Auch dann, wenn du ein Hard Target ausgewählt hast. Sobald weitere Dinge ins Sichtfeld kommen oder gehen, ändert sich automatisch das Soft Target. Und das neue Soft Target wird angesagt. Mit dieser Einstellung passiert das nicht mehr, solange du ein fixiertes Hard Target im Ziel hast (d. h. du hast aktiv TAB bzw. STRG + TAB gedrückt, um etwas ins Ziel zu nehmen).<br>
+	<br>
+	Zusatzinfos:<br>
+	
+	- Vorsicht! Wenn du bestimmte Dinge ausschließt (z. B. "Einheiten" bei Interaktion, oder Spieler bei Feinden), dann wird das Soft Targeting für diese Sachen vom Spiel weiter durchgeführt, und kann andere Soft Targets blockieren. Es gibt nur einfach bei ausgeschlossenen Elementen keine Ansage des Soft Target-Wechsels mehr. Beispiel: Wenn du Soft Targeting für Interaktion eingeschaltet hast, nimmt das Spiel automatisch alle interaktionsfähigen Dinge ins Soft Target. Das kann z. B. ein Briefkasten oder ein Questgeber sein. Wenn du in Richtung eines Briefkastens schaust, wird der zum Soft Target (denn du kannst mit ihm interagieren). Steht jedoch ein Questgeber in gerader Linie zwischen dir und dem Briefkasten, wird der zum Soft Target (denn du kannst mit ihm auch interagieren, und das Soft Targeting wählt immer das naheste passende Ziel in Sichtlinie aus). Der Questgeber blockiert also den Briefkasten als Soft Target. Das passiert _auch_ dann, wenn du für Interagieren nur "Objekte und lootbar/kürschnerbar" ausgewählt hast und nicht "Objekte und lootbar/kürschnerbar und Einheiten". Diese Einstellung bezieht sich nur auf die Ansagen. Nicht auf die Auswahl der Ziele durch das Soft Targeting selbst.
+	- Interagieren Soft Targets kannst du wie gewohnt mit G verwenden. Ohne sie mit TAB/STRG + TAB vorher ins Hard Target nehmen zu müssen. Mit Feinden bzw Freunden Soft Targets geht das jedoch nicht. Diese musst du vorher mit TAB/STRG + TAB ins Hard Target nehmen.
+	- Interagieren bezieht sich, wie gesagt, nicht nur auf Objekte in der Spielwelt, sondern auch auf NPCs, mit denen du irgendwie interagieren kannst. Händler, Questgeber, Wachen (haben einen Dialog), Leichen (können geplündert werden) usw.
+	- Beim Angeln findet Interagieren den Köder. Wenn du angelst, sollte das Interagieren Soft Targeting also sofort den Köder finden (und du kannst ohne scannen G drücken). Der Köder kann jedoch manchmal etwas weiter als die Maximalreichweite von 18 Meter für Interagieren Soft Targeting fliegen. Dann erkennt findet ihn das Soft Targeting nicht mehr. In diesem Fall kannst du einfach so lange erneut die Angel auswerfen, bis er innerhalb der 18 Meter landet.
+	- Alle alten Scan-Funktionen sind auch weiterhin verfügbar. Du wirst sie allerdings nur noch selten brauchen. 
