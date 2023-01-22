@@ -1,6 +1,3 @@
-DEUTSCH/GERMAN - Erste Schritte:<br>
-<a href="https://duugu.github.io/Sku/first_steps_de.html">https://duugu.github.io/Sku/first_steps_de.html</a><br>
-
 # Updates
 
 *Download unter:* <br>
