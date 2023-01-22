@@ -22,7 +22,6 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
--------------------------------------------------------------------------------------------------------	
 ## Changes in Sku r32.2
 - Changed the default setting for "Options > Options > Soft targeting > Interact > Output sound for" from "Objects and lootable/skinnable and units" to "Objects and lootable/skinnable"
 - Fixed a bug with minimap scanning and notifications on resources	
