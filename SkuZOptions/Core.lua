@@ -519,7 +519,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	local tSectionRepo = {}
 
 	--raid
-	local tTmpText
+	local tTmpText = ""
 	if UnitInRaid("player") then
 		local tCount = 1
 		local tPlayersSubgroup 
@@ -553,6 +553,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 				tTmpText = tTmpText.." "..iUnit..", "..vUnit.class..", "..vUnit.level..", "..vUnit.zone..", "..vUnit.online..", "..vUnit.isDead.."\r\n"
 			end
 		end
+	else
+		tTmpText = L["Not in raid"]
 	end
 
 	if tTmpText and SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["raid"].pos ~= 999 then
@@ -681,13 +683,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 
 	--hearthstone
 	local tTmpText = L["Keiner vorhanden"]
-	local startTime, duration, enable
-	if Sku.toc >= 30401 then
-		startTime, duration, enable = 0, 0, 0
-	else
-		startTime, duration, enable = GetItemCooldown(40582) --Scourgestone item id is working for all
-	end
-	
+	local startTime, duration, enable = GetItemCooldown(40582) --Scourgestone item id is working for all
 	if duration == 0 then
 		tTmpText = L[" bereit"]
 	else
@@ -1081,6 +1077,57 @@ function SkuOptions:CreateControlFrame()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:UpdateSoftTargetingSettings(aKey)
+	SetCVar("SoftTargetForce", SkuOptions.db.profile[MODULE_NAME].softTargeting.force)
+	SetCVar("SoftTargetMatchLocked", SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked)
+
+	if SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled == true then
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" or aKey == "all" then
+			print(L["Soft targeting"].." "..L["Enemies"].." "..L["Enabled"])
+		end
+		SetCVar("SoftTargetEnemy", 3)
+		SetCVar("SoftTargetEnemyArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc)
+		SetCVar("SoftTargetEnemyRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range)
+	else
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" then
+			print(L["Soft targeting"].." "..L["Enemies"].." "..L["disabled"])
+		end
+		SetCVar("SoftTargetEnemy", 0)
+	end
+
+	if SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled == true  or aKey == "all" then
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" then
+			print(L["Soft targeting"].." "..L["Friends"].." "..L["Enabled"])
+		end
+		SetCVar("SoftTargetFriend", 3)
+		SetCVar("SoftTargetFriendArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc)
+		SetCVar("SoftTargetFriendRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range)
+	else
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" then
+			print(L["Soft targeting"].." "..L["Friends"].." "..L["disabled"])
+		end
+		SetCVar("SoftTargetFriend", 0)
+	end
+
+	if SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled == true  or aKey == "all" then
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" then
+			print(L["Soft targeting"].." "..L["Interact"].." "..L["Enabled"])
+		end
+		SetCVar("SoftTargetInteract", 3)
+		SetCVar("SoftTargetInteractArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc)
+		SetCVar("SoftTargetInteractRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range)
+	else
+		if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" then
+			print(L["Soft targeting"].." "..L["Interact"].." "..L["disabled"])
+		end
+		SetCVar("SoftTargetInteract", 0)
+	end
+
+
+--SetCVar("SoftTargetInteract", 3) SetCVar("SoftTargetInteractArc", 2) SetCVar("SoftTargetInteractRange", 15)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tCurrentOverviewPage
 function SkuOptions:CreateMainFrame()
 	local tFrame = CreateFrame("Button", "OnSkuOptionsMain", UIParent, "UIPanelButtonTemplate")
@@ -1106,6 +1153,29 @@ function SkuOptions:CreateMainFrame()
 				tCurrentOverviewPage = 4
 			]]
 			end
+		end
+
+		--soft targeting
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key then
+			SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.enabled = SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.enabled == false
+			SkuOptions:UpdateSoftTargetingSettings("SKU_KEY_ENABLESOFTTARGETINGENEMY")
+		end
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key then
+			SkuOptions.db.profile["SkuOptions"].softTargeting.friend.enabled = SkuOptions.db.profile["SkuOptions"].softTargeting.friend.enabled == false
+			SkuOptions:UpdateSoftTargetingSettings("SKU_KEY_ENABLESOFTTARGETINGFRIENDLY")
+		end
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGINTERACT"].key then
+			SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled = SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == false
+			SkuOptions:UpdateSoftTargetingSettings("SKU_KEY_ENABLESOFTTARGETINGINTERACT")
+		end
+
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTHARDTARGET"].key then
+			SkuMob:PLAYER_SOFT_ENEMY_CHANGED()
+			SkuMob:PLAYER_SOFT_FRIEND_CHANGED()
+			SkuMob:PLAYER_SOFT_INTERACT_CHANGED()
+		end
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTSOFTTARGET"].key then
+			SkuMob:PLAYER_TARGET_CHANGED()
 		end
 
 
@@ -1630,6 +1700,11 @@ function SkuOptions:CreateMainFrame()
 
 	--SetOverrideBindingClick(tFrame, true, "SHIFT-U", tFrame:GetName(), "SHIFT-U")
 	--SetOverrideBindingClick(tFrame, true, "SHIFT-J", tFrame:GetName(), "SHIFT-J")
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGINTERACT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGINTERACT"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTHARDTARGET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTHARDTARGET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTSOFTTARGET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTSOFTTARGET"].key)
 
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key)
 
@@ -2865,6 +2940,8 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 		end
 
 		SkuOptions.db.global["SkuAuras"] = {}
+
+		SkuOptions:UpdateSoftTargetingSettings("all")
 	end
 end
 
@@ -3588,14 +3665,20 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.filterable = true
+				tNewMenuEntry.rangeMin = v.min or 0
+				tNewMenuEntry.rangeMax = v.max or 100
 				tNewMenuEntry.OnAction = function(self, aValue, aName)
 					--self.profilePath[self.profileIndex] = tonumber(aName)
 					self.optionsPath[self.profileIndex]:set(tonumber(aName))
 					--PlaySound(835)
+					if self.optionsPath[self.profileIndex].OnAction then
+						self.optionsPath[self.profileIndex]:OnAction(aValue, aName)
+					end
+
 				end
 				tNewMenuEntry.BuildChildren = function(self)
 					local tList = {}
-					for q = 100, 0, -1 do
+					for q = self.rangeMax, self.rangeMin, -1 do
 						--table.insert(tList, q)
 						local tNewSMenuEntry =SkuOptions:InjectMenuItems(self, {q}, SkuGenericMenuItem)
 						tNewSMenuEntry.noMenuNumbers = true
@@ -3856,11 +3939,7 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 
 		-- Resizable
 		f:SetResizable(true)
-      if Sku.toc < 30401 then
-         f:SetMinResize(150, 100)
-      else
-         f:SetResizeBounds(150, 100)
-      end
+      f:SetResizeBounds(150, 100)
 
 		local rb = CreateFrame("Button", "SkuOptionsEditBoxResizeButton", SkuOptionsEditBox)
 		rb:SetPoint("BOTTOMRIGHT", -6, 7)

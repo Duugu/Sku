@@ -1180,7 +1180,8 @@ function SkuChat_MessageEventHandler(self, event, ...)
 				if (client and client ~= "") then
 					local _, _, battleTag = BNGetFriendInfoByID(arg13) 
 					characterName = BNet_GetValidatedCharacterName(characterName, battleTag, client) or "" 
-					local characterNameText = BNet_GetClientEmbeddedTexture(client, 14)..characterName 
+					--local characterNameText = BNet_GetClientEmbeddedTexture(client, 14)..characterName 
+					local characterNameText = characterName 
 					local linkDisplayText = ("[%s] (%s)"):format(arg2, characterNameText) 
 					local playerLink = SkuChat:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, SkuChatChat_GetChatCategory(type), 0) 
 					message = format(globalstring, playerLink) 
@@ -1459,6 +1460,7 @@ local escapes = {
 	["|r"] = "", -- color end
 	["|H.-|h(.-)|h"] = "%1", -- links
 	["|T.-|t"] = "", -- textures
+	["|A.-|a"] = "", -- textures
 	["{.-}"] = "", -- raid target icons
 }
 local escapesChat = {

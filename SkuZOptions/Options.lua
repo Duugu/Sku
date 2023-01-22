@@ -1,6 +1,37 @@
 local MODULE_NAME = "SkuOptions"
 local L = Sku.L
 
+
+SkuCore.SoftTargetingArcValues = {
+	[0] = L["Only directly in front"],
+	[1] = L["15 degrees in front"],
+	[2] = L["180 degrees in front"],
+}
+SkuCore.SofttargetingForceValues  = {
+	[0] = L["Off"],
+	[1] = L["Enemies"],
+	[2] = L["Friends"],
+}
+SkuCore.SofttargetingMatchLockedValues  = {
+	[0] = L["Always"],
+	[1] = L["If no hard target locked"],
+	--[2] = L["Targets you attack"],
+}
+SkuCore.SofttargetingInteractNameForValues  = {
+	[1] = L["Nothing"],
+	[2] = L["Objects"],
+	[3] = L["Objects and lootable/skinnable"],
+	[4] = L["Objects and lootable/skinnable and units"],
+}
+do
+	SkuCore.SofttargetingSoundsValue = {}
+	SkuCore.SofttargetingSoundsValue[" "] = L["silent"]
+	for i, v in pairs (SkuAuras.outputSoundFiles) do
+		SkuCore.SofttargetingSoundsValue[i] = v
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
 SkuOptions.options = {
 	name = MODULE_NAME,
 	handler = SkuOptions,
@@ -389,6 +420,412 @@ SkuOptions.options = {
 					},
 				},
 			},
+			softTargeting={
+				name = L["Soft targeting"],
+				type = "group",
+				order = 10,
+				args= {
+					enemy={
+						name = L["Enemies"],
+						type = "group",
+						order = 1,
+						args= {
+							enabled = {
+								order = 1,
+								name = L["Enabled"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled
+								end
+							},
+							arc = {
+								order = 2,
+								name = L["Arc"] ,
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								values = SkuCore.SoftTargetingArcValues,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc
+								end
+							},							
+							range = {
+								order = 3,
+								name = L["Range"] ,
+								desc = "",
+								type = "range",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								min = 1,
+								max = 60,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range
+								end
+							},		
+							forPlayers = {
+								order = 4,
+								name = L["Include players"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPlayers = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPlayers
+								end
+							},
+							forPets = {
+								order = 5,
+								name = L["Include pets"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPets = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPets
+								end
+							},							
+							forPassive = {
+								order = 5,
+								name = L["Include passive units"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPassive = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPassive
+								end
+							},
+							sound = {
+								order = 6,
+								name = L["sound"] ,
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								values = SkuCore.SofttargetingSoundsValue,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.sound = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.sound
+								end
+							},									
+							outputName = {
+								order = 7,
+								name = L["Output unit name"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.outputName = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.outputName
+								end
+							},
+
+						},
+					},
+					friend={
+						name = L["Friends"],
+						type = "group",
+						order = 2,
+						args= {
+							enabled = {
+								order = 1,
+								name = L["Enabled"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled
+								end
+							},
+							arc = {
+								order = 2,
+								name = L["Arc"] ,
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								values = SkuCore.SoftTargetingArcValues,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc
+								end
+							},							
+							range = {
+								order = 3,
+								name = L["Range"] ,
+								desc = "",
+								type = "range",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								min = 1,
+								max = 60,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range
+								end
+							},		
+							forPlayers = {
+								order = 4,
+								name = L["Include players"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPlayers = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPlayers
+								end
+							},
+							forPets = {
+								order = 5,
+								name = L["Include pets"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPets = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPets
+								end
+							},
+							sound = {
+								order = 6,
+								name = L["sound"] ,
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								values = SkuCore.SofttargetingSoundsValue,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.sound = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.sound
+								end
+							},								
+							outputName = {
+								order = 7,
+								name = L["Output unit name"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.outputName = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.outputName
+								end
+							},													
+						},
+					},
+					interact={
+						name = L["Interact"],
+						type = "group",
+						order = 3,
+						args= {
+							enabled = {
+								order = 1,
+								name = L["Enabled"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled
+								end
+							},
+							arc = {
+								order = 2,
+								name = L["Arc"] ,
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								values = SkuCore.SoftTargetingArcValues,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc
+								end
+							},							
+							range = {
+								order = 3,
+								name = L["Range"] ,
+								desc = "",
+								type = "range",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								min = 1,
+								max = 18,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range
+								end
+							},		
+							soundfor = {
+								order = 4,
+								name = L["Output sound for"],
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								values = SkuCore.SofttargetingInteractNameForValues,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.soundfor = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.soundfor
+								end
+							},				
+							sound = {
+								order = 5,
+								name = L["sound"] ,
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								values = SkuCore.SofttargetingSoundsValue,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.sound = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.sound
+								end
+							},											
+							unitNameFor = {
+								order = 6,
+								name = L["Output name for"] ,
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								values = SkuCore.SofttargetingInteractNameForValues,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.unitNameFor = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.unitNameFor
+								end
+							},							
+
+							outputBTTS = {
+								order = 8,
+								name = L["Name output via Blizzard TTS"] ,
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings()
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.outputBTTS = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.outputBTTS
+								end
+							},									
+						},
+					},
+					force = {
+						order = 5,
+						name = L["Auto set hard target to soft target for"] ,
+						desc = "",
+						type = "select",
+						OnAction = function(self, info, val)
+							SkuOptions:UpdateSoftTargetingSettings()
+						end,
+						values = SkuCore.SofttargetingForceValues,
+						set = function(info,val)
+							SkuOptions.db.profile[MODULE_NAME].softTargeting.force = val
+						end,
+						get = function(info)
+							return SkuOptions.db.profile[MODULE_NAME].softTargeting.force
+						end
+					},							
+					matchLocked = {
+						order = 6,
+						name = L["Do soft targeting"] ,
+						desc = "",
+						type = "select",
+						OnAction = function(self, info, val)
+							SkuOptions:UpdateSoftTargetingSettings()
+						end,
+						values = SkuCore.SofttargetingMatchLockedValues,
+						set = function(info,val)
+							SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked = val
+						end,
+						get = function(info)
+							return SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked
+						end
+					},							
+				}
+			},
 		},
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -421,6 +858,38 @@ SkuOptions.defaults = {
 		Sound_EnableSoundWhenGameIsInBG = false,
 		Sound_ZoneMusicNoDelay = false,
 		},
+	softTargeting = {
+		enemy = {
+			enabled = false,
+			arc = 1,
+			range = 60,
+			forPassive = true,
+			forPlayers = false,
+			forPets = false,
+			sound = "sound-waterdrop4",
+			outputName = true,
+		},
+		friend = {
+			enabled = false,
+			arc = 1,
+			range = 60,
+			forPlayers = false,
+			forPets = false,
+			sound = "sound-waterdrop4",
+			outputName = true,
+		},
+		interact = {
+			enabled = true,
+			arc = 2,
+			range = 18,
+			soundfor = 4,
+			unitNameFor = 3,
+			sound = "sound-waterdrop4",
+			outputBTTS = true,
+		},
+		force = 0, --0 1 2 target wird softtarget 		Auto-set target to match soft target. 1 = for enemies, 2 = for friends
+		matchLocked = 1, --0 1 softtarget immer locked wenn target 2?	Match appropriate soft target to locked target. 1 = hard locked target only, 2 = for targets you attack
+	},		
 	debugOptions = {
 		soundOnError = false,
 		showError = L["fehler anzeigen default"],

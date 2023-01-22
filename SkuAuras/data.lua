@@ -490,7 +490,7 @@ SkuAuras.outputs = {
    },
 }
 
-local tOutputSoundFiles = {
+SkuAuras.outputSoundFiles = {
    ["sound-brass1"] = L["aura;sound"].."#"..L["brass 1"],
    ["sound-brass2"] = L["aura;sound"].."#"..L["brass 2"],
    ["sound-brass3"] = L["aura;sound"].."#"..L["brass 3"],
@@ -542,7 +542,7 @@ local tOutputSoundFiles = {
    ["sound-notification26"] = L["aura;sound"].."#"..L["notification"].." 26",
    ["sound-notification27"] = L["aura;sound"].."#"..L["notification"].." 27",
 }
-for tOutputString, tFriendlyName in pairs(tOutputSoundFiles) do
+for tOutputString, tFriendlyName in pairs(SkuAuras.outputSoundFiles) do
    SkuAuras.outputs[tOutputString] = {
       tooltip = tFriendlyName,
       outputString = tOutputString,

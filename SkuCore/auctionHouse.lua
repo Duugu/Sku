@@ -227,11 +227,7 @@ function SkuCore:ConfirmButtonShow(aText, aOkScript, aEscScript)
 
 		-- Resizable
 		f:SetResizable(true)
-      if Sku.toc < 30401 then
-         f:SetMinResize(150, 100)
-      else
-         f:SetResizeBounds(150, 100)
-      end
+      f:SetResizeBounds(150, 100)
 
 		local rb = CreateFrame("Button", "SkuAuctionConfirmResizeButton", SkuAuctionConfirm)
 		rb:SetPoint("BOTTOMRIGHT", -6, 7)

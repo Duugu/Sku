@@ -259,11 +259,11 @@ function SkuCore:getItemComparisnSections(itemId, cache)
 
 	local comparisnSections = {}
 	for _, slot in pairs(invSlotsToCompare) do
-		local cacheEntry = cache and cache[slot]
-		local text = cacheEntry or getEquippedItemTooltipText(slot)
+		--local cacheEntry = cache and cache[slot]
+		local text = getEquippedItemTooltipText(slot)
 		if text then
 			table.insert(comparisnSections, text)
-			if not cacheEntry then cache[slot] = text end
+			--if cache and not cacheEntry then cache[slot] = text end
 		end
 	end
 	return comparisnSections
@@ -2693,7 +2693,7 @@ function SkuCore:Build_RolePollPopup(aParentChilds)
 				textFull = "",
 				childs = {},
 				func = function()
-					tButtons[x]:Click(tButtons[x])
+					tButtons[x]:Click("LeftMouse")
 					C_Timer.After(0.3, function()
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
@@ -2717,7 +2717,7 @@ function SkuCore:Build_RolePollPopup(aParentChilds)
 			textFull = "",
 			childs = {},
 			func = function()
-				_G["RolePollPopupAcceptButton"]:Click(_G["RolePollPopupAcceptButton"])
+				_G["RolePollPopupAcceptButton"]:Click("LeftMouse")
 			end,            
 			click = true,
 		}
@@ -3958,161 +3958,94 @@ end
 function SkuCore:GossipFrame(aParentChilds)
 
 	local dtc
-	if Sku.toc < 30401 then
-		dtc = { _G["GossipGreetingScrollChildFrame"]:GetRegions() }
-
-		for x = 1, #dtc do
-			if dtc[x].GetText then
-				local tText = dtc[x]:GetText()
-				if tText then
-					local tFrameName = "GossipText"
-					local tFriendlyName = tText
-					local tFrst, tFll = SkuCore:ItemName_helper(tText)
-					table.insert(aParentChilds, tFriendlyName)
-					aParentChilds[tFriendlyName] = {
-						frameName = tFrameName,
-						RoC = "Child",
-						type = "FontString",
-						obj = _G[tFrameName],
-						textFirstLine = tFrst,
-						textFull = tFll,
-						childs = {},
-					}  
-				end
-			end
-		end
-	end
 
 	local tIconStrings = {
 		[132048] = L["Accepted Quest"],
 		[132049] = L["Available Quest"],
 	}
 
-	if Sku.toc >= 30401 then
-		local gossipText = C_GossipInfo.GetText()
-		if gossipText and gossipText ~= "" then
-			table.insert(aParentChilds, gossipText)
-			aParentChilds[gossipText] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "string",
-				--obj = nil,
-				textFirstLine = gossipText,
-				textFull = gossipText,
-				childs = {},
-			} 
-		end
 
-		local info = C_GossipInfo.GetOptions()
-		for i, v in pairs(info) do
-			local tFriendlyName = (tIconStrings[v.icon] or "").." "..v.name
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = _G["GossipFrame"],
-				RoC = "Child",
-				type = "Button",
-				obj = _G["GossipFrame"],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-				func = function()
-					C_GossipInfo.SelectOption(v.gossipOptionID)
-				end,
-				click = true,
-			} 
-		end
-		
-		local info = C_GossipInfo.GetAvailableQuests()
-		for i, v in pairs(info) do
-			local tBl = ""
-			if SkuDB.questDataTBC[v.questID] ~= nil and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData] ~= nil and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData][1][1] == true then
-				tBl = L["Blacklisted"]
-			end
-
-			local tFriendlyName = L["Available Quest"].." "..v.title.." "..tBl
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = _G["GossipFrame"],
-				RoC = "Child",
-				type = "Button",
-				obj = _G["GossipFrame"],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-				func = function()
-					C_GossipInfo.SelectAvailableQuest(v.questID)
-				end,
-				click = true,
-			} 
-		end		
-
-		local info = C_GossipInfo.GetActiveQuests()
-		for i, v in pairs(info) do
-			local tBl = ""
-			if SkuDB.questDataTBC[v.questID] ~= nil and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData] ~= nil and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData][1][1] == true then
-				tBl = L["Blacklisted"]
-			end
-
-			local tFriendlyName = L["Accepted Quest"].." "..v.title.." "..tBl
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = _G["GossipFrame"],
-				RoC = "Child",
-				type = "Button",
-				obj = _G["GossipFrame"],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-				func = function()
-					C_GossipInfo.SelectActiveQuest(v.questID)
-				end,
-				click = true,
-			} 
-		end	
-
-	else
-		for x = 1, GossipFrame.buttonIndex - 1 do
-			local tFrameName = "GossipTitleButton"..x
-			if _G[tFrameName] then
-				if _G[tFrameName]:IsShown() == true  then
-					if _G[tFrameName]:GetText() then
-						local tFriendlyName = SkuChat:Unescape(_G[tFrameName]:GetText())
-						local tBl = ""
-						for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
-							if v[1] == tFriendlyName then
-								if SkuDB.questDataTBC[i][SkuDB.questKeys.skuData] then
-									if SkuDB.questDataTBC[i][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[i][SkuDB.questKeys.skuData][1][1] == true then
-										tBl = L["Blacklisted"]
-										break
-									end
-								end
-							end
-						end					
-						tFriendlyName = tFriendlyName..tBl
-
-						if _G["GossipTitleButton"..x.."GossipIcon"]:IsShown() == true then
-							tFriendlyName = (tIconStrings[_G["GossipTitleButton"..x.."GossipIcon"]:GetTextureFileID()] or "").." "..SkuChat:Unescape(_G[tFrameName]:GetText()).." "..tBl
-						end
-						local tText, tFullText = "", ""
-						if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
-							table.insert(aParentChilds, tFriendlyName)
-							aParentChilds[tFriendlyName] = {
-								frameName = tFrameName,
-								RoC = "Child",
-								type = "Button",
-								obj = _G[tFrameName],
-								textFirstLine = tFriendlyName,
-								textFull = "",
-								childs = {},
-								func = _G[tFrameName]:GetScript("OnClick"),
-								click = true,
-							} 
-						end
-					end
-				end
-			end
-		end
+	local gossipText = C_GossipInfo.GetText()
+	if gossipText and gossipText ~= "" then
+		table.insert(aParentChilds, gossipText)
+		aParentChilds[gossipText] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "string",
+			--obj = nil,
+			textFirstLine = gossipText,
+			textFull = gossipText,
+			childs = {},
+		} 
 	end
+
+	local info = C_GossipInfo.GetOptions()
+	for i, v in pairs(info) do
+		local tFriendlyName = (tIconStrings[v.icon] or "").." "..v.name
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = _G["GossipFrame"],
+			RoC = "Child",
+			type = "Button",
+			obj = _G["GossipFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+			func = function()
+				C_GossipInfo.SelectOption(v.gossipOptionID)
+			end,
+			click = true,
+		} 
+	end
+	
+	local info = C_GossipInfo.GetAvailableQuests()
+	for i, v in pairs(info) do
+		local tBl = ""
+		if SkuDB.questDataTBC[v.questID] ~= nil and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData] ~= nil and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData][1][1] == true then
+			tBl = L["Blacklisted"]
+		end
+
+		local tFriendlyName = L["Available Quest"].." "..v.title.." "..tBl
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = _G["GossipFrame"],
+			RoC = "Child",
+			type = "Button",
+			obj = _G["GossipFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+			func = function()
+				C_GossipInfo.SelectAvailableQuest(v.questID)
+			end,
+			click = true,
+		} 
+	end		
+
+	local info = C_GossipInfo.GetActiveQuests()
+	for i, v in pairs(info) do
+		local tBl = ""
+		if SkuDB.questDataTBC[v.questID] ~= nil and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData] ~= nil and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData][1] and SkuDB.questDataTBC[v.questID][SkuDB.questKeys.skuData][1][1] == true then
+			tBl = L["Blacklisted"]
+		end
+
+		local tFriendlyName = L["Accepted Quest"].." "..v.title.." "..tBl
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = _G["GossipFrame"],
+			RoC = "Child",
+			type = "Button",
+			obj = _G["GossipFrame"],
+			textFirstLine = tFriendlyName,
+			textFull = "",
+			childs = {},
+			func = function()
+				C_GossipInfo.SelectActiveQuest(v.questID)
+			end,
+			click = true,
+		} 
+	end	
+
 end
 
 

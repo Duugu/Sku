@@ -2109,7 +2109,7 @@ function SkuNav:OnEnable()
 		SkuOptions.db.profile[MODULE_NAME].RecentWPs = {}
 	end
 
-	SkuNav:SkuNavMMOpen()
+	--SkuNav:SkuNavMMOpen()
 	SkuNav:CreateSkuNavControl()
 
 	if SkuCore.inCombat == false then
@@ -2718,7 +2718,7 @@ function SkuNav:PLAYER_LOGIN(...)
 		end)
 	end
 
-	SkuNav:SkuNavMMOpen()
+	--SkuNav:SkuNavMMOpen()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

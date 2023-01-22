@@ -168,7 +168,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function GetArmorFromTooltip(aItemLink)
 
-	local tTooltipFrame = _G["SkuRatingTooltip"] --_G["GameTooltip"]
+	local tTooltipFrame = _G["SkuRatingTooltip"] or CreateFrame("GameTooltip", "SkuRatingTooltip"); -- Tooltip name cannot be nil
+	SkuRatingTooltip = tTooltipFrame
 	tTooltipFrame:ClearLines()
 	tTooltipFrame:SetOwner(WorldFrame, "ANCHOR_NONE")
 	tTooltipFrame:SetHyperlink(aItemLink)
@@ -192,7 +193,9 @@ end
 ----------------------------------------------------------------------------------------------------------------------------------------
 local GetItemStatsHook
 local function GetItemStatsHelperHook(aItemLink, aStatsTable)
-	aStatsTable["ITEM_MOD_ARMOR_SHORT"] = GetArmorFromTooltip(aItemLink)
+	if aStatsTable then
+		aStatsTable["ITEM_MOD_ARMOR_SHORT"] = GetArmorFromTooltip(aItemLink)
+	end
 	return GetItemStatsHook(aItemLink, aStatsTable)
 end
 

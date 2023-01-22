@@ -12968,6 +12968,9 @@ SkuDB.WotLK.objectDataTBC = {
    [300242] = {"TEMP Unlit Signal Fire",nil,nil,{[3537]={{25.38,21.98}}},3537},
    [300244] = {"TEMP Corpse of the Fallen Worg",nil,nil,nil,0},
    [1000000] = {"Guild Vault",nil,nil,nil,0,},
+   [1000001] = {"Bobber",nil,nil,nil,0,},
+   [1000002] = {"Defense Protocol Alpha",nil,nil,nil,0,},
+   [1000003] = {"Mysterious Device",nil,nil,nil,0,},
 }
 
 SkuDB.WotLK.objectLookup = {
@@ -14476,6 +14479,9 @@ SkuDB.WotLK.objectLookup = {
       [186531] = "Camp Winterhoof",
       [176292] = "Campfire",
       [1000000] = "Guild Vault",
+      [1000001] = "Bobber",
+      [1000002] = "Defense Protocol Alpha",
+      [1000003] = "Mysterious Device",
       [31511] = "Bright Campfire",
       [192676] = "Emerald Acorn",
       [186533] = "Camp Winterhoof",
@@ -28016,7 +28022,10 @@ SkuDB.WotLK.objectLookup = {
          [211021] =  "Süßwasserauster",
          [211022] =  "Yoons Kranichbeeren",
          [211023] =  "Gusseiserner Topf",
-         
+         [1000000] = "Gildentresor",
+         [1000001] = "Schwimmer",
+         [1000002] = "Verteidigungsprotokoll Alpha",
+         [1000003] = "Mysteriöses Gerät",
       },
 }
       

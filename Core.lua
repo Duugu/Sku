@@ -46,7 +46,7 @@ if Sku.toc >= 30401 then
 		if not t then
 			return
 		end		
-		return t.IconFileID, t.stackCount, t.isLocked, t.quality, t.isReadable, t.hasLoot, t.hyperlink, t.isFiltered, t.hasNoValue, t.itemID, t.isBound
+		return t.iconFileID, t.stackCount, t.isLocked, t.quality, t.isReadable, t.hasLoot, t.hyperlink, t.isFiltered, t.hasNoValue, t.itemID, t.isBound
 	end
 	SocketContainerItem = C_Container.SocketContainerItem
 	SplitContainerItem = C_Container.SplitContainerItem

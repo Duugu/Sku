@@ -824,16 +824,17 @@ function SkuCore:OnEnable()
 	local ttime = 0
 	local f = _G["SkuCoreControl"] or CreateFrame("Frame", "SkuCoreControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time)
-
 		if ClassTrainerFrame then
-			if ClassTrainerFrame:IsShown() == true then
-				if SkuOptions.db.profile[MODULE_NAME].trainerSkillsUnavailableDisabled ~= true then
+			if ClassTrainerFrame:IsShown() == true and DropDownList1Button2 then
+				if DropDownList1Button2.checked == 1 or DropDownList1Button2.checked == nil then 
 					ClassTrainerFrameFilterDropDownButton:Click()
-					if DropDownList1Button2.checked == 1 then 
-						DropDownList1Button2:Click()
-					end
+					C_Timer.After(0.01, function() DropDownList1Button2:Click() end)
+					C_Timer.After(0.05, function() ClassTrainerFrameFilterDropDownButton:Click() end)
+				end
+				if DropDownList1Button3.checked == 1 or DropDownList1Button2.checked == nil then 
 					ClassTrainerFrameFilterDropDownButton:Click()
-					SkuOptions.db.profile[MODULE_NAME].trainerSkillsUnavailableDisabled = true 
+					DropDownList1Button3:Click()
+					ClassTrainerFrameFilterDropDownButton:Click()
 				end
 			end
 		end
@@ -1594,6 +1595,7 @@ function SkuCore:PLAYER_LOGIN(...)
 	CraftFrame:Show()
 	CraftFrame:Hide()
 
+	SkuOptions.db.profile[MODULE_NAME].trainerSkillsUnavailableDisabled = false
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

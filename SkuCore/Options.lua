@@ -2147,12 +2147,21 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
+			--remove outdated and delete key bindings
+			for i, v in pairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds) do
+				if not SkuOptions.skuDefaultKeyBindings[i] then
+					SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[i] = nil
+				end
+			end
+
+			--sort
 			local tSortedList = {}
 			for k, v in SkuSpairs(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds, function(t,a,b) 
 				return L[b] > L[a] end) do
 				tSortedList[#tSortedList+1] = k
 			end
 
+			--build list
 			for _, tBindingConst in pairs(tSortedList) do
 				local v = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds[tBindingConst]
 				local tFriendlyKey1
@@ -2463,11 +2472,15 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.DamageMeterMenuBuilder
 
-
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Macros"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = false
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.MacroMenuBuilder
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Atlas Loot"]}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = false
+	tNewMenuParentEntry.filterable = true
+	tNewMenuParentEntry.BuildChildren = SkuCore.alIntegrationMenuBuilder
 	
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true

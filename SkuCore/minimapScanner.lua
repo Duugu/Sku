@@ -297,7 +297,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:RestoreMinimap()
    Minimap:SetParent(tMinimapStore.parent)
-   Minimap:SetScale(tMinimapStore.scale)
+   Minimap:SetScale(tMinimapStore.scale or 1)
    Minimap:ClearAllPoints()
    Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
    MinimapCluster:SetFrameLevel(tMinimapStore.frameLevel)
