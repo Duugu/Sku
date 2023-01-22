@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.1](https://github.com/Duugu/Sku/releases/download/r32.1/Sku-r32.1-wrath.zip) (Jan 22nd, 2022)<br>
+- [Sku r32.2](https://github.com/Duugu/Sku/releases/download/r32.2/Sku-r32.2-wrath.zip) (Jan 22nd, 2022)<br>
 - [SkuAudioData r36 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r36/SkuAudioData-r36-wrath.zip) (Dec 2nd, 2022)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.2
+- Changed the default setting for "Options > Options > Soft targeting > Interact > Output sound for" from "Objects and lootable/skinnable and units" to "Objects and lootable/skinnable"
+- Fixed a bug with minimap scanning and notifications on resources	
+
 ## Changes in Sku r32.1
 [Deutsche Patch-Notes / German patch notes](https://duugu.github.io/Sku/index_de): [https://duugu.github.io/Sku/index_de](https://duugu.github.io/Sku/index_de)
 - Added AtlasLoot integration/accessibility. There is a new menu entry Core > Atlas Loot to access AtlasLoot database. You need to have AtlasLootClassic installed for that [https://www.curseforge.com/wow/addons/atlaslootclassic/download/4352422](https://www.curseforge.com/wow/addons/atlaslootclassic/download/4352422). All data is directly taken from the AtlasLoot addon. The Search submenu has just a long list of all items to filter for any specific item. The Lists submenu has the AtlasLoot categories, etc. Item Sets and Items have the usual Sku tooltips with more info (set item list, set bonus, dropped by, currently equipped, etc.). This is just the first implementation with raw access to the data. I will add more features like favorites, filters, etc. in a later step.
