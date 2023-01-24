@@ -1940,6 +1940,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:AuctionHouseOnLogin()
 		SkuCore:AchievementsOnLogin()
 		SkuCore:MinimapScannerOnLogin()
+		SkuCore:DialogKeyLogin()
 
 		if not SkuOptions.db.char[MODULE_NAME] then
 			SkuOptions.db.char[MODULE_NAME] = {}

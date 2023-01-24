@@ -45,6 +45,7 @@ SkuCore\itemRating.lua
 SkuCore\mail.lua
 SkuCore\aq.lua
 SkuCore\alIntegration.lua
+SkuCore\dialogkey.lua
 SkuCore\damageMeter.lua
 SkuCore\Options.lua
 SkuCore\Macro.lua

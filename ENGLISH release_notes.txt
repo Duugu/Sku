@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r32.4
+	- Added DialogKey-like keys for quest and dialog windows. Space key in dialog windows (quest list, dialog options, flight master, innkeeper, etc.) will select the first active quest. If there isn't any active it will select the first available quest. If there isn't any available it will select the first gossip/dialog option. Space in quest dialogs will accept/complete/finish the quest (depending on what window is open). Number key 1 to 4 in the quest reward choice window will select the quest reward number x.
+	- Added Russian translations for resource names (herbs, mining nodes, gas)
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r32.3
 	- Fixed an issue with enabling/disabling the soft targeting categories via key binds or changing settings via the menu where settings were not applied correctly on login/reload.
 	- Changed the maximum range for interact soft targeting from 18 to 15 meters, as it turned out that this is the maximum.
