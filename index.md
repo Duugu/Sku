@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.2](https://github.com/Duugu/Sku/releases/download/r32.2/Sku-r32.2-wrath.zip) (Jan 22nd, 2022)<br>
+- [Sku r32.3](https://github.com/Duugu/Sku/releases/download/r32.3/Sku-r32.3-wrath.zip) (Jan 24th, 2022)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,18 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r32.3
+- Fixed an issue with enabling/disabling the soft targeting categories via key binds or changing settings via the menu where settings were not applied correctly on login/reload.
+- Changed the maximum range for interact soft targeting from 18 to 15 meters, as it turned out that this is the maximum.
+- Fixed the "Do soft targeting if > No hard target locked" option (that is the default value) to ignore interact soft targets if you are targeting something. This should fix the issue where you could not attack hard targets using G if there was some interactable soft target (corpse, box, etc.) in front of you.
+- Fixed an issue where the addon was not playing the target sound/name for corpses on interact soft targeting
+- Added CTRL + SHIFT + N as the default key bind for Enable/disable Interact Soft Targeting. Only applies to new users or users who not already have bound a key for this.
+- Added the option "Chat notification on enabling/disabling soft targeting categories" to the overall soft targeting settings (default: on).
+- Fixed (hopefully) an issue with minimap scanning 
+- Again (hopefully) fixed another bug with minimap scanning and notifications on resources, that was leading to scans not working, resource notification not working, and a load of other strange things.
+- Removed a bunch of Ulduar maps from the database. Should fix the error spam in Ulduar raid.
+- Removed the Options > Options > Debug Options > Show error menu item, as there now is /sku errors, and this is the prefered way to show errors.
+	
 ## Changes in Sku r32.2
 - Changed the default setting for "Options > Options > Soft targeting > Interact > Output sound for" from "Objects and lootable/skinnable and units" to "Objects and lootable/skinnable"
 - Fixed a bug with minimap scanning and notifications on resources	
