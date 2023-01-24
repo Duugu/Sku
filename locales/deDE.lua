@@ -2032,3 +2032,5 @@ L["Objects and lootable/skinnable and units"] = "Objekte und lootbar/kürschnerb
 L["Always"] = "Immer"
 L["If no hard target locked"] = "Kein Hard Target fixiert ist"
 L["Do soft targeting"] = "Soft Targeting durchführen wenn"
+L["Targets you attack"] = "Von dir angegriffene Ziele"
+L["Chat notification on enabling/disabling soft targeting categories"] = "Chat Benachrichtigung bei soft targeting kategorien aktivieren/deaktivieren"

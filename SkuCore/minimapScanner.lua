@@ -115,6 +115,7 @@ SkuCore.IsScanning = false
 local tMinimapYardsMod = 3.125
 local tScanResults = {}
 local tMinimapStore = {}
+local tMinimapDefaults = {}
 local tRange = 15
 local tCurrentMMPosX, tCurrentMMPosY = -(tRange / 2), -(tRange / 2)
 local fx, fy = 0, 0
@@ -296,20 +297,44 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:RestoreMinimap()
-   Minimap:SetParent(tMinimapStore.parent)
-   Minimap:SetScale(tMinimapStore.scale or 1)
-   Minimap:ClearAllPoints()
-   Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
-   MinimapCluster:SetFrameLevel(tMinimapStore.frameLevel)
-   MinimapCluster:SetFrameStrata(tMinimapStore.frameStrata)
-   GameTooltip:SetScale(tMinimapStore.GameTooltipScale)
+   if InCombatLockdown() == true then
+      return
+   end
+   if tMinimapStore.point == nil or tMinimapStore.relativeTo == nil then
+      --print(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
+      --print("d", tMinimapDefaults.point, tMinimapDefaults.relativeTo, tMinimapDefaults.relativePoint, tMinimapDefaults.x, tMinimapDefaults.y)
 
-   for k, v in pairs(SkuCore.minimapChildren) do
-      if v.MMA_VISIBLE then
-         v:Show()
+      Minimap:SetParent(tMinimapDefaults.parent)
+      Minimap:SetScale(tMinimapDefaults.scale or 1)
+      Minimap:ClearAllPoints()
+      Minimap:SetPoint(tMinimapDefaults.point, tMinimapDefaults.relativeTo, tMinimapDefaults.relativePoint, tMinimapDefaults.x, tMinimapDefaults.y)
+      MinimapCluster:SetFrameLevel(tMinimapDefaults.frameLevel)
+      MinimapCluster:SetFrameStrata(tMinimapDefaults.frameStrata)
+      GameTooltip:SetScale(tMinimapDefaults.GameTooltipScale)
+
+      for k, v in pairs(SkuCore.minimapChildren) do
+         if v.MMA_VISIBLE then
+            v:Show()
+         end
+         v:SetFrameStrata(v.MMA_FRAME_STRATA)
+         v:SetFrameLevel(v.MMA_FRAME_LEVEL)
       end
-      v:SetFrameStrata(v.MMA_FRAME_STRATA)
-      v:SetFrameLevel(v.MMA_FRAME_LEVEL)
+   else
+      Minimap:SetParent(tMinimapStore.parent)
+      Minimap:SetScale(tMinimapStore.scale or 1)
+      Minimap:ClearAllPoints()
+      Minimap:SetPoint(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
+      MinimapCluster:SetFrameLevel(tMinimapStore.frameLevel)
+      MinimapCluster:SetFrameStrata(tMinimapStore.frameStrata)
+      GameTooltip:SetScale(tMinimapStore.GameTooltipScale)
+
+      for k, v in pairs(SkuCore.minimapChildren) do
+         if v.MMA_VISIBLE then
+            v:Show()
+         end
+         v:SetFrameStrata(v.MMA_FRAME_STRATA)
+         v:SetFrameLevel(v.MMA_FRAME_LEVEL)
+      end
    end
    --SkuCore.noMouseOverNotification = nil
 end
@@ -541,6 +566,21 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MinimapScannerOnLogin()
+   tMinimapDefaults.point, tMinimapDefaults.relativeTo, tMinimapDefaults.relativePoint, tMinimapDefaults.x, tMinimapDefaults.y = Minimap:GetPoint()
+   tMinimapDefaults.parent = Minimap:GetParent()
+   tMinimapDefaults.scale = Minimap:GetScale()
+   tMinimapDefaults.GameTooltipScale = GameTooltip:GetScale()
+   tMinimapDefaults.frameLevel = MinimapCluster:GetFrameLevel()
+   tMinimapDefaults.frameStrata = MinimapCluster:GetFrameStrata()
+
+   SkuCore.minimapChildren = { Minimap:GetChildren() }
+   for k, v in pairs(SkuCore.minimapChildren) do
+      v.MMA_VISIBLE = v:IsVisible()
+      v.MMA_FRAME_LEVEL = v:GetFrameLevel()
+      v.MMA_FRAME_STRATA = v:GetFrameStrata()
+   end
+
+
    local a = _G["OnMinimapScanner"] or CreateFrame("Button", "OnMinimapScanner", UIParent, "SecureActionButtonTemplate")
    a.timeCounter = 0
    a:SetScript("OnUpdate", function(self, atime)

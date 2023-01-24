@@ -343,6 +343,7 @@ SkuOptions.options = {
 						return SkuOptions.db.profile[MODULE_NAME].debugOptions.soundOnError
 					end
 				},
+				--[[
 				showError = {
 					order = 3,
 					name = L["Fehler anzeigen"] ,
@@ -362,6 +363,7 @@ SkuOptions.options = {
 						end
 					end,
 				},
+				]]
 			},
 		},
 	
@@ -436,7 +438,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled = val
@@ -451,7 +453,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SoftTargetingArcValues,
 								set = function(info,val)
@@ -467,7 +469,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "range",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								min = 1,
 								max = 60,
@@ -484,7 +486,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPlayers = val
@@ -499,7 +501,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPets = val
@@ -514,7 +516,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.forPassive = val
@@ -529,7 +531,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
@@ -545,7 +547,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.outputName = val
@@ -568,7 +570,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled = val
@@ -583,7 +585,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SoftTargetingArcValues,
 								set = function(info,val)
@@ -599,7 +601,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "range",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								min = 1,
 								max = 60,
@@ -616,7 +618,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPlayers = val
@@ -631,7 +633,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.forPets = val
@@ -646,7 +648,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
@@ -662,7 +664,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.outputName = val
@@ -684,7 +686,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled = val
@@ -699,7 +701,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SoftTargetingArcValues,
 								set = function(info,val)
@@ -715,10 +717,10 @@ SkuOptions.options = {
 								desc = "",
 								type = "range",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								min = 1,
-								max = 18,
+								max = 15,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range = val
 								end,
@@ -732,7 +734,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingInteractNameForValues,
 								set = function(info,val)
@@ -748,7 +750,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingSoundsValue,
 								set = function(info,val)
@@ -764,7 +766,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								values = SkuCore.SofttargetingInteractNameForValues,
 								set = function(info,val)
@@ -781,7 +783,7 @@ SkuOptions.options = {
 								desc = "",
 								type = "toggle",
 								OnAction = function(self, info, val)
-									SkuOptions:UpdateSoftTargetingSettings()
+									SkuOptions:UpdateSoftTargetingSettings("all")
 								end,
 								set = function(info,val)
 									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.outputBTTS = val
@@ -798,7 +800,7 @@ SkuOptions.options = {
 						desc = "",
 						type = "select",
 						OnAction = function(self, info, val)
-							SkuOptions:UpdateSoftTargetingSettings()
+							SkuOptions:UpdateSoftTargetingSettings("all")
 						end,
 						values = SkuCore.SofttargetingForceValues,
 						set = function(info,val)
@@ -814,7 +816,7 @@ SkuOptions.options = {
 						desc = "",
 						type = "select",
 						OnAction = function(self, info, val)
-							SkuOptions:UpdateSoftTargetingSettings()
+							SkuOptions:UpdateSoftTargetingSettings("all")
 						end,
 						values = SkuCore.SofttargetingMatchLockedValues,
 						set = function(info,val)
@@ -823,7 +825,23 @@ SkuOptions.options = {
 						get = function(info)
 							return SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked
 						end
-					},							
+					},		
+					enableDisableOutputInChat = {
+						order = 7,
+						name = L["Chat notification on enabling/disabling soft targeting categories"] ,
+						desc = "",
+						type = "toggle",
+						OnAction = function(self, info, val)
+							SkuOptions:UpdateSoftTargetingSettings("all")
+						end,
+						set = function(info,val)
+							SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat = val
+						end,
+						get = function(info)
+							return SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat
+						end
+					},									
+
 				}
 			},
 		},
@@ -881,7 +899,7 @@ SkuOptions.defaults = {
 		interact = {
 			enabled = true,
 			arc = 2,
-			range = 18,
+			range = 15,
 			soundfor = 3,
 			unitNameFor = 3,
 			sound = "sound-waterdrop4",
@@ -889,6 +907,7 @@ SkuOptions.defaults = {
 		},
 		force = 0, --0 1 2 target wird softtarget 		Auto-set target to match soft target. 1 = for enemies, 2 = for friends
 		matchLocked = 1, --0 1 softtarget immer locked wenn target 2?	Match appropriate soft target to locked target. 1 = hard locked target only, 2 = for targets you attack
+		enableDisableOutputInChat = true,
 	},		
 	debugOptions = {
 		soundOnError = false,

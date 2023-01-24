@@ -2037,3 +2037,5 @@ L["Objects and lootable/skinnable and units"] = "Objects and lootable/skinnable 
 L["Always"] = "Always"
 L["If no hard target locked"] = "No hard target locked"
 L["Do soft targeting"] = "Do soft targeting if"
+L["Targets you attack"] = "Targets you attack"
+L["Chat notification on enabling/disabling soft targeting categories"] = "Chat notification on enabling/disabling soft targeting categories"

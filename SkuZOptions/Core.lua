@@ -1078,53 +1078,60 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:UpdateSoftTargetingSettings(aKey)
+	dprint("UpdateSoftTargetingSettings()", aKey)
 	SetCVar("SoftTargetForce", SkuOptions.db.profile[MODULE_NAME].softTargeting.force)
 	SetCVar("SoftTargetMatchLocked", SkuOptions.db.profile[MODULE_NAME].softTargeting.matchLocked)
 
-	if SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled == true then
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" or aKey == "all" then
-			print(L["Soft targeting"].." "..L["Enemies"].." "..L["Enabled"])
+	if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" or aKey == "all" then
+		dprint("enemy all")
+		if SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.enabled == true then
+			SetCVar("SoftTargetEnemy", 3)
+			if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
+				print(L["Soft targeting"].." "..L["Enemies"].." "..L["Enabled"])
+			end			
+		else
+			SetCVar("SoftTargetEnemy", 0)
+			if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true  then
+				print(L["Soft targeting"].." "..L["Enemies"].." "..L["disabled"])
+			end			
 		end
-		SetCVar("SoftTargetEnemy", 3)
 		SetCVar("SoftTargetEnemyArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.arc)
 		SetCVar("SoftTargetEnemyRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.range)
-	else
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGENEMY" then
-			print(L["Soft targeting"].." "..L["Enemies"].." "..L["disabled"])
-		end
-		SetCVar("SoftTargetEnemy", 0)
 	end
 
-	if SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled == true  or aKey == "all" then
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" then
-			print(L["Soft targeting"].." "..L["Friends"].." "..L["Enabled"])
+	if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" or aKey == "all" then
+		dprint("friend all")
+		if SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.enabled == true then
+			SetCVar("SoftTargetFriend", 3)
+			if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
+				print(L["Soft targeting"].." "..L["Friends"].." "..L["Enabled"])
+			end			
+		else
+			SetCVar("SoftTargetFriend", 0)
+			if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
+				print(L["Soft targeting"].." "..L["Friends"].." "..L["disabled"])
+			end			
 		end
-		SetCVar("SoftTargetFriend", 3)
 		SetCVar("SoftTargetFriendArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.arc)
 		SetCVar("SoftTargetFriendRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.range)
-	else
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGFRIENDLY" then
-			print(L["Soft targeting"].." "..L["Friends"].." "..L["disabled"])
-		end
-		SetCVar("SoftTargetFriend", 0)
 	end
 
-	if SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled == true  or aKey == "all" then
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" then
-			print(L["Soft targeting"].." "..L["Interact"].." "..L["Enabled"])
+	if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" or aKey == "all" then
+		dprint("inter all")
+		if SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.enabled == true then
+			SetCVar("SoftTargetInteract", 3)
+			if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
+				print(L["Soft targeting"].." "..L["Interact"].." "..L["Enabled"])
+			end			
+		else
+			SetCVar("SoftTargetInteract", 0)
+			if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" and SkuOptions.db.profile[MODULE_NAME].softTargeting.enableDisableOutputInChat == true then
+				print(L["Soft targeting"].." "..L["Interact"].." "..L["disabled"])
+			end			
 		end
-		SetCVar("SoftTargetInteract", 3)
 		SetCVar("SoftTargetInteractArc", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.arc)
 		SetCVar("SoftTargetInteractRange", SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.range)
-	else
-		if aKey == "SKU_KEY_ENABLESOFTTARGETINGINTERACT" then
-			print(L["Soft targeting"].." "..L["Interact"].." "..L["disabled"])
-		end
-		SetCVar("SoftTargetInteract", 0)
 	end
-
-
---SetCVar("SoftTargetInteract", 3) SetCVar("SoftTargetInteractArc", 2) SetCVar("SoftTargetInteractRange", 15)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
