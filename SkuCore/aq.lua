@@ -1141,6 +1141,16 @@ function SkuCore:MonitorOutputPartyPercent2(aUnitNumber, aVolume, aPitch)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tRandomStC = 1
+local tRandomSt = {
+	[1] = "kimberlyteasesme",
+	[2] = "iwantanicecream",
+	[3] = "ineedtopee",
+	[4] = "ifeeldizzy",
+	[5] = "howarewedoing",
+	[6] = "arewethereyet",
+	[7] = "arewedoneyet",
+}
 local tPrevOutputHandle = {}
 function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice, aPrefix)
 	local inInstance = IsInInstance() 
@@ -1166,6 +1176,19 @@ function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice
 	C_Timer.After(tPause, function()
 		_, tPrevOutputHandle[aVoice] = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..aValue.."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 	end)
+
+	if SkuOptions.db.char[MODULE_NAME].aq.player.health.iceCreamBought ~= true then
+		if math.random(1, 750) == 750 then	
+			C_Timer.After(tPause + 1, function()
+				_, tPrevOutputHandle[aVoice] = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..tRandomSt[tRandomStC].."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+			end)
+			tRandomStC = tRandomStC + 1
+			if tRandomStC > 7 then
+				tRandomStC = 1
+			end
+		end
+	end
+
 end
 
 --menu
@@ -1364,6 +1387,7 @@ function SkuCore:MonitorMenuBuilder()
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				local willPlay, tPrevOutputHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path.."\\"..tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path.."-yay-"..SkuOptions.db.char[MODULE_NAME].aq.player.health.eventVolume..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+				SkuOptions.db.char[MODULE_NAME].aq.player.health.iceCreamBought = true
 			end			
 		end
 		--power
