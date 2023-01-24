@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.3](https://github.com/Duugu/Sku/releases/download/r32.3/Sku-r32.3-wrath.zip) (Jan 24th, 2022)<br>
+- [Sku r32.4](https://github.com/Duugu/Sku/releases/download/r32.4/Sku-r32.4-wrath.zip) (Jan 24th, 2022)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,7 +23,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
-Changes in Sku r32.3
+## Changes in Sku r32.4
+- Added DialogKey-like keys for quest and dialog windows. Space key in dialog windows (quest list, dialog options, flight master, innkeeper, etc.) will select the first active quest. If there isn't any active it will select the first available quest. If there isn't any available it will select the first gossip/dialog option. Space in quest dialogs will accept/complete/finish the quest (depending on what window is open). Number key 1 to 4 in the quest reward choice window will select the quest reward number x.
+- Added Russian translations for resource names (herbs, mining nodes, gas)
+
+## Changes in Sku r32.3
 - Fixed an issue with enabling/disabling the soft targeting categories via key binds or changing settings via the menu where settings were not applied correctly on login/reload.
 - Changed the maximum range for interact soft targeting from 18 to 15 meters, as it turned out that this is the maximum.
 - Fixed the "Do soft targeting if > No hard target locked" option (that is the default value) to ignore interact soft targets if you are targeting something. This should fix the issue where you could not attack hard targets using G if there was some interactable soft target (corpse, box, etc.) in front of you.
