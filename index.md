@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.4](https://github.com/Duugu/Sku/releases/download/r32.4/Sku-r32.4-wrath.zip) (Jan 24th, 2022)<br>
+- [Sku r32.5](https://github.com/Duugu/Sku/releases/download/r32.5/Sku-r32.5-wrath.zip) (Jan 25th, 2022)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.5
+- Fixed a typo that prevented the full addon from being loaded. Pardon. Always a good idea to last minute change stuff when you are tired and should go to sleep anyway. :D
+	
 ## Changes in Sku r32.4
 - Added DialogKey-like keys for quest and dialog windows. Space key in dialog windows (quest list, dialog options, flight master, innkeeper, etc.) will select the first active quest. If there isn't any active it will select the first available quest. If there isn't any available it will select the first gossip/dialog option. Space in quest dialogs will accept/complete/finish the quest (depending on what window is open). Number key 1 to 4 in the quest reward choice window will select the quest reward number x.
 - Added Russian translations for resource names (herbs, mining nodes, gas)
