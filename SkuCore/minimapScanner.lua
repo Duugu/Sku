@@ -61,7 +61,7 @@ SkuCore.RessourceTypes = {
       [6] = { deDE = "Aschewolke", enUS = "Cinder Cloud", zhCN = "灰烬云雾", ruRU = "Облако золы",},
       [7] = { deDE = "Arktische Wolke", enUS = "Arctic Cloud", zhCN = "北极云雾", ruRU = "Снежный шар",},
    },
-   herbs = {, ruRU = ""
+   herbs = {
       [1] = { deDE = "Friedensblume", enUS = "Peacebloom", zhCN = "宁神花", ruRU = "Мироцвет",},
       [2] = { deDE = "Silberblatt", enUS = "Silverleaf", zhCN = "银叶草", ruRU = "Сребролист",},
       [3] = { deDE = "Erdwurzel", enUS = "Earthroot", zhCN = "地根草", ruRU = "Земляной корень",},
