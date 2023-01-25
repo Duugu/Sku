@@ -24,7 +24,7 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 ## Changes in Sku r32.5
-- Fixed a typo that prevented the full addon from being loaded. Pardon. Always a good idea to last minute change stuff when you are tired and should go to sleep anyway. :D
+- Fixed a typo that prevented the full addon from being loaded. Pardon. Always a good idea to last minute change stuff if you are tired and should go to sleep anyway. :D
 	
 ## Changes in Sku r32.4
 - Added DialogKey-like keys for quest and dialog windows. Space key in dialog windows (quest list, dialog options, flight master, innkeeper, etc.) will select the first active quest. If there isn't any active it will select the first available quest. If there isn't any available it will select the first gossip/dialog option. Space in quest dialogs will accept/complete/finish the quest (depending on what window is open). Number key 1 to 4 in the quest reward choice window will select the quest reward number x.
