@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.5](https://github.com/Duugu/Sku/releases/download/r32.5/Sku-r32.5-wrath.zip) (Jan 25th, 2022)<br>
+- [Sku r32.6](https://github.com/Duugu/Sku/releases/download/r32.6/Sku-r32.6-wrath.zip) (Jan 27th, 2022)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.6
+- Tried to enhance the loading times. Initial loading on login and reload is still the same, but changing zones (transition in / out of dungeons, taking portals, ships, etc.) should be a bit faster.
+- Added a new option "Rename" to each aura under Auras > Manage auras to edit the aura name (that is just build from the auras conditions by default).
+- Added options to ignore debuffs by name under Core > Monitor > Player and Party > Debuff. The menu with not ignored debuffs is slow. That is expected, as it has a massive list of all spells in the game. Not a bug! :)
+- Fixed a bug with the class trainer window, where not some not available skill could have been selected as default unless you manually selected any skill to train.
+- Resource scanning with ruRU locale should work now?
+
 ## Changes in Sku r32.5
 - Fixed a typo that prevented the full addon from being loaded. Pardon. Always a good idea to last minute change stuff if you are tired and should go to sleep anyway. :D
 	
