@@ -685,6 +685,10 @@ function SkuCore:AqOnLogin()
 	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.types = {["magic"] = false, ["curse"] = false, ["poison"] = false, ["disease"] = false, }
 	end
+	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.ignored == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.ignored = {}
+	end
+
 	if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.instancesOnly = false
 	end
@@ -713,6 +717,11 @@ function SkuCore:AqOnLogin()
 	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.types = {["magic"] = false, ["curse"] = false, ["poison"] = false, ["disease"] = false, }
 	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.ignored == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.ignored = {}
+	end
+
 	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.instancesOnly = false
 	end
@@ -1023,9 +1032,11 @@ function SkuCore:UNIT_AURA(aEventName, aUnitID)
 			local name, icon, count, dispelType, duration, expirationTime,	source, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, castByPlayer = UnitDebuff(aUnitID, x) --UnitDebuffTest(x)
 			if name then
 				if dispelType then
-					if count == 0 then count = 1 end
-					tCurrentDebuffType[string.lower(dispelType)] = tCurrentDebuffType[string.lower(dispelType)] + count
-					tFound = true
+					if not SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.ignored[name] then
+						if count == 0 then count = 1 end
+						tCurrentDebuffType[string.lower(dispelType)] = tCurrentDebuffType[string.lower(dispelType)] + count
+						tFound = true
+					end
 				end
 			end
 		end
@@ -1192,6 +1203,69 @@ function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice
 end
 
 --menu
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function MonitorSpellMenuBuilder(self)
+	local tUnitType = "player"
+	if self.parent.parent.name == L["Party"] then
+		tUnitType = "party"
+	end
+
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignored"]}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.isSelect = true
+	tNewMenuEntry.OnAction = function(self, aValue, aName)
+		if aName ~= L["Empty"] then
+			SkuOptions.db.char[MODULE_NAME].aq[tUnitType].debuffs.ignored[self.spellName] = nil
+		end
+	end
+	tNewMenuEntry.BuildChildren = function(self)
+		local tFound
+		for spellName, _ in pairs(SkuOptions.db.char[MODULE_NAME].aq[tUnitType].debuffs.ignored) do
+			local tSpellEntry = SkuOptions:InjectMenuItems(self, {spellName}, SkuGenericMenuItem)
+			tSpellEntry.dynamic = true
+			tSpellEntry.BuildChildren = function(self)
+				local tActionEntry = SkuOptions:InjectMenuItems(self, {L["remove from ignore list"]}, SkuGenericMenuItem)
+				tActionEntry.OnEnter = function(self, aValue, aName)
+					self.selectTarget.spellName = spellName
+				end
+			end
+			tFound = true
+		end
+		if not tFound then
+			local tSpellEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+		end
+	end
+
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["not ignored"]}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.isSelect = true
+	tNewMenuEntry.OnAction = function(self, aValue, aName)
+		SkuOptions.db.char[MODULE_NAME].aq[tUnitType].debuffs.ignored[self.spellName] = true
+	end
+	tNewMenuEntry.BuildChildren = function(self)
+		local tFoundNames = {}
+		for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
+			local spellName = spellData[Sku.Loc][SkuDB.spellKeys["name_lang"]]
+			if not SkuOptions.db.char[MODULE_NAME].aq[tUnitType].debuffs.ignored[spellName] then
+				if not tFoundNames[spellName] then
+					tFoundNames[spellName] = true
+					local tSpellEntry = SkuOptions:InjectMenuItems(self, {spellName}, SkuGenericMenuItem)
+					tSpellEntry.dynamic = true
+					tSpellEntry.BuildChildren = function(self)
+						local tActionEntry = SkuOptions:InjectMenuItems(self, {L["add to ignore list"]}, SkuGenericMenuItem)
+						tActionEntry.OnEnter = function(self, aValue, aName)
+							self.selectTarget.spellName = spellName
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MonitorMenuBuilder()
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["player"]}, SkuGenericMenuItem)
@@ -1659,6 +1733,10 @@ function SkuCore:MonitorMenuBuilder()
 					end
 				end
 			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignored debuffs"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = MonitorSpellMenuBuilder
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
@@ -2476,6 +2554,10 @@ function SkuCore:MonitorMenuBuilder()
 					end
 				end
 			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignored debuffs"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = MonitorSpellMenuBuilder
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true

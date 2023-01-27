@@ -93,6 +93,8 @@ SkuGenericMenuItem = {
 				end
 			end
 
+			tCurrentItemNumber = tCurrentItemNumber or 1
+			
 			self.parent.children = {}
 			SkuCore:CheckFrames(nil, true)						
 			tParent:BuildChildren(self.parent)

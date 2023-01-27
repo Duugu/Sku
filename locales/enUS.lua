@@ -2039,3 +2039,11 @@ L["If no hard target locked"] = "No hard target locked"
 L["Do soft targeting"] = "Do soft targeting if"
 L["Targets you attack"] = "Targets you attack"
 L["Chat notification on enabling/disabling soft targeting categories"] = "Chat notification on enabling/disabling soft targeting categories"
+
+L["Renamed"] = "Renamed"
+
+L["ignored debuffs"] ="Ignored debuffs"
+L["ignored"] = "ignored"
+L["not ignored"] = "not ignored"
+L["remove from ignore list"] = "remove from ignore list"
+L["add to ignore list"] = "add to ignore list"

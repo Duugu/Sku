@@ -550,6 +550,11 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		SkuAuras:BuildAuraTooltip(self, self.name)
 	end
 	tTypeItem.BuildChildren = function(self)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Umbenennen"]}, SkuGenericMenuItem)
+		tNewMenuEntry.OnEnter = function(self)
+			self.selectTarget.targetAuraName = self.parent.name
+		end
+
 		if self.parent.name == L["Aktivierte"] then
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Deaktivieren"]}, SkuGenericMenuItem)
 			tNewMenuEntry.OnEnter = function(self)
@@ -885,6 +890,38 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				SkuOptions.Voice:OutputStringBTtts(L["gelöscht"], false, true, 0.1, true)
 			elseif aName == L["Exportieren"] then				
 				SkuAuras:ExportAuraData({self.targetAuraName})
+			elseif aName == L["Umbenennen"] then				
+				local tCurrentName = self.targetAuraName
+				SkuOptions:EditBoxShow(
+					"",
+					function(self)
+						local tNewName = SkuOptionsEditBoxEditBox:GetText()
+						if tNewName and tNewName ~= "" then
+							if SkuOptions.db.char[MODULE_NAME].Auras[tNewName] then
+								SkuOptions.Voice:OutputStringBTtts(L["name already exists"], false, false, 0.2, true, nil, nil, 2)
+								SkuOptions.Voice:OutputStringBTtts(L["Auren verwalten"], false, false, 0.2, true, nil, nil, 2)
+								PlaySound(88)
+								return
+							end
+
+							SkuOptions.db.char[MODULE_NAME].Auras[tNewName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[tCurrentName], true)
+							SkuOptions.db.char[MODULE_NAME].Auras[tCurrentName] = nil
+							PlaySound(88)
+							C_Timer.After(0.01, function()
+								SkuOptions.Voice:OutputStringBTtts(L["Renamed"], false, false, 0.2, true, nil, nil, 2)
+								SkuOptions.Voice:OutputStringBTtts(L["Auren verwalten"], false, false, 0.2, true, nil, nil, 2)
+							end)
+						end
+					end,
+					nil
+				)
+				PlaySound(89)
+				C_Timer.After(0.1, function()
+					SkuOptions.Voice:OutputStringBTtts(L["Enter name and press ENTER key"], true, true, 1, true)
+				end)
+		
+	
+
 			end
 		end
 		tNewMenuEntry.BuildChildren = function(self)

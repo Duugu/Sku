@@ -3145,7 +3145,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 
 
 	local tName = ""
-	if _G["ClassTrainerSkillName"] then
+	if _G["ClassTrainerSkillName"] and _G["ClassTrainerSkillName"]:IsVisible() == true then
 		tName = SkuChat:Unescape(_G["ClassTrainerSkillName"]:GetText()) or ""
 	end
 	local tRequirements = ""

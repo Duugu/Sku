@@ -65,8 +65,9 @@ local WaypointCacheLookupCacheNameForId = {}
 
 local WaypointCacheLookupPerContintent = {}
 function SkuNav:CreateWaypointCache(aAddLocalizedNames)
-	local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 	--print("CreateWaypointCache")
+	
+	local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos
 	WaypointCache = {}
 	WaypointCacheLookupAll = {}
 	WaypointCacheLookupIdForCacheIndex = {}
@@ -2763,9 +2764,9 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		SkuOptions.db.global["SkuNav"].Links = tl
 	end
 
-
-	SkuNav:CreateWaypointCache()
-	--SkuNav:LoadLinkDataFromProfile()
+	if aIsInitialLogin == true or aIsReloadingUi == true then
+		SkuNav:CreateWaypointCache()
+	end
 
 	if _G["SkuNavMMMainFrameZoneSelect"] then
 		C_Timer.NewTimer(1, function()
