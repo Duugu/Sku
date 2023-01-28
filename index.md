@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.6](https://github.com/Duugu/Sku/releases/download/r32.6/Sku-r32.6-wrath.zip) (Jan 27th, 2022)<br>
+- [Sku r32.7](https://github.com/Duugu/Sku/releases/download/r32.7/Sku-r32.7-wrath.zip) (Jan 28th, 2022)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,14 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.7
+- Emilylorange fixed a lot of map bugs in Northrend, mapped Ashenvale, partly mapped Azshara, and added alliance friendly mailboxes to Dalaran.
+- Tried to fix the issue where the soft targeting settings are sometimes not correctly applied. Unfortunately I have no clear idea when that happens. Apparently on some unkown combination of login/reload/teleport/targeting. But I can't find out, and therefore not test. Please report if it still happens. Thanks!
+- Editing an aura won't change the name of renamed auras auras anymore.
+- In editing an existing auras there is a new option "Auto generate aura name" to set renamed auras to the old auto-generated name that is build from the auras conditions.
+- Fixed bugs with buying items from the auction house.
+- Fixed a bug with auras containing the conditions Buff List Target, Debuff List Target, or Spell Name On Cooldown. With multiple auras containing those conditions only the first aura was triggered.
+
 ## Changes in Sku r32.6
 - Tried to enhance the loading times. Initial loading on login and reload is still the same, but changing zones (transition in / out of dungeons, taking portals, ships, etc.) should be a bit faster.
 - Added a new option "Rename" to each aura under Auras > Manage auras to edit the aura name (that is just build from the auras conditions by default).
