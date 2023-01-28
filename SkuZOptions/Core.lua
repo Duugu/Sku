@@ -2803,7 +2803,7 @@ function SkuOptions:OnEnable()
 
 	--set more sound options
 	local tbValues = {["true"] = "1", ["false"] = "0"}
-	print(tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableReverb)])
+	
 	C_CVar.SetCVar("Sound_EnableReverb", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableReverb)])
 	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnablePositionalLowPassFilter)])
 	C_CVar.SetCVar("Sound_EnablePositionalLowPassFilter", tbValues[tostring(SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableDSPEffects)])
@@ -2948,6 +2948,8 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 
 		SkuOptions.db.global["SkuAuras"] = {}
 
+		SkuMob.interactEnabledOrigin = nil
+		SkuMob:PLAYER_TARGET_CHANGED()
 		SkuOptions:UpdateSoftTargetingSettings("all")
 	end
 end

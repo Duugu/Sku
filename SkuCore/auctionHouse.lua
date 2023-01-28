@@ -1911,7 +1911,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                            SkuCore:AuctionHouseResetQuery()
                            SkuOptions.currentMenuPosition.parent.parent.parent.parent:OnSelect()
                            C_Timer.After(0.65, function()
-                              SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"].." "..SkuOptions:VocalizeCurrentMenuName(), true, true, 0.1, nil, nil, nil, 1)
+                              SkuOptions:VocalizeCurrentMenuName()
+                              SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], false, true, 0.1, nil, nil, nil, 1)
                            end)
       
                         end
@@ -1967,7 +1968,8 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_BUY()
                            SkuCore:AuctionHouseResetQuery()
                            SkuOptions.currentMenuPosition.parent.parent.parent.parent:OnSelect()
                            C_Timer.After(0.65, function()
-                              SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"].." "..SkuOptions:VocalizeCurrentMenuName(), true, true, 0.1, nil, nil, nil, 1)
+                              SkuOptions:VocalizeCurrentMenuName()
+                              SkuOptions.Voice:OutputStringBTtts(L["Fertig. Alle gekauft"], false, true, 0.1, nil, nil, nil, 1)
                            end)
 
                         end

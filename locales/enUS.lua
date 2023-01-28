@@ -2047,3 +2047,5 @@ L["ignored"] = "ignored"
 L["not ignored"] = "not ignored"
 L["remove from ignore list"] = "remove from ignore list"
 L["add to ignore list"] = "add to ignore list"
+
+L["Set name to auto generated"] = "Auto generate aura name"

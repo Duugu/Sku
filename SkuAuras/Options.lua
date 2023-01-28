@@ -482,10 +482,9 @@ function SkuAuras:NewAuraValueBuilder(self)
 	return tBuildChildrenFunc
 end
 
+
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttributes, aNewActions, aNewOutputs)
-	--dprint("UpdateAura", aAuraNameToUpdate)
-	--build the new name
+function SkuAuras:BuildAuraName(aNewType, aNewAttributes, aNewActions, aNewOutputs)
 	local tAuraName = SkuAuras.Types[aNewType].friendlyName..";"
 	local tOuterCount = 0
 	for tAttributeName, tAttributeValue in pairs(aNewAttributes) do
@@ -515,9 +514,23 @@ function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttribut
 		tAuraName = string.gsub(tAuraName, "aura;sound#", L["sound;"])
 	end
 
+	return tAuraName
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttributes, aNewActions, aNewOutputs)
+	--dprint("UpdateAura", aAuraNameToUpdate)
+	--build the new name
+	local tAuraName = SkuAuras:BuildAuraName(aNewType, aNewAttributes, aNewActions, aNewOutputs)
+	if SkuOptions.db.char[MODULE_NAME].Auras[aAuraNameToUpdate].customName == true then
+		tAuraName = aAuraNameToUpdate
+	end
+
+	--update aura
 	local tBackTo = SkuOptions.currentMenuPosition.selectTarget.backTo
 	C_Timer.After(0.01, function()
 		--remove old aura
+		local tIsCustomName = SkuOptions.db.char[MODULE_NAME].Auras[aAuraNameToUpdate].customName
 		SkuOptions.db.char[MODULE_NAME].Auras[aAuraNameToUpdate] = nil
 
 		--add new aura
@@ -527,6 +540,7 @@ function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttribut
 			attributes = aNewAttributes,
 			actions = aNewActions,
 			outputs = aNewOutputs,
+			customName = tIsCustomName,
 		}
 
 		SkuOptions.Voice:OutputStringBTtts(L["Aktualisiert"], true, true, 0.3, true)		
@@ -551,6 +565,10 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 	end
 	tTypeItem.BuildChildren = function(self)
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Umbenennen"]}, SkuGenericMenuItem)
+		tNewMenuEntry.OnEnter = function(self)
+			self.selectTarget.targetAuraName = self.parent.name
+		end
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set name to auto generated"]}, SkuGenericMenuItem)
 		tNewMenuEntry.OnEnter = function(self)
 			self.selectTarget.targetAuraName = self.parent.name
 		end
@@ -890,6 +908,14 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				SkuOptions.Voice:OutputStringBTtts(L["gelöscht"], false, true, 0.1, true)
 			elseif aName == L["Exportieren"] then				
 				SkuAuras:ExportAuraData({self.targetAuraName})
+
+			elseif aName == L["Set name to auto generated"] then		
+				local tData = SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName]
+				local tAutoName = SkuAuras:BuildAuraName(tData.type, tData.attributes, tData.actions, tData.outputs)
+				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName], true)
+				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName].customName = nil
+				SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] = nil
+
 			elseif aName == L["Umbenennen"] then				
 				local tCurrentName = self.targetAuraName
 				SkuOptions:EditBoxShow(
@@ -905,6 +931,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 							end
 
 							SkuOptions.db.char[MODULE_NAME].Auras[tNewName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[tCurrentName], true)
+							SkuOptions.db.char[MODULE_NAME].Auras[tNewName].customName = true
 							SkuOptions.db.char[MODULE_NAME].Auras[tCurrentName] = nil
 							PlaySound(88)
 							C_Timer.After(0.01, function()

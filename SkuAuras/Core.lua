@@ -326,6 +326,17 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		
 		tItemHook = true
 	end
+
+	--update pre 32.7 renamed auras
+	if not SkuOptions.db.char[MODULE_NAME].pre327AuraUpdate then
+		for tName, tData in pairs (SkuOptions.db.char[MODULE_NAME].Auras) do
+			local tCheckName = SkuAuras:BuildAuraName(tData.type, tData.attributes, tData.actions, tData.outputs)
+			if tCheckName ~= tName then
+				tData.customName = true
+			end
+		end
+		SkuOptions.db.char[MODULE_NAME].pre327AuraUpdate = true
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -818,10 +829,18 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 
 	tEvaluateData.class = nil
 
+	local toBuffListTarget = tEvaluateData.buffListTarget
+	local toDebuffListTarget = tEvaluateData.debuffListTarget
+	local toSpellNameOnCd = tEvaluateData.spellNameOnCd
+
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
 		if tAuraData.enabled == true then
+			tEvaluateData.buffListTarget = toBuffListTarget
+			tEvaluateData.debuffListTarget = toDebuffListTarget
+			tEvaluateData.spellNameOnCd = toSpellNameOnCd
+
 			local tOverallResult = true
 			local tHasApplicableAttributes = false
 
@@ -995,34 +1014,7 @@ function SkuAuras:CreateAura(aType, aAttributes)
 	end
 	
 	--build the name
-	local tAuraName = SkuAuras.Types[aType].friendlyName..";"
-	local tOuterCount = 0
-	for tAttributeName, tAttributeValue in pairs(tAttributes) do
-		if tOuterCount > 0 then
-			tAuraName = tAuraName..L["und;"]
-		end
-		if #tAttributeValue > 1 then
-			local tCount = 0
-			for tInd, tLocalValue in pairs(tAttributeValue) do
-				if tCount > 0 then
-					tAuraName = tAuraName..L["oder;"]..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..SkuAuras.values[tLocalValue[2]].friendlyName..";"
-				else
-					tAuraName = tAuraName..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..SkuAuras.values[tLocalValue[2]].friendlyName..";"
-				end
-				tCount = tCount + 1
-			end
-		else
-			tAuraName = tAuraName..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tAttributeValue[1][1]].friendlyName..";"..SkuAuras.values[tAttributeValue[1][2]].friendlyName..";"
-		end
-		tOuterCount = tOuterCount + 1
-	end				
-
-	tAuraName = tAuraName..L["dann;"]..SkuAuras.actions[tActions[1]].friendlyName..";"
-
-	for tOutputIndex, tOutputName in pairs(tOutputs) do
-		tAuraName = tAuraName..L[";und;"]..SkuAuras.outputs[sgsub(tOutputName, "output:", "")].friendlyName..";"
-		tAuraName = sgsub(tAuraName, "aura;sound#", "sound;")
-	end
+	local tAuraName = SkuAuras:BuildAuraName(aType, tAttributes, tActions, tOutputs)
 
 	--add aura
 	SkuOptions.db.char[MODULE_NAME].Auras[tAuraName] = {
@@ -1031,13 +1023,14 @@ function SkuAuras:CreateAura(aType, aAttributes)
 		attributes = tAttributes,
 		actions = tActions,
 		outputs = tOutputs,
+		customName = nil,
 	}
 
 	return true
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-tUnitRoles = {}
+local tUnitRoles = {}
 function SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(aUnitGUID)
 	if not aUnitGUID then
 		return

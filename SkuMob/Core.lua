@@ -257,7 +257,6 @@ function SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, aGuid)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local tInteractEnabledOrigin
 function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	aUnitId = aUnitId or "target"
 
@@ -265,13 +264,13 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 	if aUnitId == "target" then
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 then
-			if UnitExists("target") and not tInteractEnabledOrigin then
-				tInteractEnabledOrigin = SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled
+			if UnitExists("target") and not SkuMob.interactEnabledOrigin then
+				SkuMob.interactEnabledOrigin = SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled
 				SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled = false
 				SkuOptions:UpdateSoftTargetingSettings("all")
-			elseif UnitExists("target") ~= true and tInteractEnabledOrigin then
-				SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled = tInteractEnabledOrigin
-				tInteractEnabledOrigin = nil
+			elseif UnitExists("target") ~= true and SkuMob.interactEnabledOrigin then
+				SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled = SkuMob.interactEnabledOrigin
+				SkuMob.interactEnabledOrigin = nil
 				SkuOptions:UpdateSoftTargetingSettings("all")
 			end
 		end
