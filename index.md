@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.7](https://github.com/Duugu/Sku/releases/download/r32.7/Sku-r32.7-wrath.zip) (Jan 28th, 2022)<br>
+- [Sku r32.8](https://github.com/Duugu/Sku/releases/download/r32.8/Sku-r32.8-wrath.zip) (Jan 31st, 2022)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,17 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.8
+- Next try to fix the Interact Soft targeting:<br>
+	I have fixed some code that sometimes was missing target changes and was outputting incorrect "enabled/disabled" messages to chat in some scenarios. That should have fixed the interact soft targeting issues.<br>
+	Additionally I've renamed the global soft targeting option "Do soft targeting if" to "Do interact soft targeting if" to make clear that it is just about interact and not for enemy and friends. <br>
+	Important: as it turned out some of you are not aware of the "Do interact soft targeting if" option or its impact, and therefore by mistake assuming that interact soft targeting unintended was disabled.<br>
+	That is not the case. If you have the "Do interact soft targeting if" setting set to "No hard target locked" (that is the default), then interact soft targeting will be paused as long as you are hard targeting something (by pressing tab or control tab).<br>
+	That is intended. You wouldn't be able to use G for enemies without having interact soft targeting paused while hard targeting some unit.<br>
+	Therefore you need to clear your hard target (escape) to continue interact soft targeting.<br>
+	So, interact soft targeting not working while hard targeting something is no error. Interact soft targeting is not disabled in that case. It is just paused. There is no sense in pressing the Enable interact soft targeting key. It is enabled. Just paused. You just need to clear your hard target.<br>
+	As it sometimes is required to have a friendly hard target locked and still to do interact soft targeting (for example if you are /follow a player and still would like to find objects), I have added a third available option to the "Do interact soft targeting if" setting. That is "No attackable hard target locked" (from now on that is the default for new profiles). That one is pausing interact soft targeting only if you are hard targeting an _attackable_ unit.
+
 ## Changes in Sku r32.7
 - Emilylorange fixed a lot of map bugs in Northrend, mapped Ashenvale, partly mapped Azshara, and added alliance friendly mailboxes to Dalaran.
 - Tried to fix the issue where the soft targeting settings are sometimes not correctly applied. Unfortunately I have no clear idea when that happens. Apparently on some unkown combination of login/reload/teleport/targeting. But I can't find out, and therefore not test. Please report if it still happens. Thanks!
