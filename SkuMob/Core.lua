@@ -60,6 +60,26 @@ function SkuMob:OnEnable()
 		ttime = ttime + time 
 		if ttime > 0.25 then 
 			
+
+			if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
+				if UnitExists("target") == true then
+					if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 or (SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 2 and UnitCanAttack("player", "target") == true) then
+						SkuMob.interactTempDisabled = true
+						SkuOptions:UpdateSoftTargetingSettings("all")
+					else
+						SkuMob.interactTempDisabled = nil
+						SkuOptions:UpdateSoftTargetingSettings("all")
+					end
+				else
+					SkuMob.interactTempDisabled = nil
+					SkuOptions:UpdateSoftTargetingSettings("all")
+				end
+			end
+
+
+
+
+
 			if UnitGUID("target") then
 				if UnitCanAttack("player","target") ~= false then
 					local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
@@ -263,14 +283,17 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	--print("mob PLAYER_TARGET_CHANGED(event, ", aUnitId)
 
 	if aUnitId == "target" then
-		if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 then
-			if UnitExists("target") and not SkuMob.interactEnabledOrigin then
-				SkuMob.interactEnabledOrigin = SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled
-				SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled = false
-				SkuOptions:UpdateSoftTargetingSettings("all")
-			elseif UnitExists("target") ~= true and SkuMob.interactEnabledOrigin then
-				SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled = SkuMob.interactEnabledOrigin
-				SkuMob.interactEnabledOrigin = nil
+		if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
+			if UnitExists("target") == true then
+				if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 or (SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 2 and UnitCanAttack("player", "target") == true) then
+					SkuMob.interactTempDisabled = true
+					SkuOptions:UpdateSoftTargetingSettings("all")
+				else
+					SkuMob.interactTempDisabled = nil
+					SkuOptions:UpdateSoftTargetingSettings("all")
+				end
+			else
+				SkuMob.interactTempDisabled = nil
 				SkuOptions:UpdateSoftTargetingSettings("all")
 			end
 		end

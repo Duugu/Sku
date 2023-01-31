@@ -15,6 +15,7 @@ SkuCore.SofttargetingForceValues  = {
 SkuCore.SofttargetingMatchLockedValues  = {
 	[0] = L["Always"],
 	[1] = L["If no hard target locked"],
+	[2] = L["No attackable hard target locked"],
 	--[2] = L["Targets you attack"],
 }
 SkuCore.SofttargetingInteractNameForValues  = {
@@ -812,7 +813,7 @@ SkuOptions.options = {
 					},							
 					matchLocked = {
 						order = 6,
-						name = L["Do soft targeting"] ,
+						name = L["Do interact soft targeting if"],
 						desc = "",
 						type = "select",
 						OnAction = function(self, info, val)
@@ -906,7 +907,7 @@ SkuOptions.defaults = {
 			outputBTTS = true,
 		},
 		force = 0, --0 1 2 target wird softtarget 		Auto-set target to match soft target. 1 = for enemies, 2 = for friends
-		matchLocked = 1, --0 1 softtarget immer locked wenn target 2?	Match appropriate soft target to locked target. 1 = hard locked target only, 2 = for targets you attack
+		matchLocked = 2, --0 1 softtarget immer locked wenn target 2?	Match appropriate soft target to locked target. 1 = hard locked target only, 2 = for targets you attack
 		enableDisableOutputInChat = true,
 	},		
 	debugOptions = {

@@ -2044,3 +2044,6 @@ L["remove from ignore list"] = "von ignore liste entfernen"
 L["add to ignore list"] = "zu ignore liste hinzufügen"
 
 L["Set name to auto generated"] = "Aura name automatisch generieren"
+
+L["No attackable hard target locked"] = "Kein angreifbares Hard Target fixiert ist"
+L["Do interact soft targeting if"] = "Interagieren Soft Targeting wenn"
