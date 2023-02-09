@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.8](https://github.com/Duugu/Sku/releases/download/r32.8/Sku-r32.8-wrath.zip) (Jan 31st, 2022)<br>
+- [Sku r32.9](https://github.com/Duugu/Sku/releases/download/r32.9/Sku-r32.9-wrath.zip) (Feb 9th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,22 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.9
+- New: Quest notifications, under Quests > Options > Quest notifications. (default: off)<br>
+	Quest notifications are auto anouncing quests nearby you that are available to accept or ready for hand in.<br>
+	The idea is, to not only "play the list of available quests", but instead realize that there are available quests around by just walking around and exploring the area.<br>
+	For that there are audio beacons added to the quest givers with available quest / quests to turn in and the addon is printing the quest in chat.<br>
+	I tried to design the beacons as conservative as possible, as in some areas could be several available quests at one place, and therefore serveral simultanous beacons.<br>
+	As default the beacons at 50 volume of usual beacons, and they are only active in 180 degrees in front of you. The maximum range for available quests is 30 meters. The maximum range for quests to hand in is 60 meters.<br>
+	That should keep the audio clutter in areas with many quests low. If you still uncomforable with the beacons, there are a lot of options to change their appearance under Quests > Options > Quest notifications. Separately for available quests and completed quests. The options should be pretty self explaining.<br>
+	So, as stated, for now the feature is disabled for both types as default. Get to Quests > Options > Quest notifications, enable it, adjust the settings if required, and please provide feedback if the feature provides any value and/or what should be changed.
+- New: AtlasLoot favorites. Added favorites lists for all slot types (head, feet, weapon, etc.) under Core > Atlasloot. Every item in Atlasloot lists has a "Add to favorites" sub menu entry, to add the item to the favorites list. All favorites lists can have a unlimited number of items. They are numbered. The number is the priority for the item. You can move items up and down in the priority lists. The item priority in a list is are just fyi. For organisation. The addon will let you know if you are rolling on an item that is in your favorite list ("item xy, prio x in atlasloot...")
+- Added the currently worn item to vendor item tooltips.
+- Fixed a bug with posting auctions in the auction house. The addon was ignoring the duration parameter and posting all auctions with 24 hours. It now should correctly post auctions for 12, 24, or 48 hours.
+- Fixed a bug with the pet section on the overview pages, that was blocking all sections below the Pet section if there was no pet (for example the Cooldowns section with default settings).
+- Fixed a bug with sending a new mail that was leading to a fatality sound. Bug had no negative effects, though.
+
+
 ## Changes in Sku r32.8
 - Next try to fix the Interact Soft targeting:<br>
 	I have fixed some code that sometimes was missing target changes and was outputting incorrect "enabled/disabled" messages to chat in some scenarios. That should have fixed the interact soft targeting issues.<br>
