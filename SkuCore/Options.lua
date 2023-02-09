@@ -2473,12 +2473,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.BuildChildren = SkuCore.DamageMeterMenuBuilder
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Macros"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = false
+	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.MacroMenuBuilder
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Atlas Loot"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = false
+	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.alIntegrationMenuBuilder
 	

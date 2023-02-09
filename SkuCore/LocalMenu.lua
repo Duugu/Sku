@@ -273,7 +273,7 @@ end
 ---@param itemId number Item ID for item for which comparisns will be returned.
 ---@param textFull string[] List of strings intwo which comparisn sections will be inserted
 ---@param cache table|nil Optional lookup table for saving tooltip texts between calls to this function
-local function insertComparisnSections(itemId, textFull, cache)
+function SkuCore:InsertComparisnSections(itemId, textFull, cache)
 	if itemId and IsEquippableItem(itemId) then
 		local comparisnSections = SkuCore:getItemComparisnSections(itemId, cache)
 		if comparisnSections then
@@ -450,7 +450,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 						end
 						table.insert(bagItemButton.textFull, 1, tFull)
 						
-						insertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
+						SkuCore:InsertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
 					end
 
 					if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
@@ -787,7 +787,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or ""), }
 						end
 						table.insert(bagItemButton.textFull, 1, tFull)
-						insertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
+						SkuCore:InsertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
 					end
 
 					if bagItemButton.textFirstLine == "" and bagItemButton.textFull == "" and bagItemButton.obj.ShowTooltip then
@@ -4159,7 +4159,7 @@ function SkuCore:QuestFrame(aParentChilds)
 								if tText then
 									tFullText = {tFullText}
 									if itemLink then
-										insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
+										SkuCore:InsertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
 									end
 									tTaken[x] = true
 									tText = tText.." "..(_G[tFrameName].count or "")
@@ -4215,7 +4215,7 @@ function SkuCore:QuestFrame(aParentChilds)
 									if tText then
 										tFullText = {tFullText}
 										if itemLink then
-											insertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
+											SkuCore:InsertComparisnSections(select(1, GetItemInfoInstant(itemLink)), tFullText, compCache)
 										end
 										tTaken[x] = true
 										tText = tText.." "..(_G[tFrameName].count or "")

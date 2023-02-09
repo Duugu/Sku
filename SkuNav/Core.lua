@@ -2447,7 +2447,11 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 	SkuOptions.db.profile[MODULE_NAME].selectedWaypoint = aWpName
 
 	local tBeaconType = SkuNav:GetBeaconSoundSetName(SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
-	if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", aWpName, tBeaconType, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+	local tCCType = SkuOptions.db.profile[MODULE_NAME].clickClackSoundset
+	if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled ~= true then
+		tCCType = nil
+	end
+	if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", aWpName, tBeaconType, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange, nil, nil, nil, nil, tCCType) then
 		return
 	end
 	SkuOptions.BeaconLib:StartBeacon("SkuOptions", aWpName)
@@ -2698,6 +2702,7 @@ function SkuNav:PLAYER_LOGIN(...)
 				if SkuOptions.db.profile[MODULE_NAME].tomtomWp == true then
 					local bx, by = SkuOptions.HBD:GetWorldCoordinatesFromZone(x, y, map)
 					local tBeaconType = SkuNav:GetBeaconSoundSetName(SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).size)
+					local tCCType = SkuOptions.db.profile[MODULE_NAME].clickClackSoundset
 					SkuOptions.BeaconLib:CreateBeacon("SkuOptions", SkuOptions.tomtomBeaconName, tBeaconType, by, bx, -3, 1, SkuOptions.db.profile["SkuNav"].beaconVolume)
 					SkuOptions.BeaconLib:StartBeacon("SkuOptions", SkuOptions.tomtomBeaconName)
 				end
@@ -2795,12 +2800,6 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		SkuNav.ClickClackSoundsets[key] = value.friendlyName
 	end
 	SkuNav.options.args.clickClackSoundset.values = SkuNav.ClickClackSoundsets
-
-	if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
-		SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
-	else
-		SkuOptions.BeaconLib:SetClickClackSoundSet("off")
-	end	
 
 	SetCVar("cameraYawSmoothSpeed", 270)
 

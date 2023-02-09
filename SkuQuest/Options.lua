@@ -1,6 +1,16 @@
 local MODULE_NAME = "SkuQuest"
 local L = Sku.L
 
+SkuQuest.questMarkerBeaconsTypeValues = {
+	[-1] = L["schneller je näher, lauter je näher"],
+	[-2] = L["schneller je näher, lauter je näher; lauter in blickrichtung"],
+	[-3] = L["schneller in blickrichtung, lauter je näher"],
+	[-4] = L["gleichbleibend langsam, lauter je näher"],
+	[-5] = L["gleichbleibend schnell, lauter je näher"],
+	[-6] = L["sehr langsam, schneller je näher, lauter je näher; lauter in blickrichtung"],
+	[-7] = L["sehr langsam, schneller je näher, lauter je näher; nur in blickrichtung"],
+}
+
 SkuQuest.options = {
 	name = MODULE_NAME,
 	type = "group",
@@ -17,33 +27,469 @@ SkuQuest.options = {
 				return SkuOptions.db.profile[MODULE_NAME].showDifficultyColors
 			end,
 		},
-		--[[
-		TestDropdown = {
-			name = "Test Dropdown" ,
-			desc = "",
-			values = {
-				["Master"] = "Master",
-				["SFX"] = "SFX",
-				["Music"] = "Music",
-				["Ambience"] = "Ambience",
-				["Dialog"] = "Dialog",
+		questMarkerBeacons ={
+			name = L["quest notifications"],
+			type = "group",
+			order = 2,
+			args= {
+				availableQuests ={
+					name = L["available (can be accepted)"],
+					type = "group",
+					order = 1,
+					args= {
+						enabled = {
+							order = 1,
+							name = L["Enabled"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enabled = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enabled
+							end
+						},
+						enableBeacons = {
+							order = 1.4,
+							name = L["enable Beacons"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enableBeacons = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enableBeacons
+							end
+						},
+						enableClickClack = {
+							order = 1.5,
+							name = L["Ton für Klick bei Beacons"],
+							desc = "",
+							type = "select",
+							values = SkuNav.ClickClackSoundsets,
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)			
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enableClickClack = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enableClickClack
+							end
+						},						
+						singlePing = {
+							order = 1.75,
+							name = L["only one beacon ping"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.singlePing = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.singlePing
+							end
+						},
+
+						-- beacon sound
+						beaconSoundSet = {
+							order = 2,
+							name = L["beacon sound"],
+							desc = "",
+							type = "select",
+							values = SkuNav.BeaconSoundSetNames,
+							OnAction = function(self, info, val)
+								local tPlayerPosX, tPlayerPosY = UnitPosition("player")
+								tPlayerPosX, tPlayerPosY = tPlayerPosX + 6, tPlayerPosY + 6
+								if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+									return
+								end
+								SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
+								C_Timer.After(1, function()
+									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", "sampleBeacon")
+								end)
+
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,	
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconSoundSet = SkuNav.BeaconSoundSetNames[val]
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconSoundSet
+							end
+						},				
+						-- beacon type
+						beaconType = {
+							order = 3,
+							name = L["beacon type"],
+							desc = "",
+							type = "select",
+							values = SkuQuest.questMarkerBeaconsTypeValues,
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconType = SkuQuest.questMarkerBeaconsTypeValues[val]
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconType
+							end
+						},									
+						-- beacon volume
+						beaconVolume = {
+							order = 4,
+							name = L["beacon volume"],
+							desc = "",
+							type = "range",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconVolume = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.beaconVolume
+							end
+						},
+				
+						-- max range
+						maxRange = {
+							order = 5,
+							name = L["max notification range"],
+							desc = "",
+							type = "range",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.maxRange = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.maxRange
+							end
+						},
+						-- chat output
+						chatNotification = {
+							order = 6,
+							name = L["chat notification"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.chatNotification = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.chatNotification
+							end
+						},
+						-- disable on
+						disableOn = {
+							order = 7,
+							name = L["distance to quest giver for disabling quest notification"],
+							desc = "",
+							type = "range",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.disableOn = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.disableOn
+							end
+						},						
+						-- disable seen forever
+						disableSeenForever = {
+							order = 8,
+							name = L["disable seen quest notifications forever"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.disableSeenForever = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.disableSeenForever
+							end
+						},
+						minLevel = {
+							order = 9,
+							name = L["Ignore quests x levels below your level"],
+							desc = "",
+							type = "range",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.minLevel = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.minLevel
+							end
+						},						
+
+					},
+				},
+				currentQuests ={
+					name = L["current (in your log, ready to hand in)"],
+					type = "group",
+					order = 1,
+					args= {
+						enabled = {
+							order = 1,
+							name = L["Enabled"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enabled = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enabled
+							end
+						},
+						enableBeacons = {
+							order = 1.4,
+							name = L["enable Beacons"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enableBeacons = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enableBeacons
+							end
+						},
+						enableClickClack = {
+							order = 1.5,
+							name = L["Ton für Klick bei Beacons"],
+							desc = "",
+							type = "select",
+							values = SkuNav.ClickClackSoundsets,
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)			
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enableClickClack = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enableClickClack
+							end
+						},						
+						singlePing = {
+							order = 1.75,
+							name = L["only one beacon ping"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.singlePing = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.singlePing
+							end
+						},
+
+						beaconSoundSet = {
+							order = 2,
+							name = L["beacon sound"],
+							desc = "",
+							type = "select",
+							values = SkuNav.BeaconSoundSetNames,
+							OnAction = function(self, info, val)
+								local tPlayerPosX, tPlayerPosY = UnitPosition("player")
+								tPlayerPosX, tPlayerPosY = tPlayerPosX + 6, tPlayerPosY + 6
+								if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+									return
+								end
+								SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
+								C_Timer.After(1, function()
+									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", "sampleBeacon")
+								end)
+
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,	
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconSoundSet = SkuNav.BeaconSoundSetNames[val]
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconSoundSet
+							end
+						},
+						-- beacon type
+						beaconType = {
+							order = 3,
+							name = L["beacon type"],
+							desc = "",
+							type = "select",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							values = SkuQuest.questMarkerBeaconsTypeValues,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconType = SkuQuest.questMarkerBeaconsTypeValues[val]
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconType
+							end
+						},							
+						-- beacon volume
+						beaconVolume = {
+							order = 4,
+							name = L["beacon volume"],
+							desc = "",
+							type = "range",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconVolume = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.beaconVolume
+							end
+						},
+				
+						-- max range
+						maxRange = {
+							order = 5,
+							name = L["max notification range"],
+							desc = "",
+							type = "range",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.maxRange = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.maxRange
+							end
+						},
+						-- chat output
+						chatNotification = {
+							order = 6,
+							name = L["chat notification"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.chatNotification = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.chatNotification
+							end
+						},
+						-- disable on
+						disableOn = {
+							order = 7,
+							name = L["distance to quest giver for disabling quest notification"],
+							desc = "",
+							type = "range",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableOn = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableOn
+							end
+						},						
+						-- disable seen forever
+						disableSeenForever = {
+							order = 8,
+							name = L["disable seen quest notifications forever"],
+							desc = "",
+							type = "toggle",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableSeenForever = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableSeenForever
+							end
+						},						
+						minLevel = {
+							order = 9,
+							name = L["Ignore quests x levels below your level"],
+							desc = "",
+							type = "range",
+							OnAction = function(self, info, val)
+								SkuQuest:UpdateZoneAvailableQuestList(true)
+							end,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.minLevel = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.minLevel
+							end
+						},						
+
+					},
+				},
 			},
-			type = "select",
-			set = function(info, val) 
-				SkuOptions.db.profile[MODULE_NAME].TestDropdown = val
-			end,
-			get = function(info) 
-				return SkuOptions.db.profile[MODULE_NAME].TestDropdown
-			end
 		},
-		]]
 	}
 }
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuQuest.defaults = {
 	enable = true,
 	showDifficultyColors = true,
-	--TestDropdown = "Dialog",
+	questMarkerBeacons = {
+		availableQuests = {
+			enabled = false,
+			enableBeacons = true,
+			enableClickClack = "off",
+			singlePing = false,
+			beaconSoundSet = "Beacon 1",
+			beaconType = -7,
+			beaconVolume = 40,
+			maxRange = 30,
+			chatNotification = true,
+			disableOn = 5,
+			disableSeenForever = false,
+			minLevel = 5,
+		},
+		currentQuests = {
+			enabled = false,
+			enableBeacons = true,
+			enableClickClack = "off",
+			singlePing = false,
+			beaconSoundSet = "Beacon 3",
+			beaconType = -7,
+			beaconVolume = 40,
+			maxRange = 60,
+			chatNotification = true,
+			disableOn = 5,			
+			disableSeenForever = false,
+			minLevel = 15,
+		},
+	},
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -66,7 +512,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tStatesFriendly = {["false"] = L["No"], ["true"] = L["Yes"], ["nil"] = L["Unknown"],}
-local function GetQuestDataStringFromDB(aQuestID, aZoneID)
+function SkuQuest:GetQuestDataStringFromDB(aQuestID, aZoneID)
 	local tSections = {}
 
 	if aQuestID then
@@ -250,7 +696,7 @@ local function GetQuestDataStringFromDB(aQuestID, aZoneID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
+local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3, aOnlyUiMapId)
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 
 	for i, tNpcID in pairs(aCreatureIds) do
@@ -262,7 +708,7 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
 				for is, vs in pairs(tSpawns) do
 					local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
 					--we don't care for stuff that isn't in the open world
-					if isUiMap then
+					if isUiMap and (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
 						local tData = SkuDB.InternalAreaTable[is]
 						if tData then
 							if SkuNav:GetContinentNameFromContinentId(tData.ContinentID) then
@@ -325,7 +771,7 @@ local function CreatureIdHelper(aCreatureIds, aTargetTable, aOnly3)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3)
+function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3, aOnlyUiMapId)
 	--dprint("GetResultingWps", aSubIDTable, aSubType, aQuestID, tResultWPs, aOnly3)
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 	local tCurrentAreaId = SkuNav:GetCurrentAreaId()
@@ -343,7 +789,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 						if tObjectSpawns then
 							for is, vs in pairs(tObjectSpawns) do
 								local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
-								if isUiMap then
+								if isUiMap and (not aOnlyUiMapId or aOnlyUiMapId == isUiMap ) then
 									--if is == tCurrentAreaId then
 										local tData = SkuDB.InternalAreaTable[is]
 										if tData then
@@ -381,14 +827,14 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 				end
 			end
 			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]] then
-				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]], tResultWPs, aOnly3)
+				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["npcDrops"]], tResultWPs, aOnly3, aOnlyUiMapId)
 			end
 			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["itemDrops"]] then
 				--dprint("item drop from item")
 
 			end
 			if SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]] then
-				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]], tResultWPs, aOnly3)
+				CreatureIdHelper(SkuDB.itemDataTBC[tItemId][SkuDB.itemKeys["vendors"]], tResultWPs, aOnly3, aOnlyUiMapId)
 			end
 		end
 	elseif aSubType == "object" then
@@ -442,7 +888,7 @@ function SkuQuest:GetResultingWps(aSubIDTable, aSubType, aQuestID, tResultWPs, a
 		end
 
 	elseif aSubType == "creature" then
-		CreatureIdHelper(aSubIDTable, tResultWPs, aOnly3)
+		CreatureIdHelper(aSubIDTable, tResultWPs, aOnly3, aOnlyUiMapId)
 
 	elseif aSubType == "waypoint" then
 		for i, tWaypointName in pairs(aSubIDTable) do
@@ -962,6 +1408,259 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuQuest:GetUnsortedAvailableQuestsTable()
+	local tUiMap = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+	local tPlayX, tPlayY = UnitPosition("player")
+	local tShowQuestsTable = {}
+
+	tCurrentQuestLogQuestsTable = {}
+	local numEntries, numQuests = GetNumQuestLogEntries()
+	if (numEntries >= 0) then
+		for questLogID = 1, numEntries do
+			local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
+			tCurrentQuestLogQuestsTable[questID] = true
+		end
+	end
+	for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
+		if SkuDB.questDataTBC[i] then
+			local tZoneId
+			if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
+				--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1]
+				tZoneId = SkuDB.NpcData.Data[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]][SkuDB.NpcData.Keys['zoneID']]
+			elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then --objects
+				--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]
+				if SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]] then
+					tZoneId = SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]]
+				end
+			elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3] then --items
+				--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3]
+			end
+
+			if tZoneId == tUiMap then
+
+				local tnextQuestInChain = SkuDB.questDataTBC[i][SkuDB.questKeys["nextQuestInChain"]]
+				local tOutFlag = false
+				if tnextQuestInChain then
+					if tCurrentQuestLogQuestsTable[tnextQuestInChain] then
+						tOutFlag = true
+					end
+					if C_QuestLog.IsQuestFlaggedCompleted(tonumber(tnextQuestInChain)) == true then
+						tOutFlag = true
+					end
+				end
+				if (C_QuestLog.IsQuestFlaggedCompleted(i) == false)
+					and (SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]] <= UnitLevel("player"))
+					and not tCurrentQuestLogQuestsTable[i]
+					and tOutFlag ~= true
+				then
+					local rRaces = {}
+					local tFlagH = nil
+					local tFlagA = nil
+					local tFlagR = nil
+					local tPlayerFactionEn, tPlayerFactionLoc = UnitFactionGroup("player")
+					local tPlayerclassName, tPlayerclassFilename, tPlayerclassId = UnitClass("player")
+					local tmpraceName, tmpraceFile, tmpraceID = UnitRace("player")
+					local tRaceName = C_CreatureInfo.GetRaceInfo(tmpraceID)
+					local tCount = 0
+					if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]] then
+						for iR, vR in pairs(SkuDB.raceKeys) do
+							if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]]) > 0 then
+								if iR == "ALL_HORDE" then
+									tFlagH = true
+								end
+								if iR == "ALL_ALLIANCE" then
+									tFlagA = true
+								end
+								if iR ~= "ALL_HORDE" and iR ~= "ALL_ALLIANCE" then
+									local tCleanRaceName = string.upper(string.gsub(iR, "_", ""))
+									if tCleanRaceName == "UNDEAD" then
+										tCleanRaceName = "SCOURGE"
+									end
+									rRaces[tCleanRaceName] = true
+									tCount = tCount + 1
+								end
+							else
+								tFlagH = true
+								tFlagA = true
+							end
+						end
+					end
+					if tRaceName then
+						if rRaces[string.upper(tRaceName.clientFileString)] then
+							tFlagR = true
+						end
+					end
+
+					if not tFlagR then
+						if tCount == 0 and ((tPlayerFactionEn == "Alliance" and tFlagA) or (tPlayerFactionEn == "Horde" and tFlagH)) then
+							tFlagR = true
+						end
+					end
+
+					if tFlagR then
+						local tClasses = {}
+						local tFlagClass = nil
+						if not SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]] then
+							tFlagClass = true
+						end
+						for iR, vR in pairs(SkuDB.classKeys) do
+							if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]] then
+								if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]]) > 0 then
+									tClasses[#tClasses+1] = iR
+								end
+							end
+						end
+						for i, v in pairs(tClasses) do
+							if tPlayerclassFilename == v then
+								tFlagClass = true
+							end
+						end
+						if tFlagClass == true then
+							local tPreQuestsTable = {}
+							if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
+								for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]]) do
+									tPreQuestsTable[vR] = vR
+								end
+							end
+
+							local tPreQuestSingleOk = false
+							local tHasPreQuestSingle = false
+							if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
+								for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]]) do
+									tHasPreQuestSingle = true
+									if C_QuestLog.IsQuestFlaggedCompleted(tonumber(vR)) == true then
+										tPreQuestSingleOk = true
+									end
+								end
+							end
+
+							local tAllCompletedFlag = true
+							for iPQ, vPQ in pairs(tPreQuestsTable) do
+								if C_QuestLog.IsQuestFlaggedCompleted(tonumber(vPQ)) == false then
+									tAllCompletedFlag = false
+								end
+							end
+
+							if tAllCompletedFlag == true and (tHasPreQuestSingle == false or (tHasPreQuestSingle == true and  tPreQuestSingleOk == true)) then
+								
+								local tIsOk = true
+								--dprint(i, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]])
+								if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]] then
+									local tFaction = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]][1]
+									if tFaction then
+										local tMinRep = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]][2]
+										local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfoByID(tFaction)
+										if earnedValue then
+											if earnedValue < tMinRep then
+												tIsOk = false
+											end
+										else
+											tIsOk = false
+										end
+									end
+								end
+								if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMaxRep"]] then
+									local tFaction = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMaxRep"]][1]
+									if tFaction then
+										local tMaxRep = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMaxRep"]][2]
+										local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfoByID(tFaction)
+										if earnedValue then
+											if earnedValue > tMaxRep then
+												tIsOk = false
+											end
+										else
+											tIsOk = false
+										end
+									end
+								end
+									
+								if SkuDB.questDataTBC[i][SkuDB.questKeys["exclusiveTo"]] then
+									for x = 1, #SkuDB.questDataTBC[i][SkuDB.questKeys["exclusiveTo"]] do
+										local tExQuestId = SkuDB.questDataTBC[i][SkuDB.questKeys["exclusiveTo"]][x]
+										if C_QuestLog.IsQuestFlaggedCompleted(tExQuestId) == true then
+											tIsOk = false
+										end
+										if tCurrentQuestLogQuestsTable[tExQuestId] then
+											tIsOk = false
+										end
+									end
+								end
+
+								if tIsOk == true then
+									local tIsEventOk = true
+									if SkuQuest:IsEventQuest(i) == true then
+										local tEventName = SkuQuest:GetEventNameFor(i)
+										if SkuQuest:IsEventActive(tEventName) ~= true then
+											tIsEventOk = false
+										end
+									end
+
+									if tIsEventOk == true then
+										--['requiredSkill'] = 18, -- table: {skill(int), value(int)}
+										--['requiredSourceItems'] = 21, -- table: {item(int), ...} Items that are not an objective but still needed for the quest.
+
+
+										tShowQuestsTable[i] = {textFull = SkuQuest:GetQuestDataStringFromDB(i, tZoneId)}
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	local tcount = 0
+	local tUnSortedTable = {}
+	local tIdTable = {}
+	local tPlayerTopAreaId = SkuNav:GetAreaIdFromUiMapId(tUiMap)
+	for i, v in pairs(tShowQuestsTable) do
+		local tDistanceToQuestGiver = 0
+		if SkuDB.questDataTBC[i] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then
+			local tQuestGiverID = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]
+			if SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]] then
+				if SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap] then
+					local tSpawnX, tSpawnY = SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][1], SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][2]
+					local tContintentId = select(3, SkuNav:GetAreaData(is))
+					local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
+					local tX, tY = worldPosition:GetXY()
+					local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
+					tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = {tDistance, tX, tY, i}
+					tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+				end
+			end
+		elseif SkuDB.questDataTBC[i] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then
+			local tObjectID = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]
+			local tObjectData = SkuDB.objectDataTBC[tObjectID]
+			local tObjectSpawns = tObjectData[SkuDB.objectKeys["spawns"]]
+			if tObjectSpawns then
+				if tObjectSpawns[tUiMap] then
+					local tSpawnX, tSpawnY = tObjectSpawns[tUiMap][1][1], tObjectSpawns[tUiMap][1][2]
+					local tContintentId = select(3, SkuNav:GetAreaData(is))
+					local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
+					local tX, tY = worldPosition:GetXY()
+					local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
+					tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = {tDistance, tX, tY, i}
+					tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+				end
+			end
+		else
+			--tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
+			tIdTable["99999;"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+		end
+
+		if not tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] then
+			--tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
+			tIdTable["99999;"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
+		end
+	end
+
+	return tUnSortedTable, tIdTable, tCurrentQuestLogQuestsTable
+end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tDifficultyColors = {
 	QuestDifficulty_Trivial = L["trivial"],
 	QuestDifficulty_Standard = L["easy"],
@@ -1079,274 +1778,23 @@ function SkuQuest:MenuBuilder(aParentEntry)
 		tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		end
 		tNewMenuSubEntry.BuildChildren = function(self)
-			local tUiMap = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
-
-			local tPlayX, tPlayY = UnitPosition("player")
-			local tShowQuestsTable = {}
-
-			tCurrentQuestLogQuestsTable = {}
-			local numEntries, numQuests = GetNumQuestLogEntries()
-			if (numEntries >= 0) then
-				for questLogID = 1, numEntries do
-					local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
-					tCurrentQuestLogQuestsTable[questID] = true
-					--dprint(title, questID)
-				end
-			end
-			for i, v in pairs(SkuDB.questLookup[Sku.Loc]) do
-				if SkuDB.questDataTBC[i] then
-					local tZoneId
-					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then --creatures
-						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1]
-						tZoneId = SkuDB.NpcData.Data[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]][SkuDB.NpcData.Keys['zoneID']]
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then --objects
-						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]
-						if SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]] then
-							tZoneId = SkuDB.objectDataTBC[SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]][SkuDB.objectKeys["zoneID"]]
-						end
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]] and SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3] then --items
-						--local tIds = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][3]
-					end
-
-					if tZoneId == tUiMap then
-
-						local tnextQuestInChain = SkuDB.questDataTBC[i][SkuDB.questKeys["nextQuestInChain"]]
-						local tOutFlag = false
-						if tnextQuestInChain then
-							if tCurrentQuestLogQuestsTable[tnextQuestInChain] then
-								tOutFlag = true
-							end
-							if C_QuestLog.IsQuestFlaggedCompleted(tonumber(tnextQuestInChain)) == true then
-								tOutFlag = true
-							end
-						end
-						if (C_QuestLog.IsQuestFlaggedCompleted(i) == false)
-							and (SkuDB.questDataTBC[i][SkuDB.questKeys["requiredLevel"]] <= UnitLevel("player"))
-							and not tCurrentQuestLogQuestsTable[i]
-							and tOutFlag ~= true
-						then
-							local rRaces = {}
-							local tFlagH = nil
-							local tFlagA = nil
-							local tFlagR = nil
-							local tPlayerFactionEn, tPlayerFactionLoc = UnitFactionGroup("player")
-							local tPlayerclassName, tPlayerclassFilename, tPlayerclassId = UnitClass("player")
-							local tmpraceName, tmpraceFile, tmpraceID = UnitRace("player")
-							local tRaceName = C_CreatureInfo.GetRaceInfo(tmpraceID)
-							local tCount = 0
-							if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]] then
-								for iR, vR in pairs(SkuDB.raceKeys) do
-									if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredRaces"]]) > 0 then
-										if iR == "ALL_HORDE" then
-											tFlagH = true
-										end
-										if iR == "ALL_ALLIANCE" then
-											tFlagA = true
-										end
-										if iR ~= "ALL_HORDE" and iR ~= "ALL_ALLIANCE" then
-											local tCleanRaceName = string.upper(string.gsub(iR, "_", ""))
-											if tCleanRaceName == "UNDEAD" then
-												tCleanRaceName = "SCOURGE"
-											end
-											rRaces[tCleanRaceName] = true
-											tCount = tCount + 1
-										end
-									else
-										tFlagH = true
-										tFlagA = true
-									end
-								end
-							end
-							if tRaceName then
-								if rRaces[string.upper(tRaceName.clientFileString)] then
-									tFlagR = true
-								end
-							end
-
-							if not tFlagR then
-								if tCount == 0 and ((tPlayerFactionEn == "Alliance" and tFlagA) or (tPlayerFactionEn == "Horde" and tFlagH)) then
-									tFlagR = true
-								end
-							end
-
-							if tFlagR then
-								local tClasses = {}
-								local tFlagClass = nil
-								if not SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]] then
-									tFlagClass = true
-								end
-								for iR, vR in pairs(SkuDB.classKeys) do
-									if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]] then
-										if bit.band(vR, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredClasses"]]) > 0 then
-											tClasses[#tClasses+1] = iR
-										end
-									end
-								end
-								for i, v in pairs(tClasses) do
-									if tPlayerclassFilename == v then
-										tFlagClass = true
-									end
-								end
-								if tFlagClass == true then
-									local tPreQuestsTable = {}
-									if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]] then -- table: {quest(int)} - all to be completed before next in series
-										for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestGroup"]]) do
-											tPreQuestsTable[vR] = vR
-										end
-									end
-
-									local tPreQuestSingleOk = false
-									local tHasPreQuestSingle = false
-									if SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]] then -- table: {quest(int)} - one to be completed before next in series
-										for iR, vR in pairs(SkuDB.questDataTBC[i][SkuDB.questKeys["preQuestSingle"]]) do
-											tHasPreQuestSingle = true
-											if C_QuestLog.IsQuestFlaggedCompleted(tonumber(vR)) == true then
-												tPreQuestSingleOk = true
-											end
-										end
-									end
-
-									local tAllCompletedFlag = true
-									for iPQ, vPQ in pairs(tPreQuestsTable) do
-										if C_QuestLog.IsQuestFlaggedCompleted(tonumber(vPQ)) == false then
-											tAllCompletedFlag = false
-										end
-									end
-
-									if tAllCompletedFlag == true and (tHasPreQuestSingle == false or (tHasPreQuestSingle == true and  tPreQuestSingleOk == true)) then
-										
-										local tIsOk = true
-										--dprint(i, SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]])
-										if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]] then
-											local tFaction = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]][1]
-											if tFaction then
-												local tMinRep = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMinRep"]][2]
-												local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfoByID(tFaction)
-												if earnedValue then
-													if earnedValue < tMinRep then
-														tIsOk = false
-													end
-												else
-													tIsOk = false
-												end
-											end
-										end
-										if SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMaxRep"]] then
-											local tFaction = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMaxRep"]][1]
-											if tFaction then
-												local tMaxRep = SkuDB.questDataTBC[i][SkuDB.questKeys["requiredMaxRep"]][2]
-												local name, description, standingId, bottomValue, topValue, earnedValue, atWarWith, canToggleAtWar, isHeader, isCollapsed, hasRep, isWatched, isChild, factionID, hasBonusRepGain, canBeLFGBonus = GetFactionInfoByID(tFaction)
-												if earnedValue then
-													if earnedValue > tMaxRep then
-														tIsOk = false
-													end
-												else
-													tIsOk = false
-												end
-											end
-										end
-											
-										if SkuDB.questDataTBC[i][SkuDB.questKeys["exclusiveTo"]] then
-											for x = 1, #SkuDB.questDataTBC[i][SkuDB.questKeys["exclusiveTo"]] do
-												local tExQuestId = SkuDB.questDataTBC[i][SkuDB.questKeys["exclusiveTo"]][x]
-												if C_QuestLog.IsQuestFlaggedCompleted(tExQuestId) == true then
-													tIsOk = false
-												end
-												if tCurrentQuestLogQuestsTable[tExQuestId] then
-													tIsOk = false
-												end
-											end
-										end
-
-										if tIsOk == true then
-											local tIsEventOk = true
-											if SkuQuest:IsEventQuest(i) == true then
-												local tEventName = SkuQuest:GetEventNameFor(i)
-												if SkuQuest:IsEventActive(tEventName) ~= true then
-													tIsEventOk = false
-												end
-											end
-
-											if tIsEventOk == true then
-												--['requiredSkill'] = 18, -- table: {skill(int), value(int)}
-												--['requiredSourceItems'] = 21, -- table: {item(int), ...} Items that are not an objective but still needed for the quest.
-
-
-												tShowQuestsTable[i] = {textFull = GetQuestDataStringFromDB(i, tZoneId)}
-											end
-										end
-									end
-								end
-							end
-						end
-					end
-				end
-			end
+			local tUnSortedTable, tIdTable = SkuQuest:GetUnsortedAvailableQuestsTable()
 
 			local tNewMenuSubEntryDist =SkuOptions:InjectMenuItems(self, {L["By distance"]}, SkuGenericMenuItem)
 			tNewMenuSubEntryDist.dynamic = true
 			tNewMenuSubEntryDist.filterable = true
 			tNewMenuSubEntryDist.OnAction = function(self, aValue, aName)
-
 			end
 			tNewMenuSubEntryDist.BuildChildren = function(self)
-				local tcount = 0
-				local tUnSortedTable = {}
-				local tIdTable = {}
-				local tPlayerTopAreaId = SkuNav:GetAreaIdFromUiMapId(tUiMap)
-				for i, v in pairs(tShowQuestsTable) do
-				--dprint(i, v)
-					local tDistanceToQuestGiver = 0
-					if SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1] then
-						local tQuestGiverID = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][1][1]
-						if SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]] then
-							if SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap] then
-								local tSpawnX, tSpawnY = SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][1], SkuDB.NpcData.Data[tQuestGiverID][SkuDB.NpcData.Keys["spawns"]][tUiMap][1][2]
-								local tContintentId = select(3, SkuNav:GetAreaData(is))
-								local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
-								local tX, tY = worldPosition:GetXY()
-								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
-								tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = tDistance
-								tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
-							end
-						end
-					elseif SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2] then
-						local tObjectID = SkuDB.questDataTBC[i][SkuDB.questKeys["startedBy"]][2][1]
-						local tObjectData = SkuDB.objectDataTBC[tObjectID]
-						local tObjectSpawns = tObjectData[SkuDB.objectKeys["spawns"]]
-						if tObjectSpawns then
-							if tObjectSpawns[tUiMap] then
-								local tSpawnX, tSpawnY = tObjectSpawns[tUiMap][1][1], tObjectSpawns[tUiMap][1][2]
-								local tContintentId = select(3, SkuNav:GetAreaData(is))
-								local _, worldPosition = C_Map.GetWorldPosFromMapPos(SkuNav:GetUiMapIdFromAreaId(tUiMap), CreateVector2D(tonumber(tSpawnX) / 100, tonumber(tSpawnY) / 100))
-								local tX, tY = worldPosition:GetXY()
-								local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tX, tY)
-								tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = tDistance
-								tIdTable[tDistance..L[";Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
-							end
-						end
-					else
-						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
-						tIdTable["99999;"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
-					end
-
-					if not tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] then
-						tUnSortedTable[SkuDB.questLookup[Sku.Loc][i][1]] = 99999
-						tIdTable["99999;"..L["Meter"].."#"..SkuDB.questLookup[Sku.Loc][i][1]] = i
-					end
-				end
-
 				local tSortedTable = {}
-				for k,v in SkuSpairs(tUnSortedTable, function(t,a,b) return t[b] > t[a] end) do --nach wert
-					tSortedTable[#tSortedTable+1] = v..L[";Meter"].."#"..k
+				for k,v in SkuSpairs(tUnSortedTable, function(t,a,b) return t[b][1] > t[a][1] end) do --nach wert
+					tSortedTable[#tSortedTable+1] = v[1]..L[";Meter"].."#"..k
 				end
 				if #tSortedTable > 0 then
 					for iS, vS in ipairs(tSortedTable) do
 						local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {vS}, SkuGenericMenuItem)
 						tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
-							SkuOptions.currentMenuPosition.textFull = GetQuestDataStringFromDB(tIdTable[vS])
-
-
+							SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(tIdTable[vS])
 						end
 						CreateQuestSubmenu(tNewSubMenuEntry2, tIdTable[vS])--iS)
 						tcount = tcount + 1
@@ -1396,7 +1844,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 
 					local tNewSubMenuEntry2 = SkuOptions:InjectMenuItems(self, {tUniqueName}, SkuGenericMenuItem)
 					tNewSubMenuEntry2.OnEnter = function(self, aValue, aName)
-						SkuOptions.currentMenuPosition.textFull = GetQuestDataStringFromDB(i, tZoneId)
+						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetQuestDataStringFromDB(i, tZoneId)
 					end
 					if not CreateQuestSubmenu(tNewSubMenuEntry2, i) then
 						--self.dynamic = false
@@ -1638,18 +2086,18 @@ function SkuQuest:LoadEventHandler()
 		tinsert(SkuQuest.Event.eventQuests, {"Darkmoon Faire", 10940}) -- Darkmoon Furies Deck
 		tinsert(SkuQuest.Event.eventQuests, {"Darkmoon Faire", 10941}) -- Darkmoon Lunacy Deck
 
-		--tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11450}) -- Fire Training
+		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11450}) -- Fire Training
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11356}) -- Costumed Orphan Matron
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11357}) -- Masked Orphan Matron
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11131}) -- Stop the Fires!
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11135}) -- The Headless Horseman
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11220}) -- The Headless Horseman
-		--tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11219}) -- Stop the Fires!
+		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11219}) -- Stop the Fires!
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11361}) -- Fire Training
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11360}) -- Fire Brigade Practice
-		--tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11449}) -- Fire Training
-		--tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11440}) -- Fire Brigade Practice
-		--tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11439}) -- Fire Brigade Practice
+		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11449}) -- Fire Training
+		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11440}) -- Fire Brigade Practice
+		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 11439}) -- Fire Brigade Practice
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 12133}) -- Smash the Pumpkin
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 12135}) -- Let the Fires Come!
 		tinsert(SkuQuest.Event.eventQuests, {"Hallow's End", 12139}) -- Let the Fires Come!

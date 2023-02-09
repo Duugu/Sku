@@ -858,11 +858,11 @@ function SkuCore:AuctionHouseMenuBuilder()
                            local tCopperStartBid = mfloor(tCopperBuyout * 0.9)
                            local tDuration
                            if aName == L["Erstellen: 12 Stunden"] then
-                              tDuration = 720
+                              tDuration = 1
                            elseif aName == L["Erstellen: 24 Stunden"] then
-                              tDuration = 1440
+                              tDuration = 2
                            elseif aName == L["Erstellen: 48 Stunden"] then
-                              tDuration = 2880
+                              tDuration = 3
                            end
                      
                            if not tDuration or not tCopperBuyout or not tAmount or not tNumAuctions then

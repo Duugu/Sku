@@ -407,7 +407,9 @@ SkuGenericMenuItem = {
 			end			
 		end
 
-		SkuOptions.currentMenuPosition:OnEnter(aEnterFlag)
+		if SkuOptions.currentMenuPosition.OnEnter then
+			SkuOptions.currentMenuPosition:OnEnter(aEnterFlag)
+		end
 		--if self.removeFilter then
 			--SkuOptions.Filterstring = ""
 			--SkuOptions:ApplyFilter(SkuOptions.Filterstring)

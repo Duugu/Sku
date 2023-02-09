@@ -103,7 +103,7 @@ function SkuCore:MailEditor(aTargetValue)
       local tText = SkuOptionsEditBoxEditBox:GetText()
       SkuOptions.currentMenuPosition[aTargetValue] = tText
       if not SkuOptions.currentMenuPosition.TmpTo then
-         SkuOptions.Voice:OutputStringBTtts(L["No recepient"], false, true, 0.2)
+         SkuOptions.Voice:OutputStringBTtts(L["Recepient missing"], false, true, 0.2)
       elseif not SkuOptions.currentMenuPosition.TmpSubject then
          SkuOptions.Voice:OutputStringBTtts(L["Topic missing"], false, true, 0.2)
       else

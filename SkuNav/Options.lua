@@ -39,7 +39,7 @@ SkuNav.options = {
 			values = SkuNav.BeaconSoundSetNames,
 			OnAction = function(self, info, val)
 				local tPlayerPosX, tPlayerPosY = UnitPosition("player")
-				if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+				if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange, nil, nil, nil, nil, SkuOptions.db.profile[MODULE_NAME].clickClackSoundset) then
 					return
 				end
 				SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
@@ -62,7 +62,7 @@ SkuNav.options = {
 			values = SkuNav.BeaconSoundSetNames,
 			OnAction = function(self, info, val)
 				local tPlayerPosX, tPlayerPosY = UnitPosition("player")
-				if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+				if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", "sampleBeacon", SkuNav.BeaconSoundSetNames[val], tPlayerPosX + 10, tPlayerPosY, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange, nil, nil, nil, nil, SkuOptions.db.profile[MODULE_NAME].clickClackSoundset) then
 					return
 				end
 				SkuOptions.BeaconLib:StartBeacon("SkuOptions", "sampleBeacon")
@@ -83,18 +83,8 @@ SkuNav.options = {
 			desc = "",
 			type = "toggle",
 			OnAction = function(self, info, val)
-				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
-					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
-				else
-					SkuOptions.BeaconLib:SetClickClackSoundSet("off")
-				end				
 			end,
 			set = function(info,val)
-				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
-					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
-				else
-					SkuOptions.BeaconLib:SetClickClackSoundSet("off")
-				end				
 				SkuOptions.db.profile[MODULE_NAME].clickClackEnabled = val
 			end,
 			get = function(info)
@@ -120,18 +110,8 @@ SkuNav.options = {
 			type = "select",
 			values = SkuNav.ClickClackSoundsets,
 			OnAction = function(self, info, val)
-				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
-					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
-				else
-					SkuOptions.BeaconLib:SetClickClackSoundSet("off")
-				end				
 			end,
 			set = function(info,val)
-				if SkuOptions.db.profile[MODULE_NAME].clickClackEnabled == true then
-					SkuOptions.BeaconLib:SetClickClackSoundSet(SkuOptions.db.profile[MODULE_NAME].clickClackSoundset)
-				else
-					SkuOptions.BeaconLib:SetClickClackSoundSet("off")
-				end				
 				SkuOptions.db.profile[MODULE_NAME].clickClackSoundset = val
 			end,
 			get = function(info)

@@ -4,16 +4,59 @@ local _G = _G
 
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
---SkuCore.alIntegration = {}
-
 local tExpansions = {
    [1] = "Classic",
    [2] = "Burning Crusade",
    [3] = "Wrath",
 }
 
+INVTYPE_RANGEDRIGHT = RANGED
+SkuCore.favoriteSlots = {
+   [1] = {"INVTYPE_HEAD", {1},},
+   [2] = {"INVTYPE_NECK", {2},},
+   [3] = {"INVTYPE_SHOULDER", {3},},
+   [4] = {"INVTYPE_BODY", {4},},
+   [5] = {"INVTYPE_CHEST", {5},},
+   [6] = {"INVTYPE_WAIST", {6},},
+   [7] = {"INVTYPE_LEGS", {7},},
+   [8] = {"INVTYPE_FEET", {8},},
+   [9] = {"INVTYPE_WRIST", {9},},
+   [10] = {"INVTYPE_HAND", {10},},
+   [11] = {"INVTYPE_FINGER", {11, 12},},
+   [12] = {"INVTYPE_TRINKET", {13, 14},},
+   [13] = {"INVTYPE_WEAPON", {16, 17},},
+   [14] = {"INVTYPE_SHIELD", {17},},
+   [15] = {"INVTYPE_RANGED", {16},},
+   [16] = {"INVTYPE_CLOAK", {15},},
+   [17] = {"INVTYPE_2HWEAPON", {16},},
+   [18] = {},
+   [19] = {"INVTYPE_TABARD", {19},},
+   [20] = {"INVTYPE_ROBE", {5},},
+   [21] = {"INVTYPE_WEAPONMAINHAND", {16},},
+   [22] = {"INVTYPE_WEAPONOFFHAND", {16},},
+   [23] = {"INVTYPE_HOLDABLE", {17},},
+   [24] = {},
+   [25] = {"INVTYPE_THROWN", {16},},
+   [26] = {"INVTYPE_RANGEDRIGHT", {16},},
+}
+
 local tItemDropTable = nil
 local tItemNameTable = nil
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:alItegrationLogin()
+	SkuOptions.db.char[MODULE_NAME].alIntegration = SkuOptions.db.char[MODULE_NAME].alIntegration or {}
+   SkuOptions.db.char[MODULE_NAME].alIntegration.favorites = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites or {}
+   for x = 1, #SkuCore.favoriteSlots do
+      SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] or {}
+   end
+
+   for y = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites do
+      for x = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[y] do
+         C_Item.GetItemNameByID(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[y][x])
+      end
+   end
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local DIFFICULTY
@@ -106,7 +149,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInternalDungeonName, aBossIndex, aTypeId, aDiffId)
-   --print("SkuCore:alIntegrationItemMenuBuilder(",aParent, aType, aId, aNpcId, aInternalDungeonName, aBossIndex, aTypeId, aDiffId)
    if not aId then
       return
    end
@@ -153,10 +195,12 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
       end
 
    elseif aType == "item" then
+      local itemID, itemType, itemSubType, itemEquipLoc, icon, classID, subclassID = GetItemInfoInstant(aId)
       if not C_Item.GetItemNameByID(aId) then
          return
       end
       --print("7)", "        ", "item", SkuChat:Unescape(C_Item.GetItemNameByID(aId)))
+      --print(itemID, itemType, itemSubType, itemEquipLoc, icon, classID, subclassID)
       local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuChat:Unescape(C_Item.GetItemNameByID(aId))}, SkuGenericMenuItem)
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
          SkuCore:getItemComparisnSections(aId)
@@ -197,6 +241,51 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
 
             SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
          end)
+      end
+      tNewSubMenuEntry.dynamic = true
+      tNewSubMenuEntry.isSelect = true
+      tNewSubMenuEntry.OnAction = function(self, aValue, aName)
+         local invType = C_Item.GetItemInventoryTypeByID(aId)
+         if invType and SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] then
+            local _, itemLink = GetItemInfo(aId) 
+            if itemLink then
+               if aName == L["Add to favorites"] then
+                  for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
+                     if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
+                        return
+                     end
+                  end
+                  C_Timer.After(0.5, function()
+                     SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][#SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] + 1] = itemLink--SkuChat:Unescape(C_Item.GetItemNameByID(aId))
+                     C_Timer.After(0.001, function()
+                        SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                     end)
+                  end)
+               else
+                  for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
+                     if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
+                        table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType], q)
+                     end
+                  end
+                  C_Timer.After(0.001, function()
+                     SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                  end)
+               end
+            end
+         end
+		end
+      tNewSubMenuEntry.BuildChildren = function(self)
+         local invType = C_Item.GetItemInventoryTypeByID(aId)
+         if invType then
+            local _, itemLink = GetItemInfo(aId) 
+            for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
+               if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
+                  local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Remove from favorites"]}, SkuGenericMenuItem)
+                  return
+               end
+            end
+            local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add to favorites"]}, SkuGenericMenuItem)
+         end
       end
       
    elseif aType == "spell" then
@@ -250,9 +339,11 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
       --print("7)", "        ", "coll", aId)
       --local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {aId}, SkuGenericMenuItem)
 
+
    elseif aType == "ac" then
       --print("7)", "        ", "ac", aId)
       --local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {aId}, SkuGenericMenuItem)
+
 
    end
 end
@@ -413,6 +504,108 @@ function SkuCore:alIntegrationMenuBuilder()
          end
       end
    end
+
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Favorites"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.filterable = true
+   tNewMenuEntry.BuildChildren = function(self)
+      for x = 1, #SkuCore.favoriteSlots do
+         if SkuCore.favoriteSlots[x][1] then
+            --print(SkuCore.favoriteSlots[x][1], _G[SkuCore.favoriteSlots[x][1]])
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {_G[SkuCore.favoriteSlots[x][1]]}, SkuGenericMenuItem)
+            tNewMenuEntry.dynamic = true
+            tNewMenuEntry.filterable = true
+            tNewMenuEntry.BuildChildren = function(self)
+               if #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] > 0 then
+                  for y = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] do
+                     local tPlainName = SkuChat:Unescape(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y])
+                     tPlainName = string.gsub(tPlainName, "%[", "")
+                     tPlainName = string.gsub(tPlainName, "%]", "")
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {y.." "..tPlainName}, SkuGenericMenuItem)
+                     tNewMenuEntry.dynamic = true
+                     tNewMenuEntry.isSelect = true
+                     tNewMenuEntry.OnAction = function(self, aValue, aName)
+                        local tCurrentValue = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y]
+                        if aName == L["Up"] then
+                           table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y)
+                           table.insert(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y - 1, tCurrentValue)
+                           C_Timer.After(0.001, function()
+                              SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+                           end)
+                        elseif aName == L["Down"] then
+                           table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y)
+                           table.insert(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y + 1, tCurrentValue)
+                           C_Timer.After(0.001, function()
+                              SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+                           end)
+                        elseif aName == L["remove"] then
+                           table.remove(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x], y)
+                           C_Timer.After(0.001, function()
+                              SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+                           end)
+                        end
+                     end            
+                     tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
+                        if not SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y] then
+                           return
+                        end
+                        local aId = GetItemInfoInstant(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y])
+                        SkuCore:getItemComparisnSections(aId)
+                        C_Timer.After(0.1, function()
+                           local tSections = SkuCore:getItemComparisnSections(aId) or {}
+                           if tSections[1] then
+                              tSections[1] = L["currently equipped"].."\r\n"..tSections[1]
+                           end
+               
+                           local tDropText = L["Dropped by"].."\r\n"
+                           if tItemDropTable[aId] then
+                              for iDrop, vDrop in pairs(tItemDropTable[aId]) do
+                                 tDropText = tDropText..vDrop.."\r\n"
+                              end
+                           end
+                           table.insert(tSections, 1, tDropText)
+               
+                           if aNpcId then
+                              local Droprate = AtlasLoot.Data.Droprate:GetData(aNpcId, aId)
+                              if Droprate then
+                                 --print(aId, tTextFirstLine, aNpcId, Droprate)
+                                 table.insert(tSections, 1, L["Droprate"]..": "..Droprate.."%")
+                              end
+                           end
+               
+                           local tTextFirstLine, tTextFull = "", ""
+                           _G["SkuScanningTooltip"]:ClearLines()
+                           _G["SkuScanningTooltip"]:SetItemByID(aId)
+                           if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+                              if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+                                 local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                                 tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
+                              end
+                           end
+               
+                           table.insert(tSections, 1, tTextFull)
+                           
+               
+                           SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
+                        end)
+                     end
+                     tNewMenuEntry.BuildChildren = function(self)
+                        local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["remove"]}, SkuGenericMenuItem)
+                        if y > 1 then
+                           local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Up"]}, SkuGenericMenuItem)
+                        end
+                        if y < #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] then
+                           local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Down"]}, SkuGenericMenuItem)
+                        end
+                     end
+                  end
+               else
+                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+               end
+            end
+         end
+      end
+   end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -423,7 +616,6 @@ local function addToItemsRepos(aItemId, aNpcID, aContentInteralName, aBossIndex,
       tItemDropTable[aItemId][#tItemDropTable[aItemId] + 1] = tSourceText
    end
 
-   --tItemNameTable
    local tName = C_Item.GetItemNameByID(aItemId)
    if tName and tName  ~= "" then
       tItemNameTable[tName] = {itemID = aItemId, npcId = aNnpcID, internalName = aContentInteralName, bossIndex = aBossIndex, ttype = nil, difficultyIndex = aDifficultyIndex}

@@ -447,7 +447,7 @@ function SkuCore:PanicModeStart()
 								SkuCorePanicCurrentPoint = x
 								if not SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", tPanicBeaconName) then
 									local tBeaconType = SkuNav:GetBeaconSoundSetName(1)
-									if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange) then
+									if not SkuOptions.BeaconLib:CreateBeacon("SkuOptions", tPanicBeaconName, tBeaconType, tPanicData[SkuCorePanicCurrentPoint].x, tPanicData[SkuCorePanicCurrentPoint].y, -3, 0, SkuOptions.db.profile["SkuNav"].beaconVolume, SkuOptions.db.profile[MODULE_NAME].clickClackRange, nil, nil, nil, nil, SkuOptions.db.profile["SkuNav"].clickClackSoundset) then
 										return
 									end
 									SkuOptions.BeaconLib:StartBeacon("SkuOptions", tPanicBeaconName)
@@ -1941,6 +1941,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:AchievementsOnLogin()
 		SkuCore:MinimapScannerOnLogin()
 		SkuCore:DialogKeyLogin()
+		SkuCore:alItegrationLogin()
 
 		if not SkuOptions.db.char[MODULE_NAME] then
 			SkuOptions.db.char[MODULE_NAME] = {}
@@ -2425,6 +2426,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:IterateChildren(t, tab)
 	local tResults = {}
+	local inventoryTooltipTextCache = {}
 
 	if t.GetRegions then
 		local dtc = { t:GetRegions() }
@@ -2573,6 +2575,13 @@ function SkuCore:IterateChildren(t, tab)
 									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
 										local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
 										tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
+										if "table" ~= type(tResults[fName].textFull) then
+											tResults[fName].textFull = {tResults[fName].textFull}
+										end
+										local itemID = GetItemInfoInstant(tResults[fName].obj.link)
+										if itemID then
+											SkuCore:InsertComparisnSections(itemID, tResults[fName].textFull, inventoryTooltipTextCache)
+										end
 									end
 								end
 							else

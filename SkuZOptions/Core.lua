@@ -1001,6 +1001,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		if SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["pet"].pos ~= 999 then
 			tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["pet"].pos] = petSection
 		end
+	else
+		tSectionRepo[SkuOptions.db.profile["SkuOptions"].overviewPages[aPageId].overviewSections["pet"].pos] = ""
 	end
 
 	--CDs
@@ -1019,7 +1021,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 						if not tFound[spellName] then
 							tFound[spellName] = true
 							local start, duration, enabled, modRate = GetSpellCooldown(spellID)
-							if ( start > 0 and duration > 0) then
+							if (start > 0 and duration > 1.5) then
 								tTmpText = tTmpText..spellName.." "..SkuEpochValueHelper(GetServerTime() - math.floor(start + duration - GetTime())).."\r\n"
 							end
 						end
@@ -1036,7 +1038,9 @@ function SkuOptions:UpdateOverviewText(aPageId)
 	local tSections = {}
 	if #tSectionRepo > 0 then
 		for x = 1, #tSectionRepo do
-			table.insert(tSections, tSectionRepo[x])
+			if tSectionRepo[x] ~= "" then
+				table.insert(tSections, tSectionRepo[x])
+			end
 		end
 	else
 		table.insert(tSections, L["Empty"])
@@ -1259,7 +1263,7 @@ function SkuOptions:CreateMainFrame()
 			local tItem
 			SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 			if SkuOptions.nextRollFrameNumber then
-				SkuOptions.Voice:OutputString(L["Roll on"].." "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
+				SkuOptions.Voice:OutputStringBTtts(L["Roll on"].." "..tItem.name..", "..tItem.alFavoriteString..", "..tItem.quality..", "..tItem.bind..", "..tItem.type..", "..tItem.subtype, true, true, 0.3, true, nil, nil, 2)
 			end
 			return
 		end
@@ -2965,7 +2969,7 @@ function SkuOptions:START_LOOT_ROLL(rollID, rollTime, lootHandle, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"].." "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
+		SkuOptions.Voice:OutputStringBTtts(L["Roll on"].." "..tItem.name..", "..tItem.alFavoriteString..", "..tItem.quality..", "..tItem.bind..", "..tItem.type..", "..tItem.subtype, true, true, 0.3, true, nil, nil, 2)
 	end
 end
 
@@ -2975,7 +2979,7 @@ function SkuOptions:CANCEL_LOOT_ROLL(rollID, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"].." "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
+		SkuOptions.Voice:OutputStringBTtts(L["Roll on"].." "..tItem.name..", "..tItem.alFavoriteString..", "..tItem.quality..", "..tItem.bind..", "..tItem.type..", "..tItem.subtype, true, true, 0.3, true, nil, nil, 2)
 	end
 end
 
@@ -2985,7 +2989,7 @@ function SkuOptions:LOOT_SLOT_CHANGED(lootSlot, a, b)
 	local tItem
 	SkuOptions.nextRollFrameNumber, tItem = SkuOptions:GetCurrentRollItem()
 	if SkuOptions.nextRollFrameNumber then
-		SkuOptions.Voice:OutputString(L["Roll on"].." "..tItem.name.." "..tItem.quality.." "..tItem.bind.." "..tItem.type.." "..tItem.subtype, true, true, 0.3, true)
+		SkuOptions.Voice:OutputStringBTtts(L["Roll on"].." "..tItem.name..", "..tItem.alFavoriteString..", "..tItem.quality..", "..tItem.bind..", "..tItem.type..", "..tItem.subtype, true, true, 0.3, true, nil, nil, 2)
 	end
 end
 
@@ -2998,7 +3002,19 @@ function SkuOptions:GetCurrentRollItem()
 			if _G["GroupLootFrame"..x]:IsVisible() then
 				tLootFrameNumber = x
 				local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount, itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(GetLootRollItemLink(_G["GroupLootFrame"..x].rollID))
-				tLootItem = {name = _G["GroupLootFrame"..x.."Name"]:GetText(), quality = _G["ITEM_QUALITY"..itemQuality.."_DESC"], type = itemType, subtype = itemSubType, bind = SkuOptions.BindTypeStrings[bindType], itemId = GetLootRollItemLink(_G["GroupLootFrame"..x].rollID), rollId = _G["GroupLootFrame"..x].rollID}
+				local tAlFavoriteString = ""
+				local invType = C_Item.GetItemInventoryTypeByID(itemLink)
+				if invType and itemLink then
+					if SkuCore.favoriteSlots[invType] and SkuCore.favoriteSlots[invType][1] and #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] > 0 then
+						for q = 1, #SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType] do
+							if SkuOptions.db.char["SkuCore"].alIntegration.favorites[invType][q] == itemLink then
+								tAlFavoriteString = L["Prio"].." "..q.." "..L["in AtlasLoot favorites for"].." ".._G[SkuCore.favoriteSlots[invType][1]]
+							end
+						end
+					end
+				end
+
+				tLootItem = {name = _G["GroupLootFrame"..x.."Name"]:GetText(), quality = _G["ITEM_QUALITY"..itemQuality.."_DESC"], type = itemType, subtype = itemSubType, bind = SkuOptions.BindTypeStrings[bindType], itemId = GetLootRollItemLink(_G["GroupLootFrame"..x].rollID), rollId = _G["GroupLootFrame"..x].rollID, alFavoriteString = tAlFavoriteString}
 			end
 		end
 	end

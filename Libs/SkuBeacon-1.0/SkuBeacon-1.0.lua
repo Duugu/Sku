@@ -9,6 +9,8 @@ local CONST_DYNAME_PING_RATE2 = -2
 local CONST_DYNAME_PING_RATE3 = -3
 local CONST_DYNAME_PING_RATE4 = -4
 local CONST_DYNAME_PING_RATE5 = -5
+local CONST_DYNAME_PING_RATE6 = -6
+local CONST_DYNAME_PING_RATE7 = -7
 
 ---------------------------------------------------------------------------------------------------------
 -- repos
@@ -16,7 +18,6 @@ local CONST_DYNAME_PING_RATE5 = -5
 local gBeaconRepo = {}
 local gSoundsetRepo = {}
 local gClickClackSoundsetRepo = {}
-local gCurrentClickClackSoundset
 
 ---------------------------------------------------------------------------------------------------------
 -- PRIVATE
@@ -151,110 +152,173 @@ local function OnUpdate(self, aTime)
 					local tSoundSet = gSoundsetRepo[tBeacon.soundSet]
 					local tPlayerPosX, tPlayerPosY = UnitPosition("player")
 					local tDistance = GetDistance(tPlayerPosX, tPlayerPosY, tBeacon.posX, tBeacon.posY)
+					local tDistanceYards = tDistance
 					if not tDistance then
 						SkuBeacon:DestroyBeacon(vRefs, vBeacons)
 						return
 					end
-					local tDirection180 = math.floor(select(3, GetDirectionTo(tPlayerPosX, tPlayerPosY, tBeacon.posX, tBeacon.posY)))
-					local tCleanedDirection = (math.floor(tDirection180 / tSoundSet.degreesStep) +1 ) * tSoundSet.degreesStep
-					local tUnsignedCleanedDirection = tCleanedDirection
-					if tUnsignedCleanedDirection < 0 then tUnsignedCleanedDirection = tUnsignedCleanedDirection * -1 end
-					tBeacon.lastPing = tBeacon.lastPing or GetTime()
 
-					if tBeacon.rate == CONST_DYNAME_PING_RATE1 then
-						local tDynPingRate = tDistance / 30
-						if tDynPingRate < 0.3 then tDynPingRate = 0.3 end
-						if tDynPingRate > 5 then tDynPingRate = 5 end
-						if GetTime() - tBeacon.lastPing > tDynPingRate then
-							tDoPing = true
+					if tDistance and (not tBeacon.maxDistance or tDistance < tBeacon.maxDistance) then
+						if tBeacon.distanceChangedCallback and tDistanceYards ~= tBeacon.oldDistance and tDistanceYards <= tBeacon.maxDistance then
+							tBeacon.oldDistance = tDistanceYards
+							tBeacon.distanceChangedCallback(tBeacon, tDistanceYards)
 						end
+	
+						local tDirection180 = math.floor(select(3, GetDirectionTo(tPlayerPosX, tPlayerPosY, tBeacon.posX, tBeacon.posY)))
+						local tCleanedDirection = (math.floor(tDirection180 / tSoundSet.degreesStep) +1 ) * tSoundSet.degreesStep
+						local tUnsignedCleanedDirection = tCleanedDirection
+						if tUnsignedCleanedDirection < 0 then tUnsignedCleanedDirection = tUnsignedCleanedDirection * -1 end
+						tBeacon.lastPing = tBeacon.lastPing or GetTime()
 
-						tDistance = math.floor((tDistance + 1) / 2)
-						if tDistance < 0 then tDistance = 0 end
-						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
-
-					elseif tBeacon.rate == CONST_DYNAME_PING_RATE2 then
-						local tDynPingRate = tDistance / 30
-						if tDynPingRate < 0.3 then tDynPingRate = 0.3 end
-						if tDynPingRate > 5 then tDynPingRate = 5 end
-
-						if GetTime() - tBeacon.lastPing > tDynPingRate then
-							tDoPing = true
-						end
-
-						tDistance = math.floor((tDistance + 1) / 2)
-
-						if tUnsignedCleanedDirection > 90 then
-							local tMod = tUnsignedCleanedDirection - 90
-							--tMod 0-90
-							tDistance = tDistance + math.floor((tMod / (tSoundSet.maxDistance / 10)))
-						end
-						if tDistance < 0 then tDistance = 0 end
-						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
-
-					elseif tBeacon.rate == CONST_DYNAME_PING_RATE3 then
-						tDistance = tDistance + 4
-						local tDynPingRate = 1.3
-						local tMinDegree = 45
-						if tUnsignedCleanedDirection < tMinDegree then
-							tDynPingRate = tDynPingRate - (1 - (tUnsignedCleanedDirection / 45))
-						end
-
-					if gCurrentClickClackSoundset and gClickClackSoundsetRepo[gCurrentClickClackSoundset] then
-						local tClickClackDeg = tBeacon.clickSoundRange or 10
-						if tCleanedDirection > tClickClackDeg or tCleanedDirection < -tClickClackDeg then
-							if tPrevCleanedDirection == true then
-								local tWillPlay, tPlayingHandle = PlaySoundFile(gClickClackSoundsetRepo[gCurrentClickClackSoundset].path.."\\"..gClickClackSoundsetRepo[gCurrentClickClackSoundset].clackFileName, "Talking Head")
-								tPrevCleanedDirection = false
+						if tBeacon.rate == CONST_DYNAME_PING_RATE1 then
+							local tDynPingRate = tDistance / 30
+							if tDynPingRate < 0.3 then tDynPingRate = 0.3 end
+							if tDynPingRate > 5 then tDynPingRate = 5 end
+							if GetTime() - tBeacon.lastPing > tDynPingRate then
+								tDoPing = true
 							end
-						else
-							if tPrevCleanedDirection == false then
-								local tWillPlay, tPlayingHandle = PlaySoundFile(gClickClackSoundsetRepo[gCurrentClickClackSoundset].path.."\\"..gClickClackSoundsetRepo[gCurrentClickClackSoundset].clickFileName, "Talking Head")
-								tPrevCleanedDirection = true
+
+							tDistance = math.floor((tDistance + 1) / 2)
+							if tDistance < 0 then tDistance = 0 end
+							if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+						elseif tBeacon.rate == CONST_DYNAME_PING_RATE2 then
+							local tDynPingRate = tDistance / 30
+							if tDynPingRate < 0.3 then tDynPingRate = 0.3 end
+							if tDynPingRate > 5 then tDynPingRate = 5 end
+
+							if GetTime() - tBeacon.lastPing > tDynPingRate then
+								tDoPing = true
+							end
+
+							tDistance = math.floor((tDistance + 1) / 2)
+
+							if tUnsignedCleanedDirection > 90 then
+								local tMod = tUnsignedCleanedDirection - 90
+								--tMod 0-90
+								tDistance = tDistance + math.floor((tMod / (tSoundSet.maxDistance / 10)))
+							end
+							if tDistance < 0 then tDistance = 0 end
+							if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+						elseif tBeacon.rate == CONST_DYNAME_PING_RATE3 then
+							tDistance = tDistance + 4
+							local tDynPingRate = 1.3
+							local tMinDegree = 45
+							if tUnsignedCleanedDirection < tMinDegree then
+								tDynPingRate = tDynPingRate - (1 - (tUnsignedCleanedDirection / 45))
+							end
+
+							if tDynPingRate < 0.2 then tDynPingRate = 0.2 end
+							if tDynPingRate > 0.7 then tDynPingRate = 0.7 end
+
+							if GetTime() - tBeacon.lastPing > tDynPingRate then
+								tDoPing = true
+							end
+
+							tDistance = math.floor((tDistance + 1) / 6)
+							if tDistance < 0 then tDistance = 0 end
+							if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+						elseif tBeacon.rate == CONST_DYNAME_PING_RATE4 then
+							if GetTime() - tBeacon.lastPing > 1.0 then
+								tDoPing = true
+							end
+
+							tDistance = math.floor((tDistance + 1) / 2)
+							if tDistance < 0 then tDistance = 0 end
+							if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+						elseif tBeacon.rate == CONST_DYNAME_PING_RATE5 then
+							if GetTime() - tBeacon.lastPing > 0.5 then
+								tDoPing = true
+							end
+
+							tDistance = math.floor((tDistance + 1) / 2)
+							if tDistance < 0 then tDistance = 0 end
+							if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+						elseif tBeacon.rate == CONST_DYNAME_PING_RATE6 then
+							local tDynPingRate = tDistance / 15
+							if tDynPingRate < 1.0 then tDynPingRate = 1.0 end
+							if tDynPingRate > 5.5 then tDynPingRate = 5.5 end
+
+							if GetTime() - tBeacon.lastPing > tDynPingRate then
+								tDoPing = true
+							end
+
+							tDistance = math.floor((tDistance + 1) / 5)
+
+							if tUnsignedCleanedDirection > 90 then
+								local tMod = tUnsignedCleanedDirection - 90
+								--tMod 0-90
+								tDistance = tDistance + math.floor((tMod / (tSoundSet.maxDistance / 10)))
+							end
+							if tDistance < 0 then tDistance = 0 end
+							if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+						elseif tBeacon.rate == CONST_DYNAME_PING_RATE7 then
+							local tDynPingRate = tDistance / 15
+							if tDynPingRate < 1.0 then tDynPingRate = 1.0 end
+							if tDynPingRate > 5.5 then tDynPingRate = 5.5 end
+
+							if GetTime() - tBeacon.lastPing > tDynPingRate then
+								tDoPing = true
+							end
+
+							tDistance = math.floor((tDistance + 1) / 5)
+
+							if tUnsignedCleanedDirection > 20 then
+								local tMod = tUnsignedCleanedDirection - 20
+								--tMod 0-90
+								tDistance = tDistance + math.floor((tMod / (tSoundSet.maxDistance / 10)))
+							end
+							if tDistance < 0 then tDistance = 0 end
+							if tDistance >= 30 then tDoPing = nil end
+							if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
+
+						end
+
+						if tBeacon.clickSoundType and tBeacon.clickSoundType ~= "off" and gClickClackSoundsetRepo[tBeacon.clickSoundType] then
+							local tClickClackDeg = tBeacon.clickSoundRange or 10
+							if tCleanedDirection > tClickClackDeg or tCleanedDirection < -tClickClackDeg then
+								if tPrevCleanedDirection == true then
+									local tWillPlay, tPlayingHandle = PlaySoundFile(gClickClackSoundsetRepo[tBeacon.clickSoundType].path.."\\"..gClickClackSoundsetRepo[tBeacon.clickSoundType].clackFileName, "Talking Head")
+									tPrevCleanedDirection = false
+								end
+							else
+								if tPrevCleanedDirection == false then
+									local tWillPlay, tPlayingHandle = PlaySoundFile(gClickClackSoundsetRepo[tBeacon.clickSoundType].path.."\\"..gClickClackSoundsetRepo[tBeacon.clickSoundType].clickFileName, "Talking Head")
+									tPrevCleanedDirection = true
+								end
 							end
 						end
-					end
 
-						if tDynPingRate < 0.2 then tDynPingRate = 0.2 end
-						if tDynPingRate > 0.7 then tDynPingRate = 0.7 end
-
-						if GetTime() - tBeacon.lastPing > tDynPingRate then
-							tDoPing = true
+						if tDistance <= tBeacon.silenceRange and tBeacon.reachedCallback then
+							tBeacon.reachedCallback(tBeacon, tDistanceYards)
 						end
 
-						tDistance = math.floor((tDistance + 1) / 6)
-						if tDistance < 0 then tDistance = 0 end
-						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
-
-					elseif tBeacon.rate == CONST_DYNAME_PING_RATE4 then
-						if GetTime() - tBeacon.lastPing > 1.0 then
-							tDoPing = true
+						if tDoPing then
+							tBeacon.lastPing = GetTime()
+							if tDistance >= tBeacon.silenceRange then
+								local tVolumeMod = math.floor(tDistance + ((100 - tBeacon.volume) / 10)) --tDistance
+								if tVolumeMod < 0 then tVolumeMod = 0 end
+								if tVolumeMod > 30 then tVolumeMod = 30 end
+								if tBeacon.rate == CONST_DYNAME_PING_RATE6 then
+									tVolumeMod = math.floor((tVolumeMod / 100) * (200 - tBeacon.volume))
+									if tVolumeMod < 0 then tVolumeMod = 0 end
+									if tVolumeMod > 30 then tVolumeMod = 30 end
+								end
+								if tBeacon.pingCallback then
+									tBeacon.pingCallback(tBeacon, tDistanceYards)
+								end			
+								if tBeacon.volume > 0 then
+									local tFile = tSoundSet.path.."\\"..tSoundSet.fileName..";"..tCleanedDirection..";"..tVolumeMod..".mp3"
+									local tWillPlay, tPlayingHandle = PlaySoundFile(tFile, "Talking Head")
+								end
+							end
+							break
 						end
-
-						tDistance = math.floor((tDistance + 1) / 2)
-						if tDistance < 0 then tDistance = 0 end
-						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
-
-					elseif tBeacon.rate == CONST_DYNAME_PING_RATE5 then
-						if GetTime() - tBeacon.lastPing > 0.5 then
-							tDoPing = true
-						end
-
-						tDistance = math.floor((tDistance + 1) / 2)
-						if tDistance < 0 then tDistance = 0 end
-						if tDistance > tSoundSet.maxDistance then tDistance = tSoundSet.maxDistance end
-					end
-
-					if tDoPing then
-						tBeacon.lastPing = GetTime()
-						if tDistance >= tBeacon.silenceRange then
-							local tVolumeMod = math.floor(tDistance + ((100 - tBeacon.volume) / 10)) --tDistance
-							if tVolumeMod < 0 then tVolumeMod = 0 end
-							if tVolumeMod > 30 then tVolumeMod = 30 end
-							local tFile = tSoundSet.path.."\\"..tSoundSet.fileName..";"..tCleanedDirection..";"..tVolumeMod..".mp3"
-							local tWillPlay, tPlayingHandle = PlaySoundFile(tFile, "Talking Head")
-						end
-						break
 					end
 				end
 			end
@@ -319,8 +383,8 @@ end
 ---------------------------------------------------------------------------------------------------------
 -- mandatory sound file name format for soundsets:
 --		<soundsetName>;<degreeNumber>;<distanceNumber>.mp3
---			degreeNumber: -180 to 180 in aDegreesStep starting from 0)
---			distanceNumber: 1 to aMaxDistance
+--			int degreeNumber: -180 to 180 in aDegreesStep starting from 0)
+--			int distanceNumber: 1 to aMaxDistance
 --		Example file name: beacon_male_one;-1;15.mp3 
 --			(soundset name "beacon_male_one", degree -1, distance 15)
 function SkuBeacon:RegisterSoundSet(aBaseName, aPath, aDegreesStep, aMaxDistance, aFileName)
@@ -351,15 +415,6 @@ function SkuBeacon:RegisterClickClackSoundSet(aFriendlyName, aInternalName, aPat
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuBeacon:SetClickClackSoundSet(aInternalName)
-	if not gClickClackSoundsetRepo[aInternalName] then 
-		gCurrentClickClackSoundset = nil
-		return
-	end
-	gCurrentClickClackSoundset = aInternalName
-end
-
----------------------------------------------------------------------------------------------------------
 function SkuBeacon:GetSoundSets()
 	return gSoundsetRepo
 end
@@ -370,7 +425,7 @@ function SkuBeacon:GetClickClackSoundSets()
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY, aRate, aSilenceRange, aVolume, aClickSoundRange)
+function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY, aRate, aSilenceRange, aVolume, aClickSoundRange, aMaxDistance, aReachedCallback, aDistanceChangedCallback, aPingCallback, aClickSoundType)
 	if not gBeaconRepo[aReference] then return false end
 	if gBeaconRepo[aReference][aBeaconName] then return false end
 	if not gSoundsetRepo[aSoundSet] then return end
@@ -378,6 +433,7 @@ function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY
 	--add new beacon
 	table.insert(gBeaconRepo[aReference], aBeaconName)
 	gBeaconRepo[aReference][aBeaconName] = {
+		name = aBeaconName,
 		active = false,
 		soundSet = aSoundSet,
 		posX = aPosX,
@@ -387,6 +443,11 @@ function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY
 		silenceRange = aSilenceRange,
 		volume = aVolume or 100,
 		clickSoundRange = aClickSoundRange,
+		maxDistance = aMaxDistance or 99999,
+		reachedCallback = aReachedCallback,
+		distanceChangedCallback = aDistanceChangedCallback,
+		pingCallback = aPingCallback,
+		clickSoundType = aClickSoundType,
 	}
 	
 	return true
