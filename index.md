@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.9](https://github.com/Duugu/Sku/releases/download/r32.9/Sku-r32.9-wrath.zip) (Feb 9th, 2023)<br>
+- [Sku r32.10](https://github.com/Duugu/Sku/releases/download/r32.10/Sku-r32.10-wrath.zip) (Feb 9th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.10
+- Disabled quest notifications while you are on taxi via a flight master.
+- Fixed a bug with quest notifications distance that is printed to the chat.
+- Fixed a bug with quest notification for some daily quests that don't have a level.
+
 ## Changes in Sku r32.9
 - New: Quest notifications, under Quests > Options > Quest notifications. (default: off)<br>
 	Quest notifications are auto anouncing quests nearby you that are available to accept or ready for hand in.<br>
