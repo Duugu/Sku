@@ -1471,10 +1471,12 @@ function SkuCore:PLAYER_MOUNT_DISPLAY_CHANGED(...)--taxi
 	if PLAYER_CONTROL_LOST_flag == 1 then
 		PLAYER_CONTROL_LOST_flag = 0
 		SkuOptions.Voice:OutputString(L["taxi;started"], true, true, nil, true)
+		SkuQuest:UpdateZoneAvailableQuestList(true)
 	end
 	if PLAYER_CONTROL_GAINED_flag == 1 then
 		PLAYER_CONTROL_GAINED_flag = 0
 		SkuOptions.Voice:OutputString(L["taxi;ended"], true, true, nil, true)
+		SkuQuest:UpdateZoneAvailableQuestList(true)
 	end
 end
 ---------------------------------------------------------------------------------------------------------------------------------------

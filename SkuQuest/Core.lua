@@ -1462,6 +1462,7 @@ SkuQuest.activeBeaconsOldUiMapId = 0
 
 local function doQuestMarkerBeacons(aType, tUnSortedTable)
 	local tKeep = {}
+
 	for i, v in pairs(tUnSortedTable) do
 		local tName = math.floor(v[2])..math.floor(v[3])
 
@@ -1471,7 +1472,7 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 		end
 
 		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].enabled == true 
-			and (UnitLevel("player") - tQuestLevel <= SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].minLevel)
+			and ((UnitLevel("player") - tQuestLevel <= SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].minLevel) or tQuestLevel == -1)
 			and (SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].enableBeacons == true or SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].chatNotification == true)
 			and not SkuQuest.activeBeaconsTmpIgnore[v[4]]
 			and not SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore[v[4]]
@@ -1529,10 +1530,13 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 
 							if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].chatNotification == true then
 								if not SkuQuest.activeBeaconsTmpIgnoreChat[v[4]] then
+									local playerX, playerY = UnitPosition("player")
+									local tDistance = SkuNav:Distance(playerX, playerY, v[2], v[3]) or 0
+
 									if aType == "availableQuests" then
-										print(L["Quest available"]..": "..i.." ("..v[1].." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..")")
+										print(L["Quest available"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..")")
 									elseif aType == "currentQuests" then
-										print(L["Quest for hand-in"]..": "..i.." ("..v[1].." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..")")
+										print(L["Quest for hand-in"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..")")
 									end
 									SkuQuest.activeBeaconsTmpIgnoreChat[v[4]] = true
 								end
@@ -1586,38 +1590,41 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 		return
 	end
 
-	doQuestMarkerBeacons("availableQuests", tUnSortedTable)
+	if UnitOnTaxi("player") ~= true then
 
-	local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
-	local tPlayX, tPlayY = UnitPosition("player")
-	local numEntries = GetNumQuestLogEntries()
-	local tCompleted = {}
-	for questLogID = 1, numEntries do
-		local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, aQuestID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
-		if isComplete == 1 and isHeader ~= true then
-			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3]) then
-				local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
-				if tFinishedBy then
-					local tTargets = {}
-					local tTargetType = nil
-					tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
-					local tResultWPs = {}
-					SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, true, tPlayerUIMap)					
-					for unitGeneralName, wpTable in pairs(tResultWPs) do
-						for wpIndex, wpName in pairs(wpTable) do
-							local tWpObj = SkuNav:GetWaypointData2(wpName)
-							if tWpObj then
-								local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
-								tCompleted[title] = {tDistanceTargetWp, tWpObj.worldX, tWpObj.worldY, aQuestID}
+		doQuestMarkerBeacons("availableQuests", tUnSortedTable)
+
+		local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
+		local tPlayX, tPlayY = UnitPosition("player")
+		local numEntries = GetNumQuestLogEntries()
+		local tCompleted = {}
+		for questLogID = 1, numEntries do
+			local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, aQuestID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
+			if isComplete == 1 and isHeader ~= true then
+				if SkuDB.questDataTBC[aQuestID] and SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3]) then
+					local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
+					if tFinishedBy then
+						local tTargets = {}
+						local tTargetType = nil
+						tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
+						local tResultWPs = {}
+						SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, true, tPlayerUIMap)					
+						for unitGeneralName, wpTable in pairs(tResultWPs) do
+							for wpIndex, wpName in pairs(wpTable) do
+								local tWpObj = SkuNav:GetWaypointData2(wpName)
+								if tWpObj then
+									local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
+									tCompleted[title] = {tDistanceTargetWp, tWpObj.worldX, tWpObj.worldY, aQuestID}
+								end
 							end
 						end
 					end
 				end
 			end
 		end
+		
+		doQuestMarkerBeacons("currentQuests", tCompleted)
 	end
-	
-	doQuestMarkerBeacons("currentQuests", tCompleted)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
