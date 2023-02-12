@@ -18,6 +18,7 @@ function SkuTableToString(aTable, aCallback)
 		local tLocalCounter = 0
 		local function tf(ttable, tTab)
 			for k, v in pairs(ttable) do
+				--print(tLocalCounter, k, v)
 				if type(v) == 'table' then
 					--print(tTab.."["..k.."] = {")
 					tPartString = tPartString.."["..k.."] = {"
@@ -63,7 +64,7 @@ function SkuTableToString(aTable, aCallback)
 		else
 			if tCoCompleted == false then
 				tCoCompleted = true
-				dprint("completed")
+				--print("completed")
 				tStr = tStr..tPartString
 				aCallback("return "..tStr.."}")
 			end

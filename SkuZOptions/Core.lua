@@ -3270,7 +3270,40 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 					tNewMenuEntry.BuildChildren = function(self)
 						if ((aGossipListTable[index].isBag and CursorHasItem())) or not aGossipListTable[index].isBag or aGossipListTable[index].isPurchasable then
 							self.children = {}
-
+							if string.find(aGossipListTable[index].obj:GetName(), "MerchantItem") then
+								local tStock = 1000
+								if aGossipListTable[index].obj.numInStock and aGossipListTable[index].obj.numInStock ~= -1 then
+									tStock = aGossipListTable[index].obj.numInStock
+								end
+								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
+								tNewSubMenuEntry.filterable = true
+								tNewSubMenuEntry.dynamic = true
+								tNewSubMenuEntry.BuildChildren = function(self)
+									for tN = 1, tStock do
+										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tN}, SkuGenericMenuItem)
+										tNewSubMenuEntry.OnAction = function()
+											local trem = tN - (20 * math.floor(tN / 20))
+											tN = math.floor(tN / 20)
+											BuyMerchantItem(aGossipListTable[index].obj:GetID(), trem)
+											if tN > 0 then
+												C_Timer.After(0.25, function()
+													C_Timer.NewTicker(0.25,
+													function()
+														SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
+														BuyMerchantItem(aGossipListTable[index].obj:GetID(), 20)
+													end,
+													tN)
+												end)
+											end
+											C_Timer.After((tN * 0.25) + 0.01, function()
+												SkuCore:CheckFrames()
+												C_Timer.After(0.35 + (tN * 0.5), function() SkuOptions.currentMenuPosition:OnUpdate() end)
+											end)
+										end
+									end
+								end
+							end
+	
 							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
 								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"

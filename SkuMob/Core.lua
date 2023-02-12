@@ -280,7 +280,7 @@ end
 function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	aUnitId = aUnitId or "target"
 
-	--print("mob PLAYER_TARGET_CHANGED(event, ", aUnitId)
+	--print("mob PLAYER_TARGET_CHANGED(event, ", event, aUnitId)
 
 	if aUnitId == "target" then
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
@@ -498,15 +498,16 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 					SkuOptions.Voice:OutputString(L["level"], false, true, 0.2)
 					SkuOptions.Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)
 				else
-					--aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine
 					SkuOptions.Voice:OutputStringBTtts(L["level"].." "..string.format("%02d", tUnitLevel), false, true, 0.2, nil, nil, nil, 1)
 				end
 			else
-				if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)
-					SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
-				else
-					SkuOptions.Voice:OutputStringBTtts(L["level"].." "..L["Unknown"], false, true, 2.2, nil, nil, nil, 1)
+				if aUnitId ~= "softinteract" then
+					if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+						SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)
+						SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
+					else
+						SkuOptions.Voice:OutputStringBTtts(L["level"].." "..L["Unknown"], false, true, 2.2, nil, nil, nil, 1)
+					end
 				end
 			end
 		end

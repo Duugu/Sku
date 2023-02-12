@@ -1053,6 +1053,7 @@ function SkuCore:AuctionHouseBuildItemSellMenuSub(aSelf, aGossipItemTable)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tQualityDb = {}
 function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, subCategoryIndex, subSubCategoryIndex)
    --print("AuctionHouseBuildItemFullScanDBMenu", categoryIndex, subCategoryIndex, subSubCategoryIndex)
    local classID, subClassID, inventoryType
@@ -1075,11 +1076,14 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
       filterData = AuctionCategories[categoryIndex].filters
    end
 
+   local tHasEntries = false
    if #FullScanResultsDB == 0 then
       tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
       tNewMenuEntryCategorySubItem.dynamic = false
    else
       tCurrentDBClean = {}
+      local lmin, lmax, isuse, qmin = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin or 1, SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMax or 1000, SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.Usable or false, SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.MinQuality or 1
+
       for tIndex, tRecord in pairs(FullScanResultsDB) do
          if tRecord then
             if tRecord[1] then
@@ -1092,29 +1096,54 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
                      )
                   )
                then
-                  local tName = SkuCore:AuctionItemNameFormat(tRecord)
-                  local tFound = false
-                  for x = 1, #tCurrentDBClean do
-                     if tCurrentDBClean[x].name == tName then
-                        tCurrentDBClean[x].dupes[#tCurrentDBClean[x].dupes + 1] = tRecord
-                        tFound = true
+                  if tRecord[4] == -1 or tRecord[4] == nil then
+                     if tQualityDb[tRecord[17]] then
+                        tRecord[4] = tQualityDb[tRecord[17]]
+                     else
+                        tRecord[4] = C_Item.GetItemQualityByID(tonumber(tRecord[17]))
+                        tQualityDb[tRecord[17]] = tRecord[4]
+                     end
+                     if tRecord[4] == nil then
+                        --print("      still miss ", tRecord[4], C_Item.GetItemQualityByID(tonumber(tRecord[17])))
                      end
                   end
-                  if tFound == false then
-                     tCurrentDBClean[#tCurrentDBClean + 1] = {}
-                     tCurrentDBClean[#tCurrentDBClean].name = tName
-                     tCurrentDBClean[#tCurrentDBClean].level = select(4, GetItemInfo(tRecord[17])) or 0
-                     tCurrentDBClean[#tCurrentDBClean].pricePerItem = SkuCore:AuctionGetPricePerItem(tRecord)
-                     tCurrentDBClean[#tCurrentDBClean].pricePerAuction = {bid = tRecord[8], buy = tRecord[10],}
-                     tCurrentDBClean[#tCurrentDBClean].dupes = {}
-                     tCurrentDBClean[#tCurrentDBClean].dupes[#tCurrentDBClean[#tCurrentDBClean].dupes + 1] = tRecord
-                     tCurrentDBClean[#tCurrentDBClean].query = tRecord.query
+
+                  if tRecord[6] >= lmin and tRecord[6] <= lmax
+                     and (isuse == false or (isuse == true and tRecord[5] == true))
+                     and tRecord[4] >= qmin
+                  then
+                     tHasEntries = true
+                     local tName = SkuCore:AuctionItemNameFormat(tRecord)
+                     local tFound = false
+                     for x = 1, #tCurrentDBClean do
+                        if tCurrentDBClean[x].name == tName then
+                           tCurrentDBClean[x].dupes[#tCurrentDBClean[x].dupes + 1] = tRecord
+                           tFound = true
+                        end
+                     end
+                     if tFound == false then
+                        tCurrentDBClean[#tCurrentDBClean + 1] = {}
+                        tCurrentDBClean[#tCurrentDBClean].name = tName
+                        tCurrentDBClean[#tCurrentDBClean].level = select(4, GetItemInfo(tRecord[17])) or 0
+                        tCurrentDBClean[#tCurrentDBClean].pricePerItem = SkuCore:AuctionGetPricePerItem(tRecord)
+                        tCurrentDBClean[#tCurrentDBClean].pricePerAuction = {bid = tRecord[8], buy = tRecord[10],}
+                        tCurrentDBClean[#tCurrentDBClean].dupes = {}
+                        tCurrentDBClean[#tCurrentDBClean].dupes[#tCurrentDBClean[#tCurrentDBClean].dupes + 1] = tRecord
+                        tCurrentDBClean[#tCurrentDBClean].query = tRecord.query
+                     end
                   end
                end
             end
          end
       end
       
+      local tHasEntries = false
+      if tHasEntries == false then
+         tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
+         tNewMenuEntryCategorySubItem.dynamic = false
+         return
+      end
+   
       tCurrentDBCleanSorted = {}
    
       if SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy == 1 or not SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.SortBy then
@@ -1763,6 +1792,14 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
             local tNextEntry = #FullScanResultsDB + 1
             FullScanResultsDB[tNextEntry] = {GetAuctionItemInfo("list", x)}
             FullScanResultsDB[tNextEntry][21] = GetAuctionItemLink("list", x)
+            if FullScanResultsDB[tNextEntry][6] == nil or FullScanResultsDB[tNextEntry][6] > 10000 then
+               if SkuDB.itemDataTBC[FullScanResultsDB[tNextEntry][17]] then
+                  FullScanResultsDB[tNextEntry][6]  = SkuDB.itemDataTBC[FullScanResultsDB[tNextEntry][17]][SkuDB.WotLK.itemKeys.requiredLevel]
+               end
+               if FullScanResultsDB[tNextEntry][6] == nil then
+                  FullScanResultsDB[tNextEntry][6] = SkuOptions.db.char[MODULE_NAME].AuctionCurrentFilter.LevelMin
+               end
+            end
 
             if FullScanResultsDB[tNextEntry][1] == "" then
                if SkuDB.itemLookup[Sku.Loc][FullScanResultsDB[tNextEntry][17]] then
@@ -1770,7 +1807,6 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
                end
             end
          end
-
          FullScanResultsDBHistory = {}
          SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, FullScanResultsDBHistory)
          SkuCore:AuctionUpdateAuctionDBHistory(FullScanResultsDB, AuctionDBHistory)
@@ -1778,8 +1814,24 @@ function SkuCore:AUCTION_ITEM_LIST_UPDATE_LIST()
          SkuTableToString(AuctionDBHistory, function(aString)
             SkuCore.QuerySerializeRunning = false
             SkuOptions.db.factionrealm[MODULE_NAME].AuctionDBHistory = aString
-            dprint("full query completed", SkuCore.QueryCallback)
-            SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
+            SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)--24
+            C_Timer.After(1, function()
+               for q, w in pairs(FullScanResultsDB) do
+                  if w[1] ~= "" and w[4] == -1 then
+                     w[4] = C_Item.GetItemQualityByID(w[17])
+                  end
+               end
+               SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)--24
+               C_Timer.After(1, function()
+                  for q, w in pairs(FullScanResultsDB) do
+                     if w[1] ~= "" and w[4] == -1 then
+                        w[4] = C_Item.GetItemQualityByID(w[17])
+                     end
+                  end
+                  dprint("full query completed", SkuCore.QueryCallback)
+                  SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
+               end)
+            end)
          end)
 
          SkuCore.QueryCallback()

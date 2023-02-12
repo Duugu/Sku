@@ -1591,30 +1591,31 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 	end
 
 	if UnitOnTaxi("player") ~= true then
+		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enabled == true then
+			doQuestMarkerBeacons("availableQuests", tUnSortedTable)
 
-		doQuestMarkerBeacons("availableQuests", tUnSortedTable)
-
-		local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
-		local tPlayX, tPlayY = UnitPosition("player")
-		local numEntries = GetNumQuestLogEntries()
-		local tCompleted = {}
-		for questLogID = 1, numEntries do
-			local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, aQuestID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
-			if isComplete == 1 and isHeader ~= true then
-				if SkuDB.questDataTBC[aQuestID] and SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3]) then
-					local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
-					if tFinishedBy then
-						local tTargets = {}
-						local tTargetType = nil
-						tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
-						local tResultWPs = {}
-						SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, true, tPlayerUIMap)					
-						for unitGeneralName, wpTable in pairs(tResultWPs) do
-							for wpIndex, wpName in pairs(wpTable) do
-								local tWpObj = SkuNav:GetWaypointData2(wpName)
-								if tWpObj then
-									local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
-									tCompleted[title] = {tDistanceTargetWp, tWpObj.worldX, tWpObj.worldY, aQuestID}
+			local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
+			local tPlayX, tPlayY = UnitPosition("player")
+			local numEntries = GetNumQuestLogEntries()
+			local tCompleted = {}
+			for questLogID = 1, numEntries do
+				local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, aQuestID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
+				if isComplete == 1 and isHeader ~= true then
+					if SkuDB.questDataTBC[aQuestID] and SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][1] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][2] or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]][3]) then
+						local tFinishedBy = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["finishedBy"]]
+						if tFinishedBy then
+							local tTargets = {}
+							local tTargetType = nil
+							tTargets, tTargetType = SkuQuest:GetQuestTargetIds(aQuestID, tFinishedBy)
+							local tResultWPs = {}
+							SkuQuest:GetResultingWps(tTargets, tTargetType, aQuestID, tResultWPs, true, tPlayerUIMap)					
+							for unitGeneralName, wpTable in pairs(tResultWPs) do
+								for wpIndex, wpName in pairs(wpTable) do
+									local tWpObj = SkuNav:GetWaypointData2(wpName)
+									if tWpObj then
+										local tDistanceTargetWp = SkuNav:Distance(tPlayX, tPlayY, tWpObj.worldX, tWpObj.worldY)
+										tCompleted[title] = {tDistanceTargetWp, tWpObj.worldX, tWpObj.worldY, aQuestID}
+									end
 								end
 							end
 						end
@@ -1623,7 +1624,9 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 			end
 		end
 		
-		doQuestMarkerBeacons("currentQuests", tCompleted)
+		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enabled == true then
+			doQuestMarkerBeacons("currentQuests", tCompleted)
+		end
 	end
 end
 
