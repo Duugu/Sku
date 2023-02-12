@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.10](https://github.com/Duugu/Sku/releases/download/r32.10/Sku-r32.10-wrath.zip) (Feb 10th, 2023)<br>
+- [Sku r32.11](https://github.com/Duugu/Sku/releases/download/r32.11/Sku-r32.11-wrath.zip) (Feb 12th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+Changes in Sku r32.12
+- Added a "Buy" menu option (additionally to Left click and Right click) for items at vendors to buy stacks. If you're buying more than 20 items the addon needs to buy them in steps of 20 every 0.25 seconds. That may take a while with lager stacks. The addon plays the auction house scan progress sound on every bought stack of 20 items.
+- Fixed the missing translations for beacon types in quest notifications settings.
+- Fixed a bug that was still printing available quests to chat if quest notifications were disabled.
+- Removed "level unknown" output for objects on interact soft targeting with sku tts.
+- Auction house filters are now working for auctions from full scan too.
+	
 ## Changes in Sku r32.10
 - Disabled quest notifications while you are on taxi via a flight master.
 - Fixed a bug with quest notifications distance that is printed to the chat.
