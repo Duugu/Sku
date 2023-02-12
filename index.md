@@ -23,7 +23,7 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
-Changes in Sku r32.12
+## Changes in Sku r32.12
 - Added a "Buy" menu option (additionally to Left click and Right click) for items at vendors to buy stacks. If you're buying more than 20 items the addon needs to buy them in steps of 20 every 0.25 seconds. That may take a while with lager stacks. The addon plays the auction house scan progress sound on every bought stack of 20 items.
 - Fixed the missing translations for beacon types in quest notifications settings.
 - Fixed a bug that was still printing available quests to chat if quest notifications were disabled.
