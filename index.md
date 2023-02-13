@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.12](https://github.com/Duugu/Sku/releases/download/r32.12/Sku-r32.12-wrath.zip) (Feb 13th, 2023)<br>
+- [Sku r32.13](https://github.com/Duugu/Sku/releases/download/r32.13/Sku-r32.13-wrath.zip) (Feb 13th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.13
+- Fixed a bug with the four new "... duration" aura attributes, that was breaking them and all conditions with the Contains operator. The new auras now should work, and existing aura shouldn't be triggered unintentionally anymore.
+- Fixed a bug with quest notifications that was causing errors.
+- Fixed a bug with friendlist that was causing errors.
+
 ## Changes in Sku r32.12
 - Added four new attributes for aura conditions: "Buff list target remaining duration", "Debuff list target remaining duration", "Your buff list remaining duration", "Your debuff list remaining duration". You can use them to evaluate the remaining duration of the buff/debuff from the "buff/debuff list (L) contains" conditions for you/your target. They have no effect if there isn't the appropiate "buff/debuff list (L) contains" condition in your aura.
 - Added a Core > AtlasLoot > Loot history menu with all blue (rare) or better items you've looted. As the addon explicit needs to record looted items, the list of course only has items that you've looted from now on.
