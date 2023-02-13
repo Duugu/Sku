@@ -2,6 +2,13 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r32.12
+	- Added four new attributes for aura conditions: "Buff list target remaining duration", "Debuff list target remaining duration", "Your buff list remaining duration", "Your debuff list remaining duration". You can use them to evaluate the remaining duration of the buff/debuff from the "buff/debuff list (L) contains" conditions for you/your target. They have no effect if there isn't the appropiate "buff/debuff list (L) contains" condition in your aura.
+	- Added a Core > AtlasLoot > Loot history menu with all blue (rare) or better items you've looted. As the addon explicit needs to record looted items, the list of course only has items that you've looted from now on.
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r32.11
 	- Added a "Buy" menu option (additionally to Left click and Right click) for items at vendors to buy stacks. If you're buying more than 20 items the addon needs to buy them in steps of 20 every 0.25 seconds. That may take a while with lager stacks. The addon plays the auction house scan progress sound on every bought stack of 20 items.

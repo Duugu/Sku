@@ -671,10 +671,11 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 
 	local function getAuraList(unit, filter)
 		local tBuffList = {}
-		for x = 1, 40  do
-			local name = UnitAura(unit, x, filter)
+		for x = 1, 5  do
+			local name, icon, count, dispelType, duration, expirationTime = UnitAura(unit, x, filter)
+			--print(x, name, icon, count, dispelType, duration, expirationTime)
 			if name then
-				tBuffList[name] = name
+				tBuffList[name] = (expirationTime or GetTime()) - GetTime()
 			end
 		end
 
@@ -844,7 +845,6 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			local tOverallResult = true
 			local tHasApplicableAttributes = false
 
-			--evaluate attributes
 			local tSingleBuffListTargetValue
 			local tSingleDebuffListTargetValue
 
@@ -853,6 +853,20 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			local tHasCountCondition_NumCountConditionsTrue = 0
 			local tHasCountCondition_NumConditionsWoCountIsTrue = 0
 
+			--add tEvaluateData for durations of buff/debuff list conditions
+			local tAtts = {
+				buffListPlayer = {},
+				debuffListPlayer = {},
+				buffListTarget = {},
+				debuffListTarget = {},
+			}
+			for tAttsI, _ in pairs(tAtts) do
+				if tAuraData.attributes[tAttsI] and tAuraData.attributes[tAttsI.."Duration"] then
+					tEvaluateData[tAttsI.."Duration"] = tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])]
+				end
+			end
+			
+			--evaluate all attributes
 			for tAttributeName, tAttributeValue in pairs(tAuraData.attributes) do
 				if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
 					tHasCountCondition_NumCountConditions = tHasCountCondition_NumCountConditions + 1

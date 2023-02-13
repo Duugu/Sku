@@ -47,6 +47,7 @@ local tItemNameTable = nil
 function SkuCore:alItegrationLogin()
 	SkuOptions.db.char[MODULE_NAME].alIntegration = SkuOptions.db.char[MODULE_NAME].alIntegration or {}
    SkuOptions.db.char[MODULE_NAME].alIntegration.favorites = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites or {}
+   SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory = SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory or {}
    for x = 1, #SkuCore.favoriteSlots do
       SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] or {}
    end
@@ -54,6 +55,35 @@ function SkuCore:alItegrationLogin()
    for y = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites do
       for x = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[y] do
          C_Item.GetItemNameByID(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[y][x])
+      end
+   end
+
+   SkuCore:RegisterEvent("CHAT_MSG_LOOT")
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:CHAT_MSG_LOOT(_, text, _, _, _, playerName)
+   if not playerName or playerName ~= UnitName("player") then
+      return
+   end
+
+   if not string.find(text, L["You receive loot:"]) then
+      return
+   end
+
+   text = string.gsub(text, L["You receive loot:"].." ", "")
+   text = string.sub(text, 1, string.len(text) - 3)
+      
+   local itemid = GetItemInfoInstant(text)
+   if not itemid then
+      return
+   end
+
+   local tQuality = C_Item.GetItemQualityByID(itemid)
+   if tQuality and tQuality > 2 then
+      SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[#SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory + 1] = itemid
+      if #SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory > 1000 then
+         SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[#SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory] = nil
       end
    end
 end
@@ -605,6 +635,76 @@ function SkuCore:alIntegrationMenuBuilder()
             end
          end
       end
+   end
+
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Loot history"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.filterable = true
+   tNewMenuEntry.BuildChildren = function(self)
+      if #SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory > 0 then
+         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Clear list"]}, SkuGenericMenuItem)
+         tNewSubMenuEntry.isSelect = true
+         tNewSubMenuEntry.OnAction = function(self, aValue, aName)
+            if aName == L["Clear list"] then
+               SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory = {}
+               C_Timer.After(0.001, function()
+                  SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+               end)
+            end
+         end
+
+         for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory do
+            local itemName = GetItemInfo(SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[q]) 
+            if itemName then
+               local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+               tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
+                  local aId = SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[q]
+                  
+                  SkuCore:getItemComparisnSections(aId)
+                  C_Timer.After(0.1, function()
+                     local tSections = SkuCore:getItemComparisnSections(aId) or {}
+                     if tSections[1] then
+                        tSections[1] = L["currently equipped"].."\r\n"..tSections[1]
+                     end
+         
+                     local tDropText = L["Dropped by"].."\r\n"
+                     if tItemDropTable[aId] then
+                        for iDrop, vDrop in pairs(tItemDropTable[aId]) do
+                           tDropText = tDropText..vDrop.."\r\n"
+                        end
+                     end
+                     table.insert(tSections, 1, tDropText)
+         
+                     if aNpcId then
+                        local Droprate = AtlasLoot.Data.Droprate:GetData(aNpcId, aId)
+                        if Droprate then
+                           --print(aId, tTextFirstLine, aNpcId, Droprate)
+                           table.insert(tSections, 1, L["Droprate"]..": "..Droprate.."%")
+                        end
+                     end
+         
+                     local tTextFirstLine, tTextFull = "", ""
+                     _G["SkuScanningTooltip"]:ClearLines()
+                     _G["SkuScanningTooltip"]:SetItemByID(aId)
+                     if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+                        if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+                           local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                           tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
+                        end
+                     end
+         
+                     table.insert(tSections, 1, tTextFull)
+         
+                     SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
+                  end)
+               end
+            end
+         end
+      else
+         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+      end
+
+      
    end
 end
 

@@ -2084,3 +2084,16 @@ L["meters"] = "meters"
 L["Remove from favorites"] = "Remove from favorites"
 L["Prio"] = "prio"
 L["in AtlasLoot favorites for"] = "in AtlasLoot favorites for"
+
+L["The remaining duration of the buff from the buff list target (L) condition"]  = "The remaining duration of the buff from the condition Buff list target (L)"
+L["buff list target remaining duration"]  = "buff list target remaining duration" --
+L["The remaining duration of the debuff from the debuff list target (L) condition"]  = "The remaining duration of the debuff from the condition Debuff list target (L)"
+L["Debuff list target remaining duration"]  = "Debuff list target remaining duration" --
+L["The remaining duration of the buff from the your buff list (L) condition"] = "The remaining duration of the buff from the condition Your buff list (L)"
+L["Your buff list remaining duration"] = "Your buff list remaining duration" -- 
+L["The remaining duration of the debuff from the your debuff list (L) condition"] = "The remaining duration of the debuff from the condition Your debuff list (L)"
+L["Your debuff list remaining duration"] = "Your debuff list remaining duration" -- 
+
+L["You receive loot:"] = "You receive loot:" --needs to be the exact ingame string!!
+L["Loot history"] = "Loot history"
+L["Clear list"] = "Clear list"

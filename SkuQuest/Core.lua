@@ -1463,6 +1463,10 @@ SkuQuest.activeBeaconsOldUiMapId = 0
 local function doQuestMarkerBeacons(aType, tUnSortedTable)
 	local tKeep = {}
 
+	if not tUnSortedTable then
+		return
+	end
+
 	for i, v in pairs(tUnSortedTable) do
 		local tName = math.floor(v[2])..math.floor(v[3])
 

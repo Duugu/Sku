@@ -1760,6 +1760,64 @@ SkuAuras.attributes = {
       end,
       values = {},      
    },
+
+   buffListTargetDuration = {
+      tooltip = L["The remaining duration of the buff from the buff list target (L) condition"],
+      friendlyName = L["buff list target remaining duration"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.buffListTargetDuration then
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.buffListTargetDuration), tonumber(aValue))
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = zeroToOneHundred,      
+   },
+   debuffListTargetDuration = {
+      tooltip = L["The remaining duration of the debuff from the debuff list target (L) condition"],
+      friendlyName = L["Debuff list target remaining duration"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.debuffListTargetDuration then
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.debuffListTargetDuration), tonumber(aValue))
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = zeroToOneHundred,      
+   },   
+   buffListPlayerDuration = {
+      tooltip = L["The remaining duration of the buff from the your buff list (L) condition"],
+      friendlyName = L["Your buff list remaining duration"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.buffListPlayerDuration then
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.buffListPlayerDuration), tonumber(aValue))
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = zeroToOneHundred,      
+   },   
+   debuffListPlayerDuration = {
+      tooltip = L["The remaining duration of the debuff from the your debuff list (L) condition"],
+      friendlyName = L["Your debuff list remaining duration"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+         if aEventData.debuffListPlayerDuration then
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.debuffListPlayerDuration), tonumber(aValue))
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = zeroToOneHundred,      
+   },
+
    itemName = {
       tooltip = L["Der Gegenstandsname, der die Aura auslösen soll"],
       friendlyName = L["gegenstand name"],
@@ -1961,7 +2019,7 @@ SkuAuras.Operators = {
          if type(aValueA) == "table" then 
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
+                  local tResult = SkuAuras:RemoveTags(tNameB) == SkuAuras:RemoveTags(tNameB)
                   if tResult == true then
                      return true
                   end
@@ -1989,7 +2047,7 @@ SkuAuras.Operators = {
             local tFound = false
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
+                  local tResult = SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      tFound = true
                   end
