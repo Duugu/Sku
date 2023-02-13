@@ -1463,7 +1463,7 @@ SkuQuest.activeBeaconsOldUiMapId = 0
 local function doQuestMarkerBeacons(aType, tUnSortedTable)
 	local tKeep = {}
 
-	if not tUnSortedTable then
+	if tUnSortedTable == nil then
 		return
 	end
 

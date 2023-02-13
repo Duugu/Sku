@@ -1761,6 +1761,14 @@ SkuAuras.attributes = {
       values = {},      
    },
 
+
+
+
+
+
+
+
+   
    buffListTargetDuration = {
       tooltip = L["The remaining duration of the buff from the buff list target (L) condition"],
       friendlyName = L["buff list target remaining duration"],
@@ -2019,7 +2027,7 @@ SkuAuras.Operators = {
          if type(aValueA) == "table" then 
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  local tResult = SkuAuras:RemoveTags(tNameB) == SkuAuras:RemoveTags(tNameB)
+                  local tResult = SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      return true
                   end

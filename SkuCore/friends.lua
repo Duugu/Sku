@@ -261,7 +261,7 @@ local function tAddBnetFriend(aParent, aIndex, aOnline)
          tAddFriendSubmenu(self, aIndex, aOnline, true)
       end
 
-   elseif accountInfo.gameAccountInfo.isOnline ~= true and aOnline ~= true then
+   elseif accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline ~= true and aOnline ~= true then
       local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {"Bnet: "..accountInfo.battleTag.." - offline"}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       local tText = accountInfo.battleTag.."\r\n"

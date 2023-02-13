@@ -2580,9 +2580,11 @@ function SkuCore:IterateChildren(t, tab)
 										if "table" ~= type(tResults[fName].textFull) then
 											tResults[fName].textFull = {tResults[fName].textFull}
 										end
-										local itemID = GetItemInfoInstant(tResults[fName].obj.link)
-										if itemID then
-											SkuCore:InsertComparisnSections(itemID, tResults[fName].textFull, inventoryTooltipTextCache)
+										if tResults[fName].obj and tResults[fName].obj.link then
+											local itemID = GetItemInfoInstant(tResults[fName].obj.link)
+											if itemID then
+												SkuCore:InsertComparisnSections(itemID, tResults[fName].textFull, inventoryTooltipTextCache)
+											end
 										end
 									end
 								end
