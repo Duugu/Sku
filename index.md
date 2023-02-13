@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.11](https://github.com/Duugu/Sku/releases/download/r32.11/Sku-r32.11-wrath.zip) (Feb 12th, 2023)<br>
+- [Sku r32.12](https://github.com/Duugu/Sku/releases/download/r32.12/Sku-r32.12-wrath.zip) (Feb 13th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.12
+- Added four new attributes for aura conditions: "Buff list target remaining duration", "Debuff list target remaining duration", "Your buff list remaining duration", "Your debuff list remaining duration". You can use them to evaluate the remaining duration of the buff/debuff from the "buff/debuff list (L) contains" conditions for you/your target. They have no effect if there isn't the appropiate "buff/debuff list (L) contains" condition in your aura.
+- Added a Core > AtlasLoot > Loot history menu with all blue (rare) or better items you've looted. As the addon explicit needs to record looted items, the list of course only has items that you've looted from now on.
+
 ## Changes in Sku r32.11
 - Added a "Buy" menu option (additionally to Left click and Right click) for items at vendors to buy stacks. If you're buying more than 20 items the addon needs to buy them in steps of 20 every 0.25 seconds. That may take a while with lager stacks. The addon plays the auction house scan progress sound on every bought stack of 20 items.
 - Fixed the missing translations for beacon types in quest notifications settings.
