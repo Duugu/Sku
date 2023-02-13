@@ -24,7 +24,7 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 ## Changes in Sku r32.13
-- Fixed a bug with the four new "... duration" aura attributes, that was breaking them and all conditions with the Contains operator. The new auras now should work, and existing aura shouldn't be triggered unintentionally anymore.
+- Fixed a bug with the four new "duration" aura attributes, that was breaking them and all auras using the Contains operator in any condition. The new attributes should work now, and existing auras shouldn't be triggered unintentionally anymore.
 - Fixed a bug with quest notifications that was causing errors.
 - Fixed a bug with friendlist that was causing errors.
 
