@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.13](https://github.com/Duugu/Sku/releases/download/r32.13/Sku-r32.13-wrath.zip) (Feb 13th, 2023)<br>
+- [Sku r32.14](https://github.com/Duugu/Sku/releases/download/r32.14/Sku-r32.14-wrath.zip) (Feb 14th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.14
+- Tried to fix the bug with not working "contains" auras. Again.
+
 ## Changes in Sku r32.13
 - Fixed a bug with the four new "duration" aura attributes, that was breaking them and all auras using the Contains operator in any condition. The new attributes should work now, and existing auras shouldn't be triggered unintentionally anymore.
 - Fixed a bug with quest notifications that was causing errors.
