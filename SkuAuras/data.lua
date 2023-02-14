@@ -1396,7 +1396,7 @@ SkuAuras.attributes = {
       friendlyName = L["Quelle (L)"],
       type = "SET",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	--dprint("    ","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
+      	--print("","SkuAuras.attributes.sourceUnitId.evaluate", aEventData.sourceUnitId, aOperator, aValue)
          if aOperator == "is" then
             aOperator = "contains"
          elseif aOperator == "isNot" then
@@ -2027,7 +2027,7 @@ SkuAuras.Operators = {
          if type(aValueA) == "table" then 
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  local tResult = SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB)
+                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      return true
                   end
@@ -2055,7 +2055,7 @@ SkuAuras.Operators = {
             local tFound = false
             for tName, tValue in pairs(aValueA) do
                for tNameB, tValueB in pairs(aValueB) do
-                  local tResult = SkuAuras:RemoveTags(tName) == SkuAuras:RemoveTags(tValueB)
+                  local tResult = SkuAuras:RemoveTags(tValue) == SkuAuras:RemoveTags(tValueB)
                   if tResult == true then
                      tFound = true
                   end

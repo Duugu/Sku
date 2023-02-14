@@ -4,6 +4,11 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r32.14
+	- Tried to fix the bug with not working "contains" auras. Again.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r32.13
 	- Fixed a bug with the four new "... duration" aura attributes, that was breaking them and all conditions with the Contains operator. The new auras now should work, and existing aura shouldn't be triggered unintentionally anymore.
 	- Fixed a bug with quest notifications that was causing errors.

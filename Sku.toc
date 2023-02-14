@@ -1,9 +1,9 @@
 ## Interface: 30400
 ## Interface-Wrath: 30401
-## Title: Sku (32.13)
+## Title: Sku (32.14)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 32.13
+## Version: 32.14
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
 SkuAudioData\assets\SkuAudioDataLenIndex.lua

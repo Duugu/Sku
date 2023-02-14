@@ -669,13 +669,18 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 		tSourceUnitIDCannAttack = CombatLog_Object_IsA(tEventData[CleuBase.sourceFlags], CombatLogFilterAttackable)
 	end
 
-	local function getAuraList(unit, filter)
+	local function getAuraList(unit, filter, durationForAuraName)
+		filter = filter or "HELPFUL|HARMFUL"
 		local tBuffList = {}
-		for x = 1, 5  do
+		for x = 1, 40  do
 			local name, icon, count, dispelType, duration, expirationTime = UnitAura(unit, x, filter)
-			--print(x, name, icon, count, dispelType, duration, expirationTime)
 			if name then
-				tBuffList[name] = (expirationTime or GetTime()) - GetTime()
+				if durationForAuraName then
+					if name == durationForAuraName then
+						return (expirationTime or GetTime()) - GetTime()
+					end
+				end
+				tBuffList[name] = name
 			end
 		end
 
@@ -730,7 +735,9 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 			end
 		end
 
-		return tBuffList
+		if not durationForAuraName then
+			return tBuffList
+		end
 	end
 
 	local subevent = tEventData[CleuBase.subevent]
@@ -855,14 +862,17 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 
 			--add tEvaluateData for durations of buff/debuff list conditions
 			local tAtts = {
-				buffListPlayer = {},
-				debuffListPlayer = {},
-				buffListTarget = {},
-				debuffListTarget = {},
+				buffListPlayer = {"player", "HELPFUL"},
+				debuffListPlayer = {"player", "HARMFUL"},
+				buffListTarget = {"target", "HELPFUL"},
+				debuffListTarget = {"target", "HARMFUL"},
 			}
-			for tAttsI, _ in pairs(tAtts) do
+			for tAttsI, tAttsV in pairs(tAtts) do
 				if tAuraData.attributes[tAttsI] and tAuraData.attributes[tAttsI.."Duration"] then
-					tEvaluateData[tAttsI.."Duration"] = tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])]
+					local tduration = getAuraList(tAttsV[1], tAttsV[2], tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])])
+					if tduration then
+						tEvaluateData[tAttsI.."Duration"] = tduration
+					end
 				end
 			end
 			
