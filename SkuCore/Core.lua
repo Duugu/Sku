@@ -1944,6 +1944,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:MinimapScannerOnLogin()
 		SkuCore:DialogKeyLogin()
 		SkuCore:alItegrationLogin()
+		SkuCore:bisLogin()
 
 		if not SkuOptions.db.char[MODULE_NAME] then
 			SkuOptions.db.char[MODULE_NAME] = {}

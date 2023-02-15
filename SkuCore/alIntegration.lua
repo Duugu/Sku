@@ -44,6 +44,21 @@ local tItemDropTable = nil
 local tItemNameTable = nil
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:alItegrationGetItemDropTable(aId)
+   if not aId then
+      return
+   end
+
+   if not tItemDropTable then
+      SkuCore:alIntegrationQueryAll()
+   end
+
+   if tItemDropTable then
+      return tItemDropTable[aId]
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:alItegrationLogin()
 	SkuOptions.db.char[MODULE_NAME].alIntegration = SkuOptions.db.char[MODULE_NAME].alIntegration or {}
    SkuOptions.db.char[MODULE_NAME].alIntegration.favorites = SkuOptions.db.char[MODULE_NAME].alIntegration.favorites or {}

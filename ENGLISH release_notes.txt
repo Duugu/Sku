@@ -2,6 +2,10 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r32.15
+	- Added best in slot lists for max level chars per class and spec under Core > Best In Slot > Lists. As default the addon only shows lists for your current class. Go to Core > Best In Slot > Options to change that. First item in lists is BIS. Second is second best, etc. The loot roll tooltip has a new section named "BIS info" with BIS details for the item (if that item is on any BIS lists).
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r32.14
