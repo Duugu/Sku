@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.14](https://github.com/Duugu/Sku/releases/download/r32.14/Sku-r32.14-wrath.zip) (Feb 14th, 2023)<br>
+- [Sku r32.15](https://github.com/Duugu/Sku/releases/download/r32.15/Sku-r32.15-wrath.zip) (Feb 15th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.15
+- Added best in slot lists for max level chars per class and spec under Core > Best In Slot > Lists. As default the addon only shows lists for your current class. Go to Core > Best In Slot > Options to change that. First item in lists is BIS. Second is second best, etc. The loot roll tooltip has a new section named "BIS info" with BIS details for the item (if that item is on any BIS lists).
+
 ## Changes in Sku r32.14
 - Tried to fix the bug with not working "contains" auras. Again.
 
