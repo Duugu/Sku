@@ -2163,3 +2163,6 @@ L["Enchants"] = "Enchants"
 L["Phase"] = "Phase"
 L["Show your class only"] = "Show your class only"
 L["BIS info"] = "BIS info"
+L["Weapon"] = "Weapon"
+
+L["Mute in Combat"] = "Mute Names in Combat"

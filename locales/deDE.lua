@@ -2158,3 +2158,6 @@ L["Enchants"] = "Verzauberungen"
 L["Phase"] = "Phase"
 L["Show your class only"] = "Nur deine Klasse anzeigen"
 L["BIS info"] = "BIS informationen"
+L["Weapon"] = "Waffe"
+
+L["Mute in Combat"] = "Im Kampf Namen stummschalten"

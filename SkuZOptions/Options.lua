@@ -557,7 +557,21 @@ SkuOptions.options = {
 									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.outputName
 								end
 							},
-
+							muteInCombat = {
+								order = 8,
+								name = L["Mute in Combat"],
+								desc = "",
+								type = "toggle",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings("all")
+								end,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.muteInCombat = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.muteInCombat
+								end
+							},
 						},
 					},
 					friend={
@@ -887,6 +901,7 @@ SkuOptions.defaults = {
 			forPets = false,
 			sound = "sound-waterdrop4",
 			outputName = true,
+			muteInCombat = false,
 		},
 		friend = {
 			enabled = false,

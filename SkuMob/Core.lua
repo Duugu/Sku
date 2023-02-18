@@ -202,7 +202,9 @@ function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2)
 			SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.sound, true, true, 0.3, true)
 		end
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.outputName == true then
-			SkuMob:PLAYER_TARGET_CHANGED("PLAYER_TARGET_CHANGED", "softenemy")
+			if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.muteInCombat ~= true or (SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.muteInCombat == true and UnitAffectingCombat("player") ~= true) then
+				SkuMob:PLAYER_TARGET_CHANGED("PLAYER_TARGET_CHANGED", "softenemy")
+			end
 		end
 	end
 end

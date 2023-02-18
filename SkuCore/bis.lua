@@ -121,9 +121,17 @@ function SkuCore:bisGetBisTooltipInfo(aItemId)
    for x = 1, #bisItemData[aItemId] do
       local className = tClassSpecs[classId][0]
       if (SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass == L["On"] and bisItemData[aItemId][x].class_name == className) or SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass ~= true then
-         tText = L["BIS info"]
-         tText = tText.."\r\n"..L[className]
-         tText = tText.."\r\n"..L[bisItemData[aItemId][x].spec_name]..": "..bisItemData[aItemId][x].slots[1].ranks
+         tText = tText or L["BIS info"]
+         tText = tText.."\r\n"..L[bisItemData[aItemId][x].class_name]
+         local tRanksClean = ""
+         local pc = 1
+         for s in string.gmatch(bisItemData[aItemId][x].slots[1].ranks, "[0-9-]") do
+            if s ~= "-" then 
+               tRanksClean = tRanksClean..", "..tPhases[pc].." " ..s
+            end
+            pc = pc + 1
+         end
+         tText = tText.." "..L[bisItemData[aItemId][x].spec_name]..": "..tRanksClean
       end
    end
 
@@ -143,7 +151,7 @@ function SkuCore:bisMenuBuilder()
       for x = 1, #tClassSpecs do
          if tClassSpecs[x] and tClassSpecs[x][0] then
             local className = tClassSpecs[x][0]
-            if (SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass == true and x == classId) or SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass ~= true then
+            if (SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass == L["On"] and x == classId) or SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass ~= L["On"] then
                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[className]}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = true
                tNewMenuEntry.filterable = true

@@ -2423,6 +2423,14 @@ function SkuCore:ItemName_helper(aText)
 
 	tShort = string.gsub(tShort, "\r\n", " ")
 	tShort = string.gsub(tShort, "\n", " ")
+
+
+
+
+
+
+
+	
 	return tShort, tLong
 end
 
@@ -2598,6 +2606,38 @@ function SkuCore:IterateChildren(t, tab)
 									if TooltipLines_helper(GameTooltip:GetRegions()) ~= "" then
 										local tText = SkuChat:Unescape(TooltipLines_helper(GameTooltip:GetRegions()))
 										tResults[fName].textFirstLine, tResults[fName].textFull = SkuCore:ItemName_helper(tText)
+										local tContainerSlotIDs = {
+											[1]	 = "CharacterHeadSlot",
+											[2]	 = "CharacterNeckSlot",
+											[3]	 = "CharacterShoulderSlot",
+											[4]	 = "CharacterShirtSlot",
+											[5]	 = "CharacterChestSlot",
+											[6]	 = "CharacterWaistSlot",
+											[7]	 = "CharacterLegsSlot",
+											[8]	 = "CharacterFeetSlot",
+											[9]	 = "CharacterWristSlot",
+											[10] = "CharacterHandsSlot",
+											[11] = "CharacterFinger0Slot",
+											[12] = "CharacterFinger1Slot",
+											[13] = "CharacterTrinket0Slot",
+											[14] = "CharacterTrinket1Slot",
+											[15] = "CharacterBackSlot",
+											[16] = "CharacterMainHandSlot",
+											[17] = "CharacterSecondaryHandSlot",
+											[18] = "CharacterRangedSlot",
+										}
+										for z = 1, #tContainerSlotIDs do
+											if tContainerSlotIDs[z] == fName then
+												local itemId = GetInventoryItemID("player", z)
+												if itemId then
+													local tBisText = SkuCore:bisGetBisTooltipInfo(itemId)
+													if tBisText then
+														tResults[fName].textFull = {tResults[fName].textFull}
+														table.insert(tResults[fName].textFull, tBisText)
+													end
+												end
+											end
+										end
 									end
 								end
 								GameTooltip:SetOwner(UIParent, "Center")

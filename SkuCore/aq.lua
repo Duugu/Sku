@@ -262,7 +262,7 @@ local function AqCreateControlFrame()
 						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.player.health.steps)
 						local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
 						tPrevHpDir = healthPer > tPrevHpPer
-						if tPrevHpDir == false then
+						if tPrevHpDir == false and health ~= 0 then
 							tNumberToUtterance = tNumberToUtterance + 1
 						end
 		

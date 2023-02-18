@@ -1595,13 +1595,13 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 	end
 
 	if UnitOnTaxi("player") ~= true then
+		local tCompleted = {}
 		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enabled == true then
 			doQuestMarkerBeacons("availableQuests", tUnSortedTable)
 
 			local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
 			local tPlayX, tPlayY = UnitPosition("player")
 			local numEntries = GetNumQuestLogEntries()
-			local tCompleted = {}
 			for questLogID = 1, numEntries do
 				local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, aQuestID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
 				if isComplete == 1 and isHeader ~= true then

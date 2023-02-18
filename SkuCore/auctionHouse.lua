@@ -1137,7 +1137,6 @@ function SkuCore:AuctionHouseBuildItemFullScanDBMenu(aParent, categoryIndex, sub
          end
       end
       
-      local tHasEntries = false
       if tHasEntries == false then
          tNewMenuEntryCategorySubItem = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
          tNewMenuEntryCategorySubItem.dynamic = false

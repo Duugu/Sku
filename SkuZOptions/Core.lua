@@ -3401,12 +3401,13 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										[9]	 = "CharacterWristSlot",
 										[10] = "CharacterHandsSlot",
 										[11] = "CharacterFinger0Slot",
-										[12] = "CharacterFinger0Slot",
+										[12] = "CharacterFinger1Slot",
 										[13] = "CharacterTrinket0Slot",
 										[14] = "CharacterTrinket1Slot",
 										[15] = "CharacterBackSlot",
 										[16] = "CharacterMainHandSlot",
 										[17] = "CharacterSecondaryHandSlot",
+										[18] = "CharacterRangedSlot",
 									}
 									for x = 1, #tContainerSlotIDs do
 										if tContainerSlotIDs[x] == aGossipListTable[index].containerFrameName then
