@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.15](https://github.com/Duugu/Sku/releases/download/r32.15/Sku-r32.15-wrath.zip) (Feb 15th, 2023)<br>
+- [Sku r32.16](https://github.com/Duugu/Sku/releases/download/r32.16/Sku-r32.16-wrath.zip) (Feb 17th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,15 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.16
+- Fixed a bug with quest notification for completed quests that was breaking the feature.
+- Fixed a bug with the auction house that was leading to an empty Auctions from full scan list.
+- Fixed a bug with Monitor > Player > Health continous output that was unintentionally outputting 1 if the player was dead.
+- Added a new soft targeting setting for enemies: Options > Options > Soft Targeting > Enemy > Mute Names in Combat. Default: Off. With On the addon will not output enemy names for soft targets in combat. This setting is to avoid audio clutter in fights with a lot of enemies.
+- Fixed a bug with the BIS Show your class only setting.
+- Fixed a bug with BIS details in loot roll tooltips.
+- Added BIS details to char equipment tooltips.
+	
 ## Changes in Sku r32.15
 - Added best in slot lists for max level chars per class and spec under Core > Best In Slot > Lists. As default the addon only shows lists for your current class. Go to Core > Best In Slot > Options to change that. First item in lists is BIS. Second is second best, etc. The loot roll tooltip has a new section named "BIS info" with BIS details for the item (if that item is on any BIS lists).
 
