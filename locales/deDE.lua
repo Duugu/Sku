@@ -2161,3 +2161,4 @@ L["BIS info"] = "BIS informationen"
 L["Weapon"] = "Waffe"
 
 L["Mute in Combat"] = "Im Kampf Namen stummschalten"
+L["PvP"] = "PvP"

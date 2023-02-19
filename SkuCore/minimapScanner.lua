@@ -511,24 +511,37 @@ function SkuCore:MinimapScanFast()
       
    C_Timer.After(0.1, function()
       GameTooltip:SetAlpha(0)
+
+      local tTooltipLines = {}
       for i = 1, GameTooltip:NumLines() do
          local line = _G['GameTooltipTextLeft' .. i]:GetText()
          if line then
-            for r = 1, #tRessourceTypes do
-               for x = 1, #tRessourceTypes[r] do
-                  if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
-                     for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
-                        if string.find(line, w, 1, true) and not string.find(line, w .. '|', 1, true) then
-                           if line == "Kobaltablagerung" then
-                              line = "Kobaltvorkommen"
-                           end
-                           if line == "Reiche Kobaltablagerung" then
-                              line = "Reiches Kobaltvorkommen"
-                           end
+            if string.find(line.."\n", "", 1, true) then
+               line = line.."\n"
+               for w in string.gmatch(line, "%a+\n") do
+                  tTooltipLines[w] = w
+               end
+            else
+               tTooltipLines[tTooltipLines] = tTooltipLines
+            end
+         end
+      end
 
-                           SkuCore:MinimapScanFastStop(line)
-                           return
+      for i, v in pairs(tTooltipLines) do
+         for r = 1, #tRessourceTypes do
+            for x = 1, #tRessourceTypes[r] do
+               if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
+                  for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
+                     if string.find(v, w, 1, true) and not string.find(v, w .. '|', 1, true) then
+                        if v == "Kobaltablagerung" then
+                           v = "Kobaltvorkommen"
                         end
+                        if v == "Reiche Kobaltablagerung" then
+                           v = "Reiches Kobaltvorkommen"
+                        end
+
+                        SkuCore:MinimapScanFastStop(v)
+                        return
                      end
                   end
                end

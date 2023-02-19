@@ -323,10 +323,12 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
          local invType = C_Item.GetItemInventoryTypeByID(aId)
          if invType then
             local _, itemLink = GetItemInfo(aId) 
-            for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
-               if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
-                  local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Remove from favorites"]}, SkuGenericMenuItem)
-                  return
+            if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] then
+               for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
+                  if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
+                     local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Remove from favorites"]}, SkuGenericMenuItem)
+                     return
+                  end
                end
             end
             local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add to favorites"]}, SkuGenericMenuItem)

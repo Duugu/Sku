@@ -433,22 +433,6 @@ SkuQuest.options = {
 								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableSeenForever
 							end
 						},						
-						minLevel = {
-							order = 9,
-							name = L["Ignore quests x levels below your level"],
-							desc = "",
-							type = "range",
-							OnAction = function(self, info, val)
-								SkuQuest:UpdateZoneAvailableQuestList(true)
-							end,
-							set = function(info,val)
-								SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.minLevel = val
-							end,
-							get = function(info)
-								return SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.minLevel
-							end
-						},						
-
 					},
 				},
 			},
@@ -487,7 +471,6 @@ SkuQuest.defaults = {
 			chatNotification = true,
 			disableOn = 5,			
 			disableSeenForever = false,
-			minLevel = 15,
 		},
 	},
 }

@@ -630,6 +630,13 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		tGeneral = tGeneral .. "\r\n" .. L["Pet"] .. " " .. L["Gesundheit: "] .. formatPercentage(UnitHealth("pet"), UnitHealthMax("pet"))
 	end
 
+	--pvp
+	if UnitIsPVP("player") == true then
+		tGeneral = tGeneral.."\r\n"..L["PvP"].." "..L["Enabled"]
+	else
+		tGeneral = tGeneral.."\r\n"..L["PvP"].." "..L["disabled"]
+	end
+
 	--repair status
 	local tDurabilityStatus = {[0] = 0, [1] = 0, [2] = 0,}
 	for index, value in pairs(INVENTORY_ALERT_STATUS_SLOTS) do

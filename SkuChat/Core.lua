@@ -2493,18 +2493,24 @@ function SkuChat:InitTab(tNewTabIndex)
 	SkuChat_RemoveAllMessageGroups(a)
 	for tCName, tData in pairs(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].messageTypes) do
 		for x = 1, #tData do
-			if tData[x] ~= false then
+			if tData[x] ~= false or (tCName == "CREATURE_MESSAGES" and x == 4) then
 				if SkuChatChatTypeGroup[SkuChat.ChatFrameMessageTypes[tCName][x].type] then
 					SkuChat_AddMessageGroup(a, SkuChat.ChatFrameMessageTypes[tCName][x].type)
 				else
 					SkuChat_AddSingleMessageType(a, SkuChat.ChatFrameMessageTypes[tCName][x].type)
 				end
+
 			end
 		end
 	end
 
 	--AddMessage handler
 	function a:AddMessage(messageTypeGroup, body, r, g, b, id, accessID, typeID, arg2)
+		--[[
+		if messageTypeGroup ~= "ADDON" then
+			print(messageTypeGroup, body, r, g, b, id, accessID, typeID, arg2)
+		end
+		]]
 		if not body then
 			return
 		end

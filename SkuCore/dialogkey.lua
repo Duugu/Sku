@@ -37,14 +37,13 @@ local function DialogkeyCreateControlFrame()
             end
          end
 
+         local tActiveQuests = {}
+         local tAvailableQuests = {}
+         local tGossipOptions = {}
+         local tHasActiveQuests = false
+         local tHasAvailableQuests = false
+         local tHasGossipOptions = false
          if GossipFrame and GossipFrame.GreetingPanel and GossipFrame.GreetingPanel.ScrollBox and GossipFrame.GreetingPanel.ScrollBox:IsShown() and GossipFrame.GreetingPanel.ScrollBox:IsVisible() then
-            local tActiveQuests = {}
-            local tAvailableQuests = {}
-            local tGossipOptions = {}
-            local tHasActiveQuests = false
-            local tHasAvailableQuests = false
-            local tHasGossipOptions = false
-
             local tChild = GossipFrame.GreetingPanel.ScrollBox:GetChildren()
             local tButtons = {tChild:GetChildren()}
             for i, v in pairs(tButtons) do
@@ -54,38 +53,66 @@ local function DialogkeyCreateControlFrame()
                      tGossipOptions[tData.index] = tData.gossipOptionID or tData.titleOptionButton
                      tHasGossipOptions = true
                   elseif tData.buttonType == 4 then
-                     tActiveQuests[tData.index] = tData.activeQuestButton
-                     tHasActiveQuests = true
+                     local tQuestName = SkuChat:Unescape(tData.activeQuestButton:GetText())
+                     if tQuestName then
+                        local _, tResult = SkuQuest:CheckQuestProgress(true, tQuestName)
+                        if tResult == true then
+                           tActiveQuests[tData.index] = tData.activeQuestButton
+                           tHasActiveQuests = true
+                        end
+                     end
                   elseif tData.buttonType == 5 then
                      tAvailableQuests[tData.index] = tData.availableQuestButton
                      tHasAvailableQuests = true
                   end
                end
             end
+         end
 
-            if tHasActiveQuests == true then
-               for x = 1, 20 do
-                  if tActiveQuests[x] then
-                     tActiveQuests[x]:Click()
-                     break
-                  end
-               end
-            elseif tHasAvailableQuests == true then
-               for x = 1, 20 do
-                  if tAvailableQuests[x] then
-                     tAvailableQuests[x]:Click()
-                     break
-                  end
-               end
-            elseif tHasGossipOptions == true then
-               for x = 1, 20 do
-                  if tGossipOptions[x] then
-                     tGossipOptions[x]:Click()
-                     break
+         if _G["QuestFrameGreetingPanel"] and _G["QuestFrameGreetingPanel"]:IsVisible() == true then
+            for x = 1, 10 do
+               if _G["QuestTitleButton"..x] and _G["QuestTitleButton"..x]:IsVisible() == true then
+                  local tButton = _G["QuestTitleButton"..x]
+                  if tButton:GetText() and tButton:GetText() ~= "" then
+                     if tButton.isActive == 1 then
+                        local tQuestName = SkuChat:Unescape(tButton:GetText())
+                        local _, tResult = SkuQuest:CheckQuestProgress(true, tQuestName)
+                        if tResult == true then
+                           tActiveQuests[x] = tButton
+                           tHasActiveQuests = true
+                        end
+                     elseif tButton.isActive == 0 then
+                        tAvailableQuests[x] = tButton
+                        tHasAvailableQuests = true
+                     end
                   end
                end
             end
          end
+
+         if tHasActiveQuests == true then
+            for x = 1, 20 do
+               if tActiveQuests[x] then
+                  tActiveQuests[x]:Click()
+                  break
+               end
+            end
+         elseif tHasAvailableQuests == true then
+            for x = 1, 20 do
+               if tAvailableQuests[x] then
+                  tAvailableQuests[x]:Click()
+                  break
+               end
+            end
+         elseif tHasGossipOptions == true then
+            for x = 1, 20 do
+               if tGossipOptions[x] then
+                  tGossipOptions[x]:Click()
+                  break
+               end
+            end
+         end
+
       end
       for x = 1, 9 do
          if a == tostring(x) then

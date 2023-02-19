@@ -332,8 +332,8 @@ function SkuQuest:GetQuestTitlesList()
 	return questList
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuQuest:CheckQuestProgress(aSilent)
-	--print("CheckQuestProgress(aSilent)", aSilent, SkuOptions.db.char["SkuQuest"].CheckQuestProgressList) 
+function SkuQuest:CheckQuestProgress(aSilent, aQuestNameToCheck)
+	--print("CheckQuestProgress(aSilent)", aSilent, aQuestNameToCheck) 
 	if not SkuOptions.db.char[MODULE_NAME] then
 		SkuOptions.db.char["SkuQuest"]  = {}
 	end
@@ -348,7 +348,7 @@ function SkuQuest:CheckQuestProgress(aSilent)
 	end
 
 	local tCompleted = {}
-
+	local tQuestNameToCheckCompleted = false
 
 	for questLogID = 1, numEntries do
 		local title, level, suggestedGroup, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isStory = GetQuestLogTitle(questLogID)
@@ -400,6 +400,12 @@ function SkuQuest:CheckQuestProgress(aSilent)
 
 				if ( objectivesCompleted == numObjectives ) then
 					tCompleted[questID] = true
+
+					if title == aQuestNameToCheck then
+						tQuestNameToCheckCompleted = true
+					end
+
+					
 					if objectivesChanged == true then
 						-- quest completed
 						if not aSilent then
@@ -411,7 +417,7 @@ function SkuQuest:CheckQuestProgress(aSilent)
 		end
 	end
 
-	return tCompleted
+	return tCompleted, tQuestNameToCheckCompleted
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -428,6 +434,10 @@ function SkuQuest:GetTTSText(aQuestID)
 	end
 
 	local titleButton = _G["QuestLogTitle"..id]
+	if not titleButton then
+		return
+	end
+	
 	local titleButtonTag = _G["QuestLogTitle"..id.."Tag"]
 	aQuestID = aQuestID or questID
 	QuestLogFrame.selectedButtonID = aQuestID
@@ -1476,7 +1486,7 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 		end
 
 		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].enabled == true 
-			and ((UnitLevel("player") - tQuestLevel <= SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].minLevel) or tQuestLevel == -1)
+			and (aType == "currentQuests" or (UnitLevel("player") - tQuestLevel <= SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].minLevel) or tQuestLevel == -1)
 			and (SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].enableBeacons == true or SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].chatNotification == true)
 			and not SkuQuest.activeBeaconsTmpIgnore[v[4]]
 			and not SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore[v[4]]
@@ -1595,10 +1605,12 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 	end
 
 	if UnitOnTaxi("player") ~= true then
-		local tCompleted = {}
 		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.availableQuests.enabled == true then
 			doQuestMarkerBeacons("availableQuests", tUnSortedTable)
-
+		end
+		
+		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enabled == true then
+			local tCompleted = {}
 			local tPlayerUIMap = SkuNav:GetBestMapForUnit("player")
 			local tPlayX, tPlayY = UnitPosition("player")
 			local numEntries = GetNumQuestLogEntries()
@@ -1626,9 +1638,6 @@ function SkuQuest:UpdateZoneAvailableQuestList(aForce)
 					end
 				end
 			end
-		end
-		
-		if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.enabled == true then
 			doQuestMarkerBeacons("currentQuests", tCompleted)
 		end
 	end
