@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.16](https://github.com/Duugu/Sku/releases/download/r32.16/Sku-r32.16-wrath.zip) (Feb 17th, 2023)<br>
+- [Sku r32.17](https://github.com/Duugu/Sku/releases/download/r32.17/Sku-r32.17-wrath.zip) (Feb 19th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,15 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.17
+- Emilylorange mapped routes, graveyards, and about 1/2 the existing quests in Azshara, and parts of Blasted Lands.
+- Fixed some bugs with the dialog-key replacement (space to auto/complete accept quests, etc.). It is now selecting current quests only if the quest objectives are actually completed and ready to finish. Additionally the feature now should work with all quest windows.
+- Fixed a bug with quest notifications where setting Available Quests > Enabled to Off also was disabling notifications for Current Quests.
+- Removed "Ignore quests x levels below your level" for option current quests notifications, as that wasn't making much sense.
+- Added you PvP status to the General section on the overview page.
+- Fixed a bug where the resource scanning feature Notify on resources was reading not only the found resource, but also names of nearby group members, npcs, etc.
+- Fixed a bug with the DK start quest "Death comes from above". Special task now should start regardless of the chat settings for Creatures > Whisper.
+
 ## Changes in Sku r32.16
 - Fixed a bug with quest notification for completed quests that was breaking the feature.
 - Fixed a bug with the auction house that was leading to an empty Auctions from full scan list.
