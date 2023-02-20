@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.17](https://github.com/Duugu/Sku/releases/download/r32.17/Sku-r32.17-wrath.zip) (Feb 19th, 2023)<br>
+- [Sku r32.18](https://github.com/Duugu/Sku/releases/download/r32.18/Sku-r32.18-wrath.zip) (Feb 20th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.18
+- Fixed a bug with not working quest tooltips in the quest log.
+- Added an option to enemy/friend/interact soft targeting settings: "Sound on empty soft target" (default: silent).
+
 ## Changes in Sku r32.17
 - Emilylorange mapped routes, graveyards, and about 1/2 the existing quests in Azshara, and parts of Blasted Lands.
 - Fixed some bugs with the dialog-key replacement (space to auto/complete accept quests, etc.). It is now selecting current quests only if the quest objectives are actually completed and ready to finish. Additionally the feature now should work with all quest windows.
