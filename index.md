@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.18](https://github.com/Duugu/Sku/releases/download/r32.18/Sku-r32.18-wrath.zip) (Feb 20th, 2023)<br>
+- [Sku r32.19](https://github.com/Duugu/Sku/releases/download/r32.19/Sku-r32.19-wrath.zip) (Feb 20th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,19 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.19
+- Removed an overlooked debug chat output from Quests > All
+- Added waypoint names to quest available/current notifications in chat.
+- Fixed a bug that was showing incorrect monitor "Event steps" parameters
+- Fixed a bug that was breaking the guild bank menu.
+- Changed a lot of default settings to more appropiate values. The most important changes are:
+	- The chat has now 3 tabs as default (Default, Communication, and Other) with the appropiate message types enabled.
+	- The default key binds for small scans (SHIFT U/O/P/I) are removed.
+	- The default key bind for Enable/disable Enemy Soft Targeting has been set to SHIFT I.
+	- The default key bind for Enable/disable Interac Soft Targeting has been set to SHIFT O.
+	- The default key bind for Enable/disable Friends Soft Targeting has been set to SHIFT P.
+	- Core > Monitor > Player > Health & Resource and Pet > Health are enabled as default.
+
 ## Changes in Sku r32.18
 - Fixed a bug with not working quest tooltips in the quest log.
 - Added an option to enemy/friend/interact soft targeting settings: "Sound on empty soft target" (default: silent).
