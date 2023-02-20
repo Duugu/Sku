@@ -424,33 +424,12 @@ end
 function SkuQuest:GetTTSText(aQuestID)
 	local questID = aQuestID--SkuQuest.SelectedQuest
 	local id = questID - FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
-
 	SelectQuestLogEntry(questID)
-
 	local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID, startEvent, displayQuestID, isOnMap, hasLocalPOI, isTask, isBounty, isStory, isHidden, isScaling = GetQuestLogTitle(questID)
-	--dprint("questLogTitleText", questLogTitleText, questID, aQuestID)	
 	if not questLogTitleText then
 		return
 	end
 
-	local titleButton = _G["QuestLogTitle"..id]
-	if not titleButton then
-		return
-	end
-	
-	local titleButtonTag = _G["QuestLogTitle"..id.."Tag"]
-	aQuestID = aQuestID or questID
-	QuestLogFrame.selectedButtonID = aQuestID
-	local scrollFrameOffset = FauxScrollFrame_GetOffset(QuestLogListScrollFrame)
-	if (questID > scrollFrameOffset and questID <= (scrollFrameOffset + QUESTS_DISPLAYED) and questID <= GetNumQuestLogEntries()) then
-		if titleButton then
-			titleButton:LockHighlight()
-			titleButtonTag:SetTextColor(HIGHLIGHT_FONT_COLOR.r, HIGHLIGHT_FONT_COLOR.g, HIGHLIGHT_FONT_COLOR.b)
-			QuestLogSkillHighlight:SetVertexColor(titleButton.r, titleButton.g, titleButton.b)
-			QuestLogHighlightFrame:SetPoint("TOPLEFT", "QuestLogTitle"..id, "TOPLEFT", 5, 0)
-			QuestLogHighlightFrame:Show()
-		end
-	end
 	if ( GetQuestLogSelection() > GetNumQuestLogEntries() ) then
 		return
 	end

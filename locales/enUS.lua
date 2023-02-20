@@ -2168,3 +2168,10 @@ L["Weapon"] = "Weapon"
 L["Mute in Combat"] = "Mute Names in Combat"
 
 L["PvP"] = "PvP"
+
+L["sound on enemy soft target"] = "sound on enemy soft target"
+L["Sound on empty enemy soft target"] = "Sound on empty enemy soft target"
+L["sound on friendly soft target"] = "sound on friendly soft target"
+L["Sound on empty friendly soft target"] = "Sound on empty friendly soft target"
+L["sound on interact soft target"] = "sound on interact soft target"
+L["Sound on empty interact soft target"] = "Sound on empty interact soft target"

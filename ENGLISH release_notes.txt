@@ -2,6 +2,11 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r32.18
+	- Fixed a bug with not working quest tooltips in the quest log.
+	- Added an option to enemy/friend/interact soft targeting settings: "Sound on empty soft target" (default: silent).
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r32.17

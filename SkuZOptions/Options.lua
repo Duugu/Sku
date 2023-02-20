@@ -528,7 +528,7 @@ SkuOptions.options = {
 							},
 							sound = {
 								order = 6,
-								name = L["sound"] ,
+								name = L["sound on enemy soft target"] ,
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
@@ -542,6 +542,23 @@ SkuOptions.options = {
 									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.sound
 								end
 							},									
+							soundNoTarget = {
+								order = 6.5,
+								name = L["Sound on empty enemy soft target"],
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings("all")
+								end,
+								values = SkuCore.SofttargetingSoundsValue,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.soundNoTarget = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.enemy.soundNoTarget
+								end
+							},									
+
 							outputName = {
 								order = 7,
 								name = L["Output unit name"] ,
@@ -659,7 +676,7 @@ SkuOptions.options = {
 							},
 							sound = {
 								order = 6,
-								name = L["sound"] ,
+								name = L["sound on friendly soft target"],
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
@@ -672,7 +689,24 @@ SkuOptions.options = {
 								get = function(info)
 									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.sound
 								end
-							},								
+							},			
+							soundNoTarget = {
+								order = 6.5,
+								name = L["Sound on empty friendly soft target"],
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings("all")
+								end,
+								values = SkuCore.SofttargetingSoundsValue,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.soundNoTarget = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.friend.soundNoTarget
+								end
+							},									
+
 							outputName = {
 								order = 7,
 								name = L["Output unit name"] ,
@@ -761,7 +795,7 @@ SkuOptions.options = {
 							},				
 							sound = {
 								order = 5,
-								name = L["sound"] ,
+								name = L["sound on interact soft target"] ,
 								desc = "",
 								type = "select",
 								OnAction = function(self, info, val)
@@ -774,7 +808,23 @@ SkuOptions.options = {
 								get = function(info)
 									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.sound
 								end
-							},											
+							},			
+							soundNoTarget = {
+								order = 5.5,
+								name = L["Sound on empty interact soft target"],
+								desc = "",
+								type = "select",
+								OnAction = function(self, info, val)
+									SkuOptions:UpdateSoftTargetingSettings("all")
+								end,
+								values = SkuCore.SofttargetingSoundsValue,
+								set = function(info,val)
+									SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.soundNoTarget = val
+								end,
+								get = function(info)
+									return SkuOptions.db.profile[MODULE_NAME].softTargeting.interact.soundNoTarget
+								end
+							},																								
 							unitNameFor = {
 								order = 6,
 								name = L["Output name for"] ,
@@ -900,6 +950,7 @@ SkuOptions.defaults = {
 			forPlayers = false,
 			forPets = false,
 			sound = "sound-waterdrop4",
+			soundNoTarget = " ",
 			outputName = true,
 			muteInCombat = false,
 		},
@@ -910,6 +961,7 @@ SkuOptions.defaults = {
 			forPlayers = false,
 			forPets = false,
 			sound = "sound-waterdrop4",
+			soundNoTarget = " ",
 			outputName = true,
 		},
 		interact = {
@@ -919,6 +971,7 @@ SkuOptions.defaults = {
 			soundfor = 3,
 			unitNameFor = 3,
 			sound = "sound-waterdrop4",
+			soundNoTarget = " ",
 			outputBTTS = true,
 		},
 		force = 0, --0 1 2 target wird softtarget 		Auto-set target to match soft target. 1 = for enemies, 2 = for friends

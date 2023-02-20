@@ -541,6 +541,7 @@ SkuAuras.outputSoundFiles = {
    ["sound-notification25"] = L["aura;sound"].."#"..L["notification"].." 25",
    ["sound-notification26"] = L["aura;sound"].."#"..L["notification"].." 26",
    ["sound-notification27"] = L["aura;sound"].."#"..L["notification"].." 27",
+   ["sound-notification28"] = L["aura;sound"].."#"..L["notification"].." 28",
 }
 for tOutputString, tFriendlyName in pairs(SkuAuras.outputSoundFiles) do
    SkuAuras.outputs[tOutputString] = {

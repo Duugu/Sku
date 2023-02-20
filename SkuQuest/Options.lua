@@ -1721,6 +1721,7 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					end
 					tNewMenuEntry1.OnEnter = function(self, aValue, aName)
 						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId)
+						print(SkuOptions.currentMenuPosition.textFull)
 					end
 					local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(vq)
 					tNewMenuEntry1.BuildChildren = function(self)

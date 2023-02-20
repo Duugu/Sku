@@ -180,8 +180,15 @@ function SkuMob:GetTtsAwareUnitName(aUnitId)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tLastSoftEnemyGuid
 function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2)
 	if not UnitGUID("softenemy") then
+		if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.soundNoTarget ~= " " then
+			if UnitGUID("softenemy") ~= tLastSoftEnemyGuid then
+				SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.soundNoTarget, true, true, 0.3, true)
+			end
+		end
+		tLastSoftEnemyGuid = UnitGUID("softenemy")
 		return
 	end
 	if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.enabled ~= true then
@@ -198,6 +205,7 @@ function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2)
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.forPassive == false and (UnitReaction("player", "softenemy") >= 4 and UnitCanAttack("player", "softenemy") == true) then
 			return
 		end
+		
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.sound ~= " " then
 			SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.sound, true, true, 0.3, true)
 		end
@@ -207,6 +215,7 @@ function SkuMob:PLAYER_SOFT_ENEMY_CHANGED(arg1, arg2)
 			end
 		end
 	end
+	tLastSoftEnemyGuid = UnitGUID("softenemy")
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:PLAYER_SOFT_FRIEND_CHANGED(aEvent, aGuid)
