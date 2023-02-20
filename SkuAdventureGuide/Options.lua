@@ -103,11 +103,11 @@ SkuAdventureGuide.options = {
 SkuAdventureGuide.defaults = {
 	formatEnumsInArticles = true,
 	history = {
-		soundOnNewLinkInHistory = "sound-notification15",
+		soundOnNewLinkInHistory = "Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\error\\error_silent.mp3",
 		ignoreSeenLinks = true,
 	},
 	links = {
-		enableLinksInTooltips = true,
+		enableLinksInTooltips = false,
 		tooltipLinksIndicator = "word",
 		--globalLinkListOnly = false,
 	},

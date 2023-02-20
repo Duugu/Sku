@@ -127,7 +127,7 @@ SkuChat.ChatFrameMessageTypes = {
 			},
 		[4] = {
 			type = "TRADESKILLS",
-			default = false,
+			default = true,
 			},
 		[5] = {
 			type = "OPENING",
@@ -186,7 +186,7 @@ SkuChat.ChatFrameMessageTypes = {
 		[7] = {
 			text = L["Addons"],
 			type = "ADDON",
-			default = true,
+			default = play,
 		},		
 	},
 	
@@ -209,6 +209,589 @@ SkuChat.ChatFrameMessageTypes = {
 		},
 	},
 }
+
+SkuChat.ChatFrameDefaultTabs = {
+	[L["Default"]] = {
+		PLAYER_MESSAGES = {
+			[1] = {
+				type = "SAY",
+				default = play,
+			},
+			[2] = {
+				type = "EMOTE",
+				default = play,
+			},
+			[3] = {
+				type = "YELL",
+				default = play,
+			},
+			[4] = {
+				text = GUILD_CHAT,
+				type = "GUILD",
+				default = false,
+			},
+			[5] = {
+				text = OFFICER_CHAT,
+				type = "OFFICER",
+				default = false,
+			},
+			[6] = {
+				type = "WHISPER",
+				default = false,
+			},
+			[7] = {
+				type = "BN_WHISPER",
+				default = false,
+			},
+			[8] = {
+				type = "PARTY",
+				default = false,
+			},
+			[9] = {
+				type = "PARTY_LEADER",
+				default = false,
+			},
+			[10] = {
+				type = "RAID",
+				default = false,
+			},
+			[11] = {
+				type = "RAID_LEADER",
+				default = false,
+			},
+			[12] = {
+				type = "RAID_WARNING",
+				default = false,
+			},
+			[13] = {
+				type = "INSTANCE_CHAT",
+				default = false,
+			},
+			[14] = {
+				type = "INSTANCE_CHAT_LEADER",
+				default = false,
+			},
+		},
+	
+		CREATURE_MESSAGES = {
+			[1] = {
+				text = SAY;
+				type = "MONSTER_SAY",
+				default = play,
+			},
+			[2] = {
+				text = EMOTE;
+				type = "MONSTER_EMOTE",
+				default = play,
+			},
+			[3] = {
+				text = YELL;
+				type = "MONSTER_YELL",
+				default = play,
+			},
+			[4] = {
+				text = WHISPER;
+				type = "MONSTER_WHISPER",
+				default = false,
+			},
+			[5] = {
+				type = "MONSTER_BOSS_EMOTE",
+				default = false,
+			},
+			[6] = {
+				type = "MONSTER_BOSS_WHISPER",
+				default = false,
+			}
+		},
+	
+		OTHER = {
+			[1] = {
+				text = SKILLUPS,
+				type = "SKILL",
+				default = false,
+				},
+			[2] = {
+				text = ITEM_LOOT,
+				type = "LOOT",
+				default = false,
+				},
+			[3] = {
+				text = MONEY_LOOT,
+				type = "MONEY",
+				default = false,
+				},
+			[4] = {
+				type = "TRADESKILLS",
+				default = false,
+				},
+			[5] = {
+				type = "OPENING",
+				default = false,
+				},
+			[6] = {
+				type = "PET_INFO",
+				default = false,
+				},
+		},
+	
+		PVP = {
+			[1] = {
+				text = BG_SYSTEM_HORDE,
+				type = "BG_HORDE",
+				default = false,
+			},
+			[2] = {
+				text = BG_SYSTEM_ALLIANCE,
+				type = "BG_ALLIANCE",
+				default = false,
+			},
+			[3] = {
+				text = BG_SYSTEM_NEUTRAL,
+				type = "BG_NEUTRAL",
+				default = false,
+			},
+		},
+	
+		SYSTEM = {
+			[1] = {
+				text = SYSTEM_MESSAGES,
+				type = "SYSTEM",
+				default = true,
+			},
+			[2] = {
+				type = "ERRORS",
+				default = true,
+			},
+			[3] = {
+				type = "IGNORED",
+				default = true,
+			},
+			[4] = {
+				type = "CHANNEL",
+				default = true,
+			},
+			[5] = {
+				type = "TARGETICONS",
+				default = true,
+			},
+			[6] = {
+				type = "BN_INLINE_TOAST_ALERT",
+				default = true,
+			},
+			[7] = {
+				text = L["Addons"],
+				type = "ADDON",
+				default = play,
+			},		
+		},
+		
+		COMBAT = {
+			[1] = {
+				type = "COMBAT_XP_GAIN",
+				default = true,
+			},
+			[2] = {
+				type = "COMBAT_HONOR_GAIN",
+				default = true,
+			},
+			[3] = {
+				type = "COMBAT_FACTION_CHANGE",
+				default = true,
+			},
+			[5] = {
+				type = "COMBAT_MISC_INFO",
+				default = true,
+			},
+		},
+	},
+	[L["Communication"]] = {
+		PLAYER_MESSAGES = {
+			[1] = {
+				type = "SAY",
+				default = false,
+			},
+			[2] = {
+				type = "EMOTE",
+				default = false,
+			},
+			[3] = {
+				type = "YELL",
+				default = false,
+			},
+			[4] = {
+				text = GUILD_CHAT,
+				type = "GUILD",
+				default = play,
+			},
+			[5] = {
+				text = OFFICER_CHAT,
+				type = "OFFICER",
+				default = play,
+			},
+			[6] = {
+				type = "WHISPER",
+				default = play,
+			},
+			[7] = {
+				type = "BN_WHISPER",
+				default = play,
+			},
+			[8] = {
+				type = "PARTY",
+				default = play,
+			},
+			[9] = {
+				type = "PARTY_LEADER",
+				default = play,
+			},
+			[10] = {
+				type = "RAID",
+				default = play,
+			},
+			[11] = {
+				type = "RAID_LEADER",
+				default = play,
+			},
+			[12] = {
+				type = "RAID_WARNING",
+				default = play,
+			},
+			[13] = {
+				type = "INSTANCE_CHAT",
+				default = play,
+			},
+			[14] = {
+				type = "INSTANCE_CHAT_LEADER",
+				default = play,
+			},
+		},
+	
+		CREATURE_MESSAGES = {
+			[1] = {
+				text = SAY;
+				type = "MONSTER_SAY",
+				default = false,
+			},
+			[2] = {
+				text = EMOTE;
+				type = "MONSTER_EMOTE",
+				default = false,
+			},
+			[3] = {
+				text = YELL;
+				type = "MONSTER_YELL",
+				default = false,
+			},
+			[4] = {
+				text = WHISPER;
+				type = "MONSTER_WHISPER",
+				default = play,
+			},
+			[5] = {
+				type = "MONSTER_BOSS_EMOTE",
+				default = play,
+			},
+			[6] = {
+				type = "MONSTER_BOSS_WHISPER",
+				default = play,
+			}
+		},
+	
+		OTHER = {
+			[1] = {
+				text = SKILLUPS,
+				type = "SKILL",
+				default = false,
+				},
+			[2] = {
+				text = ITEM_LOOT,
+				type = "LOOT",
+				default = false,
+				},
+			[3] = {
+				text = MONEY_LOOT,
+				type = "MONEY",
+				default = false,
+				},
+			[4] = {
+				type = "TRADESKILLS",
+				default = false,
+				},
+			[5] = {
+				type = "OPENING",
+				default = false,
+				},
+			[6] = {
+				type = "PET_INFO",
+				default = false,
+				},
+		},
+	
+		PVP = {
+			[1] = {
+				text = BG_SYSTEM_HORDE,
+				type = "BG_HORDE",
+				default = false,
+			},
+			[2] = {
+				text = BG_SYSTEM_ALLIANCE,
+				type = "BG_ALLIANCE",
+				default = false,
+			},
+			[3] = {
+				text = BG_SYSTEM_NEUTRAL,
+				type = "BG_NEUTRAL",
+				default = false,
+			},
+		},
+	
+		SYSTEM = {
+			[1] = {
+				text = SYSTEM_MESSAGES,
+				type = "SYSTEM",
+				default = false,
+			},
+			[2] = {
+				type = "ERRORS",
+				default = false,
+			},
+			[3] = {
+				type = "IGNORED",
+				default = false,
+			},
+			[4] = {
+				type = "CHANNEL",
+				default = false,
+			},
+			[5] = {
+				type = "TARGETICONS",
+				default = false,
+			},
+			[6] = {
+				type = "BN_INLINE_TOAST_ALERT",
+				default = false,
+			},
+			[7] = {
+				text = L["Addons"],
+				type = "ADDON",
+				default = false,
+			},		
+		},
+		
+		COMBAT = {
+			[1] = {
+				type = "COMBAT_XP_GAIN",
+				default = false,
+			},
+			[2] = {
+				type = "COMBAT_HONOR_GAIN",
+				default = false,
+			},
+			[3] = {
+				type = "COMBAT_FACTION_CHANGE",
+				default = false,
+			},
+			[5] = {
+				type = "COMBAT_MISC_INFO",
+				default = false,
+			},
+		},
+	},
+	[L["Other"]] = {
+		PLAYER_MESSAGES = {
+			[1] = {
+				type = "SAY",
+				default = false,
+			},
+			[2] = {
+				type = "EMOTE",
+				default = false,
+			},
+			[3] = {
+				type = "YELL",
+				default = false,
+			},
+			[4] = {
+				text = GUILD_CHAT,
+				type = "GUILD",
+				default = false,
+			},
+			[5] = {
+				text = OFFICER_CHAT,
+				type = "OFFICER",
+				default = false,
+			},
+			[6] = {
+				type = "WHISPER",
+				default = false,
+			},
+			[7] = {
+				type = "BN_WHISPER",
+				default = false,
+			},
+			[8] = {
+				type = "PARTY",
+				default = false,
+			},
+			[9] = {
+				type = "PARTY_LEADER",
+				default = false,
+			},
+			[10] = {
+				type = "RAID",
+				default = false,
+			},
+			[11] = {
+				type = "RAID_LEADER",
+				default = false,
+			},
+			[12] = {
+				type = "RAID_WARNING",
+				default = false,
+			},
+			[13] = {
+				type = "INSTANCE_CHAT",
+				default = false,
+			},
+			[14] = {
+				type = "INSTANCE_CHAT_LEADER",
+				default = false,
+			},
+		},
+	
+		CREATURE_MESSAGES = {
+			[1] = {
+				text = SAY;
+				type = "MONSTER_SAY",
+				default = false,
+			},
+			[2] = {
+				text = EMOTE;
+				type = "MONSTER_EMOTE",
+				default = false,
+			},
+			[3] = {
+				text = YELL;
+				type = "MONSTER_YELL",
+				default = false,
+			},
+			[4] = {
+				text = WHISPER;
+				type = "MONSTER_WHISPER",
+				default = false,
+			},
+			[5] = {
+				type = "MONSTER_BOSS_EMOTE",
+				default = false,
+			},
+			[6] = {
+				type = "MONSTER_BOSS_WHISPER",
+				default = false,
+			}
+		},
+	
+		OTHER = {
+			[1] = {
+				text = SKILLUPS,
+				type = "SKILL",
+				default = true,
+				},
+			[2] = {
+				text = ITEM_LOOT,
+				type = "LOOT",
+				default = true,
+				},
+			[3] = {
+				text = MONEY_LOOT,
+				type = "MONEY",
+				default = true,
+				},
+			[4] = {
+				type = "TRADESKILLS",
+				default = true,
+				},
+			[5] = {
+				type = "OPENING",
+				default = true,
+				},
+			[6] = {
+				type = "PET_INFO",
+				default = true,
+				},
+		},
+	
+		PVP = {
+			[1] = {
+				text = BG_SYSTEM_HORDE,
+				type = "BG_HORDE",
+				default = false,
+			},
+			[2] = {
+				text = BG_SYSTEM_ALLIANCE,
+				type = "BG_ALLIANCE",
+				default = false,
+			},
+			[3] = {
+				text = BG_SYSTEM_NEUTRAL,
+				type = "BG_NEUTRAL",
+				default = false,
+			},
+		},
+	
+		SYSTEM = {
+			[1] = {
+				text = SYSTEM_MESSAGES,
+				type = "SYSTEM",
+				default = false,
+			},
+			[2] = {
+				type = "ERRORS",
+				default = false,
+			},
+			[3] = {
+				type = "IGNORED",
+				default = false,
+			},
+			[4] = {
+				type = "CHANNEL",
+				default = false,
+			},
+			[5] = {
+				type = "TARGETICONS",
+				default = false,
+			},
+			[6] = {
+				type = "BN_INLINE_TOAST_ALERT",
+				default = false,
+			},
+			[7] = {
+				text = L["Addons"],
+				type = "ADDON",
+				default = false,
+			},		
+		},
+		
+		COMBAT = {
+			[1] = {
+				type = "COMBAT_XP_GAIN",
+				default = false,
+			},
+			[2] = {
+				type = "COMBAT_HONOR_GAIN",
+				default = false,
+			},
+			[3] = {
+				type = "COMBAT_FACTION_CHANGE",
+				default = false,
+			},
+			[5] = {
+				type = "COMBAT_MISC_INFO",
+				default = false,
+			},
+		},
+	},
+}
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1673,6 +2256,25 @@ function SkuChat:OnInitialize()
 					tAccessID = SkuChat:GetChannelAccessIdFromChannelName(tLineData.messageTypeGroup)
 				end
 
+				--[[
+				--start route
+				local _, _, _, tWpName = string.find(tLineData.body, "(.+)".."#"..L["Waypoint"]..":".."(.+)")
+				if tWpName then
+					local tWpObj = SkuNav:GetWaypointData2(tWpName)
+					if tWpObj then
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Start route to waypoint"]}, SkuGenericMenuItem)
+						tNewMenuEntry.isSelect = true
+						tNewMenuEntry.OnAction = function(self)
+							--print("tWpName", tWpName)
+							
+
+							C_Timer.After(0.01, function() CloseChatMenuHelper() end)
+						end
+					end
+				end
+				]]
+
+				--
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["send to channel"]}, SkuGenericMenuItem)
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self)
@@ -2227,6 +2829,8 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	if not SkuOptions.db.profile["SkuChat"].tabs or #SkuOptions.db.profile["SkuChat"].tabs == 0 then
 		SkuOptions.db.profile["SkuChat"].tabs = {}
 		SkuChat:NewTab(L["Default"])
+		SkuChat:NewTab(L["Communication"])
+		SkuChat:NewTab(L["Other"])
 	end
 
 	--update types for existing tabs; just to add new types with new releases
@@ -2365,6 +2969,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:ResetTab(aIndex)
+	dprint("ResetTab", aIndex)
 	--set default message groups
 	if not SkuOptions.db.profile["SkuChat"].tabs[aIndex] then
 		return
@@ -2374,20 +2979,36 @@ function SkuChat:ResetTab(aIndex)
 	local tTab = SkuOptions.db.profile["SkuChat"].tabs[aIndex]
 	for tCatName, tData in pairs(SkuChat.ChatFrameMessageTypes) do
 		for x = 1, #tData do
-			tTab.messageTypes[tCatName][x] = tData[x].default
+			if SkuChat.ChatFrameDefaultTabs[tTab.name] then
+				tTab.messageTypes[tCatName][x] = SkuChat.ChatFrameDefaultTabs[tTab.name][tCatName][x].default
+			else
+				tTab.messageTypes[tCatName][x] = tData[x].default
+			end
 		end
 	end
 
 	--set default channels
-	tTab.channels = {
-		[1] = {name = "General", status = true},
-		[2] = {name = "Trade", status = true},
-		[3] = {name = "LocalDefense", status = true},
-		[4] = {name = "WorldDefense", status = true},
-		[5] = {name = "GuildRecruitment", status = true},
-		[6] = {name = "LookingForGroup", status = true},
-		[7] = {name = "SkuChat", status = play},
-	}
+	if tTab.name == L["Default"] then
+		tTab.channels = {
+			[1] = {name = "General", status = true},
+			[2] = {name = "Trade", status = true},
+			[3] = {name = "LocalDefense", status = true},
+			[4] = {name = "WorldDefense", status = true},
+			[5] = {name = "GuildRecruitment", status = true},
+			[6] = {name = "LookingForGroup", status = true},
+			[7] = {name = "SkuChat", status = play},
+		}
+	else
+		tTab.channels = {
+			[1] = {name = "General", status = false},
+			[2] = {name = "Trade", status = false},
+			[3] = {name = "LocalDefense", status = false},
+			[4] = {name = "WorldDefense", status = false},
+			[5] = {name = "GuildRecruitment", status = false},
+			[6] = {name = "LookingForGroup", status = false},
+			[7] = {name = "SkuChat", status = false},
+		}
+	end
 
 	--set custom channels
 	local tChannelList = {GetChannelList()}
@@ -2399,7 +3020,11 @@ function SkuChat:ResetTab(aIndex)
 			end
 		end
 		if not tExists then
-			tTab.channels[#tTab.channels + 1] = {name = tChannelList[x + 1], status = true}
+			if tTab.name == L["Default"] then
+				tTab.channels[#tTab.channels + 1] = {name = tChannelList[x + 1], status = true}
+			else
+				tTab.channels[#tTab.channels + 1] = {name = tChannelList[x + 1], status = false}
+			end
 		end
 	end
 

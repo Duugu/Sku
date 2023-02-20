@@ -289,7 +289,7 @@ SkuNav.defaults = {
 	includeDefaultPostboxWaypoints = true,
 	includeDefaultTaxiWaypoints = true,
 	]]
-	beaconVolume = 100,
+	beaconVolume = 50,
 	beaconSoundSetNarrow = "Beacon 2",
 	beaconSoundSetWide = "Beacon 4",
 	vocalizeFullDirectionDistance = true,
@@ -303,7 +303,7 @@ SkuNav.defaults = {
 	clickClackRange = 5,
 	clickClackSoundset = "beep",
 	autoGlobalDirection = false,
-	showGlobalDirectionInWaypointLists = false,
+	showGlobalDirectionInWaypointLists = true,
 	trackVisited = true,
 	timeForVisitedToExpire = 6, -- 5 minutes
 	showGatherWaypoints = false,

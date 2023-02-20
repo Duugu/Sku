@@ -583,7 +583,7 @@ function SkuCore:AqOnLogin()
 	--player health
 	SkuOptions.db.char[MODULE_NAME].aq.player.health = SkuOptions.db.char[MODULE_NAME].aq.player.health or {}
 	if SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled = false
+		SkuOptions.db.char[MODULE_NAME].aq.player.health.enabled = true
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly = false
@@ -613,7 +613,7 @@ function SkuCore:AqOnLogin()
 	--pet health
 	SkuOptions.db.char[MODULE_NAME].aq.pet.health = SkuOptions.db.char[MODULE_NAME].aq.pet.health or {}
 	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled = false
+		SkuOptions.db.char[MODULE_NAME].aq.pet.health.enabled = true
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly = false
@@ -643,7 +643,7 @@ function SkuCore:AqOnLogin()
 	--player power
 	SkuOptions.db.char[MODULE_NAME].aq.player.power = SkuOptions.db.char[MODULE_NAME].aq.player.power or {}
 	if SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled = false
+		SkuOptions.db.char[MODULE_NAME].aq.player.power.enabled = true
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.player.power.type == nil then
 		local _, powerToken = UnitPowerType("player")
@@ -1423,15 +1423,15 @@ function SkuCore:MonitorMenuBuilder()
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-				return SkuOptions.db.char[MODULE_NAME].aq.player.health.steps
+				return tonumber(SkuOptions.db.char[MODULE_NAME].aq.player.health.steps)
 			end
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				SkuOptions.db.char[MODULE_NAME].aq.player.health.steps = tonumber(aName)
 			end
 			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {"10"}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {"5"}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {"2"}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {10}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {5}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {2}, SkuGenericMenuItem)
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
@@ -1640,7 +1640,7 @@ function SkuCore:MonitorMenuBuilder()
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-				return SkuOptions.db.char[MODULE_NAME].aq.player.power.steps
+				return tonumber(SkuOptions.db.char[MODULE_NAME].aq.player.power.steps)
 			end
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				SkuOptions.db.char[MODULE_NAME].aq.player.power.steps = tonumber(aName)
@@ -2014,15 +2014,15 @@ function SkuCore:MonitorMenuBuilder()
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-				return SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps
+				return tonumber(SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps)
 			end
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
 				SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps = tonumber(aName)
 			end
 			tNewMenuEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {"10"}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {"5"}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {"2"}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {10}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {5}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {2}, SkuGenericMenuItem)
 			end
 
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)

@@ -2169,3 +2169,8 @@ L["sound on friendly soft target"] = "sound bei freundliches soft target"
 L["Sound on empty friendly soft target"] = "sound bei leeres freundliches soft target"
 L["sound on interact soft target"] = "sound bei interagieren soft target"
 L["Sound on empty interact soft target"] = "sound bei leeres interagieren soft target"
+
+L["Communication"] = "Kommunikation"
+L["Other"] = "Anderes"
+
+L["Start route to waypoint"] = "Route zu Wegpunkt starten"

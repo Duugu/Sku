@@ -47,10 +47,10 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_TOGGLEREACHRANGE"] = {key = "CTRL-SHIFT-Q", object = "SkuNav", func = "CreateSkuNavMain",},
 
    ["SKU_KEY_SCANCONTINUE"] = {key = "SHIFT-L", object = "SkuCoreControlOption1", script = "OnHide",},
-   ["SKU_KEY_SCAN1"] = {key = "SHIFT-U", object = "SkuCoreControlOption1", script = "OnHide",},
-   ["SKU_KEY_SCAN2"] = {key = "SHIFT-I", object = "SkuCoreControlOption1", script = "OnHide",},
-   ["SKU_KEY_SCAN3"] = {key = "SHIFT-O", object = "SkuCoreControlOption1", script = "OnHide",},
-   ["SKU_KEY_SCAN4"] = {key = "SHIFT-P", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN1"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN2"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN3"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
+   ["SKU_KEY_SCAN4"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_SCAN5"] = {key = "CTRL-SHIFT-U", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_SCAN6"] = {key = "CTRL-SHIFT-O", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_SCAN7"] = {key = "CTRL-SHIFT-P", object = "SkuCoreControlOption1", script = "OnHide",},
@@ -77,9 +77,9 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"] = {key = "", object = "SkuCoreControlOption1", func = "OnHide",},
 
-   ["SKU_KEY_ENABLESOFTTARGETINGENEMY"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_ENABLESOFTTARGETINGINTERACT"] = {key = "CTRL-SHIFT-N", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_ENABLESOFTTARGETINGENEMY"] = {key = "SHIFT-I", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"] = {key = "SHIFT-P", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_ENABLESOFTTARGETINGINTERACT"] = {key = "SHIFT-O", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_OUTPUTHARDTARGET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_OUTPUTSOFTTARGET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
 

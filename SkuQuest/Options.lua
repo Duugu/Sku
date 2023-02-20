@@ -446,24 +446,24 @@ SkuQuest.defaults = {
 	showDifficultyColors = true,
 	questMarkerBeacons = {
 		availableQuests = {
-			enabled = false,
+			enabled = true,
 			enableBeacons = true,
 			enableClickClack = "off",
-			singlePing = false,
+			singlePing = true,
 			beaconSoundSet = "Beacon 1",
 			beaconType = -7,
-			beaconVolume = 40,
-			maxRange = 30,
+			beaconVolume = 30,
+			maxRange = 40,
 			chatNotification = true,
 			disableOn = 5,
 			disableSeenForever = false,
 			minLevel = 5,
 		},
 		currentQuests = {
-			enabled = false,
+			enabled = true,
 			enableBeacons = true,
 			enableClickClack = "off",
-			singlePing = false,
+			singlePing = true,
 			beaconSoundSet = "Beacon 3",
 			beaconType = -7,
 			beaconVolume = 40,
@@ -1721,7 +1721,6 @@ function SkuQuest:MenuBuilder(aParentEntry)
 					end
 					tNewMenuEntry1.OnEnter = function(self, aValue, aName)
 						SkuOptions.currentMenuPosition.textFull = SkuQuest:GetTTSText(self.questLogId)
-						print(SkuOptions.currentMenuPosition.textFull)
 					end
 					local questLogTitleText, level, questTag, isHeader, isCollapsed, isComplete, frequency, questID = GetQuestLogTitle(vq)
 					tNewMenuEntry1.BuildChildren = function(self)

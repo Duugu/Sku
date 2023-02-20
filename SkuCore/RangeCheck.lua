@@ -64,9 +64,6 @@ function SkuCore:RangeCheckUpdateRanges()
             [15] = {
                ["sound"] = L["vocalized"],
             },
-            [8] = {
-               ["sound"] = L["vocalized"],
-            },
             [45] = {
                ["sound"] = L["vocalized"],
             },
@@ -88,6 +85,15 @@ function SkuCore:RangeCheckUpdateRanges()
             [60] = {
                ["sound"] = L["vocalized"],
             },
+            [70] = {
+               ["sound"] = L["vocalized"],
+            },
+            [80] = {
+               ["sound"] = L["vocalized"],
+            },
+            [100] = {
+               ["sound"] = L["vocalized"],
+            },            
          },
          ["Hostile"] = {
             [25] = {
@@ -99,9 +105,6 @@ function SkuCore:RangeCheckUpdateRanges()
             [15] = {
                ["sound"] = L["vocalized"],
             },
-            [8] = {
-               ["sound"] = L["vocalized"],
-            },
             [45] = {
                ["sound"] = L["vocalized"],
             },
@@ -121,6 +124,15 @@ function SkuCore:RangeCheckUpdateRanges()
                ["sound"] = L["vocalized"],
             },
             [60] = {
+               ["sound"] = L["vocalized"],
+            },
+            [70] = {
+               ["sound"] = L["vocalized"],
+            },
+            [80] = {
+               ["sound"] = L["vocalized"],
+            },
+            [100] = {
                ["sound"] = L["vocalized"],
             },
          },

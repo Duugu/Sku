@@ -336,7 +336,7 @@ SkuChat.defaults = {
 		timeStampAtLineEnd = true,
 		firstLineOnTabSwitch = true,
 		deleteHistoryOnLogin = false,
-		audioOnNewMessage = true,
+		audioOnNewMessage = false,
 		audioOnMessageEnd = false,
 	},
 	WowTtsVoice = 1,

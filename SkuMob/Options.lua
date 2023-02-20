@@ -58,7 +58,7 @@ SkuMob.defaults = {
 	vocalizeRaidTargetOnly = false,
 	vocalizePlayerNamePlaceholders = true,
 	vocalizePlayerNamePlaceholdersSkuTts = false,
-	repeatRaidTargetMarkers = false,
+	repeatRaidTargetMarkers = true,
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:MenuBuilder(aParentEntry)

@@ -1494,7 +1494,7 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 						5, 
 						SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].maxRange,
 						function(self, aDistance)
-							--print("reached callback", self.name, aDistance)
+							--reached callback
 							SkuQuest.activeBeaconsTmpIgnore[v[4]] = true
 							if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].disableSeenForever == true then
 								SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore[v[4]] = true
@@ -1502,7 +1502,7 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", self.name)
 						end,
 						function(self, aDistance)
-							--print("distance changed callback", self.name, aDistance)
+							--distance changed callback
 							if aDistance < SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons.currentQuests.disableOn then
 								SkuQuest.activeBeaconsTmpIgnore[v[4]] = true
 								if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].disableSeenForever == true then
@@ -1512,7 +1512,7 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 							end
 						end,
 						function(self, aDistance)
-							--print("ping callback", self.name, aDistance)
+							--ping callback
 							if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].singlePing == true then
 								SkuQuest.activeBeaconsTmpIgnore[v[4]] = true
 								if SkuOptions.db.profile[MODULE_NAME].questMarkerBeacons[aType].disableSeenForever == true then
@@ -1526,10 +1526,40 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 									local playerX, playerY = UnitPosition("player")
 									local tDistance = SkuNav:Distance(playerX, playerY, v[2], v[3]) or 0
 
+									print( v[4])
+									local tWpNameString = ""
+									if SkuDB.questDataTBC[v[4]]
+										and SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]]
+										and (SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]][1] 
+										or SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]][2]
+										or SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]][3])
+									then
+										local tstartedBy = SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]]
+										if tstartedBy then
+											local tTargets = {}
+											local tTargetType = nil
+											tTargets, tTargetType = SkuQuest:GetQuestTargetIds(v[4], tstartedBy)
+											local tResultWPs = {}
+											SkuQuest:GetResultingWps(tTargets, tTargetType, v[4], tResultWPs)
+											for unitGeneralName, wpTable in pairs(tResultWPs) do
+												if not string.find(wpTable[1], L["Anderer Kontinent"]) then
+													for wpIndex, wpName in pairs(wpTable) do
+														local tWpObj = SkuNav:GetWaypointData2(wpName)
+														if tWpObj then
+															local tDistanceTargetWp = SkuNav:Distance(playerX, playerY, tWpObj.worldX, tWpObj.worldY)
+															tWpNameString = "#"..L["Waypoint"]..":"..wpName
+															break
+														end
+													end
+												end
+											end
+										end
+									end
+
 									if aType == "availableQuests" then
-										print(L["Quest available"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..")")
+										print(L["Quest available"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..") "..tWpNameString)
 									elseif aType == "currentQuests" then
-										print(L["Quest for hand-in"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..")")
+										print(L["Quest for hand-in"]..": "..i.." ("..tDistance.." "..L["meters"].." "..SkuNav:GetDirectionToAsString(v[2], v[3])..") "..tWpNameString)
 									end
 									SkuQuest.activeBeaconsTmpIgnoreChat[v[4]] = true
 								end
