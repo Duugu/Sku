@@ -518,7 +518,7 @@ function SkuCore:MinimapScanFast()
          if line then
             if string.find(line.."\n", "", 1, true) then
                line = line.."\n"
-               for w in string.gmatch(line, "%a+\n") do
+               for w in string.gmatch(line, "[%aüäöß]+\n") do
                   tTooltipLines[w] = w
                end
             else
@@ -604,7 +604,7 @@ function SkuCore:MinimapScannerOnLogin()
       if SkuCore.inCombat == true then
          return
       end
-      if SkuCore:IsPlayerMoving() ~= true then
+      if SkuCore:IsPlayerMoving(true) ~= true then
          return
       end      
       self.timeCounter = self.timeCounter + atime

@@ -156,117 +156,121 @@ function SkuCore:bisMenuBuilder()
                tNewMenuEntry.dynamic = true
                tNewMenuEntry.filterable = true
                tNewMenuEntry.BuildChildren = function(self)
-                  for specNumber = 1, #tClassSpecs[x] - 1 do
-                     local specName = tClassSpecs[x][specNumber]
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[specName]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.filterable = true
-                     tNewMenuEntry.BuildChildren = function(self)
-                        for i, v in pairs(bisListData[className][specName][phaseName]) do
-                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[v.slot_name] or v.slot_name}, SkuGenericMenuItem)
+                  for specNumber = 1, #tClassSpecs[x] do
+                     if tClassSpecs[x][specNumber] then
+                        local specName = tClassSpecs[x][specNumber]
+                        if bisListData[className][specName] then
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[specName]}, SkuGenericMenuItem)
                            tNewMenuEntry.dynamic = true
                            tNewMenuEntry.filterable = true
                            tNewMenuEntry.BuildChildren = function(self)
-                              local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enchants"]}, SkuGenericMenuItem)
-                              tNewMenuEntry.dynamic = true
-                              tNewMenuEntry.filterable = true
-                              tNewMenuEntry.BuildChildren = function(self)
-                                 --insert enchants
-                                 for eIndex = 1, #v.enhs do
-                                    if v.enhs[eIndex].type == "item" then
-                                       local itemName = GetItemInfo(v.enhs[eIndex].id) 
-                                       if itemName then
-                                          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
-                                          tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
-                                             local aId = v.enhs[eIndex].id
-                                             C_Timer.After(0.1, function()
-                                                local tSections = {}
-                                                local tTextFirstLine, tTextFull = "", ""
-                                                _G["SkuScanningTooltip"]:ClearLines()
-                                                _G["SkuScanningTooltip"]:SetItemByID(aId)
-                                                if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-                                                   if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                                                      local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-                                                      tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
-                                                   end
+                              for i, v in pairs(bisListData[className][specName][phaseName]) do
+                                 local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[v.slot_name] or v.slot_name}, SkuGenericMenuItem)
+                                 tNewMenuEntry.dynamic = true
+                                 tNewMenuEntry.filterable = true
+                                 tNewMenuEntry.BuildChildren = function(self)
+                                    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enchants"]}, SkuGenericMenuItem)
+                                    tNewMenuEntry.dynamic = true
+                                    tNewMenuEntry.filterable = true
+                                    tNewMenuEntry.BuildChildren = function(self)
+                                       --insert enchants
+                                       for eIndex = 1, #v.enhs do
+                                          if v.enhs[eIndex].type == "item" then
+                                             local itemName = GetItemInfo(v.enhs[eIndex].id) 
+                                             if itemName then
+                                                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+                                                tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
+                                                   local aId = v.enhs[eIndex].id
+                                                   C_Timer.After(0.1, function()
+                                                      local tSections = {}
+                                                      local tTextFirstLine, tTextFull = "", ""
+                                                      _G["SkuScanningTooltip"]:ClearLines()
+                                                      _G["SkuScanningTooltip"]:SetItemByID(aId)
+                                                      if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+                                                         if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+                                                            local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                                                            tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
+                                                         end
+                                                      end
+                                                      table.insert(tSections, 1, tTextFull)
+                                                      SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
+                                                   end)
                                                 end
-                                                table.insert(tSections, 1, tTextFull)
-                                                SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
-                                             end)
-                                          end
-                                       end
-                                    elseif v.enhs[eIndex].type == "spell" then
-                                       local itemName = GetSpellInfo(v.enhs[eIndex].id) 
-                                       if itemName then
-                                          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
-                                          tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
-                                             local aId = v.enhs[eIndex].id
-                                             C_Timer.After(0.1, function()
-                                                local tSections = {}
-                                                local tTextFirstLine, tTextFull = "", ""
-                                                _G["SkuScanningTooltip"]:ClearLines()
-                                                _G["SkuScanningTooltip"]:SetSpellByID(aId)
-                                                if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-                                                   if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                                                      local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-                                                      tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
-                                                   end
+                                             end
+                                          elseif v.enhs[eIndex].type == "spell" then
+                                             local itemName = GetSpellInfo(v.enhs[eIndex].id) 
+                                             if itemName then
+                                                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+                                                tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
+                                                   local aId = v.enhs[eIndex].id
+                                                   C_Timer.After(0.1, function()
+                                                      local tSections = {}
+                                                      local tTextFirstLine, tTextFull = "", ""
+                                                      _G["SkuScanningTooltip"]:ClearLines()
+                                                      _G["SkuScanningTooltip"]:SetSpellByID(aId)
+                                                      if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+                                                         if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+                                                            local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                                                            tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
+                                                         end
+                                                      end
+                                                      table.insert(tSections, 1, tTextFull)
+                                                      SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
+                                                   end)
                                                 end
-                                                table.insert(tSections, 1, tTextFull)
-                                                SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
-                                             end)
+                                             end
                                           end
                                        end
                                     end
-                                 end
-                              end
-                              for itemIndex = 1, #v do
-                                 if v[itemIndex] ~= -1 then
-                                    local itemName = GetItemInfo(v[itemIndex]) 
-                                    if itemName then
-                                       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemIndex.." "..itemName}, SkuGenericMenuItem)
-                                       tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
-                                          local aId = v[itemIndex]
-                                          SkuCore:getItemComparisnSections(aId)
-                                          C_Timer.After(0.1, function()
-                                             local tSections = SkuCore:getItemComparisnSections(aId) or {}
-                                             if tSections[1] then
-                                                tSections[1] = L["currently equipped"].."\r\n"..tSections[1]
+                                    for itemIndex = 1, #v do
+                                       if v[itemIndex] ~= -1 then
+                                          local itemName = GetItemInfo(v[itemIndex]) 
+                                          if itemName then
+                                             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemIndex.." "..itemName}, SkuGenericMenuItem)
+                                             tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
+                                                local aId = v[itemIndex]
+                                                SkuCore:getItemComparisnSections(aId)
+                                                C_Timer.After(0.1, function()
+                                                   local tSections = SkuCore:getItemComparisnSections(aId) or {}
+                                                   if tSections[1] then
+                                                      tSections[1] = L["currently equipped"].."\r\n"..tSections[1]
+                                                   end
+                                       
+                                                   local tDropText = L["Dropped by"].."\r\n"
+                                                   local tItemDropTable = SkuCore:alItegrationGetItemDropTable(aId)
+                                                   if tItemDropTable then
+                                                      for iDrop, vDrop in pairs(tItemDropTable) do
+                                                         tDropText = tDropText..vDrop.."\r\n"
+                                                      end
+                                                   end
+                                                   table.insert(tSections, 1, tDropText)
+                                       
+                                                   if aNpcId then
+                                                      local Droprate = AtlasLoot.Data.Droprate:GetData(aNpcId, aId)
+                                                      if Droprate then
+                                                         --print(aId, tTextFirstLine, aNpcId, Droprate)
+                                                         table.insert(tSections, 1, L["Droprate"]..": "..Droprate.."%")
+                                                      end
+                                                   end
+                                       
+                                                   local tTextFirstLine, tTextFull = "", ""
+                                                   _G["SkuScanningTooltip"]:ClearLines()
+                                                   _G["SkuScanningTooltip"]:SetItemByID(aId)
+                                                   if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+                                                      if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+                                                         local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+                                                         tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
+                                                      end
+                                                   end
+                                       
+                                                   table.insert(tSections, 1, tTextFull)
+                                       
+                                                   SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
+                                                end)
                                              end
-                                 
-                                             local tDropText = L["Dropped by"].."\r\n"
-                                             local tItemDropTable = SkuCore:alItegrationGetItemDropTable(aId)
-                                             if tItemDropTable then
-                                                for iDrop, vDrop in pairs(tItemDropTable) do
-                                                   tDropText = tDropText..vDrop.."\r\n"
-                                                end
-                                             end
-                                             table.insert(tSections, 1, tDropText)
-                                 
-                                             if aNpcId then
-                                                local Droprate = AtlasLoot.Data.Droprate:GetData(aNpcId, aId)
-                                                if Droprate then
-                                                   --print(aId, tTextFirstLine, aNpcId, Droprate)
-                                                   table.insert(tSections, 1, L["Droprate"]..": "..Droprate.."%")
-                                                end
-                                             end
-                                 
-                                             local tTextFirstLine, tTextFull = "", ""
-                                             _G["SkuScanningTooltip"]:ClearLines()
-                                             _G["SkuScanningTooltip"]:SetItemByID(aId)
-                                             if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-                                                if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-                                                   local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-                                                   tTextFirstLine, tTextFull = SkuCore:ItemName_helper(tText)
-                                                end
-                                             end
-                                 
-                                             table.insert(tSections, 1, tTextFull)
-                                 
-                                             SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = tTextFirstLine, tSections
-                                          end)
+                                          end                                 
                                        end
-                                    end                                 
+                                    end
                                  end
                               end
                            end

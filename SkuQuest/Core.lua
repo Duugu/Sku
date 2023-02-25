@@ -1525,8 +1525,6 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 								if not SkuQuest.activeBeaconsTmpIgnoreChat[v[4]] then
 									local playerX, playerY = UnitPosition("player")
 									local tDistance = SkuNav:Distance(playerX, playerY, v[2], v[3]) or 0
-
-									print( v[4])
 									local tWpNameString = ""
 									if SkuDB.questDataTBC[v[4]]
 										and SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]]

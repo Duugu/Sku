@@ -282,14 +282,14 @@ local function OnUpdate(self, aTime)
 						if tBeacon.clickSoundType and tBeacon.clickSoundType ~= "off" and gClickClackSoundsetRepo[tBeacon.clickSoundType] then
 							local tClickClackDeg = tBeacon.clickSoundRange or 10
 							if tCleanedDirection > tClickClackDeg or tCleanedDirection < -tClickClackDeg then
-								if tPrevCleanedDirection == true then
+								if tBeacon.tPrevCleanedDirection == true then
 									local tWillPlay, tPlayingHandle = PlaySoundFile(gClickClackSoundsetRepo[tBeacon.clickSoundType].path.."\\"..gClickClackSoundsetRepo[tBeacon.clickSoundType].clackFileName, "Talking Head")
-									tPrevCleanedDirection = false
+									tBeacon.tPrevCleanedDirection = false
 								end
 							else
-								if tPrevCleanedDirection == false then
+								if tBeacon.tPrevCleanedDirection == false then
 									local tWillPlay, tPlayingHandle = PlaySoundFile(gClickClackSoundsetRepo[tBeacon.clickSoundType].path.."\\"..gClickClackSoundsetRepo[tBeacon.clickSoundType].clickFileName, "Talking Head")
-									tPrevCleanedDirection = true
+									tBeacon.tPrevCleanedDirection = true
 								end
 							end
 						end
@@ -448,6 +448,7 @@ function SkuBeacon:CreateBeacon(aReference, aBeaconName, aSoundSet, aPosX, aPosY
 		distanceChangedCallback = aDistanceChangedCallback,
 		pingCallback = aPingCallback,
 		clickSoundType = aClickSoundType,
+		tPrevCleanedDirection = true,
 	}
 	
 	return true

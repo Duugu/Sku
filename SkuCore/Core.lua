@@ -504,8 +504,14 @@ function SkuCore:Distance(sx, sy, dx, dy)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:IsPlayerMoving()
+function SkuCore:IsPlayerMoving(aOnFollow)
 	local rValue = false
+	local tNewX, tNewY
+	if C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player") then
+		local _, worldPosition = C_Map.GetWorldPosFromMapPos(WorldMapFrame:GetMapID(), C_Map.GetPlayerMapPosition(WorldMapFrame:GetMapID(), "player"))
+		tNewX, tNewY = worldPosition:GetXY()
+	end
+
 	if SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing == true or
 		SkuCoreMovement.Flags.MoveForward == true or
 		SkuCoreMovement.Flags.MoveBackward == true or
@@ -513,10 +519,11 @@ function SkuCore:IsPlayerMoving()
 		SkuCoreMovement.Flags.StrafeRight == true or
 		SkuCoreMovement.Flags.Ascend == true or
 		SkuCoreMovement.Flags.Descend == true
+		or (aOnFollow and SkuStatus.follow ~= 0 and (SkuCoreMovement.LastPosition.x ~= tNewX and SkuCoreMovement.LastPosition.y ~= tNewY))
 	then
 		rValue = true
 	end
-    return rValue
+   	return rValue
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

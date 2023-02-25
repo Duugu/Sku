@@ -3617,7 +3617,6 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 				SkuIterateGossipList(aGossipListTable[index].childs, self, aTab.."  ")
 			end
 		end
-
 	end
 end
 

@@ -4,6 +4,14 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r32.20
+	- The addon now is notifying you on resources if you are on follow.
+	- Fixed an issue with not working resource notifications for resources with umlauts. ("Lichblüte", "Feuerblüte", etc.)
+	- Fixed a bug where the click/clack sound was going crazy with multiple audio beacons at the same time (quest notifications).
+	- Fixed a bug that was leading to incomplete spec lists in the bis menu.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r32.19
 	- Removed an overlooked debug chat output from Quests > All
 	- Added waypoint names to quest available/current notifications in chat.
