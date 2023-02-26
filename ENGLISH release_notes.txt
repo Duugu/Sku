@@ -4,6 +4,11 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r32.21
+	- Tried to fix a bug where the notificaton on resources was breaking Blizzard tts output in instanced zones (like dungeons).
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r32.20
 	- The addon now is notifying you on resources if you are on follow.
 	- Fixed an issue with not working resource notifications for resources with umlauts. ("Lichblüte", "Feuerblüte", etc.)

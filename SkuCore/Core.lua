@@ -519,7 +519,7 @@ function SkuCore:IsPlayerMoving(aOnFollow)
 		SkuCoreMovement.Flags.StrafeRight == true or
 		SkuCoreMovement.Flags.Ascend == true or
 		SkuCoreMovement.Flags.Descend == true
-		or (aOnFollow and SkuStatus.follow ~= 0 and (SkuCoreMovement.LastPosition.x ~= tNewX and SkuCoreMovement.LastPosition.y ~= tNewY))
+		or (tNewX and aOnFollow and SkuStatus.follow ~= 0 and (SkuCoreMovement.LastPosition.x ~= tNewX and SkuCoreMovement.LastPosition.y ~= tNewY))
 	then
 		rValue = true
 	end
