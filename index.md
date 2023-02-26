@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r32.20](https://github.com/Duugu/Sku/releases/download/r32.20/Sku-r32.20-wrath.zip) (Feb 25th, 2023)<br>
+- [Sku r32.21](https://github.com/Duugu/Sku/releases/download/r32.21/Sku-r32.21-wrath.zip) (Feb 26th, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -23,6 +23,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r32.21
+- Tried to fix a bug where the notificaton on resources was breaking Blizzard tts output in instanced zones (like dungeons).
+	
 ## Changes in Sku r32.20
 - The addon now is notifying you on resources if you are on follow.
 - Fixed an issue with not working resource notifications for resources with umlauts. ("Lichblüte", "Feuerblüte", etc.)
