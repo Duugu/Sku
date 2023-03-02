@@ -4,6 +4,11 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r32.22
+	- Fixed a bug with the soft interact enable/disable key bind and chat notifications. Was not working correctly while targeting a friendly or hostile unit.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r32.21
 	- Tried to fix a bug where the notificaton on resources was breaking Blizzard tts output in instanced zones (like dungeons).
 
