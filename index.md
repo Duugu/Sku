@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_en/releases/download/r2/SkuAudioData_fast_en-r2-wrath.zip) (Mar 10th 2022)<br>
+- [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
 - [Sku r32.22](https://github.com/Duugu/Sku/releases/download/r32.22/Sku-r32.22-wrath.zip) (Mar 2nd, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
