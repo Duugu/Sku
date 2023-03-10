@@ -9,6 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_en /releases/download/r2/SkuAudioData_fast_en-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
 - [Sku r32.22](https://github.com/Duugu/Sku/releases/download/r32.22/Sku-r32.22-wrath.zip) (Mar 2nd, 2023)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
@@ -23,6 +24,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in SkuAudioData fast de r2
+- This is just a faster version of the audiodata file for German with 225% speed. To use it, either delete the old SkuAudioData folder or rename it. Then add this SkuAudioData_fast_de folder to Addons as usual. You can't use both, SkuAudioData and SkuAudioData_fast_de, at the same time.
+
 ## Changes in SkuAudioData r37
 - Added 6.5k new audio files for missing German words.
 
