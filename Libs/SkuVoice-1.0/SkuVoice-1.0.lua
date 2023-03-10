@@ -139,11 +139,17 @@ function SkuVoice:Create()
 			end
 
 			--check if next could be played
+			local tFinalSpeed = SkuOptions.db.profile["SkuOptions"].TTSSepPause
+			if Sku.AudiodataExtraSpeed then
+				tFinalSpeed = tFinalSpeed + Sku.AudiodataExtraSpeed
+			end
+
+
 			local tPlayNext = true
 			for i = 1, table.getn(mSkuVoiceQueue) do
 				if mSkuVoiceQueue[i].soundHandle and mSkuVoiceQueue[i].dnq ~= true then
 					--is playing; check remaining time modifyed  by pause setting
-					local tRemainingTime = (GetTime() - mSkuVoiceQueue[i].endTimestamp) + (mSkuVoiceQueue[i].length - (mSkuVoiceQueue[i].length * (SkuOptions.db.profile["SkuOptions"].TTSSepPause / 100)))
+					local tRemainingTime = (GetTime() - mSkuVoiceQueue[i].endTimestamp) + (mSkuVoiceQueue[i].length - (mSkuVoiceQueue[i].length * (tFinalSpeed / 100)))
 					if tRemainingTime < 0 then
 						--nope
 						tPlayNext = false

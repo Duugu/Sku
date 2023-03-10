@@ -518,7 +518,7 @@ function SkuCore:MinimapScanFast()
          if line then
             if string.find(line.."\n", "", 1, true) then
                line = line.."\n"
-               for w in string.gmatch(line, "[%aüäöß]+\n") do
+               for w in string.gmatch(line, "[%aüäöß ]+\n") do
                   tTooltipLines[w] = w
                end
             else

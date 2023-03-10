@@ -4,6 +4,12 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r32.23
+	- Fixed a bug with the resource notifications
+	- New routes and waypoints added for Thousand Needles, Azshara, Blasted Lands, and Silithus by Emilylorange
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r32.22
 	- Fixed a bug with the soft interact enable/disable key bind and chat notifications. Was not working correctly while targeting a friendly or hostile unit.
 
