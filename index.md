@@ -24,7 +24,7 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 ## Changes in SkuAudioData r37
-- Added 6.5k new audio files for missing words.
+- Added 6.5k new audio files for missing German words.
 
 ## Changes in Sku r32.22
 - Fixed a bug with the soft interact enable/disable key bind and chat notifications. Was not working correctly while targeting a friendly or hostile unit.
