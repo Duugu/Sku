@@ -25,7 +25,7 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------	
 ## Changes in SkuAudioData fast de r2
-- This is just a faster version of the audiodata file for German with 225% speed. To use it, either delete the old SkuAudioData folder or rename it. Then add this SkuAudioData_fast_de folder to Addons as usual. You can't use both, SkuAudioData and SkuAudioData_fast_de, at the same time.
+- This is faster version of the audiodata file for German with 225% speed. To use it just add this SkuAudioData_fast_de folder instead of SkuAudioData to Addons as usual.
 
 ## Changes in SkuAudioData r37
 - Added 6.5k new audio files for missing German words.
