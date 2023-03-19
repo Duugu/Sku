@@ -4,6 +4,11 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33
+	- Fixed a bug with the class trainer leading to UI errors.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r32.23
 	- Fixed a bug with the resource notifications
 	- New routes and waypoints added for Thousand Needles, Azshara, Blasted Lands, and Silithus by Emilylorange

@@ -43,6 +43,9 @@
 		{
 			"name": "Libs",
 			"path": "Libs"
+		},
+		{
+			"path": "SkuDispatcher"
 		}
 	],
 	"settings": {

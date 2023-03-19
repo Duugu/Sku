@@ -1,14 +1,103 @@
----------------------------------------------------------------------------------------------------------------------------------------
-local MODULE_NAME, MODULE_PART = "SkuCore", "Tutorial"  
 local L = Sku.L
-local _G = _G
 
-SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
+SkuDB.Tutorials = {
+   prefix = "Sku",
+   deDE = {
+      --[[
+      ["tutorial eins"] = {
+         steps = {
+            [1] = {
+               title = "step one",
+               allTriggersRequired = false,
+               triggers = {
+                  [1] = {
+                     type = "GAME_EVENT",
+                     value = 84,
+                  },
+                  [2] = {
+                     type = "KEY_PRESS",
+                     value = 54,
+                  },                  
+               },
+               beginText = "beginText EINS dies ist nur ein füller text, damit die ausgabe etwas länger dauert. so, das sollte reichen. beginText",
+               endText = "endText EINS dies ist nur ein füller text, damit die ausgabe etwas länger dauert. so, das sollte reichen. endText EINS",
+            },
+            [2] = {
+               title = "2",
+               allTriggersRequired = true,
+               triggers = {
+                  [1] = {
+                     type = "TTS_STRING",
+                     value = "bumms",
+                  },
+                  [2] = {
+                     type = "TARGET_UNIT_NAME",
+                     value = "Duugu",
+                  },
+               },
+               beginText = "beginText ZWEI dies ist nur ein füller text, damit die ausgabe etwas länger dauert. so, das sollte reichen. beginText ZWEI",
+               endText = "endText ZWEI dies ist nur ein füller text, damit die ausgabe etwas länger dauert. so, das sollte reichen. endText ZWEI",
+            },
+            [3] = {
+               title = "3",
+               allTriggersRequired = true,
+               triggers = {
+                  [1] = {
+                     type = "TTS_STRING",
+                     value = "bumms",
+                  },
+                  [2] = {
+                     type = "TARGET_UNIT_NAME",
+                     value = "Duugu",
+                  },
+               },
+               beginText = "",
+               endText = "dies ist der endText von step zwei",
+            },
+            [4] = {
+               title = "4",
+               allTriggersRequired = true,
+               triggers = {
+                  [1] = {
+                     type = "TTS_STRING",
+                     value = "bumms",
+                  },
+                  [2] = {
+                     type = "TARGET_UNIT_NAME",
+                     value = "Duugu",
+                  },
+               },
+               beginText = "",
+               endText = "dies ist der endText von step zwei",
+            },
+            [5] = {
+               title = "5",
+               allTriggersRequired = true,
+               triggers = {
+                  [1] = {
+                     type = "TTS_STRING",
+                     value = "bumms",
+                  },
+                  [2] = {
+                     type = "TARGET_UNIT_NAME",
+                     value = "Duugu",
+                  },
+               },
+               beginText = "",
+               endText = "dies ist der endText von step zwei",
+            },
+         },
+      },
+      ]]
+   },
+   enUS = {
+   },
+}
 
----------------------------------------------------------------------------------------------------------------------------------------
-SkuCore.tutorial = {}
-SkuCore.tutorial.currentStep = 0
-SkuCore.tutorial.data = {
+
+
+--[[
+{
    [1] = {
       completed = false,
       stepDescription = {
@@ -534,198 +623,4 @@ SkuCore.tutorial.data = {
 
 
 }
-
---[[
-["QuestLogFrame"] = "QuestLogFrameCloseButton",
-["GameMenuFrame"] = "GameMenuButtonContinue",
-["CharacterFrame"] = "CharacterFrameCloseButton",
-["PlayerTalentFrame"] = "PlayerTalentFrameCloseButton",
-["MerchantFrame"] = "MerchantFrameCloseButton",
-["GossipFrame"] = "GossipFrameCloseButton",
-["ClassTrainerFrame"] = "ClassTrainerFrameCloseButton",
-StaticPopup1
-["QuestFrame"] = "QuestFrameCloseButton",
-["TaxiFrame"] = "TaxiCloseButton",
-["SkillFrame"] = "CharacterFrameCloseButton",
-["HonorFrame"] = "CharacterFrameCloseButton",
-["DropDownList1"] = "DropDownList1",
-["InspectFrame"] = "InspectFrameCloseButton",
-	"QuestFrame",--o
-	"TaxiFrame",--o
-	"GossipFrame",--o
-	"MerchantFrame",--o
-	"StaticPopup1",
-	"StaticPopup2",
-	"StaticPopup3",
-	"PetStableFrame",
-	"ContainerFrame1",
-	"ContainerFrame2",
-	"ContainerFrame3",
-	"ContainerFrame4",
-	"ContainerFrame5",
-	"ContainerFrame6",
-	"DropDownList1",
-	"TalentFrame",
-	--"AuctionFrame",
-	"ClassTrainerFrame",
-	"CharacterFrame",
-	"ReputationFrame",
-	"SkillFrame",
-	"HonorFrame",
-	"PlayerTalentFrame",
-	"InspectFrame",
-	"BagnonInventoryFrame1",
-	"BagnonBankFrame1",
-	"GuildBankFrame",
-	"BankFrame",
-	"CraftFrame",
-	--"GroupLootContainer",
-	"TradeFrame",
-	"TradeSkillFrame",
-	--"DropDownList2",
-	--"FriendsFrame",
-	--"GameMenuFrame",
-	--"SpellBookFrame",
-	--"MultiBarLeft",
-	--"MultiBarRight",
-	--"MultiBarBottomLeft",
-	--"MultiBarBottomRight",
-	"BagnonGuildFrame1",
-	--"MainMenuBar",
-   	["BagnonInventoryFrame1"] = "BagnonInventoryFrame1",
-	["BagnonBankFrame1"] = "BagnonBankFrame1",
-	["ContainerFrame1"] = "ContainerFrame1",
-	["ContainerFrame2"] = "ContainerFrame2",
-	["ContainerFrame3"] = "ContainerFrame3",
-	["ContainerFrame4"] = "ContainerFrame4",
-	["ContainerFrame5"] = "ContainerFrame5",
-
-}
-local friendlyFrameNamesParts = {
-	["FrameGreetingPanel"] = L["Panel"],
-	["GreetingScrollFrame"] = L["Sub panel"],
-	["DetailPanel"] = L["Details"] ,
-	["DetailScrollFrame"] = L["Details panel"],
-	["ScrollFrame"] = L["Sub panel"],
-	["RewardsFrame"] = L["Rewards"],
-	["MoneyFrame"] = L["Money"],
-	["PaperDollFrame"] = L["Equiment"] ,
-	["CharacterAttributesFrame"] = L["Attributes"],
-	["CharacterResistanceFrame"] = L["Resistance"],
-	["PaperDollItemsFrame"] = L["Items"],
-	["ProgressPanel"] = L["Progress"],
-
-
-
-
-   [9] = {
-      completed = false,
-      stepDescription = {
-         [1] = "Prima. Geht jetzt mit PFEIL RUNTER ein Menüelement nach unten, zu Belohnungen.",
-      }
-      currentSuccessCondition = 1,
-      successConditions = {
-         [1] = function()
-
-         end,
-      },
-   },   
-   [10] = {
-      completed = false,
-      stepDescription = {
-         [1] = "Wie du hörst, steht vor diesem Menüpunkt nicht, Text doppelpunkt.",
-         [2] = "Das bedeutet, das ist nicht nur ein Text, den du lesen kannst, sondern es handelt sich um eine Option, die du auswählen kannst, oder um ein Untermenü.",
-         [3] = "Das ist im gesamten Audiomenü so. Steht, Text doppelpunkt, vor einem Menüelement, kannst du etwas lesen. Steht nichts davor, kannst du die Option auswählen oder mit PFEIL RECHTS in ein Untermenü wechseln.",
-         [4] = "Das Menüelement, Belohnungen hat ein Untermenü. Geh mit PFEIL RECHTS in das Untermenü.",
-      }
-      currentSuccessCondition = 1,
-      successConditions = {
-         [1] = function()
-
-         end,
-      },
-   },   
-   [11] = {
-      completed = false,
-      stepDescription = {
-         [1] = "Geh mit PFEIL RUNTER durch die Menüelement, bis zum letzten Element, und sieh dir dabei an, welche Belohnungen du bekommst.",
-      }
-      currentSuccessCondition = 1,
-      successConditions = {
-         [1] = function()
-
-         end,
-      },
-   },      
 ]]
----------------------------------------------------------------------------------------------------------------------------------------
-local tCurrentlyPlaying = {}
-function SkuCore:TutorialPlayNextStepInstructions()
-   local tCurrentStepNumber = SkuCore.tutorial.currentStep
-   for i, v in pairs(tCurrentlyPlaying) do
-      StopSound(v, 0)
-   end
-
-   tCurrentlyPlaying = {}
-   for x = 1, #SkuCore.tutorial.data[tCurrentStepNumber].stepDescription do
-      local file = ""
-      local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\assets\\audio\\"..file)
-      if willPlay then
-         tCurrentlyPlaying[#tCurrentlyPlaying + 1] = soundHandle
-      end
-   end
-
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-local f = _G["SkuCoreTutorialControl"] or CreateFrame("Frame", "SkuCoreTutorialControl", UIParent)
-local ttime = 0
-f:SetScript("OnUpdate", function(self, time)
-   ttime = ttime + time
-   if ttime < 0.0 then return end
-
-   local tCurrentStepNumber = SkuCore.tutorial.currentStep
-
-   if tCurrentStepNumber == 0 then 
-      return
-   end
-
-   if tCurrentStepNumber > #SkuCore.tutorial.data then
-      return
-   end
-   
-   local tCurrentSCondNumber = SkuCore.tutorial.data[tCurrentStepNumber].currentSuccessCondition
-   
-   if SkuCore.tutorial.data[tCurrentStepNumber].successConditions[tCurrentSCondNumber]() == true then
-      dprint("step", tCurrentStepNumber, "success condition", tCurrentSCondNumber, "completed")
-      SkuCore.tutorial.data[tCurrentStepNumber].currentSuccessCondition = SkuCore.tutorial.data[tCurrentStepNumber].currentSuccessCondition + 1
-      if SkuCore.tutorial.data[tCurrentStepNumber].currentSuccessCondition >= #SkuCore.tutorial.data[tCurrentStepNumber].successConditions then
-         dprint("step", tCurrentStepNumber, "completed")
-         SkuCore.tutorial.data[tCurrentStepNumber].currentSuccessCondition = 1
-         SkuCore.tutorial.currentStep = SkuCore.tutorial.currentStep + 1
-         --SkuCore:TutorialPlayNextStepInstructions()
-         for x = 1, #SkuCore.tutorial.data[SkuCore.tutorial.currentStep].stepDescription do
-            dprint(string.lower(SkuCore.tutorial.data[SkuCore.tutorial.currentStep].stepDescription[x]))
-            SkuOptions.Voice:OutputString(string.lower(SkuCore.tutorial.data[SkuCore.tutorial.currentStep].stepDescription[x]), false, true, 0.3, true)
-         end
-      end
-   end
-
-
-end)
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TutorialOnInitialize()
-   --SkuCore:TutorialPlayNextStepInstructions()
-
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:TutorialStart()
-   SkuCore.tutorial.currentStep = 1
-   for x = 1, #SkuCore.tutorial.data[1].stepDescription do
-      dprint(string.lower(SkuCore.tutorial.data[1].stepDescription[x]))
-      SkuOptions.Voice:OutputString(string.lower(SkuCore.tutorial.data[1].stepDescription[x]), false, true, 0.3, true)
-   end
-end
-

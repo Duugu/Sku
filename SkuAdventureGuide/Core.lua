@@ -77,8 +77,12 @@ SkuAdventureGuide.HistoryNotifySounds = {
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide:OnInitialize()
-	SkuAdventureGuide:RegisterEvent("PLAYER_LOGIN")
-	SkuAdventureGuide:RegisterEvent("PLAYER_ENTERING_WORLD")
+	SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuAdventureGuide.PLAYER_ENTERING_WORLD)
+	SkuDispatcher:RegisterEventCallback("PLAYER_LOGIN", SkuAdventureGuide.PLAYER_LOGIN)
+	--SkuAdventureGuide:RegisterEvent("PLAYER_LOGIN")
+	--SkuAdventureGuide:RegisterEvent("PLAYER_ENTERING_WORLD")
+
+	SkuAdventureGuide.Tutorial:OnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

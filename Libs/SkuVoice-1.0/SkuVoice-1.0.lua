@@ -16,13 +16,25 @@ local mSkuVoiceQueue = {}
 local mSkuVoiceQueueBTTS = {}
 local mSkuVoiceQueueBTTS_Speaking = {}
 SkuVoice.LastPlayedString = ""
+SkuVoice.TutorialPlaying = 0
 --setmetatable(mSkuVoiceQueue, SkuNav.PrintMT)
 
 function SkuVoice:Create()
 	local f = CreateFrame("Frame", "SkuVoiceMainFrame", UIParent)
+	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_STARTED")
 	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_FINISHED")
-	f:SetScript("OnEvent", function(self, aEventName)
+	f:SetScript("OnEvent", function(self, aEventName, arg1, arg2)
+		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_STARTED" then
+			--print("VOICE_CHAT_TTS_PLAYBACK_STARTED", arg2)
+
+		end
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" then
+			--print("VOICE_CHAT_TTS_PLAYBACK_FINISHED", arg2, SkuVoice.TutorialPlaying)
+			--print("tut end", arg2)
+			if SkuVoice.TutorialPlaying > 0 then
+				SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying - 1
+			end
+
 			if mSkuVoiceQueueBTTS_Speaking[1] then
 				table.remove(mSkuVoiceQueueBTTS_Speaking, 1)
 			end
@@ -38,7 +50,7 @@ function SkuVoice:Create()
 			fTimeBTTS = 0
 			local tLastReset
 			for x = 1, #mSkuVoiceQueueBTTS do
-				if mSkuVoiceQueueBTTS[x] == "queuereset" then
+				if mSkuVoiceQueueBTTS[x] == "queuereset" and SkuVoice.TutorialPlaying == 0 then
 					tLastReset = x
 				end
 			end
@@ -54,7 +66,13 @@ function SkuVoice:Create()
 			if #mSkuVoiceQueueBTTS > 0 then
 				--print("           ", tLastWait, mSkuVoiceQueueBTTS[1])
 				local tValue = mSkuVoiceQueueBTTS[1]
-				if tValue == "queuereset" then
+				local tIsTutorial
+				if string.find(tValue, "IsTutorial#") then
+					tIsTutorial = true
+					tValue = string.gsub(tValue, "IsTutorial#", "")
+				end
+
+				if tValue == "queuereset" and SkuVoice.TutorialPlaying == 0 then
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						if SkuOptions.db.profile["SkuChat"].neverResetQueues ~= true then
 							C_VoiceChat.StopSpeakingText()
@@ -74,6 +92,11 @@ function SkuVoice:Create()
 						if not tIsAlreadySpeakingThat then
 							table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
 							C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tValue, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+							if tIsTutorial then
+								--print("tut start", tValue)
+								SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying + 1
+							end
+							SkuVoice.LastPlayedString = tValue
 						end
 						--print("tLastWait = 0")
 						tLastWait = 0.1
@@ -415,10 +438,41 @@ function SkuVoice:CheckIgnore(aString)
 end
 
 ---------------------------------------------------------------------------------------------------------
-function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
-	--print("OutputStringBTtts", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
+--[[
+wait
+length
+doNotOverwrite
+isMulti
+soundChannel
+engine
+spell
+vocalizeAsIs
+instant
+dnQ
+ignoreLinks
+overwrite
+isTutorial
+]]
+function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial)
 	if not aString then
 		return
+	end
+
+	--changing to a new approach with passing a table of arguments instead of a lot of values, but still need to update that everywhere
+	if type(aOverwrite) == "table" then
+		aWait = aOverwrite.wait
+		aLength = aOverwrite.length
+		aDoNotOverwrite = aOverwrite.doNotOverwrite
+		aIsMulti = aOverwrite.isMulti
+		aSoundChannel = aOverwrite.soundChannel
+		engine = aOverwrite.engine
+		aSpell = aOverwrite.spell
+		aVocalizeAsIs = aOverwrite.vocalizeAsIs
+		aInstant = aOverwrite.instant
+		aDnQ = aOverwrite.dnQ
+		aIgnoreLinks = aOverwrite.ignoreLinks
+		aIsTutorial = aOverwrite.isTutorial
+		aOverwrite = aOverwrite.overwrite
 	end
 
 	--SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aString)
@@ -468,7 +522,9 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 	--empty the queue
 	if aOverwrite == true and SkuOptions.db.profile["SkuChat"].neverResetQueues ~= true then
-		mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = "queuereset"
+		if SkuVoice.TutorialPlaying == 0 then
+			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = "queuereset"
+		end
 		--print("ADD RESET TO QUEUE")
 		--[[
 		local tIt = true
@@ -625,7 +681,6 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		aDnQ
 		]]
 	end
-
 	if aVocalizeAsIs then
 		tFinalStringForBTts = aString
 		tFinalStringForBTtsMac = aString
@@ -633,7 +688,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 	--tFinalStringForBTts = '<voice required="Language='..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
 	--tFinalStringForBTts = '<LANG LANGID="'..SapiLangIds[Sku.Loc]..'">'..tFinalStringForBTts..'</LANG>'
-	if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+	if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false and aIsTutorial ~= true then
 		tFinalStringForBTts = '<pitch middle="0">'..tFinalStringForBTts..'</pitch>'
 	end
 	tFinalStringForBTtsMac = tFinalStringForBTtsMac
@@ -641,27 +696,34 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	tFinalStringForBTts = string.gsub(tFinalStringForBTts, ";", " ")
 	tFinalStringForBTtsMac = string.gsub(tFinalStringForBTtsMac, ";", " ")
 
-	if IsMacClient() == true then
-		if aInstant then
-			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
-		else
-			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
-		end
-		if not aIgnoreLinks then
-			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTtsMac, "")
-		end
-	else
-		if aInstant then
-			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
-		else
-			mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
-		end
+	if aIsTutorial == true and tFinalStringForBTts ~= "" then
+		tFinalStringForBTtsMac = "IsTutorial#"..tFinalStringForBTtsMac
+		tFinalStringForBTts = "IsTutorial#"..tFinalStringForBTts
+	end
 
-		if not aIgnoreLinks then
-			SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTts, "")
-		end
+	if SkuVoice.TutorialPlaying == 0 or (SkuVoice.TutorialPlaying > 0 and aIsTutorial == true) then
 
+		if IsMacClient() == true then
+			if aInstant then
+				mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
+			else
+				mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTtsMac
+			end
+			if not aIgnoreLinks then
+				SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTtsMac, "")
+			end
+		else
+			if aInstant then
+				mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
+			else
+				mSkuVoiceQueueBTTS[#mSkuVoiceQueueBTTS + 1] = tFinalStringForBTts
+			end
+
+			if not aIgnoreLinks then
+				SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTts, "")
+			end
 		--print(tFinalStringForBTts)
+		end
 	end
 
 
@@ -673,9 +735,23 @@ end
 ---@param aOverwrite boolean
 ---@param aWait boolean
 function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
-	--print("OutputString", aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks)
 	if not aString then
 		return
+	end
+
+	if type(aOverwrite) == "table" then
+		aWait = aOverwrite.wait
+		aLength = aOverwrite.length
+		aDoNotOverwrite = aOverwrite.doNotOverwrite
+		aIsMulti = aOverwrite.isMulti
+		aSoundChannel = aOverwrite.soundChannel
+		engine = aOverwrite.engine
+		aSpell = aOverwrite.spell
+		aVocalizeAsIs = aOverwrite.vocalizeAsIs
+		aInstant = aOverwrite.instant
+		aDnQ = aOverwrite.dnQ
+		aIgnoreLinks = aOverwrite.ignoreLinks
+		aOverwrite = aOverwrite.overwrite
 	end
 	
 	--we need to skip checks, etc. for sounds to get better performance on aura output
@@ -1125,8 +1201,10 @@ function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
 		mSkuVoiceQueue = {}
 	end
 	if aBlizz then
-		mSkuVoiceQueueBTTS_Speaking = {}
-		C_VoiceChat.StopSpeakingText()
+		if SkuVoice.TutorialPlaying == 0 then
+			mSkuVoiceQueueBTTS_Speaking = {}
+			C_VoiceChat.StopSpeakingText()
+		end
 	end
 end
 --[[

@@ -166,6 +166,55 @@ SkuCore.interactFramesList = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_START", SkuCore.UNIT_SPELLCAST_START)
+	SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.PLAYER_ENTERING_WORLD)
+	SkuDispatcher:RegisterEventCallback("PLAYER_LEAVING_WORLD", SkuCore.PLAYER_LEAVING_WORLD)
+	SkuDispatcher:RegisterEventCallback("PLAYER_LOGIN", SkuCore.PLAYER_LOGIN)
+	SkuDispatcher:RegisterEventCallback("VARIABLES_LOADED", SkuCore.VARIABLES_LOADED)
+	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_DISABLED", SkuCore.PLAYER_REGEN_DISABLED)
+	SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.PLAYER_REGEN_ENABLED)
+	SkuDispatcher:RegisterEventCallback("QUEST_LOG_UPDATE", SkuCore.QUEST_LOG_UPDATE)
+	SkuDispatcher:RegisterEventCallback("PLAYER_CONTROL_LOST", SkuCore.PLAYER_CONTROL_LOST)
+	SkuDispatcher:RegisterEventCallback("PLAYER_MOUNT_DISPLAY_CHANGED", SkuCore.PLAYER_MOUNT_DISPLAY_CHANGED)
+	SkuDispatcher:RegisterEventCallback("PLAYER_CONTROL_GAINED", SkuCore.PLAYER_CONTROL_GAINED)
+	SkuDispatcher:RegisterEventCallback("PLAYER_DEAD", SkuCore.PLAYER_DEAD)
+	SkuDispatcher:RegisterEventCallback("AUTOFOLLOW_BEGIN", SkuCore.AUTOFOLLOW_BEGIN)
+	SkuDispatcher:RegisterEventCallback("AUTOFOLLOW_END", SkuCore.AUTOFOLLOW_END)
+	SkuDispatcher:RegisterEventCallback("PLAYER_UPDATE_RESTING", SkuCore.PLAYER_UPDATE_RESTING)
+	SkuDispatcher:RegisterEventCallback("UPDATE_STEALTH", SkuCore.UPDATE_STEALTH)
+	SkuDispatcher:RegisterEventCallback("ITEM_UNLOCKED", SkuCore.ITEM_UNLOCKED)
+	SkuDispatcher:RegisterEventCallback("ITEM_LOCK_CHANGED", SkuCore.ITEM_LOCK_CHANGED)
+	SkuDispatcher:RegisterEventCallback("BAG_UPDATE", SkuCore.BAG_UPDATE)
+	SkuDispatcher:RegisterEventCallback("UNIT_POWER_UPDATE", SkuCore.UNIT_POWER_UPDATE)
+	SkuDispatcher:RegisterEventCallback("UNIT_HAPPINESS", SkuCore.UNIT_HAPPINESS)
+	SkuDispatcher:RegisterEventCallback("PLAYER_TARGET_CHANGED", SkuCore.PLAYER_TARGET_CHANGED)
+	SkuDispatcher:RegisterEventCallback("CURRENT_SPELL_CAST_CHANGED", SkuCore.CURRENT_SPELL_CAST_CHANGED)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_START", SkuCore.UNIT_SPELLCAST_START)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_CHANNEL_START", SkuCore.UNIT_SPELLCAST_CHANNEL_START)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_CHANNEL_STOP", SkuCore.UNIT_SPELLCAST_CHANNEL_STOP)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_CHANNEL_UPDATE", SkuCore.UNIT_SPELLCAST_CHANNEL_UPDATE)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_DELAYED", SkuCore.UNIT_SPELLCAST_DELAYED)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_FAILED", SkuCore.UNIT_SPELLCAST_FAILED)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_FAILED_QUIET", SkuCore.UNIT_SPELLCAST_FAILED_QUIET)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_INTERRUPTED", SkuCore.UNIT_SPELLCAST_INTERRUPTED)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_STOP", SkuCore.UNIT_SPELLCAST_STOP)
+	SkuDispatcher:RegisterEventCallback("UNIT_SPELLCAST_SUCCEEDED", SkuCore.UNIT_SPELLCAST_SUCCEEDED)
+	SkuDispatcher:RegisterEventCallback("NAME_PLATE_CREATED", SkuCore.NAME_PLATE_CREATED)
+	SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuCore.NAME_PLATE_UNIT_ADDED)
+	SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_REMOVED", SkuCore.NAME_PLATE_UNIT_REMOVED)
+	SkuDispatcher:RegisterEventCallback("PLAYER_STARTED_MOVING", SkuCore.PLAYER_STARTED_MOVING)
+	SkuDispatcher:RegisterEventCallback("GOSSIP_SHOW", SkuCore.GOSSIP_SHOW)
+	SkuDispatcher:RegisterEventCallback("ACTIVE_TALENT_GROUP_CHANGED", SkuCore.ACTIVE_TALENT_GROUP_CHANGED)
+	SkuDispatcher:RegisterEventCallback("PLAYER_TALENT_UPDATE", SkuCore.PLAYER_TALENT_UPDATE)
+	SkuDispatcher:RegisterEventCallback("GLYPH_ADDED", SkuCore.GLYPH_ADDED)
+	SkuDispatcher:RegisterEventCallback("GLYPH_REMOVED", SkuCore.GLYPH_REMOVED)
+	SkuDispatcher:RegisterEventCallback("GLYPH_UPDATED", SkuCore.GLYPH_UPDATED)
+	SkuDispatcher:RegisterEventCallback("LFG_LIST_SEARCH_RESULTS_RECEIVED", SkuCore.LFG_LIST_SEARCH_RESULTS_RECEIVED)
+	SkuDispatcher:RegisterEventCallback("LFG_LIST_SEARCH_RESULT_UPDATED", SkuCore.LFG_LIST_SEARCH_RESULT_UPDATED)
+	SkuDispatcher:RegisterEventCallback("TRADE_SHOW", SkuCore.TRADE_SHOW)
+	SkuDispatcher:RegisterEventCallback("TRADE_CLOSED", SkuCore.TRADE_CLOSED)
+
+--[[
 	SkuCore:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuCore:RegisterEvent("PLAYER_LEAVING_WORLD")
 	SkuCore:RegisterEvent("PLAYER_LOGIN")
@@ -222,7 +271,7 @@ function SkuCore:OnInitialize()
 
 	SkuCore:RegisterEvent("TRADE_SHOW")
 	SkuCore:RegisterEvent("TRADE_CLOSED")
-
+]]
 
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
@@ -233,7 +282,6 @@ function SkuCore:OnInitialize()
 	SkuCore:FriendsOnInitialize()
 	SkuCore:AchievementsOnInitialize()
 	SkuCore:GameWorldObjectsOnInitialize()
-	SkuCore:TutorialOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -830,20 +878,18 @@ function SkuCore:OnEnable()
 
 	local ttime = 0
 	local f = _G["SkuCoreControl"] or CreateFrame("Frame", "SkuCoreControl", UIParent)
+	local tClassTrainerFrameHooked = false
 	f:SetScript("OnUpdate", function(self, time)
-		if ClassTrainerFrame then
-			if ClassTrainerFrame:IsShown() == true and DropDownList1Button2 then
-				if DropDownList1Button2.checked == 1 or DropDownList1Button2.checked == nil then 
-					ClassTrainerFrameFilterDropDownButton:Click()
-					C_Timer.After(0.01, function() DropDownList1Button2:Click() end)
-					C_Timer.After(0.05, function() ClassTrainerFrameFilterDropDownButton:Click() end)
-				end
-				if DropDownList1Button3.checked == 1 or DropDownList1Button2.checked == nil then 
-					ClassTrainerFrameFilterDropDownButton:Click()
-					DropDownList1Button3:Click()
-					ClassTrainerFrameFilterDropDownButton:Click()
-				end
-			end
+		if ClassTrainerFrame and tClassTrainerFrameHooked == false then
+			tClassTrainerFrameHooked = true
+			SetTrainerServiceTypeFilter("available", 1)
+			SetTrainerServiceTypeFilter("unavailable", 0)
+			SetTrainerServiceTypeFilter("used", 0)
+			ClassTrainerFrame:HookScript("OnShow", function()
+				SetTrainerServiceTypeFilter("available", 1)
+				SetTrainerServiceTypeFilter("unavailable", 0)
+				SetTrainerServiceTypeFilter("used", 0)
+			end)
 		end
 
 		if _G["StaticPopup1Button2"] then

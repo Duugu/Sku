@@ -3975,9 +3975,16 @@ local function SkuOptionsEditBoxOkScript(...)
 	
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function SkuOptionsEditBoxEscScript(...)
+	
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aText string
 ---@param aOkScript function
-function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
+---@param aMultilineFlag boolean
+---@param aEscScript function
+function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag, aEscScript)
 	if not SkuOptionsEditBox then
 		local f = CreateFrame("Frame", "SkuOptionsEditBox", UIParent, "DialogBoxFrame")
 		f:SetPoint("CENTER")
@@ -4048,17 +4055,34 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 			eb:SetWidth(sf:GetWidth())
 		end)
 
-		SkuOptionsEditBoxEditBox:HookScript("OnEnterPressed", function(...) SkuOptionsEditBoxOkScript(...) SkuOptionsEditBox:Hide() end)
+		SkuOptionsEditBoxEditBox:HookScript("OnEnterPressed", function(...)
+			if aMultilineFlag ~= true then
+				local tText = SkuOptionsEditBoxEditBox:GetText()
+				if string.find(tText, "\n") then
+					tText = string.gsub(tText, "\n", " ")
+					SkuOptionsEditBoxEditBox:SetText(tText)
+				end
+			end
+			SkuOptionsEditBoxOkScript(...)
+			SkuOptionsEditBox:Hide()
+		end)
+		SkuOptionsEditBoxEditBox:HookScript("OnEscapePressed", function(...)
+			SkuOptionsEditBoxEscScript(...)
+			SkuOptionsEditBox:Hide()
+		end)
 		SkuOptionsEditBoxButton:HookScript("OnClick", SkuOptionsEditBoxOkScript)
 
 		f:Show()
 	end
 
+	SkuOptionsEditBoxEditBox:SetMultiLine(true)
+	--[[
 	if aMultilineFlag == true then
 		SkuOptionsEditBoxEditBox:SetMultiLine(true)
 	else
 		SkuOptionsEditBoxEditBox:SetMultiLine(false)
 	end
+	]]
 	
 	SkuOptionsEditBoxEditBox:Hide()
 	SkuOptionsEditBoxEditBox:SetText("")
@@ -4070,6 +4094,10 @@ function SkuOptions:EditBoxShow(aText, aOkScript, aMultilineFlag)
 	if aOkScript then
 		SkuOptionsEditBoxOkScript = aOkScript
 	end
+	if aEscScript then
+		SkuOptionsEditBoxEscScript = aEscScript
+	end
+	
 
 	SkuOptionsEditBox:Show()
 

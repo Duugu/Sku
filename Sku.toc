@@ -1,9 +1,9 @@
 ## Interface: 30400
 ## Interface-Wrath: 30401
-## Title: Sku (32.23)
+## Title: Sku (33)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 32.23
+## Version: 33
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
 SkuAudioData\assets\SkuAudioDataLenIndex.lua
@@ -26,6 +26,8 @@ Libs\SkuTTS-1.0\SkuTTS-1.0.lua
 Libs\SkuVoice-1.0\SkuVoice-1.0.lua
 Libs\SkuBeacon-1.0\SkuBeacon-1.0.lua
 
+SkuDispatcher\Core.lua
+
 SkuChat\Core.lua
 SkuChat\Options.lua
 
@@ -40,7 +42,6 @@ SkuCore\RangeCheck.lua
 SkuCore\auctionHouse.lua
 SkuCore\friends.lua
 SkuCore\Achievements.lua
-SkuCore\tutorial.lua
 SkuCore\itemRating.lua
 SkuCore\mail.lua
 SkuCore\aq.lua
@@ -77,6 +78,7 @@ SkuDB\assets\WotLK\items_fixes.lua
 SkuDB\assets\WotLK\objects.lua
 SkuDB\assets\WotLK\objects_fixes.lua
 SkuDB\assets\WotLK\enchantIDs.lua
+SkuDB\assets\tutorials.lua
 
 SkuMob\Core.lua
 SkuMob\Options.lua
@@ -99,6 +101,8 @@ SkuAuras\Options.lua
 
 SkuAdventureGuide\Core.lua
 SkuAdventureGuide\Options.lua
+SkuAdventureGuide\Tutorial.lua
+
 
 SkuZOptions\utilities.lua
 SkuZOptions\Core.lua

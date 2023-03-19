@@ -115,7 +115,22 @@ SkuAdventureGuide.defaults = {
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide:MenuBuilder(aParentEntry)
-	--dprint("SkuAdventureGuide:MenuBuilderTest", aParentEntry)
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Tutorials"]}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.BuildChildren = function(self)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Tutorial list"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			SkuAdventureGuide.Tutorial:TutorialsMenuBuilder(self)
+		end		
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Tutorial Editor"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			SkuAdventureGuide.Tutorial:EditorMenuBuilder(self)
+		end		
+	end
+
 	local tNewMenuParentEntryWiki =  SkuOptions:InjectMenuItems(aParentEntry, {L["Wiki"]}, SkuGenericMenuItem)
 	tNewMenuParentEntryWiki.dynamic = true
 	tNewMenuParentEntryWiki.BuildChildren = function(self)
