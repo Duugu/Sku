@@ -943,7 +943,7 @@ SkuOptions.defaults = {
 		},
 	softTargeting = {
 		enemy = {
-			enabled = true,
+			enabled = false,
 			arc = 1,
 			range = 60,
 			forPassive = true,
@@ -965,7 +965,7 @@ SkuOptions.defaults = {
 			outputName = true,
 		},
 		interact = {
-			enabled = true,
+			enabled = false,
 			arc = 2,
 			range = 15,
 			soundfor = 4,

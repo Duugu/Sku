@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.2
+	- Fixed the END key feature for menu navigation :)
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.1
 	- Added the END key for menu navigation to jump to the last menu item.
 	- Fixed a bug with current quest in range notification, showing the quest giver waypoint instead of the quest end waypoint in chat.

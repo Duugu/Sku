@@ -1180,6 +1180,42 @@ function SkuOptions:CreateMainFrame()
 			end
 		end
 
+		if SkuAdventureGuide.Tutorial.current.title and SkuAdventureGuide.Tutorial.current.source then
+			if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] then
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key then
+					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] > 1 then
+						SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] - 1
+						local tTitle = SkuAdventureGuide.Tutorial.current.title
+						local tSource = SkuAdventureGuide.Tutorial.current.source
+						SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+						C_Timer.After(0.1, function()
+							SkuAdventureGuide.Tutorial:StartTutorial(tTitle, SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tTitle], tSource)
+						end)
+					end
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key then
+					local tTitle = SkuAdventureGuide.Tutorial.current.title
+					local tSource = SkuAdventureGuide.Tutorial.current.source
+					SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+					C_Timer.After(0.1, function()
+						SkuAdventureGuide.Tutorial:StartTutorial(tTitle, SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tTitle], tSource)
+					end)
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key then
+					local tStepMax = #SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps
+					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] < tStepMax then
+						SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] + 1
+						local tTitle = SkuAdventureGuide.Tutorial.current.title
+						local tSource = SkuAdventureGuide.Tutorial.current.source
+						SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+						C_Timer.After(0.1, function()
+							SkuAdventureGuide.Tutorial:StartTutorial(tTitle, SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tTitle], tSource)
+						end)
+					end
+				end
+			end
+		end
+
 		--soft targeting
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key then
 			SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.enabled = SkuOptions.db.profile["SkuOptions"].softTargeting.enemy.enabled == false
@@ -1731,6 +1767,11 @@ function SkuOptions:CreateMainFrame()
 
 	--SetOverrideBindingClick(tFrame, true, "SHIFT-U", tFrame:GetName(), "SHIFT-U")
 	--SetOverrideBindingClick(tFrame, true, "SHIFT-J", tFrame:GetName(), "SHIFT-J")
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key)
+
+
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGINTERACT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGINTERACT"].key)
@@ -2024,7 +2065,9 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 		if aKey == "LEFT" then
-			SkuOptions.currentMenuPosition:OnBack()
+			if SkuOptions.currentMenuPosition then
+				SkuOptions.currentMenuPosition:OnBack()
+			end
 			SkuOptions:ClearFilter()
 		end
 		if aKey == "HOME" then

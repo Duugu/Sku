@@ -9,7 +9,6 @@ local MENU_DROPDOWN_MULTI = 3
 
 SkuOptions.MenuMT = {
 	__add = function(thisTable, newTable)
-
 		local function TableCopy(t, deep, seen)
 			seen = seen or {}
 			if t == nil then return nil end
@@ -73,7 +72,6 @@ SkuGenericMenuItem = {
 	filterable = false,
 	OnUpdate = function(self, aKey)
 		C_Timer.After(0.01, function()
-
 			dprint("++ OnUpdate generic")
 			local tCurrentItemNumber
 			local tCurrentItemName = self.name
@@ -195,9 +193,9 @@ SkuGenericMenuItem = {
 
 		if self.parent then
 			if self.parent.children then
-				SkuOptions.currentMenuPosition = self.parent.children[#self.parent]
+				SkuOptions.currentMenuPosition = self.parent.children[#self.parent.children]
 			else 
-				SkuOptions.currentMenuPosition = self.parent[#self.parent]
+				SkuOptions.currentMenuPosition = self.parent[1]
 			end
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
