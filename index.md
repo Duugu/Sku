@@ -24,6 +24,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+++ Changes in Sku r33.1
+- Added the END key to menu navigation to jump to the last menu item.
+- Fixed a bug with current quest in range notification, showing the quest giver waypoint instead of the quest end waypoint in chat.
+	
 ## Changes in Sku r33
 - Fixed a bug with the class trainer leading to UI errors.
 	
