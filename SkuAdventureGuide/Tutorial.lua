@@ -10,7 +10,7 @@ SkuAdventureGuide.Tutorial = {}
 SkuAdventureGuide.Tutorial.current = {
    title = nil, --"tutorial eins",
    step = nil, --1,
-   source = "SkuDB",
+   source = SkuDB,
 }
 SkuAdventureGuide.Tutorial.positionReachedRange = 4
 SkuAdventureGuide.Tutorial.triggers = {
@@ -56,7 +56,7 @@ SkuAdventureGuide.Tutorial.triggers = {
          return false
       end,
       collector = {},
-   },  
+   },
    MODIFIER_KEY_DOWN = {
       uiString = L["MODIFIER_KEY_DOWN"],
       values = {
@@ -269,6 +269,17 @@ SkuAdventureGuide.Tutorial.triggers = {
          [1] = "ENTER_TEXT",
       },
       validator = function(aValue)
+         local tFound = false
+         if _G["OnSkuOptionsMain"]:IsVisible() == true then
+            local tTable = SkuOptions.currentMenuPosition
+            while tTable.parent.name do
+               tTable = tTable.parent
+               if tTable.name == L["Tutorials"] then
+                  return false
+               end
+            end
+         end
+
          local tLastString = SkuOptions.Voice:GetLastPlayedString()
          if string.find(string.lower(tLastString), string.lower(aValue))  then
             return true
@@ -281,16 +292,26 @@ SkuAdventureGuide.Tutorial.triggers = {
       uiString = L["TARGET_UNIT_NAME"],
       values = {
          [1] = "ENTER_TEXT",
+         [2] = "CURRENT_TARGET",
       },
       validator = function(aValue)
-         local tLastString = SkuOptions.Voice:GetLastPlayedString()
-         local name = UnitName("target")
-         if name then
-            if string.find(string.lower(name), string.lower(aValue))  then
-               return true
+         if tonumber(aValue) then
+            local tId = SkuAdventureGuide.Tutorial:GetUnitCreatureId("target")
+            if tId then
+               if aValue == tId then
+                  return true
+               end
             end
+            return false
+         else
+            local name = UnitName("target")
+            if name then
+               if string.find(string.lower(name), string.lower(aValue))  then
+                  return true
+               end
+            end
+            return false
          end
-         return false
       end,
       collector = {},
    },
@@ -313,7 +334,7 @@ SkuAdventureGuide.Tutorial.triggers = {
          [14] = ".",
          [15] = "/",
          [16] = "^",
-         [17] = "´",
+         [17] = "'",
          [18] = "+",
          [19] = "<",
          [20] = "A",
@@ -589,6 +610,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                   tSource.Tutorials[Sku.Loc][tTutorialName].steps[#tSource.Tutorials[Sku.Loc][tTutorialName].steps + 1] = {
                      title = tText,
                      allTriggersRequired = true,
+                     dontSkipCurrentOutputs = true,
                      triggers = {},
                      beginText = "",
                      endText = "",
@@ -671,6 +693,29 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
             end
          end
 
+         if tPrefix ~= "Sku" then
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Don't skip current outputs"]}, SkuGenericMenuItem)
+            tNewMenuEntry.dynamic = true
+            tNewMenuEntry.filterable = true
+            tNewMenuEntry.isSelect = true
+            tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+               return (tStepData.dontSkipCurrentOutputs == true and L["Yes"] or L["No"])
+            end
+            tNewMenuEntry.OnAction = function(self, aValue, aName)
+               if aName == L["Yes"] then
+                  tStepData.dontSkipCurrentOutputs = true
+               else
+                  tStepData.dontSkipCurrentOutputs = false
+               end
+            end
+            tNewMenuEntry.BuildChildren = function(self)
+               SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+               SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+            end
+         else
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Don't skip current outputs"]..": "..(tStepData.dontSkipCurrentOutputs == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+         end
+
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Triggers"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
          tNewMenuEntry.filterable = true
@@ -704,7 +749,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                tNewMenuEntry.filterable = true
                tNewMenuEntry.isSelect = true
                tNewMenuEntry.OnAction = function(self, aValue, aName)
-                  if SkuAdventureGuide.Tutorial.triggers[self.triggerType].values[1] == "ENTER_TEXT" then
+                  if aName == L["ENTER_TEXT"] then
                      SkuOptions:EditBoxShow("", function(a, b, c) 
                         local tText = SkuOptionsEditBoxEditBox:GetText()
                         if tText and tText ~= "" then
@@ -719,9 +764,17 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                         SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
                      end)
                      C_Timer.After(0.01, function()
-                        SkuOptions.Voice:OutputStringBTtts(L["Enter text"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+                        SkuOptions.Voice:OutputStringBTtts(L["Paste or edit text"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
                      end)
-                  elseif SkuAdventureGuide.Tutorial.triggers[self.triggerType].values[1] == "CURRENT_COORDINATES" then
+                  elseif aName == L["CURRENT_TARGET"] then
+                     local tId = SkuAdventureGuide.Tutorial:GetUnitCreatureId("target")
+                     if tId then
+                        table.insert(tStepData.triggers, {type = self.triggerType, value = tId})
+                        C_Timer.After(0.001, function()
+                           SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+                        end)
+                     end
+                  elseif aName == L["CURRENT_COORDINATES"] then
                      local x, y = UnitPosition("player")
                      if x and y and x ~= 0 and y ~= 0 then
                         x = string.format("%.1f", x)
@@ -750,6 +803,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                         for q = 1, #v.values do
                            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[v.values[q]]}, SkuGenericMenuItem)
                            tNewMenuEntry.OnEnter = function(self, aValue, aName)
+                              self.selectTarget.triggerType = i
                               self.selectTarget.triggerValue = q
                            end
                         end
@@ -762,6 +816,12 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                local tTriggerData = tStepData.triggers[y]
                local tText = y.." "..L[tTriggerData.type]
                if SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "ENTER_TEXT" then
+                  if tonumber(tTriggerData.value) then
+                     tText = tText..": "..SkuDB.NpcData.Names[Sku.Loc][tonumber(tTriggerData.value)][1]
+                  else
+                     tText = tText..": "..tTriggerData.value
+                  end
+               elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_TARGET" then
                   tText = tText..": "..tTriggerData.value
                elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES" then
                   local x, y = string.match(tTriggerData.value, "(.+);(.+)")
@@ -801,11 +861,11 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                   local tStepDat = tSource.Tutorials[Sku.Loc][tTutorialName].steps
                   local tSingleStepDat = tStepDat[tNumberThisStep]
                   if self.movemenValue > 0 then
-                     table.insert(tStepDat,  tNumberThisStep + self.movemenValue + 1, tSingleStepDat)
-                     table.remove(tStepDat,  tNumberThisStep)
+                     table.insert(tStepDat, tNumberThisStep + self.movemenValue + 1, tSingleStepDat)
+                     table.remove(tStepDat, tNumberThisStep)
                   elseif self.movemenValue < 0 then
-                     table.insert(tStepDat,  tNumberThisStep + self.movemenValue, tSingleStepDat)
-                     table.remove(tStepDat,  tNumberThisStep)
+                     table.remove(tStepDat, tNumberThisStep)
+                     table.insert(tStepDat, tNumberThisStep + self.movemenValue, tSingleStepDat)
                   end
                   C_Timer.After(0.001, function()
                      SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
@@ -815,10 +875,10 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                   if tNumberThisStep > 1 then
                      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["First pos"]}, SkuGenericMenuItem)
                      tNewMenuEntry.OnEnter = function(self, aValue, aName)
-                        self.parent.movemenValue = tNumberThisStep - 1
+                        self.parent.movemenValue = -(tNumberThisStep - 1)
                      end
                      for q = 3, 1, -1 do
-                        if tNumberThisStep - q > 0 then
+                        if (tNumberThisStep + 1) - q > 0 then
                            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {q.." "..L["Up"]}, SkuGenericMenuItem)
                            tNewMenuEntry.OnEnter = function(self, aValue, aName)
                               self.parent.movemenValue = -(q)
@@ -1115,10 +1175,28 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:StartTutorial(aTutorialName, aStartAtStepNumber, aSource)
    --print("StartTutorial", aTutorialName, aStartAtStepNumber, aSource)
+   SkuOptions:CloseMenu()
+
    SkuAdventureGuide.Tutorial.current.title = aTutorialName
    SkuAdventureGuide.Tutorial.current.step = aStartAtStepNumber
    SkuAdventureGuide.Tutorial.current.source = aSource
-   SkuAdventureGuide.Tutorial:OnStepStarted()
+
+   SkuAdventureGuide.Tutorial:StartStep(aTutorialName, aStartAtStepNumber, aSource)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAdventureGuide.Tutorial:StartStep(aTutorialName, aStartAtStepNumber, aSource)
+   --SkuAdventureGuide.Tutorial.current.title = aTutorialName
+   SkuAdventureGuide.Tutorial.current.step = aStartAtStepNumber
+   --SkuAdventureGuide.Tutorial.current.source = aSource
+
+   local tStartText = SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuAdventureGuide.Tutorial.current.step].beginText
+   
+   C_Timer.After(1, function()
+      if SkuAdventureGuide.Tutorial.current.title and SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuAdventureGuide.Tutorial.current.step] then
+         SkuOptions.Voice:OutputStringBTtts(tStartText, {overwrite = SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuAdventureGuide.Tutorial.current.step].dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
+      end
+   end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1129,26 +1207,19 @@ function SkuAdventureGuide.Tutorial:StopCurrentTutorial()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAdventureGuide.Tutorial:OnStepStarted()
-   local tStartText = SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuAdventureGuide.Tutorial.current.step].beginText
-   --print("OnStepStarted", SkuAdventureGuide.Tutorial.current.step, tStartText)
-   C_Timer.After(1, function()
-      SkuOptions.Voice:OutputStringBTtts(tStartText, {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
-   end)
-end
-
----------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:OnStepCompleted()
    local tEndText = SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuAdventureGuide.Tutorial.current.step].endText
-   --print("OnStepCompleted", SkuAdventureGuide.Tutorial.current.step, tEndText)
-   SkuOptions.Voice:OutputStringBTtts(tEndText, {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
-
-   if SkuAdventureGuide.Tutorial.current.step < #SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps then
-      SkuAdventureGuide.Tutorial.current.step = SkuAdventureGuide.Tutorial.current.step + 1
-      SkuAdventureGuide.Tutorial:OnStepStarted()
-   else
-      SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+   --print("OnStepCompleted", SkuAdventureGuide.Tutorial.current.title, SkuAdventureGuide.Tutorial.current.step, SkuAdventureGuide.Tutorial.current.source)
+   if SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuAdventureGuide.Tutorial.current.step] then
+      SkuOptions.Voice:OutputStringBTtts(tEndText, {overwrite = SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuAdventureGuide.Tutorial.current.step].dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
    end
+   C_Timer.After(0.3, function()
+      if SkuAdventureGuide.Tutorial.current.step < #SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps then
+         SkuAdventureGuide.Tutorial:StartStep(SkuAdventureGuide.Tutorial.current.title, SkuAdventureGuide.Tutorial.current.step + 1, SkuAdventureGuide.Tutorial.current.source)
+      else
+         SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+      end
+   end)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
@@ -1202,7 +1273,16 @@ function SkuAdventureGuide.Tutorial:TutorialsMenuBuilder(aParentEntry)
    end
 end
 
-
+function SkuAdventureGuide.Tutorial:GetUnitCreatureId(unit)
+	local guid = UnitGUID(unit)
+	if guid then
+		local unit_type = strsplit("-", guid)
+		if unit_type == "Creature" or unit_type == "Vehicle" then
+			local _, _, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid)
+         return npc_id
+		end
+	end
+end
 
 --[[
 ---------------------------------------------------------------------------------------------------------------------------------------

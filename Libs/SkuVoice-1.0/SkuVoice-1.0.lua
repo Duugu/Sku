@@ -96,7 +96,9 @@ function SkuVoice:Create()
 								--print("tut start", tValue)
 								SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying + 1
 							end
-							SkuVoice.LastPlayedString = tValue
+							if tIsTutorial ~= true then
+								SkuVoice.LastPlayedString = tValue
+							end
 						end
 						--print("tLastWait = 0")
 						tLastWait = 0.1
@@ -457,7 +459,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	if not aString then
 		return
 	end
-
+	--print("OutputStringBTtts", aString)
 	--changing to a new approach with passing a table of arguments instead of a lot of values, but still need to update that everywhere
 	if type(aOverwrite) == "table" then
 		aWait = aOverwrite.wait
@@ -698,7 +700,11 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 	if aIsTutorial == true and tFinalStringForBTts ~= "" then
 		tFinalStringForBTtsMac = "IsTutorial#"..tFinalStringForBTtsMac
-		tFinalStringForBTts = "IsTutorial#"..tFinalStringForBTts
+		if SkuOptions.db.profile["SkuChat"].WowTtsTags ~= false then
+			tFinalStringForBTts = "IsTutorial#"..'<pitch middle="7">'..tFinalStringForBTts..'</pitch>'
+		else
+			tFinalStringForBTts = "IsTutorial#"..tFinalStringForBTts
+		end
 	end
 
 	if SkuVoice.TutorialPlaying == 0 or (SkuVoice.TutorialPlaying > 0 and aIsTutorial == true) then

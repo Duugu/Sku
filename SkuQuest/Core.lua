@@ -1526,13 +1526,19 @@ local function doQuestMarkerBeacons(aType, tUnSortedTable)
 									local playerX, playerY = UnitPosition("player")
 									local tDistance = SkuNav:Distance(playerX, playerY, v[2], v[3]) or 0
 									local tWpNameString = ""
+
+									local tKey = SkuDB.questKeys["startedBy"]
+									if aType == "currentQuests" then
+										tKey = SkuDB.questKeys["finishedBy"]
+									end
+
 									if SkuDB.questDataTBC[v[4]]
-										and SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]]
-										and (SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]][1] 
-										or SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]][2]
-										or SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]][3])
+										and SkuDB.questDataTBC[v[4]][tKey]
+										and (SkuDB.questDataTBC[v[4]][tKey][1] 
+										or SkuDB.questDataTBC[v[4]][tKey][2]
+										or SkuDB.questDataTBC[v[4]][tKey][3])
 									then
-										local tstartedBy = SkuDB.questDataTBC[v[4]][SkuDB.questKeys["startedBy"]]
+										local tstartedBy = SkuDB.questDataTBC[v[4]][tKey]
 										if tstartedBy then
 											local tTargets = {}
 											local tTargetType = nil

@@ -50,22 +50,22 @@ local EnumItemQuality = {
 	}
 	
 SkuCoreMovement = {
-		["Flags"] = {
-			["MoveForward"] = false,
-			["MoveBackward"] = false,
-			["StrafeLeft"] = false,
-			["StrafeRight"] = false,
-			["Ascend"] = false,
-			["Descend"] = false,
-			["FollowUnit"] = false,
-			["IsTurningOrAutorunningOrStrafing"] = false,
-			},
-		["LastPosition"] = {
-			["x"] = 0,
-			["y"] = 0,
-			},
-		["counter"] = 0,
-	}
+	["Flags"] = {
+		["MoveForward"] = false,
+		["MoveBackward"] = false,
+		["StrafeLeft"] = false,
+		["StrafeRight"] = false,
+		["Ascend"] = false,
+		["Descend"] = false,
+		["FollowUnit"] = false,
+		["IsTurningOrAutorunningOrStrafing"] = false,
+		},
+	["LastPosition"] = {
+		["x"] = 0,
+		["y"] = 0,
+		},
+	["counter"] = 0,
+}
 
 SkuStatus = {
 	["indoor"] = 0,
@@ -213,65 +213,6 @@ function SkuCore:OnInitialize()
 	SkuDispatcher:RegisterEventCallback("LFG_LIST_SEARCH_RESULT_UPDATED", SkuCore.LFG_LIST_SEARCH_RESULT_UPDATED)
 	SkuDispatcher:RegisterEventCallback("TRADE_SHOW", SkuCore.TRADE_SHOW)
 	SkuDispatcher:RegisterEventCallback("TRADE_CLOSED", SkuCore.TRADE_CLOSED)
-
---[[
-	SkuCore:RegisterEvent("PLAYER_ENTERING_WORLD")
-	SkuCore:RegisterEvent("PLAYER_LEAVING_WORLD")
-	SkuCore:RegisterEvent("PLAYER_LOGIN")
-	SkuCore:RegisterEvent("VARIABLES_LOADED")
-	SkuCore:RegisterEvent("PLAYER_REGEN_DISABLED")
-	SkuCore:RegisterEvent("PLAYER_REGEN_ENABLED")
-	SkuCore:RegisterEvent("QUEST_LOG_UPDATE")
-	SkuCore:RegisterEvent("PLAYER_CONTROL_LOST")
-	SkuCore:RegisterEvent("PLAYER_MOUNT_DISPLAY_CHANGED")
-	SkuCore:RegisterEvent("PLAYER_CONTROL_GAINED")
-	SkuCore:RegisterEvent("PLAYER_DEAD")
-	SkuCore:RegisterEvent("AUTOFOLLOW_BEGIN")
-	SkuCore:RegisterEvent("AUTOFOLLOW_END")
-	SkuCore:RegisterEvent("PLAYER_UPDATE_RESTING")
-	SkuCore:RegisterEvent("UPDATE_STEALTH")
-	SkuCore:RegisterEvent("ITEM_UNLOCKED")
-	SkuCore:RegisterEvent("ITEM_LOCK_CHANGED")
-	SkuCore:RegisterEvent("BAG_UPDATE")
-	SkuCore:RegisterEvent("UNIT_POWER_UPDATE")
-	SkuCore:RegisterEvent("UNIT_HAPPINESS")
-
-	SkuCore:RegisterEvent("PLAYER_TARGET_CHANGED")
-
-	SkuCore:RegisterEvent("CURRENT_SPELL_CAST_CHANGED")
-
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_START")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_DELAYED")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_FAILED")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_FAILED_QUIET")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_STOP")
-	SkuCore:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
-
-	SkuCore:RegisterEvent("NAME_PLATE_CREATED")
-	SkuCore:RegisterEvent("NAME_PLATE_UNIT_ADDED")
-	SkuCore:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
-	SkuCore:RegisterEvent("PLAYER_STARTED_MOVING")
-	--SkuCore:RegisterEvent("CURSOR_CHANGED")
-	--SkuCore:RegisterEvent("PET_STABLE_SHOW")
-	--SkuCore:RegisterEvent("PET_STABLE_CLOSED")
-
-	SkuCore:RegisterEvent("GOSSIP_SHOW")
-	SkuCore:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-	SkuCore:RegisterEvent("PLAYER_TALENT_UPDATE")
-	SkuCore:RegisterEvent("GLYPH_ADDED")
-	SkuCore:RegisterEvent("GLYPH_REMOVED")
-	SkuCore:RegisterEvent("GLYPH_UPDATED")
-
-	SkuCore:RegisterEvent("LFG_LIST_SEARCH_RESULTS_RECEIVED")
-	SkuCore:RegisterEvent("LFG_LIST_SEARCH_RESULT_UPDATED")
-
-	SkuCore:RegisterEvent("TRADE_SHOW")
-	SkuCore:RegisterEvent("TRADE_CLOSED")
-]]
 
 	SkuCore:MailOnInitialize()
 	SkuCore:UIErrorsOnInitialize()
@@ -2477,13 +2418,6 @@ function SkuCore:ItemName_helper(aText)
 	tShort = string.gsub(tShort, "\r\n", " ")
 	tShort = string.gsub(tShort, "\n", " ")
 
-
-
-
-
-
-
-	
 	return tShort, tLong
 end
 

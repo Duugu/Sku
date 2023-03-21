@@ -27,7 +27,6 @@ function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
 	if not SkuDispatcher.Registered[aEventName] then
 		return
 	end
-
 	if not SkuDispatcher.Registered[aEventName].callbacks[aCallbackFunc] then
 		return
 	end

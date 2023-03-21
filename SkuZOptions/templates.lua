@@ -189,6 +189,19 @@ SkuGenericMenuItem = {
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
 	end,
+	OnLast = function(self)
+		--dprint("OnLast generic", self.name)
+		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)
+
+		if self.parent then
+			if self.parent.children then
+				SkuOptions.currentMenuPosition = self.parent.children[#self.parent]
+			else 
+				SkuOptions.currentMenuPosition = self.parent[#self.parent]
+			end
+		end
+		SkuOptions.currentMenuPosition:OnEnter()
+	end,
 	OnBack = function(self)
 		--dprint("OnBack generic", self.name, self.parent.name)
 		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)
