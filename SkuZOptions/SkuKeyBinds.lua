@@ -44,7 +44,7 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_STOPTTSOUTPUT"] = {key = "CTRL-V", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_QUESTABANDON"] = {key = "CTRL-SHIFT-D", object = "OnSkuOptionsMainOption1", script = "OnShow",},
    ["SKU_KEY_CHATOPEN"] = {key = "SHIFT-F2", object = "SkuChat", func = "OnEnable",},
-   ["SKU_KEY_TOGGLEREACHRANGE"] = {key = "CTRL-SHIFT-Q", object = "SkuNav", func = "CreateSkuNavMain",},
+   ["SKU_KEY_TOGGLEREACHRANGE"] = {key = "", object = "SkuNav", func = "CreateSkuNavMain",},
 
    ["SKU_KEY_SCANCONTINUE"] = {key = "SHIFT-L", object = "SkuCoreControlOption1", script = "OnHide",},
    ["SKU_KEY_SCAN1"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},

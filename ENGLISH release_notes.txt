@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.3
+	- Added the first public version of the tutorial editor/player (Adventure Guide > Tutorials). Not available tutorials there yet. More details and instructions/guide to come next week.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.2
 	- Fixed the END key feature for menu navigation :)
 

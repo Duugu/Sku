@@ -1,11 +1,11 @@
 local SkuVoice_MAJOR, SkuVoice_MINOR = "SkuVoice-1.0", 1
 local SkuVoice, oldminor = LibStub:NewLibrary(SkuVoice_MAJOR, SkuVoice_MINOR)
 
---local L = Sku.L
 local L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 
 if not SkuVoice then return end -- No upgrade needed
 
+---------------------------------------------------------------------------------------------------------
 local SapiLangIds = {
 	["deDE"] = 407,
 	["enUS"] = 409,
@@ -15,10 +15,13 @@ local SapiLangIds = {
 local mSkuVoiceQueue = {}
 local mSkuVoiceQueueBTTS = {}
 local mSkuVoiceQueueBTTS_Speaking = {}
+
+---------------------------------------------------------------------------------------------------------
 SkuVoice.LastPlayedString = ""
 SkuVoice.TutorialPlaying = 0
 --setmetatable(mSkuVoiceQueue, SkuNav.PrintMT)
 
+---------------------------------------------------------------------------------------------------------
 --as C_VoiceChat.SpeakText is not returning an utterance id we need wrapper for that; what an ugly solution. But no choice. :(
 local C_VoiceChatStopSpeakingTextOld
 local C_VoiceChatSpeakTextOld
@@ -28,12 +31,12 @@ local function C_VoiceChatStopSpeakingTextWrapper(...)
 end
 local function C_VoiceChatSpeakTextWrapper(...)
 	local voiceID, text, destination, rate, volume = ...
-	--print("C_VoiceChatSpeakTextWrapper", text)
 	C_VoiceChatSpeakTextOld(...)
 	C_VoiceChatSpeakTextLastUtteranceId = C_VoiceChatSpeakTextLastUtteranceId + 1
 	return C_VoiceChatSpeakTextLastUtteranceId
 end
 
+---------------------------------------------------------------------------------------------------------
 function SkuVoice:Create()
 	C_VoiceChatStopSpeakingTextOld = C_VoiceChat.StopSpeakingText
 	C_VoiceChat.StopSpeakingText = C_VoiceChatStopSpeakingTextWrapper
@@ -44,57 +47,63 @@ function SkuVoice:Create()
 	local f = CreateFrame("Frame", "SkuVoiceMainFrame", UIParent)
 	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_STARTED")
 	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_FINISHED")
-	f:SetScript("OnEvent", function(self, aEventName, arg1, arg2)
+	f:RegisterEvent("VOICE_CHAT_TTS_PLAYBACK_FAILED")
+	f:SetScript("OnEvent", function(self, aEventName, ...)
+		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FAILED" then
+			local status, utteranceID, destination = ...
+		end
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_STARTED" then
-			--print("VOICE_CHAT_TTS_PLAYBACK_STARTED", arg2)
-			if arg2 - C_VoiceChatSpeakTextLastUtteranceId > 5 then
-				C_VoiceChatSpeakTextLastUtteranceId = arg2
-			elseif arg2 - C_VoiceChatSpeakTextLastUtteranceId < -5 then
-				C_VoiceChatSpeakTextLastUtteranceId = arg2
+			local numConsumers, utteranceID, durationMS, destination = ...
+			if destination == 1 then
+				SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying + 1
+			end
+			if utteranceID - C_VoiceChatSpeakTextLastUtteranceId > 15 then
+				C_VoiceChatSpeakTextLastUtteranceId = utteranceID
+			elseif utteranceID - C_VoiceChatSpeakTextLastUtteranceId < -15 then
+				C_VoiceChatSpeakTextLastUtteranceId = utteranceID
 			end
 		end
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" then
-			--print("VOICE_CHAT_TTS_PLAYBACK_FINISHED", arg2, SkuVoice.TutorialPlaying)
-			if arg2 == SkuVoice.TutorialPlaying then
-				SkuVoice.TutorialPlaying = 0
-			end
-
+			local numConsumers, utteranceID, destination = ...
+			if destination == 1 then
+				SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying - 1
+				if SkuVoice.TutorialPlaying < 0 then
+					SkuVoice.TutorialPlaying = 0
+				end
+			end			
 			if mSkuVoiceQueueBTTS_Speaking[1] then
 				table.remove(mSkuVoiceQueueBTTS_Speaking, 1)
 			end
 		end
 	end)
+
 	--this is to initialize C_VoiceChatSpeakTextLastUtteranceId
 	C_Timer.After(0.01, function()
 		C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, " ", 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 	end)
 
-
 	local fTime = 0
 	local fTimeBTTS = 0
 	local tLastWait = -1
 	f:SetScript("OnUpdate", function(self, time)
-
 		fTimeBTTS = fTimeBTTS + time
 		if fTimeBTTS > 0.01 then
 			fTimeBTTS = 0
+
 			local tLastReset
 			for x = 1, #mSkuVoiceQueueBTTS do
 				if mSkuVoiceQueueBTTS[x] == "queuereset" and SkuVoice.TutorialPlaying == 0 then
 					tLastReset = x
 				end
 			end
+
 			if tLastReset then
 				for x = 1, tLastReset - 1 do
-					--print("  Q R: ", x, mSkuVoiceQueueBTTS[1])
 					table.remove(mSkuVoiceQueueBTTS, 1)
 				end
 			end
-			for x = 1, #mSkuVoiceQueueBTTS do
-				--print("  Q: ", x, mSkuVoiceQueueBTTS[x])
-			end
+
 			if #mSkuVoiceQueueBTTS > 0 then
-				--print("           ", tLastWait, mSkuVoiceQueueBTTS[1])
 				local tValue = mSkuVoiceQueueBTTS[1]
 				local tIsTutorial
 				if string.find(tValue, "IsTutorial#") then
@@ -103,7 +112,6 @@ function SkuVoice:Create()
 				end
 
 				if tValue == "queuereset" and SkuVoice.TutorialPlaying == 0 then
-					--print("OnUpdate queuereset")
 					table.remove(mSkuVoiceQueueBTTS, 1)
 					if SkuOptions.db.profile["SkuChat"].neverResetQueues ~= true then
 						C_VoiceChat.StopSpeakingText()
@@ -114,30 +122,29 @@ function SkuVoice:Create()
 					if #mSkuVoiceQueueBTTS > 1 or tLastWait <= 0 then
 						table.remove(mSkuVoiceQueueBTTS, 1)
 						local tIsAlreadySpeakingThat
+						
 						for z = 1, #mSkuVoiceQueueBTTS_Speaking do
-							--print(z, mSkuVoiceQueueBTTS_Speaking[z])
 							if mSkuVoiceQueueBTTS_Speaking[z] == tValue then
 								tIsAlreadySpeakingThat = true
 							end
 						end
+						
 						if not tIsAlreadySpeakingThat then
 							table.insert(mSkuVoiceQueueBTTS_Speaking, tValue)
-							local tUttId = C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tValue, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
-							--print("OnUpdate speak",tUttId, tValue)
+							local tUttId
 							if tIsTutorial then
-								--print("tut start", tValue)
-								SkuVoice.TutorialPlaying = tUttId
+								tUttId = C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tValue, 1, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
+							else
+								tUttId = C_VoiceChat.SpeakText(SkuOptions.db.profile["SkuChat"].WowTtsVoice - 1, tValue, 4, SkuOptions.db.profile["SkuChat"].WowTtsSpeed, SkuOptions.db.profile["SkuChat"].WowTtsVolume)
 							end
 							if tIsTutorial ~= true then
 								SkuVoice.LastPlayedString = tValue
 							end
 						end
-						--print("tLastWait = 0")
+
 						tLastWait = 0.1
 					else
-						--print("tLastWait = 0.06")
 						tLastWait = tLastWait - time
-
 					end
 				end
 			end
@@ -619,20 +626,14 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 		for x = 1, #tSplittedString do
 			if tonumber(tSplittedString[x]) then
-				--print(x, "  NUMBER", tSplittedString[x])
 				if not aVocalizeAsIs then
 					if not string.find(tostring(tSplittedString[x]), "%.") and not string.find(tostring(tSplittedString[x]), ",") then
 						local tFloatNumber = string.format("%.1f", tonumber(tSplittedString[x]))
-						--print("tFloatNumber", tFloatNumber)
 						if tonumber(tFloatNumber) < 1000000 then
 							if (tFloatNumber - string.format("%d", tFloatNumber)) > 0 then
 								--float
 								local tIVal = string.format("%d", tFloatNumber)
 								local tFVal = string.format("%d", string.format("%.1f", (tFloatNumber - tIVal) * 10))
-								--print("float tIVal, tFVal", tIVal, tFVal)
-								--table.insert(tStrings, tIVal)
-								--table.insert(tStrings, L["KommaNumbers"])
-								--table.insert(tStrings, tFVal)
 							else
 								--int
 								local tNumber = math.floor(tonumber(tSplittedString[x]))
@@ -645,23 +646,19 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 										--no audio available
 										tRemaining = 0
 										tNumber = 0
-										--print(1)
 									end
 									if tNumber > 999 then
 										local tRound = SkuVoice:UtilRound(tRemaining, 10000)
 										table.insert(tStrings, tRound)
 										tRemaining = tRemaining - tRound
-										--print(2)
 									end
 									if tRemaining > 99 then
 										local tRound = SkuVoice:UtilRound(tRemaining, 1000)
 										table.insert(tStrings, tRound)
 										tRemaining = tRemaining - tRound
-										--print(4)
 									end
 									if tRemaining > 0 then
 										table.insert(tStrings, tRemaining)
-										--print(4)
 									end
 								end
 							end
@@ -693,10 +690,8 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		tStrings[x] = string.gsub(tStrings[x], "$skuk2", "|k")
 
 		tStrings[x] = string.gsub(tStrings[x], "§", " ")
-		--dprint(" final",x, tStrings[x])
 
 		if (string.find(tStrings[x], "sound%-") or string.find(tStrings[x], "male%-")) then
-			--dprint("  FIND SOUND", tStrings[x])
 			SkuVoice:OutputString(tStrings[x], aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
 		else
 			if (string.find(tStrings[x], "aura;sound")) then
@@ -746,7 +741,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 	if SkuVoice.TutorialPlaying == 0 or (SkuVoice.TutorialPlaying > 0 and aIsTutorial == true) then
 		if aIsTutorial == true and SkuVoice.TutorialPlaying == 0 then
-			SkuVoice.TutorialPlaying = 1
+			SkuVoice.TutorialPlaying = 0
 		end
 		if IsMacClient() == true then
 			if aInstant then
@@ -767,7 +762,6 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 			if not aIgnoreLinks then
 				SkuOptions.TTS:GetLinksTableFromString(tFinalStringForBTts, "")
 			end
-		--print(tFinalStringForBTts)
 		end
 	end
 
@@ -783,10 +777,15 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 	if not aString then
 		return
 	end
-	--print("OutputString", aString)
 
+	--print("OutputString", aString)
 	--we need this explicit check to avoid starting sku tts outputs during tutorial outputs, because EvaluateTriggers only is every 0.33 secs
-	SkuAdventureGuide.Tutorial:EvaluateTriggers("OutputString EvaluateTriggers")
+	local tResult = SkuAdventureGuide.Tutorial:EvaluateTriggers("OutputString EvaluateTriggers")
+	if tResult == true then
+		C_Timer.After(0.5, function()
+			SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial) -- for strings with lookup in string index
+		end)
+	end
 
 	if type(aOverwrite) == "table" then
 		aWait = aOverwrite.wait
@@ -923,7 +922,6 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 			while tIt == true do
 				tIt = false
 				for i, v in pairs(mSkuVoiceQueue) do
-					--print(i, v.text, aString, v.text == aString, #mSkuVoiceQueue)
 					if v.doNotOverwrite ~= true or v.text == aString then
 						--stop it first; just to be sure
 						if v.soundHandle then
@@ -931,7 +929,6 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 						end
 						--mSkuVoiceQueue[i] = nil
 						table.remove(mSkuVoiceQueue, i)
-						--print(#mSkuVoiceQueue)
 						tIt = true
 					end
 				end
@@ -1022,7 +1019,6 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		for x = 1, #tStrings do
 			local tFile
 			if not tIsSound then
-				--dprint("tStrings[x] sku", tStrings[x])
 				if tStrings[x] == "§01" then
 					tStrings[x] = "sound-silence0.1"
 				end
@@ -1252,7 +1248,6 @@ function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
 	end
 	if aBlizz then
 		if SkuVoice.TutorialPlaying == 0 then
-			--print("StopOutputEmptyQueue C_VoiceChat.StopSpeakingText")
 			mSkuVoiceQueueBTTS_Speaking = {}
 			C_VoiceChat.StopSpeakingText()
 		end
