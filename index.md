@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.3](https://github.com/Duugu/Sku/releases/download/r33.3/Sku-r33.3-wrath.zip) (Mar 24th 2023)<br>
+- [Sku r33.4](https://github.com/Duugu/Sku/releases/download/r33.4/Sku-r33.4-wrath.zip) (Mar 26th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
@@ -24,6 +24,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r33.4
+- Fixed a bug with some distance outputs in Close routes reading random zeros.
+- A bunch of changes and fixes on the tutorial feature. Still in development / testing. Not ready to use yet.
+
 ## Changes in Sku r33.3
 - Added the first public version of the tutorial editor/player (Adventure Guide > Tutorials). Not available tutorials there yet. More details and instructions/guide to come next week.
 
