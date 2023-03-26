@@ -594,6 +594,10 @@ function SkuNav:GetNearestWpsWithLinksToWp(aWpName, aNumberOfWpsToReturn, aMaxDi
 	local tMaxDistanceFound = 100000
 	aMaxDistance = aMaxDistance or 100000
 
+	if not WaypointCacheLookupAll[aWpName] or not WaypointCache[WaypointCacheLookupAll[aWpName]] then
+		return {}
+	end
+
 	local taWpNameX, taWpNameY = WaypointCache[WaypointCacheLookupAll[aWpName]].worldX, WaypointCache[WaypointCacheLookupAll[aWpName]].worldY
 	local _, _, tPlayerContinentID  = SkuNav:GetAreaData(SkuNav:GetCurrentAreaId())
 	local tWpsToTest = WaypointCacheLookupPerContintent[tPlayerContinentID]
@@ -2410,6 +2414,7 @@ function SkuNav:EndFollowingWpOrRt()
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowingTargetName = nil
 	SkuNav:SelectWP("", true)
+	SkuDispatcher:TriggerSkuEvent("SKU_NAVIGATION_STOPPED")
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2548,6 +2553,7 @@ function SkuNav:UpdateQuickWP(aWpName, aSilent, x, y)
 	if not aSilent then
 		SkuOptions:VocalizeMultipartString(aWpName..";"..L["updated"], true, true, 0.2)
 	end
+	SkuDispatcher:TriggerSkuEvent("SKU_QUICKWAYPOINT_UPDATED")
 
 	if IsAltKeyDown() == true then
 		C_Timer.After(0.1, function()
@@ -2637,6 +2643,7 @@ function SkuNav:UpdateQuickWP(aWpName, aSilent, x, y)
 						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
 						SkuOptions.Voice:OutputStringBTtts(L["Metaroute folgen gestartet"], false, true, 0.2)
+						SkuDispatcher:TriggerSkuEvent("SKU_ROUTE_STARTED")
 					end
 
 				end

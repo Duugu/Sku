@@ -946,6 +946,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						SkuOptions.Voice:OutputStringBTtts(L["Following metaroute"], false, true, 0.2)
 		
 						SkuOptions:CloseMenu()
+						SkuDispatcher:TriggerSkuEvent("SKU_ROUTE_STARTED")
 					end
 
 				end
@@ -1052,6 +1053,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
 							SkuOptions.Voice:OutputStringBTtts(L["Metaroute folgen gestartet"], false, true, 0.2)
 							SkuOptions:CloseMenu()
+							SkuDispatcher:TriggerSkuEvent("SKU_ROUTE_STARTED")
 						end
 					end
 				end
@@ -1151,6 +1153,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 					if SkuNav:GetWaypointData2(SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint) then
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].menuFollowTargetWaypoint)
 						SkuOptions:CloseMenu()
+						SkuDispatcher:TriggerSkuEvent("SKU_WAYPOINT_STARTED")
 					else
 						SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
 						SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt nicht ausgewählt"], false, true, 0.3, true)

@@ -528,6 +528,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
 						SkuOptions.Voice:OutputStringBTtts(L["Metaroute folgen gestartet"], false, true, 0.2)
 						SkuOptions:CloseMenu()
+						SkuDispatcher:TriggerSkuEvent("SKU_CLOSEROUTE_STARTED")
 					end
 				end
 			else
@@ -555,6 +556,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					--lastDirection = SkuNav:GetDirectionTo(worldx, worldy, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY)
 					--PlaySound(835)
 					SkuOptions:CloseMenu()
+					SkuDispatcher:TriggerSkuEvent("SKU_WAYPOINT_STARTED")
 				else
 					SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
 					SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt nicht ausgewählt"], false, true, 0.3, true)
@@ -718,6 +720,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 					SkuOptions.Voice:OutputStringBTtts(L["Wegpunkt abgewählt"], false, true, 0.3, true)
 					--SkuOptions.db.profile["SkuNav"].selectedWaypoint = ""
 					SkuNav:SelectWP("", true)
+					SkuDispatcher:TriggerSkuEvent("SKU_NAVIGATION_STOPPED")
 				end
 				--PlaySound(835)
 			end
@@ -951,6 +954,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 			SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, true)
 			SkuOptions.Voice:OutputStringBTtts(L["Einheiten Route folgen gestartet"], false, true, 0.2)
 			SkuOptions:CloseMenu()
+			SkuDispatcher:TriggerSkuEvent("SKU_UNITROUTE_STARTED")
 			return
 		elseif SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart then
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths then
@@ -966,6 +970,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.Voice:OutputStringBTtts(L["Metaroute folgen gestartet"], false, true, 0.2)
 
 				SkuOptions:CloseMenu()
+				SkuDispatcher:TriggerSkuEvent("SKU_ROUTE_STARTED")
 			end
 		end
 	end

@@ -8,6 +8,13 @@ SkuDispatcher = LibStub("AceAddon-3.0"):NewAddon("SkuDispatcher", "AceConsole-3.
 SkuDispatcher.Registered = {}
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuDispatcher:TriggerSkuEvent(aEventName, ...)
+	if SkuDispatcher[aEventName] then
+		SkuDispatcher[aEventName](SkuDispatcher, aEventName, ...)
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuDispatcher:OnDisable()
 	
 end
@@ -38,7 +45,9 @@ function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
 	end
 
 	-- no callbacks left > unregister event
-	SkuDispatcher:UnregisterEvent(aEventName)
+	if string.sub(aEventName, 1, 4) ~= "SKU_" then
+		SkuDispatcher:UnregisterEvent(aEventName)
+	end
 	SkuDispatcher[aEventName] = nil
 	SkuDispatcher.Registered[aEventName] = nil
 end
@@ -57,7 +66,9 @@ function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc)
 			callbacks = {},
 		}
 
-		SkuDispatcher:RegisterEvent(aEventName)
+		if string.sub(aEventName, 1, 4) ~= "SKU_" then
+			SkuDispatcher:RegisterEvent(aEventName)
+		end
 	end
 
 	if not SkuDispatcher.Registered[aEventName].callbacks[aCallbackFunc] then

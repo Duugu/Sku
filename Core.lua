@@ -27,7 +27,7 @@ end
 Sku.testMode = false
 
 ---------------------------------------------------------------------------------------------------------------------------------------
--- tmp fixes for 30401 ptr
+-- tmp fixes for 30401; still need to replace all calls everywhere at some point
 Sku.toc = select(4, GetBuildInfo())
 if Sku.toc >= 30401 then
 	PickupContainerItem = C_Container.PickupContainerItem

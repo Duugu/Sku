@@ -2470,5 +2470,24 @@ L["wait for player activating next step"] = "Warten bis Spieler zum nächsten Sc
 
 L["Press"] = "Drücke"
 L["to continue with the next tutorial step"] = "um mit dem nächsten tutorial schritt fortzufahren"
-L["Missing key bind for"] = "Tastenbelegung fehlt für"
+L["No key bind for"] = "Tastenbelegung fehlt für"
 L["Tutorial step completed"] = "Tutorial Schritt abgeschlossen"
+L["Step settings"] = "Schritt einstellungen"
+L["Play first time user intro"] = "Intro für Erstbenutzer abspielen"
+L["Show in users tutorials list"] = "In der tutorial liste für benutzer anzeigen"
+L["You first need to set up that key bind in Core > Sku key binds to use this tutorial."] = "Du musst erst diese Tastenbelegung im Menü unter (Core), (Sku Tastenbelegung) einrichten, um das Tutorial verwenden zu können."
+
+L["Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:"] = "Hallo, %name%. Dies ist ein Tutorial. Es führt dich Schritt für Schritt durch Aktivitäten im Spiel. In jedem Schritt erhälst du einige Informationen oder Anweisungen zu Aktivitäten. Sobald du die Schrittaktivitäten durchgeführt hast hörst du einen Erfolgssound. Dann kannst du zum nächsten Tutorial Schritt wechseln. In Tutorial kannst du die folgenden 3 Tastenkombinationen verwenden:"
+L["to play the instructions of the current step again."] = ", um die Anweisungen aus dem aktuellen Schritt erneut zu hören."
+L["to move to the next step of the tutorial."] = ", um zum nächsten Schritt zu wechseln."
+L["to move to the previous step."] = ", um zum vorherigen Schritt zu wechseln."
+	
+L["Insert new Step"] = "Neuen Schritt"
+L["after this step"] = "einfügen nach diesem Schritt"
+
+L["SKU_ROUTE_STARTED"] = "Sku: Route gestartet"
+L["SKU_UNITROUTE_STARTED"] = "Sku: Einheiten Route gestartet"
+L["SKU_CLOSEROUTE_STARTED"] = "Sku: Nahe Route gestartet"
+L["SKU_WAYPOINT_STARTED"] = "Sku: Wegpunkt gestartet"
+L["SKU_NAVIGATION_STOPPED"] = "Sku: Navigation beendet"
+L["SKU_QUICKWAYPOINT_UPDATED"] = "Sku: Schnellwegpunkt aktualisiert"

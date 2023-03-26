@@ -2191,7 +2191,7 @@ L["Move Step"] = "Move"
 L["All Required"] = "All Required"
 L["One"] = "One"
 
-L["GAME_EVENT"] = "Game svent"
+L["GAME_EVENT"] = "Game event"
 L["TTS_STRING"] = "TTS string"
 L["UNIT_SPELLCAST_START"] = "Spellcast start"
 L["QUEST_LOG_UPDATE"] = "Quest log update"
@@ -2476,5 +2476,28 @@ L["wait for player activating next step"] = "wait for player activating next ste
 
 L["Press"] = "Press"
 L["to continue with the next tutorial step"] = "to continue with the next tutorial step"
-L["Missing key bind for"] = "Missing key bind for"
+L["No key bind for"] = "No key bind for"
 L["Tutorial step completed"] = "Tutorial step completed"
+L["Step settings"] = "Step settings"
+L["Play first time user intro"] = "Play first time user intro"
+L["Show in users tutorials list"] = "Show in users tutorials list"
+L["You first need to set up that key bind in Core > Sku key binds to use this tutorial."] = "You first need to set up that key bind in (Core), (Sku key binds) to use this tutorial."
+
+L["Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:"] = "Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:"
+L["to play the instructions of the current step again."] = "to play the instructions of the current step again."
+L["to move to the next step of the tutorial."] = "to move to the next step of the tutorial."
+L["to move to the previous step."] = "to move to the previous step."
+
+L["Insert new Step"] = "Insert new Step"
+L["after this step"] = "after this step"
+L["SKU_ROUTE_STARTED"] = "Sku: Route started"
+L["SKU_UNITROUTE_STARTED"] = "Sku: Unit route started"
+L["SKU_CLOSEROUTE_STARTED"] = "Sku: Close route started"
+L["SKU_WAYPOINT_STARTED"] = "Sku: Waypoint started"
+L["SKU_NAVIGATION_STOPPED"] = "Sku: Navigation stopped"
+L["SKU_QUICKWAYPOINT_UPDATED"] = "Sku: Quick waypoint updated"
+--L[""] = ""
+
+
+
+

@@ -70,7 +70,11 @@ function SkuVoice:Create()
 				if SkuVoice.TutorialPlaying < 0 then
 					SkuVoice.TutorialPlaying = 0
 				end
-			end			
+				if SkuVoice.TutorialPlaying == 0 then
+					SkuOptions.Voice:OutputString("sound-waterdrop1", false, false, 0.3, true)
+				end
+			end
+			--SkuAdventureGuide.Tutorial.evaluateNextStep = false
 			if mSkuVoiceQueueBTTS_Speaking[1] then
 				table.remove(mSkuVoiceQueueBTTS_Speaking, 1)
 			end
@@ -637,30 +641,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 							else
 								--int
 								local tNumber = math.floor(tonumber(tSplittedString[x]))
-								--print("int ", tNumber)
-								if tNumber == 0 then
-									table.insert(tStrings, 0)
-								else
-									local tRemaining = tNumber
-									if tNumber > 13000 then
-										--no audio available
-										tRemaining = 0
-										tNumber = 0
-									end
-									if tNumber > 999 then
-										local tRound = SkuVoice:UtilRound(tRemaining, 10000)
-										table.insert(tStrings, tRound)
-										tRemaining = tRemaining - tRound
-									end
-									if tRemaining > 99 then
-										local tRound = SkuVoice:UtilRound(tRemaining, 1000)
-										table.insert(tStrings, tRound)
-										tRemaining = tRemaining - tRound
-									end
-									if tRemaining > 0 then
-										table.insert(tStrings, tRemaining)
-									end
-								end
+								table.insert(tStrings, tNumber)
 							end
 						end
 					end

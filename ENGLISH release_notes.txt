@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.4
+	- Fixed a bug with some distance outputs in Close routes reading random zeros.
+	- A bunch of changes and fixes on the tutorial feature. Still in development / testing. Not ready to use yet.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.3
 	- Added the first public version of the tutorial editor/player (Adventure Guide > Tutorials). Not available tutorials there yet. More details and instructions/guide to come next week.
 
