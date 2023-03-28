@@ -286,7 +286,9 @@ SkuAdventureGuide.Tutorial.triggers = {
          [96] = "SKU_WAYPOINT_STARTED",
          [97] = "SKU_NAVIGATION_STOPPED",
          [98] = "SKU_QUICKWAYPOINT_UPDATED",
-         --[99] = "",
+         [99] = "CHAT_MSG_MONEY",
+         [100] = "PLAYER_MONEY",
+         --[] = "",
       },
       validator = function(aValue)
          for i, v in pairs(SkuAdventureGuide.Tutorial.triggers.GAME_EVENT.collector) do
@@ -540,15 +542,23 @@ SkuAdventureGuide.Tutorial.triggers = {
       uiString = L["PLAYER_POSITION"],
       values = {
          [1] = "CURRENT_COORDINATES",
+         [2] = "CURRENT_COORDINATES_10",
+         [3] = "CURRENT_COORDINATES_20",
       },
       validator = function(aValue)
          local x, y = UnitPosition("player")
          if x and y then
+            local tRR = 4
+            if aValue == 2 then
+               tRR = 10
+            elseif aValue == 3 then
+               tRR = 20
+            end
             x = string.format("%.1f", x)
             y = string.format("%.1f", y)      
-            local xv, yv = string.match(aValue, "(.+);(.+)")      
+            local xv, yv = string.match(aValue, "(.+);(.+)")     
             if xv and yv then
-               if (x - xv < SkuAdventureGuide.Tutorial.positionReachedRange and x - xv > -(SkuAdventureGuide.Tutorial.positionReachedRange)) and (y - yv < SkuAdventureGuide.Tutorial.positionReachedRange and y - yv > -(SkuAdventureGuide.Tutorial.positionReachedRange)) then
+               if (x - xv < tRR and x - xv > -(tRR)) and (y - yv < tRR and y - yv > -(tRR)) then
                   return true
                end
             end
@@ -792,12 +802,19 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                            SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
                         end)
                      end
-                  elseif aName == L["CURRENT_COORDINATES"] then
+                  elseif aName == L["CURRENT_COORDINATES_4"] or aName == L["CURRENT_COORDINATES_10"] or aName == L["CURRENT_COORDINATES_20"] then
                      local x, y = UnitPosition("player")
                      if x and y and x ~= 0 and y ~= 0 then
+                        local tRR = 5
+                        if aName == L["CURRENT_COORDINATES_10"] then
+                           tRR = 10
+                        elseif aName == L["CURRENT_COORDINATES_20"] then
+                           tRR = 20
+                        end
+
                         x = string.format("%.1f", x)
                         y = string.format("%.1f", y)
-                        table.insert(tStepData.triggers, {type = self.triggerType, value = x..";"..y})
+                        table.insert(tStepData.triggers, {type = self.triggerType, value = x..";"..y.. ";"..tRR})
                      end
                      C_Timer.After(0.001, function()
                         SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
@@ -846,9 +863,11 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                   end
                elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_TARGET" then
                   tText = tText..": "..tTriggerData.value
-               elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES" then
-                  local x, y = string.match(tTriggerData.value, "(.+);(.+)")
-                  tText = tText..": "..x.." "..y
+               elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES" or SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES_4" or SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES_10" or SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES_20" then
+                  local x, y, rr = string.match(tTriggerData.value, "(.+);(.+)")
+                  local _, _, rr = string.match(tTriggerData.value, "(.+);(.+);(.+)")
+                  rr = rr or 4
+                  tText = tText..": "..x..";"..y.. " "..rr.." "..L["Meter"]
                else
                   tText = tText..": "..L[SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[tTriggerData.value]]
                end

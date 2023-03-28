@@ -296,6 +296,67 @@ SkuCore.options = {
 	
 			},
 		},
+		fallSettings={
+			name = L["Fall detection settings"],
+			type = "group",
+			order = 3,
+			args= {
+				delay = {
+					name = L["Delay before output trigger (milliseconds)"],
+					order = 1,
+					desc = "",
+					type = "range",
+					min = 0,
+					max = 1000,
+					set = function(info, val)
+						SkuOptions.db.profile[MODULE_NAME].fallSettings.delay = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].fallSettings.delay
+					end
+				},
+				ignoreJumps = {
+					name = L["Ignore jumps"],
+					order = 2,
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].fallSettings.ignoreJumps = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].fallSettings.ignoreJumps
+					end
+				},
+
+				voiceOutput = {
+					name = L["Voice output"],
+					order = 3,
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].fallSettings.voiceOutput = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].fallSettings.voiceOutput
+					end
+				},
+				soundOutput = {
+					name = L["Sound output"],
+					order = 4,
+					desc = "",
+					type = "toggle",
+					set = function(info, val)
+						SkuOptions.db.profile[MODULE_NAME].fallSettings.soundOutput = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].fallSettings.soundOutput
+					end
+				},
+	
+			},
+		},
+
+
 
 		UIErrors={
 			name = L["Error feedback"],
@@ -567,6 +628,12 @@ SkuCore.defaults = {
 		ShowItemQality = true,
 		autoSellJunk = true,
 		autoRepair = true,
+	},
+	fallSettings = {
+		delay = 0,
+		voiceOutput = false,
+		soundOutput = true,
+		ignoreJumps = true,
 	},
 	UIErrors = {
 		ErrorSoundChannel = "Talking Head",

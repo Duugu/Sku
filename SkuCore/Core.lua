@@ -817,6 +817,7 @@ function SkuCore:OnEnable()
 		tSkuCoreSecureTabButtonTime = 0
 	end)
 
+	local tLastFallSoundNum = 0
 	local ttime = 0
 	local f = _G["SkuCoreControl"] or CreateFrame("Frame", "SkuCoreControl", UIParent)
 	local tClassTrainerFrameHooked = false
@@ -862,6 +863,24 @@ function SkuCore:OnEnable()
 					SkuCoreOldPetHappinessCounter = 0
 				end
 				SkuCoreOldPetHappiness = happiness
+			end
+		end
+
+		if SkuOptions.db.profile[MODULE_NAME].fallSettings.soundOutput == true then
+			if IsFalling() == true and SkuStatus.fallingSoundJump ~= true then
+				SkuStatus.fallingSound = SkuStatus.fallingSound or GetTime()
+				if (GetTime() - SkuStatus.fallingSound) > (SkuOptions.db.profile[MODULE_NAME].fallSettings.delay / 1000) then
+					if math.floor(((GetTime() - SkuStatus.fallingSound) - (SkuOptions.db.profile[MODULE_NAME].fallSettings.delay / 1000)) / 0.05) > tLastFallSoundNum then
+						tLastFallSoundNum = tLastFallSoundNum + 1
+						if tLastFallSoundNum == 1 then
+							SkuOptions.Voice:OutputString("male-Fallen", true, true, 0.2)
+						end
+						PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\fall_sound\\1\\fall_sound-"..string.format("%02d", tLastFallSoundNum)..".mp3", "Talking Head")
+					end
+				end
+			else
+				SkuStatus.fallingSound = GetTime()
+				tLastFallSoundNum = 0
 			end
 		end
 
@@ -920,7 +939,7 @@ function SkuCore:OnEnable()
 				end
 			end
 		end
-
+--[[
 		if IsFalling() == true then
 			if SkuStatus.falling ~= -1 then
 				if SkuStatus.falling > 0 then
@@ -935,6 +954,7 @@ function SkuCore:OnEnable()
 		else
 			SkuStatus.falling = 0
 		end
+]]		
 		if UnitIsAFK("player") == true then
 			if SkuStatus.afk == 0 then
 				SkuStatus.afk = GetTime()
@@ -1319,7 +1339,19 @@ function SkuCore:OnEnable()
 	hooksecurefunc("StrafeRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false end)
 	hooksecurefunc("TurnLeftStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnLeftStop") end)
 	hooksecurefunc("TurnRightStop", function() SkuCoreMovement.Flags.IsTurningOrAutorunningOrStrafing = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("TurnRightStop") end)
-	hooksecurefunc("JumpOrAscendStart", function() SkuCoreMovement.Flags.Ascend = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("JumpOrAscendStart") end)
+	hooksecurefunc("JumpOrAscendStart", function()
+		if SkuOptions.db.profile[MODULE_NAME].fallSettings.ignoreJumps == true then
+			SkuStatus.fallingSoundJump = true
+			C_Timer.After(0.8, function()
+				SkuStatus.fallingSoundJump = false	
+			end)
+		else
+			SkuStatus.fallingSoundJump = false	
+		end
+		
+		SkuCoreMovement.Flags.Ascend = true
+		SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("JumpOrAscendStart")
+	end)
 	hooksecurefunc("AscendStop", function() SkuCoreMovement.Flags.Ascend = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("AscendStop") end)
 	hooksecurefunc("SitStandOrDescendStart", function() SkuCoreMovement.Flags.Descend = true SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("SitStandOrDescendStart") end)
 	hooksecurefunc("DescendStop", function() SkuCoreMovement.Flags.Descend = false SkuNav:NavigationModeWoCoordinates_ON_MOVEMENT("DescendStop") end)
