@@ -9,8 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku r33.5](https://github.com/Duugu/Sku/releases/download/r33.5/Sku-r33.5-wrath.zip) (Mar 28th 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
-- [Sku r33.4](https://github.com/Duugu/Sku/releases/download/r33.4/Sku-r33.4-wrath.zip) (Mar 26th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
 - [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
@@ -24,6 +24,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r33.5
+- Changed the fall detection and output. The addon will now default make a rising sound as soon as you start falling. Even if it only is like falling down a step. The sound will start small and get higher fast. There are new settings under Core > Options > Fall detection settings. They are pretty self explaining. To set up the old behavior (voice and delay of 1 sec), set Sound output to off and Delay to 1000.
+
 ## Changes in wow menu 3.11
 - Tried to fix an issue with ultra wide screens with higher ratio than 1.77.
 
