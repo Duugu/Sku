@@ -1165,6 +1165,7 @@ function SkuOptions:CreateMainFrame()
 	SkuOptions.InteractMove = false
 
 	tFrame:SetScript("OnClick", function(self, a, b)
+		--print("OnSkuOptionsMain", a, b)
 		if not SkuOptions.TTS:IsVisible() then
 			tCurrentOverviewPage = nil
 			if a == "SHIFT-UP" then
@@ -1903,7 +1904,12 @@ function SkuOptions:CreateMenuFrame()
 		OnSkuOptionsMainOption1:GetScript("OnClick")(self, aKey)
 	end)
 	tFrame:SetScript("OnClick", function(self, aKey, aB)
-		dprint("OnSkuOptionsMainOption1 click", aKey, aB)
+		--print("OnSkuOptionsMainOption1 click", aKey, aB)
+
+		--ignore tutorial keys
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key or aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key or aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key then
+			return
+		end
 
 		if aKey == "PAGEDOWN" then
 			if SkuOptions.currentMenuPosition then

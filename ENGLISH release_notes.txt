@@ -4,6 +4,12 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.7
+	- Fixed the falling sound if the player is falling for more than 5 seconds.
+	- More tutorial testing fixes (feature still not ready)
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.6
 	- Fixed the voice output setting for fall detection. :)
 

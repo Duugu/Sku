@@ -872,6 +872,9 @@ function SkuCore:OnEnable()
 				if (GetTime() - SkuStatus.fallingSound) > (SkuOptions.db.profile[MODULE_NAME].fallSettings.delay / 1000) then
 					if math.floor(((GetTime() - SkuStatus.fallingSound) - (SkuOptions.db.profile[MODULE_NAME].fallSettings.delay / 1000)) / 0.05) > tLastFallSoundNum then
 						tLastFallSoundNum = tLastFallSoundNum + 1
+						if tLastFallSoundNum > 99 then
+							tLastFallSoundNum = 99
+						end
 						if tLastFallSoundNum == 1 and SkuOptions.db.profile[MODULE_NAME].fallSettings.voiceOutput == true then
 							SkuOptions.Voice:OutputString("male-Fallen", true, true, 0.2)
 						end

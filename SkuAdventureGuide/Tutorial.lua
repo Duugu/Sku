@@ -549,14 +549,20 @@ SkuAdventureGuide.Tutorial.triggers = {
          local x, y = UnitPosition("player")
          if x and y then
             local tRR = 4
-            if aValue == 2 then
-               tRR = 10
-            elseif aValue == 3 then
-               tRR = 20
+            local xv, yv, tRR = string.match(aValue, "(.+);(.+)")
+            if not tRR then
+               xv, yv, tRR = string.match(aValue, "(.+);(.+) (.+)")
             end
+            if not tRR then
+               xv, yv, tRR = string.match(aValue, "(.+);(.+);(.+)")
+            end
+
+            xv, yv, tRR = tonumber(xv), tonumber(yv), tonumber(tRR)
+            
             x = string.format("%.1f", x)
             y = string.format("%.1f", y)      
-            local xv, yv = string.match(aValue, "(.+);(.+)")     
+            --local xv, yv = string.match(aValue, "(.+);(.+)")   
+
             if xv and yv then
                if (x - xv < tRR and x - xv > -(tRR)) and (y - yv < tRR and y - yv > -(tRR)) then
                   return true
@@ -617,14 +623,68 @@ end
 function SkuAdventureGuide.Tutorial:OnInitialize()
    SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuAdventureGuide.Tutorial.PLAYER_ENTERING_WORLD)
 
+   --this frame is to catch all keys if tutorial output is running
+	tFrame = _G["OnSkuOptionsKeyTrap"] or CreateFrame("Button", "OnSkuOptionsKeyTrap", _G["UIParent"], "UIPanelButtonTemplate")
+	tFrame:SetSize(80, 22)
+	tFrame:SetText("OnSkuOptionsKeyTrap")
+	tFrame:SetPoint("TOP", _G["OnSkuOptionsMain"], "BOTTOM", 0, 0)
+	tFrame:SetScript("OnKeyDown", function(self, aKey, aB)
+      --print("OnKeyDown", aKey, aB, self:GetPropagateKeyboardInput())
+      if SkuOptions.Voice.TutorialPlaying then
+         if SkuOptions.Voice.TutorialPlaying > 0 then
+            if ((aKey == "A" or aKey == "S" or aKey == "D") and IsAltKeyDown() == true) then
+               --print("   SetPropagateKeyboardInput true")            
+               self:SetPropagateKeyboardInput(true)
+            elseif aKey == "7" and IsShiftKeyDown() == true then
+               SkuOptions.Voice.TutorialPlaying = 0
+               self:SetPropagateKeyboardInput(true)
+               self:Hide()
+            else
+               PlaySound(88)
+            end
+         end
+      end
+	end)
+	tFrame:SetScript("OnKeyUp", function(self, aKey, aB)
+		--print("OnKeyUp", aKey, aB, self:GetPropagateKeyboardInput())
+      if SkuOptions.Voice.TutorialPlaying then
+         if SkuOptions.Voice.TutorialPlaying > 0 then
+            --print("   SetPropagateKeyboardInput false")
+            self:SetPropagateKeyboardInput(false)
+         end
+      end
+	end)
+	tFrame:SetScript("OnChar", function(self, aKey, aB)
+      --if (aKey = "a" or aKey = "s" or aKey = "d") and IsAltKeyDown() == true then
+		--print("OnChar", aKey, aB, self:GetPropagateKeyboardInput())
+	end)
+	tFrame:Hide()
+	tFrame:EnableKeyboard(true)
+	tFrame:SetPropagateKeyboardInput(true)
+
+
    local f = _G["SkuAdventureGuideTutorialControl"] or CreateFrame("Frame", "SkuAdventureGuideTutorialControl", UIParent)
    local tNextCollectorCleanup = 0 
    local ttime = 0
    f:SetScript("OnUpdate", function(self, time)
+      if SkuOptions.Voice.TutorialPlaying <= 0 then
+         if _G["OnSkuOptionsKeyTrap"]:IsShown() == true then
+            --print("hide trap")
+            _G["OnSkuOptionsKeyTrap"]:Hide()
+            _G["OnSkuOptionsKeyTrap"]:SetPropagateKeyboardInput(true)
+         end
+      else
+         if _G["OnSkuOptionsKeyTrap"]:IsShown() == false then
+            --print("show trap")
+            _G["OnSkuOptionsKeyTrap"]:Show()
+            _G["OnSkuOptionsKeyTrap"]:SetPropagateKeyboardInput(false)
+         end
+      end
+
       if SkuAdventureGuide.Tutorial.current.title then
          ttime = ttime + time
          if ttime < 0.33 then return end
-
+         --print("TutorialPlaying", SkuOptions.Voice.TutorialPlaying)
          if tNextCollectorCleanup > 0 then
             if GetTimePreciseSec() - tNextCollectorCleanup > 20 then
                tNextCollectorCleanup = 0
@@ -814,7 +874,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
 
                         x = string.format("%.1f", x)
                         y = string.format("%.1f", y)
-                        table.insert(tStepData.triggers, {type = self.triggerType, value = x..";"..y.. ";"..tRR})
+                        table.insert(tStepData.triggers, {type = self.triggerType, value = x..";"..y..";"..tRR})
                      end
                      C_Timer.After(0.001, function()
                         SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
@@ -867,7 +927,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                   local x, y, rr = string.match(tTriggerData.value, "(.+);(.+)")
                   local _, _, rr = string.match(tTriggerData.value, "(.+);(.+);(.+)")
                   rr = rr or 4
-                  tText = tText..": "..x..";"..y.. " "..rr.." "..L["Meter"]
+                  tText = tText..": "..x..";"..y.. " "..rr..";"..L["Meter"]
                else
                   tText = tText..": "..L[SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[tTriggerData.value]]
                end
@@ -1136,6 +1196,7 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
                   steps = {},
                   playFtuIntro = false,
                   showInUserList = true,
+                  lockKeyboard = true,
                }
                C_Timer.After(0.001, function()
                   SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -1201,6 +1262,29 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
                   end
                else
                   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+               end
+
+               if tPrefix ~= "Sku" then
+                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]}, SkuGenericMenuItem)
+                  tNewMenuEntry.dynamic = true
+                  tNewMenuEntry.filterable = true
+                  tNewMenuEntry.isSelect = true
+                  tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                     return (self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard == true and L["Yes"] or L["No"])
+                  end
+                  tNewMenuEntry.OnAction = function(self, aValue, aName)
+                     if aName == L["Yes"] then
+                        self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard = true
+                     else
+                        self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard = false
+                     end
+                  end
+                  tNewMenuEntry.BuildChildren = function(self)
+                     SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                     SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                  end
+               else
+                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].showInUserList == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
                end
 
                if tPrefix ~= "Sku" then
@@ -1381,7 +1465,7 @@ function SkuAdventureGuide.Tutorial:ReReadCurrentStep()
          SkuAdventureGuide.Tutorial:PlayFtuIntro()
       else
          local tCurrentStepData = SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title]]
-         SkuOptions.Voice:OutputStringBTtts(tCurrentStepData.beginText, {overwrite = tCurrentStepData.dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
+         SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:ReplacePlaceholders(tCurrentStepData.beginText), {overwrite = tCurrentStepData.dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
       end
    end)
 end
@@ -1456,7 +1540,7 @@ function SkuAdventureGuide.Tutorial:OnStepCompleted(aCompleteStepNumber)
          SkuAdventureGuide.Tutorial:StopCurrentTutorial()
          return
       end
-      if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience < 5 then
+      if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience < 4 then
          C_Timer.After(0.4, function()
             SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:AddNextStepText(""), {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
          end)      

@@ -2482,7 +2482,7 @@ L["wait for player activating next step"] = "wait for player activating next ste
 L["Press"] = "Press"
 L["to continue with the next tutorial step"] = "to continue with the next tutorial step"
 L["No key bind for"] = "No key bind for"
-L["Tutorial step completed"] = "Tutorial step completed"
+L["Tutorial step completed"] = "The sound means the current tutorial step is completed"
 L["Step settings"] = "Step settings"
 L["Play first time user intro"] = "Play first time user intro"
 L["Show in users tutorials list"] = "Show in users tutorials list"
@@ -2507,6 +2507,7 @@ L["Delay before output trigger (milliseconds)"] = "Delay before output trigger (
 L["Voice output"] = "Voice output"
 L["Sound output"] = "Sound output"
 L["Ignore jumps"] = "Ignore jumping"
+L["Lock keyboard if tutorial is playing"] = "Lock keyboard if tutorial is playing"
 --L[""] = ""
 
 
