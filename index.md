@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.6](https://github.com/Duugu/Sku/releases/download/r33.6/Sku-r33.6-wrath.zip) (Mar 28th 2023)<br>
+- [Sku r33.7](https://github.com/Duugu/Sku/releases/download/r33.7/Sku-r33.7-wrath.zip) (Mar 29th 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r33.7
+- Fixed the falling sound if the player is falling for more than 5 seconds.
+- More tutorial testing fixes (feature still in development)
+	
 ## Changes in Sku r33.6
 - Fixed the voice output setting for fall detection. :)
 	
