@@ -83,9 +83,9 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_OUTPUTHARDTARGET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_OUTPUTSOFTTARGET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
 
-   ["SKU_KEY_TUTORIALSTEPBACK"] = {key = "ALT-A", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_TUTORIALSTEPREPEAT"] = {key = "ALT-S", object = "SkuOptions", func = "CreateMainFrame",},
-   ["SKU_KEY_TUTORIALSTEPFORWARD"] = {key = "ALT-D", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_TUTORIALSTEPBACK"] = {key = "ALT-H", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_TUTORIALSTEPREPEAT"] = {key = "ALT-K", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_TUTORIALSTEPFORWARD"] = {key = "ALT-J", object = "SkuOptions", func = "CreateMainFrame",},
 
 
 

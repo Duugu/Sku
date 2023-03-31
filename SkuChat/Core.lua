@@ -767,7 +767,7 @@ SkuChat.ChatFrameDefaultTabs = {
 			[7] = {
 				text = L["Addons"],
 				type = "ADDON",
-				default = false,
+				default = play,
 			},		
 		},
 		

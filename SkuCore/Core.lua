@@ -1887,6 +1887,14 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 				end	
 			end)			
 
+			C_Timer.After(120, function()
+				if BugSackLDBIconDB then
+					BugSackLDBIconDB.minimapPos = 350
+				end
+				LeaveChannelByName("LookingForGroup")
+				LeaveChannelByName("SucheNachGruppe")		
+			end)			
+
 			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 			SkuOptions:CloseMenu()
 			

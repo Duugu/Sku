@@ -68,6 +68,10 @@ function SkuCore:DamageMeterOnLogin()
    C_Timer.After(15, function()
       SkuDetailsCloseAssistant()
    end)
+   C_Timer.After(180, function()
+      SkuDetailsCloseAssistant()
+   end)
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

@@ -15,6 +15,7 @@ local SapiLangIds = {
 local mSkuVoiceQueue = {}
 local mSkuVoiceQueueBTTS = {}
 local mSkuVoiceQueueBTTS_Speaking = {}
+local mSkuVoiceQueueBTTS_Callback = nil
 
 ---------------------------------------------------------------------------------------------------------
 SkuVoice.LastPlayedString = ""
@@ -72,6 +73,10 @@ function SkuVoice:Create()
 				end
 				if SkuVoice.TutorialPlaying == 0 then
 					SkuOptions.Voice:OutputString("sound-waterdrop1", false, false, 0.3, true)
+					if mSkuVoiceQueueBTTS_Callback then
+						mSkuVoiceQueueBTTS_Callback()
+						mSkuVoiceQueueBTTS_Callback = nil
+					end
 				end
 			end
 			--SkuAdventureGuide.Tutorial.evaluateNextStep = false
@@ -1229,6 +1234,7 @@ function SkuVoice:StopOutputEmptyQueue(aBlizz, aSku)
 	end
 	if aBlizz then
 		if SkuVoice.TutorialPlaying == 0 then
+			mSkuVoiceQueueBTTS_Callback = nil
 			mSkuVoiceQueueBTTS_Speaking = {}
 			C_VoiceChat.StopSpeakingText()
 		end
@@ -1239,3 +1245,9 @@ end
 function SkuVoice:Release()
 
 end
+
+---------------------------------------------------------------------------------------------------------
+function SkuVoice:RegisterBttsCallback(aFunc)
+	mSkuVoiceQueueBTTS_Callback = aFunc
+end
+

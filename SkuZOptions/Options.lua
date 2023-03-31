@@ -928,10 +928,10 @@ SkuOptions.defaults = {
 		},
 	soundChannels  = {
 		MasterVolume = -1, --this is to check if the profile has sound settings. take the current blizz settings, if not.
-		SFXVolume = 100,
-		MusicVolume = 100,
-		AmbienceVolume = 100,
-		DialogVolume = 100,
+		SFXVolume = 70,
+		MusicVolume = 20,
+		AmbienceVolume = 60,
+		DialogVolume = 60,
 		SkuChannel = "Talking Head",
 		},
 	soundSettings  = {

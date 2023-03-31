@@ -1300,27 +1300,6 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 				tPreQuestTable[#tPreQuestTable+1] = SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["parentQuest"]]
 			end
 
-			if #tPreQuestTable > 0 then
-				tHasEntries = true
-				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Pre Quests"]}, SkuGenericMenuItem)
-				tNewMenuSubEntry.dynamic = true
-				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
-
-				end
-				tNewMenuSubEntry.BuildChildren = function(self)
-					for i, v in pairs(tPreQuestTable) do
-						local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[Sku.Loc][v][1]}, SkuGenericMenuItem)
-						tNewMenuSubEntry1.dynamic = true
-						tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
-							C_Timer.NewTimer(0.1, function()
-								SkuOptions:SlashFunc("short,"..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
-								SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
-							end)
-						end
-					end
-				end
-			end
-
 			if SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]] and (SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][1] 
 				or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][2]
 				or SkuDB.questDataTBC[aQuestID][SkuDB.questKeys["startedBy"]][3])
@@ -1383,6 +1362,27 @@ local function CreateQuestSubmenu(aParent, aQuestID)
 					end
 				end
 			end
+
+			if #tPreQuestTable > 0 then
+				tHasEntries = true
+				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParent, {L["Pre Quests"]}, SkuGenericMenuItem)
+				tNewMenuSubEntry.dynamic = true
+				tNewMenuSubEntry.OnAction = function(self, aValue, aName)
+
+				end
+				tNewMenuSubEntry.BuildChildren = function(self)
+					for i, v in pairs(tPreQuestTable) do
+						local tNewMenuSubEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.questLookup[Sku.Loc][v][1]}, SkuGenericMenuItem)
+						tNewMenuSubEntry1.dynamic = true
+						tNewMenuSubEntry1.OnAction = function(self, aValue, aName)
+							C_Timer.NewTimer(0.1, function()
+								SkuOptions:SlashFunc("short,"..L["SkuQuest,Questdatenbank,Alle"]..","..self.name)
+								SkuOptions.Voice:OutputStringBTtts(self.name, true, true, 0.3, true)
+							end)
+						end
+					end
+				end
+			end			
 		end
 	end
 

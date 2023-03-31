@@ -1178,6 +1178,10 @@ function SkuOptions:CreateMainFrame()
 		if SkuAdventureGuide.Tutorial.current.title and SkuAdventureGuide.Tutorial.current.source then
 			if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] then
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key then
+					if SkuAdventureGuide.Tutorial.current.isUser then
+						return
+					end
+
 					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] > 1 then
 						SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] - 1
 						local tTitle = SkuAdventureGuide.Tutorial.current.title
@@ -1192,8 +1196,6 @@ function SkuOptions:CreateMainFrame()
 				end
 
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key then
-					SkuOptions.Voice.TutorialPlaying = 0
-					SkuOptions.Voice:StopOutputEmptyQueue()
 					C_Timer.After(0.1, function()
 						SkuAdventureGuide.Tutorial:ReReadCurrentStep()
 					end)
@@ -1201,6 +1203,10 @@ function SkuOptions:CreateMainFrame()
 				end
 
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key then
+					if SkuAdventureGuide.Tutorial.current.isUser and SkuAdventureGuide.Tutorial.currentStepCompleted ~= true then
+						return
+					end
+
 					local tStepMax = #SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps
 					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] < tStepMax then
 						SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] + 1

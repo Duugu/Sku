@@ -834,7 +834,7 @@ function SkuCore:AuctionHouseMenuBuilder()
                   isBound = C_Item.IsBound(ItemLocation:CreateFromBagAndSlot(bag, slot))
                   if isBound == false then
                      local tName = C_Item.GetItemName(ItemLocation:CreateFromBagAndSlot(bag, slot))
-                     if not tFoundItems[itemID] then
+                     if tName and not tFoundItems[itemID] then
                         tFoundItems[itemID] = true
                         local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {tName.." ("..tCountItems[itemID]..")"}, SkuGenericMenuItem)
                         tNewMenuSubSubEntry.dynamic = true

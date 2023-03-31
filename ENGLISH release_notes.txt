@@ -2,6 +2,12 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r33.8
+	- Moved the Pre Quests menu option in quest navigation to the end of the list.
+	- (Hopefully) fixed an issue where the addon was not always leaving the LFG channel and hiding the details damagemeter addon setup panel for new characters.
+	- More fixes and changes for the tutorial feature. Still in development.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r33.7
