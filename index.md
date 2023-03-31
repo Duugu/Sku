@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.7](https://github.com/Duugu/Sku/releases/download/r33.7/Sku-r33.7-wrath.zip) (Mar 29th 2023)<br>
+- [Sku r33.8](https://github.com/Duugu/Sku/releases/download/r33.8/Sku-r33.8-wrath.zip) (Mar 31th 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r33.8
+- Moved the Pre Quests menu option in quest navigation to the end of the list.
+- (Hopefully) fixed an issue where the addon was not always leaving the LFG channel and hiding the details damagemeter addon setup panel for new characters.
+- More fixes and changes for the tutorial feature. Still in development.
+
 ## Changes in Sku r33.7
 - Fixed the falling sound if the player is falling for more than 5 seconds.
 - More tutorial testing fixes (feature still in development)
