@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.9](https://github.com/Duugu/Sku/releases/download/r33.9/Sku-r33.9-wrath.zip) (April 1st 2023)<br>
+- [Sku r33.10](https://github.com/Duugu/Sku/releases/download/r33.10/Sku-r33.10-wrath.zip) (April 1st 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r33.10
+- Restricted the "first login hint" to level 1 characters.
+
 ## Changes in Sku r33.9
 - A lot of internal bug fixes and updates for the tutorial feature. Added a default basic example tutorial for Human Warriors. This is just for testing and has very few steps.
 
