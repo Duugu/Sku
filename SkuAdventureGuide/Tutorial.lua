@@ -1804,7 +1804,7 @@ function SkuAdventureGuide.Tutorial:AddNextStepText(aString)
          tKey = L["No key bind for"].." "..CleanKeyBindStringHelper(L["SKU_KEY_TUTORIALSTEPFORWARD"])..". "..L["You first need to set up that key bind in Core > Sku key binds to use this tutorial."]
          return tKey
       end
-      if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience <= SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
+      if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience >= SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
          aString = aString..". "..L["You will hear the following hint for the last time"].."! "
       end
       aString = aString..". "..L["Tutorial step completed"]..". "..L["Press"].." "..tKey.." "..L["to continue with the next tutorial step"]
