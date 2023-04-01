@@ -129,6 +129,31 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuAdventureGuide.Tutorial:EditorMenuBuilder(self)
 		end		
+
+      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Tutorial help"]}, SkuGenericMenuItem)
+      tNewMenuEntry.dynamic = true
+      tNewMenuEntry.filterable = true
+      tNewMenuEntry.BuildChildren = function(self)
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["In this help section you will find basic information on how to use the tutorial. Press the Down or Up key to hear all information."])}, SkuGenericMenuItem)
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["The basics: When following the tutorial, you should strictly follow the instructions in the tutorial. Listen closely to what you are supposed to do, and then do exactly that. Do not do anything else while the tutorial is in progress. You can of course do other things in between. But then you may find it difficult to get back to the point you need to go to for the next step of the tutorial. So, unless you already know your way around, you should only do the tutorial steps and not do anything else."])}, SkuGenericMenuItem)
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Tutorial flow: The tutorial consists of many individual steps. In each step you will first hear an information text. It explains what you have to do next. When you have performed that activity, you will hear a success sound. Then you can proceed to the next step. To proceed to the next step, press the shortcut %SKU_KEY_TUTORIALSTEPFORWARD%. The tutorial will not continue until you have completed the current step (success sound) and pressed %SKU_KEY_TUTORIALSTEPFORWARD%."])}, SkuGenericMenuItem)
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Replaying the step instructions: You can listen to the instructions of the current tutorial step again at any time. To do this, press the shortcut %SKU_KEY_TUTORIALSTEPREPEAT%."])}, SkuGenericMenuItem)
+
+			local tBestTutName, tLocRaceText, tLocClassText = SkuAdventureGuide.Tutorial:GetBestTutorialNameForFirstTimeUser()
+			if tBestTutName then
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Starting your newbie tutorial: There is a first steps tutorial specifically for your as a "]..tLocRaceText.." "..tLocClassText..". "..L["To start this tutorial now, please press the ENTER key."])}, SkuGenericMenuItem)
+				tNewMenuEntry.isSelect = true
+				tNewMenuEntry.OnAction = function(self, aValue, aName)
+					SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+					SkuOptions:CloseMenu()                     
+					SkuAdventureGuide.Tutorial:StartTutorial(tBestTutName, 1, SkuDB, nil, true)
+				end
+			else
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a "]..tLocRaceText.." "..tLocClassText..". "..L["We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials."])}, SkuGenericMenuItem)
+			end
+
+      end
+
 	end
 
 	local tNewMenuParentEntryWiki =  SkuOptions:InjectMenuItems(aParentEntry, {L["Wiki"]}, SkuGenericMenuItem)

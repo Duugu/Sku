@@ -2488,10 +2488,11 @@ L["Play first time user intro"] = "Play first time user intro"
 L["Show in users tutorials list"] = "Show in users tutorials list"
 L["You first need to set up that key bind in Core > Sku key binds to use this tutorial."] = "You first need to set up that key bind in (Core), (Sku key binds) to use this tutorial."
 
-L["Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:"] = "Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:"
+L["Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 2 keyboard shortcuts in tutorials like this one:"] = "Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one: "
 L["to play the instructions of the current step again."] = "to play the instructions of the current step again."
-L["to move to the next step of the tutorial."] = "to move to the next step of the tutorial."
-L["to move to the previous step."] = "to move to the previous step."
+L["to move to the next step of the tutorial if you have completed the current step."] = "to move to the next step of the tutorial if you have completed the current step"
+L["That's it for now. Now start the tutorial content by pressing %SKU_KEY_TUTORIALSTEPFORWARD%."] = "That's it for now. Now start the tutorial content by pressing %SKU_KEY_TUTORIALSTEPFORWARD%."
+
 
 L["Insert new Step"] = "Insert new Step"
 L["after this step"] = "after this step"
@@ -2508,7 +2509,29 @@ L["Voice output"] = "Voice output"
 L["Sound output"] = "Sound output"
 L["Ignore jumps"] = "Ignore jumping"
 L["Lock keyboard if tutorial is playing"] = "Lock keyboard if tutorial is playing"
---L[""] = ""
+L["You will hear the following hint for the last time"] = "The following hint will now be played for the last time"
+L["Tutorial help"] = "Tutorial help"
+L["Show for"] = "Show for"
+L["Race"] = "Race"
+L["Skill"] = "Skill"
+L["Export as text"] = "Export as text"
+
+L["Attention, important before you get into action: If you are new to the game, you can get help with your first steps with the F1 key. If you do not know how to play the game, press F1 now to start a tutorial. Don't do other stuff first. The tutorial might fail if you do things on your own. So, if you would like assistance, press the F1 key now."] = "Attention, important before you get into action: If you are new to the game, you can get help with your first steps with the F1 key. If you do not know how to play the game, press F1 now to start a tutorial. Don't do other stuff first. The tutorial might fail if you do things on your own. So, if you would like assistance, press the F1 key now."
+
+L["Tutorial helper macro"] = "Tutorial helper macro"
+L["In this help section you will find basic information on how to use the tutorial. Press the Down or Up key to hear all information."] = "In this help section you will find basic information on how to use the tutorial. Press the Down or Up key to hear all information or close this help with the Escape key"
+L["The basics: When following the tutorial, you should strictly follow the instructions in the tutorial. Listen closely to what you are supposed to do, and then do exactly that. Do not do anything else while the tutorial is in progress. You can of course do other things in between. But then you may find it difficult to get back to the point you need to go to for the next step of the tutorial. So, unless you already know your way around, you should only do the tutorial steps and not do anything else."] = "The basics: When following the tutorial, you should strictly follow the instructions in the tutorial. Listen closely to what you are supposed to do, and then do exactly that. Do not do anything else while the tutorial is in progress. You can of course do other things in between. But then you may find it difficult to get back to the point you need to go to for the next step of the tutorial. So, unless you already know your way around, you should only do the tutorial steps and not do anything else."
+L["Tutorial flow: The tutorial consists of many individual steps. In each step you will first hear an information text. It explains what you have to do next. When you have performed that activity, you will hear a success sound. Then you can proceed to the next step. To proceed to the next step, press the shortcut %SKU_KEY_TUTORIALSTEPFORWARD%. The tutorial will not continue until you have completed the current step (success sound) and pressed %SKU_KEY_TUTORIALSTEPFORWARD%."] = "Tutorial flow: The tutorial consists of many individual steps. In each step you will first hear an information text. It explains what you have to do next. When you have performed that activity, you will hear a success sound. Then you can proceed to the next step. To proceed to the next step, press the shortcut %SKU_KEY_TUTORIALSTEPFORWARD%. The tutorial will not continue until you have completed the current step and pressed %SKU_KEY_TUTORIALSTEPFORWARD%."
+L["Replaying the step instructions: You can listen to the instructions of the current tutorial step again at any time. To do this, press the shortcut %SKU_KEY_TUTORIALSTEPREPEAT%."] = "Replaying the step instructions: You can listen to the instructions of the current tutorial step again at any time. To do this, press the shortcut %SKU_KEY_TUTORIALSTEPREPEAT%."
+L["Starting your newbie tutorial: There is a first steps tutorial specifically for your as a "] = "Starting your newbie tutorial: There is a first steps tutorial specifically for your as a "
+L["To start this tutorial now, please press the ENTER key."] = "To start this tutorial now, please press the ENTER key now."
+L["Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a "] = "Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a "
+L["We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials."] = "We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials."
+
+
+
+
+
 
 
 

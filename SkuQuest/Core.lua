@@ -24,9 +24,8 @@ local EnumItemQuality = {
 SkuQuest.racesFriendly = {
 	ALL_ALLIANCE = L["Allianz"],
 	ALL_HORDE = L["Horde"],
-	--ALL = VANILLA and 255 or 2047,
+	ALL = L["Alle"],
 	NONE = L["Keine"],
-
 	HUMAN = L["Mensch"],
 	ORC = L["Ork"],
 	DWARF = L["Zwerg"],
