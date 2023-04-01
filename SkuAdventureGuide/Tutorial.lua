@@ -1714,10 +1714,12 @@ function SkuAdventureGuide.Tutorial:PlayFtuTutorialHint(aevent)
    if not SkuOptions.db.char[MODULE_NAME].Tutorials.ftuTutorialHintPlayed then
       SkuDispatcher:UnregisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuAdventureGuide.Tutorial.PlayFtuTutorialHint)
       SkuOptions.db.char[MODULE_NAME].Tutorials.ftuTutorialHintPlayed = true
-      C_Timer.After(3, function()
-         local tIntroText = L["Attention, important before you get into action: If you are new to the game, you can get help with your first steps with the F1 key. If you do not know how to play the game, press F1 now to start a tutorial. Don't do other stuff first. The tutorial might fail if you do things on your own. So, if you would like assistance, press the F1 key now."]
-         SkuOptions.Voice:OutputStringBTtts(tIntroText, {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
-      end)
+      if UnitLevel("player") == 1 then
+         C_Timer.After(3, function()
+            local tIntroText = L["Attention, important before you get into action: If you are new to the game, you can get help with your first steps with the F1 key. If you do not know how to play the game, press F1 now to start a tutorial. Don't do other stuff first. The tutorial might fail if you do things on your own. So, if you would like assistance, press the F1 key now."]
+            SkuOptions.Voice:OutputStringBTtts(tIntroText, {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
+         end)
+      end
    end
 end
 

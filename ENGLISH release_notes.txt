@@ -4,6 +4,11 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.10
+	- Restricted the "first login hint" to level 1 characters.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.9
 	- A lot of internal bug fixes and updates for the tutorial feature. Added a default basic example tutorial for Human Warriors. This is just for testing and has very few steps.
 
