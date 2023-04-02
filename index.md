@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.10](https://github.com/Duugu/Sku/releases/download/r33.10/Sku-r33.10-wrath.zip) (April 1st 2023)<br>
+- [Sku r33.11](https://github.com/Duugu/Sku/releases/download/r33.11/Sku-r33.11-wrath.zip) (April 1st 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------	
+## Changes in Sku r33.11
+- Added the placeholder %target% to use in tutorial step start texts. Will be replaced by the npc/creature id of the unit you are targeting while editing the start text.
+- Fixed a bug with tutorial shortcuts not working if ALT + J and ALT + K.
+- Fixed a bug with tutorial shortcuts and leading to filter inputs in menüs.
+- Added an tutorial end text that will be played if the last tutorial step is completed.
+
 ## Changes in Sku r33.10
 - Restricted the "first login hint" to level 1 characters.
 
