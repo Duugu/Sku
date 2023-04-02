@@ -2528,10 +2528,13 @@ L["To start this tutorial now, please press the ENTER key."] = "To start this tu
 L["Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a "] = "Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a "
 L["We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials."] = "We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials."
 
+L["Error: No target or target has no not valid creature id"] = "Error: No target or target has no not valid creature id"
+L["INCORRECT CREATURE ID"] = "INCORRECT CREATURE ID"
 
+L["is creature ID"] = "creature ID"
+L["is string"] = "string"
 
-
-
+L["This was the last tutorial step. The tutorial is completed."] = "This was the last tutorial step. The tutorial is completed."
 
 
 

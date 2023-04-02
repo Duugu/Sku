@@ -2463,7 +2463,7 @@ L["Alt"] = "Alt"
 L["MODIFIER_KEY_DOWN"] = "Modifizierungtaste gedrückt"
 L["Alliance"] = "Allianz"
 L["VIEWING_DIRECTION"] = "Blickrichtung"
-L["CURRENT_TARGET"] = "Id deine aktuellen Ziels"
+L["CURRENT_TARGET"] = "Id deines aktuellen Ziels"
 L["Don't skip current outputs"] = "Laufende Ausgaben nicht abbrechen"
 L["Start over"] = "Neu starten"
 L["Continue"] = "Fortsetzen"
@@ -2521,3 +2521,11 @@ L["Starting your newbie tutorial: There is a first steps tutorial specifically f
 L["To start this tutorial now, please press the ENTER key."] = "Drücke jetzt die EINGABETASTE, um dieses Tutorial jetzt zu starten."
 L["Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a "] = "Starten des Neueinsteiger Tutorials: Leider gibt es zurzeit kein Erste Schritte Tutorial für dich als "
 L["We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials."] = "Wir arbeiten an weiteren Tutorials. Du kannst in unserem Discord um Hilfe bitten oder nach weiteren Tutorials fragen."
+
+L["Error: No target or target has no not valid creature id"] = "Fehler: Kein Ziel oder ziel hat keine gültige creature id"
+L["INCORRECT CREATURE ID"] = "FEHLERHAFTE CREATURE ID"
+
+L["is creature ID"] = "creature ID"
+L["is string"] = "zeichenfolge"
+
+L["This was the last tutorial step. The tutorial is completed."] = "Dies war der letzte Tutorial Schritt. Das Tutorial ist abgeschlossen."

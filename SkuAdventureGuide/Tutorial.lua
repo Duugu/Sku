@@ -40,29 +40,62 @@ local tSkillRequirementValues = {
 	[999] = L["Alle"],
 }
 
+local tEditPlaceholders = {
+   [1] = {
+      tag = "%%target%%",
+      value = function() 
+         local tCreatureId = SkuAdventureGuide.Tutorial:GetUnitCreatureId("target")
+         if tCreatureId then
+            return "%%npc_id%:"..string.format("%06d", tCreatureId).."%%"
+         end
+         return nil, L["Error: No target or target has no not valid creature id"]
+      end,
+   },
+}
+
 local tPlaceholders = {
    [1] = {
       tag = "%%name%%",
-      value = function() 
-         return UnitName("player")
+      value = function(aString) 
+         local tName = UnitName("player")
+         aString = string.gsub(aString, "%%name%%", tName)
+         return aString
       end,
    },
    [2] = {
       tag = "%%class%%",
-      value = function() 
-         return UnitClass("player")
+      value = function(aString) 
+         local tClass = UnitClass("player")
+         aString = string.gsub(aString, "%%class%%", tClass)
+         return aString
       end,
    },
    [3] = {
       tag = "%%SKU_KEY_TUTORIALSTEPFORWARD%%",
-      value = function() 
-         return SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key
+      value = function(aString) 
+         aString = string.gsub(aString, "%%SKU_KEY_TUTORIALSTEPFORWARD%%", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key)
+         return aString
       end,
    },
    [4] = {
       tag = "%%SKU_KEY_TUTORIALSTEPREPEAT%%",
-      value = function() 
-         return SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key
+      value = function(aString) 
+         aString = string.gsub(aString, "%%SKU_KEY_TUTORIALSTEPREPEAT%%", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key)
+         return aString
+      end,
+   },
+   [4] = {
+      tag = "%%(npc_id)%:(%d+)%%",
+      value = function(aString) 
+         local tType, tId = string.match(aString, "%%(npc_id)%:(%d+)%%")
+         if tId then
+            local tName = L["INCORRECT CREATURE ID"].." "..tId
+            if SkuDB.NpcData.Names[Sku.Loc][tonumber(tId)] then
+               tName = SkuDB.NpcData.Names[Sku.Loc][tonumber(tId)][1]
+            end
+            aString = string.gsub(aString, "%%(npc_id)%:"..tId.."%%", tName)
+         end
+         return aString
       end,
    },
 }
@@ -706,18 +739,29 @@ function SkuAdventureGuide.Tutorial:OnInitialize()
 	tFrame:SetText("OnSkuOptionsKeyTrap")
 	tFrame:SetPoint("TOP", _G["OnSkuOptionsMain"], "BOTTOM", 0, 0)
 	tFrame:SetScript("OnKeyDown", function(self, aKey, aB)
-      --print("OnKeyDown", aKey, aB, self:GetPropagateKeyboardInput())
       if SkuOptions.Voice.TutorialPlaying then
          if SkuOptions.Voice.TutorialPlaying > 0 then
-            if ((aKey == "A" or aKey == "S" or aKey == "D") and IsAltKeyDown() == true) then
-               --print("   SetPropagateKeyboardInput true")            
+            local tFullKey = aKey
+            if IsAltKeyDown() == true then
+               tFullKey = "ALT-"..tFullKey
+            end
+            if IsControlKeyDown() == true then
+               tFullKey = "CTRL-"..tFullKey
+            end
+            if IsShiftKeyDown() == true then
+               tFullKey = "SHIFT-"..tFullKey
+            end
+
+            if (tFullKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key or tFullKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key or tFullKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key) then
                self:SetPropagateKeyboardInput(true)
             elseif aKey == "7" and IsShiftKeyDown() == true then
                SkuOptions.Voice.TutorialPlaying = 0
                self:SetPropagateKeyboardInput(true)
                self:Hide()
             else
-               PlaySound(88)
+               if aKey ~= "LALT" and aKey ~= "RALT" and aKey ~= "RCTRL" and aKey ~= "LCTRL" and aKey ~= "LSHIFT" and aKey ~= "RSHIFT" then
+                  PlaySound(88)
+               end
             end
          end
       end
@@ -861,10 +905,22 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                SkuOptions:EditBoxShow(tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].beginText, function(a, b, c) 
                   local tText = SkuOptionsEditBoxEditBox:GetText()
                   if tText then
-                     tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].beginText = tText
-                     C_Timer.After(0.001, function()
-                        SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
-                     end)
+                     local tText, tError = SkuAdventureGuide.Tutorial:EditReplacePlaceholders(tText)
+                     if not tText then
+                        C_Timer.After(0.001, function()
+                           SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                           C_Timer.After(1, function()
+                              print("error", tText, tError)
+                              SkuOptions.Voice:OutputStringBTtts(tError, {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+                           end)
+                        end)
+                     else
+                        print("insert", tText, tError)
+                        tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].beginText = tText
+                        C_Timer.After(0.001, function()
+                           SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                        end)
+                     end
                   end
                end,
                false,
@@ -994,9 +1050,9 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                local tText = y.." "..L[tTriggerData.type]
                if SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "ENTER_TEXT" then
                   if tonumber(tTriggerData.value) then
-                     tText = tText..": "..SkuDB.NpcData.Names[Sku.Loc][tonumber(tTriggerData.value)][1]
+                     tText = tText..": "..SkuDB.NpcData.Names[Sku.Loc][tonumber(tTriggerData.value)][1].." ("..L["is creature ID"]..")"
                   else
-                     tText = tText..": "..tTriggerData.value
+                     tText = tText..": "..tTriggerData.value.." ("..L["is string"]..")"
                   end
                elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_TARGET" then
                   tText = tText..": "..tTriggerData.value
@@ -1772,6 +1828,9 @@ function SkuAdventureGuide.Tutorial:OnStepCompleted(aCompleteStepNumber)
       SkuOptions.Voice:OutputString("sound-notification8", false, false, 0.3, true)
       if not SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title]] then
          SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+         C_Timer.After(1.5, function()
+            SkuOptions.Voice:OutputStringBTtts(L["This was the last tutorial step. The tutorial is completed."], {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
+         end)
          return
       end
       if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience <= SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
@@ -1786,12 +1845,30 @@ function SkuAdventureGuide.Tutorial:OnStepCompleted(aCompleteStepNumber)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAdventureGuide.Tutorial:EditReplacePlaceholders(aString)
+   local tLastError = nil
+   for x = 1, #tEditPlaceholders do
+      if string.find(aString, tEditPlaceholders[x].tag) then
+         local tValue, tError = tEditPlaceholders[x].value()
+         if tValue then
+            aString = string.gsub(aString, tEditPlaceholders[x].tag, tValue)
+         else
+            tLastError = tError
+         end
+      end
+   end
+   
+   if tLastError then
+      return nil, tLastError
+   else
+      return aString
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:ReplacePlaceholders(aString)
    for x = 1, #tPlaceholders do
-      local tValue = tPlaceholders[x].value()
-      if tValue then
-         aString = string.gsub(aString, tPlaceholders[x].tag, tValue)
-      end
+      aString = tPlaceholders[x].value(aString)
    end
    return aString
 end

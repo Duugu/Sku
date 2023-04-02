@@ -2,6 +2,13 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r33.11
+	- Added the placeholder %target% for to start texts. Will be replaced by the npc/creature id of the unit you are targeting while editing the start text.
+	- Fixed a bug with tutorial shortcuts not working if ALT + J and ALT + K.
+	- Fixed a bug with tutorial shortcuts and leading to filter inputs in menüs.
+	- Added an tutorial end text that will be played if the last tutorial step is completed.
+	
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r33.10
