@@ -138,12 +138,21 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["The basics: When following the tutorial, you should strictly follow the instructions in the tutorial. Listen closely to what you are supposed to do, and then do exactly that. Do not do anything else while the tutorial is in progress. You can of course do other things in between. But then you may find it difficult to get back to the point you need to go to for the next step of the tutorial. So, unless you already know your way around, you should only do the tutorial steps and not do anything else."])}, SkuGenericMenuItem)
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Tutorial flow: The tutorial consists of many individual steps. In each step you will first hear an information text. It explains what you have to do next. When you have performed that activity, you will hear a success sound. Then you can proceed to the next step. To proceed to the next step, press the shortcut %SKU_KEY_TUTORIALSTEPFORWARD%. The tutorial will not continue until you have completed the current step (success sound) and pressed %SKU_KEY_TUTORIALSTEPFORWARD%."])}, SkuGenericMenuItem)
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Replaying the step instructions: You can listen to the instructions of the current tutorial step again at any time. To do this, press the shortcut %SKU_KEY_TUTORIALSTEPREPEAT%."])}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Tutorial duration: The tutorial can last several hours. However, it usually takes about an hour to complete. But that will depend on your pace. It is better to spend some more time learning how the game and the addon are working. After that, you have to deal with everthing without the tutorial supporting you. You can always create a new character to play the tutorial again."])}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Breaks: If you can't finish the tutorial because you don't have enough time or unexpected events such disconnects are disrupting the tutorial, you may resume the tutorial once you are back. Open this help with (F1). Go to the bottom. There, you will be offered to continue the tutorial."])}, SkuGenericMenuItem)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Log out: If you would like to exit the game, do not use Alt + (F4). For the game to save settings you need to log out from the game. To do this type slash logout and press Enter. The wait until you hear the background audio changing. That can take up to 20 seconds. Then close the game using Alt + (F4)."])}, SkuGenericMenuItem)		
 
 			local tBestTutName, tLocRaceText, tLocClassText = SkuAdventureGuide.Tutorial:GetBestTutorialNameForFirstTimeUser()
 			if tBestTutName then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Starting your newbie tutorial: There is a first steps tutorial specifically for your as a "]..tLocRaceText.." "..tLocClassText..". "..L["To start this tutorial now, please press the ENTER key."])}, SkuGenericMenuItem)
-				tNewMenuEntry.isSelect = true
-				tNewMenuEntry.OnAction = function(self, aValue, aName)
+				local tProgress = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tBestTutName]
+				local tNewMenuEntryC
+				if tProgress and tProgress < #SkuDB.Tutorials[Sku.Loc][i].steps and tProgress ~= 0 then
+					tNewMenuEntryC = SkuOptions:InjectMenuItems(self, {L["To continue your newbie tutorial from step"]" "..tProgress.." "..L["press the Enter key now"]}, SkuGenericMenuItem)
+				else
+					tNewMenuEntryC = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Starting your newbie tutorial: There is a first steps tutorial specifically for your as a "]..tLocRaceText.." "..tLocClassText..". "..L["To start this tutorial now, please press the ENTER key."])}, SkuGenericMenuItem)
+				end
+				tNewMenuEntryC.isSelect = true
+				tNewMenuEntryC.OnAction = function(self, aValue, aName)
 					SkuAdventureGuide.Tutorial:StopCurrentTutorial()
 					SkuOptions:CloseMenu()                     
 					SkuAdventureGuide.Tutorial:StartTutorial(tBestTutName, 1, SkuDB, nil, true)

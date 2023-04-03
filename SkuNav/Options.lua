@@ -289,7 +289,7 @@ SkuNav.defaults = {
 	includeDefaultPostboxWaypoints = true,
 	includeDefaultTaxiWaypoints = true,
 	]]
-	beaconVolume = 50,
+	beaconVolume = 35,
 	beaconSoundSetNarrow = "Beacon 2",
 	beaconSoundSetWide = "Beacon 4",
 	vocalizeFullDirectionDistance = true,

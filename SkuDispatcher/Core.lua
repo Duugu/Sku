@@ -31,6 +31,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
+	--print("UnregisterEventCallback(", aEventName, aCallbackFunc)
 	if not SkuDispatcher.Registered[aEventName] then
 		return
 	end
@@ -54,11 +55,16 @@ function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc)
+function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc, aOnlyOneCallbackFlag)
+	aOnlyOneCallbackFlag = aOnlyOneCallbackFlag or false
+	--print("RegisterEventCallback(", aEventName, aCallbackFunc, aOnlyOneCallbackFlag)
 	if not SkuDispatcher.Registered[aEventName] then
 		SkuDispatcher[aEventName] = function(...)
-			for callbackFunc in pairs(SkuDispatcher.Registered[aEventName].callbacks) do
+			for callbackFunc, tOnlyOneCallbackFlag in pairs(SkuDispatcher.Registered[aEventName].callbacks) do
 				callbackFunc(...)
+				if tOnlyOneCallbackFlag == true then
+					SkuDispatcher:UnregisterEventCallback(aEventName, callbackFunc)
+				end
 			end
 		end
 
@@ -73,6 +79,6 @@ function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc)
 	end
 
 	if not SkuDispatcher.Registered[aEventName].callbacks[aCallbackFunc] then
-		SkuDispatcher.Registered[aEventName].callbacks[aCallbackFunc] = true
+		SkuDispatcher.Registered[aEventName].callbacks[aCallbackFunc] = aOnlyOneCallbackFlag
 	end
 end

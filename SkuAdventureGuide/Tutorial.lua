@@ -854,6 +854,7 @@ function SkuAdventureGuide.Tutorial:OnInitialize()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
+local tNoAction
 local SkuFoundtMenuPosString
 function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
    local tSource = self.parent.source
@@ -929,7 +930,6 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                            end)
                         end)
                      else
-                        print("insert", tText, tError)
                         tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].beginText = tText
                         C_Timer.After(0.001, function()
                            SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -985,6 +985,9 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                tNewMenuEntry.filterable = true
                tNewMenuEntry.isSelect = true
                tNewMenuEntry.OnAction = function(self, aValue, aName)
+                  if tNoAction then
+                     return
+                  end
                   if aName == L["ENTER_TEXT"] then
                      SkuOptions:EditBoxShow("", function(a, b, c) 
                         local tText = SkuOptionsEditBoxEditBox:GetText()
@@ -1036,14 +1039,16 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                               C_Timer.After(0.001, function()
                                  SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
                                  SkuFoundtMenuPosString = nil
+                                 tNoAction = nil
                               end)
                            else
                               SkuFoundtMenuPosString = nil
+                              tNoAction = nil
                            end
                         end)
-                        SkuDispatcher:UnregisterEventCallback("SKU_SLASH_MENU_ITEM_SELECTED", CallbackHelper)
                      end
-                     SkuDispatcher:RegisterEventCallback("SKU_SLASH_MENU_ITEM_SELECTED", CallbackHelper)
+                     SkuDispatcher:RegisterEventCallback("SKU_SLASH_MENU_ITEM_SELECTED", CallbackHelper, true)
+                     tNoAction = true
 
                   else
                      for a, b in pairs(SkuAdventureGuide.Tutorial.triggers[self.triggerType].values) do
@@ -1855,10 +1860,11 @@ function SkuAdventureGuide.Tutorial:PlayFtuIntro()
    local tPrev = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key ~= "" and CleanKeyBindStringHelper(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key) or " ("..L["No key bind for"].." "..L["SKU_KEY_TUTORIALSTEPBACK"]..") "
    local tIntroText = 
    L["Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:"]
-   .." "..tPlay.." "..
-   L["to play the instructions of the current step again."]
-   .." "..tNext.." "..
-   L["to move to the next step of the tutorial if you have completed the current step."]
+   .." "..tPlay
+   .." "..L["to play the instructions of the current step again."]
+   .." "..tNext
+   .." "..L["to move to the next step of the tutorial if you have completed the current step."]
+   .." "..L["Whenever the tutorial speaks, all keys are locked. Wait until the tutorial has finished speaking. Then the keys are available again."]
    .." "..L["That's it for now. Now start the tutorial content by pressing %SKU_KEY_TUTORIALSTEPFORWARD%."] 
 
    tIntroText = SkuAdventureGuide.Tutorial:ReplacePlaceholders(tIntroText)
@@ -1944,10 +1950,11 @@ function SkuAdventureGuide.Tutorial:AddNextStepText(aString)
          tKey = L["No key bind for"].." "..CleanKeyBindStringHelper(L["SKU_KEY_TUTORIALSTEPFORWARD"])..". "..L["You first need to set up that key bind in Core > Sku key binds to use this tutorial."]
          return tKey
       end
-      if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience >= SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
-         aString = aString..". "..L["You will hear the following hint for the last time"].."! "
-      end
       aString = aString..". "..L["Tutorial step completed"]..". "..L["Press"].." "..tKey.." "..L["to continue with the next tutorial step"]
+      if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience == SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
+         aString = aString..". "..L["You won't hear this tip anymore from now on."]
+      end
+
       SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience = SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience + 1
    end
    return aString

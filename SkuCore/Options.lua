@@ -64,7 +64,7 @@ local tModifierKeys = {
 	"SHIFT-SHIFT-ALT-",
 }
 
-local tStandardChars = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ö", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", ",", ".", "-", "#", "+", "ß", "´", "<"}
+local tStandardChars = {"^", "°", "`", "~", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ü", "ö", "ß", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", ",", ".", "-", "#", "+", "ß", "´", "<"}
 local tStandardNumbers = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12",}
 
 local tActionBarData = {
@@ -609,7 +609,7 @@ SkuCore.defaults = {
 	--autoFollow = false,
 	--endFollowOnCast = false,
 	interactMove = true,
-	playNPCGreetings = false,
+	playNPCGreetings = true,
 	scanBackgroundSound = "tools-ratchet.mp3",
 	doNotHideTooltip = true,
 	ressourceScanning = {
@@ -691,7 +691,7 @@ local function KeyBindingKeyMenuEntryHelper(self, aValue, aName)
 			f:SetPoint("LEFT", UIParent, "RIGHT", 1500, 0)
 			f:SetPoint("CENTER")
 			f:SetScript("OnClick", function(self, aKey, aB)
-				--dprint(aKey, aB)
+				--print(aKey, aB)
 				if aKey ~= "ESCAPE" then
 					if not self.command or not self.category or not self.menuTarget or not self.index then return end
 					for z = 1, #tBlockedKeysParts do
