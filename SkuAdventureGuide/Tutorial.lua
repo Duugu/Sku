@@ -128,7 +128,20 @@ SkuAdventureGuide.Tutorial.triggers = {
       end,
       collector = {},
    },
-
+   MENU_ITEM = {
+      uiString = L["MENU_ITEM"],
+      values = {
+         [1] = "WAIT_FOR_MENU_SELECT",
+      },
+      validator = function(aValue)
+         local tcurrent = SkuOptions:GetMenuIndexAndBreadString(SkuOptions.currentMenuPosition)
+         if tcurrent == aValue then
+            return true
+         end
+         return false
+      end,
+      collector = {},
+   },
    VIEWING_DIRECTION = {
       uiString = L["VIEWING_DIRECTION"],
       values = {
@@ -841,6 +854,7 @@ function SkuAdventureGuide.Tutorial:OnInitialize()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
+local SkuFoundtMenuPosString
 function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
    local tSource = self.parent.source
    local tTutorialName = self.parent.tutorialName
@@ -947,6 +961,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                tNewMenuEntry.filterable = true
                tNewMenuEntry.isSelect = true
                tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                  self.menuStringUpdated = nil
                   return (tStepData.allTriggersRequired == true and L["Yes"] or L["No"])
                end
                tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -1012,6 +1027,24 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                      C_Timer.After(0.001, function()
                         SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
                      end)
+                  elseif aName == L["WAIT_FOR_MENU_SELECT"] then
+                     local tOldIndexString = SkuOptions:GetMenuIndexAndBreadString(SkuOptions.currentMenuPosition)
+                     local function CallbackHelper(aEventName, aIndexString, aBreadString)
+                        table.insert(tStepData.triggers, {type = self.triggerType, value = aIndexString})
+                        C_Timer.After(0.4, function()
+                           if SkuOptions:OpenMenuFromIndexString(tOldIndexString) then
+                              C_Timer.After(0.001, function()
+                                 SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+                                 SkuFoundtMenuPosString = nil
+                              end)
+                           else
+                              SkuFoundtMenuPosString = nil
+                           end
+                        end)
+                        SkuDispatcher:UnregisterEventCallback("SKU_SLASH_MENU_ITEM_SELECTED", CallbackHelper)
+                     end
+                     SkuDispatcher:RegisterEventCallback("SKU_SLASH_MENU_ITEM_SELECTED", CallbackHelper)
+
                   else
                      for a, b in pairs(SkuAdventureGuide.Tutorial.triggers[self.triggerType].values) do
                         if L[b] == aName then
@@ -1061,14 +1094,44 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                   local _, _, rr = string.match(tTriggerData.value, "(.+);(.+);(.+)")
                   rr = rr or 4
                   tText = tText..": "..x..";"..y.. " "..rr..";"..L["Meter"]
+               elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "WAIT_FOR_MENU_SELECT" then
+                  tText = tText..": "..tTriggerData.value
                else
                   tText = tText..": "..L[SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[tTriggerData.value]]
                end
+
                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tText}, SkuGenericMenuItem)
                if tPrefix ~= "Sku" then
                   tNewMenuEntry.dynamic = true
                   tNewMenuEntry.filterable = true
                   tNewMenuEntry.BuildChildren = function(self)
+                     --resolve WAIT_FOR_MENU_SELECT trigger
+                     if SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "WAIT_FOR_MENU_SELECT" then
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Resolve menu entry"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           local tOldIndexString = SkuOptions:GetMenuIndexAndBreadString(SkuOptions.currentMenuPosition)
+                           if SkuFoundtMenuPosString == nil then
+                              SkuFoundtMenuPosString = true
+                              local tMenuPosString = SkuOptions:GetMenuStringFromIndexString(tTriggerData.value)
+                              if not tMenuPosString then
+                                 tMenuPosString = " > "..L["menu entry not available at the moment"]
+                              end
+                              C_Timer.After(0.4, function()
+                                 if SkuOptions:OpenMenuFromIndexString(tOldIndexString) then
+                                    C_Timer.After(0.001, function()
+                                       SkuOptions.currentMenuPosition.name = SkuOptions.currentMenuPosition.name..tMenuPosString
+                                       SkuOptions:VocalizeCurrentMenuName()
+                                       SkuFoundtMenuPosString = nil
+                                    end)
+                                 else
+                                    SkuFoundtMenuPosString = nil
+                                 end
+                              end)
+                           end
+                        end            
+                     end
+
                      --delete trigger
                      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
                      tNewMenuEntry.isSelect = true

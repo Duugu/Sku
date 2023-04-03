@@ -107,6 +107,99 @@ function SkuOptions:SlashFuncPquit(input)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:GetMenuIndexAndBreadString(aMenuItem)
+	local tTable = aMenuItem
+	if tTable then
+		local tBreadString = SkuOptions.currentMenuPosition.name
+		local tIndexString = SkuOptions.currentMenuPosition.index
+		while tTable.parent.name do
+			tTable = tTable.parent
+			tBreadString = tTable.name..","..tBreadString
+			tIndexString = tTable.index..","..tIndexString
+		end
+
+		return tIndexString, tBreadString
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:OpenMenuFromIndexString(aIndexString)
+	local fields = {}
+	for i in string.gmatch(aIndexString..",", "%d+,") do
+		local tClean = string.gsub(i, ",", "")
+		fields[#fields + 1] = tonumber(tClean)
+	end
+
+	if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
+		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+	end
+
+	local tMenu = {}
+	local tMenu = SkuOptions.Menu
+	local tFoundMenuPos = nil
+	local tNameString = ""
+	for x = 1, #fields do
+		if tMenu[fields[x]].children then
+			if #tMenu[fields[x]].children == 0 then
+				tMenu[fields[x]]:BuildChildren(tMenu[fields[x]])
+			end
+		end
+		tFoundMenuPos = tMenu[fields[x]]
+		tMenu[fields[x]].OnSelect(tMenu[fields[x]], true)
+		tMenu = tMenu[fields[x]].children
+		
+		if tFoundMenuPos and tFoundMenuPos.name then
+			tNameString = tNameString.." > "..tFoundMenuPos.name
+		else
+			return
+		end
+	end
+
+	return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuOptions:GetMenuStringFromIndexString(aIndexString)
+	local fields = {}
+	for i in string.gmatch(aIndexString..",", "%d+,") do
+		local tClean = string.gsub(i, ",", "")
+		fields[#fields + 1] = tonumber(tClean)
+	end
+
+	if #SkuOptions.Menu == 0 or SkuOptions:IsMenuOpen() == false then
+		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+	end
+
+	local tMenu = {}
+	local tMenu = SkuOptions.Menu
+	local tFoundMenuPos = nil
+	local tNameString = ""
+	for x = 1, #fields do
+		if tMenu[fields[x]] then
+			if tMenu[fields[x]].children then
+				if #tMenu[fields[x]].children == 0 then
+					tMenu[fields[x]]:BuildChildren(tMenu[fields[x]])
+				end
+			end
+			tFoundMenuPos = tMenu[fields[x]]
+			tMenu[fields[x]].OnSelect(tMenu[fields[x]], true)
+			tMenu = tMenu[fields[x]].children
+			if tFoundMenuPos and tFoundMenuPos.name then
+				tNameString = tNameString.." > "..tFoundMenuPos.name
+			else
+				return
+			end
+		else
+			return
+		end
+	end
+
+	if tFoundMenuPos then
+		return tNameString
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 ---@param input string
 function SkuOptions:SlashFunc(input, aSilent)
 	--print("++SkuOptions:SlashFunc(input)", input, aSilent)
@@ -212,6 +305,12 @@ function SkuOptions:SlashFunc(input, aSilent)
 			SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap = SkuOptions.db.profile["SkuNav"].showRoutesOnMinimap ~= true
 		end
 		]]
+
+		if fields[1] == "menuselect" then
+			local tIndexString, tBreadString = SkuOptions:GetMenuIndexAndBreadString(SkuOptions.currentMenuPosition)
+			SkuDispatcher:TriggerSkuEvent("SKU_SLASH_MENU_ITEM_SELECTED", tIndexString, tBreadString)
+		end
+
 
 		if fields[1] == "mon" then
 			SkuCore:AqSlashHandler(fields)
@@ -3264,6 +3363,7 @@ function SkuOptions:InjectMenuItems(aParentMenu, aNewItems, aItemTemplate)
 		for x = 1, #aNewItems do
 			tParentMenu = tParentMenu + aItemTemplate
 			tParentMenu[#tParentMenu].name = aNewItems[x]
+			tParentMenu[#tParentMenu].index = #tParentMenu
 			tParentMenu[#tParentMenu].parent = aParentMenu
 			if tParentMenu[#tParentMenu - 1] then
 				tParentMenu[#tParentMenu].prev = tParentMenu[#tParentMenu - 1]

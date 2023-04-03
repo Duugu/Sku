@@ -2536,6 +2536,7 @@ L["is string"] = "string"
 
 L["This was the last tutorial step. The tutorial is completed."] = "This was the last tutorial step. The tutorial is completed."
 
-
-
-
+L["MENU_ITEM"] = "Menu item"
+L["WAIT_FOR_MENU_SELECT"] = "Wait for menu item selection"
+L["Resolve menu entry"] = "Resolve menu entry"
+L["menu entry not available at the moment"] = "menu entry not available at the moment"

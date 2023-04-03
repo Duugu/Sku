@@ -10,7 +10,7 @@ SkuDispatcher.Registered = {}
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuDispatcher:TriggerSkuEvent(aEventName, ...)
 	if SkuDispatcher[aEventName] then
-		SkuDispatcher[aEventName](SkuDispatcher, aEventName, ...)
+		SkuDispatcher[aEventName](aEventName, ...)
 	end
 end
 
@@ -35,6 +35,7 @@ function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
 		return
 	end
 	if not SkuDispatcher.Registered[aEventName].callbacks[aCallbackFunc] then
+		print("Error: no registered callback function")
 		return
 	end
 

@@ -2529,3 +2529,8 @@ L["is creature ID"] = "creature ID"
 L["is string"] = "zeichenfolge"
 
 L["This was the last tutorial step. The tutorial is completed."] = "Dies war der letzte Tutorial Schritt. Das Tutorial ist abgeschlossen."
+
+L["MENU_ITEM"] = "Menüelement"
+L["WAIT_FOR_MENU_SELECT"] = "Auf Menüelement Auswahl warten"
+L["Resolve menu entry"] = "Menueintrag auflösen"
+L["menu entry not available at the moment"] = "Menüeintrag zurzeit nicht verfügbar"
