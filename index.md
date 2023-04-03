@@ -23,7 +23,6 @@ DEUTSCH - Erste Schritte:<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
--------------------------------------------------------------------------------------------------------	
 -------------------------------------------------------------------------------------------------------
 ## Changes in Sku r33.12
 - Added a new tutorial trigger type: Menu item. 
