@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.12](https://github.com/Duugu/Sku/releases/download/r33.12/Sku-r33.12-wrath.zip) (April 2nd 2023)<br>
+- [Sku r33.13](https://github.com/Duugu/Sku/releases/download/r33.13/Sku-r33.13-wrath.zip) (April 3nd 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r33.13
+- Added support for the following characters for key binds: caret, backquote, tilde, degree
+- Added "Continue tutorial" to f1 help menu if player already has started the tutorial
+- Changed some default sound volume settings for new players
+- Renamed the "Adventure Guide" menu entry to "Tutorials and Wiki"
+- Repaired the tutorial trigger "menu item"
+
 ## Changes in Sku r33.12
 - Added a new tutorial trigger type: Menu item. 
 	Creating a new trigger with that type will not instantly create the trigger. Instead it will wait for you to choose the required menu item from the real sku menu.<br>
