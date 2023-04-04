@@ -835,7 +835,7 @@ function SkuAdventureGuide.Tutorial:OnInitialize()
    end)
 
    -- get events for GAME_EVENT
-   local function tCallbackHelper(self, aEvent, ...)
+   local function tCallbackHelper(aEvent, ...)
       table.insert(SkuAdventureGuide.Tutorial.triggers.GAME_EVENT.collector, aEvent)
       tNextCollectorCleanup = GetTimePreciseSec()
    end
