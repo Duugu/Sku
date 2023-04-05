@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.14](https://github.com/Duugu/Sku/releases/download/r33.14/Sku-r33.14-wrath.zip) (April 4th 2023)<br>
+- [Sku r33.15](https://github.com/Duugu/Sku/releases/download/r33.15/Sku-r33.15-wrath.zip) (April 5th 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r33.15
+- Fixed an issue with the sku event dispatcher and new sku events
+- Removed default tutorials ("Sku") from Tutorial Editor > Existing
+
 ## Changes in Sku r33.14
 - Fixed the sku game event triggers for tutorials
 	
