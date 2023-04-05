@@ -39,7 +39,6 @@ local tSkillRequirementValues = {
    [3] = L["Fishing"],
 	[999] = L["Alle"],
 }
-
 local tEditPlaceholders = {
    [1] = {
       tag = "%%target%%",
@@ -52,7 +51,6 @@ local tEditPlaceholders = {
       end,
    },
 }
-
 local tPlaceholders = {
    [1] = {
       tag = "%%name%%",
@@ -102,7 +100,7 @@ local tPlaceholders = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuAdventureGuide.Tutorial = {}
-SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps = 7
+SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps = 4
 SkuAdventureGuide.Tutorial.currentStepCompleted = false
 SkuAdventureGuide.Tutorial.evaluateNextStep = false
 SkuAdventureGuide.Tutorial.current = {
@@ -674,13 +672,24 @@ SkuAdventureGuide.Tutorial.triggers = {
 function SkuAdventureGuide.Tutorial:PLAYER_ENTERING_WORLD(...)
    SkuOptions.db.global[MODULE_NAME].Tutorials = SkuOptions.db.global[MODULE_NAME].Tutorials or {prefix = "Custom", ["enUS"] = {}, ["deDE"] = {},}   
    SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
+
+   --upgrade char tutorial progress table
    SkuOptions.db.char[MODULE_NAME].Tutorials = SkuOptions.db.char[MODULE_NAME].Tutorials or {progress = {}, logins = 0,}
+
+   --upgrade existing tutorials tables
    SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience = SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience or 0
-
    for i, v in pairs(SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc]) do
+      v.GUID = v.GUID or SkuAdventureGuide.Tutorial:GetNewGUID()
       v.requirements = v.requirements or {race = 993, class = 99, skill = 999, }
-   end
+      v.requirements = v.requirements or {race = 993, class = 99, skill = 999, }
+      v.isSkuNewbieTutorial = v.isSkuNewbieTutorial or false
 
+      for istep, vstep in pairs(v.steps) do
+         vstep.GUID = vstep.GUID or SkuAdventureGuide.Tutorial:GetNewGUID()
+         vstep.linkedFrom = {}
+         vstep.linkedIn = {}
+      end
+   end
 
    --add the tutorial help macro to MultiBarBottomLeftButton1 (F1)
    if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience == 0 then
@@ -835,7 +844,7 @@ function SkuAdventureGuide.Tutorial:OnInitialize()
    end)
 
    -- get events for GAME_EVENT
-   local function tCallbackHelper(aEvent, ...)
+   local function tCallbackHelper(_, aEvent, ...)
       table.insert(SkuAdventureGuide.Tutorial.triggers.GAME_EVENT.collector, aEvent)
       tNextCollectorCleanup = GetTimePreciseSec()
    end
@@ -881,11 +890,14 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                   SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, })
                else
                   tSource.Tutorials[Sku.Loc][tTutorialName].steps[#tSource.Tutorials[Sku.Loc][tTutorialName].steps + 1] = {
+                     GUID = SkuAdventureGuide.Tutorial:GetNewGUID(),
                      title = tText,
                      allTriggersRequired = true,
                      dontSkipCurrentOutputs = true,
                      triggers = {},
                      beginText = "",
+                     linkedFrom = {},
+                     linkedIn = {},
                   }
                   C_Timer.After(0.001, function()
                      SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -1394,11 +1406,13 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
                SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, })
             else
                SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][tText] = {
+                  GUID = SkuAdventureGuide.Tutorial:GetNewGUID(),
                   requirements = {race = 993, class = 99, skill = 999, },
                   steps = {},
                   playFtuIntro = false,
                   showInUserList = true,
                   lockKeyboard = true,
+                  isSkuNewbieTutorial = false,
                }
                C_Timer.After(0.001, function()
                   SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -1644,7 +1658,8 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
          return tEmpty
       end
 
-      if tSubMenuBuilderHelper(SkuDB) + tSubMenuBuilderHelper(SkuOptions.db.global[MODULE_NAME]) == 0 then
+      --if tSubMenuBuilderHelper(SkuDB) + tSubMenuBuilderHelper(SkuOptions.db.global[MODULE_NAME]) == 0 then
+      if tSubMenuBuilderHelper(SkuOptions.db.global[MODULE_NAME]) == 0 then
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
       end
 
@@ -1696,6 +1711,8 @@ function SkuAdventureGuide.Tutorial:ExportTutorialAsFriendlyList(aTutorialName, 
             local _, _, rr = string.match(tTriggerData.value, "(.+);(.+);(.+)")
             rr = rr or 4
             tText = tText..": "..x..";"..y.. " "..rr..";"..L["Meter"]
+         elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "WAIT_FOR_MENU_SELECT" then
+            tText = tText..": "..tTriggerData.value
          else
             tText = tText..": "..L[SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[tTriggerData.value]]
          end
@@ -2087,4 +2104,31 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:OpenTutorialHelpMenu()
    SkuOptions:SlashFunc(L["short"]..","..L["SkuAdventureGuideMenuEntry"]..","..L["Tutorials"]..","..L["Tutorial help"])
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAdventureGuide.Tutorial:LinkStep(aThisTutorialName, aThisTutorialStepNumber, aLinkTutorialName, aLinkTutorialStepNumber)
+   SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aThisTutorialName].steps[aThisTutorialStepNumber].linkedFrom.tutorialName = aLinkTutorialName
+   SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aThisTutorialName].steps[aThisTutorialStepNumber].linkedFrom.stepNumber = aLinkTutorialStepNumber
+
+   SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aLinkTutorialName].steps[aLinkTutorialStepNumber].linkedIn.tutorialName = aThisTutorialName
+   SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aLinkTutorialName].steps[aLinkTutorialStepNumber].linkedIn.stepNumber[#SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aLinkTutorialName].steps[aLinkTutorialStepNumber].linkedIn.stepNumber + 1] = aThisTutorialStepNumber
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAdventureGuide.Tutorial:UnlinkStep(aThisTutorialName, aThisTutorialStepNumber, aLinkTutorialName, aLinkTutorialStepNumber)
+   SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aThisTutorialName].steps[aThisTutorialStepNumber].linkedFrom.tutorialName = nil
+   SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aThisTutorialName].steps[aThisTutorialStepNumber].linkedFrom.stepNumber = nil
+
+   SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aLinkTutorialName].steps[aLinkTutorialStepNumber].linkedIn.tutorialName = aThisTutorialName
+   SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc][aLinkTutorialName].steps[aLinkTutorialStepNumber].linkedIn.stepNumber = aThisTutorialStepNumber
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tNewGUIDSessionCounter = 0
+function SkuAdventureGuide.Tutorial:GetNewGUID()
+   tNewGUIDSessionCounter = tNewGUIDSessionCounter + 1
+   local tNumber = string.gsub(tostring(GetServerTime()..format("%.2f", GetTimePreciseSec())), "%.", "")..format("%04d", tNewGUIDSessionCounter)
+   tNumber = tNumber:gsub("%.", "")
+   return tNumber
 end

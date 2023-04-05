@@ -4,6 +4,12 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.15
+	- Fixed an issue with the sku event dispatcher and new sku events
+	- Removed default tutorials ("Sku") from Tutorial Editor > Existing
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.14
 	- Fixed the sku game event triggers for tutorials
 

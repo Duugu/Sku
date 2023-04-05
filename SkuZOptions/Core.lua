@@ -223,7 +223,12 @@ function SkuOptions:SlashFunc(input, aSilent)
 			print(title)
 		end
 
-		
+		if fields[1] == "devmode" then
+			SkuOptions.db.global["SkuOptions"] = SkuOptions.db.global["SkuOptions"] or {}
+			SkuOptions.db.global["SkuOptions"].devmode = SkuOptions.db.global["SkuOptions"].devmode == (false or nil) and true or false
+			print("Sku devmode", (SkuOptions.db.global["SkuOptions"].devmode == true and "on" or "off"))
+		end
+
 		if fields[1] == "errors" then
 			SkuOptions:PrintLastBugsackErrors(fields[2])
 		end

@@ -146,7 +146,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 			if tBestTutName then
 				local tProgress = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tBestTutName]
 				local tNewMenuEntryC
-				if tProgress and tProgress < #SkuDB.Tutorials[Sku.Loc][i].steps and tProgress ~= 0 then
+				if tProgress and tProgress < #SkuDB.Tutorials[Sku.Loc][tBestTutName].steps and tProgress ~= 0 then
 					tNewMenuEntryC = SkuOptions:InjectMenuItems(self, {L["To continue your newbie tutorial from step"]" "..tProgress.." "..L["press the Enter key now"]}, SkuGenericMenuItem)
 				else
 					tNewMenuEntryC = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Starting your newbie tutorial: There is a first steps tutorial specifically for your as a "]..tLocRaceText.." "..tLocClassText..". "..L["To start this tutorial now, please press the ENTER key."])}, SkuGenericMenuItem)

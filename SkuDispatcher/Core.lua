@@ -10,7 +10,7 @@ SkuDispatcher.Registered = {}
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuDispatcher:TriggerSkuEvent(aEventName, ...)
 	if SkuDispatcher[aEventName] then
-		SkuDispatcher[aEventName](aEventName, ...)
+		SkuDispatcher[aEventName](SkuDispatcher, aEventName, ...)
 	end
 end
 

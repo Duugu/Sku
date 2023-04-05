@@ -594,6 +594,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:NAME_PLATE_UNIT_ADDED(aEvent, aPlateName) --aPlateName is the unitid; not the same as the plate frame name
+	--print("NAME_PLATE_UNIT_ADDED(", aEvent, aPlateName)
 	-- NAMEPLATE TEST -->
 	if Sku.testMode == true then
 		C_Timer.After(0.01, function()
