@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.15](https://github.com/Duugu/Sku/releases/download/r33.15/Sku-r33.15-wrath.zip) (April 5th 2023)<br>
+- [Sku r33.16](https://github.com/Duugu/Sku/releases/download/r33.16/Sku-r33.16-wrath.zip) (April 8th 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r33.16
+- Added updated map data for Blasted lands, Azshara, Thousand Needles, mapped by Emily
+- Fixed a bug with unintentionall removing an aura on "Auto generate aura name" and Auras that don't have a custom name.
+- Removed the "Auto generate aura name" option for auras that don't have a custom name (aka where the name already _is_ auto generated).
+- Linking of tutorial steps implemented
+- "There could be tutorials" hint on first login temporary disabled, as there are not tutorials yet. We are still in development for that feature.
+
 ## Changes in Sku r33.15
 - Fixed an issue with the sku event dispatcher and new sku events
 - Removed default tutorials ("Sku") from Tutorial Editor > Existing
