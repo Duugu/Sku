@@ -568,9 +568,11 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		tNewMenuEntry.OnEnter = function(self)
 			self.selectTarget.targetAuraName = self.parent.name
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set name to auto generated"]}, SkuGenericMenuItem)
-		tNewMenuEntry.OnEnter = function(self)
-			self.selectTarget.targetAuraName = self.parent.name
+		if SkuOptions.db.char[MODULE_NAME].Auras[self.selectTarget.targetAuraName].customName then
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set name to auto generated"]}, SkuGenericMenuItem)
+			tNewMenuEntry.OnEnter = function(self)
+				self.selectTarget.targetAuraName = self.parent.name
+			end
 		end
 
 		if self.parent.name == L["Aktivierte"] then
@@ -912,9 +914,11 @@ function SkuAuras:MenuBuilder(aParentEntry)
 			elseif aName == L["Set name to auto generated"] then		
 				local tData = SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName]
 				local tAutoName = SkuAuras:BuildAuraName(tData.type, tData.attributes, tData.actions, tData.outputs)
-				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName], true)
-				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName].customName = nil
-				SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] = nil
+				if tAutoName ~= self.targetAuraName then
+					SkuOptions.db.char[MODULE_NAME].Auras[tAutoName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName], true)
+					SkuOptions.db.char[MODULE_NAME].Auras[tAutoName].customName = nil
+					SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] = nil
+				end
 
 			elseif aName == L["Umbenennen"] then				
 				local tCurrentName = self.targetAuraName

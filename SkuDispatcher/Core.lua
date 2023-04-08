@@ -36,7 +36,7 @@ function SkuDispatcher:UnregisterEventCallback(aEventName, aCallbackFunc)
 		return
 	end
 	if not SkuDispatcher.Registered[aEventName].callbacks[aCallbackFunc] then
-		print("Error: no registered callback function")
+		dprint("Error: no registered callback function")
 		return
 	end
 
@@ -57,7 +57,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc, aOnlyOneCallbackFlag)
 	aOnlyOneCallbackFlag = aOnlyOneCallbackFlag or false
-	--print("RegisterEventCallback(", aEventName, aCallbackFunc, aOnlyOneCallbackFlag)
 	if not SkuDispatcher.Registered[aEventName] then
 		SkuDispatcher[aEventName] = function(...)
 			for callbackFunc, tOnlyOneCallbackFlag in pairs(SkuDispatcher.Registered[aEventName].callbacks) do

@@ -224,8 +224,15 @@ function SkuOptions:SlashFunc(input, aSilent)
 		end
 
 		if fields[1] == "devmode" then
+			-- Oh, hai there. You've found the secrect dev mode switch. Good boy. :P
+			-- I would suggest to not use it, if you don't know what that is leading to.
+			-- If you are ignoring this advice, I will not help you to fix any damage that may result from its use. :)
 			SkuOptions.db.global["SkuOptions"] = SkuOptions.db.global["SkuOptions"] or {}
-			SkuOptions.db.global["SkuOptions"].devmode = SkuOptions.db.global["SkuOptions"].devmode == (false or nil) and true or false
+			if not SkuOptions.db.global["SkuOptions"].devmode or SkuOptions.db.global["SkuOptions"].devmode == false then
+				SkuOptions.db.global["SkuOptions"].devmode = true
+			else
+				SkuOptions.db.global["SkuOptions"].devmode = false
+			end
 			print("Sku devmode", (SkuOptions.db.global["SkuOptions"].devmode == true and "on" or "off"))
 		end
 
@@ -1277,7 +1284,7 @@ function SkuOptions:CreateMainFrame()
 				tCurrentOverviewPage = 1
 			end
 		end
-
+		
 		if SkuAdventureGuide.Tutorial.current.title and SkuAdventureGuide.Tutorial.current.source then
 			if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] then
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key then

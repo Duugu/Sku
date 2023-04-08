@@ -4,6 +4,15 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.16
+	- Added updated map data for Blasted lands, Azshara, Thousand Needles, mapped by Emily
+	- Fixed a bug with unintentionall removing an aura on "Auto generate aura name" and Auras that don't have a custom name.
+	- Removed the "Auto generate aura name" option for auras that don't have a custom name (aka where the name already _is_ auto generated).
+	- Linking of tutorial steps implemented
+	- "There could be tutorials" hint on first login temporary disabled, as there are not tutorials yet. We are still in development for that feature.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.15
 	- Fixed an issue with the sku event dispatcher and new sku events
 	- Removed default tutorials ("Sku") from Tutorial Editor > Existing
