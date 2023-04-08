@@ -899,15 +899,37 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
       tNewMenuEntry.filterable = true
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.OnAction = function(self, aValue, aName)
-         tSource.Tutorials[Sku.Loc][tTutorialName].steps[#tSource.Tutorials[Sku.Loc][tTutorialName].steps + 1] = {
-            GUID = SkuAdventureGuide.Tutorial:GetNewGUID(),
-            linkedFrom = {},
-            linkedIn = {},
-         }
-         SkuAdventureGuide.Tutorial:LinkStep(tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tSource.Tutorials[Sku.Loc][tTutorialName].steps[#tSource.Tutorials[Sku.Loc][tTutorialName].steps].GUID, self.sourceTutorialGUID, self.sourceStepGUID)
-         C_Timer.After(0.01, function()
-            SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
-         end)
+         if aName == L["Add all steps as linked steps"] then
+            for x = 1, #self.sourceSteps do
+               dprint(x, "insert in", tTutorialName, "new:", #tSource.Tutorials[Sku.Loc][tTutorialName].steps + 1)
+               local tStepData = self.sourceSteps[x]
+               tSource.Tutorials[Sku.Loc][tTutorialName].steps[#tSource.Tutorials[Sku.Loc][tTutorialName].steps + 1] = {
+                  GUID = SkuAdventureGuide.Tutorial:GetNewGUID(),
+                  linkedFrom = {},
+                  linkedIn = {},
+               }
+               SkuAdventureGuide.Tutorial:LinkStep(
+                  tSource.Tutorials[Sku.Loc][tTutorialName].GUID, 
+                  tSource.Tutorials[Sku.Loc][tTutorialName].steps[#tSource.Tutorials[Sku.Loc][tTutorialName].steps].GUID, 
+                  self.sourceTutorialGUID, 
+                  self.sourceSteps[x].GUID
+               )
+            end
+
+            C_Timer.After(0.01, function()
+               SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+            end)
+         else
+            tSource.Tutorials[Sku.Loc][tTutorialName].steps[#tSource.Tutorials[Sku.Loc][tTutorialName].steps + 1] = {
+               GUID = SkuAdventureGuide.Tutorial:GetNewGUID(),
+               linkedFrom = {},
+               linkedIn = {},
+            }
+            SkuAdventureGuide.Tutorial:LinkStep(tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tSource.Tutorials[Sku.Loc][tTutorialName].steps[#tSource.Tutorials[Sku.Loc][tTutorialName].steps].GUID, self.sourceTutorialGUID, self.sourceStepGUID)
+            C_Timer.After(0.01, function()
+               SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+            end)
+         end
       end
       tNewMenuEntry.BuildChildren = function(self)
          local aSource = SkuOptions.db.global[MODULE_NAME]
@@ -951,9 +973,21 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                         self.selectTarget.sourceTutorialGUID = v.GUID
                      end
                   end
+
+                  if tEmpty ~= 0 then
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add all steps as linked steps"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.OnEnter = function(self, aValue, aName)
+                        SkuOptions.currentMenuPosition.textFull = tTooltipText
+                        self.selectTarget.sourceSteps = v.steps
+                        self.selectTarget.sourceTutorialGUID = v.GUID
+                     end
+
+                  end
                end
             end
          end
+
+
          
          if tEmpty == 0 then
             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
@@ -1511,7 +1545,6 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
             tNewMenuEntry.filterable = true
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.OnAction = function(self, aValue, aName)
-               print("self.stepGUID, self.tutorialGUID", self.sourceStepGUID, self.sourceTutorialGUID)
                table.insert(tSource.Tutorials[Sku.Loc][tTutorialName].steps, x + 1, {
                   GUID = SkuAdventureGuide.Tutorial:GetNewGUID(),
                   linkedFrom = {},
@@ -2717,26 +2750,26 @@ function SkuAdventureGuide.Tutorial:VerifyAndCleanGUIDs()
          for targetTutorialGuidI, targetTutorialStepsGuidV in pairs(sourceStepV.linkedIn) do
             for x = #targetTutorialStepsGuidV, 1, -1 do
                if not SkuAdventureGuide.Tutorial:GetStepDataByGUID(targetTutorialStepsGuidV[x]) then
-                  print("VerifyAndCleanGUIDs: table.remove(targetTutorialStepsGuidV,", x, ")")
+                  print("ERROR: VerifyAndCleanGUIDs: table.remove(targetTutorialStepsGuidV,", x, ")")
                   table.remove(targetTutorialStepsGuidV, x)
                end
             end
             if #targetTutorialStepsGuidV == 0 then
-               print("VerifyAndCleanGUIDs: sourceStepV.linkedIn[", targetTutorialGuidI, "] = nil")
+               print("ERROR: VerifyAndCleanGUIDs: sourceStepV.linkedIn[", targetTutorialGuidI, "] = nil")
                sourceStepV.linkedIn[targetTutorialGuidI] = nil
             end
          end
 
          if sourceStepV.linkedFrom.SourceTutorialGUID and not SkuAdventureGuide.Tutorial:GetTutorialDataByGUID(sourceStepV.linkedFrom.SourceTutorialGUID) then
-            print("VerifyAndCleanGUIDs: sourceStepV.linkedFrom.", SourceTutorialGUID, " = nil")
+            print("ERROR: VerifyAndCleanGUIDs: sourceStepV.linkedFrom.", SourceTutorialGUID, " = nil")
             sourceStepV.linkedFrom.SourceTutorialGUID = nil
          end
          if sourceStepV.linkedFrom.SourceTutorialStepGUID and not SkuAdventureGuide.Tutorial:GetStepDataByGUID(sourceStepV.linkedFrom.SourceTutorialStepGUID) then
-            print("VerifyAndCleanGUIDs: sourceStepV.linkedFrom.", SourceTutorialStepGUID, " = nil")
+            print("ERROR: VerifyAndCleanGUIDs: sourceStepV.linkedFrom.", SourceTutorialStepGUID, " = nil")
             sourceStepV.linkedFrom.SourceTutorialStepGUID = nil
          end
          if (not sourceStepV.linkedFrom.SourceTutorialGUID or not sourceStepV.linkedFrom.SourceTutorialStepGUID) and not sourceStepV.title then
-            print("VerifyAndCleanGUIDs: table.remove(sourceTutV.steps,", y, ")")
+            print("ERROR: VerifyAndCleanGUIDs: table.remove(sourceTutV.steps,", y, ")")
             table.remove(sourceTutV.steps, y)
          end
       end

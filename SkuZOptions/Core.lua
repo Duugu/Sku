@@ -3154,6 +3154,9 @@ function SkuOptions:PLAYER_ENTERING_WORLD(...)
 		SkuMob.interactTempDisabled = nil
 		SkuMob:PLAYER_TARGET_CHANGED()
 		SkuOptions:UpdateSoftTargetingSettings("all")
+
+		SkuOptions.db.global["SkuOptions"] = SkuOptions.db.global["SkuOptions"] or {}
+		SkuOptions.db.global["SkuOptions"].devmode = SkuOptions.db.global["SkuOptions"].devmode or false
 	end
 end
 

@@ -2580,3 +2580,4 @@ L["Error: Data language is not current language"] = "Fehler: Sprache in daten is
 L["Warning: this will replace all existing custom newbie tutorials!)"] = "Warnung: Dadurch werden alle vorhanden custom newbie tutorials ersetzt!)"
 L["Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial"] = "Daten aus Schritten in diesem Tutorial zu allen Schritten kopieren die auf die Schritte in diesem tutorial verlinken, wodurch diese zu echten, nicht verlinkten Schritten werden. Dann dieses Tutorial löschen"
 L["Delete all steps that are linking a step in this tutorial. Then delete this tutorial"] = "Alle mit Schritten in diesem Tutorial verlinkten Schritte löschen. Dann dieses Tutorial löschen"
+L["Add all steps as linked steps"] = "Alle Schritte als verlinkte Schritte einfügen"
