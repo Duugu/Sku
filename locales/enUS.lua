@@ -2586,3 +2586,5 @@ L["Warning: this will replace all existing custom newbie tutorials!)"] = "Warnin
 L["Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial"] = "Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial"
 L["Delete all steps that are linking a step in this tutorial. Then delete this tutorial"] ="Delete all steps that are linking a step in this tutorial. Then delete this tutorial"
 L["Add all steps as linked steps"] = "Add all steps as linked steps"
+L["for tutorial creators"] = "for tutorial creators"
+L["Delete all custom tutorials"] = "Delete all custom tutorials"

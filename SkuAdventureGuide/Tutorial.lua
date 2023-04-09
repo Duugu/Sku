@@ -1622,6 +1622,13 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                SkuAdventureGuide.Tutorial:StopCurrentTutorial()
               
+               SkuAdventureGuide.Tutorial:UnlinkStep(
+                  tSource.Tutorials[Sku.Loc][tTutorialName].GUID, 
+                  tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].GUID, 
+                  tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].linkedFrom.SourceTutorialGUID,
+                  tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].linkedFrom.SourceTutorialStepGUID
+               )
+
                table.remove(tSource.Tutorials[Sku.Loc][tTutorialName].steps, x)
                C_Timer.After(0.001, function()
                   SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
@@ -2138,6 +2145,17 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
          SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience = 0
       end)
    end
+
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Delete all custom tutorials"]}, SkuGenericMenuItem)
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      SkuOptions.db.global[MODULE_NAME].Tutorials = {prefix = "Custom", ["enUS"] = {}, ["deDE"] = {},}   
+      SkuAdventureGuide.Tutorial:PLAYER_ENTERING_WORLD()
+      C_Timer.After(0.01, function()
+         SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+      end)
+   end
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2908,7 +2926,6 @@ function SkuAdventureGuide.Tutorial:GetNumberOfStepsThatLinkToThisTep(aTutorialS
    local tLinksFromText = L["Linking to this step"]..":\r\n"
    for i, v in pairs(tStepData.linkedIn) do
       tCount = tCount + #v
-
       local tTutD, tTutI = SkuAdventureGuide.Tutorial:GetTutorialDataByGUID(i)
       for x = 1, #v do
          local tSd, tSi = SkuAdventureGuide.Tutorial:GetStepDataByGUID(v[x])

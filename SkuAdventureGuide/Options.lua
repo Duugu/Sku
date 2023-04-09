@@ -124,7 +124,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 			SkuAdventureGuide.Tutorial:TutorialsMenuBuilder(self, true)
 		end		
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Tutorial Editor"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Tutorial Editor"].." ("..L["for tutorial creators"]..")"}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuAdventureGuide.Tutorial:EditorMenuBuilder(self)
