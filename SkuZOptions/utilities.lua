@@ -120,11 +120,13 @@ end
 function TooltipLines_helper(...)
    local tQualityString = nil
 
-	local itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
+	local itemName, ItemLink
+	itemName, ItemLink = _G["SkuScanningTooltip"]:GetItem()
+
 	local tEffectiveILvl
 
 	if not ItemLink then
-		itemName, ItemLink = GameTooltip:GetItem()
+		itemName, ItemLink = _G["GameTooltip"]:GetItem()
 	end
 
 	if ItemLink then
@@ -164,6 +166,8 @@ function TooltipLines_helper(...)
 			end
 		end
 	end
+
+	--_G["SkuScanningTooltip"]:ClearLines()
 	return rText
 end
 

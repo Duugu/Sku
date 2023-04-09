@@ -675,8 +675,9 @@ function SkuAdventureGuide.Tutorial:PLAYER_ENTERING_WORLD(...)
    SkuOptions.db.char[MODULE_NAME].Tutorials = SkuOptions.db.char[MODULE_NAME].Tutorials or {}
    --upgrade char tutorial progress table
    SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience = SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience or 0
-   SkuOptions.db.char[MODULE_NAME].Tutorials = SkuOptions.db.char[MODULE_NAME].Tutorials or {progress = {}, logins = 0,}
-
+   --SkuOptions.db.char[MODULE_NAME].Tutorials = SkuOptions.db.char[MODULE_NAME].Tutorials or {progress = {}, logins = 0,}
+   SkuOptions.db.char[MODULE_NAME].Tutorials.progress = SkuOptions.db.char[MODULE_NAME].Tutorials.progress or {}
+   SkuOptions.db.char[MODULE_NAME].Tutorials.logins = SkuOptions.db.char[MODULE_NAME].Tutorials.logins or 0
    SkuOptions.db.global[MODULE_NAME].Tutorials = SkuOptions.db.global[MODULE_NAME].Tutorials or {prefix = "Custom", ["enUS"] = {}, ["deDE"] = {},}   
 
    --upgrade existing tutorials tables
@@ -1067,7 +1068,8 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.OnAction = function(self, aValue, aName)
                local tFinalSourceStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(tStepData.GUID)
-               local tSTutGuid = SkuAdventureGuide.Tutorial:GetTutorialDataByStepGUID(tFinalSourceStepData.GUID)
+               local sourceTutI, sourceTutV = SkuAdventureGuide.Tutorial:GetTutorialDataByStepGUID(tFinalSourceStepData.GUID)
+               local tSTutGuid = sourceTutV.GUID
                SkuAdventureGuide.Tutorial:UnlinkStep(tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].GUID, tSTutGuid, tFinalSourceStepData.GUID)
                tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].title = tFinalSourceStepData.title
                tSource.Tutorials[Sku.Loc][tTutorialName].steps[x].allTriggersRequired = tFinalSourceStepData.allTriggersRequired
@@ -1084,9 +1086,6 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
             --go to linked
             tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["go to linked"]}, SkuGenericMenuItem)
             ]]
-
-
-
 
 
             
@@ -1977,7 +1976,7 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
                               self.parent.source.Tutorials[Sku.Loc][i] = nil
 
                               C_Timer.After(0.001, function()
-                                 SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                                 SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
                               end)
                            end
                         end
@@ -2310,14 +2309,13 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:StartTutorial(aTutorialName, aStartAtStepNumber, aSource, aSilent, aIsUser)
-   dprint("StartTutorial", aTutorialName, aStartAtStepNumber, aSource)
+   dprint("StartTutorial", aTutorialName, aStartAtStepNumber, aSource, aSilent, aIsUser)
    SkuAdventureGuide.Tutorial.currentStepCompleted = false
    C_Timer.After(0.3, function()
       SkuAdventureGuide.Tutorial.current.title = aTutorialName
       SkuAdventureGuide.Tutorial.current.source = aSource
       SkuAdventureGuide.Tutorial.current.isUser = aIsUser
       SkuAdventureGuide.Tutorial.current.linkedStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(aSource.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps[aStartAtStepNumber].GUID)
-      
       
       SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] = aStartAtStepNumber
       SkuOptions.Voice.TutorialPlaying = 0
@@ -2745,18 +2743,24 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:VerifyAndCleanGUIDs()
    for sourceTutI, sourceTutV in pairs(SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc]) do
-      for y = #sourceTutV.steps, 1, -1 do
+      for y = 3, 1, -1 do --#sourceTutV.steps, 1, -1 do
          local sourceStepV = sourceTutV.steps[y]
          for targetTutorialGuidI, targetTutorialStepsGuidV in pairs(sourceStepV.linkedIn) do
             for x = #targetTutorialStepsGuidV, 1, -1 do
                if not SkuAdventureGuide.Tutorial:GetStepDataByGUID(targetTutorialStepsGuidV[x]) then
-                  print("ERROR: VerifyAndCleanGUIDs: table.remove(targetTutorialStepsGuidV,", x, ")")
+                  print("ERROR: VerifyAndCleanGUIDs: tar step guid is nil table.remove(targetTutorialStepsGuidV,", x, ")")
                   table.remove(targetTutorialStepsGuidV, x)
+               else
+                  local tTarD = SkuAdventureGuide.Tutorial:GetStepDataByGUID(targetTutorialStepsGuidV[x])
+                  if tTarD.linkedFrom.SourceTutorialStepGUID ~= sourceStepV.GUID then
+                     print("ERROR: VerifyAndCleanGUIDs: linkedin step guid isn't this step guid, remove,", sourceTutI, y, x, ")")
+                     table.remove(targetTutorialStepsGuidV, x)
+                  end
                end
             end
             if #targetTutorialStepsGuidV == 0 then
-               print("ERROR: VerifyAndCleanGUIDs: sourceStepV.linkedIn[", targetTutorialGuidI, "] = nil")
-               sourceStepV.linkedIn[targetTutorialGuidI] = nil
+               --print("ERROR: VerifyAndCleanGUIDs: sourceStepV.linkedIn[", targetTutorialGuidI, "] = nil")
+               --sourceStepV.linkedIn[targetTutorialGuidI] = nil
             end
          end
 
