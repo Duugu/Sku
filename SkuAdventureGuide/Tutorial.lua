@@ -960,9 +960,9 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                         tLinksFromText = " ("..SkuAdventureGuide.Tutorial:GetNumberOfStepsThatLinkToThisTep(tStepData.GUID).." "..L["linking"]..") "
                      end          
                      if tStepData.title then
-                        tMenuText = L["schritt "]..x.." "..tLinksFromText.." : "..tStepData.title
+                        tMenuText = L["schritt "]..x.." : "..tStepData.title.." "..tLinksFromText
                      else
-                        tMenuText = L["schritt "]..x.." ("..L["is link"]..") "..tLinksFromText.." : "..tRealStepData.title
+                        tMenuText = L["schritt "]..x.." ("..L["is link"]..") : "..tRealStepData.title.." "..tLinksFromText
                      end
                      local tTooltipText = tMenuText.."\r\n"
                      tTooltipText = tTooltipText..SkuAdventureGuide.Tutorial:CreateStepTooltipData(tStepData)
@@ -1050,9 +1050,9 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
          tLinksFromText = " ("..SkuAdventureGuide.Tutorial:GetNumberOfStepsThatLinkToThisTep(tStepData.GUID).." "..L["linking"]..") "
       end                     
       if tStepData.title then
-         tTitleText = L["schritt "]..x.." "..tLinksFromText.." : "..tStepData.title
+         tTitleText = L["schritt "]..x.." : "..tStepData.title.." "..tLinksFromText
       else
-         tTitleText = L["schritt "]..x.." ("..L["is link"]..") "..tLinksFromText.." : "..tSourceStepDataRef.title
+         tTitleText = L["schritt "]..x.." ("..L["is link"]..") : "..tSourceStepDataRef.title.." "..tLinksFromText
       end
 
       local tTooltipText = tTitleText.."\r\n"
@@ -1584,9 +1584,9 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                               tLinksFromText = " ("..SkuAdventureGuide.Tutorial:GetNumberOfStepsThatLinkToThisTep(tStepData.GUID).." "..L["linking"]..") "
                            end                     
                            if tStepData.title then
-                              tMenuText = L["schritt "]..x.." "..tLinksFromText.." : "..tStepData.title
+                              tMenuText = L["schritt "]..x.." : "..tStepData.title.." "..tLinksFromText
                            else
-                              tMenuText = L["schritt "]..x.." ("..L["is link"]..") "..tLinksFromText.." : "..tRealStepData.title
+                              tMenuText = L["schritt "]..x.." ("..L["is link"]..") : "..tRealStepData.title.." "..tLinksFromText
                            end
                            local tTooltipText = tMenuText.."\r\n"
                            tTooltipText = tTooltipText..SkuAdventureGuide.Tutorial:CreateStepTooltipData(tStepData)
@@ -1732,7 +1732,7 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
                   showAsTemplate = false,
                }
                C_Timer.After(0.001, function()
-                  SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                  SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
                end)
             end
          end
@@ -1754,350 +1754,369 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
       function tSubMenuBuilderHelper(aSource)
          local tEmpty = 0
          for i, v in pairs(aSource.Tutorials[Sku.Loc]) do
-            --tutorial entry
-            tEmpty = tEmpty + 1
-            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[aSource.Tutorials.prefix]..": "..i..(aSource.Tutorials.prefix == "Sku" and " ("..L["read only"]..")" or "")}, SkuGenericMenuItem)
-            tNewMenuEntry.dynamic = true
-            tNewMenuEntry.filterable = true
-            tNewMenuEntry.tutorialName = i
-            tNewMenuEntry.source = aSource
-            tNewMenuEntry.BuildChildren = function(self)
-               --links count for steps menu option title
-               local tLinkedCount = 0
-               for x = 1, #aSource.Tutorials[Sku.Loc][i].steps do
-                  if aSource.Tutorials[Sku.Loc][i].steps[x].linkedFrom.SourceTutorialGUID and aSource.Tutorials[Sku.Loc][i].steps[x].linkedFrom.SourceTutorialStepGUID then
-                     tLinkedCount = tLinkedCount + 1
-                  end
-               end
-               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Steps"]..(tLinkedCount == 0 and "" or (" ("..tLinkedCount.." "..L["linked"]..")"))}, SkuGenericMenuItem)
+            if aSource.Tutorials[Sku.Loc][i] then
+               --tutorial entry
+               tEmpty = tEmpty + 1
+               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {i..(aSource.Tutorials.prefix == "Sku" and " ("..L["read only"]..")" or "")}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = true
                tNewMenuEntry.filterable = true
-               tNewMenuEntry.BuildChildren = SkuAdventureGuide.Tutorial.MenuBuilderEdit
-   
-               --Start over
-               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Start over"]}, SkuGenericMenuItem)
-               tNewMenuEntry.isSelect = true
-               tNewMenuEntry.OnAction = function(self, aValue, aName)
-                  SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-                  SkuOptions:CloseMenu()                  
-                  SkuAdventureGuide.Tutorial:StartTutorial(i, 1, aSource)
-               end
-
-               if tPrefix ~= "Sku" then
-                  if SkuOptions.db.global["SkuOptions"].devmode == true then
-                     --Show as link source
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show as link source"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.filterable = true
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                        return (self.parent.source.Tutorials[Sku.Loc][i].showAsTemplate == true and L["Yes"] or L["No"])
-                     end
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        if aName == L["Yes"] then
-                           self.parent.source.Tutorials[Sku.Loc][i].showAsTemplate = true
-                        else
-                           self.parent.source.Tutorials[Sku.Loc][i].showAsTemplate = false
-                        end
-                     end
-                     tNewMenuEntry.BuildChildren = function(self)
-                        SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                        SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-                     end
-
-                     --Is Sku newbie tutorial
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Is Sku newbie tutorial"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.filterable = true
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                        return (self.parent.source.Tutorials[Sku.Loc][i].isSkuNewbieTutorial == true and L["Yes"] or L["No"])
-                     end
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        if aName == L["Yes"] then
-                           self.parent.source.Tutorials[Sku.Loc][i].isSkuNewbieTutorial = true
-                        else
-                           self.parent.source.Tutorials[Sku.Loc][i].isSkuNewbieTutorial = false
-                        end
-                     end
-                     tNewMenuEntry.BuildChildren = function(self)
-                        SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                        SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+               tNewMenuEntry.tutorialName = i
+               tNewMenuEntry.source = aSource
+               tNewMenuEntry.BuildChildren = function(self)
+                  --links count for steps menu option title
+                  local tLinkedCount = 0
+                  for x = 1, #aSource.Tutorials[Sku.Loc][i].steps do
+                     if aSource.Tutorials[Sku.Loc][i].steps[x].linkedFrom.SourceTutorialGUID and aSource.Tutorials[Sku.Loc][i].steps[x].linkedFrom.SourceTutorialStepGUID then
+                        tLinkedCount = tLinkedCount + 1
                      end
                   end
-
-                  --Play first time user intro
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]}, SkuGenericMenuItem)
+                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Steps"]..(tLinkedCount == 0 and "" or (" ("..tLinkedCount.." "..L["linked"]..")"))}, SkuGenericMenuItem)
                   tNewMenuEntry.dynamic = true
                   tNewMenuEntry.filterable = true
-                  tNewMenuEntry.isSelect = true
-                  tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                     return (self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro == true and L["Yes"] or L["No"])
-                  end
-                  tNewMenuEntry.OnAction = function(self, aValue, aName)
-                     if aName == L["Yes"] then
-                        self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro = true
-                     else
-                        self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro = false
-                     end
-                  end
-                  tNewMenuEntry.BuildChildren = function(self)
-                     SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                     SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-                  end
-               else
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show as link source"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].showAsTemplate == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
-               end
-
-               --Show for requirements               
-               if tPrefix ~= "Sku" then
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show for"]}, SkuGenericMenuItem)
-                  tNewMenuEntry.dynamic = true
-                  tNewMenuEntry.BuildChildren = function(self)
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Race"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        for xI, xR in pairs(tRaceRequirementValues) do
-                           if xR == aName then
-                              self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.race = xI
-                              return
-                           end
-                        end
-                     end
-                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                        return (tRaceRequirementValues[self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.race])
-                     end
-                     tNewMenuEntry.BuildChildren = function(self)
-                        for xI, xR in pairs(tRaceRequirementValues) do
-                           SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
-                        end
-                     end
-
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["klasse"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        for xI, xR in pairs(tClassRequirementValues) do
-                           if xR == aName then
-                              self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.class = xI
-                              return
-                           end
-                        end
-                     end
-                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                        return (tClassRequirementValues[self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.class])
-                     end
-                     tNewMenuEntry.BuildChildren = function(self)
-                        for xI, xR in pairs(tClassRequirementValues) do
-                           SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
-                        end
-                     end
-
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Skill"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        for xI, xR in pairs(tSkillRequirementValues) do
-                           if xR == aName then
-                              self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.skill = xI
-                              return
-                           end
-                        end
-                     end
-                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                        return (tSkillRequirementValues[self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.skill])
-                     end
-                     tNewMenuEntry.BuildChildren = function(self)
-                        for xI, xR in pairs(tSkillRequirementValues) do
-                           SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
-                        end
-                     end
-                  end
-               end
-
-               --Lock keyboard if tutorial is playing
-               if tPrefix ~= "Sku" then
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]}, SkuGenericMenuItem)
-                  tNewMenuEntry.dynamic = true
-                  tNewMenuEntry.filterable = true
-                  tNewMenuEntry.isSelect = true
-                  tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                     return (self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard == true and L["Yes"] or L["No"])
-                  end
-                  tNewMenuEntry.OnAction = function(self, aValue, aName)
-                     if aName == L["Yes"] then
-                        self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard = true
-                     else
-                        self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard = false
-                     end
-                  end
-                  tNewMenuEntry.BuildChildren = function(self)
-                     SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                     SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-                  end
-               else
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
-               end
-
-               --Show in users tutorials list
-               if tPrefix ~= "Sku" then
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]}, SkuGenericMenuItem)
-                  tNewMenuEntry.dynamic = true
-                  tNewMenuEntry.filterable = true
-                  tNewMenuEntry.isSelect = true
-                  tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                     return (self.parent.source.Tutorials[Sku.Loc][i].showInUserList == true and L["Yes"] or L["No"])
-                  end
-                  tNewMenuEntry.OnAction = function(self, aValue, aName)
-                     if aName == L["Yes"] then
-                        self.parent.source.Tutorials[Sku.Loc][i].showInUserList = true
-                     else
-                        self.parent.source.Tutorials[Sku.Loc][i].showInUserList = false
-                     end
-                  end
-                  tNewMenuEntry.BuildChildren = function(self)
-                     SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                     SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-                  end
-               else
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].showInUserList == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
-               end
-
-               if aSource.Tutorials.prefix ~= "Sku" then
-                  --rename tut
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Rename"]}, SkuGenericMenuItem)
+                  tNewMenuEntry.BuildChildren = SkuAdventureGuide.Tutorial.MenuBuilderEdit
+      
+                  --Start over
+                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Start over"]}, SkuGenericMenuItem)
                   tNewMenuEntry.isSelect = true
                   tNewMenuEntry.OnAction = function(self, aValue, aName)
-                     SkuOptions:EditBoxShow(i, function(a, b, c) 
-                        local tText = SkuOptionsEditBoxEditBox:GetText()
-                        if tText and tText ~= "" then
-                           if self.parent.source.Tutorials[Sku.Loc][tText] then
-                              SkuOptions.Voice:OutputStringBTtts(L["name schon vorhanden"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
-                              SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, })
+                     SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+                     SkuOptions:CloseMenu()                  
+                     SkuAdventureGuide.Tutorial:StartTutorial(i, 1, aSource)
+                  end
+
+                  if tPrefix ~= "Sku" then
+                     if SkuOptions.db.global["SkuOptions"].devmode == true then
+                        --Show as link source
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show as link source"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.dynamic = true
+                        tNewMenuEntry.filterable = true
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                           return (self.parent.source.Tutorials[Sku.Loc][i].showAsTemplate == true and L["Yes"] or L["No"])
+                        end
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           if aName == L["Yes"] then
+                              self.parent.source.Tutorials[Sku.Loc][i].showAsTemplate = true
                            else
-                              SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-                              local tOldData = self.parent.source.Tutorials[Sku.Loc][i]
-                              self.parent.source.Tutorials[Sku.Loc][tText] = tOldData
-                              self.parent.source.Tutorials[Sku.Loc][i] = nil
+                              self.parent.source.Tutorials[Sku.Loc][i].showAsTemplate = false
+                           end
+                        end
+                        tNewMenuEntry.BuildChildren = function(self)
+                           SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                           SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                        end
 
+                        --Is Sku newbie tutorial
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Is Sku newbie tutorial"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.dynamic = true
+                        tNewMenuEntry.filterable = true
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                           return (self.parent.source.Tutorials[Sku.Loc][i].isSkuNewbieTutorial == true and L["Yes"] or L["No"])
+                        end
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           if aName == L["Yes"] then
+                              self.parent.source.Tutorials[Sku.Loc][i].isSkuNewbieTutorial = true
+                           else
+                              self.parent.source.Tutorials[Sku.Loc][i].isSkuNewbieTutorial = false
+                           end
+                        end
+                        tNewMenuEntry.BuildChildren = function(self)
+                           SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                           SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                        end
+                     end
+
+                     --Play first time user intro
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.dynamic = true
+                     tNewMenuEntry.filterable = true
+                     tNewMenuEntry.isSelect = true
+                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                        return (self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro == true and L["Yes"] or L["No"])
+                     end
+                     tNewMenuEntry.OnAction = function(self, aValue, aName)
+                        if aName == L["Yes"] then
+                           self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro = true
+                        else
+                           self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro = false
+                        end
+                     end
+                     tNewMenuEntry.BuildChildren = function(self)
+                        SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                        SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                     end
+                  else
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show as link source"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].showAsTemplate == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].playFtuIntro == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+                  end
+
+                  --Show for requirements               
+                  if tPrefix ~= "Sku" then
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show for"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.dynamic = true
+                     tNewMenuEntry.BuildChildren = function(self)
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Race"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.dynamic = true
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           for xI, xR in pairs(tRaceRequirementValues) do
+                              if xR == aName then
+                                 self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.race = xI
+                                 return
+                              end
+                           end
+                        end
+                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                           return (tRaceRequirementValues[self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.race])
+                        end
+                        tNewMenuEntry.BuildChildren = function(self)
+                           for xI, xR in pairs(tRaceRequirementValues) do
+                              SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
+                           end
+                        end
+
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["klasse"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.dynamic = true
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           for xI, xR in pairs(tClassRequirementValues) do
+                              if xR == aName then
+                                 self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.class = xI
+                                 return
+                              end
+                           end
+                        end
+                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                           return (tClassRequirementValues[self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.class])
+                        end
+                        tNewMenuEntry.BuildChildren = function(self)
+                           for xI, xR in pairs(tClassRequirementValues) do
+                              SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
+                           end
+                        end
+
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Skill"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.dynamic = true
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           for xI, xR in pairs(tSkillRequirementValues) do
+                              if xR == aName then
+                                 self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.skill = xI
+                                 return
+                              end
+                           end
+                        end
+                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                           return (tSkillRequirementValues[self.parent.parent.source.Tutorials[Sku.Loc][i].requirements.skill])
+                        end
+                        tNewMenuEntry.BuildChildren = function(self)
+                           for xI, xR in pairs(tSkillRequirementValues) do
+                              SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
+                           end
+                        end
+                     end
+                  end
+
+                  --Lock keyboard if tutorial is playing
+                  if tPrefix ~= "Sku" then
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.dynamic = true
+                     tNewMenuEntry.filterable = true
+                     tNewMenuEntry.isSelect = true
+                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                        return (self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard == true and L["Yes"] or L["No"])
+                     end
+                     tNewMenuEntry.OnAction = function(self, aValue, aName)
+                        if aName == L["Yes"] then
+                           self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard = true
+                        else
+                           self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard = false
+                        end
+                     end
+                     tNewMenuEntry.BuildChildren = function(self)
+                        SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                        SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                     end
+                  else
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].lockKeyboard == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+                  end
+
+                  --Show in users tutorials list
+                  if tPrefix ~= "Sku" then
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.dynamic = true
+                     tNewMenuEntry.filterable = true
+                     tNewMenuEntry.isSelect = true
+                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                        return (self.parent.source.Tutorials[Sku.Loc][i].showInUserList == true and L["Yes"] or L["No"])
+                     end
+                     tNewMenuEntry.OnAction = function(self, aValue, aName)
+                        if aName == L["Yes"] then
+                           self.parent.source.Tutorials[Sku.Loc][i].showInUserList = true
+                        else
+                           self.parent.source.Tutorials[Sku.Loc][i].showInUserList = false
+                        end
+                     end
+                     tNewMenuEntry.BuildChildren = function(self)
+                        SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                        SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                     end
+                  else
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]..": "..(self.parent.source.Tutorials[Sku.Loc][i].showInUserList == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+                  end
+
+                  if aSource.Tutorials.prefix ~= "Sku" then
+                     --rename tut
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Rename"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.isSelect = true
+                     tNewMenuEntry.OnAction = function(self, aValue, aName)
+                        SkuOptions:EditBoxShow(i, function(a, b, c) 
+                           local tText = SkuOptionsEditBoxEditBox:GetText()
+                           if tText and tText ~= "" then
+                              if self.parent.source.Tutorials[Sku.Loc][tText] then
+                                 SkuOptions.Voice:OutputStringBTtts(L["name schon vorhanden"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+                                 SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, })
+                              else
+                                 SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+                                 local tOldData = self.parent.source.Tutorials[Sku.Loc][i]
+                                 self.parent.source.Tutorials[Sku.Loc][tText] = tOldData
+                                 self.parent.source.Tutorials[Sku.Loc][i] = nil
+
+                                 C_Timer.After(0.001, function()
+                                    SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
+                                 end)
+                              end
+                           end
+                        end,
+                        false,
+                        function(a, b, c) 
+                           SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                        end)
+                        C_Timer.After(0.01, function()
+                           SkuOptions.Voice:OutputStringBTtts(L["Enter new name"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+                        end)
+                     end
+
+                     -- delete tutorial
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
+                     local tNumberOfLinksToThisStep = 0
+                     for tTSI = 1, #aSource.Tutorials[Sku.Loc][i].steps do
+                        local tStepData = aSource.Tutorials[Sku.Loc][i].steps[tTSI]
+                        for iLinkedinTutGuid, iLinkedinTutSteps in pairs(tStepData.linkedIn) do
+                           for xStepIndex = 1, #iLinkedinTutSteps do
+                              tNumberOfLinksToThisStep = tNumberOfLinksToThisStep + 1
+                           end
+                        end
+                     end
+                     if tNumberOfLinksToThisStep == 0 then
+                        --just delete; no linked
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+
+
+
+
+
+                           for tTSI = #aSource.Tutorials[Sku.Loc][i].steps, 1, -1 do
+                              --unlink and delete step
+                              local tStepData = aSource.Tutorials[Sku.Loc][i].steps[tTSI]
+                              SkuAdventureGuide.Tutorial:UnlinkStep(aSource.Tutorials[Sku.Loc][i].GUID, tStepData.GUID, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
+                              table.remove(aSource.Tutorials[Sku.Loc][i].steps, x)
+                           end
+
+
+
+
+
+                           aSource.Tutorials[Sku.Loc][i] = nil
+                           --self.parent.source.Tutorials[Sku.Loc][i] = nil
+                           C_Timer.After(0.001, function()
+                              SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
+                           end)
+                        end
+                     else
+                        tNewMenuEntry.dynamic = true
+                        tNewMenuEntry.BuildChildren = function(self)
+                           --replace linked
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial"]}, SkuGenericMenuItem)
+                           tNewMenuEntry.isSelect = true
+                           tNewMenuEntry.OnAction = function(self, aValue, aName)
+                              SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+                              --for each step in this tut
+                              for tTSI = #aSource.Tutorials[Sku.Loc][i].steps, 1, -1 do
+                                 --update all linked steps
+                                 local tStepData = aSource.Tutorials[Sku.Loc][i].steps[tTSI]
+                                 local tTutorialName = i
+                                 local tSource = self.parent.parent.source
+                                 for iLinkedinTutGuid, iLinkedinTutSteps in pairs(tStepData.linkedIn) do
+                                    for xStepIndex = 1, #iLinkedinTutSteps do
+                                       if tStepData.linkedFrom.SourceTutorialGUID and tStepData.linkedFrom.SourceTutorialStepGUID then --this is a linked step, we need to update the source for all steps that are linking to this step to the source of this step
+                                          local tLinkedStepGuid = iLinkedinTutSteps[xStepIndex]
+                                          --unlink remote
+                                          SkuAdventureGuide.Tutorial:UnlinkStep(iLinkedinTutGuid, tLinkedStepGuid, tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tStepData.GUID)
+                                          --relink remote
+                                          SkuAdventureGuide.Tutorial:LinkStep(iLinkedinTutGuid, tLinkedStepGuid, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
+                                          --unlink this
+                                          SkuAdventureGuide.Tutorial:UnlinkStep(tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tStepData.GUID, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
+                                       else --this is a real step; no need to update the linking steps
+                                          local tLinkedStepGuid = iLinkedinTutSteps[xStepIndex]
+                                          --unlink remote
+                                          SkuAdventureGuide.Tutorial:UnlinkStep(iLinkedinTutGuid, tLinkedStepGuid, tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tStepData.GUID)
+                                          --update remote
+                                          SkuAdventureGuide.Tutorial:PutStepDataByGUID(tLinkedStepGuid, tStepData)
+                                       end
+                                    end
+                                 end
+                                 --now delete this step
+                                 table.remove(tSource.Tutorials[Sku.Loc][tTutorialName].steps, tTSI)
+                              end
+
+                              --now delete this tut
+                              self.parent.parent.source.Tutorials[Sku.Loc][i] = nil
                               C_Timer.After(0.001, function()
-                                 SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
+                                 SkuOptions.currentMenuPosition.parent.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent.parent)
+                              end)
+                           end
+            
+                           --delete linked steps
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete all steps that are linking a step in this tutorial. Then delete this tutorial"]}, SkuGenericMenuItem)
+                           tNewMenuEntry.isSelect = true
+                           tNewMenuEntry.OnAction = function(self, aValue, aName)
+                              SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+                              --delete all steps that are linking to this step
+                              for tTSI = #aSource.Tutorials[Sku.Loc][i].steps, 1, -1 do
+                                 local tStepData = aSource.Tutorials[Sku.Loc][i].steps[tTSI]
+                                 SkuAdventureGuide.Tutorial:DeleteStep(tStepData.GUID, 0)
+                              end
+                              
+                              --now delete this tut
+                              self.parent.parent.source.Tutorials[Sku.Loc][i] = nil
+                              C_Timer.After(0.001, function()
+                                 SkuOptions.currentMenuPosition.parent.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent.parent)
                               end)
                            end
                         end
-                     end,
-                     false,
-                     function(a, b, c) 
-                        SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                     end
+                  end
+
+                  --export tutorial
+                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Export this tutorial"]}, SkuGenericMenuItem)
+                  tNewMenuEntry.isSelect = true
+                  tNewMenuEntry.OnAction = function(self, aValue, aName)
+                     C_Timer.After(0.001, function()
+                        SkuAdventureGuide.Tutorial:ExportTutorial(i, v)
                      end)
-                     C_Timer.After(0.01, function()
-                        SkuOptions.Voice:OutputStringBTtts(L["Enter new name"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+                  end
+
+                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Export this tutorial as text"]}, SkuGenericMenuItem)
+                  tNewMenuEntry.isSelect = true
+                  tNewMenuEntry.OnAction = function(self, aValue, aName)
+                     C_Timer.After(0.001, function()
+                        SkuAdventureGuide.Tutorial:ExportTutorialAsFriendlyList(i, v)
                      end)
                   end
-
-                  -- delete tutorial
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
-                  local tNumberOfLinksToThisStep = 0
-                  for tTSI = 1, #aSource.Tutorials[Sku.Loc][i].steps do
-                     local tStepData = aSource.Tutorials[Sku.Loc][i].steps[tTSI]
-                     for iLinkedinTutGuid, iLinkedinTutSteps in pairs(tStepData.linkedIn) do
-                        for xStepIndex = 1, #iLinkedinTutSteps do
-                           tNumberOfLinksToThisStep = tNumberOfLinksToThisStep + 1
-                        end
-                     end
-                  end
-                  if tNumberOfLinksToThisStep == 0 then
-                     --just delete; no linked
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-                        self.parent.source.Tutorials[Sku.Loc][i] = nil
-                        C_Timer.After(0.001, function()
-                           SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
-                        end)
-                     end
-                  else
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.BuildChildren = function(self)
-                        --replace linked
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial"]}, SkuGenericMenuItem)
-                        tNewMenuEntry.isSelect = true
-                        tNewMenuEntry.OnAction = function(self, aValue, aName)
-                           SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-                           --for each step in this tut
-                           for tTSI = #aSource.Tutorials[Sku.Loc][i].steps, 1, -1 do
-                              --update all linked steps
-                              local tStepData = aSource.Tutorials[Sku.Loc][i].steps[tTSI]
-                              local tTutorialName = i
-                              local tSource = self.parent.parent.source
-                              for iLinkedinTutGuid, iLinkedinTutSteps in pairs(tStepData.linkedIn) do
-                                 for xStepIndex = 1, #iLinkedinTutSteps do
-                                    if tStepData.linkedFrom.SourceTutorialGUID and tStepData.linkedFrom.SourceTutorialStepGUID then --this is a linked step, we need to update the source for all steps that are linking to this step to the source of this step
-                                       local tLinkedStepGuid = iLinkedinTutSteps[xStepIndex]
-                                       --unlink remote
-                                       SkuAdventureGuide.Tutorial:UnlinkStep(iLinkedinTutGuid, tLinkedStepGuid, tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tStepData.GUID)
-                                       --relink remote
-                                       SkuAdventureGuide.Tutorial:LinkStep(iLinkedinTutGuid, tLinkedStepGuid, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
-                                       --unlink this
-                                       SkuAdventureGuide.Tutorial:UnlinkStep(tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tStepData.GUID, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
-                                    else --this is a real step; no need to update the linking steps
-                                       local tLinkedStepGuid = iLinkedinTutSteps[xStepIndex]
-                                       --unlink remote
-                                       SkuAdventureGuide.Tutorial:UnlinkStep(iLinkedinTutGuid, tLinkedStepGuid, tSource.Tutorials[Sku.Loc][tTutorialName].GUID, tStepData.GUID)
-                                       --update remote
-                                       SkuAdventureGuide.Tutorial:PutStepDataByGUID(tLinkedStepGuid, tStepData)
-                                    end
-                                 end
-                              end
-                              --now delete this step
-                              table.remove(tSource.Tutorials[Sku.Loc][tTutorialName].steps, tTSI)
-                           end
-
-                           --now delete this tut
-                           self.parent.parent.source.Tutorials[Sku.Loc][i] = nil
-                           C_Timer.After(0.001, function()
-                              SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
-                           end)
-                        end
-         
-                        --delete linked steps
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete all steps that are linking a step in this tutorial. Then delete this tutorial"]}, SkuGenericMenuItem)
-                        tNewMenuEntry.isSelect = true
-                        tNewMenuEntry.OnAction = function(self, aValue, aName)
-                           SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-                           --delete all steps that are linking to this step
-                           for tTSI = #aSource.Tutorials[Sku.Loc][i].steps, 1, -1 do
-                              local tStepData = aSource.Tutorials[Sku.Loc][i].steps[tTSI]
-                              SkuAdventureGuide.Tutorial:DeleteStep(tStepData.GUID, 0)
-                           end
-                           
-                           --now delete this tut
-                           self.parent.parent.source.Tutorials[Sku.Loc][i] = nil
-                           C_Timer.After(0.001, function()
-                              SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
-                           end)
-                        end
-                     end
-                  end
-               end
-
-               --export tutorial
-               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Export this tutorial"]}, SkuGenericMenuItem)
-               tNewMenuEntry.isSelect = true
-               tNewMenuEntry.OnAction = function(self, aValue, aName)
-                  C_Timer.After(0.001, function()
-                     SkuAdventureGuide.Tutorial:ExportTutorial(i, v)
-                  end)
-               end
-
-               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Export this tutorial as text"]}, SkuGenericMenuItem)
-               tNewMenuEntry.isSelect = true
-               tNewMenuEntry.OnAction = function(self, aValue, aName)
-                  C_Timer.After(0.001, function()
-                     SkuAdventureGuide.Tutorial:ExportTutorialAsFriendlyList(i, v)
-                  end)
                end
             end
          end
@@ -2761,7 +2780,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:VerifyAndCleanGUIDs()
    for sourceTutI, sourceTutV in pairs(SkuOptions.db.global[MODULE_NAME].Tutorials[Sku.Loc]) do
-      for y = 3, 1, -1 do --#sourceTutV.steps, 1, -1 do
+      for y = #sourceTutV.steps, 1, -1 do
          local sourceStepV = sourceTutV.steps[y]
          for targetTutorialGuidI, targetTutorialStepsGuidV in pairs(sourceStepV.linkedIn) do
             for x = #targetTutorialStepsGuidV, 1, -1 do

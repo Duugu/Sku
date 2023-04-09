@@ -1188,6 +1188,7 @@ function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice
 		_, tPrevOutputHandle[aVoice] = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..aValue.."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 	end)
 
+	--[[
 	if SkuOptions.db.char[MODULE_NAME].aq.player.health.iceCreamBought ~= true then
 		if math.random(1, 750) == 750 then	
 			C_Timer.After(tPause + 1, function()
@@ -1199,6 +1200,7 @@ function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice
 			end
 		end
 	end
+	]]
 
 end
 
