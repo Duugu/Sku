@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.19](https://github.com/Duugu/Sku/releases/download/r33.19/Sku-r33.19-wrath.zip) (April 9th 2023)<br>
+- [Sku r33.20](https://github.com/Duugu/Sku/releases/download/r33.20/Sku-r33.20-wrath.zip) (April 9th 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r33.20
+- More bugfixes for the tutorial editor. Didn't saw that coming? :P
+	
 ## Changes in Sku r33.19
 - Another bugfix for the tutorial editor
 	
