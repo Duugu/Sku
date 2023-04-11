@@ -1285,21 +1285,21 @@ function SkuOptions:CreateMainFrame()
 			end
 		end
 		
-		if SkuAdventureGuide.Tutorial.current.title and SkuAdventureGuide.Tutorial.current.source then
-			if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] then
+		if SkuAdventureGuide.Tutorial.current.guid and SkuAdventureGuide.Tutorial.current.source then
+			if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] then
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key then
 					if SkuAdventureGuide.Tutorial.current.isUser then
 						return
 					end
 
-					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] > 1 then
-						SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] - 1
-						local tTitle = SkuAdventureGuide.Tutorial.current.title
+					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] > 1 then
+						SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] - 1
+						local tGuid = SkuAdventureGuide.Tutorial.current.guid
 						local tSource = SkuAdventureGuide.Tutorial.current.source
 						SkuOptions.Voice.TutorialPlaying = 0
 						SkuOptions.Voice:StopOutputEmptyQueue()
 						C_Timer.After(0.1, function()
-							SkuAdventureGuide.Tutorial:StartStep(SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tTitle])
+							SkuAdventureGuide.Tutorial:StartStep(SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tGuid])
 						end)
 					end
 					return
@@ -1317,15 +1317,15 @@ function SkuOptions:CreateMainFrame()
 						return
 					end
 
-					local tStepMax = #SkuAdventureGuide.Tutorial.current.source.Tutorials[Sku.Loc][SkuAdventureGuide.Tutorial.current.title].steps
-					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] < tStepMax then
-						SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.title] + 1
-						local tTitle = SkuAdventureGuide.Tutorial.current.title
+					local tStepMax = #SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps
+					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] < tStepMax then
+						SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] + 1
+						local tGuid = SkuAdventureGuide.Tutorial.current.guid
 						local tSource = SkuAdventureGuide.Tutorial.current.source
 						SkuOptions.Voice.TutorialPlaying = 0
 						SkuOptions.Voice:StopOutputEmptyQueue()
 						C_Timer.After(0.1, function()
-							SkuAdventureGuide.Tutorial:StartStep(SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tTitle])
+							SkuAdventureGuide.Tutorial:StartStep(SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tGuid])
 						end)
 					end
 					return

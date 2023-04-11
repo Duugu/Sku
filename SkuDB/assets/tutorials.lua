@@ -1,11 +1,5 @@
 local L = Sku.L
-
-SkuDB.Tutorials = {
-   ["prefix"] = "Sku",
-   ["enUS"] = {
-
-   },
-   ["deDE"] = {
-
-   },
+SkuDB.AllLangs = {
+   prefix = "Sku",
+   Tutorials = {},
 }

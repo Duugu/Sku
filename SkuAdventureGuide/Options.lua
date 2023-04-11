@@ -142,11 +142,11 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Breaks: If you can't finish the tutorial because you don't have enough time or unexpected events such disconnects are disrupting the tutorial, you may resume the tutorial once you are back. Open this help with (F1). Go to the bottom. There, you will be offered to continue the tutorial."])}, SkuGenericMenuItem)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Log out: If you would like to exit the game, do not use Alt + (F4). For the game to save settings you need to log out from the game. To do this type slash logout and press Enter. The wait until you hear the background audio changing. That can take up to 20 seconds. Then close the game using Alt + (F4)."])}, SkuGenericMenuItem)		
 
-			local tBestTutName, tLocRaceText, tLocClassText = SkuAdventureGuide.Tutorial:GetBestTutorialNameForFirstTimeUser()
-			if tBestTutName then
-				local tProgress = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tBestTutName]
+			local tBestTutName, tLocRaceText, tLocClassText, tBestTutGuid = SkuAdventureGuide.Tutorial:GetBestTutorialNameForFirstTimeUser()
+			if tBestTutGuid then
+				local tProgress = SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[tBestTutGuid]
 				local tNewMenuEntryC
-				if tProgress and tProgress < #SkuDB.Tutorials[Sku.Loc][tBestTutName].steps and tProgress ~= 0 then
+				if tProgress and tProgress < #SkuDB.AllLangs.Tutorials[tBestTutGuid].steps and tProgress ~= 0 then
 					tNewMenuEntryC = SkuOptions:InjectMenuItems(self, {L["To continue your newbie tutorial from step"]" "..tProgress.." "..L["press the Enter key now"]}, SkuGenericMenuItem)
 				else
 					tNewMenuEntryC = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Starting your newbie tutorial: There is a first steps tutorial specifically for your as a "]..tLocRaceText.." "..tLocClassText..". "..L["To start this tutorial now, please press the ENTER key."])}, SkuGenericMenuItem)
@@ -155,7 +155,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 				tNewMenuEntryC.OnAction = function(self, aValue, aName)
 					SkuAdventureGuide.Tutorial:StopCurrentTutorial()
 					SkuOptions:CloseMenu()                     
-					SkuAdventureGuide.Tutorial:StartTutorial(tBestTutName, 1, SkuDB, nil, true)
+					SkuAdventureGuide.Tutorial:StartTutorial(tBestTutGuid, 1, SkuDB, nil, true)
 				end
 			else
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Starting the newbie tutorial: Unfortunately at the moment there is no first steps tutorial for you as a "]..tLocRaceText.." "..tLocClassText..". "..L["We are working on more tutorials. Feel free to ask in our Discord for help or more tutorials."])}, SkuGenericMenuItem)
