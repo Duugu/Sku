@@ -1009,7 +1009,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
          if tText then
             local tNameExists = false
             for x = 1, #tSource.AllLangs.Tutorials[tTutorialGuid].steps do
-               if tText ~= "" and tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title[Sku.Loc] == tText then
+               if tText ~= "" and tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title and tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title[Sku.Loc] == tText then
                   tNameExists = true
                end
             end
@@ -1029,11 +1029,11 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                }
                for langi, langv in pairs(Sku.Locs) do
                   if langv ~= Sku.Loc then
-                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[Sku.Loc] = "UNTRANSLATED:"..tText
-                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[Sku.Loc] = ""
+                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[langv] = "UNTRANSLATED:"..tText
+                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText[langv] = ""
                   else
-                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[Sku.Loc] = tText
-                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[Sku.Loc] = ""
+                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[langv] = tText
+                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText[langv] = ""
                   end
                end
 
@@ -1427,7 +1427,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                      local tExists = false
                      local tStepDat = tSource.AllLangs.Tutorials[tTutorialGuid].steps
                      for w = 1, #tStepDat do
-                        if w ~= x and tStepDat[w].title[Sku.Loc] == tText then
+                        if w ~= x and tStepDat[w].title and tStepDat[w].title[Sku.Loc] == tText then
                            tExists = true
                         end
                      end
@@ -1572,7 +1572,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                if tText then
                   local tNameExists = false
                   for x = 1, #tSource.AllLangs.Tutorials[tTutorialGuid].steps do
-                     if tText ~= "" and tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title[Sku.Loc] == tText then
+                     if tText ~= "" and tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title and tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title[Sku.Loc] == tText then
                         tNameExists = true
                      end
                   end
@@ -1592,11 +1592,11 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                      })
                      for langi, langv in pairs(Sku.Locs) do
                         if langv ~= Sku.Loc then
-                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[Sku.Loc] = "UNTRANSLATED:"..tText
-                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[Sku.Loc] = ""
+                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[langv] = "UNTRANSLATED:"..tText
+                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText[langv] = ""
                         else
-                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[Sku.Loc] = tText
-                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[Sku.Loc] = ""
+                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[langv] = tText
+                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText[langv] = ""
                         end
                      end
 

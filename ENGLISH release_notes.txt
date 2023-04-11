@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.22
+	- Fixed a bug with creating a new step
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.21
 	- Available tutorial lists are now sorted by name
 	- Changed the internal tutorial storage to be language independant
