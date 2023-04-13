@@ -569,7 +569,31 @@ function SkuChat:MenuBuilder(aParentEntry)
 							end
 						end
 					end
-				end				
+				end			
+				
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Audio notification on chat message"]}, SkuGenericMenuItem)
+				tNewMenuEntry.dynamic = true
+				tNewMenuEntry.isSelect = true
+				tNewMenuEntry.OnAction = function(self, aValue, aName)
+					if aName == L["On"] then
+						SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = true
+					elseif aName == L["Off"] then
+						SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = false
+					end
+				end
+				tNewMenuEntry.BuildChildren = function(self)
+					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
+					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+				end
+				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+					local tValue = L["On"]
+					if SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == true then
+						tValue = L["On"]
+					else
+						tValue = L["Off"]
+					end
+					return tValue
+				end
 			end
 		end
 

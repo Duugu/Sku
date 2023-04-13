@@ -3,6 +3,13 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r33.23
+	- Added an "Audio notification on chat message" settings to every chat tab
+	- Fixed a bunch of errors with the new internal tutorial storage structure
+	- Implemented an internal translation feature for tutorials
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r33.22
 	- Fixed a bug with creating a new step
 

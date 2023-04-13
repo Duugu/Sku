@@ -1027,15 +1027,9 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                   linkedFrom = {},
                   linkedIn = {},
                }
-               for langi, langv in pairs(Sku.Locs) do
-                  if langv ~= Sku.Loc then
-                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[langv] = "UNTRANSLATED:"..tText
-                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText[langv] = ""
-                  else
-                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[langv] = tText
-                     tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText[langv] = ""
-                  end
-               end
+
+               SkuAdventureGuide.Tutorial:UpdateTranslations(tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title, tText)
+               SkuAdventureGuide.Tutorial:UpdateTranslations(tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText, "")
 
                C_Timer.After(0.001, function()
                   SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
@@ -1130,7 +1124,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                            end)
                         end)
                      else
-                        tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].beginText[Sku.Loc] = tText
+                        SkuAdventureGuide.Tutorial:UpdateTranslations(tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].beginText, tText)
                         C_Timer.After(0.001, function()
                            SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
                         end)
@@ -1192,13 +1186,17 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                               type = self.triggerType, 
                               value = {},
                            })
+
                            for langi, langv in pairs(Sku.Locs) do
-                              if langv ~= Sku.Loc and (SkuAdventureGuide.Tutorial.triggers[self.triggerType].translate and not tonumber(tText)) == true then
-                                 tStepData.triggers[#tStepData.triggers].value[langv] = "UNTRANSLATED:"..tText
-                              else
-                                 tStepData.triggers[#tStepData.triggers].value[langv] = tText
+                              if langv ~= Sku.Loc then
+                                 if SkuAdventureGuide.Tutorial.triggers[self.triggerType].translate == true and tonumber(tText) == nil then
+                                    tStepData.triggers[#tStepData.triggers].value[langv] = "UNTRANSLATED:"..tText
+                                 else
+                                    tStepData.triggers[#tStepData.triggers].value[langv] = tText
+                                 end
                               end
-                           end      
+                           end
+                           tStepData.triggers[#tStepData.triggers].value[Sku.Loc] = tText
 
                            C_Timer.After(0.001, function()
                               SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
@@ -1259,7 +1257,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                      end)
                   elseif aName == L["WAIT_FOR_MENU_SELECT"] then
                      local tOldIndexString = SkuOptions:GetMenuIndexAndBreadString(SkuOptions.currentMenuPosition)
-                     local function CallbackHelper(aEventName, aIndexString, aBreadString)
+                     local function CallbackHelper(aSource, aEventName, aIndexString, aBreadString, a, b)
                         table.insert(tStepData.triggers, {
                            type = self.triggerType,
                            value = {},
@@ -1436,7 +1434,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                         SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, })
                      else
                         SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-                        tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title[Sku.Loc] = tText
+                        SkuAdventureGuide.Tutorial:UpdateTranslations(tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title, tText)
                         C_Timer.After(0.001, function()
                            SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
                         end)
@@ -1590,15 +1588,9 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                         linkedFrom = {},
                         linkedIn = {},
                      })
-                     for langi, langv in pairs(Sku.Locs) do
-                        if langv ~= Sku.Loc then
-                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[langv] = "UNTRANSLATED:"..tText
-                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText[langv] = ""
-                        else
-                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].title[langv] = tText
-                           tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps].beginText[langv] = ""
-                        end
-                     end
+
+                     SkuAdventureGuide.Tutorial:UpdateTranslations(tSource.AllLangs.Tutorials[tTutorialGuid].steps[x + 1].title, tText)
+                     SkuAdventureGuide.Tutorial:UpdateTranslations(tSource.AllLangs.Tutorials[tTutorialGuid].steps[x + 1].beginText, "")
 
                      C_Timer.After(0.001, function()
                         SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition)
@@ -1860,382 +1852,389 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
             if aSource.AllLangs.Tutorials[v.GUID] then
                --tutorial entry
                tEmpty = tEmpty + 1
-               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v.tutorialTitle[Sku.Loc]..(aSource.AllLangs.prefix == "Sku" and " ("..L["read only"]..")" or "")}, SkuGenericMenuItem)
-               tNewMenuEntry.dynamic = true
-               tNewMenuEntry.filterable = true
+
+               local tExportedText = ""
+               if v.exported ~= nil then
+                  tExportedText = " (locked, exported) "
+               end
+
+               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v.tutorialTitle[Sku.Loc]..(aSource.AllLangs.prefix == "Sku" and " ("..L["read only"]..")" or "")..tExportedText}, SkuGenericMenuItem)
                tNewMenuEntry.tutorialName = v.tutorialTitle[Sku.Loc]
                tNewMenuEntry.tutorialGuid = v.GUID
                tNewMenuEntry.source = aSource
-               tNewMenuEntry.BuildChildren = function(self)
-                  --links count for steps menu option title
-                  local tLinkedCount = 0
-                  for x = 1, #aSource.AllLangs.Tutorials[v.GUID].steps do
-                     if aSource.AllLangs.Tutorials[v.GUID].steps[x].linkedFrom.SourceTutorialGUID and aSource.AllLangs.Tutorials[v.GUID].steps[x].linkedFrom.SourceTutorialStepGUID then
-                        tLinkedCount = tLinkedCount + 1
-                     end
-                  end
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Steps"]..(tLinkedCount == 0 and "" or (" ("..tLinkedCount.." "..L["linked"]..")"))}, SkuGenericMenuItem)
+               if v.exported == nil then
                   tNewMenuEntry.dynamic = true
                   tNewMenuEntry.filterable = true
-                  tNewMenuEntry.BuildChildren = SkuAdventureGuide.Tutorial.MenuBuilderEdit
-      
-                  --Start over
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Start over"]}, SkuGenericMenuItem)
-                  tNewMenuEntry.isSelect = true
-                  tNewMenuEntry.OnAction = function(self, aValue, aName)
-                     SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-                     SkuOptions:CloseMenu()                  
-                     SkuAdventureGuide.Tutorial:StartTutorial(v.GUID, 1, aSource)
-                  end
+                  tNewMenuEntry.BuildChildren = function(self)
+                     --links count for steps menu option title
+                     local tLinkedCount = 0
+                     for x = 1, #aSource.AllLangs.Tutorials[v.GUID].steps do
+                        if aSource.AllLangs.Tutorials[v.GUID].steps[x].linkedFrom.SourceTutorialGUID and aSource.AllLangs.Tutorials[v.GUID].steps[x].linkedFrom.SourceTutorialStepGUID then
+                           tLinkedCount = tLinkedCount + 1
+                        end
+                     end
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Steps"]..(tLinkedCount == 0 and "" or (" ("..tLinkedCount.." "..L["linked"]..")"))}, SkuGenericMenuItem)
+                     tNewMenuEntry.dynamic = true
+                     tNewMenuEntry.filterable = true
+                     tNewMenuEntry.BuildChildren = SkuAdventureGuide.Tutorial.MenuBuilderEdit
+         
+                     --Start over
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Start over"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.isSelect = true
+                     tNewMenuEntry.OnAction = function(self, aValue, aName)
+                        SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+                        SkuOptions:CloseMenu()                  
+                        SkuAdventureGuide.Tutorial:StartTutorial(v.GUID, 1, aSource)
+                     end
 
-                  if tPrefix ~= "Sku" then
-                     if SkuOptions.db.global["SkuOptions"].devmode == true then
-                        --Show as link source
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show as link source"]}, SkuGenericMenuItem)
+                     if tPrefix ~= "Sku" then
+                        if SkuOptions.db.global["SkuOptions"].devmode == true then
+                           --Show as link source
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show as link source"]}, SkuGenericMenuItem)
+                           tNewMenuEntry.dynamic = true
+                           tNewMenuEntry.filterable = true
+                           tNewMenuEntry.isSelect = true
+                           tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                              return (self.parent.source.AllLangs.Tutorials[v.GUID].showAsTemplate == true and L["Yes"] or L["No"])
+                           end
+                           tNewMenuEntry.OnAction = function(self, aValue, aName)
+                              if aName == L["Yes"] then
+                                 self.parent.source.AllLangs.Tutorials[v.GUID].showAsTemplate = true
+                              else
+                                 self.parent.source.AllLangs.Tutorials[v.GUID].showAsTemplate = false
+                              end
+                           end
+                           tNewMenuEntry.BuildChildren = function(self)
+                              SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                              SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                           end
+
+                           --Is Sku newbie tutorial
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Is Sku newbie tutorial"]}, SkuGenericMenuItem)
+                           tNewMenuEntry.dynamic = true
+                           tNewMenuEntry.filterable = true
+                           tNewMenuEntry.isSelect = true
+                           tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                              return (self.parent.source.AllLangs.Tutorials[v.GUID].isSkuNewbieTutorial == true and L["Yes"] or L["No"])
+                           end
+                           tNewMenuEntry.OnAction = function(self, aValue, aName)
+                              if aName == L["Yes"] then
+                                 self.parent.source.AllLangs.Tutorials[v.GUID].isSkuNewbieTutorial = true
+                              else
+                                 self.parent.source.AllLangs.Tutorials[v.GUID].isSkuNewbieTutorial = false
+                              end
+                           end
+                           tNewMenuEntry.BuildChildren = function(self)
+                              SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                              SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                           end
+                        end
+
+                        --Play first time user intro
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]}, SkuGenericMenuItem)
                         tNewMenuEntry.dynamic = true
                         tNewMenuEntry.filterable = true
                         tNewMenuEntry.isSelect = true
                         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                           return (self.parent.source.AllLangs.Tutorials[v.GUID].showAsTemplate == true and L["Yes"] or L["No"])
+                           return (self.parent.source.AllLangs.Tutorials[v.GUID].playFtuIntro == true and L["Yes"] or L["No"])
                         end
                         tNewMenuEntry.OnAction = function(self, aValue, aName)
                            if aName == L["Yes"] then
-                              self.parent.source.AllLangs.Tutorials[v.GUID].showAsTemplate = true
+                              self.parent.source.AllLangs.Tutorials[v.GUID].playFtuIntro = true
                            else
-                              self.parent.source.AllLangs.Tutorials[v.GUID].showAsTemplate = false
+                              self.parent.source.AllLangs.Tutorials[v.GUID].playFtuIntro = false
                            end
                         end
                         tNewMenuEntry.BuildChildren = function(self)
                            SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
                            SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
                         end
+                     else
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show as link source"]..": "..(self.parent.source.AllLangs.Tutorials[v.GUID].showAsTemplate == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]..": "..(self.parent.source.AllLangs.Tutorials[v.GUID].playFtuIntro == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+                     end
 
-                        --Is Sku newbie tutorial
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Is Sku newbie tutorial"]}, SkuGenericMenuItem)
+                     --Show for requirements               
+                     if tPrefix ~= "Sku" then
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show for"]}, SkuGenericMenuItem)
                         tNewMenuEntry.dynamic = true
-                        tNewMenuEntry.filterable = true
-                        tNewMenuEntry.isSelect = true
-                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                           return (self.parent.source.AllLangs.Tutorials[v.GUID].isSkuNewbieTutorial == true and L["Yes"] or L["No"])
-                        end
-                        tNewMenuEntry.OnAction = function(self, aValue, aName)
-                           if aName == L["Yes"] then
-                              self.parent.source.AllLangs.Tutorials[v.GUID].isSkuNewbieTutorial = true
-                           else
-                              self.parent.source.AllLangs.Tutorials[v.GUID].isSkuNewbieTutorial = false
-                           end
-                        end
                         tNewMenuEntry.BuildChildren = function(self)
-                           SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                           SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-                        end
-                     end
-
-                     --Play first time user intro
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.filterable = true
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                        return (self.parent.source.AllLangs.Tutorials[v.GUID].playFtuIntro == true and L["Yes"] or L["No"])
-                     end
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        if aName == L["Yes"] then
-                           self.parent.source.AllLangs.Tutorials[v.GUID].playFtuIntro = true
-                        else
-                           self.parent.source.AllLangs.Tutorials[v.GUID].playFtuIntro = false
-                        end
-                     end
-                     tNewMenuEntry.BuildChildren = function(self)
-                        SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                        SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-                     end
-                  else
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show as link source"]..": "..(self.parent.source.AllLangs.Tutorials[v.GUID].showAsTemplate == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Play first time user intro"]..": "..(self.parent.source.AllLangs.Tutorials[v.GUID].playFtuIntro == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
-                  end
-
-                  --Show for requirements               
-                  if tPrefix ~= "Sku" then
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show for"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.BuildChildren = function(self)
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Race"]}, SkuGenericMenuItem)
-                        tNewMenuEntry.dynamic = true
-                        tNewMenuEntry.isSelect = true
-                        tNewMenuEntry.OnAction = function(self, aValue, aName)
-                           for xI, xR in pairs(tRaceRequirementValues) do
-                              if xR == aName then
-                                 self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.race = xI
-                                 return
-                              end
-                           end
-                        end
-                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                           return (tRaceRequirementValues[self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.race])
-                        end
-                        tNewMenuEntry.BuildChildren = function(self)
-                           for xI, xR in pairs(tRaceRequirementValues) do
-                              SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
-                           end
-                        end
-
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["klasse"]}, SkuGenericMenuItem)
-                        tNewMenuEntry.dynamic = true
-                        tNewMenuEntry.isSelect = true
-                        tNewMenuEntry.OnAction = function(self, aValue, aName)
-                           for xI, xR in pairs(tClassRequirementValues) do
-                              if xR == aName then
-                                 self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.class = xI
-                                 return
-                              end
-                           end
-                        end
-                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                           return (tClassRequirementValues[self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.class])
-                        end
-                        tNewMenuEntry.BuildChildren = function(self)
-                           for xI, xR in pairs(tClassRequirementValues) do
-                              SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
-                           end
-                        end
-
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Skill"]}, SkuGenericMenuItem)
-                        tNewMenuEntry.dynamic = true
-                        tNewMenuEntry.isSelect = true
-                        tNewMenuEntry.OnAction = function(self, aValue, aName)
-                           for xI, xR in pairs(tSkillRequirementValues) do
-                              if xR == aName then
-                                 self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.skill = xI
-                                 return
-                              end
-                           end
-                        end
-                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                           return (tSkillRequirementValues[self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.skill])
-                        end
-                        tNewMenuEntry.BuildChildren = function(self)
-                           for xI, xR in pairs(tSkillRequirementValues) do
-                              SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
-                           end
-                        end
-                     end
-                  end
-
-                  --Lock keyboard if tutorial is playing
-                  if tPrefix ~= "Sku" then
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.filterable = true
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                        return (self.parent.source.AllLangs.Tutorials[v.GUID].lockKeyboard == true and L["Yes"] or L["No"])
-                     end
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        if aName == L["Yes"] then
-                           self.parent.source.AllLangs.Tutorials[v.GUID].lockKeyboard = true
-                        else
-                           self.parent.source.AllLangs.Tutorials[v.GUID].lockKeyboard = false
-                        end
-                     end
-                     tNewMenuEntry.BuildChildren = function(self)
-                        SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                        SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-                     end
-                  else
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]..": "..(self.parent.source.AllLangs.Tutorials[v.GUID].lockKeyboard == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
-                  end
-
-                  --Show in users tutorials list
-                  if tPrefix ~= "Sku" then
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.dynamic = true
-                     tNewMenuEntry.filterable = true
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
-                        return (self.parent.source.AllLangs.Tutorials[v.GUID].showInUserList == true and L["Yes"] or L["No"])
-                     end
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        if aName == L["Yes"] then
-                           self.parent.source.AllLangs.Tutorials[v.GUID].showInUserList = true
-                        else
-                           self.parent.source.AllLangs.Tutorials[v.GUID].showInUserList = false
-                        end
-                     end
-                     tNewMenuEntry.BuildChildren = function(self)
-                        SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
-                        SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-                     end
-                  else
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]..": "..(self.parent.source.AllLangs.Tutorials[v.GUID].showInUserList == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
-                  end
-
-                  if aSource.AllLangs.prefix ~= "Sku" then
-                     --rename tut
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Rename"]}, SkuGenericMenuItem)
-                     tNewMenuEntry.isSelect = true
-                     tNewMenuEntry.OnAction = function(self, aValue, aName)
-                        SkuOptions:EditBoxShow(i, function(a, b, c) 
-                           local tText = SkuOptionsEditBoxEditBox:GetText()
-                           if tText and tText ~= "" then
-                              local tNameExists = false
-                              for xi, xv in pairs(self.parent.source.AllLangs.Tutorials) do
-                                 if tText ~= "" and xv.tutorialTitle[Sku.Loc] == tText then
-                                    tNameExists = true
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Race"]}, SkuGenericMenuItem)
+                           tNewMenuEntry.dynamic = true
+                           tNewMenuEntry.isSelect = true
+                           tNewMenuEntry.OnAction = function(self, aValue, aName)
+                              for xI, xR in pairs(tRaceRequirementValues) do
+                                 if xR == aName then
+                                    self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.race = xI
+                                    return
                                  end
                               end
-                              if tNameExists == true then
-                                 SkuOptions.Voice:OutputStringBTtts(L["name schon vorhanden"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
-                                 SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, })
-                              else
+                           end
+                           tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                              return (tRaceRequirementValues[self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.race])
+                           end
+                           tNewMenuEntry.BuildChildren = function(self)
+                              for xI, xR in pairs(tRaceRequirementValues) do
+                                 SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
+                              end
+                           end
+
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["klasse"]}, SkuGenericMenuItem)
+                           tNewMenuEntry.dynamic = true
+                           tNewMenuEntry.isSelect = true
+                           tNewMenuEntry.OnAction = function(self, aValue, aName)
+                              for xI, xR in pairs(tClassRequirementValues) do
+                                 if xR == aName then
+                                    self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.class = xI
+                                    return
+                                 end
+                              end
+                           end
+                           tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                              return (tClassRequirementValues[self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.class])
+                           end
+                           tNewMenuEntry.BuildChildren = function(self)
+                              for xI, xR in pairs(tClassRequirementValues) do
+                                 SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
+                              end
+                           end
+
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Skill"]}, SkuGenericMenuItem)
+                           tNewMenuEntry.dynamic = true
+                           tNewMenuEntry.isSelect = true
+                           tNewMenuEntry.OnAction = function(self, aValue, aName)
+                              for xI, xR in pairs(tSkillRequirementValues) do
+                                 if xR == aName then
+                                    self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.skill = xI
+                                    return
+                                 end
+                              end
+                           end
+                           tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                              return (tSkillRequirementValues[self.parent.parent.source.AllLangs.Tutorials[v.GUID].requirements.skill])
+                           end
+                           tNewMenuEntry.BuildChildren = function(self)
+                              for xI, xR in pairs(tSkillRequirementValues) do
+                                 SkuOptions:InjectMenuItems(self, {xR}, SkuGenericMenuItem)
+                              end
+                           end
+                        end
+                     end
+
+                     --Lock keyboard if tutorial is playing
+                     if tPrefix ~= "Sku" then
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.dynamic = true
+                        tNewMenuEntry.filterable = true
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                           return (self.parent.source.AllLangs.Tutorials[v.GUID].lockKeyboard == true and L["Yes"] or L["No"])
+                        end
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           if aName == L["Yes"] then
+                              self.parent.source.AllLangs.Tutorials[v.GUID].lockKeyboard = true
+                           else
+                              self.parent.source.AllLangs.Tutorials[v.GUID].lockKeyboard = false
+                           end
+                        end
+                        tNewMenuEntry.BuildChildren = function(self)
+                           SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                           SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                        end
+                     else
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lock keyboard if tutorial is playing"]..": "..(self.parent.source.AllLangs.Tutorials[v.GUID].lockKeyboard == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+                     end
+
+                     --Show in users tutorials list
+                     if tPrefix ~= "Sku" then
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.dynamic = true
+                        tNewMenuEntry.filterable = true
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+                           return (self.parent.source.AllLangs.Tutorials[v.GUID].showInUserList == true and L["Yes"] or L["No"])
+                        end
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           if aName == L["Yes"] then
+                              self.parent.source.AllLangs.Tutorials[v.GUID].showInUserList = true
+                           else
+                              self.parent.source.AllLangs.Tutorials[v.GUID].showInUserList = false
+                           end
+                        end
+                        tNewMenuEntry.BuildChildren = function(self)
+                           SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+                           SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+                        end
+                     else
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show in users tutorials list"]..": "..(self.parent.source.AllLangs.Tutorials[v.GUID].showInUserList == true and L["Yes"] or L["No"])}, SkuGenericMenuItem)
+                     end
+
+                     if aSource.AllLangs.prefix ~= "Sku" then
+                        --rename tut
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Rename"]}, SkuGenericMenuItem)
+                        tNewMenuEntry.isSelect = true
+                        tNewMenuEntry.OnAction = function(self, aValue, aName)
+                           SkuOptions:EditBoxShow(i, function(a, b, c) 
+                              local tText = SkuOptionsEditBoxEditBox:GetText()
+                              if tText and tText ~= "" then
+                                 local tNameExists = false
+                                 for xi, xv in pairs(self.parent.source.AllLangs.Tutorials) do
+                                    if tText ~= "" and xv.tutorialTitle[Sku.Loc] == tText then
+                                       tNameExists = true
+                                    end
+                                 end
+                                 if tNameExists == true then
+                                    SkuOptions.Voice:OutputStringBTtts(L["name schon vorhanden"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+                                    SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, })
+                                 else
+                                    SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+
+                                    C_Timer.After(0.05, function()
+                                       SkuOptions.currentMenuPosition.parent:OnSelect(SkuOptions.currentMenuPosition.parent)
+                                       SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+                                    end)
+                                    C_Timer.After(0.1, function()
+                                       SkuAdventureGuide.Tutorial:UpdateTranslations(self.parent.source.AllLangs.Tutorials[v.GUID].tutorialTitle, tText)
+                                    end)
+                                 end
+                              end
+                           end,
+                           false,
+                           function(a, b, c) 
+                              SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+                           end)
+                           C_Timer.After(0.01, function()
+                              SkuOptions.Voice:OutputStringBTtts(L["Enter new name"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+                           end)
+                        end
+
+                        -- delete tutorial
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
+                        local tNumberOfLinksToThisStep = 0
+                        for tTSI = 1, #aSource.AllLangs.Tutorials[v.GUID].steps do
+                           local tStepData = aSource.AllLangs.Tutorials[v.GUID].steps[tTSI]
+                           for iLinkedinTutGuid, iLinkedinTutSteps in pairs(tStepData.linkedIn) do
+                              for xStepIndex = 1, #iLinkedinTutSteps do
+                                 tNumberOfLinksToThisStep = tNumberOfLinksToThisStep + 1
+                              end
+                           end
+                        end
+                        if tNumberOfLinksToThisStep == 0 then
+                           --just delete; no linked
+                           tNewMenuEntry.isSelect = true
+                           tNewMenuEntry.OnAction = function(self, aValue, aName)
+                              SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+
+                              C_Timer.After(0.05, function()
+                                 SkuOptions.currentMenuPosition.parent:OnSelect(SkuOptions.currentMenuPosition.parent)
+                                 SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+                              end)
+                              C_Timer.After(0.1, function()
+                                 for tTSI = #aSource.AllLangs.Tutorials[v.GUID].steps, 1, -1 do
+                                    --unlink and delete step
+                                    local tStepData = aSource.AllLangs.Tutorials[v.GUID].steps[tTSI]
+                                    SkuAdventureGuide.Tutorial:UnlinkStep(aSource.AllLangs.Tutorials[v.GUID].GUID, tStepData.GUID, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
+                                    table.remove(aSource.AllLangs.Tutorials[v.GUID].steps, x)
+                                 end
+                                 aSource.AllLangs.Tutorials[v.GUID] = nil
+                              end)
+                           end
+                        else
+                           tNewMenuEntry.dynamic = true
+                           tNewMenuEntry.BuildChildren = function(self)
+                              --replace linked
+                              local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial"]}, SkuGenericMenuItem)
+                              tNewMenuEntry.isSelect = true
+                              tNewMenuEntry.OnAction = function(self, aValue, aName)
                                  SkuAdventureGuide.Tutorial:StopCurrentTutorial()
 
                                  C_Timer.After(0.05, function()
-                                    SkuOptions.currentMenuPosition.parent:OnSelect(SkuOptions.currentMenuPosition.parent)
-                                    SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
+                                    SkuOptions.currentMenuPosition.parent.parent:OnSelect(SkuOptions.currentMenuPosition.parent.parent)
+                                    SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
                                  end)
+
                                  C_Timer.After(0.1, function()
-                                    self.parent.source.AllLangs.Tutorials[v.GUID].tutorialTitle = {}
-                                    for langi, langv in pairs(Sku.Locs) do
-                                       if langv ~= Sku.Loc then
-                                          self.parent.source.AllLangs.Tutorials[v.GUID].tutorialTitle[langv] = "UNTRANSLATED:"..tText
-                                       else
-                                          self.parent.source.AllLangs.Tutorials[v.GUID].tutorialTitle[langv] = tText
-                                       end
-                                    end                                     
-                                 end)
-                              end
-                           end
-                        end,
-                        false,
-                        function(a, b, c) 
-                           SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
-                        end)
-                        C_Timer.After(0.01, function()
-                           SkuOptions.Voice:OutputStringBTtts(L["Enter new name"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
-                        end)
-                     end
-
-                     -- delete tutorial
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
-                     local tNumberOfLinksToThisStep = 0
-                     for tTSI = 1, #aSource.AllLangs.Tutorials[v.GUID].steps do
-                        local tStepData = aSource.AllLangs.Tutorials[v.GUID].steps[tTSI]
-                        for iLinkedinTutGuid, iLinkedinTutSteps in pairs(tStepData.linkedIn) do
-                           for xStepIndex = 1, #iLinkedinTutSteps do
-                              tNumberOfLinksToThisStep = tNumberOfLinksToThisStep + 1
-                           end
-                        end
-                     end
-                     if tNumberOfLinksToThisStep == 0 then
-                        --just delete; no linked
-                        tNewMenuEntry.isSelect = true
-                        tNewMenuEntry.OnAction = function(self, aValue, aName)
-                           SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-
-                           C_Timer.After(0.05, function()
-                              SkuOptions.currentMenuPosition.parent:OnSelect(SkuOptions.currentMenuPosition.parent)
-                              SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)
-                           end)
-                           C_Timer.After(0.1, function()
-                              for tTSI = #aSource.AllLangs.Tutorials[v.GUID].steps, 1, -1 do
-                                 --unlink and delete step
-                                 local tStepData = aSource.AllLangs.Tutorials[v.GUID].steps[tTSI]
-                                 SkuAdventureGuide.Tutorial:UnlinkStep(aSource.AllLangs.Tutorials[v.GUID].GUID, tStepData.GUID, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
-                                 table.remove(aSource.AllLangs.Tutorials[v.GUID].steps, x)
-                              end
-                              aSource.AllLangs.Tutorials[v.GUID] = nil
-                           end)
-                        end
-                     else
-                        tNewMenuEntry.dynamic = true
-                        tNewMenuEntry.BuildChildren = function(self)
-                           --replace linked
-                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Copy data from steps in this tutorial to all steps that are linking to the steps in this tutorial, making them unlinked real steps. Then delete this tutorial"]}, SkuGenericMenuItem)
-                           tNewMenuEntry.isSelect = true
-                           tNewMenuEntry.OnAction = function(self, aValue, aName)
-                              SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-
-                              C_Timer.After(0.05, function()
-                                 SkuOptions.currentMenuPosition.parent.parent:OnSelect(SkuOptions.currentMenuPosition.parent.parent)
-                                 SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
-                              end)
-
-                              C_Timer.After(0.1, function()
-                                 --for each step in this tut
-                                 for tTSI = #aSource.AllLangs.Tutorials[v.GUID].steps, 1, -1 do
-                                    --update all linked steps
-                                    local tStepData = aSource.AllLangs.Tutorials[v.GUID].steps[tTSI]
-                                    local tTutorialGuid = i
-                                    local tSource = self.parent.parent.source
-                                    for iLinkedinTutGuid, iLinkedinTutSteps in pairs(tStepData.linkedIn) do
-                                       for xStepIndex = 1, #iLinkedinTutSteps do
-                                          if tStepData.linkedFrom.SourceTutorialGUID and tStepData.linkedFrom.SourceTutorialStepGUID then --this is a linked step, we need to update the source for all steps that are linking to this step to the source of this step
-                                             local tLinkedStepGuid = iLinkedinTutSteps[xStepIndex]
-                                             --unlink remote
-                                             SkuAdventureGuide.Tutorial:UnlinkStep(iLinkedinTutGuid, tLinkedStepGuid, tSource.AllLangs.Tutorials[tTutorialGuid].GUID, tStepData.GUID)
-                                             --relink remote
-                                             SkuAdventureGuide.Tutorial:LinkStep(iLinkedinTutGuid, tLinkedStepGuid, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
-                                             --unlink this
-                                             SkuAdventureGuide.Tutorial:UnlinkStep(tSource.AllLangs.Tutorials[tTutorialGuid].GUID, tStepData.GUID, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
-                                          else --this is a real step; no need to update the linking steps
-                                             local tLinkedStepGuid = iLinkedinTutSteps[xStepIndex]
-                                             --unlink remote
-                                             SkuAdventureGuide.Tutorial:UnlinkStep(iLinkedinTutGuid, tLinkedStepGuid, tSource.AllLangs.Tutorials[tTutorialGuid].GUID, tStepData.GUID)
-                                             --update remote
-                                             SkuAdventureGuide.Tutorial:PutStepDataByGUID(tLinkedStepGuid, tStepData)
+                                    --for each step in this tut
+                                    for tTSI = #aSource.AllLangs.Tutorials[v.GUID].steps, 1, -1 do
+                                       --update all linked steps
+                                       local tStepData = aSource.AllLangs.Tutorials[v.GUID].steps[tTSI]
+                                       local tTutorialGuid = i
+                                       local tSource = self.parent.parent.source
+                                       for iLinkedinTutGuid, iLinkedinTutSteps in pairs(tStepData.linkedIn) do
+                                          for xStepIndex = 1, #iLinkedinTutSteps do
+                                             if tStepData.linkedFrom.SourceTutorialGUID and tStepData.linkedFrom.SourceTutorialStepGUID then --this is a linked step, we need to update the source for all steps that are linking to this step to the source of this step
+                                                local tLinkedStepGuid = iLinkedinTutSteps[xStepIndex]
+                                                --unlink remote
+                                                SkuAdventureGuide.Tutorial:UnlinkStep(iLinkedinTutGuid, tLinkedStepGuid, tSource.AllLangs.Tutorials[tTutorialGuid].GUID, tStepData.GUID)
+                                                --relink remote
+                                                SkuAdventureGuide.Tutorial:LinkStep(iLinkedinTutGuid, tLinkedStepGuid, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
+                                                --unlink this
+                                                SkuAdventureGuide.Tutorial:UnlinkStep(tSource.AllLangs.Tutorials[tTutorialGuid].GUID, tStepData.GUID, tStepData.linkedFrom.SourceTutorialGUID, tStepData.linkedFrom.SourceTutorialStepGUID)
+                                             else --this is a real step; no need to update the linking steps
+                                                local tLinkedStepGuid = iLinkedinTutSteps[xStepIndex]
+                                                --unlink remote
+                                                SkuAdventureGuide.Tutorial:UnlinkStep(iLinkedinTutGuid, tLinkedStepGuid, tSource.AllLangs.Tutorials[tTutorialGuid].GUID, tStepData.GUID)
+                                                --update remote
+                                                SkuAdventureGuide.Tutorial:PutStepDataByGUID(tLinkedStepGuid, tStepData)
+                                             end
                                           end
                                        end
+                                       --now delete this step
+                                       table.remove(tSource.AllLangs.Tutorials[tTutorialGuid].steps, tTSI)
                                     end
-                                    --now delete this step
-                                    table.remove(tSource.AllLangs.Tutorials[tTutorialGuid].steps, tTSI)
-                                 end
 
-                                 --now delete this tut
-                                 self.parent.parent.source.AllLangs.Tutorials[v.GUID] = nil
-                              end)
-                           end
-            
-                           --delete linked steps
-                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete all steps that are linking a step in this tutorial. Then delete this tutorial"]}, SkuGenericMenuItem)
-                           tNewMenuEntry.isSelect = true
-                           tNewMenuEntry.OnAction = function(self, aValue, aName)
-                              SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+                                    --now delete this tut
+                                    self.parent.parent.source.AllLangs.Tutorials[v.GUID] = nil
+                                 end)
+                              end
+               
+                              --delete linked steps
+                              local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Delete all steps that are linking a step in this tutorial. Then delete this tutorial"]}, SkuGenericMenuItem)
+                              tNewMenuEntry.isSelect = true
+                              tNewMenuEntry.OnAction = function(self, aValue, aName)
+                                 SkuAdventureGuide.Tutorial:StopCurrentTutorial()
 
-                              C_Timer.After(0.05, function()
-                                 SkuOptions.currentMenuPosition.parent.parent:OnSelect(SkuOptions.currentMenuPosition.parent.parent)
-                                 SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
-                              end)
+                                 C_Timer.After(0.05, function()
+                                    SkuOptions.currentMenuPosition.parent.parent:OnSelect(SkuOptions.currentMenuPosition.parent.parent)
+                                    SkuOptions.currentMenuPosition.parent.parent:OnUpdate(SkuOptions.currentMenuPosition.parent.parent)
+                                 end)
 
-                              C_Timer.After(0.1, function()
-                                 --delete all steps that are linking to this step
-                                 for tTSI = #aSource.AllLangs.Tutorials[v.GUID].steps, 1, -1 do
-                                    local tStepData = aSource.AllLangs.Tutorials[v.GUID].steps[tTSI]
-                                    SkuAdventureGuide.Tutorial:DeleteStep(tStepData.GUID, 0)
-                                 end
-                                 --now delete this tut
-                                 self.parent.parent.source.AllLangs.Tutorials[v.GUID] = nil
-                              end)
+                                 C_Timer.After(0.1, function()
+                                    --delete all steps that are linking to this step
+                                    for tTSI = #aSource.AllLangs.Tutorials[v.GUID].steps, 1, -1 do
+                                       local tStepData = aSource.AllLangs.Tutorials[v.GUID].steps[tTSI]
+                                       SkuAdventureGuide.Tutorial:DeleteStep(tStepData.GUID, 0)
+                                    end
+                                    --now delete this tut
+                                    self.parent.parent.source.AllLangs.Tutorials[v.GUID] = nil
+                                 end)
+                              end
                            end
                         end
                      end
-                  end
 
-                  --export tutorial
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Export this tutorial"]}, SkuGenericMenuItem)
-                  tNewMenuEntry.isSelect = true
-                  tNewMenuEntry.OnAction = function(self, aValue, aName)
-                     C_Timer.After(0.001, function()
-                        SkuAdventureGuide.Tutorial:ExportTutorial(v.GUID, v)
-                     end)
-                  end
+                     --export tutorial
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Export this tutorial"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.isSelect = true
+                     tNewMenuEntry.OnAction = function(self, aValue, aName)
+                        C_Timer.After(0.001, function()
+                           SkuAdventureGuide.Tutorial:ExportTutorial(v.GUID, v)
+                        end)
+                     end
 
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Export this tutorial as text"]}, SkuGenericMenuItem)
-                  tNewMenuEntry.isSelect = true
-                  tNewMenuEntry.OnAction = function(self, aValue, aName)
-                     C_Timer.After(0.001, function()
-                        SkuAdventureGuide.Tutorial:ExportTutorialAsFriendlyList(v.GUID, v)
-                     end)
+                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Export this tutorial as text"]}, SkuGenericMenuItem)
+                     tNewMenuEntry.dynamic = true
+                     tNewMenuEntry.isSelect = true
+                     tNewMenuEntry.BuildChildren = function(self)
+                        for _, tLoc in pairs(Sku.Locs) do
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tLoc}, SkuGenericMenuItem)
+                        end
+                     end
+                     tNewMenuEntry.OnAction = function(self, aValue, aName)
+                        C_Timer.After(0.001, function()
+                           SkuAdventureGuide.Tutorial:ExportTutorialAsFriendlyList(v.GUID, v, aName)
+                        end)
+                     end
                   end
                end
             end
@@ -2298,48 +2297,39 @@ function SkuAdventureGuide.Tutorial:EditorMenuBuilder(aParentEntry)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAdventureGuide.Tutorial:ExportTutorialAsFriendlyList(aTutorialGuid, aTutorialData)
-
-
-
-
-
-
-
-
-
-
+function SkuAdventureGuide.Tutorial:ExportTutorialAsFriendlyList(aTutorialGuid, aTutorialData, aLang)
+   aLang = aLang or Sku.Loc
    local tResult = ""
-   tResult = tResult.."Titel: "..aTutorialData.tutorialTitle[Sku.Loc].."\r\n"
+   tResult = tResult.."Titel: "..aTutorialData.tutorialTitle[aLang].."\r\n"
    tResult = tResult..L["Play first time user intro"]..": "..(aTutorialData.playFtuIntro == true and L["Yes"] or L["No"]).."\r\n"
    tResult = tResult..L["Don't skip current outputs"]..": "..(aTutorialData.steps.dontSkipCurrentOutputs == true and L["Yes"] or L["No"]).."\r\n"
    for x = 1, #aTutorialData.steps do
       local tStepData = aTutorialData.steps[x]
       if tStepData.title then
-         tResult = tResult..""..L["schritt "]..x..": "..tStepData.title[Sku.Loc].."\r\n"
-         tResult = tResult.."  "..L["Start text"]..": "..tStepData.beginText[Sku.Loc].."\r\n"
+         tResult = tResult..""..L["schritt "]..x..": "..tStepData.title[aLang].."\r\n"
+         tResult = tResult.."  "..L["Start text"]..": "..tStepData.beginText[aLang].."\r\n"
          tResult = tResult.."  "..L["Triggers"]..":".."\r\n"
          tResult = tResult.."    "..L["All Required"]..": "..(tStepData.allTriggersRequired == true and L["Yes"] or L["No"]).."\r\n"
          for y = 1, #tStepData.triggers do
             local tTriggerData = tStepData.triggers[y]
             local tText = y.." "..L[tTriggerData.type]
             if SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "ENTER_TEXT" then
-               if tonumber(tTriggerData.value[Sku.Loc]) then
-                  tText = tText..": "..SkuDB.NpcData.Names[Sku.Loc][tonumber(tTriggerData.value[Sku.Loc])][1]
+               if tonumber(tTriggerData.value[aLang]) then
+                  tText = tText..": "..SkuDB.NpcData.Names[aLang][tonumber(tTriggerData.value[aLang])][1]
                else
-                  tText = tText..": "..tTriggerData.value[Sku.Loc]
+                  tText = tText..": "..tTriggerData.value[aLang]
                end
             elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_TARGET" then
-               tText = tText..": "..tTriggerData.value[Sku.Loc]
+               tText = tText..": "..tTriggerData.value[aLang]
             elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES" or SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES_4" or SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES_10" or SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "CURRENT_COORDINATES_20" then
-               local x, y, rr = string.match(tTriggerData.value[Sku.Loc], "(.+);(.+)")
-               local _, _, rr = string.match(tTriggerData.value[Sku.Loc], "(.+);(.+);(.+)")
+               local x, y, rr = string.match(tTriggerData.value[aLang], "(.+);(.+)")
+               local _, _, rr = string.match(tTriggerData.value[aLang], "(.+);(.+);(.+)")
                rr = rr or 4
                tText = tText..": "..x..";"..y.. " "..rr..";"..L["Meter"]
             elseif SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[1] == "WAIT_FOR_MENU_SELECT" then
-               tText = tText..": "..tTriggerData.value[Sku.Loc]
+               tText = tText..": "..tTriggerData.value[aLang]
             else
-               tText = tText..": "..L[SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[tTriggerData.value[Sku.Loc]]]
+               tText = tText..": "..L[SkuAdventureGuide.Tutorial.triggers[tTriggerData.type].values[tTriggerData.value[aLang]]]
             end
             tResult = tResult.."    "..tText.."\r\n"
          end
@@ -2358,7 +2348,6 @@ function SkuAdventureGuide.Tutorial:ExportTutorial(aTutorialGuid, aTutorialData)
 	end
 	local tExportDataTable = {
 		version = GetAddOnMetadata("Sku", "Version"),
-      lang = Sku.Loc,
 		tutorialGuid = aTutorialGuid,
 		tutorialData = aTutorialData,
 	}
@@ -2378,22 +2367,11 @@ function SkuAdventureGuide.Tutorial:ImportTutorial()
 			local tSuccess, tTutorialData = SkuOptions:Deserialize(tSerializedData)
          if tSuccess == true and tTutorialData then
             if tTutorialData.tutorialGuid and tTutorialData.tutorialData then
-               tTutorialData.lang = tTutorialData.lang or Sku.Loc
-               if tTutorialData.lang == Sku.Loc then               
-                  if not SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[tTutorialData.tutorialGuid] then
-                     SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[tTutorialData.tutorialGuid] = tTutorialData.tutorialData
-                     SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[tTutorialData.tutorialGuid].requirements = SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[tTutorialData.tutorialGuid].requirements or {race = 993, class = 99, skill = 999, }
-                     SkuAdventureGuide.Tutorial:VerifyAndCleanGUIDs()
-                     SkuOptions.Voice:OutputStringBTtts(L["Tutorial imported"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })		
-                     return
-                  else
-                     SkuOptions.Voice:OutputStringBTtts(L["Error. Name already exists. Rename the existing tutorial and try again."], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })		
-                     return
-                  end
-               else
-                  SkuOptions.Voice:OutputStringBTtts(L["Error: Data language is not current language"].." ("..tTutorialData.lang.." / "..Sku.Loc..")", {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })		
-                  return
-               end
+               SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[tTutorialData.tutorialGuid] = tTutorialData.tutorialData
+               SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[tTutorialData.tutorialGuid].requirements = SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[tTutorialData.tutorialGuid].requirements or {race = 993, class = 99, skill = 999, }
+               SkuAdventureGuide.Tutorial:VerifyAndCleanGUIDs()
+               SkuOptions.Voice:OutputStringBTtts(L["Tutorial imported"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })		
+               return
             end
          end
 		end
@@ -2402,17 +2380,20 @@ function SkuAdventureGuide.Tutorial:ImportTutorial()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAdventureGuide.Tutorial:ExportNewbieTutorials()
+function SkuAdventureGuide.Tutorial:ExportNewbieTutorials(aOverrideLocked)
    local tNewbieTutorials = {}
    for i, v in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials) do
       if v.isSkuNewbieTutorial == true then
+         if v.exported ~= nil and not aOverrideLocked then
+            print("Error: at least one newbie tutorial is exported to translation and locked")            
+            return
+         end
          tNewbieTutorials[i] = v
       end
    end
    
 	local tExportDataTable = {
 		version = GetAddOnMetadata("Sku", "Version"),
-      lang = Sku.Loc,
 		isNewbieData = true,
 		tutorialsData = tNewbieTutorials,
 	}
@@ -2422,7 +2403,7 @@ function SkuAdventureGuide.Tutorial:ExportNewbieTutorials()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAdventureGuide.Tutorial:ImportNewbieTutorials()
+function SkuAdventureGuide.Tutorial:ImportNewbieTutorials(aOverrideLocked)
 	PlaySound(88)
    SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
 	SkuOptions:EditBoxPasteShow("", function(self)
@@ -2432,27 +2413,29 @@ function SkuAdventureGuide.Tutorial:ImportNewbieTutorials()
 			local tSuccess, tTutorialData = SkuOptions:Deserialize(tSerializedData)
          if tSuccess == true and tTutorialData then
             if tTutorialData.isNewbieData and tTutorialData.isNewbieData == true then
-               tTutorialData.lang = tTutorialData.lang or Sku.Loc
-               if tTutorialData.lang == Sku.Loc then
-                  --delete all existing newbie tuts
-                  for i, v in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials) do
-                     if v.isSkuNewbieTutorial == true then
-                        SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[v.GUID] = nil
-                     end
+               for i, v in pairs(tTutorialData.tutorialsData) do
+                  if SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[v.GUID].exported ~= nil and not aOverrideLocked then
+                     print("Error: at least one newbie tutorial is exported to translation and locked")            
+                     return
                   end
-
-                  --add imported newbie tuts
-                  for i, v in pairs(tTutorialData.tutorialsData) do
-                     SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[v.GUID] = v
-                  end
-                  SkuAdventureGuide.Tutorial:VerifyAndCleanGUIDs()
-
-                  SkuOptions.Voice:OutputStringBTtts(L["Tutorials imported"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
-                  return
-               else
-                  SkuOptions.Voice:OutputStringBTtts(L["Error: Data language is not current language"].." ("..tTutorialData.lang.." / "..Sku.Loc..")", {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })		
-                  return
                end
+
+
+               --delete all existing newbie tuts
+               for i, v in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials) do
+                  if v.isSkuNewbieTutorial == true then
+                     SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[v.GUID] = nil
+                  end
+               end
+
+               --add imported newbie tuts
+               for i, v in pairs(tTutorialData.tutorialsData) do
+                  SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[v.GUID] = v
+               end
+               SkuAdventureGuide.Tutorial:VerifyAndCleanGUIDs()
+
+               SkuOptions.Voice:OutputStringBTtts(L["Tutorials imported"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+               return
             end
          end
 		end
@@ -2531,7 +2514,7 @@ function SkuAdventureGuide.Tutorial:StartStep(aStartAtStepNumber)
       SkuOptions.Voice:OutputString("sound-waterdrop5", false, false, 0.3, true)
       C_Timer.After(1.0, function()
          local tCurrentStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid]].GUID)
-         local tStartText = tCurrentStepData.beginText
+         local tStartText = tCurrentStepData.beginText[Sku.Loc]
          tStartText = SkuAdventureGuide.Tutorial:ReplacePlaceholders(tStartText)
          SkuOptions.Voice:OutputStringBTtts(tStartText, {overwrite = tCurrentStepData.dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
          C_Timer.After(0.1, function()
@@ -2749,7 +2732,7 @@ function SkuAdventureGuide.Tutorial:TutorialsMenuBuilder(aParentEntry, aIsUser)
                      
                      for x = 1, #tSource.AllLangs.Tutorials[tTutorialGuid].steps do
                         local tStepData = tSource.AllLangs.Tutorials[tTutorialGuid].steps[x]
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["schritt "]..x..": "..tStepData.title}, SkuGenericMenuItem)
+                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["schritt "]..x..": "..tStepData.title[Sku.Loc]}, SkuGenericMenuItem)
                         tNewMenuEntry.BuildChildren = function(self)
                            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Start from this step"]}, SkuGenericMenuItem)
                            tNewMenuEntry.isSelect = true
@@ -2865,11 +2848,16 @@ function SkuAdventureGuide.Tutorial:UnlinkStep(aTargetTutorialGUID, aTargetTutor
                if not sourceStepV.linkedIn[aTargetTutorialGUID] then
                   print("error. aTargetTutorialGUID missing in source linkedIn.", aTargetTutorialGUID, aTargetTutorialStepGUID, aSourceTutorialGUID, aSourceTutorialStepGUID)
                end
-               for x = 1, #sourceStepV.linkedIn[aTargetTutorialGUID] do
-                  if sourceStepV.linkedIn[aTargetTutorialGUID][x] == aTargetTutorialStepGUID then
-                     table.remove(sourceStepV.linkedIn[aTargetTutorialGUID], x)
-                     tReturnValue = tReturnValue + 1
-                     break
+               print("#sourceStepV.linkedIn[aTargetTutorialGUID]", #sourceStepV.linkedIn[aTargetTutorialGUID])
+               if #sourceStepV.linkedIn[aTargetTutorialGUID] == 0 then
+                  sourceStepV.linkedIn[aTargetTutorialGUID] = nil
+               else
+                  for x = 1, #sourceStepV.linkedIn[aTargetTutorialGUID] do
+                     if sourceStepV.linkedIn[aTargetTutorialGUID][x] == aTargetTutorialStepGUID then
+                        table.remove(sourceStepV.linkedIn[aTargetTutorialGUID], x)
+                        tReturnValue = tReturnValue + 1
+                        break
+                     end
                   end
                end
             end
@@ -3154,6 +3142,71 @@ function SkuAdventureGuide.Tutorial:DeleteStep(aStepGUID, aIntend)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAdventureGuide.Tutorial:UpdateTranslations(aTranslationsTable, aNewText)
+   if tonumber(aNewText) then
+      for langi, langv in pairs(Sku.Locs) do
+         aTranslationsTable[langv] = aNewText
+      end
+      return
+   end
+
+   if not aTranslationsTable[Sku.Loc] then
+      aTranslationsTable[Sku.Loc] = ""
+   end
+      
+   local tOldSourceCleanText = string.gsub(aTranslationsTable[Sku.Loc], "%%npc_id:%d%d%d%d%d%d%%", "TAG")
+   local tNewSourceCleanText = string.gsub(aNewText, "%%npc_id:%d%d%d%d%d%d%%", "TAG")
+
+   local tIsIdUpdate
+   if tOldSourceCleanText == tNewSourceCleanText then
+      tIsIdUpdate = true
+   end
+   dprint("tIsIdUpdate", tIsIdUpdate)
+
+   local tOldSourceText = "§§"..aTranslationsTable[Sku.Loc].."§§"
+   local tOldPreText, tOldTag, tOldPostText = string.match(tOldSourceText, "(.+)(%%npc_id:%d%d%d%d%d%d%%)(.+)")
+   dprint("tOldPreText, tOldTag, tOldPostText", tOldPreText, "--", tOldTag, "--", tOldPostText)
+   local tNewSourceText = "§§"..aNewText.."§§"
+   local tNewPreText, tNewTag, tNewPostText = string.match(tNewSourceText, "(.+)(%%npc_id%:%d%d%d%d%d%d%%)(.+)")
+   dprint("tNewPreText, tNewTag, tNewPostText", tNewPreText, "--", tNewTag, "--", tNewPostText)
+
+   local tOldTagId = string.match(tOldTag or "", "(%d%d%d%d%d%d)")
+   local tNewTagId = string.match(tNewTag or "", "(%d%d%d%d%d%d)")
+   dprint("tOldTagId", tOldTagId)
+   dprint("tNewTagId", tNewTagId)
+
+   --update all other langs tag
+   for langi, langv in pairs(Sku.Locs) do
+      if langv ~= Sku.Loc then
+         dprint("---old target:", aTranslationsTable[langv])
+         if not aTranslationsTable[langv] then
+            aTranslationsTable[langv] = ""
+         end
+         local tOldTargetText = "§§"..aTranslationsTable[langv].."§§"
+         local tOldPreTargetText, tOldTargetTag, tOldPostTargetText = string.match(tOldTargetText, "(.+)(%%npc_id:%d%d%d%d%d%d%%)(.+)")
+         local tUntranslated = string.match(aTranslationsTable[langv], "(UNTRANSLATED:)(.+)")
+         local tUpdated = string.match(aTranslationsTable[langv], "(UPDATED:)(.+)")
+         if tOldTagId == nil or tNewTagId == nil or tIsIdUpdate == nil or aTranslationsTable[langv] == "" or tUntranslated ~= nil or tUpdated ~= nil or tOldTargetTag == nil then
+            aTranslationsTable[langv] = "UNTRANSLATED:"..Sku.Loc..":"..aNewText
+            dprint("    copy + untranslated", aTranslationsTable[langv])
+         else
+            if tIsIdUpdate then                                 
+               --update
+               aTranslationsTable[langv] = string.gsub(aTranslationsTable[langv], tOldTagId, tNewTagId)
+               dprint("    update id", aTranslationsTable[langv])
+            else
+               aTranslationsTable[langv] = "UPDATED:"..Sku.Loc..":"..aTranslationsTable[langv]
+               dprint("    keep targt + updated", aTranslationsTable[langv])
+            end
+         end
+         dprint("+++new target:", aTranslationsTable[langv])
+      end
+   end
+   --update Sku.Loc
+   aTranslationsTable[Sku.Loc] = aNewText
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 --[[
    Internal translation utilities
    Addon tutorials db: SkuDB.AllLangs.Tutorials[Sku.Loc]
@@ -3163,79 +3216,423 @@ end
 
 ]]
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuAdventureGuide.Tutorial:ExportNewbieTutorialsToTranslation(aSourceLang, aTargetLang)
+--/script SkuAdventureGuide.Tutorial:ExportTutorialsToTranslation("deDE", "deDE", nil, nil, nil, false, false, false)
+function SkuAdventureGuide.Tutorial:ExportTutorialsToTranslation(aSourceLang, aTargetLang, aUpdatedInteadOfUntranslated, aForce, aTutorialsTable, aIncludeTutorialTitles, aIncludeStepTitles, aIncludeTriggerValues)
+   if aIncludeTutorialTitles == nil then
+      aIncludeTutorialTitles = true
+   end
+   if aIncludeStepTitles == nil then
+      aIncludeStepTitles = true
+   end
+   if aIncludeTriggerValues == nil then
+      aIncludeTriggerValues = true
+   end
 
+   print("aIncludeTutorialTitles, aIncludeStepTitles, aIncludeTriggerValues", aIncludeTutorialTitles, aIncludeStepTitles, aIncludeTriggerValues)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
    if not aSourceLang and not aTargetLang then
       aSourceLang, aTargetLang = "deDE", "enUS"
    end
-   
-   local tNewbieTutorialsSourceLang = {}
-   local tNewbieTutorialsTargetLang = {}
-   for i, v in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[aSourceLang]) do
-      if v.isSkuNewbieTutorial == true then
-         tNewbieTutorialsSourceLang[i] = v
+
+   if not aTutorialsTable then
+      aTutorialsTable = {}
+      for i, v in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials) do
+         if v.isSkuNewbieTutorial == true then
+            aTutorialsTable[i] = v
+         end
       end
    end
-   for i, v in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[aTargetLang]) do
-      if v.isSkuNewbieTutorial == true then
-         tNewbieTutorialsTargetLang[i] = v
-      end
-   end
-   --[[
-	local tExportDataTable = {
-		version = GetAddOnMetadata("Sku", "Version"),
-      sourceLang = aSourceLang,
-      targetLang = aTargetLang,
-	}
-   ]]
 
    local tExportString = ""
    tExportString = tExportString.."DNT:sourceLang:"..aSourceLang.."\r\n"
    tExportString = tExportString.."DNT:targetLang:"..aTargetLang.."\r\n"
-   tExportString = tExportString.."\r\n"
-   
-   for tutGuid, tutData in pairs(tNewbieTutorials) do
-      tExportString = tExportString.."DNT:tutorialGUID:"..tutData.GUID.."\r\n"
-      tExportString = tExportString.."tutorialName: "..tutData.tutorialTitle[Sku.Loc].."\r\n"
-      for x = 1, #tutData.steps do
-         local stepData = tutData.steps[x]
-         if stepData.title then
-            tExportString = tExportString.."DNT:"..x..":"..stepData.GUID.."\r\n"
-            tExportString = tExportString.."stepTitle: "..stepData.title.."\r\n"
-            tExportString = tExportString.."stepText: "..stepData.beginText.."\r\n"
 
-            for y = 1, #stepData.triggers do
-               --{type = self.triggerType, value = aIndexString})
-               if SkuAdventureGuide.Tutorial.triggers[stepData.triggers[y].type].translate then
-                  if not tonumber(stepData.triggers[y].value) then
-                     tExportString = tExportString.."stepTrigger:"..y..": "..stepData.triggers[y].value.."\r\n"
+
+   for tutGuid, tutData in pairs(aTutorialsTable) do
+      print("export:", tutData.tutorialTitle[aTargetLang])
+
+      if tutData.exported ~= nil and not aForce then
+         print("ERROR: already exported for", tutData.exported)
+         return
+      end
+
+   end
+
+   for tutGuid, tutData in pairs(aTutorialsTable) do
+      print("export:", tutData.tutorialTitle[aTargetLang])
+
+      if tutData.exported ~= nil and not aForce then
+         print("ERROR: already exported for", tutData.exported)
+      else
+
+         tutData.exported = aTargetLang
+
+         if aIncludeTutorialTitles == true then
+            if string.match(tutData.tutorialTitle[aTargetLang], "UNTRANSLATED:") or aSourceLang == aTargetLang then
+               tExportString = tExportString.."DNT:"..tutGuid..":tutorialTitle\r\n"
+               tExportString = tExportString..string.gsub(tutData.tutorialTitle[aTargetLang], "UNTRANSLATED:....:", "").."\r\n"
+            end
+         end
+            
+         for x = 1, #tutData.steps do
+            local stepData = tutData.steps[x]
+            if stepData.title then
+
+               if aIncludeStepTitles == true then
+                  if string.match(stepData.title[aTargetLang], "UNTRANSLATED:") or aSourceLang == aTargetLang then
+                     tExportString = tExportString.."DNT:"..stepData.GUID..":title".."\r\n"
+                     tExportString = tExportString..string.gsub(stepData.title[aTargetLang], "UNTRANSLATED:....:", "").."\r\n"
+                  end
+               end
+
+               if string.match(stepData.beginText[aTargetLang], "UNTRANSLATED:") or aSourceLang == aTargetLang then
+                  tExportString = tExportString.."DNT:"..stepData.GUID..":beginText".."\r\n"
+                  tExportString = tExportString..string.gsub(stepData.beginText[aTargetLang], "UNTRANSLATED:....:", "").."\r\n"
+               end
+
+               if aIncludeTriggerValues == true then
+                  for y = 1, #stepData.triggers do
+                     if string.match(stepData.triggers[y].value[aTargetLang], "UNTRANSLATED:") or aSourceLang == aTargetLang then
+                        if SkuAdventureGuide.Tutorial.triggers[stepData.triggers[y].type].translate then
+                           if not tonumber(stepData.triggers[y].value[Sku.Loc]) then
+                              tExportString = tExportString.."DNT:"..stepData.GUID..":"..y..":value".."\r\n"
+                              tExportString = tExportString..string.gsub(stepData.triggers[y].value[aTargetLang], "UNTRANSLATED:....:", "").."\r\n"
+                           end
+                        end
+                     end
                   end
                end
             end
          end
+         --tExportString = tExportString.."\r\n"
       end
-      tExportString = tExportString.."\r\n"
    end
 
 	PlaySound(88)
 	SkuOptions.Voice:OutputStringBTtts(L["Jetzt Export Daten mit Steuerung plus C kopieren und Escape drücken"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })		
-	SkuOptions:EditBoxShow(tExportString, function(self) PlaySound(89) end)
+	SkuAdventureGuide:ExportImportEditBoxShow(tExportString, function(self) PlaySound(89) end)
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+--/script SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
+function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
+   local function processHelper(aStringsDataTable)
+      local aSourceLang = string.gsub(aStringsDataTable[1], "DNT:sourceLang:", "")
+      local tExists
+      for langi, langv in pairs(Sku.Locs) do
+         if langv == aSourceLang then
+            tExists = true
+         end
+      end
+      if not tExists then
+         print("import error: aSourceLang", aSourceLang)
+         return
+      end
+      local aTargetLang = string.gsub(aStringsDataTable[2], "DNT:targetLang:", "")
+      local tExists
+      for langi, langv in pairs(Sku.Locs) do
+         if langv == aSourceLang then
+            tExists = true
+         end
+      end
+      if not tExists then
+         print("import error: aTargetLang", aTargetLang)
+         return
+      end      
+      print("aSourceLang, aTargetLang", aSourceLang, aTargetLang)
+
+      --check for locked tutorials
+      for x = 3, #aStringsDataTable, 2 do
+         local tDNT, tTutorialGUID, tVariableName = string.match(aStringsDataTable[x], "(.+):(.+):(.+)")
+         if tVariableName == "tutorialTitle" then
+            local tTutorialData = SkuAdventureGuide.Tutorial:GetTutorialDataByGUID(tTutorialGUID)
+            if not tTutorialData.exported or tTutorialData.exported ~= aTargetLang then
+               print("import error: tTutorialData is NOT locked for this import target lang", tVariableName, tTutorialData.exported, aTargetLang)
+               return
+            end
+         end
+      end
+
+
+      --step data
+      for x = 3, #aStringsDataTable, 2 do
+         --print("processing:", x, aStringsDataTable[x])
+
+         local tDNT, tTutorialGUID, tVariableName = string.match(aStringsDataTable[x], "(.+):(.+):(.+)")
+
+         if tVariableName == "tutorialTitle" then
+            --is tutorial title data
+
+            print("NEXT TUTORIAL---------------------")
+            --print("  tTutorialGUID, tVariableName", tTutorialGUID, tVariableName)
+
+            local tTutorialData = SkuAdventureGuide.Tutorial:GetTutorialDataByGUID(tTutorialGUID)
+            --print("  tTutorialData", tTutorialData, "tTutorialData.GUID", tTutorialData.GUID, "tTutorialData[tVariableName]", tTutorialData[tVariableName])
+
+            if not tTutorialData then
+               print("import error: tTutorialData = nil")
+               return
+            end
+
+            if not tTutorialData.exported or tTutorialData.exported ~= aTargetLang then
+               print("import error: tTutorialData is NOT locked for this import target lang", tTutorialData.exported, aTargetLang)
+               return
+            end
+
+            local tTranslation = aStringsDataTable[x + 1]
+
+            if not tTutorialData[tVariableName][aTargetLang] then
+               print("import error: tTutorialData[tVariableName][aTargetLang] = nil", tVariableName)
+               return
+            end
+
+            --print("  tTranslation", tTranslation)
+            if tTutorialData[tVariableName][aTargetLang] ~= tTranslation then
+               print("  UPDATE:", tVariableName, tTutorialData[tVariableName][aTargetLang], tTranslation)
+               print("    old:", tTutorialData[tVariableName][aTargetLang])
+               print("    new:", tTranslation)
+
+
+
+
+                  --update other to UNTRANSLATED?
+
+
+
+
+
+
+               --tTutorialData.exported = nil
+               --tTutorialData[tVariableName][aTargetLang] = tTranslation
+            end
+         
+         else
+            --is step data
+            local tDNT, tStepGUID, tTriggerNumber, tVariableName = string.match(aStringsDataTable[x], "(.+):(.+):(.+):(.+)")
+            if not tDNT then
+               tDNT, tStepGUID, tVariableName = string.match(aStringsDataTable[x], "(.+):(.+):(.+)")
+            end
+            if not tDNT then
+               print("import error:", x, aStringsDataTable[x])
+               return
+            end
+
+            local tTranslation = aStringsDataTable[x + 1]
+            --print("  tDNT, tStepGUID, tVariableName, tTriggerNumber", tDNT, tStepGUID, "-"..tVariableName.."-", tTriggerNumber)
+            --print("    tTranslation:", tTranslation)
+
+            local tStepV, tStepI = SkuAdventureGuide.Tutorial:GetStepDataByGUID(tStepGUID)
+            --print("  tStepV, tStepI", tStepV, tStepI)
+
+            if not tStepV then
+               print("import error: tStepV == nil", x, tStepGUID)
+               return
+            end
+
+            if not tTriggerNumber then
+               --update step
+               if not tStepV[tVariableName] then
+                  print("import error: tStepV[tVariableName] = nil", x, tVariableName)
+                  return
+               end      
+
+               --print("  tStepV[tVariableName]", tStepV[tVariableName])
+               if not tStepV[tVariableName][aTargetLang] then
+                  print("import error: tStepV[tVariableName][aTargetLang] = nil", x, tVariableName)
+                  return
+               end                
+
+               --print("    tStepV[tVariableName][aTargetLang]", tStepV[tVariableName][aTargetLang])
+               if tStepV[tVariableName][aTargetLang] ~= tTranslation then
+                  print("  UPDATE:", tVariableName)
+                  print("     old", tStepV[tVariableName][aTargetLang])
+                  print("     new", tTranslation)
+
+
+
+
+                  --update other to UNTRANSLATED?
+
+
+
+
+
+
+                  --tStepV[tVariableName][aTargetLang] = tTranslation
+               end
+            else
+               --update trigger
+
+               if not tStepV.triggers[tonumber(tTriggerNumber)] then
+                  print("import error: tStepV.triggers[tonumber(tTriggerNumber)] = nil", x, tTriggerNumber)
+                  return
+               end                
+
+               if not tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] then
+                  print("import error: tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] = nil", x, tTriggerNumber)
+                  return
+               end   
+
+               --print("  tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang]", tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang])
+               if tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] ~= tTranslation then
+                  print("  UPDATE:", tTriggerNumber, tVariableName)
+                  print("     old", tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang])
+                  print("     new", tTranslation)
+
+
+
+                  --update other to UNTRANSLATED?
+
+
+
+
+
+                  --tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] = tTranslation
+               end
+            end
+         end
+      end
+
+
+      SkuOptions.Voice:OutputStringBTtts(L["Tutorial imported"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })		
+   end
+
+
+	PlaySound(88)
+   SkuOptions.Voice:OutputStringBTtts(L["Paste data to import now"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+   SkuAdventureGuide:ExportImportEditBoxShow("", function(self)
+		PlaySound(89)
+      tImportedString = _G["SkuAdventureGuideEditBoxEditBox"]:GetText().."\r\n"
+      local tStringsDataTable = {}
+      for i in string.gmatch(tImportedString, "([^\r\n]+)") do
+         tStringsDataTable[#tStringsDataTable + 1] = i
+      end
+      processHelper(tStringsDataTable)
+	end, true)
+
+   
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function SkuAdventureGuideEditBoxOkScript(...) end
+local function SkuAdventureGuideEditBoxEscScript(...) end
+function SkuAdventureGuide:ExportImportEditBoxShow(aText, aOkScript, aMultilineFlag, aEscScript)
+	if not SkuAdventureGuideEditBox then
+		local f = CreateFrame("Frame", "SkuAdventureGuideEditBox", UIParent, "DialogBoxFrame")
+		f:SetPoint("CENTER")
+		f:SetSize(600, 500)
+
+		f:SetBackdrop({
+			bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+			edgeFile = "Interface\\PVPFrame\\UI-Character-PVP-Highlight", -- this one is neat
+			edgeSize = 16,
+			insets = { left = 8, right = 6, top = 8, bottom = 8 },
+		})
+		f:SetBackdropBorderColor(0, .44, .87, 0.5) -- darkblue
+
+		-- Movable
+		f:SetMovable(true)
+		f:SetClampedToScreen(true)
+		f:SetScript("OnMouseDown", function(self, button)
+			if button == "LeftButton" then
+				self:StartMoving()
+			end
+		end)
+		f:SetScript("OnMouseUp", f.StopMovingOrSizing)
+
+		-- ScrollFrame
+		local sf = CreateFrame("ScrollFrame", "SkuAdventureGuideEditBoxScrollFrame", SkuAdventureGuideEditBox, "UIPanelScrollFrameTemplate")
+		sf:SetPoint("LEFT", 16, 0)
+		sf:SetPoint("RIGHT", -32, 0)
+		sf:SetPoint("TOP", 0, -16)
+		sf:SetPoint("BOTTOM", SkuAdventureGuideEditBoxButton, "TOP", 0, 0)
+
+		-- EditBox
+		local eb = CreateFrame("EditBox", "SkuAdventureGuideEditBoxEditBox", SkuAdventureGuideEditBoxScrollFrame)
+		eb:SetSize(sf:GetSize())
+
+		eb:SetAutoFocus(false) -- dont automatically focus
+		eb:SetFontObject("ChatFontNormal")
+		eb:SetScript("OnEscapePressed", function() 
+			PlaySound(89)
+			f:Hide()
+		end)
+		eb:SetScript("OnTextSet", function(self)
+			self:HighlightText()
+		end)
+
+		sf:SetScrollChild(eb)
+
+		-- Resizable
+		f:SetResizable(true)
+      f:SetResizeBounds(150, 100)
+
+		local rb = CreateFrame("Button", "SkuAdventureGuideEditBoxResizeButton", SkuAdventureGuideEditBox)
+		rb:SetPoint("BOTTOMRIGHT", -6, 7)
+		rb:SetSize(16, 16)
+
+		rb:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+		rb:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+		rb:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+
+		rb:SetScript("OnMouseDown", function(self, button)
+			if button == "LeftButton" then
+				f:StartSizing("BOTTOMRIGHT")
+				self:GetHighlightTexture():Hide() -- more noticeable
+			end
+		end)
+		rb:SetScript("OnMouseUp", function(self, button)
+			f:StopMovingOrSizing()
+			self:GetHighlightTexture():Show()
+			eb:SetWidth(sf:GetWidth())
+		end)
+
+		SkuAdventureGuideEditBoxEditBox:HookScript("OnEnterPressed", function(...)
+			if aMultilineFlag ~= true then
+				local tText = SkuAdventureGuideEditBoxEditBox:GetText()
+				if string.find(tText, "\n") then
+					tText = string.gsub(tText, "\n", " ")
+					SkuAdventureGuideEditBoxEditBox:SetText(tText)
+				end
+			end
+			SkuAdventureGuideEditBoxOkScript(...)
+			SkuAdventureGuideEditBox:Hide()
+		end)
+		SkuAdventureGuideEditBoxEditBox:HookScript("OnEscapePressed", function(...)
+			SkuAdventureGuideEditBoxEscScript(...)
+			SkuAdventureGuideEditBox:Hide()
+		end)
+		SkuAdventureGuideEditBoxButton:HookScript("OnClick", SkuAdventureGuideEditBoxOkScript)
+
+		f:Show()
+	end
+
+	SkuAdventureGuideEditBoxEditBox:SetMultiLine(true)
+	--[[
+	if aMultilineFlag == true then
+		SkuAdventureGuideEditBoxEditBox:SetMultiLine(true)
+	else
+		SkuAdventureGuideEditBoxEditBox:SetMultiLine(false)
+	end
+	]]
+	
+	SkuAdventureGuideEditBoxEditBox:Hide()
+	SkuAdventureGuideEditBoxEditBox:SetText("")
+	if aText then
+		SkuAdventureGuideEditBoxEditBox:SetText(aText)
+		SkuAdventureGuideEditBoxEditBox:HighlightText()
+	end
+	SkuAdventureGuideEditBoxEditBox:Show()
+	if aOkScript then
+		SkuAdventureGuideEditBoxOkScript = aOkScript
+	end
+	if aEscScript then
+		SkuAdventureGuideEditBoxEscScript = aEscScript
+	end
+	
+
+	SkuAdventureGuideEditBox:Show()
+
+	SkuAdventureGuideEditBoxEditBox:SetFocus()
 end
 
 
@@ -3252,7 +3649,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 --[[
-   tmp stuff for updating to new table format
+   tmp stuff
 
 
 
@@ -3303,7 +3700,6 @@ function SkuAdventureGuide.Tutorial:CreateNewTableFormat(aTutorialsTable)
       end
    end
 end
-
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:ImportOldFormatNewbieTutorials()
 	PlaySound(88)
@@ -3323,6 +3719,28 @@ function SkuAdventureGuide.Tutorial:ImportOldFormatNewbieTutorials()
 	end)
 end
 
-
-
--- bei tut, schritt, trigger bearbeiten andere langs zurücksetzen
+function tmphelper()
+   for i, v in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials) do
+      --v.tutorialTitle["enUS"] = "UNTRANSLATED:deDE:"..v.tutorialTitle["deDE"]
+      for isteps, vsteps in pairs(v.steps) do
+         for index, _ in pairs(vsteps.linkedIn) do
+            if #vsteps.linkedIn[index] == 0 then
+               vsteps.linkedIn[index] = nil
+            end
+         end
+         --[[
+         if vsteps.title then
+            vsteps.beginText["enUS"] = "UNTRANSLATED:deDE:"..vsteps.beginText["deDE"]
+            vsteps.title["enUS"] = "UNTRANSLATED:deDE:"..vsteps.title["deDE"]
+            for triggeri, triggerv in pairs(vsteps.triggers) do
+               if SkuAdventureGuide.Tutorial.triggers[triggerv.type].translate and not tonumber(triggerv.value["deDE"]) then
+                  triggerv.value["enUS"] = "UNTRANSLATED:deDE:"..triggerv.value["deDE"]
+               else
+                  triggerv.value["enUS"] = triggerv.value["deDE"]
+               end
+            end
+         end
+         ]]
+      end
+   end
+end
