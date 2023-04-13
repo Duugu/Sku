@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.22](https://github.com/Duugu/Sku/releases/download/r33.22/Sku-r33.22-wrath.zip) (April 11th 2023)<br>
+- [Sku r33.23](https://github.com/Duugu/Sku/releases/download/r33.23/Sku-r33.23-wrath.zip) (April 13th 2023)<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 - [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
 - [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
@@ -24,6 +24,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r33.23
+- Added an "Audio notification on chat message" settings to every chat tab
+- Fixed a bunch of errors with the new internal tutorial storage structure
+- Implemented an internal translation feature for tutorials
+
 ## Changes in Sku r33.22
 - Fixed a bug with creating a new step
 
