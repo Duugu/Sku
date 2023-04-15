@@ -9,21 +9,23 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.23](https://github.com/Duugu/Sku/releases/download/r33.23/Sku-r33.23-wrath.zip) (April 13th 2023)<br>
-- [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
-- [SkuAudioData fast de r2 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r2/SkuAudioData_fast_de-r2-wrath.zip) (Mar 10th 2022)<br>
-- [SkuAudioData r37 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r37/SkuAudioData-r37-wrath.zip) (Mar 10th 2022)<br>
-- [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
+- [Sku r33.24](https://github.com/Duugu/Sku/releases/download/r33.24/Sku-r33.24-wrath.zip) (April 15th 2023)<br>
+- [SkuAudioData_en r9 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r9/SkuAudioData_en-r9-wrath.zip) (April 15th 2022)<br>
+- [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2022)<br>
+- [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2022)<br>
 
 *Older updates:* <br>
-- [SkuAudioData_en r8 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r8/SkuAudioData_en-r8-wrath.zip) (Nov 17th, 2022)<br>
+- [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 
 *Updates for sighted players:* <br>
-- [SkuMapper r2.3](https://github.com/Duugu/SkuMapper/releases/download/r2.3/SkuMapper-r2.3-wrath.zip) (Nov 13th, 2022), mapping addon for sighted players<br>
+- [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r33.24
+- added some new aura output sounds (you need to download the new audiodata_en (r9, English) or  audiodata (r38, German) update to use them). The new sounds are: axe 01, blaze 01, interface 01 - 06, shot 01, sword 01 - 03, Tutorial Close 01, Tutorial Open 01, Tutorial Success 01
+
 ## Changes in Sku r33.23
 - Added an "Audio notification on chat message" settings to every chat tab
 - Fixed a bunch of errors with the new internal tutorial storage structure
