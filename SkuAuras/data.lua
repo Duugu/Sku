@@ -541,6 +541,21 @@ SkuAuras.outputSoundFiles = {
    ["sound-notification25"] = L["aura;sound"].."#"..L["notification"].." 25",
    ["sound-notification26"] = L["aura;sound"].."#"..L["notification"].." 26",
    ["sound-notification27"] = L["aura;sound"].."#"..L["notification"].." 27",
+   ["sound-axe01"] = L["aura;sound"].."#axe 01",
+   ["sound-blaze01"] = L["aura;sound"].."#blaze 01",
+   ["sound-interface01"] = L["aura;sound"].."#interface 01",
+   ["sound-interface02"] = L["aura;sound"].."#interface 02",
+   ["sound-interface03"] = L["aura;sound"].."#interface 03",
+   ["sound-interface04"] = L["aura;sound"].."#interface 04",
+   ["sound-interface05"] = L["aura;sound"].."#interface 05",
+   ["sound-interface06"] = L["aura;sound"].."#interface 06",
+   ["sound-shot01"] = L["aura;sound"].."#shot 01",
+   ["sound-sword01"] = L["aura;sound"].."#sword 01",
+   ["sound-sword02"] = L["aura;sound"].."#sword 02",
+   ["sound-sword03"] = L["aura;sound"].."#sword 03",
+   ["sound-TutorialClose01"] = L["aura;sound"].."#Tutorial Close 01",
+   ["sound-TutorialOpen01"] = L["aura;sound"].."#Tutorial Open 01",
+   ["sound-TutorialSuccess01"] = L["aura;sound"].."#Tutorial Success 01",
 }
 for tOutputString, tFriendlyName in pairs(SkuAuras.outputSoundFiles) do
    SkuAuras.outputs[tOutputString] = {

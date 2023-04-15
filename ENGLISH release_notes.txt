@@ -2,6 +2,12 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r33.24
+	- added some new aura output sounds (you need to download the updated audiodata, either SkuAudioData_en r9 ENGLISH or SkuAudioData r38 GERMAN, to use them). New sounds are: axe 01, blaze 01, interface 01 - 06, shot 01, sword 01 - 03, Tutorial Close 01, Tutorial Open 01, Tutorial Success 01
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r33.23
 	- Added an "Audio notification on chat message" settings to every chat tab

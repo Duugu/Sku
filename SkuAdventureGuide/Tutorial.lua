@@ -2414,7 +2414,7 @@ function SkuAdventureGuide.Tutorial:ImportNewbieTutorials(aOverrideLocked)
          if tSuccess == true and tTutorialData then
             if tTutorialData.isNewbieData and tTutorialData.isNewbieData == true then
                for i, v in pairs(tTutorialData.tutorialsData) do
-                  if SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[v.GUID].exported ~= nil and not aOverrideLocked then
+                  if SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[v.GUID] and SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials[v.GUID].exported ~= nil and not aOverrideLocked then
                      print("Error: at least one newbie tutorial is exported to translation and locked")            
                      return
                   end
@@ -2482,21 +2482,24 @@ function SkuAdventureGuide.Tutorial:ReReadCurrentStep()
          SkuAdventureGuide.Tutorial:PlayFtuIntro()
       else
          local tCurrentStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid]].GUID)
-
-         SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:ReplacePlaceholders(tCurrentStepData.beginText), {overwrite = tCurrentStepData.dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
-         
-         if SkuAdventureGuide.Tutorial.currentStepCompleted == true then
-            C_Timer.After(0.5, function()
-               SkuOptions.Voice:RegisterBttsCallback(function()
-                  SkuOptions.Voice:OutputString("sound-notification8", false, true, 0.3, true)
-                  if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience <= SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
-                     C_Timer.After(0.4, function()
-                        SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:AddNextStepText(""), {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
-                     end)
-                  end
+         SkuOptions.Voice:OutputString("sound-TutorialOpen01", false, false, 0.3, true)
+         C_Timer.After(1.5, function()
+   
+            SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:ReplacePlaceholders(tCurrentStepData.beginText[Sku.Loc]), {overwrite = tCurrentStepData.dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
+            
+            if SkuAdventureGuide.Tutorial.currentStepCompleted == true then
+               C_Timer.After(1.5, function()
+                  SkuOptions.Voice:RegisterBttsCallback(function()
+                     SkuOptions.Voice:OutputString("sound-TutorialSuccess01", false, true, 0.3, true)
+                     if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience <= SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
+                        C_Timer.After(2.4, function()
+                           SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:AddNextStepText(""), {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
+                        end)
+                     end
+                  end)
                end)
-            end)
-         end
+            end
+         end)
       end
    end)
 end
@@ -2511,7 +2514,7 @@ function SkuAdventureGuide.Tutorial:StartStep(aStartAtStepNumber)
    end
 
    C_Timer.After(0.1, function()
-      SkuOptions.Voice:OutputString("sound-waterdrop5", false, false, 0.3, true)
+      SkuOptions.Voice:OutputString("sound-TutorialOpen01", false, false, 0.3, true)
       C_Timer.After(1.0, function()
          local tCurrentStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid]].GUID)
          local tStartText = tCurrentStepData.beginText[Sku.Loc]
@@ -2585,8 +2588,8 @@ function SkuAdventureGuide.Tutorial:OnStepCompleted(aCompleteStepNumber)
    dprint("OnStepCompleted", aCompleteStepNumber)
    SkuAdventureGuide.Tutorial.evaluateNextStep = false
    SkuAdventureGuide.Tutorial.currentStepCompleted = true
-   C_Timer.After(1, function()
-      SkuOptions.Voice:OutputString("sound-notification8", false, false, 0.3, true)
+   C_Timer.After(1.5, function()
+      SkuOptions.Voice:OutputString("sound-TutorialSuccess01", false, false, 0.3, true)
       if not SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] + 1] then
          SkuAdventureGuide.Tutorial:StopCurrentTutorial()
          C_Timer.After(1.5, function()
@@ -2596,7 +2599,7 @@ function SkuAdventureGuide.Tutorial:OnStepCompleted(aCompleteStepNumber)
       end
       if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience <= SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
          C_Timer.After(1.4, function()
-            SkuOptions.Voice:OutputString("sound-waterdrop5", false, false, 0.3, true)
+            --SkuOptions.Voice:OutputString("sound-TutorialOpen01", false, false, 0.3, true)
             C_Timer.After(0.1, function()
                SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:AddNextStepText(""), {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
             end)
@@ -3378,6 +3381,9 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
                return
             end
 
+            tTutorialData.exported = nil
+
+
             local tTranslation = aStringsDataTable[x + 1]
 
             if not tTutorialData[tVariableName][aTargetLang] then
@@ -3401,8 +3407,7 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
 
 
 
-               --tTutorialData.exported = nil
-               --tTutorialData[tVariableName][aTargetLang] = tTranslation
+               tTutorialData[tVariableName][aTargetLang] = tTranslation
             end
          
          else
@@ -3457,7 +3462,7 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
 
 
 
-                  --tStepV[tVariableName][aTargetLang] = tTranslation
+                  tStepV[tVariableName][aTargetLang] = tTranslation
                end
             else
                --update trigger
@@ -3486,7 +3491,7 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
 
 
 
-                  --tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] = tTranslation
+                  tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] = tTranslation
                end
             end
          end

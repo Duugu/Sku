@@ -57,6 +57,7 @@ function SkuVoice:Create()
 			local numConsumers, utteranceID, durationMS, destination = ...
 			if destination == 1 then
 				SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying + 1
+				dprint("START")
 			end
 			if utteranceID - C_VoiceChatSpeakTextLastUtteranceId > 15 then
 				C_VoiceChatSpeakTextLastUtteranceId = utteranceID
@@ -72,7 +73,8 @@ function SkuVoice:Create()
 					SkuVoice.TutorialPlaying = 0
 				end
 				if SkuVoice.TutorialPlaying == 0 then
-					SkuOptions.Voice:OutputString("sound-waterdrop1", false, false, 0.3, true)
+					SkuOptions.Voice:OutputString("sound-TutorialClose01", false, false, 0.3, true)
+					dprint("STOP")
 					if mSkuVoiceQueueBTTS_Callback then
 						mSkuVoiceQueueBTTS_Callback()
 						mSkuVoiceQueueBTTS_Callback = nil
