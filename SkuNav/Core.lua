@@ -53,8 +53,8 @@ SkuNav.WpTypes = {
 	[4] = "standard",
 }
 
-SkuNav.MaxMetaRange = 4000
-SkuNav.MaxMetaWPs = 200
+SkuNav.MaxMetaRange = 2000
+SkuNav.MaxMetaWPs = 100
 SkuNav.MaxMetaEntryRange = 300
 SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
 

@@ -2588,3 +2588,4 @@ L["Delete all steps that are linking a step in this tutorial. Then delete this t
 L["Add all steps as linked steps"] = "Add all steps as linked steps"
 L["for tutorial creators"] = "for tutorial creators"
 L["Delete all custom tutorials"] = "Delete all custom tutorials"
+L["Entry point: "] = "Entry point;"

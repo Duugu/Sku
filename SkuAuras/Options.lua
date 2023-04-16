@@ -159,7 +159,7 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
 	end
 
 
-	if aAuraName then
+	if aAuraName and SkuOptions.db.char[MODULE_NAME].Auras[aAuraName] then
 		if SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].type then
 			tType = SkuAuras.Types[SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].type].friendlyName
 		end
@@ -568,7 +568,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		tNewMenuEntry.OnEnter = function(self)
 			self.selectTarget.targetAuraName = self.parent.name
 		end
-		if SkuOptions.db.char[MODULE_NAME].Auras[self.selectTarget.targetAuraName].customName then
+		if SkuOptions.db.char[MODULE_NAME].Auras[self.selectTarget.targetAuraName] and SkuOptions.db.char[MODULE_NAME].Auras[self.selectTarget.targetAuraName].customName then
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set name to auto generated"]}, SkuGenericMenuItem)
 			tNewMenuEntry.OnEnter = function(self)
 				self.selectTarget.targetAuraName = self.parent.name
@@ -593,18 +593,6 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.internalName = "action"
 		tNewMenuEntry.BuildChildren = function(self)
-			--[[
-			local tNewMenuEntryType = SkuOptions:InjectMenuItems(self, {"Typ"}, SkuGenericMenuItem)
-			tNewMenuEntryType.dynamic = true
-			tNewMenuEntryType.isSelect = true
-			tNewMenuEntryType.OnAction = function(self, aValue, aName)
-				print("OnAction Typ ")
-			end
-			tNewMenuEntryType.BuildChildren = function(self)
-				local tNewMenuEntryTypeVal = SkuOptions:InjectMenuItems(self, {"Wenn"}, SkuGenericMenuItem)
-				local tNewMenuEntryTypeVal = SkuOptions:InjectMenuItems(self, {"Wenn nicht"}, SkuGenericMenuItem)
-			end
-			]]
 			local tNewMenuEntryCond = SkuOptions:InjectMenuItems(self, {L["Bedingungen"]}, SkuGenericMenuItem)
 			tNewMenuEntryCond.dynamic = true
 			tNewMenuEntryCond.isSelect = true
@@ -705,6 +693,7 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			end
 
 			local tNewMenuEntryOutp = SkuOptions:InjectMenuItems(self, {L["Ausgaben"]}, SkuGenericMenuItem)
+			tNewMenuEntryOutp.filterable = true
 			tNewMenuEntryOutp.dynamic = true
 			tNewMenuEntryOutp.isSelect = true
 			tNewMenuEntryOutp.auraName = self.parent.name

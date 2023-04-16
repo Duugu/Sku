@@ -999,34 +999,28 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 			end
 
-			for q = 2, #tSortedWaypointList do
-				tSortedWaypointList[q] = nil
-			end
-
 			if #tSortedWaypointList == 0 then
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 			else
 				local tCount = 0
 				for k, v in SkuSpairs(tSortedWaypointList) do
 					if tCount < 10 then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..v}, SkuGenericMenuItem)
 						tNewMenuEntry.dynamic = true
 						tNewMenuEntry.filterable = true
 						tNewMenuEntry.BuildChildren = function(self)
 							SkuOptions.db.profile[MODULE_NAME].metapathFollowingStartTMP = v
 							local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(string.sub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs)--
 							SkuMetapathFollowingMetapathsTMP = tMetapaths
-
 							local tData = {}
 							for i, v in pairs(tMetapaths) do--
-								tData[i] = tMetapaths[i].distance--
-							end--
+								tData[i] = tMetapaths[i].distance
+							end
 
 							local tSortedList = {}
 							for k,v in SkuSpairs(tData, function(t,a,b) return t[b] > t[a] end) do
 								table.insert(tSortedList, k)
 							end
-
 							if #tSortedList == 0 then
 								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 							else
@@ -1055,6 +1049,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 			
 								end
 							end
+--print("filled", debugprofilestop() - beginTime)
+
 						end
 						tCount = tCount + 1
 					end

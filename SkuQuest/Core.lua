@@ -62,6 +62,8 @@ SkuDB.QuestFlagsFriendly = {
 	DAILY = L["Täglich"],
 }
 
+local tDoQuestAvailableUpdates = false
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:OnInitialize()
 	--dprint("SkuQuest OnInitialize")
@@ -1137,7 +1139,7 @@ function SkuQuest:PLAYER_LOGIN(...)
 	SkuQuest:UpdateAllQuestObjects()
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuQuest:PLAYER_ENTERING_WORLD(...)
+function SkuQuest:PLAYER_ENTERING_WORLD(isInitialLogin, isReloadingUi)
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	--print("PLAYER_ENTERING_WORLD", SkuOptions.db.char["SkuQuest"].CheckQuestProgressList)
 
@@ -1164,9 +1166,17 @@ function SkuQuest:PLAYER_ENTERING_WORLD(...)
 	
 	end)	
 
-	C_Timer.After(40, function()
+	local tTime = 20
+	if isInitialLogin == true or isReloadingUi == true then
+		tTime = 60
+	end
+
+	C_Timer.After(tTime, function()
 		SkuQuest:LoadEventHandler()
-		SkuQuest:UpdateZoneAvailableQuestList()
+		C_Timer.After(5, function()
+			tDoQuestAvailableUpdates = true
+			SkuQuest:UpdateZoneAvailableQuestList()
+		end)
 	end)
 end
 
@@ -1590,6 +1600,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:UpdateZoneAvailableQuestList(aForce)
+	if tDoQuestAvailableUpdates == false then
+		return
+	end
+
 	SkuOptions.db.char[MODULE_NAME].questMarkerBeacons = SkuOptions.db.char[MODULE_NAME].questMarkerBeacons or {}
 	SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore = SkuOptions.db.char[MODULE_NAME].questMarkerBeacons.activeBeaconsIgnore or {}
 

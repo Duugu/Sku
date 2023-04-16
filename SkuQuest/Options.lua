@@ -968,52 +968,66 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 					if #tSortedWaypointList == 0 then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 					else
-						local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs)--
-						SkuOptions.db.profile["SkuNav"].metapathFollowingStart = tSortedWaypointList[1]
-						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
-						SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = nil
+						local tCount = 0
+						for k, v in SkuSpairs(tSortedWaypointList) do
+							if tCount < 10 then
+								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..v}, SkuGenericMenuItem)
+								tNewMenuEntry.dynamic = true
+								tNewMenuEntry.filterable = true
+								tNewMenuEntry.BuildChildren = function(self)
+									if #tSortedWaypointList == 0 then
+										local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+									else
+										local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(string.sub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs)--
+										SkuOptions.db.profile["SkuNav"].metapathFollowingStart = v
+										SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
+										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = nil
 
-						do -- build route choices
-							local tData = {}
-							for i, v in pairs(tMetapaths) do
-								for wpIndex, wpName in pairs(wpTable) do
-									if string.find(i, wpName) then
-										tData[i] = tMetapaths[i].distance
-									end
-								end
-							end
-							local tSortedList = {}
-							for k,v in SkuSpairs(tData, function(t,a,b) return t[b] > t[a] end) do --nach wert
-								table.insert(tSortedList, k)
-							end
-							if #tSortedList == 0 then
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
-							else
-								for tK, tV in ipairs(tSortedList) do
-									for wpIndex, wpName in pairs(wpTable) do
-										if string.find(tV, wpName) then
-											local tDistText = tMetapaths[tV].distance..L[";Meter"]
-											if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
-												tDistText = L["weit"]
-											end
-
-											-- add direction to wp
-											local tDirectionTargetWp = ""
-											if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
-												local tWpData = SkuNav:GetWaypointData2(tV)
-												local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
-												if tDirectionString then
-													tDirectionTargetWp = ";"..tDirectionString
+										do -- build route choices
+											local tData = {}
+											for i, v in pairs(tMetapaths) do
+												for wpIndex, wpName in pairs(wpTable) do
+													if string.find(i, wpName) then
+														tData[i] = tMetapaths[i].distance
+													end
 												end
 											end
-											tDistText = tDistText..tDirectionTargetWp
-
-											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem)
-											tNewMenuEntry.OnEnter = function(self, aValue, aName)
-												SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
+											local tSortedList = {}
+											for k,v in SkuSpairs(tData, function(t,a,b) return t[b] > t[a] end) do --nach wert
+												table.insert(tSortedList, k)
 											end
-											tCoveredWps[tV] = true
-											--tHasContent = true
+											if #tSortedList == 0 then
+												local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+											else
+												for tK, tV in ipairs(tSortedList) do
+													for wpIndex, wpName in pairs(wpTable) do
+														if string.find(tV, wpName) then
+															local tDistText = tMetapaths[tV].distance..L[";Meter"]
+															if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
+																tDistText = L["weit"]
+															end
+
+															-- add direction to wp
+															local tDirectionTargetWp = ""
+															if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+																local tWpData = SkuNav:GetWaypointData2(tV)
+																local tDirectionString = SkuNav:GetDirectionToAsString(tWpData.worldX, tWpData.worldY)
+																if tDirectionString then
+																	tDirectionTargetWp = ";"..tDirectionString
+																end
+															end
+															tDistText = tDistText..tDirectionTargetWp
+
+															local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tDistText .. "#" .. tV, tV) }, SkuGenericMenuItem)
+															tNewMenuEntry.OnEnter = function(self, aValue, aName)
+																SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tV
+															end
+															tCoveredWps[tV] = true
+															--tHasContent = true
+														end
+													end
+												end
+											end
 										end
 									end
 								end
@@ -1071,63 +1085,74 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							table.insert(tSortedWaypointList, v.nearestWpRange..L[";Meter"].."#"..v.nearestWP)
 						end
 					end
+
 					if #tSortedWaypointList == 0 then
 						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 					else
-						local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, nil, true)
-						SkuOptions.db.profile["SkuNav"].metapathFollowingStart = tSortedWaypointList[1]
-						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
+						local tCount = 0
+						for k, v in SkuSpairs(tSortedWaypointList) do
+							if tCount < 10 then
+								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..v}, SkuGenericMenuItem)
+								tNewMenuEntry.dynamic = true
+								tNewMenuEntry.filterable = true
+								tNewMenuEntry.BuildChildren = function(self)
+									local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(string.sub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, nil, true)
+									SkuOptions.db.profile["SkuNav"].metapathFollowingStart = v
+									SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
 
-						local tResults = {}
-						for wpIndex, wpName in pairs(wpTable) do
-							local tNearWps = SkuNav:GetNearestWpsWithLinksToWp(wpName, 10, tMaxAllowedDistanceToTargetWp)
-							local tBestRouteWeightedLength = 100000
-							for x = 1, #tNearWps do
-								if tMetapaths[tNearWps[x].wpName] then
-									local EndMetapathWpObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
-									local tEndTargetWpObj = SkuNav:GetWaypointData2(wpName)
-									local tDistToEndTargetWp = SkuNav:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+									local tResults = {}
+									for wpIndex, wpName in pairs(wpTable) do
+										local tNearWps = SkuNav:GetNearestWpsWithLinksToWp(wpName, 10, tMaxAllowedDistanceToTargetWp)
+										local tBestRouteWeightedLength = 100000
+										for x = 1, #tNearWps do
+											if tMetapaths[tNearWps[x].wpName] then
+												local EndMetapathWpObj = SkuNav:GetWaypointData2(tNearWps[x].wpName)
+												local tEndTargetWpObj = SkuNav:GetWaypointData2(wpName)
+												local tDistToEndTargetWp = SkuNav:Distance(EndMetapathWpObj.worldX, EndMetapathWpObj.worldY, tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
 
-									-- add direction to wp
-									local tDirectionTargetWp = ""
-									if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
-										local tDirectionString = SkuNav:GetDirectionToAsString(tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
-										if tDirectionString then
-											tDirectionTargetWp = ";"..tDirectionString
+												-- add direction to wp
+												local tDirectionTargetWp = ""
+												if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+													local tDirectionString = SkuNav:GetDirectionToAsString(tEndTargetWpObj.worldX, tEndTargetWpObj.worldY)
+													if tDirectionString then
+														tDirectionTargetWp = ";"..tDirectionString
+													end
+												end					
+
+												if (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp < tBestRouteWeightedLength then
+													tBestRouteWeightedLength = (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp
+													tResults[wpName] = {
+														metarouteIndex = tNearWps[x].wpName, 
+														metapathLength = tMetapaths[tNearWps[x].wpName].distance, 
+														distanceTargetWp = tNearWps[x].distance,
+														targetWpName = wpName,
+														weightedDistance = tBestRouteWeightedLength,
+														direction = tDirectionTargetWp,
+													}
+												end
+											end
 										end
-									end					
-
-									if (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp < tBestRouteWeightedLength then
-										tBestRouteWeightedLength = (tMetapaths[tNearWps[x].wpName].distance / SkuNav.BestRouteWeightedLengthModForMetaDistance) + tDistToEndTargetWp
-										tResults[wpName] = {
-											metarouteIndex = tNearWps[x].wpName, 
-											metapathLength = tMetapaths[tNearWps[x].wpName].distance, 
-											distanceTargetWp = tNearWps[x].distance,
-											targetWpName = wpName,
-											weightedDistance = tBestRouteWeightedLength,
-											direction = tDirectionTargetWp,
-										}
 									end
-								end
-							end
-						end
 
-						do -- build choices
-							local tSortedList = {}
-							for k,v in SkuSpairs(tResults, function(t,a,b) return t[b].weightedDistance > t[a].weightedDistance end) do
-								table.insert(tSortedList, k)
-							end
-							if #tSortedList == 0 then
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
-							else
-								for tK, tV in ipairs(tSortedList) do
-									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tResults[tV].metapathLength .. ";" .. L["plus"] .. ";" .. tResults[tV].distanceTargetWp .. L[";Meter"] .. tResults[tV].direction .. "#" .. tV, tV) }, SkuGenericMenuItem)
-									tNewMenuEntry.OnEnter = function(self, aValue, aName)
-										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
-										SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
+									do -- build choices
+										local tSortedList = {}
+										for k,v in SkuSpairs(tResults, function(t,a,b) return t[b].weightedDistance > t[a].weightedDistance end) do
+											table.insert(tSortedList, k)
+										end
+										if #tSortedList == 0 then
+											local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
+										else
+											for tK, tV in ipairs(tSortedList) do
+												local tNewMenuEntry = SkuOptions:InjectMenuItems(self, { SkuNav:getAnnotatedWaypointLabel(tResults[tV].metapathLength .. ";" .. L["plus"] .. ";" .. tResults[tV].distanceTargetWp .. L[";Meter"] .. tResults[tV].direction .. "#" .. tV, tV) }, SkuGenericMenuItem)
+												tNewMenuEntry.OnEnter = function(self, aValue, aName)
+													SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = tResults[tV].metarouteIndex
+													SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget = tResults[tV].targetWpName
+												end
+												tCoveredWps[tV] = true
+												--tHasContent = true
+											end
+										end
 									end
-									tCoveredWps[tV] = true
-									--tHasContent = true
 								end
 							end
 						end
@@ -1856,6 +1881,7 @@ function SkuQuest:LoadEventHandler()
 
 		SkuQuest.Event.eventQuests = {}
 
+
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8684}) -- Dreamseer the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8635}) -- Splitrock the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8883}) -- Valadar Starsong
@@ -1875,7 +1901,7 @@ function SkuQuest:LoadEventHandler()
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8716}) -- Starglade the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8650}) -- Snowcrown the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8876}) -- Small Rockets
-		-- tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8874}) -- The Lunar Festival
+		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8874}) -- The Lunar Festival
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8880}) -- Cluster Rockets
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8722}) -- Meadowrun the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8652}) -- Graveborn the Elder
@@ -1883,7 +1909,7 @@ function SkuQuest:LoadEventHandler()
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8873}) -- The Lunar Festival
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8720}) -- Skygleam the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8673}) -- Bloodhoof the Elder
-		-- tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8875}) -- The Lunar Festival
+		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8875}) -- The Lunar Festival
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8862}) -- Elune's Candle
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8723}) -- Nightwind the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8681}) -- Thunderhorn the Elder
@@ -1891,10 +1917,10 @@ function SkuQuest:LoadEventHandler()
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8651}) -- Ironband the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8863}) -- Festival Dumplings
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8672}) -- Stonespire the Elder
-		-- tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8870}) -- The Lunar Festival
+		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8870}) -- The Lunar Festival
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8871}) -- The Lunar Festival
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8649}) -- Stormbrow the Elder
-		-- tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8872}) -- The Lunar Festival
+		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8872}) -- The Lunar Festival
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8726}) -- Brightspear the Elder
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8877}) -- Firework Launcher
 		tinsert(SkuQuest.Event.eventQuests, {"Lunar Festival", 8718}) -- Bladeswift the Elder
@@ -2385,7 +2411,6 @@ function SkuQuest:LoadEventHandler()
 		tinsert(SkuQuest.Event.eventQuests, {"Winter Veil", 11528}) -- A Winter Veil Gift
 
 		SkuQuest.Event:Load() 
-
 	else
 		SkuQuest.Event = {
 			GetEventNameFor = function()
