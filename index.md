@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r33.24](https://github.com/Duugu/Sku/releases/download/r33.24/Sku-r33.24-wrath.zip) (April 15th 2023)<br>
+- [Sku r33.25](https://github.com/Duugu/Sku/releases/download/r33.25/Sku-r33.25-wrath.zip) (April 16th 2023)<br>
 - [SkuAudioData_en r10 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r10/SkuAudioData_en-r10-wrath.zip) (April 15th 2022)<br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2022)<br>
 - [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2022)<br>
@@ -23,6 +23,14 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r33.25
+- There some important changes for route entry points (see below). They are in preparation for an upcoming update, where I will rename auto points to something more usefull than just "auto". If don't know what an entry point is: it's the first point that is shown on shift + f10. If you still don't know what that means, then I _strongly_ suggest to read https://github.com/Duugu/Sku/wiki/How-To-Navigation#how-do-i-navigate-using-waypoints-routes-and-close-routes
+- Route navigation (shift + f10) is now showing a list of up to 10 entry points (sorted by range) instead of just a single entry point (the closest). So, on shift + f10, if you are unsure if you could start a route from there, go down and check other entry points in range, that could make a better starting point for your route.
+- The quest navigation menus (Start, Targets, End) now too have an Entry point list under Routes and Close Routes. (Instead of just silently taking the closest entry point.) Therefore you won't find the destinations directly under Routes/Close Routes anymore, but instead a list of entry points in between. Just like with shift + 10. Choose an appropiate entry point from the list, then go right, and there is the destination waypoints list. 
+- Available quests will now start announcing 60 seconds after login and not immediately after login
+- Fixed a bug with filters in Aura > Manage > Active
+- Made the menu for editing exiting auras outputs filterable
+
 ## Changes in Sku r33.24
 - added some new aura output sounds (you need to download the new audiodata_en (r9, English) or  audiodata (r38, German) update to use them). The new sounds are: axe 01, blaze 01, interface 01 - 06, shot 01, sword 01 - 03, Tutorial Close 01, Tutorial Open 01, Tutorial Success 01
 
