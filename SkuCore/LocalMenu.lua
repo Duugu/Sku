@@ -4371,7 +4371,11 @@ function SkuCore:QuestFrame(aParentChilds)
 
 			local tIconStrings = {
 				[132048] = L["Accepted Quest"],
+				[-47609] = L["Accepted Quest"],
 				[132049] = L["Available Quest"],
+				[-57593] = L["Available Quest"],
+				[-47593] = L["Available Quest"],
+				[-47596] = L["Available Quest"],
 			}
 
 			for x = 1, 10 do
@@ -4381,7 +4385,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						if _G[tFrameName]:GetText() then
 							local tFriendlyName = SkuChat:Unescape(_G[tFrameName]:GetText())
 							if _G["QuestTitleButton"..x.."QuestIcon"]:IsVisible() == true  then
-								tFriendlyName = (tIconStrings[_G["QuestTitleButton"..x.."QuestIcon"]:GetTextureFileID()] or "").." "..SkuChat:Unescape(_G[tFrameName]:GetText())
+								tFriendlyName = (tIconStrings[_G["QuestTitleButton"..x.."QuestIcon"]:GetTexture()] or "").." "..SkuChat:Unescape(_G[tFrameName]:GetText())
 							end
 							local tText, tFullText = "", ""
 							if _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()

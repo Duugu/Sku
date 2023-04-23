@@ -2,6 +2,42 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34
+	- Fixed the "available/accepted" text in npc greetings dialogs that questie was breaking with its latest release
+
+	- Auto waypoint names changed
+		All existing Auto waypoints have been renamed to make them distinguishable. The word "Auto" has been appended with the zone name and a sequence number. 
+		New auto waypoint names (created by mappers from this update onwards) can also contain additional information. 
+		Example: "auto inside first floor lions inn goldshire elwyn 83". 
+		However, the naming of the auto waypoints is up to the mapper. 
+		We will try to add more information to new waypoints where this is appropriate. 
+		Not on all waypoints. (That is too much work and it would provide no value).
+
+	- New: waypoint layers
+		Waypoints can now have layer numbers.
+		Layer numbers need to be manually assigned by the mapper. By default, they are neither there for existing waypoints nor for new waypoints.
+		The layer number or just "layer" of a waypoint indicates its elevation. 
+		"Layer 0" means that this waypoint is at the default level. This usually is the ground level/floor.
+		"Layer 1" is one level above the ground level. And "Layer minus 1" is one level below ground level.
+		So in the inn, the ground floor would be "Layer 0", the basement would be "Layer minus 1" and stairs up would be "Layer 1".
+		The layer numbers are not real height information in the world. They only represent "logical waypoint levels".
+		They are not meant to show you how high up in meters you are. They are meant to show you which waypoints are on the same layer. At places where several waypoints or routes are on top of each other.
+		So, for example, if you are in the basement of the inn, you should find an entry point with "layer -1" upon starting a route in order to get a working route.
+		The layer numbers are pronounced to you at several points:
+		- In route and quest navigation before waypoints as abbreviations: Examples: "L 0" stands for "layer 0", "L minus 1" stands for "layer minus 1", etc.
+		- When you target an NPC or mob, the layer number is appended to the end of the name.
+		Unfortunately, for technical reasons, the addon can only determine the precise layer number for unique names (names that only exist once). This is the case with all navigation lists (route, close route, quest destinations, etc.), but not with NPCs/mobs in the world that you are targeting.
+		If the name of your target is there several times (for example, a guard in Dalaran), the addon tries to find the matching NPC/mob. However, this can be inaccurate.
+		If this is the case, there is a "U" after the layer number. For "uncertain". Example: "L 0 U". This means that you should take the layer number with a certain amount of scepticism. :)
+		We will assign layer numbers only at places where several waypoints/routes can overlap. Examples: Buildings with several floor, mines and caves where there are also routes above on the ground level, towers with several floors, etc.
+		If a waypoint has no layer information, then nothing is pronounced.
+		Therefore, no layer information before a waypoint does _not_ mean that it is on the default layer (0), but that the waypoint simply has no layer information.
+		If the waypoint had layer information and was on the standard layer, then there explicit "L 0" would be pronounced.
+		We will try to add layers to the existing waypoints/routes where this is necessary (buildings, caves, etc.).
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r33.25
 	- There some important changes for route entry points (see below). They are in preparation for an upcoming update, where I will rename auto points to something more usefull than just "auto". If don't know what an entry point is: it's the first point that is shown on shift + f10. If you still don't know what that means, then I _strongly_ suggest to read https://github.com/Duugu/Sku/wiki/How-To-Navigation#how-do-i-navigate-using-waypoints-routes-and-close-routes

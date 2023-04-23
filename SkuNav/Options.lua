@@ -334,11 +334,18 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 -- (string, optional<string>) -> string
 function SkuNav:getAnnotatedWaypointLabel(originalLabel, id)
+	--print("getAnnotatedWaypointLabel", originalLabel, id)
+
+	local tSkuWpName = id or string.sub(originalLabel, string.find(originalLabel, "#") + 1)
+
+	--layer
+	local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, tSkuWpName, nil))
+
 	-- annotate with "visited" if visited
-	local wpID = id or string.sub(originalLabel, string.find(originalLabel, "#") + 1)
-	if SkuNav:waypointWasVisited(wpID) then
-		return L["visited"].." " .. originalLabel
-	else return originalLabel
+	if SkuNav:waypointWasVisited(tSkuWpName) then
+		return L["visited"]..";"..tLayerText..originalLabel
+	else 
+		return tLayerText..originalLabel
 	end
 end
 
@@ -1005,7 +1012,11 @@ function SkuNav:MenuBuilder(aParentEntry)
 				local tCount = 0
 				for k, v in SkuSpairs(tSortedWaypointList) do
 					if tCount < 10 then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..v}, SkuGenericMenuItem)
+
+						local tSkuWpName = string.sub(v, string.find(v, "#") + 1)
+						local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, tSkuWpName, nil))
+
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Entry point: "]..tLayerText..v}, SkuGenericMenuItem)
 						tNewMenuEntry.dynamic = true
 						tNewMenuEntry.filterable = true
 						tNewMenuEntry.BuildChildren = function(self)

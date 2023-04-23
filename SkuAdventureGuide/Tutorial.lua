@@ -2476,7 +2476,7 @@ function SkuAdventureGuide.Tutorial:ReReadCurrentStep()
    SkuOptions.Voice:StopOutputEmptyQueue()
 
    C_Timer.After(1.0, function()
-      dprint("ReReadCurrentStep", SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid])
+      print("ReReadCurrentStep", SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid])
 
       if SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] == 0 then
          SkuAdventureGuide.Tutorial:PlayFtuIntro()
@@ -2506,7 +2506,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:StartStep(aStartAtStepNumber)
-   dprint("StartStep", aStartAtStepNumber)
+   print("StartStep", aStartAtStepNumber)
    SkuAdventureGuide.Tutorial.evaluateNextStep = false
    SkuAdventureGuide.Tutorial.currentStepCompleted = false
    for _, v in pairs(SkuAdventureGuide.Tutorial.triggers) do

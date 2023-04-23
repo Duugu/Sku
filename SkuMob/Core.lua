@@ -538,6 +538,17 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 				end
 			end
 		end
+		
+		--layer info
+		if SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true) then
+			
+			local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, nil, true))
+			
+			
+			if tLayerText then
+				SkuOptions.Voice:OutputString(tLayerText, false, true, 0.8)
+			end
+		end
+
 	end
 end
-

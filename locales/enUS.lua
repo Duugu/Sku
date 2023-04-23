@@ -2589,3 +2589,7 @@ L["Add all steps as linked steps"] = "Add all steps as linked steps"
 L["for tutorial creators"] = "for tutorial creators"
 L["Delete all custom tutorials"] = "Delete all custom tutorials"
 L["Entry point: "] = "Entry point;"
+L["Layer"] = "Layer" 
+L["layerFirstLetter"] = "L" --this is the first letter of the term "layer" in your language
+L["uncertain"] = "uncertain"
+L["uncertainFirstLetter"] = "U" --this is the first letter of the term "uncertain" in your language

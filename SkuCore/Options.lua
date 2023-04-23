@@ -1461,7 +1461,7 @@ local function RangecheckMenuBuilder(aParent, aType)
 	for i = 1, 100 do 
 		if SkuCore.RangeCheckValues.Ranges[aType][i] then 
 			local tIsConfiguredWith = ";"..L["silent"]
-			if SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i] then
+			if SkuOptions.db.char[MODULE_NAME].RangeChecks[aType] ~= nil and SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i] ~= nil then
 				if SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i].sound == L["vocalized"] then
 					tIsConfiguredWith = ";"..L["vocalized"]
 				else

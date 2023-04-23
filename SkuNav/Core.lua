@@ -236,51 +236,57 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 					if tData[1] ~= false then
 						local tName = tData.names[Sku.Loc]
 
-						local tWaypointData = tData
-						if tWaypointData then
-							if tWaypointData.contintentId then
-								local isUiMap = SkuNav:GetUiMapIdFromAreaId(tWaypointData.areaId)
-								local tWpIndex = (#WaypointCache + 1)
-								local tOldLinks = {
-									byId = nil,
-									byName = nil,
-								}
-								if WaypointCacheLookupAll[tName] then
-									if WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId] then
-										WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId][WaypointCacheLookupAll[tName]] = nil
+						if WaypointCacheLookupAll[tName] then
+							WaypointCache[WaypointCacheLookupAll[tName]].worldX = tData.worldX
+							WaypointCache[WaypointCacheLookupAll[tName]].worldY = tData.worldY
+						else
+
+							local tWaypointData = tData
+							if tWaypointData then
+								if tWaypointData.contintentId then
+									local isUiMap = SkuNav:GetUiMapIdFromAreaId(tWaypointData.areaId)
+									local tWpIndex = (#WaypointCache + 1)
+									local tOldLinks = {
+										byId = nil,
+										byName = nil,
+									}
+									if WaypointCacheLookupAll[tName] then
+										if WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId] then
+											WaypointCacheLookupPerContintent[WaypointCache[WaypointCacheLookupAll[tName]].contintentId][WaypointCacheLookupAll[tName]] = nil
+										end
+										tOldLinks = WaypointCache[WaypointCacheLookupAll[tName]].links
+										tWpIndex = WaypointCacheLookupAll[tName]
 									end
-									tOldLinks = WaypointCache[WaypointCacheLookupAll[tName]].links
-									tWpIndex = WaypointCacheLookupAll[tName]
-								end
 
-								WaypointCache[tWpIndex] = {
-									name = tName,
-									role = "",
-									typeId = 1,
-									dbIndex = tIndex,
-									spawn = 1,
-									contintentId = tWaypointData.contintentId,
-									areaId = tWaypointData.areaId,
-									uiMapId = isUiMap,
-									worldX = tWaypointData.worldX,
-									worldY = tWaypointData.worldY,
-									createdAt = tWaypointData.createdAt,
-									createdBy = tWaypointData.createdBy,
-									size = tWaypointData.size or 1,
-									comments = tWaypointData.lComments or {["deDE"] = {},["enUS"] = {},},
-									spawnNr = nil,
-									links = tOldLinks,
-								}
+									WaypointCache[tWpIndex] = {
+										name = tName,
+										role = "",
+										typeId = 1,
+										dbIndex = tIndex,
+										spawn = 1,
+										contintentId = tWaypointData.contintentId,
+										areaId = tWaypointData.areaId,
+										uiMapId = isUiMap,
+										worldX = tWaypointData.worldX,
+										worldY = tWaypointData.worldY,
+										createdAt = tWaypointData.createdAt,
+										createdBy = tWaypointData.createdBy,
+										size = tWaypointData.size or 1,
+										comments = tWaypointData.lComments or {["deDE"] = {},["enUS"] = {},},
+										spawnNr = nil,
+										links = tOldLinks,
+									}
 
-								WaypointCacheLookupAll[tName] = tWpIndex
-								local tWpId = SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)
-								WaypointCacheLookupIdForCacheIndex[tWpId] =  tWpIndex
-								WaypointCacheLookupCacheNameForId[tName] = tWpId										
-		
-								if not WaypointCacheLookupPerContintent[tWaypointData.contintentId] then
-									WaypointCacheLookupPerContintent[tWaypointData.contintentId] = {}
+									WaypointCacheLookupAll[tName] = tWpIndex
+									local tWpId = SkuNav:BuildWpIdFromData(1, tIndex, 1, tWaypointData.areaId)
+									WaypointCacheLookupIdForCacheIndex[tWpId] =  tWpIndex
+									WaypointCacheLookupCacheNameForId[tName] = tWpId										
+			
+									if not WaypointCacheLookupPerContintent[tWaypointData.contintentId] then
+										WaypointCacheLookupPerContintent[tWaypointData.contintentId] = {}
+									end
+									WaypointCacheLookupPerContintent[tWaypointData.contintentId][tWpIndex] = tName
 								end
-								WaypointCacheLookupPerContintent[tWaypointData.contintentId][tWpIndex] = tName
 							end
 						end
 					else
@@ -844,6 +850,10 @@ function SkuNav:GetBestMapForUnit(aUnitId)
 		if tMMZoneText == L["Deeprun Tram"] then
 			tPlayerUIMap = 2257
 		end
+	end
+
+	if tPlayerUIMap == 126 then
+		tPlayerUIMap = 125
 	end
 
 	return tPlayerUIMap
@@ -2690,7 +2700,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_LOGIN(...)
-	--print("PLAYER_LOGIN", ...)
+	dprint("PLAYER_LOGIN", ...)
 	SkuNav.MinimapFull = false
 
 	SkuOptions.db.global["SkuNav"] = SkuOptions.db.global["SkuNav"] or {}
@@ -2737,6 +2747,25 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:LoadDefaultMapData(aForce)
 	dprint("LoadDefaultMapData", aForce, SkuOptions.db.global["SkuNav"].hasCustomMapData)
+
+	if SkuDB.routedata["global"].WaypointsNew then
+		SkuDB.routedata["global"].Waypoints = {}
+		for x = 1, #SkuDB.routedata["global"].WaypointsNew do
+			local tData = SkuDB.routedata["global"].WaypointsNew[x]
+			SkuDB.routedata["global"].Waypoints[x] = tData
+			if SkuDB.routedata["global"].Waypoints[x][1] ~= false then
+				local en, de = string.match(SkuDB.routedata["global"].Waypoints[x].names, "(.+)§(.+)")
+				if not en or not de then
+					en, de = "", ""
+				end
+				SkuDB.routedata["global"].Waypoints[x].names = {}
+				SkuDB.routedata["global"].Waypoints[x].names["enUS"] = en
+				SkuDB.routedata["global"].Waypoints[x].names["deDE"] = de
+			end
+		end
+		SkuDB.routedata["global"].WaypointsNew = nil
+	end
+
 	--if SkuOptions.db.global["SkuNav"].hasCustomMapData ~= true or aForce then
 		local t = SkuDB.routedata["global"]["Waypoints"]
 		SkuOptions.db.global["SkuNav"].Waypoints = t
@@ -3310,3 +3339,135 @@ function SkuNav:GetWpDataFromId(id)
 
 	return typeId, dbIndex, spawn, areaId
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function GetCreatureIdFromCreatureGUID(unit)
+	local guid = UnitGUID(unit)
+	if guid then
+		local unit_type = strsplit("-", guid)
+		if unit_type == "Creature" then
+			local _, _, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid)
+			return npc_id
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:GetNonAutoLevel(aUid, aUnitName, aSkuWaypointName, aForTarget)
+	--print("GetNonAutoLevel", aUid, aUnitName, aSkuWaypointName, aForTarget)
+	if SkuDB.routedata["global"].WaypointLevels == nil then
+		return
+	end
+
+	if aUid == nil and aUnitName ~= nil then
+		--[[
+		local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+		if not tPlayerAreaId then return end
+
+		--> fix for dalaran map id
+		if tPlayerAreaId == 100077 or tPlayerAreaId == 4613 then
+			tPlayerAreaId = 4395
+		end
+		--<
+
+		for i, v in pairs(SkuDB.NpcData.Names[Sku.Loc]) do
+			if v[1] == aUnitName then
+				if SkuDB.NpcData.Data[i] then
+					
+					if SkuDB.NpcData.Data[i][7] then
+						if SkuDB.NpcData.Data[i][7][tPlayerAreaId] then
+							if #SkuDB.NpcData.Data[i][7][tPlayerAreaId] == 1 then
+								aUid = SkuNav:BuildWpIdFromData(
+									2,
+									i,
+									1,
+									tPlayerAreaId
+								)
+							end
+							break
+						end
+					end
+				end
+			end
+		end
+		]]
+	elseif aUid == nil and aSkuWaypointName ~= nil then
+		if WaypointCacheLookupCacheNameForId[aSkuWaypointName] then
+			return SkuDB.routedata["global"].WaypointLevels[WaypointCacheLookupCacheNameForId[aSkuWaypointName]], true
+		end
+
+	elseif aUid == nil and aForTarget ~= nil then
+		local tDistanceToTarget = SkuCore:DoRangeCheck(true, true)
+		local fPlayerPosX, fPlayerPosY = UnitPosition("player")
+	
+		if fPlayerPosX and tDistanceToTarget and UnitPlayerControlled("target") == false and UnitIsPlayer("target") == false then
+			local C_MapGetWorldPosFromMapPos = C_Map.GetWorldPosFromMapPos			
+			local tPlayerAreaId = SkuNav:GetCurrentAreaId()
+			if not tPlayerAreaId then return end
+			--> fix for dalaran map id
+			if tPlayerAreaId == 100077 or tPlayerAreaId == 4613 then
+				tPlayerAreaId = 4395
+			end
+			--<
+
+			local i = GetCreatureIdFromCreatureGUID("target")
+			if i then
+				i = tonumber(i)
+				if SkuDB.NpcData.Data[i] then
+					if SkuDB.NpcData.Data[i][7] then
+						if SkuDB.NpcData.Data[i][7][tPlayerAreaId] then
+							--local tData = SkuDB.InternalAreaTable[tPlayerAreaId]
+							local isUiMap = SkuNav:GetUiMapIdFromAreaId(tPlayerAreaId)
+							local vs = SkuDB.NpcData.Data[i][7][tPlayerAreaId]
+							local tNumberOfSpawns = #vs
+							local tBestSpawn
+							local tBestSpawnDist = 99999999
+							for sp = 1, tNumberOfSpawns do
+								local _, worldPosition = C_MapGetWorldPosFromMapPos(isUiMap, CreateVector2D(vs[sp][1] / 100, vs[sp][2] / 100))
+								if worldPosition then
+									local tTargetWorldX, tTargetWorldY = worldPosition:GetXY()
+									if tTargetWorldX then
+										local tDistanceToPlayer = SkuNav:Distance(fPlayerPosX, fPlayerPosY, tTargetWorldX, tTargetWorldY)
+										local tDistDiff = tDistanceToPlayer - tDistanceToTarget
+										if tDistDiff < 0 then tDistDiff = (tDistDiff * -1) end
+										if tDistDiff < 55 and tDistDiff < tBestSpawnDist then
+											tBestSpawnDist = tDistDiff
+											tBestSpawn = sp
+										end
+									end
+								end
+							end
+
+							if tBestSpawn ~= nil then
+								local aUid = SkuNav:BuildWpIdFromData(2, i, tBestSpawn, tPlayerAreaId)
+								if aUid then
+									return SkuDB.routedata["global"].WaypointLevels[aUid], tNumberOfSpawns == 1
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+
+	if aUid ~= nil then
+		return SkuDB.routedata["global"].WaypointLevels[aUid], true
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:GetLayerText(aNonAutoLevel, aNonAutoLevelNotUnique)
+	if aNonAutoLevel then
+		if aNonAutoLevel < 0 then
+			aNonAutoLevel = string.gsub(aNonAutoLevel, "-", L["Minus"].." ")
+		end
+		local tLayerText = L["layerFirstLetter"].." "..aNonAutoLevel
+		if aNonAutoLevelNotUnique ~= true then
+			tLayerText = tLayerText.." "..L["uncertainFirstLetter"]..""
+		end
+		return tLayerText..";"
+	end
+	return ""
+end
+	
