@@ -45,6 +45,7 @@ DEUTSCH - Erste Schritte:<br>
 	The layer numbers are pronounced to you at several points:<br>
 	- In route and quest navigation before waypoints as abbreviations: Examples: "L 0" stands for "layer 0", "L minus 1" stands for "layer minus 1", etc.<br>
 	- When you target an NPC or mob, the layer number is appended to the end of the name.<br>
+	
 	Unfortunately, for technical reasons, the addon can only determine the precise layer number for unique names (names that only exist once). This is the case with all navigation lists (route, close route, quest destinations, etc.), but not with NPCs/mobs in the world that you are targeting.
 	If the name of your target is there several times (for example, a guard in Dalaran), the addon tries to find the matching NPC/mob. However, this can be inaccurate.
 	If this is the case, there is a "U" after the layer number. For "uncertain". Example: "L 0 U". This means that you should take the layer number with a certain amount of scepticism. :)
