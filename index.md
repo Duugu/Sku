@@ -23,9 +23,8 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
-Changes in Sku r34
+## Changes in Sku r34
 - Fixed the "available/accepted" text in npc greetings dialogs that questie was breaking with its latest release
-
 - Auto waypoint names changed<br>
 	All existing Auto waypoints have been renamed to make them distinguishable. The word "Auto" has been appended with the zone name and a sequence number. 
 	New auto waypoint names (created by mappers from this update onwards) can also contain additional information. 
@@ -33,7 +32,6 @@ Changes in Sku r34
 	However, the naming of the auto waypoints is up to the mapper. 
 	We will try to add more information to new waypoints where this is appropriate. 
 	Not on all waypoints. (That is too much work and it would provide no value).
-
 - New: waypoint layers<br>
 	Waypoints can now have layer numbers.
 	Layer numbers need to be manually assigned by the mapper. By default, they are neither there for existing waypoints nor for new waypoints.
