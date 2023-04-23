@@ -48,7 +48,7 @@ DEUTSCH - Erste Schritte:<br>
 	
 	Unfortunately, for technical reasons, the addon can only determine the precise layer number for unique names (names that only exist once). This is the case with all navigation lists (route, close route, quest destinations, etc.), but not with NPCs/mobs in the world that you are targeting.
 	If the name of your target is there several times (for example, a guard in Dalaran), the addon tries to find the matching NPC/mob. However, this can be inaccurate.
-	If this is the case, there is a "U" after the layer number. For "uncertain". Example: "L 0 U". This means that you should take the layer number with a certain amount of scepticism. :)
+	If this is the case, there is a "U" after the layer number. For "uncertain". Example: "L 0 U". This means that you should take the layer number with a certain amount of scepticism. :)<br>
 	We will assign layer numbers only at places where several waypoints/routes can overlap. Examples: Buildings with several floor, mines and caves where there are also routes above on the ground level, towers with several floors, etc.
 	If a waypoint has no layer information, then nothing is pronounced.
 	Therefore, no layer information before a waypoint does _not_ mean that it is on the default layer (0), but that the waypoint simply has no layer information.
