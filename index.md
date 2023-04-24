@@ -9,6 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku r34.1](https://github.com/Duugu/Sku/releases/download/r34/Sku-r34-wrath.zip) (April 24th 2023)<br>
 - [SkuAudioData_en r10 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r10/SkuAudioData_en-r10-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2023)<br>
@@ -22,8 +23,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.1
+- Added waypoint layer infos to Stormwind, Elwynn and Westfall
+- Added a route to DM dungeon entrance, fixed the tower in Elwynn, and a bunch of other things
+- Fixed an issue that could lead to a "constant table overflow" error and losing all settings on closing the game with Alt + F4
+- Target outputs now should be in one line (irrelvant if you're not using nvda sapi)
+	
 ## Changes in Sku r34
-TEMPORARY REMOVED THE DOWNLOAD OF r34 AS THERE ISSUES 
 - Fixed the "available/accepted" text in npc greetings dialogs that questie was breaking with its latest release
 - Auto waypoint names changed<br>
 	All existing Auto waypoints have been renamed to make them distinguishable. The word "Auto" has been appended with the zone name and a sequence number. 
