@@ -22,7 +22,7 @@ SkuNav = SkuNav or LibStub("AceAddon-3.0"):NewAddon("SkuNav", "AceConsole-3.0", 
 -- tmp helpers, to delete after migration
 -------------------------------------------------------------------------
 function tConvert()
-	SkuOptions.db.global[MODULE_NAME].LinksNew = {}
+	SkuDB.SessionRouteData.LinksNew = {}
 	for tSourceWpName, tSourceWpLinks in pairs(tSkuLinks) do
 		local tSourceIndex = WaypointCacheLookupAll[tSourceWpName]
 		
@@ -34,7 +34,7 @@ function tConvert()
 
 		--print(tSourceIndex, tSourceWpName, tSourceWpLinks)
 
-		SkuOptions.db.global[MODULE_NAME].LinksNew[tSourceId] = {}
+		SkuDB.SessionRouteData.LinksNew[tSourceId] = {}
 
 		for tTargetWpName, tTargetWpDistance in pairs(tSourceWpLinks) do
 			local tTaregtIndex = WaypointCacheLookupAll[tTargetWpName]
@@ -43,7 +43,7 @@ function tConvert()
 			if tTaregtIndex then		
 				tTargetId = SkuNav:BuildWpIdFromData(WaypointCache[tTaregtIndex].typeId, WaypointCache[tTaregtIndex].dbIndex, WaypointCache[tTaregtIndex].spawn, WaypointCache[tTaregtIndex].areaId)	
 				--print("  ", tTargetId, tTaregtIndex, tTargetWpName, tTargetWpDistance)
-				SkuOptions.db.global[MODULE_NAME].LinksNew[tSourceId][tTargetId] = tTargetWpDistance
+				SkuDB.SessionRouteData.LinksNew[tSourceId][tTargetId] = tTargetWpDistance
 			end
 		end
 

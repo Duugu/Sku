@@ -466,26 +466,38 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		tUnitName = UnitName("softinteract")
 	end
 
+	local tOutputString = ""
+	local tOutputStringB = ""
+
+
 	if tUnitName then
 		if hp == 0 then
 			if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-				SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)
-				SkuOptions.Voice:OutputString(tUnitName, false, true, 0.8)
+				--SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)
+				tOutputString = tOutputString.." "..L["dead"]
+				--SkuOptions.Voice:OutputString(tUnitName, false, true, 0.8)
+				tOutputString = tOutputString.." "..tUnitName
+				
 			else
-				SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tUnitName, true, true, 0.3, nil, nil, nil, 1)
+				--SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tUnitName, true, true, 0.3, nil, nil, nil, 1)
+				tOutputStringB = tOutputStringB.." "..L["dead"].." "..tUnitName
 			end
 		else
 			if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
 				if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					SkuOptions.Voice:OutputString(tRaidTargetString, true, true, 0.8)
+					--SkuOptions.Voice:OutputString(tRaidTargetString, true, true, 0.8)
+					tOutputString = tOutputString.." "..tRaidTargetString
 				else
-					SkuOptions.Voice:OutputStringBTtts(tRaidTargetString, true, true, 0.8, nil, nil, nil, 1)
+					--SkuOptions.Voice:OutputStringBTtts(tRaidTargetString, true, true, 0.8, nil, nil, nil, 1)
+					tOutputStringB = tOutputStringB.." "..tRaidTargetString
 				end
 			else
 				if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					SkuOptions.Voice:OutputString(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8)
+					--SkuOptions.Voice:OutputString(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8)
+					tOutputString = tOutputString.." "..tRaidTargetString..tReactionText..tUnitName
 				else
-					SkuOptions.Voice:OutputStringBTtts(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8, nil, nil, nil, 1)
+					--SkuOptions.Voice:OutputStringBTtts(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8, nil, nil, nil, 1)
+					tOutputStringB = tOutputStringB.." "..tRaidTargetString..tReactionText..tUnitName
 				end
 			end
 		end
@@ -506,18 +518,24 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		if tUnitLevel then
 			if tUnitLevel ~= -1 then
 				if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					SkuOptions.Voice:OutputString(L["level"], false, true, 0.2)
-					SkuOptions.Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)
+					--SkuOptions.Voice:OutputString(L["level"], false, true, 0.2)
+					tOutputString = tOutputString.." "..L["level"]
+					--SkuOptions.Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)
+					tOutputString = tOutputString.." "..string.format("%02d", tUnitLevel).." "..tClassifications[tClassification]
 				else
-					SkuOptions.Voice:OutputStringBTtts(L["level"].." "..string.format("%02d", tUnitLevel), false, true, 0.2, nil, nil, nil, 1)
+					--SkuOptions.Voice:OutputStringBTtts(L["level"].." "..string.format("%02d", tUnitLevel), false, true, 0.2, nil, nil, nil, 1)
+					tOutputStringB = tOutputStringB.." "..L["level"].." "..string.format("%02d", tUnitLevel)
 				end
 			else
 				if aUnitId ~= "softinteract" then
 					if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-						SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)
-						SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
+						--SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)
+						tOutputString = tOutputString.." "..L["level"]
+						--SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
+						tOutputString = tOutputString.." "..L["Unknown"]
 					else
-						SkuOptions.Voice:OutputStringBTtts(L["level"].." "..L["Unknown"], false, true, 2.2, nil, nil, nil, 1)
+						--SkuOptions.Voice:OutputStringBTtts(L["level"].." "..L["Unknown"], false, true, 2.2, nil, nil, nil, 1)
+						tOutputStringB = tOutputStringB.." "..L["level"].." "..L["Unknown"]
 					end
 				end
 			end
@@ -533,6 +551,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 					if tLineTwoText ~= "" then
 						if not string.find(tLineTwoText, L["level"]) then
 							SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
+							tOutputString = tOutputString.." "..tLineTwoText
 						end
 					end
 				end
@@ -546,9 +565,20 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			
 			
 			if tLayerText then
-				SkuOptions.Voice:OutputString(tLayerText, false, true, 0.8)
+				--SkuOptions.Voice:OutputString(tLayerText, false, true, 0.8)
+				tOutputString = tOutputString.." "..tLayerText
+				tOutputStringB = tOutputStringB.." "..tLayerText
 			end
 		end
 
+	end
+
+
+	if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+		SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
+		--print("tOutputString", "-"..tOutputString.."-")
+	else
+		SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
+		--print("tOutputStringB", "-"..tOutputStringB.."-", tIsPlayerControled, SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts)
 	end
 end

@@ -1085,7 +1085,7 @@ SkuDB.InternalAreaTable = {
 --[1477] = {ZoneName = "TheTempleOfAtal'Hakkar", AreaName_lang = {["deDE"] = "Der Tempel von Atal'Hakkar", ["enUS"] = "The Temple of Atal'Hakkar", }, ContinentID = 109, ParentAreaID = 0, Faction = 0, Flags = 0,},
 [1497] = {ZoneName = "Undercity", AreaName_lang = {["deDE"] = "Unterstadt", ["enUS"] = "Undercity", }, ContinentID = 0, ParentAreaID = 0, Faction = 4, Flags = 69206328,},
 [1517] = {ZoneName = "Uldaman", AreaName_lang = {["deDE"] = "Uldaman", ["enUS"] = "Uldaman", }, ContinentID = 0, ParentAreaID = 3, Faction = 0, Flags = 1073741888,},
-[1518] = {ZoneName = "NotIUsedDeadmines", AreaName_lang = {["deDE"] = "Nicht benutzt - Todesminen", ["enUS"] = "Not Used Deadmines", }, ContinentID = 0, ParentAreaID = 40, Faction = 0, Flags = 1073741888,},
+[1518] = {ZoneName = "TheDeadmines", AreaName_lang = {["deDE"] = "Die Todesminen", ["enUS"] = "The Deadmines", }, ContinentID = 0, ParentAreaID = 40, Faction = 0, Flags = 1073741888,},
 [1519] = {ZoneName = "StormwindCity", AreaName_lang = {["deDE"] = "Sturmwind", ["enUS"] = "Stormwind City", }, ContinentID = 0, ParentAreaID = 0, Faction = 2, Flags = 2097464,},
 [1537] = {ZoneName = "Ironforge", AreaName_lang = {["deDE"] = "Eisenschmiede", ["enUS"] = "Ironforge", }, ContinentID = 0, ParentAreaID = 0, Faction = 2, Flags = 2097464,},
 [1557] = {ZoneName = "SplithoofHold", AreaName_lang = {["deDE"] = "Spalthufhöhle", ["enUS"] = "Splithoof Hold", }, ContinentID = 1, ParentAreaID = 400, Faction = 0, Flags = 1073741888,},
@@ -3320,4 +3320,6 @@ SkuDB.InternalAreaTable = {
 [100457] = {ZoneName = "", AreaName_lang = {["deDE"] = "Zim'Torga", ["enUS"] = "Zim'Torga", }, ContinentID = 571, ParentAreaID = 4323, Faction = -1, Flags = -1,},
 [100458] = {ZoneName = "", AreaName_lang = {["deDE"] = "Außenposten von Zoram'gar", ["enUS"] = "Zoram'gar Outpost", }, ContinentID = 1, ParentAreaID = 414, Faction = -1, Flags = -1,},
 
-    }
+--Sku fake subzone entries
+[250000] = {ZoneName = "", AreaName_lang = {["deDE"] = "Versteck der Defias", ["enUS"] = "Defias hideout", }, ContinentID = 0, ParentAreaID = 20, Faction = -1, Flags = -1,},
+}

@@ -4,6 +4,14 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.1
+	- Added waypoint layer infos to Stormwind, Elwynn and Westfall
+	- Added a route to DM dungeon entrance, fixed the tower in Elwynn, and a bunch of other things
+	- Fixed an issue that could lead to a "constant table overflow" error and losing all settings on closing the game with Alt + F4
+	- Target outputs now should be in one line (irrelvant if you're not using nvda sapi)
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34
 	- Fixed the "available/accepted" text in npc greetings dialogs that questie was breaking with its latest release
 

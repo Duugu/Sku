@@ -415,8 +415,8 @@ function SkuOptions:SlashFunc(input, aSilent)
 
 		elseif fields[1] == "rdatareset" then
 			dprint("/sku rdatareset")
-			SkuOptions.db.global["SkuNav"].Waypoints = {}
-			SkuOptions.db.global["SkuNav"].Links = {}
+			SkuDB.SessionRouteData.Waypoints = {}
+			SkuDB.SessionRouteData.Links = {}
 			SkuOptions.db.global["SkuNav"].hasCustomMapData = nil
 			--SkuNav:CreateWaypointCache()
 			SkuNav:PLAYER_ENTERING_WORLD()
@@ -516,10 +516,10 @@ function SkuOptions:OnProfileReset()
 	SkuOptions.db.profile["SkuNav"].Routes = nil
 
 	local t = SkuDB.routedata["global"]["Waypoints"]
-	SkuOptions.db.global["SkuNav"].Waypoints = t
+	SkuDB.SessionRouteData.Waypoints = t
 
 	local tl = SkuDB.routedata["global"]["Links"]
-	SkuOptions.db.global["SkuNav"].Links = tl
+	SkuDB.SessionRouteData.Links = tl
 
 	SkuNav:CreateWaypointCache()
 
@@ -4536,10 +4536,10 @@ function SkuOptions:ImportWpAndLinkData()
 
 			--do tWaypoints 
 			local tFullCounterWps = 0
-			SkuOptions.db.global["SkuNav"].Waypoints = {}
+			SkuDB.SessionRouteData.Waypoints = {}
 			for tIndex, tWpData in ipairs(tWaypoints) do
-				if not SkuOptions.db.global["SkuNav"].Waypoints[tIndex] then
-					table.insert(SkuOptions.db.global["SkuNav"].Waypoints, tWpData)
+				if not SkuDB.SessionRouteData.Waypoints[tIndex] then
+					table.insert(SkuDB.SessionRouteData.Waypoints, tWpData)
 					tImportCounterWps = tImportCounterWps + 1
 				else
 					tIgnoredCounterWps = tIgnoredCounterWps + 1
@@ -4552,8 +4552,8 @@ function SkuOptions:ImportWpAndLinkData()
 			for i, v in pairs(tLinks) do
 				tImportCounterLinks = tImportCounterLinks + 1
 			end
-			SkuOptions.db.global["SkuNav"].Links = {}
-			SkuOptions.db.global["SkuNav"].Links = tLinks
+			SkuDB.SessionRouteData.Links = {}
+			SkuDB.SessionRouteData.Links = tLinks
 
 			--done
 			print("Version:", tVersion)
@@ -4584,11 +4584,11 @@ function SkuOptions:ExportWpAndLinkData()
 	}
 
 	--build Links
-	tExportDataTable.links = SkuOptions.db.global["SkuNav"].Links
+	tExportDataTable.links = SkuDB.SessionRouteData.Links
 
 	--build Waypoints
-	for i, v in ipairs(SkuOptions.db.global["SkuNav"].Waypoints) do
-		local tWpData = SkuOptions.db.global["SkuNav"].Waypoints[i]
+	for i, v in ipairs(SkuDB.SessionRouteData.Waypoints) do
+		local tWpData = SkuDB.SessionRouteData.Waypoints[i]
 		if tWpData then
 			table.insert(tExportDataTable.waypoints, tWpData)
 		end

@@ -223,10 +223,10 @@ SkuNav.options = {
 			type = "toggle",
 			OnAction = function(self, info, val)
 				local t = SkuDB.routedata["global"]["Waypoints"]
-				SkuOptions.db.global["SkuNav"].Waypoints = t
+				SkuDB.SessionRouteData.Waypoints = t
 
 				local tl = SkuDB.routedata["global"]["Links"]
-				SkuOptions.db.global["SkuNav"].Links = tl
+				SkuDB.SessionRouteData.Links = tl
 				SkuNav:CreateWaypointCache()
 
 				for x = 1, 4 do
@@ -1180,8 +1180,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.Voice:OutputStringBTtts(L["Active waypoint or route or recording"], false, true, 0.3, true)
 				return
 			end
-			SkuOptions.db.global["SkuNav"].Waypoints = {}
-			SkuOptions.db.global["SkuNav"].Links = {}
+			SkuDB.SessionRouteData.Waypoints = {}
+			SkuDB.SessionRouteData.Links = {}
 			SkuOptions.db.global["SkuNav"].hasCustomMapData = nil
 			--SkuNav:CreateWaypointCache()
 			SkuNav:PLAYER_ENTERING_WORLD()
