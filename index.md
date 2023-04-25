@@ -18,7 +18,7 @@ DEUTSCH - Erste Schritte:<br>
 - [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 
 *Updates for sighted players:* <br>
-- [SkuMapper r2.4](https://github.com/Duugu/SkuMapper/releases/download/r2.4/SkuMapper-r2.4-wrath.zip) (Jan 22nd, 2022), mapping addon for sighted players<br>
+- [SkuMapper r3](https://github.com/Duugu/SkuMapper/releases/download/r3/SkuMapper-r3-wrath.zip) (April 25th 2023), mapping addon for sighted players<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
