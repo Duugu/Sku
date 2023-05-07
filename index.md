@@ -26,7 +26,7 @@ DEUTSCH - Erste Schritte:<br>
 ## Changes in Wow Menu r3.12
 - Added support for auto pause if dial targeting is enabled.
 - Social contract will be auto accepted again.
-- 
+
 ## Changes in Sku r34.2
 - Added a new option Core > Range > Range for group members in range checks (default: 10), and a new key bind "Do group members in range check" (default: not bound). This is to output the number of party or raid members that a inside the selected range to you.
 - Added a new option: Mob > Options > Sound if target is in combat, to change the default beep sound on targeting enemies that are already in combat to something else. Default value: "Default beep sound".
