@@ -9,13 +9,13 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.1](https://github.com/Duugu/Sku/releases/download/r34.1/Sku-r34.1-wrath.zip)) (April 24th 2023)<br>
+- [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (Mar 27th 2023)<br>
+- [Sku r34.2](https://github.com/Duugu/Sku/releases/download/r34.2/Sku-r34.2-wrath.zip)) (May 7th 2023)<br>
+
+*Older updates:* <br>
 - [SkuAudioData_en r10 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r10/SkuAudioData_en-r10-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2023)<br>
-
-*Older updates:* <br>
-- [wow_menu r3.11](https://github.com/Duugu/wow_menu/releases/download/r3.11/wow_menu-r3.11-wrath.zip) (Mar 27th 2023)<br>
 
 *Updates for sighted players:* <br>
 - [SkuMapper r3](https://github.com/Duugu/SkuMapper/releases/download/r3/SkuMapper-r3-wrath.zip) (April 25th 2023), mapping addon for sighted players<br>
@@ -23,6 +23,39 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Wow Menu r3.12
+- Added support for auto pause if dial targeting is enabled.
+
+## Changes in Sku r34.2
+- Added a new option Core > Range > Range for group members in range checks (default: 10), and a new key bind "Do group members in range check" (default: not bound). This is to output the number of party or raid members that a inside the selected range to you.
+- Added a new option: Mob > Options > Sound if target is in combat, to change the default beep sound on targeting enemies that are already in combat to something else. Default value: "Default beep sound".
+- Added the spells from patch 3.4.1 to the database (hc+ stuff etc.).
+- Fixed a bug with adding all steps from an existing tutorial as linked steps.
+- Fixed an issue with creating multi line macros.
+- The raid roster on the overview page (default on overview page 2 with shift + up), has been fixed to use the same order as the games standard raid frame.
+- Several changes in Core > Monitor:
+	- Removed the party health chord style monitor
+	- Added raid health and debuff monitors. There are options for enabling/disabling outputs per subgroup, new roles like MTs, etc. Please adjust them to restrict the number of outputs in raids to a level that is useful for you.
+	- Player Health, Player Power, and Pet Health outputs are slightly changed to announce the expected numbers. Examples: down from 81% hp to 79% hp the monitor is now announcing "8" instead of "7" as before
+	- The player, party, and raid health monitors are now automatically used depending on the group type (if the appropiate monitor is set to On in the settings). If you are solo, its player, if you are in a party, its party, etc.
+	- Added a new sku key bind: "Toggle player, party, raid health monitor". Default set to nothing. It is to toggle the currently active health monitor (player, party, raid) on/off.
+- Added a new targeting feature for party/raid members. I am calling it "dial targeting", because you are "dialing" the target via the numpad using the raid members number.<br>
+	It is disabled as default. You need to explicit enable the feature via Core > Dial Targeting. Can be set to auto enable in parties, raids, both or never.<br>
+	With Dial Targeting you're using the numpad to target any specific raid member in any raid size (10, 25, 40) by just typing the raid members number.<br>
+	The raid members number is just a running number. Members 1-5 in raid group 1 have the raid member numbers 1 to 5. Members 1-5 in raid group 2 are 6 to 10. Members in raid group 3 are 11 to 15, and so on.<br>
+	Typing the raid members number always uses two digits, with a leading zero for numbers below 10. So, to target raid member 1, you will enter 0 1 (zero one). Two is 0 2 (zero two) and raid member 9 is 0 9 (zero nine). Raid member 10 is 1 0 (one zero), and so on.<br>
+	As stated, Dial Targeting is disabled as default. To enable the feature, go to Core > Dial Targeting. You will also find other self explaining options there.<br>
+	Dial Targeting has three numpad keys with custom actions:
+	
+	- Numpad zero twice (aka raid member number 0 0) is always you.
+	- Numpad decimal separator (English) or Numpad comma (German) is resetting the input and clearing your target. That is, for example, if you started with typing 1, and then, before typing in the second number for the raid member, would like to start over to choose 0 and 1 instead. With resetting the input the addon then will take the next number not as the second, but as the first.
+	- Numpad Enter is to re-target the the last target you've selected via Dial Targeting
+		
+	If Dial Targeting is enabled, all existing key binds on numpad keys will be temporary disabled. The old key binds will be restored after Dial Targeting was disabled.<br>
+	If you are enabling dial targeting, you of course can't use the sku menu script shortcuts for numpad 7-9 (clicking on the ground, turning to beacon). With menu script r3.12 or higher they will be automatically disabled while Dial Targeting is enabled. With older menu script versions you need to manually exit the script (ALT + ESCAPE) to have dial targeting working.<br>
+	In parties (if enabled for parties) Dial Targeting is using one digit party member numbers (1-4 for party member 1 to 4, and 0 for yourself).<br>
+	Any feedback and suggestion to improve the feature is appreciated.
+
 ## Changes in Sku r34.1
 - Added waypoint layer infos to Stormwind, Elwynn and Westfall
 - Added a route to DM dungeon entrance, fixed the tower in Elwynn, and a bunch of other things
