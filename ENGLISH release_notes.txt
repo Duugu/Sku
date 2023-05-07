@@ -4,6 +4,36 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.2
+	- Added a new option Core > Range > Range for group members in range checks (default: 10), and a new key bind "Do group members in range check" (default: not bound). This is to output the number of party or raid members that a inside the selected range to you.
+	- Added a new option: Mob > Options > Sound if target is in combat, to change the default beep sound on targeting enemies that are already in combat to something else. Default value: "Default beep sound".
+	- Added the spells from patch 3.4.1 to the database (hc+ stuff etc.).
+	- Fixed a bug with adding all steps from an existing tutorial as linked steps.
+	- Fixed an issue with creating multi line macros.
+	- The raid roster on the overview page (default on overview page 2 with shift + up), has been fixed to use the same order as the games standard raid frame.
+	- Several changes in Core > Monitor:
+		- Removed the party health chord style monitor
+		- Added raid health and debuff monitors. There are options for enabling/disabling outputs per subgroup, new roles like MTs, etc. Please adjust them to restrict the number of outputs in raids to a level that is useful for you.
+		- Player Health, Player Power, and Pet Health outputs are slightly changed to announce the expected numbers. Examples: down from 81% hp to 79% hp the monitor is now announcing "8" instead of "7" as before
+		- The player, party, and raid health monitors are now automatically used depending on the group type (if the appropiate monitor is set to On in the settings). If you are solo, its player, if you are in a party, its party, etc.
+		- Added a new sku key bind: "Toggle player, party, raid health monitor". Default set to nothing. It is to toggle the currently active health monitor (player, party, raid) on/off.
+	- Added a new targeting feature for party/raid members. I am calling it "dial targeting", because you are "dialing" the target via the numpad using the raid members number.
+		It is disabled as default. You need to explicit enable the feature via Core > Dial Targeting. Can be set to auto enable in parties, raids, both or never.
+		With Dial Targeting you're using the numpad to target any specific raid member in any raid size (10, 25, 40) by just typing the raid members number.
+		The raid members number is just a running number. Members 1-5 in raid group 1 have the raid member numbers 1 to 5. Members 1-5 in raid group 2 are 6 to 10. Members in raid group 3 are 11 to 15, and so on.
+		Typing the raid members number always uses two digits, with a leading zero for numbers below 10. So, to target raid member 1, you will enter 0 1 (zero one). Two is 0 2 (zero two) and raid member 9 is 0 9 (zero nine). Raid member 10 is 1 0 (one zero), and so on.
+		As stated, Dial Targeting is disabled as default. To enable the feature, go to Core > Dial Targeting. You will also find other self explaining options there.
+		Dial Targeting has three numpad keys with custom actions:
+			- Numpad zero twice (aka raid member number 0 0) is always you.
+			- Numpad decimal separator (English) or Numpad comma (German) is resetting the input and clearing your target. That is, for example, if you started with typing 1, and then, before typing in the second number for the raid member, would like to start over to choose 0 and 1 instead. With resetting the input the addon then will take the next number not as the second, but as the first.
+			- Numpad Enter is to re-target the the last target you've selected via Dial Targeting
+		If Dial Targeting is enabled, all existing key binds on numpad keys will be temporary disabled. The old key binds will be restored after Dial Targeting was disabled.
+		If you are enabling dial targeting, you of course can't use the sku menu script shortcuts for numpad 7-9 (clicking on the ground, turning to beacon). With menu script r3.12 or higher they will be automatically disabled while Dial Targeting is enabled. With older menu script versions you need to manually exit the script (ALT + ESCAPE) to have dial targeting working.
+		In parties (if enabled for parties) Dial Targeting is using one digit party member numbers (1-4 for party member 1 to 4, and 0 for yourself).
+		Any feedback and suggestion to improve the feature is appreciated.
+
+		
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.1
 	- Added waypoint layer infos to Stormwind, Elwynn and Westfall
 	- Added a route to DM dungeon entrance, fixed the tower in Elwynn, and a bunch of other things
@@ -14,7 +44,6 @@ Changes in Sku r34.1
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34
 	- Fixed the "available/accepted" text in npc greetings dialogs that questie was breaking with its latest release
-
 	- Auto waypoint names changed
 		All existing Auto waypoints have been renamed to make them distinguishable. The word "Auto" has been appended with the zone name and a sequence number. 
 		New auto waypoint names (created by mappers from this update onwards) can also contain additional information. 
@@ -22,7 +51,6 @@ Changes in Sku r34
 		However, the naming of the auto waypoints is up to the mapper. 
 		We will try to add more information to new waypoints where this is appropriate. 
 		Not on all waypoints. (That is too much work and it would provide no value).
-
 	- New: waypoint layers
 		Waypoints can now have layer numbers.
 		Layer numbers need to be manually assigned by the mapper. By default, they are neither there for existing waypoints nor for new waypoints.
@@ -48,7 +76,7 @@ Changes in Sku r34
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r33.25
-	- There some important changes for route entry points (see below). They are in preparation for an upcoming update, where I will rename auto points to something more usefull than just "auto". If don't know what an entry point is: it's the first point that is shown on shift + f10. If you still don't know what that means, then I _strongly_ suggest to read https://github.com/Duugu/Sku/wiki/How-To-Navigation#how-do-i-navigate-using-waypoints-routes-and-close-routes
+	- There are some important changes for route entry points (see below). They are in preparation for an upcoming update, where I will rename auto points to something more usefull than just "auto". If don't know what an entry point is: it's the first point that is shown on shift + f10. If you still don't know what that means, then I _strongly_ suggest to read https://github.com/Duugu/Sku/wiki/How-To-Navigation#how-do-i-navigate-using-waypoints-routes-and-close-routes
 	- Route navigation (shift + f10) is now showing a list of up to 10 entry points (sorted by range) instead of just a single entry point (the closest). So, on shift + f10, if you are unsure if you could start a route from there, go down and check other entry points in range, that could make a better starting point for your route.
 	- The quest navigation menus (Start, Targets, End) now too have an Entry point list under Routes and Close Routes. (Instead of just silently taking the closest entry point.) Therefore you won't find the destinations directly under Routes/Close Routes anymore, but instead a list of entry points in between. Just like with shift + 10. Choose an appropiate entry point from the list, then go right, and there is the destination waypoints list. 
 	- Available quests will now start announcing 60 seconds after login and not immediately after login

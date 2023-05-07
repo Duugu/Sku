@@ -1059,17 +1059,21 @@ function SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(aUnitGUID)
 	if not aUnitGUID then
 		return
 	end
-	if aUnitGUID == UnitGUID("player") then
-		return "player"
-	end
-	for x = 1, 4 do
-		if aUnitGUID == UnitGUID("party"..x) then
-			return "party"..x
+	if not UnitInRaid("player") then
+		if aUnitGUID == UnitGUID("player") then
+			return "player"
+		end
+		for x = 1, 4 do
+			if aUnitGUID == UnitGUID("party"..x) then
+				return "party"..x
+			end
 		end
 	end
-	for x = 1, 25 do
-		if aUnitGUID == UnitGUID("raid"..x) then
-			return "raid"..x
+	if UnitInRaid("player") then
+		for x = 1, 25 do
+			if aUnitGUID == UnitGUID("raid"..x) then
+				return "raid"..x
+			end
 		end
 	end
 end
@@ -1078,8 +1082,10 @@ end
 function SkuAuras:RoleChecker(aEventName, tEventData)
 	if aEventName == "COMBAT_LOG_EVENT_UNFILTERED" then
 		local tSourceUnitID, tTargetUnitID = SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(tEventData[4]), SkuAuras:RoleCheckerIsUnitGUIDInPartyOrRaid(tEventData[8])
+		--print("RoleChecker", tSourceUnitID, tTargetUnitID, tEventData[4], tEventData[8])
 
 		if tTargetUnitID then
+			--print("  tTargetUnitID", tEventData[8])
 			if not tUnitRoles[tEventData[8]] then
 				tUnitRoles[tEventData[8]] = {dmg = 0, heal = 0,}
 			end
@@ -1096,13 +1102,14 @@ function SkuAuras:RoleChecker(aEventName, tEventData)
 		end
 		
 		if tSourceUnitID then
+			--print("  tSourceUnitID", tEventData[4])
 			if not tUnitRoles[tEventData[4]] then
 				tUnitRoles[tEventData[4]] = {dmg = 0, heal = 0,}
 			end
 			tUnitRoles[tEventData[4]].maxHealth = UnitHealthMax(tSourceUnitID)			
-			if tEventData[2] == "SPELL_HEAL" then
+			if tEventData[2] == "SPELL_HEAL" and tSourceUnitID ~= tTargetUnitID then
 				tUnitRoles[tEventData[4]].heal = tUnitRoles[tEventData[4]].heal + tEventData[15]
-			elseif tEventData[2] == "SPELL_PERIODIC_HEAL" then
+			elseif tEventData[2] == "SPELL_PERIODIC_HEAL" and tSourceUnitID ~= tTargetUnitID then
 				tUnitRoles[tEventData[4]].heal = tUnitRoles[tEventData[4]].heal + tEventData[15]
 			end
 		end
@@ -1123,7 +1130,18 @@ function SkuAuras:GROUP_ROSTER_UPDATE()
 	SkuAuras:RoleCheckerUpdateRoster()
 end
 function SkuAuras:RoleCheckerUpdateRoster()
+	--print("------------RoleCheckerUpdateRoster")
 	tUnitRoles = {}
+end
+
+function SkuAuras:RoleCheckerGetRoster()
+	for x = 1, #SkuCore.Monitor.UnitNumbersIndexedRaid do
+		local tUnitGUID = UnitGUID(SkuCore.Monitor.UnitNumbersIndexedRaid[x])
+		if tUnitGUID then
+			local tRoleId, tUnitId = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+			print(x, tRoleId, tUnitId, UnitName(tUnitId))
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1133,6 +1151,33 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:RoleCheckerGetUnitRole(aUnitGUID)
+
+	if UnitInRaid("player") or UnitInParty("player") then
+		for x = 1, MAX_RAID_MEMBERS do
+			local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x) 
+			local tUnitGUID = UnitGUID("raid"..x)
+			if tUnitGUID and tUnitGUID == aUnitGUID then
+				for y = 1, #SkuCore.Monitor.UnitNumbersIndexedRaid do
+					if SkuCore.Monitor.UnitNumbersIndexedRaid[y] ~= nil and SkuCore.Monitor.UnitNumbersIndexedRaid[y] == "raid"..x then
+						if SkuOptions.db.char["SkuCore"].aq.raid.health2.roleAssigments[y] ~= 0 then
+							return SkuOptions.db.char["SkuCore"].aq.raid.health2.roleAssigments[y], "raid"..x
+						end
+					end
+				end
+
+				if role == "MAINTANK" then
+					return 5, "raid"..x
+				elseif combatRole == "TANK" then
+					return 1, "raid"..x
+				elseif combatRole == "HEALER" then
+					return 2, "raid"..x
+				elseif combatRole == "DAMAGER" then
+					return 3, "raid"..x
+				end
+			end
+		end
+	end
+
 	if tUnitRoles[aUnitGUID] then
 		local tDmgAvg, tHealAvg = 0, 0
 		local tGroupMemberCount = 0
@@ -1160,9 +1205,9 @@ function SkuAuras:RoleCheckerGetUnitRole(aUnitGUID)
 		if tGroupMemberCount > 0 then
 			tDmgAvg = tDmgAvg / tGroupMemberCount
 			tHealAvg = tHealAvg / tGroupMemberCount
-			if (tUnitRoles[aUnitGUID].heal) >= (tHealAvg * 2) then --if the healing done is > the groups average healing done we assume the unit is a healer
+			if tUnitRoles[aUnitGUID].heal > 0 and (tUnitRoles[aUnitGUID].heal) >= (tHealAvg * 2) then --if the healing done is > the groups average healing done we assume the unit is a healer
 				return 2, tUnitID
-			elseif (tUnitRoles[aUnitGUID].dmg * (UnitHealthMax(tUnitID) / tMaxHealth)) >= ((tDmgAvg * 1.5)) then --if the damage taken is > the groups average damage taken we assume the unit is a tank
+			elseif tUnitRoles[aUnitGUID].dmg > 0 and (tUnitRoles[aUnitGUID].dmg * (UnitHealthMax(tUnitID) / tMaxHealth)) >= ((tDmgAvg * 1.5)) then --if the damage taken is > the groups average damage taken we assume the unit is a tank
 				return 1, tUnitID
 			else --if the unit is not a tank or healer it must be dps
 				return 3, tUnitID

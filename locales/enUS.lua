@@ -2593,3 +2593,34 @@ L["Layer"] = "Layer"
 L["layerFirstLetter"] = "L" --this is the first letter of the term "layer" in your language
 L["uncertain"] = "uncertain"
 L["uncertainFirstLetter"] = "U" --this is the first letter of the term "uncertain" in your language
+
+L["raid member"] = "raid member"
+L["Overrides subgroup selection"] = "Overrides subgroup selection"
+L["Main Tank"] = "Main Tank"
+L["Off Tank"] = "Off Tank"
+L["Subgroups selection"] = "Subgroups selection"
+L["Subgroup"] = "Subgroup"
+L["Main Tanks"] = "Main Tanks"
+L["Off Tanks"] = "Off Tanks"
+L["Select to disable"] = "Select to disable"
+L["Select to enable"] = "Select to enable"
+L["overrides enabled"] ="overrides enabled"
+L["Dial Targeting"] = "Dial Targeting"
+L["Party and Raid"] = "Party and Raid"
+
+L["Key Sound"] = "Key Sound"
+L["No sound"] = "No sound"
+L["On first key"] = "On first key"
+L["On second key"] = "On second key"
+L["On first and second key"] = "On first and second key"
+
+L["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"] = "Toggle player, party, raid health monitor"
+
+L["Default beep sound"] = "Default beep sound"
+L["Sound if target is in combat"] = "Sound if target is in combat"
+L["Range for group members in range checks"] = "Range for group members in range checks"
+L["in distance"] = "in distance"
+L["SKU_KEY_GROUPMEMBERSRANGECHECK"] = "Do group members in range check"
+
+L["No one in range"] = "No one in range"
+L["in range"] = "in range"

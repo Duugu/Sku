@@ -223,6 +223,7 @@ function SkuCore:OnInitialize()
 	SkuCore:FriendsOnInitialize()
 	SkuCore:AchievementsOnInitialize()
 	SkuCore:GameWorldObjectsOnInitialize()
+	SkuCore:DialTargetingOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1156,7 +1157,11 @@ function SkuCore:OnEnable()
 		end
 
 		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"].key then
-			SkuCore:MonitorPartyHealth2Conti()
+			if UnitInRaid("player") ~= nil then
+				SkuCore:MonitorRaidHealth2Conti(true)
+			elseif UnitInParty("player") == true then
+				SkuCore:MonitorPartyHealth2Conti(true)
+			end
 		end
 
 
@@ -2008,6 +2013,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:GameWorldObjectsOnLogin()
 
 		SkuCore:AqOnLogin()
+		
+		SkuCore:DialTargetingOnLogin()
 
 		SkuCore:DamageMeterOnLogin()
 

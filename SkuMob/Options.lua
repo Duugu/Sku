@@ -1,6 +1,10 @@
 local MODULE_NAME = "SkuMob"
 local L = Sku.L
 
+SkuMob.InCombatSounds = {
+	["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"],
+}
+
 SkuMob.options = {
 	name = MODULE_NAME,
 	type = "group",
@@ -49,7 +53,18 @@ SkuMob.options = {
 				return SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers
 			end
 		},
-
+		InCombatSound={
+			name = L["Sound if target is in combat"],
+			desc = "",
+			type = "select",
+			values = SkuMob.InCombatSounds,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].InCombatSound = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].InCombatSound
+			end
+		},
 	}
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -59,6 +74,7 @@ SkuMob.defaults = {
 	vocalizePlayerNamePlaceholders = true,
 	vocalizePlayerNamePlaceholdersSkuTts = false,
 	repeatRaidTargetMarkers = true,
+	InCombatSound = L["Default beep sound"],
 }
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:MenuBuilder(aParentEntry)

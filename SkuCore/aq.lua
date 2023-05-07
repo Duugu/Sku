@@ -1,21 +1,3 @@
---[[
-Interface\AddOns\Sku\SkuCore\assets\audio\heal\numbers
-	Interface\AddOns\Sku\SkuCore\assets\audio\heal\other
-	/sku 
-		aq		on/off
-		dispel	on/off
-		self	on/off
-		all	on/off
-		1-40	on/off
-		pet	on/off
-		focus	on/off
-		tank1-5	on/off
-		hp	<value>,<value>,...
-		mana	<value>,<value>,...
-		channel	name?
-		min sp	<value>
-		max sp	<value>
-]]
 ---------------------------------------------------------------------------------------------------------------------------------------
 local MODULE_NAME, MODULE_PART = "SkuCore", "aq"
 local L = Sku.L
@@ -62,6 +44,7 @@ local tRoles = {
 	[2] = L["Healers"],
 	[3] = L["Damagers"],
 	[4] = L["No role"],
+	[5] = L["Main Tank"],
 }
 
 local tUnitNumbers = {
@@ -78,15 +61,33 @@ local tUnitNumbersIndexed = {
 	[4] = "party3",
 	[5] = "party4",
 }
+
+local tUnitNumbersRaid = {}
+for x = 1, MAX_RAID_MEMBERS do
+	tUnitNumbersRaid["raid"..x] = x
+end
+
+SkuCore.Monitor = SkuCore.Monitor or {}
+SkuCore.Monitor.UnitNumbersIndexedRaid = {}
+for x = 1, MAX_RAID_MEMBERS do
+	SkuCore.Monitor.UnitNumbersIndexedRaid[x] = "raid"..x
+end
+
+tDTRaidRoster = {}
+
 local tEventOutputFilters = {
-	minAbsoluteSincePrevEvent = {name = L["minimum percent difference since previous event"], values = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,22,25,30}, defaults = {5, 5, 0, 0}, id = 1, },
-	minStepsSincePrevEvent = {name = L["minimum steps difference since previous event"], values = {0,1,2,3,4,5,6,7,}, defaults = {0, 0, 1, 1}, id = 2, },
+	minAbsoluteSincePrevEvent = {name = L["minimum percent difference since previous event"], values = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,20,22,25,30}, defaults = {5, 10, 20, 30, 5}, id = 1, },
+	minStepsSincePrevEvent = {name = L["minimum steps difference since previous event"], values = {0,1,2,3,4,5,6,7,}, defaults = {0, 1, 2, 3, 0}, id = 2, },
 }
 
 local tAuraRepo = {}
 local ttimeMonParty2Queue = {}
 local ttimeMonParty2QueueCurrentTime = 0
 local ttimeMonParty2QueueDefaultOutputLength = 0.2
+
+local ttimeMonRaid2Queue = {}
+local ttimeMonRaid2QueueCurrentTime = 0
+local ttimeMonRaid2QueueDefaultOutputLength = 0.2
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ttimeMonParty2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio)
@@ -196,11 +197,246 @@ function SkuCore:MonitorPartyHealth2Conti()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function GetUnitsRaidSubgroup(aUnitID)
+	local tUnitName = UnitName(aUnitID)
+	for x = 1, MAX_RAID_MEMBERS do
+		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
+		if name == tUnitName then
+			return subgroup
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function ttimeMonRaid2QueueAdd(aUnitNumber, aVolume, aPitch, aLength, aRole, aHealthAbsoluteValue, aIgnorePrio, aUnitID)
+	aLength = aLength or ttimeMonRaid2QueueDefaultOutputLength
+
+	--check if subgroup is enabled
+	if GetUnitsRaidSubgroup(aUnitID) == nil or SkuOptions.db.char["SkuCore"].aq.raid.health2.unitsAndSubgroupsSelection[L["Subgroup"].." "..GetUnitsRaidSubgroup(aUnitID)] == false then
+		return
+	end
+	--check if mt/ot is enabled
+	if aRole == 5 then
+		if SkuOptions.db.char["SkuCore"].aq.raid.health2.unitsAndSubgroupsSelection[tRoles[aRole]] == false then
+			return
+		end
+	end
+
+	if #ttimeMonRaid2Queue > 0 then
+		if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prioOutput[aRole] == true and aIgnorePrio ~= true then
+			local tFound
+			local tFoundVol
+			for x = 1, #ttimeMonRaid2Queue do
+				if ttimeMonRaid2Queue[x].tUnitNumber == aUnitNumber then
+					tFound = x
+					tFoundVol = ttimeMonRaid2Queue[x].tVolume
+				end
+			end
+			if tFound then
+				table.remove(ttimeMonRaid2Queue, tFound)
+			end
+			if tFoundVol and tFoundVol > aVolume then
+				aVolume = tFoundVol
+			end
+			if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+				table.insert(ttimeMonRaid2Queue, 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
+			elseif SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+				table.insert(ttimeMonRaid2Queue, 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
+			end
+			table.insert(ttimeMonRaid2Queue, 1, {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,})
+			return
+		else
+			for x = 1, #ttimeMonRaid2Queue do
+				if ttimeMonRaid2Queue[x].tUnitNumber == aUnitNumber then
+					ttimeMonRaid2Queue[x].tPitch = aPitch	
+					if ttimeMonRaid2Queue[x].tVolume < aVolume	then
+						ttimeMonRaid2Queue[x].tVolume = aVolume
+					end
+					ttimeMonRaid2Queue[x].lenght = aLength
+					if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+						table.insert(ttimeMonRaid2Queue, x + 1, {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,})
+					elseif SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+						table.insert(ttimeMonRaid2Queue, x + 1, {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,})
+					end
+		
+					return
+				end
+			end
+		end
+	end
+
+	ttimeMonRaid2Queue[#ttimeMonRaid2Queue + 1] = {tUnitNumber = aUnitNumber, tVolume = aVolume, tPitch = aPitch, lenght = aLength,}
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addDeadOn0Percent == true and aHealthAbsoluteValue == 0 then
+		ttimeMonRaid2Queue[#ttimeMonRaid2Queue + 1] = {tUnitNumber = "dead", tVolume = aVolume, tPitch = 0, lenght = 0.5,}
+	elseif SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addSoundOn100Percent == true and aHealthAbsoluteValue == 100 then
+		ttimeMonRaid2Queue[#ttimeMonRaid2Queue + 1] = {tUnitNumber = "full", tVolume = aVolume, tPitch = 0, lenght = 0.15,}
+	end	
+end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function monitorRaidHealth2ContiOutput(aForce)
+	if aForce == true then
+		ttimeMonRaid2Queue = {}
+		ttimeMonRaid2QueueCurrentTime = 0
+	end
+
+	for w = 1, MAX_RAID_MEMBERS do
+		for i, v in pairs(tDTRaidRoster) do
+			if v == w then
+
+
+				local tIndex, tUnitID = x, i
+				local tUnitGUID = UnitGUID(tUnitID)
+				if tUnitGUID then
+					local tRoleID = SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments[tUnitNumbersRaid[tUnitID]]
+					if tRoleID == 0 then
+						tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+					end
+					local tHealthAbsoluteValue = math.floor((UnitHealth(tUnitID) / UnitHealthMax(tUnitID)) * 100)
+					local tHealthStepsValue = math.floor(tHealthAbsoluteValue / (100 / 15))
+					if tHealthStepsValue > 14 then
+						tHealthStepsValue = 14
+					end
+				
+					if tRoleID and ((SkuOptions.db.char[MODULE_NAME].aq.raid.health2.silentOn100and0 == false or (SkuOptions.db.char[MODULE_NAME].aq.raid.health2.silentOn100and0 == true and tHealthAbsoluteValue ~= 0 and tHealthAbsoluteValue ~= 100)) or aForce== true) then
+						if tHealthAbsoluteValue <= SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyStartAt[tRoleID] or aForce== true then
+							if not SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth then
+								SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth = {}
+								for x = 1, MAX_RAID_MEMBERS do
+									SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth["raid"..x] = {absolute = 100, steps = 14, lastOutput = 0, }
+								end
+							end
+		
+							local tUnitNumber, tVolume, tPitch = tUnitNumbersRaid[tUnitID], SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyVolume, (((tHealthStepsValue * 5) - 35) * -1)
+							if tPitch == 0 then tPitch = 0 end --dnd, we need this in case of -0
+							local tAddlSpeedMod = 1
+							if aForce then
+								tAddlSpeedMod = 0.5
+							end
+							ttimeMonRaid2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonRaid2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.raid.health2.outputQueueDelay / 100)) * tAddlSpeedMod, tRoleID, tHealthAbsoluteValue, true, tUnitID)
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MonitorRaidHealth2Conti()
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled == true then
+		monitorRaidHealth2ContiOutput(true)
+	end
+end
+
+--------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Monitor_PLAYER_ENTERING_WORLD()
+	C_Timer.After(5, function()
+		SkuCore:MonitorRaidRosterUpdate()
+	end)
+	C_Timer.After(15, function()
+		SkuCore:MonitorRaidRosterUpdate()
+	end)
+	C_Timer.After(25, function()
+		SkuCore:MonitorRaidRosterUpdate()
+	end)
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Monitor_PARTY_LEADER_CHANGED()
+   dprint("Monitor_PARTY_LEADER_CHANGED", UnitInRaid("player"), UnitInParty("player"))
+   if UnitInRaid("player") then
+   	SkuCore:MonitorRaidRosterUpdate()
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Monitor_GROUP_FORMED()
+   dprint("Monitor_PARTY_LEADER_CHANGED")
+   if UnitInRaid("player") then
+   	SkuCore:MonitorRaidRosterUpdate()
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Monitor_GROUP_JOINED()
+   dprint("Monitor_PARTY_LEADER_CHANGED")
+   if UnitInRaid("player") then
+   	SkuCore:MonitorRaidRosterUpdate()
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Monitor_GROUP_LEFT()
+   dprint("Monitor_PARTY_LEADER_CHANGED")
+   if UnitInRaid("player") then
+   	SkuCore:MonitorRaidRosterUpdate()
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:Monitor_GROUP_ROSTER_UPDATE()
+   dprint("Monitor_PARTY_LEADER_CHANGED")
+   if UnitInRaid("player") then
+   	SkuCore:MonitorRaidRosterUpdate()
+	end
+end
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MonitorRaidRosterUpdate()
+	--[[
+   if SkuCore.Monitor.enabled == false then
+      return
+   end
+	]]
+
+   if SkuCore.inCombat == true then
+      SkuDispatcher:RegisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.MonitorRaidRosterUpdate, true)
+      return
+   end
+   SkuDispatcher:UnregisterEventCallback("PLAYER_REGEN_ENABLED", SkuCore.MonitorRaidRosterUpdate)
+
+   if UnitInRaid("player") then
+		local tRaidRoster = {}
+      local tsubgroupcounter = {}
+      for x = 1, MAX_RAID_MEMBERS do
+         local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
+         if name and subgroup then
+            tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
+            tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
+            tRaidRoster[name] = ((subgroup - 1) * 5) + tsubgroupcounter[subgroup]
+         end
+      end
+
+		tDTRaidRoster = {}
+
+      for x = 1, MAX_RAID_MEMBERS do
+			local trN = UnitName("raid"..x)
+			if trN and tRaidRoster[trN] then
+				tDTRaidRoster["raid"..x] = tRaidRoster[trN]
+			end
+      end
+
+		C_Timer.After(1, function()
+			for x = 1, 10 do 
+				if _G["CompactRaidGroup"..x] then
+					CompactRaidGroup_InitializeForGroup(_G["CompactRaidGroup"..x], x)
+				end
+			end
+		end)
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tHealthMonitorPause = false
 local tDebuffMonitorPause = false
 local tPowerMonitorPause = false
 local tPlayerDebuffsMonitorPause = false
 local tPartyDebuffsMonitorPause = false
+local tRaidDebuffsMonitorPause = false
+local tPrevNumberToUtterance = 10
+local tPrevNumberToUtterancePet = 10
+local tPrevNumberToUtterancePlPwr = 10
 local tPrevHpPer = 100
 local tPrevHpDir = false
 local tPrevPwrPer = 100
@@ -216,8 +452,11 @@ local function AqCreateControlFrame()
    local ttimeMonPwr = 0
 	local ttimeMonParty = 0
 	local ttimeMonParty2 = 0
+	local ttimeMonRaid = 0
+	local ttimeMonRaid2 = 0
 	local ttimeMonPlayerDebuff = 0
 	local ttimeMonPartyDebuff = 0
+	local ttimeMonRaidDebuff = 0
 
    f:SetScript("OnUpdate", function(self, time)
 		--party health 2 queue manager
@@ -229,6 +468,18 @@ local function AqCreateControlFrame()
 				table.remove(ttimeMonParty2Queue, 1)
 			else
 				ttimeMonParty2QueueCurrentTime = ttimeMonParty2QueueCurrentTime - time
+			end
+		end
+
+		--raid health 2 queue manager
+		if #ttimeMonRaid2Queue > 0 then
+			if ttimeMonRaid2QueueCurrentTime <= 0 then
+				local tUnitNumber, tVolume, tPitch, tLength = ttimeMonRaid2Queue[1].tUnitNumber , ttimeMonRaid2Queue[1].tVolume , ttimeMonRaid2Queue[1].tPitch , ttimeMonRaid2Queue[1].lenght
+				ttimeMonRaid2QueueCurrentTime = tLength
+				SkuCore:MonitorOutputRaidPercent2(tUnitNumber, tVolume, tPitch)
+				table.remove(ttimeMonRaid2Queue, 1)
+			else
+				ttimeMonRaid2QueueCurrentTime = ttimeMonRaid2QueueCurrentTime - time
 			end
 		end
 
@@ -261,13 +512,17 @@ local function AqCreateControlFrame()
 					if SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt >= 0 and (math.floor(healthPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyStartAt) then
 						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.player.health.steps)
 						local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
-						tPrevHpDir = healthPer > tPrevHpPer
-						if tPrevHpDir == false and health ~= 0 then
-							tNumberToUtterance = tNumberToUtterance + 1
-						end
 		
-						if SkuOptions.db.char[MODULE_NAME].aq.player.health.silentOn100and0 == false or (tNumberToUtterance < 10 and tNumberToUtterance > 0) then
-							SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
+						tPrevHpDir = healthPer > tPrevHpPer
+						local tPrevNumberToUtteranceOutput = tNumberToUtterance
+						if tPrevHpDir == false then
+							tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
+						end
+
+						tPrevHpPer = healthPer
+
+						if SkuOptions.db.char[MODULE_NAME].aq.player.health.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
+							SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
 						end							
 					end
 
@@ -288,13 +543,17 @@ local function AqCreateControlFrame()
 					if SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt >= 0 and (math.floor(healthPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyStartAt) then
 						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps)
 						local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
+
 						tPrevHpPetDir = healthPer > tPrevHpPetPer
+						local tPrevNumberToUtteranceOutput = tNumberToUtterance
 						if tPrevHpPetDir == false then
-							tNumberToUtterance = tNumberToUtterance + 1
+							tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
 						end
-		
-						if SkuOptions.db.char[MODULE_NAME].aq.pet.health.silentOn100and0 == false or (tNumberToUtterance < 10 and tNumberToUtterance > 0) then
-							SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice].path, "pet")
+
+						tPrevHpPetPer = healthPer
+
+						if SkuOptions.db.char[MODULE_NAME].aq.pet.health.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
+							SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice].path, "pet")
 						end							
 					end
 
@@ -312,14 +571,18 @@ local function AqCreateControlFrame()
 					if SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt >= 0 and (math.floor(pwrPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyStartAt) then
 						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.player.power.steps)
 						local tNumberToUtterance = ((math.floor(pwrPer / tsinglestep)) * tsinglestep) / 10
+
 						tPrevPwrDir = pwrPer > tPrevPwrPer
+						local tPrevNumberToUtteranceOutput = tNumberToUtterance
 						if tPrevPwrDir == false then
-							tNumberToUtterance = tNumberToUtterance + 1
+							tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
 						end
 
-						if SkuOptions.db.char[MODULE_NAME].aq.player.power.silentOn100and0 == false or (tNumberToUtterance < 10 and tNumberToUtterance > 0) then
+						tPrevPwrPer = pwrPer
+
+						if SkuOptions.db.char[MODULE_NAME].aq.player.power.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
 							C_Timer.After(0.25, function()
-								SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
+								SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
 							end)
 						end							
 					end
@@ -327,6 +590,7 @@ local function AqCreateControlFrame()
 				end
 			end
 
+			--[=[
 			if SkuOptions.db.char[MODULE_NAME].aq.party.health.enabled == true then
 				ttimeMonParty = ttimeMonParty + time
 				if SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslyEnabled == true then
@@ -376,6 +640,7 @@ local function AqCreateControlFrame()
 					end
 				end
 			end
+			]=]
 
 			if SkuOptions.db.char[MODULE_NAME].aq.player.debuffs.enabled == true then
 				ttimeMonPlayerDebuff = ttimeMonPlayerDebuff + time
@@ -455,6 +720,56 @@ local function AqCreateControlFrame()
 					ttimeMonParty2 = 0
 				end
 			end
+
+
+			if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.enabled == true then
+				ttimeMonRaidDebuff = ttimeMonRaidDebuff + time
+				if ttimeMonRaidDebuff > SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyTimer and tRaidDebuffsMonitorPause == false then
+					if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyStartAfter > -1 then
+						local tUnitIdList = SkuCore:UnitIsInUnitGroup("raid", "player")
+						if tUnitIdList then
+							local tPause = 0
+							for _, tUnitID in pairs(tUnitIdList) do
+								local tUnitGUID = UnitGUID(tUnitID)
+								if tAuraRepo["raid"] and tAuraRepo["raid"][tUnitGUID] then
+									for i, v in pairs(tDebuffTypes) do
+										if tAuraRepo["raid"][tUnitGUID][i].start > 0 and tAuraRepo["raid"][tUnitGUID][i].count > 0 and (GetTime() - tAuraRepo["raid"][tUnitGUID][i].start > SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyStartAfter) then
+											if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.types[i] == true then		
+												local tNumber
+												if string.sub(tUnitID, 1, 4) == "raid" then
+													tNumber = tonumber(string.sub(tUnitID, 5))
+													if tNumber then
+														tNumber = tNumber + 1
+													end
+												end
+												if tNumber then
+													local tTypeString = tDebuffTypesShort[i]
+													if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.outputStyle == 1 then
+														tTypeString = i
+													end
+													C_Timer.After(tPause, function()
+														SkuCore:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber}, SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.voice].path)
+													end)
+													tPause = tPause + ((string.len(tTypeString) + string.len(tNumber)) * 0.4)
+												end
+											end
+										end
+									end
+								end
+							end
+						end
+					end
+					ttimeMonRaidDebuff = 0
+				end
+			end
+
+			if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled == true then
+				ttimeMonRaid2 = ttimeMonRaid2 + time
+				if ttimeMonRaid2 > SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyTimer then
+					monitorRaidHealth2ContiOutput()
+					ttimeMonRaid2 = 0
+				end
+			end			
 		end
    end)
 end
@@ -498,6 +813,13 @@ function SkuCore:AqOnInitialize()
 	SkuCore:RegisterEvent("UNIT_POWER_UPDATE")
 
 	SkuCore:RegisterEvent("UNIT_AURA")
+
+   SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuCore.Monitor_PLAYER_ENTERING_WORLD)
+   SkuDispatcher:RegisterEventCallback("PARTY_LEADER_CHANGED", SkuCore.Monitor_PARTY_LEADER_CHANGED)
+   SkuDispatcher:RegisterEventCallback("GROUP_FORMED", SkuCore.Monitor_GROUP_FORMED)
+   SkuDispatcher:RegisterEventCallback("GROUP_JOINED", SkuCore.Monitor_GROUP_JOINED)
+   SkuDispatcher:RegisterEventCallback("GROUP_LEFT", SkuCore.Monitor_GROUP_LEFT)
+   SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.Monitor_GROUP_ROSTER_UPDATE)	
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -506,30 +828,7 @@ function SkuCore:AqOnLogin()
 	SkuOptions.db.char[MODULE_NAME].aq.player = SkuOptions.db.char[MODULE_NAME].aq.player or {}
 	SkuOptions.db.char[MODULE_NAME].aq.pet = SkuOptions.db.char[MODULE_NAME].aq.pet or {}
 	SkuOptions.db.char[MODULE_NAME].aq.party = SkuOptions.db.char[MODULE_NAME].aq.party or {}
-
-	--party health
-	SkuOptions.db.char[MODULE_NAME].aq.party.health = SkuOptions.db.char[MODULE_NAME].aq.party.health or {}
-	if SkuOptions.db.char[MODULE_NAME].aq.party.health.enabled == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.party.health.enabled = false
-	end
-	if SkuOptions.db.char[MODULE_NAME].aq.party.health.instancesOnly == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.party.health.instancesOnly = false
-	end
-	if SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslyEnabled == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslyEnabled = true
-	end
-	if SkuOptions.db.char[MODULE_NAME].aq.party.health.silentAtAll100 == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.party.health.silentAtAll100 = true
-	end
-	if SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslyTimer == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslyTimer = 4
-	end
-	if SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslySpeed == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.party.health.continouslySpeed = 50
-	end
-	if SkuOptions.db.char[MODULE_NAME].aq.party.health.includeSelf == nil then
-		SkuOptions.db.char[MODULE_NAME].aq.party.health.includeSelf = true
-	end
+	SkuOptions.db.char[MODULE_NAME].aq.raid = SkuOptions.db.char[MODULE_NAME].aq.raid or {}
 
 	--party health 2
 	SkuOptions.db.char[MODULE_NAME].aq.party.health2 = SkuOptions.db.char[MODULE_NAME].aq.party.health2 or {}
@@ -578,6 +877,69 @@ function SkuCore:AqOnLogin()
 	end
 	if SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.health2.prioOutput = {[1] = false, [2] = false, [3] = false, [4] = false, }
+	end
+
+	--raid health 2
+	SkuOptions.db.char[MODULE_NAME].aq.raid.health2 = SkuOptions.db.char[MODULE_NAME].aq.raid.health2 or {}
+		if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled == nil then
+			SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled = false
+		end
+		if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments == nil then
+			SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments = {}
+			for x = 1, MAX_RAID_MEMBERS do
+				SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments[x] = 0
+			end
+		end
+
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection = {}
+		for x = 1, 5 do
+			SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection[L["Subgroup"].." "..x] = true
+		end
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection[L["Main Tank"]] = true
+	end
+	
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyStartAt == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyStartAt = {}
+		for x = 1, #tRoles do
+			SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyStartAt[x] = 0
+		end
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventOutputFilters == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventOutputFilters = {}
+		for x = 1, #tRoles do
+			SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventOutputFilters[x] = {}
+			for i, v in pairs(tEventOutputFilters) do
+				SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventOutputFilters[x][v.id] = v.defaults[x]
+			end
+		end
+	end	
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.silentOn100and0 == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.silentOn100and0 = true
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addDeadOn0Percent == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addDeadOn0Percent = true
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addSoundOn100Percent == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addSoundOn100Percent = true
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyTimer == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyTimer = 3
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyVolume = 50
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventVolume = 100
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.outputQueueDelay == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.outputQueueDelay = 100
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prioOutput == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prioOutput = {[1] = false, [2] = false, [3] = false, [4] = false, }
 	end
 
 	--player health
@@ -745,6 +1107,52 @@ function SkuCore:AqOnLogin()
 	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.voice == nil then
 		SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.voice = 3
 	end
+
+	--raid debuffs
+	SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs = SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs or {}
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.enabled == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.enabled = false
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.types == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.types = {["magic"] = false, ["curse"] = false, ["poison"] = false, ["disease"] = false, }
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.ignored == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.ignored = {}
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.instancesOnly == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.instancesOnly = false
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection = {}
+		for x = 1, 5 do
+			SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection[L["Subgroup"].." "..x] = true
+		end
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection[L["Main Tank"]] = true
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyStartAfter == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyStartAfter = -1
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.outputStyle == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.outputStyle = 2
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyTimer == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyTimer = 6
+	end
+
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyVolume = 30
+	end	
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.eventVolume == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.eventVolume = 60
+	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.voice == nil then
+		SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.voice = 3
+	end	
 end
 
 --Monitor
@@ -772,7 +1180,6 @@ function SkuCore:AqSlashHandler(aFieldsTable)
 				if tRoleID == 0 or tRoleID == nil then
 					tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
 				end
-				print(x, UnitName(tUnitNumbersIndexed[x]), tRoles[tRoleID] or L["Unknown"])
 			end
 		end
 	end
@@ -789,20 +1196,21 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 				local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.player.health.steps)
 				local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
 				tPrevHpDir = healthPer > tPrevHpPer
+				local tPrevNumberToUtteranceOutput = tNumberToUtterance
 				if tPrevHpDir == false then
-					tNumberToUtterance = tNumberToUtterance + 1
+					tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
 				end
-
-				if tNumberToUtterance ~= tPrevHpPer then
-					SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.health.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
+				if tNumberToUtterance ~= tPrevNumberToUtterance then
+					SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq.player.health.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.health.voice].path)
 					tHealthMonitorPause = true
 					tPowerMonitorPause = true
 					C_Timer.After(SkuOptions.db.char[MODULE_NAME].aq.player.health.continouslyTimer, function()
 						tHealthMonitorPause = false
 						tPowerMonitorPause = false
 					end)
-					tPrevHpPer = tNumberToUtterance
+					tPrevNumberToUtterance = tNumberToUtterance
 				end
+				tPrevHpPer = healthPer
 			end
 		end
 	elseif aUnitID == "playerpet" or aUnitID == "pet" then
@@ -814,20 +1222,22 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 				local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.pet.health.steps)
 				local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
 				tPrevHpPetDir = healthPer > tPrevHpPetPer
+				local tPrevNumberToUtteranceOutput = tNumberToUtterance
 				if tPrevHpPetDir == false then
-					tNumberToUtterance = tNumberToUtterance + 1
+					tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
 				end
 
-				if tNumberToUtterance ~= tPrevHpPetPer then
-					SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.pet.health.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice].path, "pet")
+				if tNumberToUtterance ~= tPrevNumberToUtterancePet then
+					SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq.pet.health.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.pet.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.pet.health.voice].path, "pet")
 					tHealthMonitorPause = true
 					tPowerMonitorPause = true
 					C_Timer.After(SkuOptions.db.char[MODULE_NAME].aq.pet.health.continouslyTimer, function()
 						tHealthMonitorPause = false
 						tPowerMonitorPause = false
 					end)
-					tPrevHpPetPer = tNumberToUtterance
+					tPrevNumberToUtterancePet = tNumberToUtterance
 				end
+				tPrevHpPetPer = healthPer
 			end
 		end
 	end
@@ -887,6 +1297,61 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 			end
 		end
 	end
+
+	--raid health 2
+	if SkuOptions.db.char[MODULE_NAME].aq then
+		if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled == true then
+			if string.sub(aUnitID, 1, 4) == "raid" and string.sub(aUnitID, 1, 7) ~= "raidpet" then
+				local tUnitGUID = UnitGUID(aUnitID)
+				local tRoleID = SkuOptions.db.char["SkuCore"].aq.raid.health2.roleAssigments[tUnitNumbersRaid[aUnitID]]
+				if tRoleID == 0 then
+					tRoleID = SkuAuras:RoleCheckerGetUnitRole(tUnitGUID)
+				end
+				
+				if not SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth = {}
+					for x = 1, MAX_RAID_MEMBERS do
+						SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth["raid"..x] = {absolute = 100, steps = 14, lastOutput = 0, }
+					end
+				end
+
+				local tHealthAbsoluteValue = math.floor((UnitHealth(aUnitID) / UnitHealthMax(aUnitID)) * 100)
+				--if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.silentOn100and0 == true and (tHealthAbsoluteValue < 1 or tHealthAbsoluteValue > 99) then
+					--return
+				--end
+
+				local tHealthStepsValue = math.floor(tHealthAbsoluteValue / (100 / 15))
+				if tHealthStepsValue > 14 then
+					tHealthStepsValue = 14
+				end
+				
+				local tminAbsoluteSincePrevEventValue = SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventOutputFilters[tRoleID][tEventOutputFilters["minAbsoluteSincePrevEvent"].id]
+				local tminStepsSincePrevEventValue = SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventOutputFilters[tRoleID][tEventOutputFilters["minStepsSincePrevEvent"].id]
+
+				if (
+						SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth[aUnitID].absolute - tHealthAbsoluteValue >= tminAbsoluteSincePrevEventValue 
+						or 
+						SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth[aUnitID].absolute - tHealthAbsoluteValue <= -tminAbsoluteSincePrevEventValue 
+					)
+					and
+					(
+						SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth[aUnitID].steps - tHealthStepsValue >= tminStepsSincePrevEventValue 
+						or 
+						SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth[aUnitID].steps - tHealthStepsValue <= -tminStepsSincePrevEventValue 
+					)
+				then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth[aUnitID].absolute = tHealthAbsoluteValue
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth[aUnitID].steps = tHealthStepsValue
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prevHealth[aUnitID].lastOutput = GetTime()
+
+					local tUnitNumber, tVolume, tPitch = tUnitNumbersRaid[aUnitID], SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventVolume, (((tHealthStepsValue * 5) - 35) * -1)
+					if tPitch == 0 then tPitch = 0 end --dnd, we need this in case of -0
+
+					ttimeMonRaid2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonRaid2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.raid.health2.outputQueueDelay / 100)), tRoleID, tHealthAbsoluteValue, nil, aUnitID)
+				end
+			end
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -901,24 +1366,28 @@ function SkuCore:UNIT_POWER_UPDATE(eventName, unitTarget, powerType)
 					local power = UnitPower("player", tPowerTypes[powerType].number)
 					local powerMax = UnitPowerMax("player", tPowerTypes[powerType].number)
 					local pwrPer = math.floor((power / powerMax) * 100)
-
 					local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq.player.power.steps)
 					local tNumberToUtterance = ((math.floor(pwrPer / tsinglestep)) * tsinglestep) / 10
-					tPrevPwrDir = pwrPer > tPrevPwrPer
+					if tPrevPwrPer == pwrPer then
+						return
+					end
+					tPrevPwrDir = pwrPer >= tPrevPwrPer
+					local tPrevNumberToUtteranceOutput = tNumberToUtterance					
 					if tPrevPwrDir == false then
-						tNumberToUtterance = tNumberToUtterance + 1
+						tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
 					end
 
-					if tNumberToUtterance ~= tPrevPwrPer then
-						SkuCore:MonitorOutputPlayerPercent(tNumberToUtterance, SkuOptions.db.char[MODULE_NAME].aq.player.power.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
+					if tNumberToUtterance ~= tPrevNumberToUtterancePlPwr then
+						SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq.player.power.eventVolume, SkuOptions.db.char[MODULE_NAME].aq.player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq.player.power.voice].path)
 						tHealthMonitorPause = true
 						tPowerMonitorPause = true
 						C_Timer.After(SkuOptions.db.char[MODULE_NAME].aq.player.power.continouslyTimer, function()
 							tHealthMonitorPause = false
 							tPowerMonitorPause = false
 						end)
-						tPrevPwrPer = tNumberToUtterance
+						tPrevNumberToUtterancePlPwr = tNumberToUtterance
 					end
+					tPrevPwrPer = pwrPer
 				end
 			end
 		end
@@ -965,7 +1434,7 @@ function SkuCore:UnitIsInUnitGroup(aFilter, aUnitID)
 	elseif aFilter == "raid" then
 		if UnitPlayerOrPetInRaid(aUnitID) and UnitIsPlayer(aUnitID) then
 			local tTable = {}
-			for x = 1, 25 do
+			for x = 1, MAX_RAID_MEMBERS do
 				tTable[x] = "raid"..x
 			end
 			return tTable
@@ -973,10 +1442,10 @@ function SkuCore:UnitIsInUnitGroup(aFilter, aUnitID)
 	elseif aFilter == "raidandpets" then
 		if UnitPlayerOrPetInRaid(aUnitID) then
 			local tTable = {}
-			for x = 1, 25 do
+			for x = 1, MAX_RAID_MEMBERS do
 				tTable[x] = "raid"..x
 			end
-			for x = 26, 50 do
+			for x = MAX_RAID_MEMBERS + 1, MAX_RAID_MEMBERS * 2 do
 				tTable[x] = "raid"..x.."pet"
 			end
 			return tTable
@@ -985,17 +1454,6 @@ function SkuCore:UnitIsInUnitGroup(aFilter, aUnitID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
---[[
-local function UnitDebuffTest(x)
-	if x == 1 then
-		return "TestMagie1 2", "icon", 2, "Magic"
-	elseif x == 2 then
-		return "TestMagie2 1", "icon", 1, "Magic"
-	elseif x == 3 then
-		return "TestCurse2 1", "icon", 1, "Curse"
-	end
-end
-]]
 function SkuCore:UNIT_AURA(aEventName, aUnitID)
 	local tSubR
 	local tUnitIdList = {}
@@ -1005,8 +1463,15 @@ function SkuCore:UNIT_AURA(aEventName, aUnitID)
 	if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.enabled == true and SkuCore:UnitIsInUnitGroup("party", aUnitID) then
 		tSubR = "party"
 	end
+	if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.enabled == true and SkuCore:UnitIsInUnitGroup("raid", aUnitID) then
+		tSubR = "raid"
+	end
 
 	if tSubR == nil then
+		return
+	end
+
+	if not string.find(aUnitID, tSubR) then
 		return
 	end
 
@@ -1064,15 +1529,40 @@ function SkuCore:UNIT_AURA(aEventName, aUnitID)
 									if tNumber then
 										tNumber = tNumber + 1
 									end
-								elseif string.sub(aUnitID, 1, 4) == "raid" then
-									tNumber = tonumber(string.sub(aUnitID, 5))
-									if tNumber then
-										tNumber = tNumber + 1
-									end
 								end
 								if tNumber then
 									local tTypeString = tDebuffTypesShort[i]
 									if SkuOptions.db.char[MODULE_NAME].aq.party.debuffs.outputStyle == 1 then
+										tTypeString = i
+									end
+
+
+
+
+
+
+
+
+
+
+
+
+
+									SkuCore:MonitorOutputPlayerStatus({[1] = tTypeString, [2] = tNumber,}, SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.eventVolume, SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq[tSubR].debuffs.voice].path)								
+									tPause = tPause + 0.3
+								end
+							elseif tSubR == "raid" then
+								local tNumber
+								if string.sub(aUnitID, 1, 4) == "raid" then
+									tNumber = tonumber(string.sub(aUnitID, 5))
+									if tNumber then
+										--tNumber = tNumber + 1
+										tNumber = tDTRaidRoster[aUnitID]
+									end
+								end
+								if tNumber then
+									local tTypeString = tDebuffTypesShort[i]
+									if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.outputStyle == 1 then
 										tTypeString = i
 									end
 
@@ -1152,6 +1642,18 @@ function SkuCore:MonitorOutputPartyPercent2(aUnitNumber, aVolume, aPitch)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MonitorOutputRaidPercent2(aUnitNumber, aVolume, aPitch)
+	if aUnitNumber ~= "full" and aUnitNumber ~= "dead" then
+		aUnitNumber = tDTRaidRoster["raid"..aUnitNumber]
+	else
+		aPitch = 0
+	end
+	if aUnitNumber then
+		PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\jus\\pitch\\jus_"..aUnitNumber.."_"..aVolume.."_"..aPitch..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local tRandomStC = 1
 local tRandomSt = {
 	[1] = "kimberlyteasesme",
@@ -1205,7 +1707,6 @@ function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice
 end
 
 --menu
-
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function MonitorSpellMenuBuilder(self)
 	local tUnitType = "player"
@@ -2057,6 +2558,7 @@ function SkuCore:MonitorMenuBuilder()
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
 		--health
+		--[[
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Health Chord Style"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2207,8 +2709,9 @@ function SkuCore:MonitorMenuBuilder()
 				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
 			end			
 		end
+		]]
 
-		--health 2
+		--party health 2
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Health Pitch style"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2498,7 +3001,7 @@ function SkuCore:MonitorMenuBuilder()
 			end
 		end		
 
-		--debuffs
+		--party ebuffs
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Debuffs"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2704,4 +3207,629 @@ function SkuCore:MonitorMenuBuilder()
 			end
 		end			
 	end
+
+	--raid
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Raid"]}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.BuildChildren = function(self)
+		--health
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Health"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Role assignment"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				local traidMembers = {}
+
+				local tHasEntries
+				for x = 1, MAX_RAID_MEMBERS do
+					if tDTRaidRoster["raid"..x] then
+						local tUnitName = UnitName("raid"..x)
+						local className = UnitClass("raid"..x)
+						traidMembers[tDTRaidRoster["raid"..x]] = tDTRaidRoster["raid"..x]..": "..className.." "..tUnitName
+						tHasEntries = true
+					end
+				end
+
+				if not tHasEntries then
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+				else
+					for x = 1, MAX_RAID_MEMBERS do
+						if traidMembers[x] then
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {traidMembers[x]}, SkuGenericMenuItem)
+							tNewMenuEntry.dynamic = true
+							tNewMenuEntry.isSelect = true
+							tNewMenuEntry.OnAction = function(self, aValue, aName)
+								SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments[x] = 0
+								for w = 1, #tRoles do
+									if aName == tRoles[w] then
+										SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments[x] = w
+									end
+								end
+							end
+							tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+								if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments[x] == 0 then
+									return L["Auto"]
+								else
+									return tRoles[SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments[x]]
+								end
+							end
+							tNewMenuEntry.BuildChildren = function(self)
+								SkuOptions:InjectMenuItems(self, {L["Auto"]}, SkuGenericMenuItem)
+								for q = 1, #tRoles do
+									SkuOptions:InjectMenuItems(self, {tRoles[q]}, SkuGenericMenuItem)
+								end
+							end
+						end
+					end
+
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set all to auto"]}, SkuGenericMenuItem)
+					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnAction = function(self, aValue, aName)
+						for x = 1, #traidMembers do
+							SkuOptions.db.char[MODULE_NAME].aq.raid.health2.roleAssigments[x] = 0
+						end
+					end
+				end
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Subgroups selection"]}, SkuGenericMenuItem)
+         local tSortedList = {}
+         for k, v in SkuSpairs(SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection, function(t,a,b) 
+				return a < b
+			end) do 
+				tSortedList[#tSortedList+1] = k
+			end
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				local tsubstring = string.sub(aName, 1, string.find(aName, " %(") - 1)
+				if tsubstring and SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection[tsubstring] ~= nil then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection[tsubstring] = SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection[tsubstring] ~= true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				local tNewMenuEntryEnabled = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+				tNewMenuEntryEnabled.dynamic = true
+				tNewMenuEntryEnabled.BuildChildren = function(self)
+					local tNewMenuEntryEnabledHasEntries
+					for w = 1, #tSortedList do
+						local tUnit, tValue = tSortedList[w], SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection[tSortedList[w]]
+						if tValue == true then
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tUnit.." ("..L["Select to disable"]..")"}, SkuGenericMenuItem)
+							tNewMenuEntryEnabledHasEntries = true
+						end
+					end
+					if not tNewMenuEntryEnabledHasEntries then
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntryEnabled, {L["empty"]}, SkuGenericMenuItem)
+					end
+				end
+				local tNewMenuEntryDisabled = SkuOptions:InjectMenuItems(self, {L["disabled"].." ("..L["overrides enabled"]..")"}, SkuGenericMenuItem)
+				tNewMenuEntryDisabled.dynamic = true
+				tNewMenuEntryDisabled.BuildChildren = function(self)
+					local tNewMenuEntryDisabledHasEntries
+					for w = 1, #tSortedList do
+						local tUnit, tValue = tSortedList[w], SkuOptions.db.char[MODULE_NAME].aq.raid.health2.unitsAndSubgroupsSelection[tSortedList[w]]
+						if tValue == false then
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tUnit.." ("..L["Select to enable"]..")"}, SkuGenericMenuItem)
+							tNewMenuEntryDisabledHasEntries = true
+						end
+					end
+					if not tNewMenuEntryDisabledHasEntries then
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntryDisabled, {L["empty"]}, SkuGenericMenuItem)
+					end
+				end
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output start at"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tRoles do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tRoles[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnAction = function(self, aValue, aName)
+						if aName == L["Never"] then
+							SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyStartAt[x] = 0
+						else
+							SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyStartAt[x] = tonumber(aName)
+						end
+					end
+					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+						return SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyStartAt[x]
+					end
+					tNewMenuEntry.BuildChildren = function(self)
+						SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+						for x = 10, 100, 10 do
+							SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+						end
+					end
+				end
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyTimer
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyTimer = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 2, 60 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event output filters"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tRoles do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tRoles[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.BuildChildren = function(self)
+						for i, v in pairs(tEventOutputFilters) do
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v.name}, SkuGenericMenuItem)
+							tNewMenuEntry.dynamic = true
+							tNewMenuEntry.isSelect = true
+							tNewMenuEntry.OnAction = function(self, aValue, aName)
+								SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventOutputFilters[x][v.id] = tonumber(aName)
+							end
+							tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+								return SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventOutputFilters[x][v.id]
+							end
+							tNewMenuEntry.BuildChildren = function(self)
+								for i1, v1 in pairs(v.values) do
+									local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v1}, SkuGenericMenuItem)
+								end
+							end
+						end
+					end
+				end
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Prio output"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tRoles do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tRoles[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnAction = function(self, aValue, aName)
+						if aName == L["No"] then
+							SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prioOutput[x] = false
+						elseif aName == L["Yes"] then
+							SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prioOutput[x] = true
+						end
+					end
+					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+						if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prioOutput[x] == false then
+							return L["No"]
+						elseif SkuOptions.db.char[MODULE_NAME].aq.raid.health2.prioOutput[x] == true then
+							return L["Yes"]
+						end
+					end
+					tNewMenuEntry.BuildChildren = function(self)
+						SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+						SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+					end
+				end
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Silent on 100 and 0 percent"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.silentOn100and0 == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.silentOn100and0 = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.silentOn100and0 = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add sound on 100 percent"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addSoundOn100Percent == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addSoundOn100Percent = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addSoundOn100Percent = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end		
+			
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Dead on 0 percent"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addDeadOn0Percent == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addDeadOn0Percent = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.health2.addDeadOn0Percent = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end				
+			
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.raid.health2.continouslyVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.raid.health2.eventVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Percent delay for next output in queue"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.raid.health2.outputQueueDelay
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.raid.health2.outputQueueDelay = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 20, 150, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+		end		
+
+		--debuffs
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Debuffs"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.enabled == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.enabled = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.enabled = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["debuff types"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["Enabled"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.types[self.itemName] = true
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.types[self.itemName] = false
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for i, v in pairs(tDebuffTypes) do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					tNewMenuEntry.dynamic = true
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.itemName = i
+					end
+					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+						if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.types[i] == true then
+							return L["Enabled"]
+						else
+							return L["disabled"]
+						end
+					end
+					tNewMenuEntry.BuildChildren = function(self)
+						SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+						SkuOptions:InjectMenuItems(self, {L["disabled"]}, SkuGenericMenuItem)
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["ignored debuffs"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.BuildChildren = MonitorSpellMenuBuilder
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enable in dungeons/raids only"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.instancesOnly == true then
+					return L["Yes"]
+				else
+					return L["No"]
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["No"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.instancesOnly = false
+				elseif aName == L["Yes"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.instancesOnly = true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+				SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+			end
+			
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Subgroups selection"]}, SkuGenericMenuItem)
+         local tSortedList = {}
+         for k, v in SkuSpairs(SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection, function(t,a,b) 
+				return a < b
+			end) do 
+				tSortedList[#tSortedList+1] = k
+			end
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				local tsubstring = string.sub(aName, 1, string.find(aName, " %(") - 1)
+				if tsubstring and SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection[tsubstring] ~= nil then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection[tsubstring] = SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection[tsubstring] ~= true
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				local tNewMenuEntryEnabled = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+				tNewMenuEntryEnabled.dynamic = true
+				tNewMenuEntryEnabled.BuildChildren = function(self)
+					local tNewMenuEntryEnabledHasEntries
+					for w = 1, #tSortedList do
+						local tUnit, tValue = tSortedList[w], SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection[tSortedList[w]]
+						if tValue == true then
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tUnit.." ("..L["Select to disable"]..")"}, SkuGenericMenuItem)
+							tNewMenuEntryEnabledHasEntries = true
+						end
+					end
+					if not tNewMenuEntryEnabledHasEntries then
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntryEnabled, {L["empty"]}, SkuGenericMenuItem)
+					end
+				end
+				local tNewMenuEntryDisabled = SkuOptions:InjectMenuItems(self, {L["disabled"].." ("..L["overrides enabled"]..")"}, SkuGenericMenuItem)
+				tNewMenuEntryDisabled.dynamic = true
+				tNewMenuEntryDisabled.BuildChildren = function(self)
+					local tNewMenuEntryDisabledHasEntries
+					for w = 1, #tSortedList do
+						local tUnit, tValue = tSortedList[w], SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.unitsAndSubgroupsSelection[tSortedList[w]]
+						if tValue == false then
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tUnit.." ("..L["Select to enable"]..")"}, SkuGenericMenuItem)
+							tNewMenuEntryDisabledHasEntries = true
+						end
+					end
+					if not tNewMenuEntryDisabledHasEntries then
+						local tNewMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntryDisabled, {L["empty"]}, SkuGenericMenuItem)
+					end
+				end
+			end
+
+
+
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output starts after seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				if aName == -1 then
+					return L["Never"]
+				else
+					return SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyStartAfter
+				end
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				if aName == L["Never"] then
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyStartAfter = -1
+				else
+					SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyStartAfter = tonumber(aName)
+				end
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Never"]}, SkuGenericMenuItem)
+				for x = 0, 50 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Output style"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.toutputStyle = 1
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return tOutputStyles[SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.outputStyle]
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.outputStyle = self.toutputStyle
+				C_Timer.After(0.001, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+				end)				
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tOutputStyles do
+					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tOutputStyles[x]}, SkuGenericMenuItem)
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.toutputStyle = x
+					end
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous output every seconds"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyTimer
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyTimer = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, 60 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Continuous volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.continouslyVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+			
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Event volume"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.eventVolume
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.eventVolume = tonumber(aName)
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 10, 100, 10 do
+					SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+				end
+			end
+
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.filterable = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				return tVoices[SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.voice].name
+			end
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				for x = 1, #tVoices do
+					if aName == tVoices[x].name then
+						SkuOptions.db.char[MODULE_NAME].aq.raid.debuffs.voice = x
+					end
+				end
+				C_Timer.After(0.001, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate(SkuOptions.currentMenuPosition.parent)						
+				end)				
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for x = 1, #tVoices do
+					SkuOptions:InjectMenuItems(self, {tVoices[x].name}, SkuGenericMenuItem)
+				end
+			end
+		end			
+	end
+
+
 end

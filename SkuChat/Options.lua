@@ -156,10 +156,10 @@ SkuChat.options = {
 							if SkuOptions.db.profile[MODULE_NAME].chatSettings.openWhispersInNewTab == false then
 								if SkuOptions.db.profile["SkuChat"].tabs[1] then
 									local tTab = SkuOptions.db.profile["SkuChat"].tabs[1]
-									tTab.messageTypes["PLAYER_MESSAGES"][6] = true
-									tTab.messageTypes["PLAYER_MESSAGES"][7] = true
-									tTab.messageTypes["CREATURE_MESSAGES"][4] = true
-									tTab.messageTypes["CREATURE_MESSAGES"][6] = true		
+									tTab.messageTypes["PLAYER_MESSAGES"][6] = 2
+									tTab.messageTypes["PLAYER_MESSAGES"][7] = 2
+									tTab.messageTypes["CREATURE_MESSAGES"][4] = 2
+									tTab.messageTypes["CREATURE_MESSAGES"][6] = 2		
 								end
 
 								for z = 1, #SkuOptions.db.profile["SkuChat"].tabs do

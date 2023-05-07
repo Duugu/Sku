@@ -907,7 +907,7 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
             for x = 1, #self.sourceSteps do
                dprint(x, "insert in", tTutorialGuid, "new:", #tSource.AllLangs.Tutorials[tTutorialGuid].steps + 1)
                local tStepData = self.sourceSteps[x]
-               tSource.AllLangs.Tutorials[SkutTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps + 1] = {
+               tSource.AllLangs.Tutorials[tTutorialGuid].steps[#tSource.AllLangs.Tutorials[tTutorialGuid].steps + 1] = {
                   GUID = SkuAdventureGuide.Tutorial:GetNewGUID(),
                   linkedFrom = {},
                   linkedIn = {},
@@ -3219,7 +3219,12 @@ end
 
 ]]
 ---------------------------------------------------------------------------------------------------------------------------------------
---/script SkuAdventureGuide.Tutorial:ExportTutorialsToTranslation("deDE", "deDE", nil, nil, nil, false, false, false)
+--[[
+all without step titles
+/script SkuAdventureGuide.Tutorial:ExportTutorialsToTranslation("deDE", "enUS", nil, true, nil, true, false, true)
+step texts only
+/script SkuAdventureGuide.Tutorial:ExportTutorialsToTranslation("deDE", "enUS", nil, true, nil, false, false, false)
+]]
 function SkuAdventureGuide.Tutorial:ExportTutorialsToTranslation(aSourceLang, aTargetLang, aUpdatedInteadOfUntranslated, aForce, aTutorialsTable, aIncludeTutorialTitles, aIncludeStepTitles, aIncludeTriggerValues)
    if aIncludeTutorialTitles == nil then
       aIncludeTutorialTitles = true
@@ -3316,7 +3321,9 @@ function SkuAdventureGuide.Tutorial:ExportTutorialsToTranslation(aSourceLang, aT
 	SkuAdventureGuide:ExportImportEditBoxShow(tExportString, function(self) PlaySound(89) end)
 end
 ---------------------------------------------------------------------------------------------------------------------------------------
---/script SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
+--[[
+/script SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
+]]
 function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
    local function processHelper(aStringsDataTable)
       local aSourceLang = string.gsub(aStringsDataTable[1], "DNT:sourceLang:", "")
@@ -3327,7 +3334,7 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
          end
       end
       if not tExists then
-         print("import error: aSourceLang", aSourceLang)
+         print("import error 1: aSourceLang", aSourceLang)
          return
       end
       local aTargetLang = string.gsub(aStringsDataTable[2], "DNT:targetLang:", "")
@@ -3338,7 +3345,7 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
          end
       end
       if not tExists then
-         print("import error: aTargetLang", aTargetLang)
+         print("import error 2: aTargetLang", aTargetLang)
          return
       end      
       print("aSourceLang, aTargetLang", aSourceLang, aTargetLang)
@@ -3349,7 +3356,7 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
          if tVariableName == "tutorialTitle" then
             local tTutorialData = SkuAdventureGuide.Tutorial:GetTutorialDataByGUID(tTutorialGUID)
             if not tTutorialData.exported or tTutorialData.exported ~= aTargetLang then
-               print("import error: tTutorialData is NOT locked for this import target lang", tVariableName, tTutorialData.exported, aTargetLang)
+               print("import error 3: tTutorialData is NOT locked for this import target lang", tVariableName, tTutorialData.exported, aTargetLang)
                return
             end
          end
@@ -3366,18 +3373,18 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
             --is tutorial title data
 
             print("NEXT TUTORIAL---------------------")
-            --print("  tTutorialGUID, tVariableName", tTutorialGUID, tVariableName)
+            print("  tTutorialGUID, tVariableName", tTutorialGUID, tVariableName)
 
             local tTutorialData = SkuAdventureGuide.Tutorial:GetTutorialDataByGUID(tTutorialGUID)
-            --print("  tTutorialData", tTutorialData, "tTutorialData.GUID", tTutorialData.GUID, "tTutorialData[tVariableName]", tTutorialData[tVariableName])
+            print("  tTutorialData", tTutorialData, "tTutorialData.GUID", tTutorialData.GUID, "tTutorialData[tVariableName]", tTutorialData[tVariableName])
 
             if not tTutorialData then
-               print("import error: tTutorialData = nil")
+               print("import error 4: tTutorialData = nil")
                return
             end
 
             if not tTutorialData.exported or tTutorialData.exported ~= aTargetLang then
-               print("import error: tTutorialData is NOT locked for this import target lang", tTutorialData.exported, aTargetLang)
+               print("import error 5: tTutorialData is NOT locked for this import target lang", tTutorialData.exported, aTargetLang)
                return
             end
 
@@ -3387,15 +3394,15 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
             local tTranslation = aStringsDataTable[x + 1]
 
             if not tTutorialData[tVariableName][aTargetLang] then
-               print("import error: tTutorialData[tVariableName][aTargetLang] = nil", tVariableName)
+               print("import error 6: tTutorialData[tVariableName][aTargetLang] = nil", tVariableName)
                return
             end
 
             --print("  tTranslation", tTranslation)
             if tTutorialData[tVariableName][aTargetLang] ~= tTranslation then
-               print("  UPDATE:", tVariableName, tTutorialData[tVariableName][aTargetLang], tTranslation)
-               print("    old:", tTutorialData[tVariableName][aTargetLang])
-               print("    new:", tTranslation)
+               --print("  UPDATE:", tVariableName, tTutorialData[tVariableName][aTargetLang], tTranslation)
+               --print("    old:", tTutorialData[tVariableName][aTargetLang])
+               --print("    new:", tTranslation)
 
 
 
@@ -3417,7 +3424,7 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
                tDNT, tStepGUID, tVariableName = string.match(aStringsDataTable[x], "(.+):(.+):(.+)")
             end
             if not tDNT then
-               print("import error:", x, aStringsDataTable[x])
+               print("import error 7:", x, aStringsDataTable[x])
                return
             end
 
@@ -3429,28 +3436,28 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
             --print("  tStepV, tStepI", tStepV, tStepI)
 
             if not tStepV then
-               print("import error: tStepV == nil", x, tStepGUID)
+               print("import error 8: tStepV == nil", x, tStepGUID)
                return
             end
 
             if not tTriggerNumber then
                --update step
                if not tStepV[tVariableName] then
-                  print("import error: tStepV[tVariableName] = nil", x, tVariableName)
+                  print("import error 9: tStepV[tVariableName] = nil", x, tVariableName)
                   return
                end      
 
                --print("  tStepV[tVariableName]", tStepV[tVariableName])
                if not tStepV[tVariableName][aTargetLang] then
-                  print("import error: tStepV[tVariableName][aTargetLang] = nil", x, tVariableName)
+                  print("import error 10: tStepV[tVariableName][aTargetLang] = nil", x, tVariableName)
                   return
                end                
 
                --print("    tStepV[tVariableName][aTargetLang]", tStepV[tVariableName][aTargetLang])
                if tStepV[tVariableName][aTargetLang] ~= tTranslation then
-                  print("  UPDATE:", tVariableName)
-                  print("     old", tStepV[tVariableName][aTargetLang])
-                  print("     new", tTranslation)
+                  --print("  UPDATE:", tVariableName)
+                  --print("     old", tStepV[tVariableName][aTargetLang])
+                  --print("     new", tTranslation)
 
 
 
@@ -3468,20 +3475,20 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
                --update trigger
 
                if not tStepV.triggers[tonumber(tTriggerNumber)] then
-                  print("import error: tStepV.triggers[tonumber(tTriggerNumber)] = nil", x, tTriggerNumber)
+                  print("import error 11: tStepV.triggers[tonumber(tTriggerNumber)] = nil", x, tTriggerNumber)
                   return
                end                
 
                if not tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] then
-                  print("import error: tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] = nil", x, tTriggerNumber)
+                  print("import error 12: tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] = nil", x, tTriggerNumber)
                   return
                end   
 
                --print("  tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang]", tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang])
                if tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang] ~= tTranslation then
-                  print("  UPDATE:", tTriggerNumber, tVariableName)
-                  print("     old", tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang])
-                  print("     new", tTranslation)
+                  --print("  UPDATE:", tTriggerNumber, tVariableName)
+                  --print("     old", tStepV.triggers[tonumber(tTriggerNumber)].value[aTargetLang])
+                  --print("     new", tTranslation)
 
 
 
@@ -3510,6 +3517,7 @@ function SkuAdventureGuide.Tutorial:ImportTutorialsToTranslation()
       local tStringsDataTable = {}
       for i in string.gmatch(tImportedString, "([^\r\n]+)") do
          tStringsDataTable[#tStringsDataTable + 1] = i
+         print(i)
       end
       processHelper(tStringsDataTable)
 	end, true)
@@ -3649,9 +3657,6 @@ end
 
 
 
-
-
-
 ---------------------------------------------------------------------------------------------------------------------------------------
 --[[
    tmp stuff
@@ -3705,6 +3710,7 @@ function SkuAdventureGuide.Tutorial:CreateNewTableFormat(aTutorialsTable)
       end
    end
 end
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:ImportOldFormatNewbieTutorials()
 	PlaySound(88)

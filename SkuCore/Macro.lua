@@ -126,6 +126,6 @@ function CreateTextBox(aParent, name, message, setterFunction, aMultilineFlag)
         SkuOptions:EditBoxShow("", function(self)
             local tText = SkuOptionsEditBoxEditBox:GetText()
             setterFunction(tText)
-        end, aMultilineFlag)
+        end, true)
     end
 end

@@ -53,14 +53,20 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnEnable()
 	--dprint("SkuMob OnEnable")
-	-- Called when the addon is enabled
+		
+	SkuMob.InCombatSounds = {}
+	SkuMob.InCombatSounds["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"]
+	for i, v in pairs(SkuAuras.outputSoundFiles) do
+		SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
+	end
+	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds
+
+
 	local ttime = 0
 	local f = _G["SkuMobControl"] or CreateFrame("Frame", "SkuMobControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time) 
 		ttime = ttime + time 
 		if ttime > 0.25 then 
-			
-
 			if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
 				if UnitExists("target") == true then
 					if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 or (SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 2 and UnitCanAttack("player", "target") == true) then
@@ -75,10 +81,6 @@ function SkuMob:OnEnable()
 					SkuOptions:UpdateSoftTargetingSettings("all")
 				end
 			end
-
-
-
-
 
 			if UnitGUID("target") then
 				if UnitCanAttack("player","target") ~= false then
@@ -425,7 +427,8 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 	if status and tIsPlayerControled == false then
 		--creature in combat indicator
-		local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+		local tAudioFile = SkuOptions.db.profile[MODULE_NAME].InCombatSound or "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+		local willPlay, soundHandle = PlaySoundFile(tAudioFile, SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
 	end
 
 	--raidtarget

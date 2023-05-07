@@ -126,7 +126,7 @@ local function OnUpdate(self, aTime)
 			if SkuOptions:IsMenuOpen() == true then
 				tDisable = true
 			end
-			if tBeaconRunning == true then
+			if tBeaconRunning == true and SkuCore.DialTargeting.enabled ~= true then
 				if tDisable == true then
 					if _G["SkuBeaconSkriptRecognizerTurn"]:IsShown() then
 						_G["SkuBeaconSkriptRecognizerTurn"]:Hide()

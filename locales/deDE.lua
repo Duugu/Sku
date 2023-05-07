@@ -2588,3 +2588,33 @@ L["Layer"] = "Ebene"
 L["layerFirstLetter"] = "E" --this is the first letter of the term "layer" in your language
 L["uncertain"] = "unsicher"
 L["uncertainFirstLetter"] = "u" --this is the first letter of the term "uncertain" in your language
+
+L["raid member"] = "raid mitglied"
+L["Overrides subgroup selection"] = "Überschreibt subgruppenauswahl"
+L["Main Tank"] = "Main Tank"
+L["Off Tank"] = "Off Tank"
+L["Subgroups selection"] = "Auswahl von Subgruppen"
+L["Subgroup"] = "Subgruppe"
+L["Main Tanks"] = "Main Tanks"
+L["Off Tanks"] = "Off Tanks"
+L["Select to disable"] = "auswählen zum deaktivieren"
+L["Select to enable"] = "auswählen zum aktivieren"
+L["overrides enabled"] ="überschreibt aktivierte"
+L["Dial Targeting"] = "Dial Targeting"
+L["Party and Raid"] = "Gruppe und Raid"
+
+L["Key Sound"] = "Tasten Sound"
+L["No sound"] = "Kein sound"
+L["On first key"] = "Bei erster Taste"
+L["On second key"] = "Bei zweiter Taste"
+L["On first and second key"] = "Bei erster und zweiter Taste"
+L["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"] = "Spieler, Gruppe, Raid Gesundheitsmonitor umschalten"
+
+L["Default beep sound"] = "Standard piep sound"
+L["Sound if target is in combat"] = "Sound wenn Ziel im Kampf ist"
+L["Range for group members in range checks"] = "Abstand für gruppenmitglieder in Reichweite abfrage"
+L["in distance"] = "innerhalb entfernung"
+L["SKU_KEY_GROUPMEMBERSRANGECHECK"] = "Gruppenmitglieder in Entfernung prüfen"
+
+L["No one in range"] = "Niemand in Reichweite"
+L["in range"] = "in Reichweite"

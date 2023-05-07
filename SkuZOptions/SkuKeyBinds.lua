@@ -87,6 +87,10 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_TUTORIALSTEPREPEAT"] = {key = "ALT-K", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_TUTORIALSTEPFORWARD"] = {key = "ALT-J", object = "SkuOptions", func = "CreateMainFrame",},
 
+   ["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+
+   ["SKU_KEY_GROUPMEMBERSRANGECHECK"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+
 
 
    --["SKU_KEY_CHAT_LINEPREV"] = {key = "UP", object = "SkuChat", func = "OnEnable",},

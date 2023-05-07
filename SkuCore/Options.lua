@@ -2079,6 +2079,32 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Misc")
 		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Range for group members in range checks"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.isSelect = true
+		tNewMenuEntry.OnAction = function(self, aValue, aName)
+			if aName == L["leer"] then
+				return
+			end
+			SkuOptions.db.char[MODULE_NAME].RangeChecks.groupChecksRange = tonumber(aName)
+		end
+		tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+			return SkuOptions.db.char[MODULE_NAME].RangeChecks.groupChecksRange
+		end
+		tNewMenuEntry.BuildChildren = function(self)
+			local aType = "Friendly"
+			local tEntriesFound = false
+			for i = 1, 100 do 
+				if SkuCore.RangeCheckValues.Ranges[aType][i] then 
+					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
+					tEntriesFound = true
+				end
+			end
+			if tEntriesFound == false then
+				local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["leer"]}, SkuGenericMenuItem)
+			end
+		end
 	end
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Spiel Tastenbelegung"]}, SkuGenericMenuItem)
@@ -2528,6 +2554,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.MonitorMenuBuilder
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Dial Targeting"]}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.filterable = true
+	tNewMenuParentEntry.BuildChildren = SkuCore.DialTargetingMenuBuilder
+
 
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Social"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
