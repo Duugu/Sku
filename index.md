@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (Mar 27th 2023)<br>
+- [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 - [Sku r34.2](https://github.com/Duugu/Sku/releases/download/r34.2/Sku-r34.2-wrath.zip)) (May 7th 2023)<br>
 
 *Older updates:* <br>
