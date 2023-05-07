@@ -4,6 +4,13 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.3
+	- Fixed a bug that was causing an error on changing actions bar sets (on switching stance, entering vehicles, etc). Thx @Chaosbringer.
+	- Slightly changed the "Toggle player, party, raid health monitor" key bind. If you are solo it is toggleing the player health monitor on/off. If you are in a party, it is switching between party health and player health monitor. If you are in a raid it is switching between player health and raid health.
+	- Added better chat outputs for the "Toggle player, party, raid health monitor" key bind.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.2
 	- Added a new option Core > Range > Range for group members in range checks (default: 10), and a new key bind "Do group members in range check" (default: not bound). This is to output the number of party or raid members that a inside the selected range to you.
 	- Added a new option: Mob > Options > Sound if target is in combat, to change the default beep sound on targeting enemies that are already in combat to something else. Default value: "Default beep sound".

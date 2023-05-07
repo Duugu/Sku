@@ -1306,20 +1306,37 @@ function SkuOptions:CreateMainFrame()
 		--monitor
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"].key then
 			if UnitInRaid("player") then
-				SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled == false and true or false
 				SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = false
-				SkuOptions.db.char["SkuCore"].aq.player.health.enabled = false
-				print("raid.health.enabled", SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled)
+				if SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled == true then
+					SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = false
+					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = true
+					print(L["Player health monitor enabled"])
+				else
+					SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = true
+					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = false
+					print(L["Raid health monitor enabled"])
+				end
 			elseif UnitInParty("player") == true then
-				SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = SkuOptions.db.char["SkuCore"].aq.party.health2.enabled == false and true or false
-				SkuOptions.db.char["SkuCore"].aq.player.health.enabled = false
 				SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = false
-				print("party.health.enabled", SkuOptions.db.char["SkuCore"].aq.party.health2.enabled)
+				if SkuOptions.db.char["SkuCore"].aq.party.health2.enabled == true then
+					SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = false
+					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = true
+					print(L["Player health monitor enabled"])
+				else
+					SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = true
+					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = false
+					print(L["Party health monitor enabled"])
+				end
 			else
-				SkuOptions.db.char["SkuCore"].aq.player.health.enabled = SkuOptions.db.char["SkuCore"].aq.player.health.enabled == false and true or false
 				SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = false
 				SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = false
-				print("player.health.enabled", SkuOptions.db.char["SkuCore"].aq.player.health.enabled)
+				if SkuOptions.db.char["SkuCore"].aq.player.health.enabled == true then
+					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = false
+					print(L["Player health monitor disabled"])
+				else
+					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = true
+					print(L["Player health monitor enabled"])
+				end
 			end
 		end
 

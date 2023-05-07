@@ -2624,3 +2624,8 @@ L["SKU_KEY_GROUPMEMBERSRANGECHECK"] = "Do group members in range check"
 
 L["No one in range"] = "No one in range"
 L["in range"] = "in range"
+
+L["Player health monitor enabled"] = "Player health monitor enabled"
+L["Player health monitor disabled"] = "Player health monitor disabled"
+L["Raid health monitor enabled"] = "Raid health monitor enabled"
+L["Party health monitor enabled"] = "Party health monitor enabled"

@@ -2618,3 +2618,8 @@ L["SKU_KEY_GROUPMEMBERSRANGECHECK"] = "Gruppenmitglieder in Entfernung prüfen"
 
 L["No one in range"] = "Niemand in Reichweite"
 L["in range"] = "in Reichweite"
+
+L["Player health monitor enabled"] = "Spieler Gesundheit Monitor aktiviert"
+L["Player health monitor disabled"] = "Spieler Gesundheit Monitor deaktiviert"
+L["Raid health monitor enabled"] = "Raid Gesundheit Monitor aktiviert"
+L["Party health monitor enabled"] = "Gruppe Gesundheit Monitor aktiviert"

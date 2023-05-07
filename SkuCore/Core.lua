@@ -1904,6 +1904,29 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 			SkuOptions:CloseMenu()
 			
+			C_Timer.After(10, function()
+				if InCombatLockdown() ~= true then
+					TRAINER_FILTER_AVAILABLE = 1 
+					TRAINER_FILTER_UNAVAILABLE = 0 
+					TRAINER_FILTER_USED = 0
+					SetActionBarToggles(1,1,1,1,1) 
+					
+					
+					SHOW_MULTI_ACTIONBAR_1 = 1 
+					SHOW_MULTI_ACTIONBAR_2 = 1 
+					SHOW_MULTI_ACTIONBAR_3 = 1 
+					SHOW_MULTI_ACTIONBAR_4 = 1 
+					
+					MultiActionBar_Update() 
+					UIParent_ManageFramePositions() 
+					C_CVar.SetCVar("instantQuestText", "1")
+					C_CVar.SetCVar("autoLootDefault", "1")
+					C_CVar.SetCVar("alwaysShowActionBars", "1")
+					C_CVar.SetCVar("cameraSmoothStyle", "2")
+					C_CVar.GetCVar("removeChatDelay", "1")
+				end
+			end)		
+
 			SkuOptions.db.char[MODULE_NAME].IsFirstCharLogin = false
 		end
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
@@ -2021,29 +2044,6 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
 	end
-
-	C_Timer.After(6, function()
-		if InCombatLockdown() ~= true then
-			TRAINER_FILTER_AVAILABLE = 1 
-			TRAINER_FILTER_UNAVAILABLE = 0 
-			TRAINER_FILTER_USED = 0
-			SetActionBarToggles(1,1,1,1,1) 
-			
-			
-			SHOW_MULTI_ACTIONBAR_1 = 1 
-			SHOW_MULTI_ACTIONBAR_2 = 1 
-			SHOW_MULTI_ACTIONBAR_3 = 1 
-			SHOW_MULTI_ACTIONBAR_4 = 1 
-			
-			MultiActionBar_Update() 
-			UIParent_ManageFramePositions() 
-			C_CVar.SetCVar("instantQuestText", "1")
-			C_CVar.SetCVar("autoLootDefault", "1")
-			C_CVar.SetCVar("alwaysShowActionBars", "1")
-			C_CVar.SetCVar("cameraSmoothStyle", "2")
-			C_CVar.GetCVar("removeChatDelay", "1")
-		end
-	end)			
 
 	--hooksecurefunc(GameTooltip, "Show", SkuCore.CheckInteractObjectShow)
 	GameTooltip:HookScript("OnShow", SkuCore.CheckInteractObjectShow)
