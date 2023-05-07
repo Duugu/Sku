@@ -9,8 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku r34.3](https://github.com/Duugu/Sku/releases/download/r34.3/Sku-r34.3-wrath.zip)) (May 7th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
-- [Sku r34.2](https://github.com/Duugu/Sku/releases/download/r34.2/Sku-r34.2-wrath.zip)) (May 7th 2023)<br>
 
 *Older updates:* <br>
 - [SkuAudioData_en r10 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r10/SkuAudioData_en-r10-wrath.zip) (April 15th 2023)<br>
@@ -23,6 +23,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.3
+- Fixed a bug that was causing an error on changing actions bar sets (on switching stance, entering vehicles, etc). Thx @Chaosbringer.
+- Slightly changed the "Toggle player, party, raid health monitor" key bind. If you are solo it is toggleing the player health monitor on/off. If you are in a party, it is switching between party health and player health monitor. If you are in a raid it is switching between player health and raid health.
+- Added better chat outputs for the "Toggle player, party, raid health monitor" key bind.
+
 ## Changes in Wow Menu r3.12
 - Added support for auto pause if dial targeting is enabled.
 - Social contract will be auto accepted again.
