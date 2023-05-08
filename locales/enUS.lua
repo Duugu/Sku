@@ -2482,7 +2482,7 @@ L["wait for player activating next step"] = "wait for player activating next ste
 L["Press"] = "Press"
 L["to continue with the next tutorial step"] = "to continue with the next tutorial step"
 L["No key bind for"] = "No key bind for"
-L["Tutorial step completed"] = "The sound means the current tutorial step is completed"
+L["Tutorial step completed"] = "The sound means the current tutorial step is completed."
 L["Step settings"] = "Step settings"
 L["Play first time user intro"] = "Play first time user intro"
 L["Show in users tutorials list"] = "Show in users tutorials list"
@@ -2629,3 +2629,40 @@ L["Player health monitor enabled"] = "Player health monitor enabled"
 L["Player health monitor disabled"] = "Player health monitor disabled"
 L["Raid health monitor enabled"] = "Raid health monitor enabled"
 L["Party health monitor enabled"] = "Party health monitor enabled"
+
+
+
+
+--login
+L["Important! Before you start playing: You may want to check out the help for newbies. If you don't know how to play the game, press F1 right now, to get more information, before you do anything else. So, if you do need help, press F1 now."] = "Important! Before you start playing: You may want to check out the help for newbies. If you don't know how to play the game, press F1 right now, to get more information, before you do anything else. So, if you do need help, press F1 now."
+
+
+--F1 menu
+L["In this help you will find information about our tutorials for newbies. Press down arrow or up arrow to listen to the info, or press Escape to close this help. Press F1 to open the help again."] = "In this help you will find information about our tutorials for newbies. Press down arrow or up arrow to listen to the info, or press Escape to close this help. Press F1 to open the help again."
+
+--If not valid race + class
+L["Unfortunately there is no tutorial for you as (%race%) (%class%) yet. The Sku addon contains tutorials for (Human) Warriors, Paladins, Rogues, Priests, Mages, and Warlocks, and for (Night Elf) Hunters, and Druids."] = "Unfortunately there is no tutorial for you as (%race%) (%class%) yet. The Sku addon contains tutorials for (Human) Warriors, Paladins, Rogues, Priests, Mages, and Warlocks, and for (Night Elf) Hunters, and Druids."
+L["If you would like to be supported by a tutorial, you can logout now by typing /logout and pressing enter."] = "If you would like to be supported by a tutorial, you can logout now by typing /logout and pressing enter."
+L["Then you can create a second character using one of the mentioned race and class combinations. With the second character you can play the tutorial. That takes about 2 hours."] = "Then you can create a second character using one of the mentioned race and class combinations. With the second character you can play the tutorial. That takes about 2 hours."
+L["Afterwards you have mastered the basics and can return to your first character and play it without assistance, or you can continue playing with the second character."] = "Afterwards you have mastered the basics and can return to your first character and play it without assistance, or you can continue playing with the second character."
+
+--If valid race + class
+L["For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it."] = "For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it."
+L["First a few infos: If you are following the tutorial, you should strictly follow the instructions from the tutorial. Listen carefully to what you are supposed to do, and then do exactly that. Don't do anything else while the tutorial is running. Do not deviate from the tutorial. Otherwise the tutorial will not work anymore!"] = "First a few infos: If you are following the tutorial, you should strictly follow the instructions from the tutorial. Listen carefully to what you are supposed to do, and then do exactly that. Don't do anything else while the tutorial is running. Do not deviate from the tutorial. Otherwise the tutorial will not work anymore!"
+L["The tutorial will take about 2 hours. You can log out at any time and continue the tutorial later via this help. Just press F1 again after logging in."] = "The tutorial will take about 2 hours. You can log out at any time and continue the tutorial later via this help. Just press F1 again after logging in."
+
+--if step 1
+L["Press ENTER now, to start your tutorial."] = "Press ENTER now, to start your tutorial."
+
+--if step > 1
+L["Press ENTER, to continue your tutorial."] = "Press ENTER, to continue your tutorial."
+
+
+--PlayFtuIntro
+L["Hello, %name%. This tutorial will guide you step by step through the game and the Sku addon. In each step you will first hear some information or instructions. While these are played, the tutorial will lock the keyboard."] = "Hello, %name%. This tutorial will guide you step by step through the game and the Sku addon. In each step you will first hear some information or instructions. While these are played, the tutorial will lock the keyboard."
+L["Then you will take action and carry out the instructions of that step. Once you have completed them, you will hear a success sound. Then you can proceed to the next tutorial step."] = "Then you will take action and carry out the instructions of that step. Once you have completed them, you will hear a success sound. Then you can proceed to the next tutorial step."
+L["You will need the following two shortcut keys, that you should write down now:"] = "You will need the following two shortcut keys, that you should write down now:"
+L["(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current step again."] = "(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current step again."
+L["(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound."] = "(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound."
+L["Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step."] = "Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step."
+L["Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%)."] = "Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%)."

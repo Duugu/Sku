@@ -71,18 +71,22 @@ local tPlaceholders = {
    [3] = {
       tag = "%%SKU_KEY_TUTORIALSTEPFORWARD%%",
       value = function(aString) 
-         aString = string.gsub(aString, "%%SKU_KEY_TUTORIALSTEPFORWARD%%", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key)
+         local aKeyBindText = string.gsub(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key, "%-", " ")
+         aKeyBindText = " ("..aKeyBindText..") "
+         aString = string.gsub(aString, "%%SKU_KEY_TUTORIALSTEPFORWARD%%", aKeyBindText)
          return aString
       end,
    },
    [4] = {
       tag = "%%SKU_KEY_TUTORIALSTEPREPEAT%%",
       value = function(aString) 
-         aString = string.gsub(aString, "%%SKU_KEY_TUTORIALSTEPREPEAT%%", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key)
+         local aKeyBindText = string.gsub(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key, "%-", " ")
+         aKeyBindText = " ("..aKeyBindText..") "
+         aString = string.gsub(aString, "%%SKU_KEY_TUTORIALSTEPREPEAT%%", aKeyBindText)
          return aString
       end,
    },
-   [4] = {
+   [5] = {
       tag = "%%(npc_id)%:(%d+)%%",
       value = function(aString) 
          local tType, tId = string.match(aString, "%%(npc_id)%:(%d+)%%")
@@ -96,11 +100,20 @@ local tPlaceholders = {
          return aString
       end,
    },
+   [6] = {
+      tag = "%%race%%",
+      value = function(aString) 
+         local raceName = UnitRace("player")
+         aString = string.gsub(aString, "%%race%%", raceName)
+         return aString
+      end,
+   },
+
 }
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuAdventureGuide.Tutorial = {}
-SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps = 4
+SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps = 3
 SkuAdventureGuide.Tutorial.currentStepCompleted = false
 SkuAdventureGuide.Tutorial.evaluateNextStep = false
 SkuAdventureGuide.Tutorial.current = {
@@ -778,8 +791,11 @@ function SkuAdventureGuide.Tutorial:OnInitialize()
 
 
 
-   --temp disabled, until there are tutorials
+   --uncomment if tutorials are released
    --SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuAdventureGuide.Tutorial.PlayFtuTutorialHint)
+
+
+
    SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuAdventureGuide.Tutorial.PLAYER_ENTERING_WORLD)
 
    --this frame is to catch all keys if tutorial output is running
@@ -2451,7 +2467,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:StartTutorial(aTutorialGuid, aStartAtStepNumber, aSource, aSilent, aIsUser)
-   dprint("StartTutorial", aTutorialGuid, aStartAtStepNumber, aSource, aSilent, aIsUser)
    SkuAdventureGuide.Tutorial.currentStepCompleted = false
    C_Timer.After(0.3, function()
       SkuAdventureGuide.Tutorial.current.guid = aTutorialGuid
@@ -2476,13 +2491,11 @@ function SkuAdventureGuide.Tutorial:ReReadCurrentStep()
    SkuOptions.Voice:StopOutputEmptyQueue()
 
    C_Timer.After(1.0, function()
-      print("ReReadCurrentStep", SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid])
-
       if SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] == 0 then
          SkuAdventureGuide.Tutorial:PlayFtuIntro()
       else
          local tCurrentStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid]].GUID)
-         SkuOptions.Voice:OutputString("sound-TutorialOpen01", false, false, 0.3, true)
+         SkuOptions.Voice:OutputString("sound-waterdrop5", false, false, 0.3, true)
          C_Timer.After(1.5, function()
    
             SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:ReplacePlaceholders(tCurrentStepData.beginText[Sku.Loc]), {overwrite = tCurrentStepData.dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
@@ -2506,7 +2519,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:StartStep(aStartAtStepNumber)
-   print("StartStep", aStartAtStepNumber)
+   dprint("StartStep", aStartAtStepNumber)
    SkuAdventureGuide.Tutorial.evaluateNextStep = false
    SkuAdventureGuide.Tutorial.currentStepCompleted = false
    for _, v in pairs(SkuAdventureGuide.Tutorial.triggers) do
@@ -2514,7 +2527,7 @@ function SkuAdventureGuide.Tutorial:StartStep(aStartAtStepNumber)
    end
 
    C_Timer.After(0.1, function()
-      SkuOptions.Voice:OutputString("sound-TutorialOpen01", false, false, 0.3, true)
+      SkuOptions.Voice:OutputString("sound-waterdrop5", false, false, 0.3, true)
       C_Timer.After(1.0, function()
          local tCurrentStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid]].GUID)
          local tStartText = tCurrentStepData.beginText[Sku.Loc]
@@ -2533,8 +2546,8 @@ function SkuAdventureGuide.Tutorial:PlayFtuTutorialHint(aevent)
       SkuOptions.db.char[MODULE_NAME].Tutorials.ftuTutorialHintPlayed = true
       SkuDispatcher:UnregisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuAdventureGuide.Tutorial.PlayFtuTutorialHint)
       if UnitLevel("player") == 1 then
-         C_Timer.After(3, function()
-            local tIntroText = L["Attention, important before you get into action: If you are new to the game, you can get help with your first steps with the F1 key. If you do not know how to play the game, press F1 now to start a tutorial. Don't do other stuff first. The tutorial might fail if you do things on your own. So, if you would like assistance, press the F1 key now."]
+         C_Timer.After(15, function()
+            local tIntroText = L["Important! Before you start playing: You may want to check out the help for newbies. If you don't know how to play the game, press F1 right now, to get more information, before you do anything else. So, if you do need help, press F1 now."]
             SkuOptions.Voice:OutputStringBTtts(tIntroText, {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
          end)
       end
@@ -2549,20 +2562,16 @@ function SkuAdventureGuide.Tutorial:PlayFtuIntro()
       v.collector = {}
    end
 
-   local tPlay = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key ~= "" and CleanKeyBindStringHelper(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key) or " ("..L["No key bind for"].." "..L["SKU_KEY_TUTORIALSTEPREPEAT"]..") "
-   local tNext = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key ~= "" and CleanKeyBindStringHelper(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key) or " ("..L["No key bind for"].." "..L["SKU_KEY_TUTORIALSTEPFORWARD"]..") "
-   local tPrev = SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key ~= "" and CleanKeyBindStringHelper(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key) or " ("..L["No key bind for"].." "..L["SKU_KEY_TUTORIALSTEPBACK"]..") "
    local tIntroText = 
-   L["Hello, %name%. This is a tutorial. It will guide you step for step through how to do things in the game. In each step you will here some information or instruction on activities. Once you've complete the step activities you will hear a success sound. Then you can move on to the next tutorial step. There are 3 keyboard shortcuts in tutorials like this one:"]
-   .." "..tPlay
-   .." "..L["to play the instructions of the current step again."]
-   .." "..tNext
-   .." "..L["to move to the next step of the tutorial if you have completed the current step."]
-   .." "..L["Whenever the tutorial speaks, all keys are locked. Wait until the tutorial has finished speaking. Then the keys are available again."]
-   .." "..L["That's it for now. Now start the tutorial content by pressing %SKU_KEY_TUTORIALSTEPFORWARD%."] 
+   L["Hello, %name%. This tutorial will guide you step by step through the game and the Sku addon. In each step you will first hear some information or instructions. While these are played, the tutorial will lock the keyboard."]
+   .." "..L["Then you will take action and carry out the instructions of that step. Once you have completed them, you will hear a success sound. Then you can proceed to the next tutorial step."]
+   .." "..L["You will need the following two shortcut keys, that you should write down now:"]
+   .." "..L["(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current step again."]
+   .." "..L["(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound."]
+   .." "..L["Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step."]
+   .." "..L["Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%)."]
 
    tIntroText = SkuAdventureGuide.Tutorial:ReplacePlaceholders(tIntroText)
-   --tIntroText = SkuAdventureGuide.Tutorial:AddNextStepText(tIntroText)
 
    SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] = 0
    C_Timer.After(0.1, function()
@@ -2938,6 +2947,12 @@ function SkuAdventureGuide.Tutorial:GetTutorialDataByGUID(aSourceTutorialGUID)
       return
    end
 
+   for sourceTutI, sourceTutV in pairs(SkuDB.AllLangs.Tutorials) do
+      if sourceTutV.GUID == aSourceTutorialGUID then
+         return sourceTutV, sourceTutV.tutorialTitle[Sku.Loc]
+      end
+   end
+
    for sourceTutI, sourceTutV in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials) do
       if sourceTutV.GUID == aSourceTutorialGUID then
          return sourceTutV, sourceTutV.tutorialTitle[Sku.Loc]
@@ -2951,13 +2966,21 @@ function SkuAdventureGuide.Tutorial:GetStepDataByGUID(aSourceTutorialStepGUID)
       return
    end
 
-   for sourceTutI, sourceTutV in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials) do
+   for sourceTutI, sourceTutV in pairs(SkuDB.AllLangs.Tutorials) do
       for sourceStepI, sourceStepV in pairs(sourceTutV.steps) do
          if sourceStepV.GUID == aSourceTutorialStepGUID then
             return sourceStepV, sourceStepI
          end
       end
    end
+
+   for sourceTutI, sourceTutV in pairs(SkuOptions.db.global[MODULE_NAME].AllLangs.Tutorials) do
+      for sourceStepI, sourceStepV in pairs(sourceTutV.steps) do
+         if sourceStepV.GUID == aSourceTutorialStepGUID then
+            return sourceStepV, sourceStepI
+         end
+      end
+   end   
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

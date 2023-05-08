@@ -73,7 +73,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:PrintLastBugsackErrors(aNumberOfErrors)
-	aNumberOfErrors = aNumberOfErrors or 5
+	aNumberOfErrors = aNumberOfErrors or 4
 	if BugSack then
 		local tErrors = BugSack:GetErrors()
 		if #tErrors > 0 then
@@ -654,7 +654,6 @@ function SkuOptions:UpdateOverviewText(aPageId)
 				tSubgroups[subgroup] = tSubgroups[subgroup] or {}
             tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
             tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
-				print(x, name, subgroup, tsubgroupcounter[subgroup])
 				tSubgroups[subgroup][tsubgroupcounter[subgroup]] = {level = level, class = class, zone = zone, online = online, isDead = isDead, name = name,}
          end
       end

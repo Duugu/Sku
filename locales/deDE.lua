@@ -2476,7 +2476,7 @@ L["wait for player activating next step"] = "Warten bis Spieler zum nächsten Sc
 L["Press"] = "Drücke"
 L["to continue with the next tutorial step"] = "um mit dem nächsten tutorial schritt fortzufahren"
 L["No key bind for"] = "Tastenbelegung fehlt für"
-L["Tutorial step completed"] = "Der ton bedeutet der aktuelle Tutorial Schritt ist abgeschlossen"
+L["Tutorial step completed"] = "Das Jubeln bedeutet, das der aktuelle Tutorial Schritt abgeschlossen ist."
 L["Step settings"] = "Schritt einstellungen"
 L["Play first time user intro"] = "Intro für Erstbenutzer abspielen"
 L["Show in users tutorials list"] = "In der tutorial liste für benutzer anzeigen"
@@ -2623,3 +2623,39 @@ L["Player health monitor enabled"] = "Spieler Gesundheit Monitor aktiviert"
 L["Player health monitor disabled"] = "Spieler Gesundheit Monitor deaktiviert"
 L["Raid health monitor enabled"] = "Raid Gesundheit Monitor aktiviert"
 L["Party health monitor enabled"] = "Gruppe Gesundheit Monitor aktiviert"
+
+
+
+--login
+L["Important! Before you start playing: You may want to check out the help for newbies. If you don't know how to play the game, press F1 right now, to get more information, before you do anything else. So, if you do need help, press F1 now."] = "Achtung! Wichtig, bevor du aktiv wirst: Du kannst die Hilfe für Neueinsteiger nutzen. Wenn du nicht weißt wie das Spiel funktioniert, dann drücke jetzt sofort F1, um weitere Informationen zu erhalten, bevor du andere Dinge machst. Also, wenn du Hilfe benötigst, drücke jetzt die Taste F1."
+
+
+--F1 menu
+L["In this help you will find information about our tutorials for newbies. Press down arrow or up arrow to listen to the info, or press Escape to close this help. Press F1 to open the help again."] = "In dieser Hilfe findest du Infos zu unseren Tutorials für Neueinsteiger. Drücke Pfeil runter oder Pfeil hoch, um dir die Infos anzuhören, oder drücke Escape, um diese Hilfe zu schließen. Mit F1 kannst du die Hilfe erneut öffnen."
+
+--If not valid race + class
+L["Unfortunately there is no tutorial for you as (%race%) (%class%) yet. The Sku addon contains tutorials for (Human) Warriors, Paladins, Rogues, Priests, Mages, and Warlocks, and for (Night Elf) Hunters, and Druids."] = "Für dich als (%race%) (%class%) gibt es leider noch kein Tutorial. Das Sku-Addon enthält Tutorials für (Menschen) Krieger, Paladine, Schurken, Priester, Magier und Hexenmeister, sowie für (Nachtelfen) Jäger und Druiden."
+L["If you would like to be supported by a tutorial, you can logout now by typing /logout and pressing enter."] = "Wenn du Unterstützung durch ein Tutorial möchtest, kannst du jetzt ausloggen, indem du /logout eingibst und Enter drückst."
+L["Then you can create a second character using one of the mentioned race and class combinations. With the second character you can play the tutorial. That takes about 2 hours."] = "Dann kannst du dir einen zweiten Character mit einer der genannten Kombinationen aus Rasse und Klasse, für die es Tutorials gibt, erstellen. Mit dem zweiten Character kannst du dann das Tutorial spielen. Das dauert ca. 2 Stunden."
+L["Afterwards you have mastered the basics and can return to your first character and play it without assistance, or you can continue playing with the second character."] = "Danach beherrscht du die Grundlagen, und kannst zu deinem ersten Character zurückkehren, und ihn ohne Hilfe spielen, oder natürlich auch mit dem zweiten Character weiterspielen."
+
+--If valid race + class
+L["For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it."] = "Für dich als %race% %class% gibt es ein Tutorial. Wenn du mit Pfeil runter nach unten gehst, erfährst du wie du es startest."
+L["First a few infos: If you are following the tutorial, you should strictly follow the instructions from the tutorial. Listen carefully to what you are supposed to do, and then do exactly that. Don't do anything else while the tutorial is running. Do not deviate from the tutorial. Otherwise the tutorial will not work anymore!"] = "Vorher noch ein paar Infos: Wenn du dem Tutorial folgst, solltest du dich strikt an die Anweisungen aus dem Tutorial halten. Hör dir genau an, was du machen sollst, und mach dann genau das. Mache sonst nichts, solange das Tutorial läuft. Weiche nicht vom Tutorial ab. Das Tutorial wird sonst nicht mehr funktionieren!"
+L["The tutorial will take about 2 hours. You can log out at any time and continue the tutorial later via this help. Just press F1 again after logging in."] = "Das Tutorial dauert ca. 2 Stunden. Du kannst jederzeit ausloggen, und das Tutorial später über diese Hilfe fortsetzen. Drücke dazu einfach nach dem Einloggen wieder F1."
+
+--if step 1
+L["Press ENTER now, to start your tutorial."] = "Drücke jetzt die EINGABETASTE, um dein Tutorial zu beginnen."
+
+--if step > 1
+L["Press ENTER, to continue your tutorial."] = "Drücke die EINGABETASTE, um dein Tutorial fortzusetzen."
+
+
+--PlayFtuIntro
+L["Hello, %name%. This tutorial will guide you step by step through the game and the Sku addon. In each step you will first hear some information or instructions. While these are played, the tutorial will lock the keyboard."] = "Hallo, %name%. Dieses Tutorial führt dich Schritt für Schritt durch das Spiel und das Sku Addon. In jedem Schritt hörst du zuerst einige Informationen oder Anweisungen. Während diese abgespielt werden, sperrt das Tutorial die Tastatur."
+L["Then you will take action and carry out the instructions of that step. Once you have completed them, you will hear a success sound. Then you can proceed to the next tutorial step."] = "Danach wirst du aktiv, und führst die Anweisungen des Schrittes aus. Sobald du diese abgeschlossen hast, hörst du einen Erfolgssound. Dann kannst du zum nächsten Tutorialschritt wechseln."
+L["You will need the following two shortcut keys, that you should write down now:"] = "Du benötigst dazu die folgenden 2 Tastenkombinationen, die du dir jetzt notieren kannst:"
+L["(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current step again."] = "(%SKU_KEY_TUTORIALSTEPREPEAT%), um die Anweisungen aus dem aktuellen Schritt erneut zu hören."
+L["(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound."] = "(%SKU_KEY_TUTORIALSTEPFORWARD%), um zum nächsten Schritt zu wechseln, sobald du den aktuellen Schritt abgeschlossen hast. Das geht nur, wenn du den Erfolgssound gehört hast."
+L["Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step."] = "Halte dich immer genau an die Anweisungen. Mache niemals anderen Dinge außer den Tutorial-Anweisungen, solange du das Tutorial spielen willst. Es funktioniert sonst nicht mehr korrekt. Schalte immer weiter zum nächsten Schritt, wenn du einen Schritt abgeschlossen hast."
+L["Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%)."] = "Drücke jetzt (%SKU_KEY_TUTORIALSTEPFORWARD%), um mit dem ersten Schritt loszulegen. Um diese Infos erneut zu hören, und dir die Tastenkombinationen zu notieren, drücke (%SKU_KEY_TUTORIALSTEPREPEAT%)."

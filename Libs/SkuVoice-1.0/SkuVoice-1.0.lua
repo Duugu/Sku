@@ -73,7 +73,8 @@ function SkuVoice:Create()
 					SkuVoice.TutorialPlaying = 0
 				end
 				if SkuVoice.TutorialPlaying == 0 then
-					SkuOptions.Voice:OutputString("sound-TutorialClose01", false, false, 0.3, true)
+					--SkuOptions.Voice:OutputString("sound-TutorialClose01", false, false, 0.3, true)
+					SkuOptions.Voice:OutputString("sound-waterdrop1", false, false, 0.3, true)
 					dprint("STOP")
 					if mSkuVoiceQueueBTTS_Callback then
 						mSkuVoiceQueueBTTS_Callback()
