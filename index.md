@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.3](https://github.com/Duugu/Sku/releases/download/r34.3/Sku-r34.3-wrath.zip)) (May 7th 2023)<br>
+- [Sku r34.4](https://github.com/Duugu/Sku/releases/download/r34.4/Sku-r34.4-wrath.zip)) (May 8th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.4
+- More routes for Terokkar added by Emily
+- Layers and waypoint names updated and map issues fixed for Darkshore, Darnassus, Teldrassil, Rut'theran, Moonglade (parts)
+- Removed an overlooked debug output from the overview page
+- Final updates of the tutorial FTUE
+	
 ## Changes in Sku r34.3
 - Fixed a bug that was causing an error on changing actions bar sets (on switching stance, entering vehicles, etc). Thx @Chaosbringer.
 - Slightly changed the "Toggle player, party, raid health monitor" key bind. If you are solo it is toggleing the player health monitor on/off. If you are in a party, it is switching between party health and player health monitor. If you are in a raid it is switching between player health and raid health.
