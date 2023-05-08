@@ -18,7 +18,7 @@ DEUTSCH - Erste Schritte:<br>
 - [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2023)<br>
 
 *Updates for sighted players:* <br>
-- [SkuMapper r3](https://github.com/Duugu/SkuMapper/releases/download/r3/SkuMapper-r3-wrath.zip) (April 25th 2023), mapping addon for sighted players<br>
+- [SkuMapper r3.2](https://github.com/Duugu/SkuMapper/releases/download/r3.2/SkuMapper-r3.2-wrath.zip) (May 8th 2023), mapping addon for sighted players<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
