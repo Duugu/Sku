@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.4](https://github.com/Duugu/Sku/releases/download/r34.4/Sku-r34.4-wrath.zip)) (May 8th 2023)<br>
+- [Sku r34.5](https://github.com/Duugu/Sku/releases/download/r34.5/Sku-r34.5-wrath.zip)) (May 9th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.5
+- Re-enabled the instant distance output on hard targeting a unit
+- Fixed a bug with the tutorial editor and steps that are converted from linked steps to real steps
+
 ## Changes in Sku r34.4
 - More routes for Terokkar added by Emily
 - Layers and waypoint names updated and map issues fixed for Darkshore, Darnassus, Teldrassil, Rut'theran, Moonglade (parts)
