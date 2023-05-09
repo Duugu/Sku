@@ -293,11 +293,14 @@ end
 function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	aUnitId = aUnitId or "target"
 
-	--print("mob PLAYER_TARGET_CHANGED(event, ", event, aUnitId)
+	dprint("mob PLAYER_TARGET_CHANGED(event, ", event, aUnitId)
 
 	if aUnitId == "target" then
+		SkuCore:DoRangeCheck(true, nil, "target")
+
 		if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
 			if UnitExists("target") == true then
+
 				if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 or (SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 2 and UnitCanAttack("player", "target") == true) then
 					SkuMob.interactTempDisabled = true
 					SkuOptions:UpdateSoftTargetingSettings("all")

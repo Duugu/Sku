@@ -1094,10 +1094,18 @@ function SkuAdventureGuide.Tutorial:MenuBuilderEdit(self)
                local sourceTutI, sourceTutV = SkuAdventureGuide.Tutorial:GetTutorialDataByStepGUID(tFinalSourceStepData.GUID)
                local tSTutGuid = sourceTutV.GUID
                SkuAdventureGuide.Tutorial:UnlinkStep(tSource.AllLangs.Tutorials[tTutorialGuid].GUID, tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].GUID, tSTutGuid, tFinalSourceStepData.GUID)
-               tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title = tFinalSourceStepData.title
-               tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].allTriggersRequired = tFinalSourceStepData.allTriggersRequired
-               tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].dontSkipCurrentOutputs = tFinalSourceStepData.dontSkipCurrentOutputs
-               tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].beginText = tFinalSourceStepData.beginText
+               tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].title = SkuOptions:TableCopy(tFinalSourceStepData.title, true)
+               if tFinalSourceStepData.allTriggersRequired == true then
+                  tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].allTriggersRequired = true
+               else
+                  tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].allTriggersRequired = false
+               end
+               if tFinalSourceStepData.dontSkipCurrentOutputs == true then
+                  tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].dontSkipCurrentOutputs = true
+               else
+                  tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].dontSkipCurrentOutputs = false
+               end
+               tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].beginText = SkuOptions:TableCopy(tFinalSourceStepData.beginText, true)
                tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].linkedFrom = {}
                tSource.AllLangs.Tutorials[tTutorialGuid].steps[x].triggers = SkuOptions:TableCopy(tFinalSourceStepData.triggers, true)
                C_Timer.After(0.01, function()
@@ -2860,7 +2868,6 @@ function SkuAdventureGuide.Tutorial:UnlinkStep(aTargetTutorialGUID, aTargetTutor
                if not sourceStepV.linkedIn[aTargetTutorialGUID] then
                   print("error. aTargetTutorialGUID missing in source linkedIn.", aTargetTutorialGUID, aTargetTutorialStepGUID, aSourceTutorialGUID, aSourceTutorialStepGUID)
                end
-               print("#sourceStepV.linkedIn[aTargetTutorialGUID]", #sourceStepV.linkedIn[aTargetTutorialGUID])
                if #sourceStepV.linkedIn[aTargetTutorialGUID] == 0 then
                   sourceStepV.linkedIn[aTargetTutorialGUID] = nil
                else
@@ -2871,6 +2878,10 @@ function SkuAdventureGuide.Tutorial:UnlinkStep(aTargetTutorialGUID, aTargetTutor
                         break
                      end
                   end
+                  if #sourceStepV.linkedIn[aTargetTutorialGUID] == 0 then
+                     sourceStepV.linkedIn[aTargetTutorialGUID] = nil
+                  end
+   
                end
             end
          end

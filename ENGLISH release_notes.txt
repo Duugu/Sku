@@ -4,6 +4,12 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.5
+	- Re-enabled the instant distance output on hard targeting a unit
+	- Fixed a bug with the tutorial editor and steps that are converted from linked steps to real steps
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.4
 	- More routes for Terokkar added by Emily
 	- Layers and waypoint names updated and map issues fixed for Darkshore, Darnassus, Teldrassil, Rut'theran, Moonglade (parts)
