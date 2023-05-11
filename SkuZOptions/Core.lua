@@ -1296,7 +1296,56 @@ function SkuOptions:CreateMainFrame()
 				tCurrentOverviewPage = 1
 			end
 		end
-		
+
+		local tTargetGUID = UnitGUID("target")
+		if tTargetGUID then
+			local tRaidtarget = GetRaidTargetIndex("target")
+			if not tRaidtarget then
+				local tMarkerIndex = nil
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET1WHITE"].key then
+					tMarkerIndex = SkuCore.SkuRaidTargetIndex[1]
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET2RED"].key then
+					tMarkerIndex = SkuCore.SkuRaidTargetIndex[2]
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET3BLUE"].key then
+					tMarkerIndex = SkuCore.SkuRaidTargetIndex[3]
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET4GREEN"].key then
+					tMarkerIndex = SkuCore.SkuRaidTargetIndex[4]
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET5PURPLE"].key then
+					tMarkerIndex = SkuCore.SkuRaidTargetIndex[5]
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET6YELLOW"].key then
+					tMarkerIndex = SkuCore.SkuRaidTargetIndex[6]
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET7ORANGE"].key then
+					tMarkerIndex = SkuCore.SkuRaidTargetIndex[7]
+				end
+				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET8GREY"].key then
+					tMarkerIndex = SkuCore.SkuRaidTargetIndex[8]
+				end
+				if tMarkerIndex ~= nil then
+					SkuCore:TankingSetSkuRaidTarget(tTargetGUID, tMarkerIndex)
+					C_Timer.After(0.1, function()
+						SkuMob:PLAYER_TARGET_CHANGED("PLAYER_TARGET_CHANGED", "target")
+					end)
+				end
+			end
+		end
+
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERCLEARALL"].key then
+			SkuCore:TankingClearSkuRaidTargets()
+			local tTargetGUID = UnitGUID("target")
+			if tTargetGUID then
+				C_Timer.After(0.1, function()
+					SkuMob:PLAYER_TARGET_CHANGED("PLAYER_TARGET_CHANGED", "target")
+				end)
+			end
+		end
+
+
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key then
 			SkuCore:DoGroupRangeCheck()
 		end
@@ -1939,6 +1988,16 @@ function SkuOptions:CreateMainFrame()
 
 	--SetOverrideBindingClick(tFrame, true, "SHIFT-U", tFrame:GetName(), "SHIFT-U")
 	--SetOverrideBindingClick(tFrame, true, "SHIFT-J", tFrame:GetName(), "SHIFT-J")
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET1WHITE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET1WHITE"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET2RED"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET2RED"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET3BLUE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET3BLUE"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET4GREEN"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET4GREEN"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET5PURPLE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET5PURPLE"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET6YELLOW"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET6YELLOW"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET7ORANGE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET7ORANGE"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET8GREY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET8GREY"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERCLEARALL"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERCLEARALL"].key)
+
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key)
@@ -4044,9 +4103,9 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuOptions:StopSounds(aNumberOfSounds)
+function SkuOptions:StopSounds(aNumberOfSounds, aForce)
 	--print("StopSounds", aNumberOfSounds, [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\silence_1s.mp3]])
-	if SkuOptions.db.profile["SkuCore"].playNPCGreetings == true then
+	if SkuOptions.db.profile["SkuCore"].playNPCGreetings == true and not aForce then
 		return
 	end
 	local _, currentSoundHandle = PlaySoundFile([[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\silence_1s.mp3]], "Dialog")--PlaySound(871, "Dialog")

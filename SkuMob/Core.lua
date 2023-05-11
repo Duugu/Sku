@@ -28,17 +28,6 @@ local SkuMobDB = {
 		},
 	}
 
-local SkuMobRaidTargetStrings = {
-	[1] = L["Star"],
-	[2] = L["Circle"],
-	[3] = L["Diamond"],
-	[4] = L["Triangle"],
-	[5] = L["Moon"],
-	[6] = L["Square"],
-	[7] = L["Cross"],
-	[8] = L["Skull"],
-}
-
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnInitialize()
 	--dprint("SkuMob OnInitialize")
@@ -60,7 +49,6 @@ function SkuMob:OnEnable()
 		SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
 	end
 	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds
-
 
 	local ttime = 0
 	local f = _G["SkuMobControl"] or CreateFrame("Frame", "SkuMobControl", UIParent)
@@ -134,8 +122,13 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:VARIABLES_LOADED(...)
-	-- process the event
-  --dprint(...)
+	if SkuOptions.db.profile[MODULE_NAME].InCombatSound == nil then
+		SkuOptions.db.profile[MODULE_NAME].InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+	end
+
+	if SkuMob.InCombatSounds[SkuOptions.db.profile[MODULE_NAME].InCombatSound] == nil then
+		SkuOptions.db.profile[MODULE_NAME].InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -293,7 +286,7 @@ end
 function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	aUnitId = aUnitId or "target"
 
-	dprint("mob PLAYER_TARGET_CHANGED(event, ", event, aUnitId)
+	dprint("SkuMob PLAYER_TARGET_CHANGED(event, ", event, aUnitId)
 
 	if aUnitId == "target" then
 		SkuCore:DoRangeCheck(true, nil, "target")
@@ -438,15 +431,35 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	local tRaidtarget = GetRaidTargetIndex(aUnitId)
 	local tRaidTargetString = ""
 	if tRaidtarget then
-		if SkuMobRaidTargetStrings[tRaidtarget] then
+		if SkuCore.RaidTargetValues[tRaidtarget] then
 			if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
-				tRaidTargetString = SkuMobRaidTargetStrings[tRaidtarget]..";"..SkuMobRaidTargetStrings[tRaidtarget]..";"
+				tRaidTargetString = SkuCore.RaidTargetValues[tRaidtarget].name..";"..SkuCore.RaidTargetValues[tRaidtarget].name..";"
 			else
-				tRaidTargetString = SkuMobRaidTargetStrings[tRaidtarget]..";"
+				tRaidTargetString = SkuCore.RaidTargetValues[tRaidtarget].name..";"
 			end
 		end
 	end
 	
+	local tUnitGUID = UnitGUID(aUnitId)
+	--sku raid target
+	if tRaidtarget == nil or tRaidtarget == "" then
+		if SkuCore:TankingGetSkuRaidTarget(tUnitGUID) ~= nil then
+			tRaidTargetString = SkuCore.RaidTargetValues[SkuCore:TankingGetSkuRaidTarget(tUnitGUID)].color..";"
+		else
+			if UnitCanAttack("player", aUnitId) and tIsPlayerControled == false and status then
+				if SkuOptions.db.profile[MODULE_NAME].autoSetSkuRaidTargetsToInCombatCreatures == true then
+					local tNewRaidTargetId = SkuCore:TankingSetSkuRaidTarget(tUnitGUID, 0)
+					if tNewRaidTargetId then
+						tRaidTargetString = SkuCore.RaidTargetValues[tNewRaidTargetId].color..";"
+					end
+				end
+			end
+		end
+		if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
+			tRaidTargetString = tRaidTargetString..tRaidTargetString
+		end
+	end
+
 	--for passive but attackable targets
 	local tReactionText = ""
 	if UnitCanAttack("player", aUnitId) then

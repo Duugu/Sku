@@ -4,6 +4,38 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.6
+	- Fixed a bug with tutorials and npc id tags
+	- On following a route or waypoint, if the reached waypoint is on a different layer than the previous waypoint, the addon is outputing the layer number. That way you should realize if you are changing layers while on a route (moving a floor up or down, moving ramps up/down, etc.). There's no output if the waypoint has no layer number assigned.
+	- Fixed a bug with missing sound for units that are already in combat. Should now be the beep sound as default.
+	- Added a filter to automatically remove the annoying "Citizens of Dalaran..." outputs that Rhonin is doing if someone has killed Algalon. Removes the chat and audio output.
+	- Added a new chat feature: Chat > Filter. You can add and remove filter terms or phrases to a list. If a chat message contains any filter term, it will be ignored for all chat tabs. Keep that in mind. If you are adding very generic terms, then a lot of messages could be filterd. :) Filter terms are not case-sensitive. Filter terms are stored per Sku profile.
+	- Added a new feature: private Sku target markers
+		Sku target markers are similar to the games target markers (Skull, Cross, Moon, etc.), but they are using colors instead of symbold and they private to you. They are not visible for other players.
+		The colors are: White, Red, Blue, Green, Purple, Yellow, Orange
+		The Sku target markers are to uniquely mark and identify units.
+		Example, if you are fighting three Young Boars, you can privately mark the first one with White, the second with Red, and the third with Blue.
+		The sku target markers are added before the mob name. Similar to the standard raid target markers.
+		So, with the second Young Boar marked with "Blue", you will hear "Blue Young Boar Level..." on targeting that boar.
+		That way you can uniquely identify all mobs, even if they have the same name.
+		As stated, the Sku markers are private and additionally to the games standard target markers. 
+			So, even in a group they won't mix up with the standard target markers, an won't confuse other players.
+		There are two ways to set sku target markers:
+			- There are 8 new key binds for them: Core > Sku key binds > bind key > Set Sku target marker x. (Just filter for "sku target marker")
+			- There is a new option to auto-assign them: Mob > Options > Auto set private Sku raid targets on in combat targets without a raid target. Default: Off. 
+				With this set to On, the addon will auto assign a Sku marker to every unit that is in combat with you and don't have and marker (Sku or Game) yet.
+				Markers will be removed if a unit dies.
+				There is a sku key bind to additionally clear all assigned Sku markers at once.
+		Some more details:
+			- A unit can't have a sku marker and a game marker. Therefore the games target markers are overriding the sku target markers. 
+				If you have privately marked a mob as blue, and you or someone else is marking that mob as the default target marker "Skull", then Blue will just be replaced by Skull.
+			- The default games Remove Target Marker feature is used to remove a sku marker. 
+				That is under Core > Game key binds > Assign key > Target markers > Remove target marker. The default binding is Control + numpad 0.
+			- Good to know: for easier referencing the sku target markers are using the same colors as the games target marker symbols have: 
+				Skull = White, Cross = Red, Square = Blue, Triangle = Green, Diamond = Purple, Star = Yellow, Circle = Orange, Moon = Grey
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.5
 	- Re-enabled the instant distance output on hard targeting a unit
 	- Fixed a bug with the tutorial editor and steps that are converted from linked steps to real steps

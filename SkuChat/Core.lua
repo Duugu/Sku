@@ -1529,6 +1529,16 @@ function SkuChat_MessageEventHandler(self, event, ...)
 		local type = strsub(event, 10) 
 		local info = {r = nil, g = nil, b = nil, id = nil}
 
+		if SkuOptions.db.profile["SkuChat"].chatSettings.filter and SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms then
+			if arg2 == "Rhonin" then
+				SkuOptions:StopSounds(15, true)
+				return true
+			end
+			if SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms[string.lower(arg1)] then
+				return true
+			end
+		end
+
 		local filter = false 
 		if ( chatFilters[event] ) then
 			local newarg1, newarg2, newarg3, newarg4, newarg5, newarg6, newarg7, newarg8, newarg9, newarg10, newarg11, newarg12, newarg13, newarg14 
@@ -2831,6 +2841,14 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 		SkuChat:NewTab(L["Default"])
 		SkuChat:NewTab(L["Communication"])
 		SkuChat:NewTab(L["Other"])
+	end
+
+	--init filters
+	if not SkuOptions.db.profile["SkuChat"].chatSettings.filter then
+		SkuOptions.db.profile["SkuChat"].chatSettings.filter = {}
+	end
+	if not SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms then
+		SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms = {}
 	end
 
 	--update types for existing tabs; just to add new types with new releases

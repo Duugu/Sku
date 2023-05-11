@@ -89,13 +89,14 @@ local tPlaceholders = {
    [5] = {
       tag = "%%(npc_id)%:(%d+)%%",
       value = function(aString) 
-         local tType, tId = string.match(aString, "%%(npc_id)%:(%d+)%%")
-         if tId then
-            local tName = L["INCORRECT CREATURE ID"].." "..tId
-            if SkuDB.NpcData.Names[Sku.Loc][tonumber(tId)] then
-               tName = SkuDB.NpcData.Names[Sku.Loc][tonumber(tId)][1]
+         for tType, tId in string.gmatch(aString, "%%(npc_id)%:(%d+)%%") do 
+            if tId then
+               local tName = L["INCORRECT CREATURE ID"].." "..tId
+               if SkuDB.NpcData.Names[Sku.Loc][tonumber(tId)] then
+                  tName = SkuDB.NpcData.Names[Sku.Loc][tonumber(tId)][1]
+               end
+               aString = string.gsub(aString, "%%(npc_id)%:"..tId.."%%", tName)
             end
-            aString = string.gsub(aString, "%%(npc_id)%:"..tId.."%%", tName)
          end
          return aString
       end,

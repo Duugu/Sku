@@ -616,6 +616,61 @@ function SkuChat:MenuBuilder(aParentEntry)
 		end
 	end
 
+
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Filters"]}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.isSelect = true
+	tNewMenuEntry.deleteName = nil
+	tNewMenuEntry.OnAction = function(self, aValue, aName)
+		if aName == L["Add new entry"] then
+			SkuOptions:EditBoxShow("", function() 
+				local tText = SkuOptionsEditBoxEditBox:GetText()
+				if tText and tText ~= "" then
+					SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms[string.lower(tText)] = true
+					C_Timer.After(0.001, function()
+						SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+					end)
+				end
+			end,
+			false,
+			function() 
+				SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+			end)
+			C_Timer.After(0.01, function()
+				SkuOptions.Voice:OutputStringBTtts(L["Enter filter term and press enter"], {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, })
+			end)
+		else
+			if self.deleteName then
+				self.deleteName = string.lower(self.deleteName)
+				if SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms[self.deleteName] then
+					SkuOptions.db.profile["SkuChat"].chatSettings.filter.terms[self.deleteName] = nil
+				end
+			end
+			C_Timer.After(0.001, function()
+				SkuOptions.currentMenuPosition:OnUpdate(SkuOptions.currentMenuPosition)
+			end)
+		end
+	end
+	tNewMenuEntry.BuildChildren = function(self)
+		local tEntry = SkuOptions:InjectMenuItems(self, {L["Add new entry"]}, SkuGenericMenuItem)
+		tEntry.OnEnter = function(self, aValue, aName)
+			self.selectTarget.deleteName = nil
+		end			
+
+		for i, v in pairs(SkuOptions.db.profile[MODULE_NAME].chatSettings.filter.terms) do
+			local tEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
+			tEntry.dynamic = true
+			tEntry.OnEnter = function(self, aValue, aName)
+				self.selectTarget.deleteName = i
+			end			
+			tEntry.BuildChildren = function(self)
+				SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
+			end
+		end
+	end
+
+
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuChat.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])

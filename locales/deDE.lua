@@ -2659,3 +2659,30 @@ L["(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current ste
 L["(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound."] = "(%SKU_KEY_TUTORIALSTEPFORWARD%), um zum nächsten Schritt zu wechseln, sobald du den aktuellen Schritt abgeschlossen hast. Das geht nur, wenn du den Erfolgssound gehört hast."
 L["Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step."] = "Halte dich immer genau an die Anweisungen. Mache niemals anderen Dinge außer den Tutorial-Anweisungen, solange du das Tutorial spielen willst. Es funktioniert sonst nicht mehr korrekt. Schalte immer weiter zum nächsten Schritt, wenn du einen Schritt abgeschlossen hast."
 L["Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%)."] = "Drücke jetzt (%SKU_KEY_TUTORIALSTEPFORWARD%), um mit dem ersten Schritt loszulegen. Um diese Infos erneut zu hören, und dir die Tastenkombinationen zu notieren, drücke (%SKU_KEY_TUTORIALSTEPREPEAT%)."
+
+L["Tanking"] = "Tanking"
+
+L["Yellow"] = "Gelb"
+L["Orange"] = "Orange"
+L["Purple"] = "Lila"
+L["Green"] = "Grün"
+L["Grey"] = "Grau"
+L["Blue"] = "Blau"
+L["Red"] = "Rot"
+L["White"] = "Weiß"
+
+L["Auto set private Sku raid targets on in combat targets without a raid target"] = "Automatisch privates Sku Raidsymbol auf Einheiten im Kampf ohne Raidsymbol setzen"
+
+L["Filters"] = "Filter"
+L["Add new entry"] = "Neuen Eintrag hinzufügen"
+L["Enter filter term and press enter"] = "Filterbegriff eingeben und Enter drücken"
+
+L["SKU_KEY_SKUMARKERSET1WHITE"] = "Sku Ziel Markierung 1 Weiß zuweisen"
+L["SKU_KEY_SKUMARKERSET2RED"] = "Sku Ziel Markierung 2 Rot zuweisen"
+L["SKU_KEY_SKUMARKERSET3BLUE"] = "Sku Ziel Markierung 3 Blau zuweisen"
+L["SKU_KEY_SKUMARKERSET4GREEN"] = "Sku Ziel Markierung 4 Grün zuweisen"
+L["SKU_KEY_SKUMARKERSET5PURPLE"] = "Sku Ziel Markierung 5 Lila zuweisen"
+L["SKU_KEY_SKUMARKERSET6YELLOW"] = "Sku Ziel Markierung 6 Gelb zuweisen"
+L["SKU_KEY_SKUMARKERSET7ORANGE"] = "Sku Ziel Markierung 7 Orange zuweisen"
+L["SKU_KEY_SKUMARKERSET8GREY"] = "Sku Ziel Markierung 8 Grau zuweisen"
+L["SKU_KEY_SKUMARKERCLEARALL"] = "Alle Sku Ziel Markierungen entfernen"

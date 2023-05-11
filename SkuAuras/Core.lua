@@ -622,6 +622,10 @@ function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 
 	SkuAuras:RoleChecker(aEventName, tEventData)
 
+	if tEventData[CleuBase.subevent] == "UNIT_DIED" then
+		SkuDispatcher:TriggerSkuEvent("SKU_UNIT_DIED", tEventData[8])
+	end
+
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
 		C_Timer.After(0.1, function()
 			SkuAuras:SPELL_COOLDOWN_START(tEventData)

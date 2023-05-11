@@ -91,6 +91,16 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_GROUPMEMBERSRANGECHECK"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
 
+   ["SKU_KEY_SKUMARKERSET1WHITE"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_SKUMARKERSET2RED"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_SKUMARKERSET3BLUE"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_SKUMARKERSET4GREEN"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_SKUMARKERSET5PURPLE"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_SKUMARKERSET6YELLOW"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_SKUMARKERSET7ORANGE"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_SKUMARKERSET8GREY"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+   ["SKU_KEY_SKUMARKERCLEARALL"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
+
 
 
    --["SKU_KEY_CHAT_LINEPREV"] = {key = "UP", object = "SkuChat", func = "OnEnable",},

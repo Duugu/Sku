@@ -6,6 +6,8 @@ local L = Sku.L
 
 SkuNav = SkuNav or LibStub("AceAddon-3.0"):NewAddon("SkuNav", "AceConsole-3.0", "AceEvent-3.0")
 
+local lastLayer = ""
+
 local lastDirection = -1
 local lastDistance = 0
 SkuDrawFlag = false
@@ -1635,7 +1637,14 @@ function SkuNav:ProcessCheckReachingWp()
 					if distance < SkuNavWpSize[tWpObject.size] + SkuNav.CurrentStandardWpReachedRange and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 						SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 						SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)
-						SkuOptions:VocalizeMultipartString(L["Arrived;at;waypoint"], false, true, 0.3, true)
+
+						local tOutput =L["Arrived;at;waypoint"]
+						local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, nil), true, true)
+						if tLayerText ~= lastLayer then
+							lastLayer = tLayerText
+							tOutput = tLayerText..";"..tOutput
+						end
+						SkuOptions.Voice:OutputString(tOutput, false, true, 0, true)
 							
 						if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
@@ -1685,7 +1694,14 @@ function SkuNav:ProcessCheckReachingWp()
 								if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 								end
-								SkuOptions.Voice:OutputString(L["still"]..";"..(#SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps - tNextWPNr + 1), true, true, 0, true)
+
+								local tOutput = L["still"]..";"..(#SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps - tNextWPNr + 1)
+								local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, nil), true, true)
+								if tLayerText ~= lastLayer then
+									lastLayer = tLayerText
+									tOutput = tLayerText..";"..tOutput
+								end
+								SkuOptions.Voice:OutputString(tOutput, true, true, 0, true)
 
 								SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingMetapaths[SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget].pathWps[tNextWPNr], true)
 								SkuNav:UpdateReverseRtData()
@@ -1696,7 +1712,16 @@ function SkuNav:ProcessCheckReachingWp()
 								if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 									SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 								end
-								SkuOptions:VocalizeMultipartString(L["Arrived at target"]..";", false, true, 0.3, true)
+
+								local tOutput = L["Arrived at target"]..";"
+								local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, SkuOptions.db.profile[MODULE_NAME].selectedWaypoint, nil), true, true)
+								if tLayerText ~= lastLayer then
+									lastLayer = tLayerText
+									tOutput = tLayerText..";"..tOutput
+								end
+								SkuOptions.Voice:OutputString(tOutput, false, true, 0, true)
+
+								--SkuOptions:VocalizeMultipartString(tOutput, false, true, 0.3, true)
 
 								local selectedWaypoint = SkuOptions.db.profile[MODULE_NAME].selectedWaypoint
 								SkuNav:setWaypointVisited(selectedWaypoint)
@@ -3460,12 +3485,15 @@ function SkuNav:GetNonAutoLevel(aUid, aUnitName, aSkuWaypointName, aForTarget)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:GetLayerText(aNonAutoLevel, aNonAutoLevelNotUnique)
+function SkuNav:GetLayerText(aNonAutoLevel, aNonAutoLevelNotUnique, aLongFlag)
 	if aNonAutoLevel then
 		if aNonAutoLevel < 0 then
 			aNonAutoLevel = string.gsub(aNonAutoLevel, "-", L["Minus"].." ")
 		end
 		local tLayerText = L["layerFirstLetter"].." "..aNonAutoLevel
+		if aLongFlag ~= nil then
+			tLayerText = L["Layer"].." "..aNonAutoLevel
+		end
 		if aNonAutoLevelNotUnique ~= true then
 			tLayerText = tLayerText.." "..L["uncertainFirstLetter"]..""
 		end

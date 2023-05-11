@@ -2666,3 +2666,31 @@ L["(%SKU_KEY_TUTORIALSTEPREPEAT%), to hear the instructions from the current ste
 L["(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound."] = "(%SKU_KEY_TUTORIALSTEPFORWARD%), to proceed to the next step as soon as you have completed the current step. This only works if you have heard the success sound."
 L["Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step."] = "Always follow the instructions exactly. Never do anything other than the tutorial instructions are requesting, as long as you want to play the tutorial. It will break if you're doing anything else. Always proceed to the next step when you have completed a step."
 L["Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%)."] = "Now press %SKU_KEY_TUTORIALSTEPFORWARD% to start with the first step. To hear this info again, and take note of the shortcuts, press (%SKU_KEY_TUTORIALSTEPREPEAT%)."
+
+
+L["Tanking"] = "Tanking"
+
+L["Yellow"] = "Yellow"
+L["Orange"] = "Orange"
+L["Purple"] = "Purple"
+L["Green"] = "Green"
+L["Grey"] = "Grey"
+L["Blue"] = "Blue"
+L["Red"] = "Red"
+L["White"] = "White"
+
+L["Auto set private Sku raid targets on in combat targets without a raid target"] = "Auto set private Sku raid targets on in combat targets without a raid target"
+
+L["Filters"] = "Filters"
+L["Add new entry"] = "Add new entry"
+L["Enter filter term and press enter"] = "Enter filter term and press enter"
+
+L["SKU_KEY_SKUMARKERSET1WHITE"] = "Set Sku target marker 1 White"
+L["SKU_KEY_SKUMARKERSET2RED"] = "Set Sku target marker 2 Red"
+L["SKU_KEY_SKUMARKERSET3BLUE"] = "Set Sku target marker 3 Blue"
+L["SKU_KEY_SKUMARKERSET4GREEN"] = "Set Sku target marker 4 Green"
+L["SKU_KEY_SKUMARKERSET5PURPLE"] = "Set Sku target marker 5 Purple"
+L["SKU_KEY_SKUMARKERSET6YELLOW"] = "Set Sku target marker 6 Yellow"
+L["SKU_KEY_SKUMARKERSET7ORANGE"] = "Set Sku target marker 7 Orange"
+L["SKU_KEY_SKUMARKERSET8GREY"] = "Set Sku target marker 8 Grey"
+L["SKU_KEY_SKUMARKERCLEARALL"] = "Clear all Sku target markers"

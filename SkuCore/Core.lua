@@ -218,6 +218,7 @@ function SkuCore:OnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
 	SkuCore:AqOnInitialize()
+	SkuCore:TankingOnInitialize()
 	SkuCore:DamageMeterOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
 	SkuCore:FriendsOnInitialize()
@@ -2036,6 +2037,8 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:GameWorldObjectsOnLogin()
 
 		SkuCore:AqOnLogin()
+
+		SkuCore:TankingOnLogin()
 		
 		SkuCore:DialTargetingOnLogin()
 
