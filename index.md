@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.7](https://github.com/Duugu/Sku/releases/download/r34.7/Sku-r34.7-wrath.zip) (May 12th 2023)<br>
+- [Sku r34.8](https://github.com/Duugu/Sku/releases/download/r34.8/Sku-r34.8-wrath.zip) (May 12th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,18 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.8
+- The newbie tutorials are ready. :) Right now there are tutorials for:
+	- Human: Warriors, Paladins, Rogues, Priests, Mages, and Warlocks
+	- Night Elf: Hunters, and Druids.
+
+	Other race / class combos may follow.<br>
+	The tutorials are for absolute beginners, with literally zero knowledge on the game, the addon, or mmo games in general.<br>
+	New players will get an audio hint that there are tutorials and how to start them on the very first login with their first character. <br>
+	Each tutorial will take between 1.5 and 2.5 hours if time to be completed (depending on the players speed).<br>
+	All tutorials need to be tested in English and German. So, if you would like to help, and test a tutorial, you just need to create a new character using one of the available race / class combos listed above. Then login and follow the instructions.<br>
+	Any feedback is appreciated. If you really would like to help with building more tutorials or building your own tutorials, please let me know.
+
 ## Changes in Sku r34.7
 - Fixed a bug with the Sku target markers. Shoud now assign different colors if Mob > Options > Auto set private Sku raid targets on in combat targets without a raid target is set to On. :)
 - Sku target markers won't be removed from dead mobs anymore. Instead all Sku target markers are removed if combat ends.
