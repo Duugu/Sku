@@ -17,6 +17,7 @@ local tRaceRequirementValues = {
 	[8] = L["Troll"],
 	[10] = L["Blutelf"],
 	[11] = L["Draenei"],
+	[990] = "hidden",
 	[991] = L["Allianz"],
 	[992] = L["Horde"],
 	[993] = L["Alle"],
@@ -775,28 +776,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide.Tutorial:OnInitialize()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   --uncomment if tutorials are released
-   --SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuAdventureGuide.Tutorial.PlayFtuTutorialHint)
-
-
-
+   SkuDispatcher:RegisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuAdventureGuide.Tutorial.PlayFtuTutorialHint)
    SkuDispatcher:RegisterEventCallback("PLAYER_ENTERING_WORLD", SkuAdventureGuide.Tutorial.PLAYER_ENTERING_WORLD)
 
    --this frame is to catch all keys if tutorial output is running
@@ -2557,7 +2537,7 @@ function SkuAdventureGuide.Tutorial:PlayFtuTutorialHint(aevent)
       SkuOptions.db.char[MODULE_NAME].Tutorials.ftuTutorialHintPlayed = true
       SkuDispatcher:UnregisterEventCallback("NAME_PLATE_UNIT_ADDED", SkuAdventureGuide.Tutorial.PlayFtuTutorialHint)
       if UnitLevel("player") == 1 then
-         C_Timer.After(15, function()
+         C_Timer.After(7, function()
             local tIntroText = L["Important! Before you start playing: You may want to check out the help for newbies. If you don't know how to play the game, press F1 right now, to get more information, before you do anything else. So, if you do need help, press F1 now."]
             SkuOptions.Voice:OutputStringBTtts(tIntroText, {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
          end)
