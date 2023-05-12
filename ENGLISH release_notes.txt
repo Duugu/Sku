@@ -2,6 +2,12 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34.7
+	- Fixed a bug with the Sku target markers. Shoud now assign different colors if Mob > Options > Auto set private Sku raid targets on in combat targets without a raid target is set to On. :)
+	- Sku target markers won't be removed from dead mobs anymore. Instead all Sku target markers are removed if combat ends.
+	- Fixed a bug with some quest panel that was causing the panel to open again and again on escape.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.6

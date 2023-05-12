@@ -1417,7 +1417,7 @@ function SkuOptions:CreateMainFrame()
 				end
 
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key then
-					if SkuAdventureGuide.Tutorial.current.isUser and SkuAdventureGuide.Tutorial.currentStepCompleted ~= true then
+					if SkuAdventureGuide.Tutorial.currentStepCompleted ~= true then
 						return
 					end
 
@@ -2663,10 +2663,12 @@ function SkuOptions:CreateMenuFrame()
 			end
 		end
 
+		--[[
 		if _G["QuestFrameDetailPanel"]:IsVisible() == true then
 			--_G["QuestFrameDetailPanel"]:Hide()
 			_G["QuestFrameDeclineButton"]:GetScript("OnClick")(_G["QuestFrameDeclineButton"])
 		end
+		]]
 		if _G["QuestFrameProgressPanel"]:IsVisible() == true then
 			--_G["QuestFrameProgressPanel"]:Hide()
 			_G["QuestFrameGoodbyeButton"]:GetScript("OnClick")(_G["QuestFrameGoodbyeButton"])
@@ -2685,10 +2687,11 @@ function SkuOptions:CreateMenuFrame()
 				_G["GossipFrameGreetingGoodbyeButton"]:GetScript("OnClick")(_G["GossipFrameGreetingGoodbyeButton"])
 			end
 		end
+		--[[
 		if _G["QuestFrameGreetingPanel"]:IsVisible() == true then
 			_G["QuestFrameGoodbyeButton"]:GetScript("OnClick")(_G["QuestFrameGoodbyeButton"])
 		end
-
+		]]
 		SkuOptions.TTS:Output("", -1)
 		SkuOptions:StartStopBackgroundSound(false)
 		SkuOptions:HideVisualMenu()

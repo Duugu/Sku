@@ -493,13 +493,13 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		if hp == 0 then
 			if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
 				--SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)
-				tOutputString = tOutputString.." "..L["dead"]
+				tOutputString = tRaidTargetString.." "..L["dead"]
 				--SkuOptions.Voice:OutputString(tUnitName, false, true, 0.8)
-				tOutputString = tOutputString.." "..tUnitName
+				tOutputString = tRaidTargetString.." "..tUnitName
 				
 			else
 				--SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tUnitName, true, true, 0.3, nil, nil, nil, 1)
-				tOutputStringB = tOutputStringB.." "..L["dead"].." "..tUnitName
+				tOutputStringB = tRaidTargetString.." "..L["dead"].." "..tUnitName
 			end
 		else
 			if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then

@@ -2538,13 +2538,15 @@ function SkuAdventureGuide.Tutorial:StartStep(aStartAtStepNumber)
    C_Timer.After(0.1, function()
       SkuOptions.Voice:OutputString("sound-waterdrop5", false, false, 0.3, true)
       C_Timer.After(1.0, function()
-         local tCurrentStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid]].GUID)
-         local tStartText = tCurrentStepData.beginText[Sku.Loc]
-         tStartText = SkuAdventureGuide.Tutorial:ReplacePlaceholders(tStartText)
-         SkuOptions.Voice:OutputStringBTtts(tStartText, {overwrite = tCurrentStepData.dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
-         C_Timer.After(0.1, function()
-            SkuAdventureGuide.Tutorial.evaluateNextStep = true
-         end)
+         if SkuAdventureGuide.Tutorial.current.source then
+            local tCurrentStepData = SkuAdventureGuide.Tutorial:GetLinkedStepData(SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid]].GUID)
+            local tStartText = tCurrentStepData.beginText[Sku.Loc]
+            tStartText = SkuAdventureGuide.Tutorial:ReplacePlaceholders(tStartText)
+            SkuOptions.Voice:OutputStringBTtts(tStartText, {overwrite = tCurrentStepData.dontSkipCurrentOutputs == false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
+            C_Timer.After(0.1, function()
+               SkuAdventureGuide.Tutorial.evaluateNextStep = true
+            end)
+         end
       end)
    end)
 end
