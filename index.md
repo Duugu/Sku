@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.6](https://github.com/Duugu/Sku/releases/download/r34.6/Sku-r34.6-wrath.zip) (May 11th 2023)<br>
+- [Sku r34.7](https://github.com/Duugu/Sku/releases/download/r34.7/Sku-r34.7-wrath.zip) (May 12th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.7
+- Fixed a bug with the Sku target markers. Shoud now assign different colors if Mob > Options > Auto set private Sku raid targets on in combat targets without a raid target is set to On. :)
+- Sku target markers won't be removed from dead mobs anymore. Instead all Sku target markers are removed if combat ends.
+- Fixed a bug with some quest panel that was causing the panel to open again and again on escape.
+
 ## Changes in Sku r34.6
 - Fixed a bug with tutorials and npc id tags
 - On following a route or waypoint, if the reached waypoint is on a different layer than the previous waypoint, the addon is outputing the layer number. That way you should realize if you are changing layers while on a route (moving a floor up or down, moving ramps up/down, etc.). There's no output if the waypoint has no layer number assigned.
