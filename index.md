@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.8](https://github.com/Duugu/Sku/releases/download/r34.8/Sku-r34.8-wrath.zip) (May 12th 2023)<br>
+- [Sku r34.9](https://github.com/Duugu/Sku/releases/download/r34.9/Sku-r34.9-wrath.zip) (May 13th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.9
+- Fixed an issue with outdated audio data versions that lead to missing audio outputs for mobs (like health, name, etc). You nevertheless should update to SkuAudioData en r10 (ENGLISH) or SkuAudioData r38 (GERMAN) via https://duugu.github.io/Sku/ if you not already did that.
+
 ## Changes in Sku r34.8
 - The newbie tutorials are ready. :) Right now there are tutorials for:
 	- Human: Warriors, Paladins, Rogues, Priests, Mages, and Warlocks
