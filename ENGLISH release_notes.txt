@@ -2,6 +2,10 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34.9
+	- Fixed an issue with outdated audio data versions that lead to missing audio outputs for mobs (like health, name, etc). You nevertheless should update to SkuAudioData en r10 (ENGLISH) or SkuAudioData r38 (GERMAN) via https://duugu.github.io/Sku/ if you not already did that.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.8

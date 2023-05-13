@@ -46,7 +46,9 @@ function SkuMob:OnEnable()
 	SkuMob.InCombatSounds = {}
 	SkuMob.InCombatSounds["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"]
 	for i, v in pairs(SkuAuras.outputSoundFiles) do
-		SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
+		if SkuAudioFileIndex[i] then
+			SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
+		end
 	end
 	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds
 
