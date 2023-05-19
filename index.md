@@ -31,7 +31,7 @@ DEUTSCH - Erste Schritte:<br>
 	This is auto turning you to units like your target, party members, mobs with game markers like Skull, or mobs with sku markers like Blue.<br>
 	The feature is not 100% accurate. Sometimes it is turning you straight to the unit. Sometimes it ends up left or right of the unit. It gets less accurate the closer the unit is. It gets less accurate the faster the speed setting is (see below). It depends on your machines speed/your fps. Faster is more accurate. Low fps can lead to completely inaccurate results.<br>
 	It works reliably with units up to 41 meters away. If the unit is more than 41 meters away, the success rate will be quite worse. It works everywhere. Open world, dungeons, even battlegrounds. It works for all unit types. However, the unit must by on your physical level. Units above or below you, or units behind walls etc. won't work.<br>
-	There are 6 new keybindings to use this feature: Sku key binds > Turn to target 1-6. They are are bound to no key by default. Each keybind is turning you to a different unit (see below). 1 is your target, 2 is skull, 3 is cross, 4 is square, and 5 & 6 are nothing<br>
+	There are 6 new keybindings to use this feature: Sku key binds > Turn to unit 1-6. They are are bound to no key by default. Each keybind is turning you to a different unit (see below). 1 is your target, 2 is skull, 3 is cross, 4 is square, and 5 & 6 are nothing<br>
 	There are settings under Core > Options > Turn to target:
 	- Unit selection:  This is where you set the units for the 6 key bindings. The default units for key 1-6 are: target, skull, cross, square, nothing, nothing
 	- Speed: the faster, the less accurate
