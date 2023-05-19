@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.11](https://github.com/Duugu/Sku/releases/download/r34.11/Sku-r34.11-wrath.zip) (May 19th 2023)<br>
+- [Sku r34.12](https://github.com/Duugu/Sku/releases/download/r34.12/Sku-r34.12-wrath.zip) (May 19th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,10 +23,15 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
-## Changes in Sku r34.11
+## Changes in Sku r34.12 (May 19th 2023)
+- Added a new option: Mob > Options > Don't vocalize reaction and level for players in combat. Default: on
+- Addded a new key bind: Sku key binds > Turn 180 degrees. Default: not bound. It is instantly (in 0.1 seconds) turning you around by 180 degrees. Can by used while moving. The feature again depends on your fps / computer performance. Should be quite accurate with high fps and no lags. Will get less accurate otherwise. Please provide feedback if it isn't working correctly for you.
+- Fixed a bug where using the Turn to Unit key binds while moving was opening the menu on stop moving.
+
+## Changes in Sku r34.11 (May 19th 2023)
 - Fixed an issue with tutorials where the tutorial could break after starting the route to the first quest target.
 	
-## Changes in Sku r34.10
+## Changes in Sku r34.10 (May 19th 2023)
 - Added a new feature: Turn to Unit <br>
 	This is auto turning you to units like your target, party members, mobs with game markers like Skull, or mobs with sku markers like Blue.<br>
 	The feature is not 100% accurate. Sometimes it is turning you straight to the unit. Sometimes it ends up left or right of the unit. It gets less accurate the closer the unit is. It gets less accurate the faster the speed setting is (see below). It depends on your machines speed/your fps. Faster is more accurate. Low fps can lead to completely inaccurate results.<br>
