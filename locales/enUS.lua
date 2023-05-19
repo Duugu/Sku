@@ -2725,13 +2725,16 @@ L["Enhanced settings"] = "Enhanced settings"
 L["Delay on found plate"] = "Delay on found plate"
 
 L["SKU_KEY_TURNTOUNITTARGET"] = "Turn to target"
-L["SKU_KEY_TURNTOUNIT1"] = "Turn to target 1"
-L["SKU_KEY_TURNTOUNIT2"] = "Turn to target 2"
-L["SKU_KEY_TURNTOUNIT3"] = "Turn to target 3"
-L["SKU_KEY_TURNTOUNIT4"] = "Turn to target 4"
-L["SKU_KEY_TURNTOUNIT5"] = "Turn to target 5"
-L["SKU_KEY_TURNTOUNIT6"] = "Turn to target 6"
+L["SKU_KEY_TURNTOUNIT1"] = "Turn to unit 1"
+L["SKU_KEY_TURNTOUNIT2"] = "Turn to unit 2"
+L["SKU_KEY_TURNTOUNIT3"] = "Turn to unit 3"
+L["SKU_KEY_TURNTOUNIT4"] = "Turn to unit 4"
+L["SKU_KEY_TURNTOUNIT5"] = "Turn to unit 5"
+L["SKU_KEY_TURNTOUNIT6"] = "Turn to unit 6"
 
 L["Unit selection"] = "Unit selection"
 L["Key bind"] = "Key bind"
 
+L["Don't vocalize reaction and level for players in combat"] ="Don't vocalize reaction and level for players in combat"
+
+L["SKU_KEY_TURNTOUNITTURN180"] = "Turn 180 degrees"

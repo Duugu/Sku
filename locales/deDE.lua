@@ -1333,7 +1333,7 @@ L["KommaNumbers"] = "Komma"
 
 L[";Meter"] = " Meter"
 
-L["Announce player controled units with generic descriptions"] = "Freundliche und feindliche Spieler ansagen"
+L["Announce player controled units with generic descriptions"] = "Spieler mit generischen Beschreibungen ansagen"
 
 L["Repeat raid target markers on units"] = "Ziel symbole wiederholen"
 L["Ein"] = "Ein"
@@ -2715,12 +2715,15 @@ L["Enhanced settings"] = "Erweiterte Einstellungen"
 L["Delay on found plate"] = "Verzögerung bei Plakette gefunden"
 
 L["SKU_KEY_TURNTOUNITTARGET"] = "Zum Ziel drehen"
-L["SKU_KEY_TURNTOUNIT1"] = "Zum Ziel drehen 1"
-L["SKU_KEY_TURNTOUNIT2"] = "Zum Ziel drehen 2"
-L["SKU_KEY_TURNTOUNIT3"] = "Zum Ziel drehen 3"
-L["SKU_KEY_TURNTOUNIT4"] = "Zum Ziel drehen 4"
-L["SKU_KEY_TURNTOUNIT5"] = "Zum Ziel drehen 5"
-L["SKU_KEY_TURNTOUNIT6"] = "Zum Ziel drehen 6"
+L["SKU_KEY_TURNTOUNIT1"] = "Zu Einheit drehen 1"
+L["SKU_KEY_TURNTOUNIT2"] = "Zu Einheit drehen 2"
+L["SKU_KEY_TURNTOUNIT3"] = "Zu Einheit drehen 3"
+L["SKU_KEY_TURNTOUNIT4"] = "Zu Einheit drehen 4"
+L["SKU_KEY_TURNTOUNIT5"] = "Zu Einheit drehen 5"
+L["SKU_KEY_TURNTOUNIT6"] = "Zu Einheit drehen 6"
 
 L["Unit selection"] = "Einheitenauswahl"
 L["Key bind"] = "Tastenkombination"
+
+L["Don't vocalize reaction and level for players in combat"] ="Für spieler Reaktion und level im kampf nicht ansagen"
+L["SKU_KEY_TURNTOUNITTURN180"] = "180 Grad drehen"

@@ -1345,19 +1345,6 @@ function SkuOptions:CreateMainFrame()
 			end
 		end
 
-		for x = 1, 6 do
-			if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key then
-				local tValues = SkuCore.TurnToUnit.availableTargetsList[SkuCore.TurnToUnit.availableTargetsListNames[SkuOptions.db.profile["SkuCore"].turnToUnit.targetSelection["key"..x]]]
-				SkuCore:TurnToUnitStartTuring(tValues[1], tValues[2], tValues[3])
-			end
-		end
-
-		
-		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key then
-			SkuCore:DoGroupRangeCheck()
-		end
-			
-
 		--monitor
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"].key then
 			if UnitInRaid("player") then
@@ -2026,16 +2013,9 @@ function SkuOptions:CreateMainFrame()
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET7ORANGE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET7ORANGE"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET8GREY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERSET8GREY"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERCLEARALL"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERCLEARALL"].key)
-
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key)
-
-	for x = 1, 6 do
-		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key)
-	end
-
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key)

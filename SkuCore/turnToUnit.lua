@@ -234,3 +234,24 @@ function SkuCore:TurnToUnitStartTuring(aUnitId, aGameMarker, aSkuMarker)
       end)
    end)
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:TurnToUnitTurn180()
+   if SkuCore.TurnToUnit.searching == true then
+      return
+   end
+
+   SkuCore.TurnToUnit.searching = true
+   MoveViewRightStart(6.7)
+   MoveViewDownStart(0)
+   MoveViewUpStart(0)
+   C_Timer.After(0.1, function()
+      SkuCore.TurnToUnit.searching = false
+      MoveViewRightStart(0)
+      MoveViewUpStart(0)
+      MoveViewDownStart(0)
+      MouselookStart()
+      MouselookStop() 
+   end)
+end
+

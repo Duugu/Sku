@@ -2,10 +2,18 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34.12
+	- Added a new option: Mob > Options > Don't vocalize reaction and level for players in combat. Default: on
+	- Addded a new key bind: Sku key binds > Turn 180 degrees. Default: not bound. It is instantly (in 0.1 seconds) turning you around by 180 degrees. Can by used while moving. The feature again depends on your fps / computer performance. Should be quite accurate with high fps and no lags. Will get less accurate otherwise. Please provide feedback if it isn't working correctly for you.
+	- Fixed a bug where using the Turn to Unit key binds while moving was opening the menu on stop moving.
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.11
 	- Fixed an issue with tutorials where the tutorial could break after starting the route to the first quest target.
-	
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.10
@@ -13,7 +21,7 @@ Changes in Sku r34.10
 		This is auto turning you to units like your target, party members, mobs with game markers like Skull, or mobs with sku markers like Blue.
 		The feature is not 100% accurate. Sometimes it is turning you straight to the unit. Sometimes it ends up left or right of the unit. It gets less accurate the closer the unit is. It gets less accurate the faster the speed setting is (see below). It depends on your machines speed/your fps. Faster is more accurate. Low fps can lead to completely inaccurate results.
 		It works reliably with units up to 41 meters away. If the unit is more than 41 meters away, the success rate will be quite worse. It works everywhere. Open world, dungeons, even battlegrounds. It works for all unit types. However, the unit must by on your physical level. Units above or below you, or units behind walls etc. won't work.
-		There are 6 new keybindings to use this feature: Sku key binds > Turn to target 1-6. They are are bound to nothing by default. Each keybind is turning you to a different unit (see below). 1 is your target, 2 is skull, 3 is cross, 4 is square, and 5 & 6 are nothing
+		There are 6 new keybindings to use this feature: Sku key binds > Turn to unit 1-6. They are are bound to no key by default. Each keybind is turning you to a different unit (see below). 1 is your target, 2 is skull, 3 is cross, 4 is square, and 5 & 6 are nothing
 		There are settings under Core > Options > Turn to target:
 			- Unit selection:  This is where you set the units for the 6 key bindings. The default units for key 1-6 are: target, skull, cross, square, nothing, nothing
 			- Speed: the faster, the less accurate

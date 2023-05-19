@@ -1236,6 +1236,22 @@ function SkuCore:OnEnable()
 			return
 		end
 
+		for x = 1, 6 do
+			if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key then
+				local tValues = SkuCore.TurnToUnit.availableTargetsList[SkuCore.TurnToUnit.availableTargetsListNames[SkuOptions.db.profile["SkuCore"].turnToUnit.targetSelection["key"..x]]]
+				SkuCore:TurnToUnitStartTuring(tValues[1], tValues[2], tValues[3])
+			end
+		end
+
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNITTURN180"].key then
+			SkuCore:TurnToUnitTurn180()
+		end
+	
+		
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key then
+			SkuCore:DoGroupRangeCheck()
+		end
+
 		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"].key then
 			if UnitInRaid("player") ~= nil then
 				SkuCore:MonitorRaidHealth2Conti(true)
@@ -1399,7 +1415,11 @@ function SkuCore:OnEnable()
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_PANICMODE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_PANICMODE"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANWIDE"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MMSCANNARROW"].key)
-
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key)
+		for x = 1, 6 do
+			SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key)
+		end
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNITTURN180"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNITTURN180"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN2"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN2"].key)

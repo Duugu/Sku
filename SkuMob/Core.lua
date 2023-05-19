@@ -329,10 +329,18 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	if UnitIsPlayer(aUnitId) then
 		if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders == true then
 			if UnitIsFriend("player", aUnitId) then
-				tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["freundlicher spieler"]
-				tIsPlayerControled = true
+				if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+					tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
+				else
+					tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["freundlicher spieler"]
+				end
+					tIsPlayerControled = true
 			else
-				tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["feindlicher spieler"]
+				if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+					tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
+				else
+					tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["feindlicher spieler"]
+				end
 				tIsPlayerControled = true
 			end
 			noSubText = true
@@ -341,7 +349,11 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		end
 	end
 	if UnitPlayerControlled(aUnitId) == true and UnitIsPlayer(aUnitId) == false then
-		tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["fremder begleiter"]
+		if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
+		else
+			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["fremder begleiter"]
+		end
 		tIsPlayerControled = true
 		noSubText = true
 	end
@@ -476,7 +488,6 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	local hp = math.floor(UnitHealth(aUnitId) / (UnitHealthMax(aUnitId) / 100))
 
 	if aUnitId == "softinteract" then
-		--tRaidTargetString = ""
 		if UnitExists("softinteract") == false then
 			noSubText = true
 			tIsPlayerControled = false
@@ -494,29 +505,21 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 	if tUnitName then
 		if hp == 0 then
 			if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-				--SkuOptions.Voice:OutputString(L["dead"], true, true, 0.3)
-				--SkuOptions.Voice:OutputString(tUnitName, false, true, 0.8)
 				tOutputString = tRaidTargetString.." "..L["dead"].." "..tUnitName
-				
 			else
-				--SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tUnitName, true, true, 0.3, nil, nil, nil, 1)
 				tOutputStringB = tRaidTargetString.." "..L["dead"].." "..tUnitName
 			end
 		else
 			if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
 				if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					--SkuOptions.Voice:OutputString(tRaidTargetString, true, true, 0.8)
 					tOutputString = tOutputString.." "..tRaidTargetString
 				else
-					--SkuOptions.Voice:OutputStringBTtts(tRaidTargetString, true, true, 0.8, nil, nil, nil, 1)
 					tOutputStringB = tOutputStringB.." "..tRaidTargetString
 				end
 			else
 				if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					--SkuOptions.Voice:OutputString(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8)
 					tOutputString = tOutputString.." "..tRaidTargetString..tReactionText..tUnitName
 				else
-					--SkuOptions.Voice:OutputStringBTtts(tRaidTargetString..tReactionText..tUnitName, true, true, 0.8, nil, nil, nil, 1)
 					tOutputStringB = tOutputStringB.." "..tRaidTargetString..tReactionText..tUnitName
 				end
 			end
@@ -538,28 +541,31 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		if tUnitLevel then
 			if tUnitLevel ~= -1 then
 				if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					--SkuOptions.Voice:OutputString(L["level"], false, true, 0.2)
-					tOutputString = tOutputString.." "..L["level"]
-					--SkuOptions.Voice:OutputString(string.format("%02d", tUnitLevel).." "..tClassifications[tClassification], false, true, 0.3)
-					tOutputString = tOutputString.." "..string.format("%02d", tUnitLevel).." "..tClassifications[tClassification]
+					if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true or SkuCore.inCombat == false) then
+						tOutputString = tOutputString.." "..L["level"]
+						tOutputString = tOutputString.." "..string.format("%02d", tUnitLevel).." "..tClassifications[tClassification]
+					end
 				else
-					--SkuOptions.Voice:OutputStringBTtts(L["level"].." "..string.format("%02d", tUnitLevel), false, true, 0.2, nil, nil, nil, 1)
-					tOutputStringB = tOutputStringB.." "..L["level"].." "..string.format("%02d", tUnitLevel)
+					if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+						tOutputStringB = tOutputStringB.." "..L["level"].." "..string.format("%02d", tUnitLevel)
+					end
 				end
 			else
 				if aUnitId ~= "softinteract" then
 					if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-						--SkuOptions.Voice:OutputString(L["level"], false, true, 2.2)
-						tOutputString = tOutputString.." "..L["level"]
-						--SkuOptions.Voice:OutputString(L["Unknown"], false, true, 0.3)
-						tOutputString = tOutputString.." "..L["Unknown"]
+						if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+							tOutputString = tOutputString.." "..L["level"]
+							tOutputString = tOutputString.." "..L["Unknown"]
+						end
 					else
-						--SkuOptions.Voice:OutputStringBTtts(L["level"].." "..L["Unknown"], false, true, 2.2, nil, nil, nil, 1)
-						tOutputStringB = tOutputStringB.." "..L["level"].." "..L["Unknown"]
+						if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+							tOutputStringB = tOutputStringB.." "..L["level"].." "..L["Unknown"]
+						end
 					end
 				end
 			end
 		end
+
 		if noSubText ~= true then
 			GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
 			GameTooltip:SetUnit(aUnitId)
@@ -570,7 +576,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 				if tLineTwoText then
 					if tLineTwoText ~= "" then
 						if not string.find(tLineTwoText, L["level"]) then
-							SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
+							--SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
 							tOutputString = tOutputString.." "..tLineTwoText
 						end
 					end
@@ -580,12 +586,8 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 		
 		--layer info
 		if SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true) then
-			
 			local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, nil, true))
-			
-			
 			if tLayerText then
-				--SkuOptions.Voice:OutputString(tLayerText, false, true, 0.8)
 				tOutputString = tOutputString.." "..tLayerText
 				tOutputStringB = tOutputStringB.." "..tLayerText
 			end
@@ -593,12 +595,9 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 
 	end
 
-
-	if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+	if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
 		SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
-		--print("tOutputString", "-"..tOutputString.."-")
 	else
 		SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
-		--print("tOutputStringB", "-"..tOutputStringB.."-", tIsPlayerControled, SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts)
 	end
 end
