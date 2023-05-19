@@ -5,6 +5,40 @@ local L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 
 if not SkuVoice then return end -- No upgrade needed
 
+local tGenderSuffixes = {
+	["frau"] = "mann",
+	["in"] = "",
+	}
+
+local tEmojis = {
+	[":%-%)"] = L["Emoji"].." "..L["Smile"],
+	[":%)"] = L["Emoji"].." "..L["Smile"],
+	[":%]"] = L["Emoji"].." "..L["Smile"],
+	[":>"] = L["Emoji"].." "..L["Smile"],
+	["%^%^"] = L["Emoji"].." "..L["Smile"],
+	[":%-d"] = L["Emoji"].." "..L["Laughing"],
+	[":d"] = L["Emoji"].." "..L["Laughing"],
+	["xd"] = L["Emoji"].." "..L["Laughing"],
+	["Xd"] = L["Emoji"].." "..L["Laughing"],
+	[":%-%("] = L["Emoji"].." "..L["Sad"],
+	[":%("] = L["Emoji"].." "..L["Sad"],
+	[":%-%*"] = L["Emoji"].." "..L["Kiss"],
+	[":%*"] = L["Emoji"].." "..L["Kiss"],
+	[":%-P"] = L["Emoji"].." "..L["Tongue sticking out"],
+	[":p"] = L["Emoji"].." "..L["Tongue sticking out"],
+	[":%-/"] = L["Emoji"].." "..L["Skeptical"],
+	[":/"] = L["Emoji"].." "..L["Skeptical"],
+	[":\\"] = L["Emoji"].." "..L["Skeptical"],
+	[":%-|"] = L["Emoji"].." "..L["Straight face"],
+	[":|"] = L["Emoji"].." "..L["Straight face"],
+	[":%-x"] = L["Emoji"].." "..L["Sealed lips"],
+	[":x"] = L["Emoji"].." "..L["Sealed lips"],
+	[":%-#"] = L["Emoji"].." "..L["Sealed lips"],
+	[":#"] = L["Emoji"].." "..L["Sealed lips"],
+	[";%-%)"] = L["Emoji"].." "..L["Wink"],
+	[";%)"] = L["Emoji"].." "..L["Wink"],
+}	
+
 ---------------------------------------------------------------------------------------------------------
 local SapiLangIds = {
 	["deDE"] = 407,
@@ -54,31 +88,35 @@ function SkuVoice:Create()
 			local status, utteranceID, destination = ...
 		end
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_STARTED" then
-			local numConsumers, utteranceID, durationMS, destination = ...
-			if destination == 1 then
-				SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying + 1
-				dprint("START")
-			end
-			if utteranceID - C_VoiceChatSpeakTextLastUtteranceId > 15 then
-				C_VoiceChatSpeakTextLastUtteranceId = utteranceID
-			elseif utteranceID - C_VoiceChatSpeakTextLastUtteranceId < -15 then
-				C_VoiceChatSpeakTextLastUtteranceId = utteranceID
+			if IsMacClient() ~= true then
+				local numConsumers, utteranceID, durationMS, destination = ...
+				if destination == 1 then
+					SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying + 1
+					dprint("START")
+				end
+				if utteranceID - C_VoiceChatSpeakTextLastUtteranceId > 15 then
+					C_VoiceChatSpeakTextLastUtteranceId = utteranceID
+				elseif utteranceID - C_VoiceChatSpeakTextLastUtteranceId < -15 then
+					C_VoiceChatSpeakTextLastUtteranceId = utteranceID
+				end
 			end
 		end
 		if aEventName == "VOICE_CHAT_TTS_PLAYBACK_FINISHED" then
-			local numConsumers, utteranceID, destination = ...
-			if destination == 1 then
-				SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying - 1
-				if SkuVoice.TutorialPlaying < 0 then
-					SkuVoice.TutorialPlaying = 0
-				end
-				if SkuVoice.TutorialPlaying == 0 then
-					--SkuOptions.Voice:OutputString("sound-TutorialClose01", false, false, 0.3, true)
-					SkuOptions.Voice:OutputString("sound-waterdrop1", false, false, 0.3, true)
-					dprint("STOP")
-					if mSkuVoiceQueueBTTS_Callback then
-						mSkuVoiceQueueBTTS_Callback()
-						mSkuVoiceQueueBTTS_Callback = nil
+			if IsMacClient() ~= true then
+				local numConsumers, utteranceID, destination = ...
+				if destination == 1 then
+					SkuVoice.TutorialPlaying = SkuVoice.TutorialPlaying - 1
+					if SkuVoice.TutorialPlaying < 0 then
+						SkuVoice.TutorialPlaying = 0
+					end
+					if SkuVoice.TutorialPlaying == 0 then
+						--SkuOptions.Voice:OutputString("sound-TutorialClose01", false, false, 0.3, true)
+						SkuOptions.Voice:OutputString("sound-waterdrop1", false, false, 0.3, true)
+						dprint("STOP")
+						if mSkuVoiceQueueBTTS_Callback then
+							mSkuVoiceQueueBTTS_Callback()
+							mSkuVoiceQueueBTTS_Callback = nil
+						end
 					end
 				end
 			end
@@ -277,6 +315,11 @@ local function SplitStringBTTS(aString)
 	if aString == "" then
 		return aString
 	end
+
+	for i, v in pairs(tEmojis) do
+		aString = string.gsub(aString, i, v)
+	end
+
 	aString = string.gsub(aString, "\r\n", ";")
 	aString = string.gsub(aString, "\r", ";")
 	aString = string.gsub(aString, "\n", ";")
@@ -292,10 +335,10 @@ local function SplitStringBTTS(aString)
 	aString = string.gsub(aString, "|", ";")
 	aString = string.gsub(aString, "%[", ";")
 	aString = string.gsub(aString, "%]", ";")
-	aString = string.gsub(aString, "%+", ";")
-	aString = string.gsub(aString, "%*", ";")
+	--aString = string.gsub(aString, "%+", ";")
+	--aString = string.gsub(aString, "%*", ";")
 	aString = string.gsub(aString, "#", ";")
-	aString = string.gsub(aString, "%-", ";")
+	--aString = string.gsub(aString, "%-", ";")
 	--aString = string.gsub(aString, ":", L[";doppelpunkt;"])
 	--aString = string.gsub(aString, "&", ";und;")
 	--aString = string.gsub(aString, "%%", L[";prozent;"])
@@ -771,7 +814,7 @@ end
 ---@param aString string
 ---@param aOverwrite boolean
 ---@param aWait boolean
-function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial) -- for strings with lookup in string index
+function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aAudioFile) -- for strings with lookup in string index
 	if not aString then
 		return
 	end
@@ -781,7 +824,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 	local tResult = SkuAdventureGuide.Tutorial:EvaluateTriggers("OutputString EvaluateTriggers")
 	if tResult == true then
 		C_Timer.After(0.5, function()
-			SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial) -- for strings with lookup in string index
+			SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks, aIsTutorial, aAudioFile) -- for strings with lookup in string index
 		end)
 	end
 
@@ -798,6 +841,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		aDnQ = aOverwrite.dnQ
 		aIgnoreLinks = aOverwrite.ignoreLinks
 		aIsTutorial = aOverwrite.isTutorial
+		aAudioFile = aOverwrite.audioFile
 		aOverwrite = aOverwrite.overwrite
 	end
 	
@@ -1033,9 +1077,17 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				--dprint(tStrings[x], "tFile", tFile)
 
 				if tFile == nil then
+					local tModString = string.lower(tostring(tStrings[x]))
+					for i, v in pairs(tGenderSuffixes) do
+						if string.sub(tModString, string.len(tModString) - string.len(i) + 1) == i then
+							tFile = SkuAudioFileIndex[string.sub(tModString, 1, string.len(tModString) - string.len(i))..v]
+						end
+					end
+				end
+
+				if tFile == nil then
 					tFile = SkuAudioFileIndex["sound-audiofehltbeep"]
 					if SkuOptions.db then
-
 						if SkuOptions.db.realm.missingAudio == nil then
 							SkuOptions.db.realm.missingAudio = {}
 						end
@@ -1044,12 +1096,16 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 						else
 							SkuOptions.db.realm.missingAudio[tStrings[x]] = SkuOptions.db.realm.missingAudio[tStrings[x]] + 1
 						end
-
 					end
 				end
 			else
 				tFile = SkuAudioFileIndex[tStrings[x]]
 			end
+
+			if aAudioFile ~= nil then
+				tFile = aAudioFile
+			end
+
 			if tFile then
 				if tFile ~= "" then
 					local tLength = SkuAudioDataLenIndex[tFile] or aLength
@@ -1058,8 +1114,9 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 						--tLength = tLength - ((100 - tonumber(SkuOptions.db.profile["SkuOptions"].TTSSepPause)) / 100) -- - 0.15
 					--end
 
-
-					tFile = "Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..tFile
+					if aAudioFile == nil then
+						tFile = "Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..tFile
+					end
 					aOverwrite = aOverwrite or false
 					aWait = aWait or false
 					tLength = tLength or 0

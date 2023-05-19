@@ -2492,7 +2492,16 @@ function SkuAdventureGuide.Tutorial:ReReadCurrentStep()
             if SkuAdventureGuide.Tutorial.currentStepCompleted == true then
                C_Timer.After(1.5, function()
                   SkuOptions.Voice:RegisterBttsCallback(function()
-                     SkuOptions.Voice:OutputString("sound-TutorialSuccess01", false, true, 0.3, true)
+                     SkuOptions.Voice:OutputString("sound-TutorialSuccess01", --false, false, 0.3, true)
+                        {
+                           overwrite = false,
+                           wait = false,
+                           length = 2.2,
+                           doNotOverwrite = true,
+                           audioFile = "Interface\\AddOns\\Sku\\SkuAudioData\\assets\\audio\\"..Sku.Loc.."\\Tutorial_Success_01.mp3"
+                        }
+                     )
+
                      if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience <= SkuAdventureGuide.Tutorial.ftuExperienceMaxSteps then
                         C_Timer.After(2.4, function()
                            SkuOptions.Voice:OutputStringBTtts(SkuAdventureGuide.Tutorial:AddNextStepText(""), {overwrite = false, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
@@ -2589,7 +2598,16 @@ function SkuAdventureGuide.Tutorial:OnStepCompleted(aCompleteStepNumber)
    SkuAdventureGuide.Tutorial.evaluateNextStep = false
    SkuAdventureGuide.Tutorial.currentStepCompleted = true
    C_Timer.After(1.5, function()
-      SkuOptions.Voice:OutputString("sound-TutorialSuccess01", false, false, 0.3, true)
+      SkuOptions.Voice:OutputString("sound-TutorialSuccess01", --false, false, 0.3, true)
+         {
+            overwrite = false,
+            wait = false,
+            length = 2.2,
+            doNotOverwrite = true,
+            audioFile = "Interface\\AddOns\\Sku\\SkuAudioData\\assets\\audio\\"..Sku.Loc.."\\Tutorial_Success_01.mp3"
+         }
+      )
+
       if not SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps[SkuOptions.db.char[MODULE_NAME].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] + 1] then
          SkuAdventureGuide.Tutorial:StopCurrentTutorial()
          C_Timer.After(1.5, function()
@@ -2735,14 +2753,16 @@ function SkuAdventureGuide.Tutorial:TutorialsMenuBuilder(aParentEntry, aIsUser)
                      
                      for x = 1, #tSource.AllLangs.Tutorials[tTutorialGuid].steps do
                         local tStepData = tSource.AllLangs.Tutorials[tTutorialGuid].steps[x]
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["schritt "]..x..": "..tStepData.title[Sku.Loc]}, SkuGenericMenuItem)
-                        tNewMenuEntry.BuildChildren = function(self)
-                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Start from this step"]}, SkuGenericMenuItem)
-                           tNewMenuEntry.isSelect = true
-                           tNewMenuEntry.OnAction = function(self, aValue, aName)
-                              SkuAdventureGuide.Tutorial:StopCurrentTutorial()
-                              SkuOptions:CloseMenu()                           
-                              SkuAdventureGuide.Tutorial:StartTutorial(tTutorialGuid, x, tSource, nil, aIsUser)
+                        if tStepData.title then
+                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["schritt "]..x..": "..tStepData.title[Sku.Loc]}, SkuGenericMenuItem)
+                           tNewMenuEntry.BuildChildren = function(self)
+                              local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Start from this step"]}, SkuGenericMenuItem)
+                              tNewMenuEntry.isSelect = true
+                              tNewMenuEntry.OnAction = function(self, aValue, aName)
+                                 SkuAdventureGuide.Tutorial:StopCurrentTutorial()
+                                 SkuOptions:CloseMenu()                           
+                                 SkuAdventureGuide.Tutorial:StartTutorial(tTutorialGuid, x, tSource, nil, aIsUser)
+                              end
                            end
                         end
                      end

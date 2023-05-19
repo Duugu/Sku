@@ -3183,6 +3183,10 @@ function SkuChat:InitTab(tNewTabIndex)
 			end
 		end
 
+		if string.find(body, "Debug:") then
+			tAudio = false
+		end
+
 		--process
 		if tAudio ~= false then
 			--remove old if > max

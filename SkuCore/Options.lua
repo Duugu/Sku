@@ -111,7 +111,7 @@ SkuCore.options = {
 		ressourceScanning={
 			name = L["Ressource Scanning"],
 			type = "group",
-			order = 1,
+			order = 2,
 			args= {
 				miningNodes={
 					order = 1,
@@ -160,6 +160,7 @@ SkuCore.options = {
 		},
 		readAllTooltips = {
 			name = L["Read all tooltips"],
+			order = 3,
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
@@ -195,6 +196,7 @@ SkuCore.options = {
 		]]
 		interactMove = {
 			name = L["Bei Interagieren zum Ziel laufen"],
+			order = 4,
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
@@ -204,8 +206,166 @@ SkuCore.options = {
 				return SkuOptions.db.profile[MODULE_NAME].interactMove
 			end
 		},
+
+		turnToUnit = {
+			name = L["Turn to unit"],
+			order = 5,
+			type = "group",
+			args = {
+				speed = {
+					order = 1,
+					name = L["Speed (higher is faster)"],
+					desc = "",
+					type = "range",
+					min = 1,
+					max = 10,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].turnToUnit.speed = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].turnToUnit.speed
+					end
+				},
+				soundOnSuccess = {
+					order = 2,
+					name = L["Sound on success"],
+					desc = "",
+					type = "select",
+					values = SkuCore.outputSoundFiles,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnSuccess = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnSuccess
+					end
+				},	
+				soundOnFail = {
+					order = 3,
+					name = L["Sound on fail"],
+					desc = "",
+					type = "select",
+					values = SkuCore.outputSoundFiles,
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnFail = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].turnToUnit.soundOnFail
+					end
+				},	
+				targetSelection={
+					name = L["Unit selection"],
+					type = "group",
+					order = 4,
+					args= {
+						key1 = {
+							order = 1,
+							name = L["Key bind"].." "..1,
+							desc = "",
+							type = "select",
+							values = SkuCore.TurnToUnit.availableTargetsListNames,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key1 = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key1
+							end
+						},
+						key2 = {
+							order = 2,
+							name = L["Key bind"].." "..2,
+							desc = "",
+							type = "select",
+							values = SkuCore.TurnToUnit.availableTargetsListNames,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key2 = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key2
+							end
+						},
+						key3 = {
+							order = 3,
+							name = L["Key bind"].." "..3,
+							desc = "",
+							type = "select",
+							values = SkuCore.TurnToUnit.availableTargetsListNames,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key3 = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key3
+							end
+						},
+						key4 = {
+							order = 4,
+							name = L["Key bind"].." "..4,
+							desc = "",
+							type = "select",
+							values = SkuCore.TurnToUnit.availableTargetsListNames,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key4 = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key4
+							end
+						},
+						key5 = {
+							order = 5,
+							name = L["Key bind"].." "..5,
+							desc = "",
+							type = "select",
+							values = SkuCore.TurnToUnit.availableTargetsListNames,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key5 = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key5
+							end
+						},
+						key6 = {
+							order = 6,
+							name = L["Key bind"].." "..6,
+							desc = "",
+							type = "select",
+							values = SkuCore.TurnToUnit.availableTargetsListNames,
+							set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key6 = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.targetSelection.key6
+							end
+						},
+
+					},
+				},
+
+				enhancedSettings={
+					name = L["Enhanced settings"],
+					type = "group",
+					order = 5,
+					args= {
+						delayOnPlate = {
+							order = 1,
+							name = L["Delay on found plate"],
+							desc = "",
+							type = "range",
+							min = 1,
+							max = 10,
+									set = function(info,val)
+								SkuOptions.db.profile[MODULE_NAME].turnToUnit.enhancedSettings.delayOnPlate = val
+							end,
+							get = function(info)
+								return SkuOptions.db.profile[MODULE_NAME].turnToUnit.enhancedSettings.delayOnPlate
+							end
+						},
+					},
+				},
+			},
+		},
+
 		playNPCGreetings = {
 			name = L["Play NPC greetings"],
+			order = 6,
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
@@ -217,6 +377,7 @@ SkuCore.options = {
 		},
 		doNotHideTooltip = {
 			name = L["do not hide tooltip"],
+			order = 7,
 			desc = "",
 			type = "toggle",
 			set = function(info, val)
@@ -229,7 +390,7 @@ SkuCore.options = {
 		classes={
 			name = L["Classes"],
 			type = "group",
-			order = 2,
+			order = 8,
 			args= {
 				hunter={
 					name = L["Hunter"],
@@ -255,7 +416,7 @@ SkuCore.options = {
 		itemSettings={
 			name = L["item settings"],
 			type = "group",
-			order = 3,
+			order = 9,
 			args= {
 				ShowItemQality = {
 					name = L["show item quality"],
@@ -299,7 +460,7 @@ SkuCore.options = {
 		fallSettings={
 			name = L["Fall detection settings"],
 			type = "group",
-			order = 3,
+			order = 10,
 			args= {
 				delay = {
 					name = L["Delay before output trigger (milliseconds)"],
@@ -361,7 +522,7 @@ SkuCore.options = {
 		UIErrors={
 			name = L["Error feedback"],
 			type = "group",
-			order = 4,
+			order = 11,
 			args= {
 				ErrorSoundChannel={
 					name = L["sound channel"],
@@ -609,6 +770,22 @@ SkuCore.defaults = {
 	--autoFollow = false,
 	--endFollowOnCast = false,
 	interactMove = true,
+	turnToUnit = {
+		speed = 6,
+		soundOnSuccess = "sound-waterdrop5",
+		soundOnFail = "sound-waterdrop1",
+		targetSelection = {
+			key1 = 1,
+			key2 = 13,
+			key3 = 12,
+			key4 = 11,
+			key5 = 22,
+			key6 = 22,
+		},
+		enhancedSettings = {
+			delayOnPlate = 2,
+		},
+	},
 	playNPCGreetings = true,
 	scanBackgroundSound = "tools-ratchet.mp3",
 	doNotHideTooltip = true,
@@ -2590,6 +2767,82 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.TankingMenuBuilder
+
+
+	local tDungeonDifficultyIDs = {
+		[1] = L["5 Player normal"],
+		[2] = L["5 Player heroic"],
+	}
+	local tRaidDifficultyIDs = {
+		[3] = L["10 Player"],
+		[4] = L["25 Player"],
+	}
+
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Dungeon and raid settings"]}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.BuildChildren = function(self)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Party"]}, SkuGenericMenuItem)
+		tNewMenuEntry.isSelect = true
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Difficulty"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				for i, v in pairs(tDungeonDifficultyIDs) do
+					if v == aName then
+						SetDungeonDifficultyID(i)
+					end
+				end
+			end
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				local difficultyID = GetDungeonDifficultyID()
+				return tDungeonDifficultyIDs[difficultyID]
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for i, v in pairs(tDungeonDifficultyIDs) do
+					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+				end
+			end
+		end
+
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Raid"]}, SkuGenericMenuItem)
+		tNewMenuEntry.isSelect = true
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.BuildChildren = function(self)
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Difficulty"]}, SkuGenericMenuItem)
+			tNewMenuEntry.dynamic = true
+			tNewMenuEntry.isSelect = true
+			tNewMenuEntry.OnAction = function(self, aValue, aName)
+				for i, v in pairs(tRaidDifficultyIDs) do
+					if v == aName then
+						SetRaidDifficultyID(i)
+					end
+				end
+			end
+			tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+				local difficultyID = GetRaidDifficultyID()
+				return tRaidDifficultyIDs[difficultyID]
+			end
+			tNewMenuEntry.BuildChildren = function(self)
+				for i, v in pairs(tRaidDifficultyIDs) do
+					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+				end
+			end
+		end
+
+	end
+
+
+
+
+
+
+
+
+
+
+
 
 	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true

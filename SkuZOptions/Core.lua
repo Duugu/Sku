@@ -1345,7 +1345,14 @@ function SkuOptions:CreateMainFrame()
 			end
 		end
 
+		for x = 1, 6 do
+			if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key then
+				local tValues = SkuCore.TurnToUnit.availableTargetsList[SkuCore.TurnToUnit.availableTargetsListNames[SkuOptions.db.profile["SkuCore"].turnToUnit.targetSelection["key"..x]]]
+				SkuCore:TurnToUnitStartTuring(tValues[1], tValues[2], tValues[3])
+			end
+		end
 
+		
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key then
 			SkuCore:DoGroupRangeCheck()
 		end
@@ -1392,6 +1399,7 @@ function SkuOptions:CreateMainFrame()
 		if SkuAdventureGuide.Tutorial.current.guid and SkuAdventureGuide.Tutorial.current.source then
 			if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] then
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPBACK"].key then
+					SkuAdventureGuide.Tutorial.currentStepCompletedOverride = false
 					if SkuAdventureGuide.Tutorial.current.isUser then
 						return
 					end
@@ -1410,16 +1418,37 @@ function SkuOptions:CreateMainFrame()
 				end
 
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key then
-					C_Timer.After(0.1, function()
-						SkuAdventureGuide.Tutorial:ReReadCurrentStep()
-					end)
-					return
+					if SkuOptions.Voice.TutorialPlaying == 0 then
+						SkuAdventureGuide.Tutorial.currentStepCompletedOverride = false
+						C_Timer.After(0.1, function()
+							SkuAdventureGuide.Tutorial:ReReadCurrentStep()
+						end)
+						return
+					else
+						return
+					end
 				end
 
 				if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key then
-					if SkuAdventureGuide.Tutorial.currentStepCompleted ~= true then
+					if SkuOptions.Voice.TutorialPlaying == 0 then
+						if SkuAdventureGuide.Tutorial.currentStepCompleted ~= true then
+							if SkuAdventureGuide.Tutorial.currentStepCompletedOverride ~= true then
+								SkuAdventureGuide.Tutorial.currentStepCompletedOverride = true
+								local tOutput = SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Warning: You have not completed the current step yet. If you jump to the next step anyway, the tutorial might not work anymore. If you really want to jump to the next step, press %SKU_KEY_TUTORIALSTEPFORWARD% again. Otherwise press %SKU_KEY_TUTORIALSTEPREPEAT% to hear the instructions of the current step again."])
+								SkuOptions.Voice:StopOutputEmptyQueue()
+								C_Timer.After(0.1, function()
+									SkuOptions.Voice:OutputStringBTtts(tOutput, {overwrite = true, wait = true, doNotOverwrite = true, engine = 2, isTutorial = true, })
+									C_Timer.After(20, function()
+										SkuAdventureGuide.Tutorial.currentStepCompletedOverride = false
+									end)
+								end)
+								return
+							end
+						end
+					else
 						return
 					end
+					SkuAdventureGuide.Tutorial.currentStepCompletedOverride = false
 
 					local tStepMax = #SkuAdventureGuide.Tutorial.current.source.AllLangs.Tutorials[SkuAdventureGuide.Tutorial.current.guid].steps
 					if SkuOptions.db.char["SkuAdventureGuide"].Tutorials.progress[SkuAdventureGuide.Tutorial.current.guid] < tStepMax then
@@ -2002,6 +2031,11 @@ function SkuOptions:CreateMainFrame()
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPREPEAT"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TUTORIALSTEPFORWARD"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key)
+
+	for x = 1, 6 do
+		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key)
+	end
+
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGENEMY"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLESOFTTARGETINGFRIENDLY"].key)

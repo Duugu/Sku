@@ -14273,7 +14273,7 @@ SkuDB.AllLangs = {
                ["allTriggersRequired"] = true,
                ["beginText"] = {
                   ["deDE"] = "Als %class% kannst du (Stoffrüstung), (Lederrüstung) und (Schwere rüstung) tragen. Später, ab Level 40 auch (Plattenrüstung). Sicher möchtest du sehen, welche Ausrüstung du aktuell angezogen hast. Gehe dafür auf (Ausrüstung) nach rechts auf (Gegenstände) und dann nochmal nach rechts.",
-                  ["enUS"] = "As %class% you can wear cloth armor, leather armor and heavy armor. Later, at level 40, you can also wear plate armor. You will probably want to see what equipment you are currently wearing. To do this, go to (Equipment), right to (Items) and then right again.",
+                  ["enUS"] = "As %class% you can wear cloth armor, leather armor and mail armor. Later, at level 40, you can also wear plate armor. You will probably want to see what equipment you are currently wearing. To do this, go to (Equipment), right to (Items) and then right again.",
                },
                ["dontSkipCurrentOutputs"] = true,
                ["triggers"] = {
@@ -15537,6 +15537,13 @@ SkuDB.AllLangs = {
                      },
                      ["type"] = "MENU_ITEM",
                   }, -- [2]
+                  {
+                     ["value"] = {
+                        ["deDE"] = "4,1,3,1,1",
+                        ["enUS"] = "4,1,3,1,1",
+                     },
+                     ["type"] = "MENU_ITEM",
+                  }, -- [3]                  
                },
             }, -- [111]
             {

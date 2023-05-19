@@ -69,6 +69,6 @@ end
 Sku.debug = false
 function dprint(...)
 	if Sku.debug == true then
-		print(...)
+		print("Debug:", ...)
 	end
 end

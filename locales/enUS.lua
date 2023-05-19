@@ -2694,3 +2694,44 @@ L["SKU_KEY_SKUMARKERSET6YELLOW"] = "Set Sku target marker 6 Yellow"
 L["SKU_KEY_SKUMARKERSET7ORANGE"] = "Set Sku target marker 7 Orange"
 L["SKU_KEY_SKUMARKERSET8GREY"] = "Set Sku target marker 8 Grey"
 L["SKU_KEY_SKUMARKERCLEARALL"] = "Clear all Sku target markers"
+
+L["Dungeon and raid settings"] = "Dungeon and raid settings"
+L["Difficulty"] = "Difficulty"
+
+L["5 Player normal"] = "5 Player normal"
+L["5 Player heroic"] = "5 Player heroic"
+L["10 Player"] = "10 Player"
+L["25 Player"] = "25 Player"
+
+L["Warning: You have not completed the current step yet. If you jump to the next step anyway, the tutorial might not work anymore. If you really want to jump to the next step, press %SKU_KEY_TUTORIALSTEPFORWARD% again. Otherwise press %SKU_KEY_TUTORIALSTEPREPEAT% to hear the instructions of the current step again."] = "Warning: You have not completed the current step yet. If you jump to the next step anyway, the tutorial might not work anymore. If you really want to jump to the next step, press %SKU_KEY_TUTORIALSTEPFORWARD% again. Otherwise press %SKU_KEY_TUTORIALSTEPREPEAT% to hear the instructions of the current step again."
+
+L["Emoji"] = "Emoji"
+L["Smile"] = "Smile"
+L["Laughing"] = "Laughing"
+L["Sad"] = "Sad"
+L["Kiss"] = "Kiss"
+L["Tongue sticking out"] = "Tongue sticking out"
+L["Skeptical"] = "Skeptical"
+L["Straight face"] = "Straight face"
+L["Sealed lips"] = "Sealed lips"
+L["Wink"] = "Wink"
+
+
+L["Turn to unit"] = "Turn to unit"
+L["Speed (higher is faster)"] = "Speed (higher is faster)"
+L["Sound on success"] = "Sound on success"
+L["Sound on fail"] = "Sound on fail"
+L["Enhanced settings"] = "Enhanced settings"
+L["Delay on found plate"] = "Delay on found plate"
+
+L["SKU_KEY_TURNTOUNITTARGET"] = "Turn to target"
+L["SKU_KEY_TURNTOUNIT1"] = "Turn to target 1"
+L["SKU_KEY_TURNTOUNIT2"] = "Turn to target 2"
+L["SKU_KEY_TURNTOUNIT3"] = "Turn to target 3"
+L["SKU_KEY_TURNTOUNIT4"] = "Turn to target 4"
+L["SKU_KEY_TURNTOUNIT5"] = "Turn to target 5"
+L["SKU_KEY_TURNTOUNIT6"] = "Turn to target 6"
+
+L["Unit selection"] = "Unit selection"
+L["Key bind"] = "Key bind"
+

@@ -2,6 +2,30 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34.10
+	- Added a new feature: turn to unit. 
+		This is auto turning you to units like your target, party members, mobs with game markers like Skull, or mobs with sku markers like Blue.
+		The feature is not 100% accurate. Sometimes it is turning you straight to the unit. Sometimes it ends up left or right of the unit. It gets less accurate the closer the unit is. It gets less accurate the faster the speed setting is (see below). It depends on your machines speed/your fps. Faster is more accurate. Low fps can lead to completely inaccurate results.
+		It works reliably with units up to 41 meters away. If the unit is more than 41 meters away, the success rate will be quite worse. It works everywhere. Open world, dungeons, even battlegrounds. It works for all unit types. However, the unit must by on your physical level. Units above or below you, or units behind walls etc. won't work.
+		There are 6 new keybindings to use this feature: Sku key binds > Turn to target 1-6. They are are bound to nothing by default. Each keybind is turning you to a different unit (see below). 1 is your target, 2 is skull, 3 is cross, 4 is square, and 5 & 6 are nothing
+		There are settings under Core > Options > Turn to target:
+			- Unit selection:  This is where you set the units for the 6 key bindings. The default units for key 1-6 are: target, skull, cross, square, nothing, nothing
+			- Speed: the faster, the less accurate
+			- Enhanced settings: do not touch unless prompted
+	- Fixed a bug with the Human tutorials step "start navigation to class trainer"
+	- Changed "heavy armor" to "chain armor" in tutorial texts
+	- Fixed an issue with missing success sound in tutorials if you are not on the latest SkuAudiodata version
+	- It is now possible to use the "next step" key bind (default: ALT + J) to jump to the next tutorial step even if you haven't completed the current step. You will hear a warning and need to confirm by pressing ALT + J again to actually jump to the next step. This most likely will break the tutorial and is not recommended.
+	- Fixed the missing "dead" output on targeting dead targets
+	- Added a Core > Dungeon and raid settings menu to set the difficulty if you are the party/raid leader
+	- Fixed an issue with missing audio outputs for female creatures in German
+	- Fixed an issue on Mac clients where tts outputs could not be canceled anymore. This will break the tutorials feature on Mac clients, but I can't do anything to avoid that. It's Blizzards fault.
+	- Fixed an issue with "auto" waypoints incorrectly showing up in the waypoint list (shift + f9)
+	- The addon is now outputting generic emojis like in chat messages as text that is correctly read by tts voices.
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.9
 	- Fixed an issue with outdated audio data versions that lead to missing audio outputs for mobs (like health, name, etc). You nevertheless should update to SkuAudioData en r10 (ENGLISH) or SkuAudioData r38 (GERMAN) via https://duugu.github.io/Sku/ if you not already did that.

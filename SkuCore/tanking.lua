@@ -288,3 +288,19 @@ function SkuCore:TankingMenuBuilder()
    end
    ]]
 end
+
+
+function test()
+   MouselookStop()  
+   C_Timer.After(0, function()
+      print("test 1")
+      SetView(2)
+      MoveViewRightStart(125)
+      MoveViewDownStart(0)
+      MoveViewUpStart(0)
+   end)
+   C_Timer.After(0.5, function()
+      print("test 2")
+           MouselookStop()
+   end) 
+end
