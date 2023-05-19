@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.10](https://github.com/Duugu/Sku/releases/download/r34.10/Sku-r34.10-wrath.zip) (May 19th 2023)<br>
+- [Sku r34.11](https://github.com/Duugu/Sku/releases/download/r34.11/Sku-r34.11-wrath.zip) (May 19th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,7 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
-Changes in Sku r34.10
+## Changes in Sku r34.11
+- Fixed an issue with tutorials where the tutorial could break after starting the route to the first quest target.
+	
+## Changes in Sku r34.10
 - Added a new feature: Turn to Unit <br>
 	This is auto turning you to units like your target, party members, mobs with game markers like Skull, or mobs with sku markers like Blue.<br>
 	The feature is not 100% accurate. Sometimes it is turning you straight to the unit. Sometimes it ends up left or right of the unit. It gets less accurate the closer the unit is. It gets less accurate the faster the speed setting is (see below). It depends on your machines speed/your fps. Faster is more accurate. Low fps can lead to completely inaccurate results.<br>
