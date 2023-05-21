@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.12](https://github.com/Duugu/Sku/releases/download/r34.12/Sku-r34.12-wrath.zip) (May 19th 2023)<br>
+- [Sku r34.13](https://github.com/Duugu/Sku/releases/download/r34.13/Sku-r34.13-wrath.zip) (May 21st 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,17 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.13
+- The addon now is auto-enabling the nameplates for all units
+- Renamed the setting "Don't vocalize reaction and level for players in combat" to "Don't vocalize the reaction (friendly or hostile) and the level for players while in combat"
+- Added new options to the bags and bank slots: 
+	Every bag has a new "Sort and cleanup" menu after the last bag slot/item in the bag. It is to sort or cleanup the items in the specific bag.
+	In the main bag menu is a "Sort and cleanup" menu entry after the last bag. It applies to ALL open bags. Even the bank, if the bank is open.
+	Under "Sort and cleanup" you will find actions to sort or clean the bag or bags. Right now there is only one action:
+	- "Move all items to the top of the bag (collapse)": That is, if the items are spread all over the bag, and there are empty slots in between, all items will be moved, so that all empty bag slots are at the end of the bag. The items order won't change with this. 
+	
+	I will add additional sorting/cleaning options with the next release. At least "Sort items by quality". I am open for suggestions what sorting/cleaning options could be helpful.
+
 ## Changes in Sku r34.12 
 (May 19th 2023)
 - Added a new option: Mob > Options > Don't vocalize reaction and level for players in combat. Default: on
