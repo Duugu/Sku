@@ -3614,8 +3614,6 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			end
 			if tNewMenuEntry and aGossipListTable[index].click == true then
 				if aGossipListTable[index].func then
-
-
 					tNewMenuEntry.BuildChildren = function(self)
 						if ((aGossipListTable[index].isBag and CursorHasItem())) or not aGossipListTable[index].isBag or aGossipListTable[index].isPurchasable then
 							self.children = {}
@@ -3925,6 +3923,8 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						end
 					end
 				end
+			elseif tNewMenuEntry and aGossipListTable[index].func and aGossipListTable[index].click ~= true then
+				tNewMenuEntry.OnAction = aGossipListTable[index].func
 			end
 		else
 			--dprint(aTab, x, "SUB: "..aGossipListTable[index].textFirstLine)

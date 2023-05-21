@@ -2734,7 +2734,10 @@ L["SKU_KEY_TURNTOUNIT6"] = "Turn to unit 6"
 
 L["Unit selection"] = "Unit selection"
 L["Key bind"] = "Key bind"
-
-L["Don't vocalize reaction and level for players in combat"] ="Don't vocalize reaction and level for players in combat"
-
+L["Don't vocalize reaction and level for players in combat"] ="Don't vocalize the reaction (friendly or hostile) and the level for players while in combat"
 L["SKU_KEY_TURNTOUNITTURN180"] = "Turn 180 degrees"
+
+L["Sorting and cleanup all bags"] = "Sort and cleanup all open bags"
+L["Sorting and cleanup"] = "Sort and cleanup"
+L["Remove empty bag slots (collapse)"] = "Move all items to the top of the bag (collapse)"
+L["Sort items by quality"] = "Sort items by quality"

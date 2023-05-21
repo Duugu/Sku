@@ -1907,6 +1907,10 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	SkuOptions.db.char["SkuAuras"] = SkuOptions.db.char["SkuAuras"] or {}
 
+	SetCVar("nameplateShowEnemies", 1)
+	SetCVar("nameplateShowFriends", 1)
+	SetCVar("nameplateShowAll", 1)
+
 	if isInitialLogin == true then
 		--add default profiles if they are not there
 		local tCurrentP = SkuOptions.db:GetCurrentProfile()

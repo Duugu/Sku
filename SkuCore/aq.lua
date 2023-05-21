@@ -3832,4 +3832,32 @@ function SkuCore:MonitorMenuBuilder()
 	end
 
 
+	--combat
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Combat"]}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.BuildChildren = function(self)
+		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+		tNewMenuEntry.dynamic = true
+		tNewMenuEntry.filterable = true
+		tNewMenuEntry.isSelect = true
+		tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+			if SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled == true then
+				return L["Yes"]
+			else
+				return L["No"]
+			end
+		end
+		tNewMenuEntry.OnAction = function(self, aValue, aName)
+			if aName == L["No"] then
+				SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled = false
+			elseif aName == L["Yes"] then
+				SkuOptions.db.char[MODULE_NAME].aq.raid.health2.enabled = true
+			end
+		end
+		tNewMenuEntry.BuildChildren = function(self)
+			SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+			SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+		end
+
+	end
 end

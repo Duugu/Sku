@@ -2724,6 +2724,11 @@ L["SKU_KEY_TURNTOUNIT6"] = "Zu Einheit drehen 6"
 
 L["Unit selection"] = "Einheitenauswahl"
 L["Key bind"] = "Tastenkombination"
-
-L["Don't vocalize reaction and level for players in combat"] ="Für spieler Reaktion und level im kampf nicht ansagen"
+L["Don't vocalize reaction and level for players in combat"] ="Im kampf für Spieler nicht Freundlich oder Feindlich und Level ansagen"
 L["SKU_KEY_TURNTOUNITTURN180"] = "180 Grad drehen"
+
+L["Sorting and cleanup all bags"] = "Alle offenen Taschen sortieren und aufräumen"
+L["Sorting and cleanup"] = "Sortieren und aufräumen"
+L["Remove empty bag slots (collapse)"] = "Alle Gegenstände zu Taschenanfang verschieben (zusammenschieben)"
+L["Sort items by quality"] = "Gegenstände nach Qualität sortieren"
+
