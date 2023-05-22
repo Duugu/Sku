@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.13](https://github.com/Duugu/Sku/releases/download/r34.13/Sku-r34.13-wrath.zip) (May 21st 2023)<br>
+- [Sku r34.14](https://github.com/Duugu/Sku/releases/download/r34.14/Sku-r34.14-wrath.zip) (May 22nd 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,7 +23,15 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.14
+(May 22nd 2023)
+- Added more sorting options to the Sort and Cleanup menus:
+	- Sort items by quality ascending / descending
+	- Sort items by name ascending / descending
+- The addon now is locking the keyboard while any bag sorting or cleanup process is running
+
 ## Changes in Sku r34.13
+(May 21st 2023)
 - The addon now is auto-enabling the nameplates for all units
 - Renamed the setting "Don't vocalize reaction and level for players in combat" to "Don't vocalize the reaction (friendly or hostile) and the level for players while in combat"
 - Added new options to the bags and bank slots: 
