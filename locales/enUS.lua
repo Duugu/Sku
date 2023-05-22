@@ -2741,3 +2741,7 @@ L["Sorting and cleanup all bags"] = "Sort and cleanup all open bags"
 L["Sorting and cleanup"] = "Sort and cleanup"
 L["Remove empty bag slots (collapse)"] = "Move all items to the top of the bag (collapse)"
 L["Sort items by quality"] = "Sort items by quality"
+L["Sort items by name"] = "Sort items by name"
+
+L["ascending"] = "ascending"
+L["descending"] = "descending"

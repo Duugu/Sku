@@ -2,6 +2,15 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34.14
+	- Added more sorting options to the Sort and Cleanup menus:
+		- Sort items by quality ascending / descending
+		- Sort items by name ascending / descending
+	- The addon now is locking the keyboard while any bag sorting or cleanup process is running
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.13
 	- The addon now is auto-enabling the nameplates for all units

@@ -669,16 +669,16 @@ function SkuCore:Build_BankFrame(aParentChilds)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local tIsProc = 0
-local tIsProcHandle
+local tIsProcessing = 0
+local tIsProcessingHandle
 local function SortProcessingSoundHelper()
-	if tIsProcHandle == nil then
-		tIsProcHandle = C_Timer.NewTicker(0.5, function(self)
-			if tIsProc > 0 then
-				SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
+	if tIsProcessingHandle == nil then
+		tIsProcessingHandle = C_Timer.NewTicker(0.5, function(self)
+			if tIsProcessing > 0 then
+				--SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
 			else
 				self:Cancel() 
-				tIsProcHandle = nil
+				tIsProcessingHandle = nil
 				C_Timer.After(0.1, function()
 					SkuOptions.currentMenuPosition.parent:OnUpdate()
 					SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
@@ -689,8 +689,21 @@ local function SortProcessingSoundHelper()
 	end
 end
 
----------------------------------------------------------------------------------------------------------------------------------------
-local function BagSortHelper(aParentChilds, aBagId)
+local function BagSortMenuHelper(aParentChilds, aBagId)
+	local function tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, slotId)
+		local containerFrameName = ""
+		if tCurrentContainerFrameNumber then
+			containerFrameName = "ContainerFrame"..(tCurrentContainerFrameNumber).."Item"..(tNumSlots - slotId + 1)
+		end
+		if i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true then
+			tCurrentContainerFrameNumber = -1
+			containerFrameName = "BankFrameItem"..slotId
+		end
+		return _G[containerFrameName]
+	end
+
+
+	--collapse
 	local tFriendlyName = L["Remove empty bag slots (collapse)"]
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
@@ -702,11 +715,13 @@ local function BagSortHelper(aParentChilds, aBagId)
 		noMenuNumbers = true,
 		childs = {},
 		func = function()
+			SkuCore.CursorSilent = true
+			SkuOptions.Voice.TutorialPlaying = 1
 			for i, v in pairs(tBagSlotList) do
 				if i == aBagId or aBagId == nil then
 					local tCurrentContainerFrameNumber = IsBagOpen(i)
 					local tNumSlots = GetContainerNumSlots(i)
-					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true))then
+					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
 						local tCompleted = true
 						local co = coroutine.create(function ()
 							while tCompleted == true do
@@ -749,16 +764,19 @@ local function BagSortHelper(aParentChilds, aBagId)
 							end
 						end)
 
-						tIsProc = tIsProc + 1
+						tIsProcessing = tIsProcessing + 1
 						SortProcessingSoundHelper()
 						cbObject = C_Timer.NewTicker(0.5, function(self) 
 							if coroutine.status(co) == "suspended" then
 								SortProcessingSoundHelper()
 								coroutine.resume(co)
 							else
-								tIsProc = tIsProc - 1
-								SortProcessingSoundHelper()
+								tIsProcessing = tIsProcessing - 1
 								self:Cancel() 
+								SkuCore.CursorSilent = false
+								SkuOptions.Voice.TutorialPlaying = 0
+								SkuVoice:StopOutputEmptyQueue()
+								SortProcessingSoundHelper()
 							end
 						end)
 					end
@@ -766,8 +784,68 @@ local function BagSortHelper(aParentChilds, aBagId)
 			end
 		end,
 	}   
---[[
-	local tFriendlyName = L["Sort items by quality"]
+
+
+
+	--sort by quality
+	local function SortByQualityHelper(tCurrentContainerFrameNumber, tNumSlots, i, aEvaluateFunc)
+		SkuCore.CursorSilent = true
+		SkuOptions.Voice.TutorialPlaying = 1
+		local co = coroutine.create(function ()
+			local tProcess = true
+			while tProcess do
+				tProcess = nil
+				for count = 1, tNumSlots - 1 do
+					local tPickContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count)
+					local tPlaceContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count + 1)
+					_G["SkuScanningTooltip"]:ClearLines()
+					_G["SkuScanningTooltip"]:SetBagItem(i, count)
+					local itemName, pickItemLink = _G["SkuScanningTooltip"]:GetItem()
+					local tPickQuali = 99999
+					if pickItemLink then
+						tPickQuali = C_Item.GetItemQualityByID(pickItemLink)
+					end
+					_G["SkuScanningTooltip"]:ClearLines()
+					_G["SkuScanningTooltip"]:SetBagItem(i, count + 1)
+					local itemName, placeItemLink = _G["SkuScanningTooltip"]:GetItem()
+					local tPlaceQuali = 99999
+					if placeItemLink then
+						tPlaceQuali = C_Item.GetItemQualityByID(placeItemLink)
+					end
+					if aEvaluateFunc(tPickQuali, tPlaceQuali) == true then
+						if pickItemLink then
+							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
+							tPlaceContainerFrame:GetScript("OnClick")(tPlaceContainerFrame, "LeftButton")
+						else
+							tPlaceContainerFrame:GetScript("OnClick")(tPlaceContainerFrame, "LeftButton")
+							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
+						end
+						tProcess = true
+						break
+					end
+				end
+				coroutine.yield()
+			end
+		end)
+
+		tIsProcessing = tIsProcessing + 1
+		SortProcessingSoundHelper()
+		cbObject = C_Timer.NewTicker(0.01, function(self) 
+			if coroutine.status(co) == "suspended" then
+				SortProcessingSoundHelper()
+				local tret = coroutine.resume(co)
+			else
+				tIsProcessing = tIsProcessing - 1
+				self:Cancel() 
+				SkuCore.CursorSilent = false
+				SkuOptions.Voice.TutorialPlaying = 0
+				SkuVoice:StopOutputEmptyQueue()
+				SortProcessingSoundHelper()
+			end
+		end)
+	end
+
+	local tFriendlyName = L["Sort items by quality"].." "..L["ascending"]
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
 		frameName = nil,
@@ -778,30 +856,161 @@ local function BagSortHelper(aParentChilds, aBagId)
 		noMenuNumbers = true,
 		childs = {},
 		func = function()
-			print("func Sort by quality", aBagId)
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			--print("func Sort by quality ascending", aBagId)
+			for i, v in pairs(tBagSlotList) do
+				if i == aBagId or aBagId == nil then
+					local tCurrentContainerFrameNumber = IsBagOpen(i)
+					local tNumSlots = GetContainerNumSlots(i)
+					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
+						SortByQualityHelper(tCurrentContainerFrameNumber, tNumSlots, i, function(a, b)
+						 	return a > b
+						end)
+					end
+				end
+			end
 		end,
 	}   
-]]
+	local tFriendlyName = L["Sort items by quality"].." "..L["descending"]
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = nil,
+		RoC = "Child",
+		type = "Button",
+		textFirstLine = tFriendlyName,
+		textFull = "",
+		noMenuNumbers = true,
+		childs = {},
+		func = function()
+			--print("func Sort by quality descending", aBagId)
+			for i, v in pairs(tBagSlotList) do
+				if i == aBagId or aBagId == nil then
+					local tCurrentContainerFrameNumber = IsBagOpen(i)
+					local tNumSlots = GetContainerNumSlots(i)
+					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
+						SortByQualityHelper(tCurrentContainerFrameNumber, tNumSlots, i, function(a, b)
+						 	return a < b
+						end)
+					end
+				end
+			end
+		end,
+	}   
+
+
+
+
+
+	--sort by name
+	local function SortByNameHelper(tCurrentContainerFrameNumber, tNumSlots, i, aEvaluateFunc)
+		SkuCore.CursorSilent = true
+		SkuOptions.Voice.TutorialPlaying = 1
+		local co = coroutine.create(function ()
+			local tProcess = true
+			while tProcess do
+				tProcess = nil
+				for count = 1, tNumSlots - 1 do
+					local tPickContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count)
+					local tPlaceContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count + 1)
+					_G["SkuScanningTooltip"]:ClearLines()
+					_G["SkuScanningTooltip"]:SetBagItem(i, count)
+					local pickitemName, pickItemLink = _G["SkuScanningTooltip"]:GetItem()
+					if not pickitemName then
+						pickitemName = "zzzzzzzzzz"
+					end
+					_G["SkuScanningTooltip"]:ClearLines()
+					_G["SkuScanningTooltip"]:SetBagItem(i, count + 1)
+					local placeitemName = _G["SkuScanningTooltip"]:GetItem()
+					if not placeitemName then
+						placeitemName = "zzzzzzzzzz"
+					end
+					if aEvaluateFunc(pickitemName, placeitemName) == true then
+						if pickItemLink then
+							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
+							tPlaceContainerFrame:GetScript("OnClick")(tPlaceContainerFrame, "LeftButton")
+						else
+							tPlaceContainerFrame:GetScript("OnClick")(tPlaceContainerFrame, "LeftButton")
+							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
+						end
+						tProcess = true
+						break
+					end
+				end
+				coroutine.yield()
+			end
+		end)
+
+		tIsProcessing = tIsProcessing + 1
+		SortProcessingSoundHelper()
+		cbObject = C_Timer.NewTicker(0.01, function(self) 
+			if coroutine.status(co) == "suspended" then
+				SortProcessingSoundHelper()
+				local tret = coroutine.resume(co)
+			else
+				tIsProcessing = tIsProcessing - 1
+				self:Cancel() 
+				SkuCore.CursorSilent = false
+				SkuOptions.Voice.TutorialPlaying = 0
+				SkuVoice:StopOutputEmptyQueue()
+				SortProcessingSoundHelper()
+			end
+		end)
+	end
+
+	--sort by name
+	local tFriendlyName = L["Sort items by name"].." "..L["ascending"]
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = nil,
+		RoC = "Child",
+		type = "Button",
+		textFirstLine = tFriendlyName,
+		textFull = "",
+		noMenuNumbers = true,
+		childs = {},
+		func = function()
+			for i, v in pairs(tBagSlotList) do
+				if i == aBagId or aBagId == nil then
+					local tCurrentContainerFrameNumber = IsBagOpen(i)
+					local tNumSlots = GetContainerNumSlots(i)
+					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
+						SortByNameHelper(tCurrentContainerFrameNumber, tNumSlots, i, function(a, b)
+						 	return a > b
+						end)
+					end
+				end
+			end
+		end,
+	}   
+	local tFriendlyName = L["Sort items by name"].." "..L["descending"]
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = nil,
+		RoC = "Child",
+		type = "Button",
+		textFirstLine = tFriendlyName,
+		textFull = "",
+		noMenuNumbers = true,
+		childs = {},
+		func = function()
+			for i, v in pairs(tBagSlotList) do
+				if i == aBagId or aBagId == nil then
+					local tCurrentContainerFrameNumber = IsBagOpen(i)
+					local tNumSlots = GetContainerNumSlots(i)
+					if tNumSlots > 0 and (tCurrentContainerFrameNumber or (i == -1 and _G["BankFrame"] and _G["BankFrame"]:IsVisible() == true)) then
+						SortByNameHelper(tCurrentContainerFrameNumber, tNumSlots, i, function(a, b)
+						 	return a < b
+						end)
+					end
+				end
+			end
+		end,
+	}   
+
+
+
+
+
+
 end
 
 
@@ -1007,7 +1216,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				func = nil,
 				click = true,
 			}   
-			BagSortHelper(v.obj.childs[tFriendlyName].childs, v.obj.obj:GetBag(), v)
+			BagSortMenuHelper(v.obj.childs[tFriendlyName].childs, v.obj.obj:GetBag(), v)
 		end
 	end
 
@@ -1193,7 +1402,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		click = true,
 	}   
 
-	BagSortHelper(aParentChilds[tFriendlyName].childs, nil)
+	BagSortMenuHelper(aParentChilds[tFriendlyName].childs, nil)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

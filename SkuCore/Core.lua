@@ -1003,7 +1003,7 @@ function SkuCore:OnEnable()
 			oitemID = itemID
 			oitemLink = itemLink
 		end
-		if tResult then
+		if tResult and SkuCore.CursorSilent ~= true then
 			SkuOptions.Voice:OutputString(L["Cursor"]..tResult, true, true, 0.2, true)
 		end
 
