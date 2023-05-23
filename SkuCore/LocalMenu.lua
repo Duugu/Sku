@@ -443,18 +443,25 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 					end
 				end
 				
-				if bagItemButton.obj.info.id then
-					GameTooltip:SetGuildBankItem(bagItemButton.obj.info.gbanktab, bagItemButton.obj.info.gbankslot) 
+				_G["SkuScanningTooltip"]:ClearLines()
+				if GetCurrentGuildBankTab() and bagItemButton.obj.info.gbankslot then
+					_G["SkuScanningTooltip"]:SetGuildBankItem(GetCurrentGuildBankTab(), bagItemButton.obj.info.gbankslot) 
+				end
+				local itemName, tItemLink = _G["SkuScanningTooltip"]:GetItem()
+				local tItemId = SkuGetItemIdFromItemLink(tItemLink)
+				if tItemId ~= nil then
+					GameTooltip:ClearLines()
+					GameTooltip:SetGuildBankItem(GetCurrentGuildBankTab(), bagItemButton.obj.info.gbankslot) 
 					
 					local _, maybeText = GetButtonTooltipLines(nil, GameTooltip)
 					if maybeText then
 						local tText = maybeText
 						local isEmpty = false
 						if bagItemButton.obj.info then
-							if bagItemButton.obj.info.id then
-								bagItemButton.itemId = bagItemButton.obj.info.id
+							if tItemId then
+								bagItemButton.itemId = tItemId
 								bagItemButton.textFirstLine = SkuCore:ItemName_helper(tText)
-								bagItemButton.textFull = SkuCore:AuctionHouseGetAuctionPriceHistoryData(bagItemButton.obj.info.id)
+								bagItemButton.textFull = SkuCore:AuctionHouseGetAuctionPriceHistoryData(tItemId)
 							end
 						end
 
@@ -485,7 +492,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 					end
 
 					if containerFrame.info then
-						bagItemButton.itemId = containerFrame.info.id
+						bagItemButton.itemId = tItemId
 						if not containerFrame.info.count then
 							bagItemButton.textFirstLine = bagItemButton.textFirstLine
 						else
@@ -493,7 +500,12 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 								bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. containerFrame.info.count
 							end
 						end								
-					end					
+					end
+				else
+					bagItemButton.textFirstLine = slotIndex.." "..L["Empty"]
+					bagItemButton.textFull = slotIndex.." "..L["Empty"]
+					bagItemButton.itemId = nil
+				
 				end
 			end
 		end

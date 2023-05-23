@@ -30,7 +30,7 @@ local SkuMobDB = {
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnInitialize()
-	--dprint("SkuMob OnInitialize")
+	SkuMob:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuMob:RegisterEvent("VARIABLES_LOADED")
 	SkuMob:RegisterEvent("PLAYER_TARGET_CHANGED")
 	SkuMob:RegisterEvent("QUEST_TURNED_IN")
@@ -41,17 +41,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnEnable()
-	--dprint("SkuMob OnEnable")
-		
-	SkuMob.InCombatSounds = {}
-	SkuMob.InCombatSounds["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"]
-	for i, v in pairs(SkuAuras.outputSoundFiles) do
-		if SkuAudioFileIndex[i] then
-			SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
-		end
-	end
-	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds
-
 	local ttime = 0
 	local f = _G["SkuMobControl"] or CreateFrame("Frame", "SkuMobControl", UIParent)
 	f:SetScript("OnUpdate", function(self, time) 
@@ -123,7 +112,22 @@ function SkuMob:RefreshVisuals()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuMob:PLAYER_ENTERING_WORLD(...)
+	
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:VARIABLES_LOADED(...)
+	SkuMob.InCombatSounds = {}
+	SkuMob.InCombatSounds["Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"] = L["Default beep sound"]
+	for i, v in pairs(SkuAuras.outputSoundFiles) do
+		if SkuAudioFileIndex[i] then
+			SkuMob.InCombatSounds["Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..SkuAudioFileIndex[i]] = v
+		end
+	end
+	SkuMob.options.args.InCombatSound.values = SkuMob.InCombatSounds
+
 	if SkuOptions.db.profile[MODULE_NAME].InCombatSound == nil then
 		SkuOptions.db.profile[MODULE_NAME].InCombatSound = "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
 	end

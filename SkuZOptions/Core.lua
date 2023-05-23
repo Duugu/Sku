@@ -1499,17 +1499,31 @@ function SkuOptions:CreateMainFrame()
 			print("Debug:", Sku.debug)
 		end
 	
+		local function tRollConfirmHelper()
+			C_Timer.NewTimer(0.5, function()
+				if _G["StaticPopup2"] and _G["StaticPopup2"]:IsVisible() then
+					if _G["StaticPopup2Button2"] and _G["StaticPopup2Button2"]:IsVisible() then
+						_G["StaticPopup2Button1"]:Click()
+						return
+					end
+				end
+				if _G["StaticPopup1"] and _G["StaticPopup1"]:IsVisible() then
+					if _G["StaticPopup1Button2"] and _G["StaticPopup1Button2"]:IsVisible() then
+						_G["StaticPopup1Button1"]:Click()
+						return
+					end
+				end
+			end)
+		end
+
+
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ROLLNEED"].key then
 			if SkuOptions.nextRollFrameNumber then
 				if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber] then
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].NeedButton:Click()
 						SkuOptions.Voice:OutputString(L["Need rolled"], true, true, 0.3, true)
-						C_Timer.NewTimer(0.5, function()
-							if _G["StaticPopup1"]:IsVisible() then
-								_G["StaticPopup1Button1"]:Click()
-							end
-						end)
+						tRollConfirmHelper()
 					end
 				end
 			end
@@ -1521,11 +1535,7 @@ function SkuOptions:CreateMainFrame()
 					if _G["GroupLootFrame"..SkuOptions.nextRollFrameNumber]:IsVisible() then
 						_G["GroupLootFrame"..SkuOptions.nextRollFrameNumber].GreedButton:Click()
 						SkuOptions.Voice:OutputString(L["Greed rolled"], true, true, 0.3, true)
-						C_Timer.NewTimer(0.5, function()
-							if _G["StaticPopup1"]:IsVisible() then
-								_G["StaticPopup1Button1"]:Click()
-							end
-						end)
+						tRollConfirmHelper()
 					end
 				end
 			end

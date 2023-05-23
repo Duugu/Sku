@@ -28,6 +28,10 @@ function SkuCore:JunkAndRepairInitialize()
       if SellJunkTicker then SellJunkTicker:Cancel() end
       SellJunkFrame:UnregisterEvent("ITEM_LOCKED")
       SellJunkFrame:UnregisterEvent("ITEM_UNLOCKED")
+
+      C_Timer.After(0.3, function()
+         SkuCore:CheckFrames()
+      end)
    end
 
    -- Vendor function

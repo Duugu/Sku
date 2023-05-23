@@ -85,12 +85,12 @@ SkuCore.QueryBuyType = nil
 SkuCore.QueryBuyAmount = nil
 SkuCore.QueryBuyBought = nil
 
- QueryResultsDB = {}
- FullScanResultsDB = {}
- FullScanResultsDBHistory = {}
+local QueryResultsDB = {}
+local FullScanResultsDB = {}
+local FullScanResultsDBHistory = {}
 local BidDB = {}
 local OwnDB = {}
- AuctionDBHistory = {}
+local AuctionDBHistory = {}
 
 local HistoryMaxValues = 500
 
@@ -329,6 +329,8 @@ function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData
    local tPriceHistoryData, tBestBuyoutPriceCopper = SkuCore:AuctionHouseGetAuctionPriceHistoryData(aItemData[17])
 
    table.insert(tPriceHistoryData, 1, tTextFull)
+
+   _G["SkuScanningTooltip"]:ClearLines()
 
    return tTextFirstLine, tPriceHistoryData
 end

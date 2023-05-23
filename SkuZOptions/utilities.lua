@@ -9,6 +9,14 @@ local band, bor, bxor, bnot = bit.band, bit.bor, bit.bxor, bit.bnot
 local lshift, rshift, arshift = bit.lshift, bit.rshift, bit.arshift
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuGetItemIdFromItemLink(aLink)
+	if not aLink then return end
+	local tr = 0
+	local a, b, c, d, e = strsplit("%:", aLink)
+	return b
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuTableToString(aTable, aCallback)
 	local tStr = "{"
 	local tPartString = ""

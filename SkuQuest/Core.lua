@@ -166,9 +166,8 @@ function SkuQuest:OnEnable()
 		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTABANDON"].key then
 			SkuQuest:OnSkuQuestAbandon()
 		end
-		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key then
-			SkuQuest:OnSkuQuestPush()
-		end
+
+		
 		if aKey == "UP" then
 			SkuQuest:OnSkuQuestUP()
 		end

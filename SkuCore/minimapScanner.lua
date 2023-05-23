@@ -144,14 +144,14 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tFoundPositions = {}
-toptionTypes = {
+local toptionTypes = {
    "miningNodes",
    "herbs",
    "gasCollector",
 }
 
 function SkuCore:MinimapScanFindActiveRessource(aX, aY)
-    tRessourceTypes = {
+   local tRessourceTypes = {
       SkuCore.RessourceTypes.mining,
       SkuCore.RessourceTypes.herbs,
       SkuCore.RessourceTypes.gasCollector,
@@ -160,16 +160,17 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
    for i = 1, GameTooltip:NumLines() do
       local line = string.lower(_G['GameTooltipTextLeft' .. i]:GetText())
       if line then
+         line = SkuChat:Unescape(line)
          for r = 1, #tRessourceTypes do
             for x = 1, #tRessourceTypes[r] do
                if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
                   for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
                      if string.find(line, string.lower(w), 1, true) and not string.find(line, string.lower(w .. '|'), 1, true) then
-                        if not tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] then
-                           tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] = {}
+                        if not tFoundPositions[tRessourceTypes[r][x][Sku.LocP]] then
+                           tFoundPositions[tRessourceTypes[r][x][Sku.LocP]] = {}
                         end
-                        if #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] == 0 then
-                           tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][1] = {
+                        if #tFoundPositions[tRessourceTypes[r][x][Sku.LocP]] == 0 then
+                           tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][1] = {
                               xMin = aX - 1,
                               xMax = aX + 1,
                               yMin = aY - 1,
@@ -177,43 +178,36 @@ function SkuCore:MinimapScanFindActiveRessource(aX, aY)
                            }
                         else
                            local tFoundIndex
-                           for q = 1, #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] do
-                              dprint("q", q, #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ],
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q])
-                              local xmax = tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q].xMax - aX
-                              local ymax = tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q].yMax - aY
-                              local xmin = tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q].xMin - aX
-                              local ymin = tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][q].yMin - aY
+                           for q = 1, #tFoundPositions[tRessourceTypes[r][x][Sku.LocP]] do
+                              local xmax = tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][q].xMax - aX
+                              local ymax = tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][q].yMax - aY
+                              local xmin = tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][q].xMin - aX
+                              local ymin = tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][q].yMin - aY
                               if xmax < 0 then xmax = xmax * -1 end
                               if ymax < 0 then ymax = ymax * -1 end
                               if xmin < 0 then xmin = xmin * -1 end
                               if ymin < 0 then ymin = ymin * -1 end
 
-                              dprint("  ", xmax, ymax, xmin, ymin)
                               local tRangeNew = 20
                               if xmax < tRangeNew and ymax < tRangeNew and xmin < tRangeNew and ymin < tRangeNew then
                                  tFoundIndex = q
                               end
                            end
                            if tFoundIndex then
-                              dprint("found", tFoundIndex)
-                              if tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].xMin > aX then
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].xMin = aX
+                              if tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][tFoundIndex].xMin > aX then
+                                 tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][tFoundIndex].xMin = aX
                               end
-                              if tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].xMax < aX then
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].xMax = aX
+                              if tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][tFoundIndex].xMax < aX then
+                                 tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][tFoundIndex].xMax = aX
                               end
-                              if tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].yMin > aY then
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].yMin = aY
+                              if tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][tFoundIndex].yMin > aY then
+                                 tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][tFoundIndex].yMin = aY
                               end
-                              if tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].yMax < aY then
-                                 tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][tFoundIndex].yMax = aY
+                              if tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][tFoundIndex].yMax < aY then
+                                 tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][tFoundIndex].yMax = aY
                               end
                            else
-                              dprint("new", tRessourceTypes[r][x][Sku.LocP],
-                                 #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] + 1)
-                              tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ][
-                                  #tFoundPositions[ tRessourceTypes[r][x][Sku.LocP] ] + 1] = {
+                              tFoundPositions[tRessourceTypes[r][x][Sku.LocP]][#tFoundPositions[tRessourceTypes[r][x][Sku.LocP]] + 1] = {
                                  xMin = aX - 1,
                                  xMax = aX + 1,
                                  yMin = aY - 1,
@@ -266,8 +260,6 @@ local function MinimapScanStep()
    C_Timer.After(0, function()
       local tResultString = SkuCore:MinimapScanFindActiveRessource(tCurrentMMPosX, tCurrentMMPosY)
       if tResultString then
-         --fx, fy = tCurrentMMPosX, tCurrentMMPosY
-         --print(tResultString, fx, fy)
          if not tScanResults[tResultString] then
             tScanResults[tResultString] = 0
          end
@@ -302,9 +294,6 @@ function SkuCore:RestoreMinimap()
       return
    end
    if tMinimapStore.point == nil or tMinimapStore.relativeTo == nil then
-      --print(tMinimapStore.point, tMinimapStore.relativeTo, tMinimapStore.relativePoint, tMinimapStore.x, tMinimapStore.y)
-      --print("d", tMinimapDefaults.point, tMinimapDefaults.relativeTo, tMinimapDefaults.relativePoint, tMinimapDefaults.x, tMinimapDefaults.y)
-
       Minimap:SetParent(tMinimapDefaults.parent)
       Minimap:SetScale(tMinimapDefaults.scale or 1)
       Minimap:ClearAllPoints()
@@ -357,7 +346,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MinimapScan(aRange)
-   dprint("MinimapScan", aRange)
    if Questie then
       Questie.db.global.enableMiniMapIcons = false
    end
@@ -471,7 +459,6 @@ local tInitialCenterMouse
 local tPrevResult = ""
 local mmx, mmy
 function SkuCore:MinimapScanFast()
-   --print("MinimapScanFast")
    if Questie then
       Questie.db.global.enableMiniMapIcons = false
    end
@@ -504,7 +491,6 @@ function SkuCore:MinimapScanFast()
    SkuCore:StoreMinimap()
    mmx, mmy = Minimap:GetSize()
    Minimap:SetSize(15, 15)
-   --Minimap:SetParent(UIParent)
    Minimap:ClearAllPoints()
    local x, y = GetCursorPosition()
    Minimap:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x / UIParent:GetScale(), y / UIParent:GetScale())
@@ -516,6 +502,7 @@ function SkuCore:MinimapScanFast()
       for i = 1, GameTooltip:NumLines() do
          local line = _G['GameTooltipTextLeft' .. i]:GetText()
          if line then
+            line = SkuChat:Unescape(line)
             if string.find(line.."\n", "", 1, true) then
                line = line.."\n"
                for w in string.gmatch(line, "[%aüäöß ]+\n") do
@@ -532,7 +519,8 @@ function SkuCore:MinimapScanFast()
             for x = 1, #tRessourceTypes[r] do
                if SkuOptions.db.profile[MODULE_NAME].ressourceScanning[toptionTypes[r]][x] == true then
                   for w in string.gmatch(tRessourceTypes[r][x][Sku.LocP], ".+") do
-                     if string.find(v, w, 1, true) and not string.find(v, w .. '|', 1, true) then
+                     --if string.find(v, w, 1, true) and not string.find(v, w.."|", 1, true) then
+                     if string.sub(v, 1, string.len(v) - 1) == w and not string.find(v, w.."|", 1, true) then
                         if v == "Kobaltablagerung" then
                            v = "Kobaltvorkommen"
                         end
