@@ -23,8 +23,8 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------------------
 ## Changes in Sku r34.15
+(May 23rd 2023)
 - Fixed a bug with the Mob > Options > Sound if target is in combat setting. Setting will now be saved as intended.
 - Fixed issues with auto minimap resource scanning, that was causing the scan to miss some resources.
 - Fixed a bug where rolling need or greed on loot while dead was releasing your spirit.
