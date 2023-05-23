@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.14](https://github.com/Duugu/Sku/releases/download/r34.14/Sku-r34.14-wrath.zip) (May 22nd 2023)<br>
+- [Sku r34.15](https://github.com/Duugu/Sku/releases/download/r34.15/Sku-r34.15-wrath.zip) (May 23rd 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,16 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.15
+- Fixed a bug with the Mob > Options > Sound if target is in combat setting. Setting will now be saved as intended.
+- Fixed issues with auto minimap resource scanning, that was causing the scan to miss some resources.
+- Fixed a bug where rolling need or greed on loot while dead was releasing your spirit.
+- Sharing quests via Control + Shift + T isn't available anymore. Instead there is a new menu entry under each quest in you log: "Share quest". The default shortcut Control + Shift + T is only for reading the loot roll tooltips from now on. This should now be possible while you're dead.
+- Fixed a bug where using item tooltips in the auction house was mixing up all other tooltips, adding nonsense stuff like a quality to flight destinations at the flight master or item levels to buffs.
+- The bags should now be correctly updated after auto selling junk at vendors.
+- Fixed a bug with not updated empty guild bank slots on selecting another guild bank box
+
 ## Changes in Sku r34.14
 (May 22nd 2023)
 - Added more sorting options to the Sort and Cleanup menus:
