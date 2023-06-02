@@ -167,22 +167,24 @@ local function monitorPartyHealth2ContiOutput(aForce)
 			end
 		
 			if tRoleID and ((SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == false or (SkuOptions.db.char[MODULE_NAME].aq.party.health2.silentOn100and0 == true and tHealthAbsoluteValue ~= 0 and tHealthAbsoluteValue ~= 100)) or aForce== true) then
-				if tHealthAbsoluteValue <= SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt[tRoleID] or aForce== true then
-					SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth = SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth or {
-						["player"] = {absolute = 100, steps = 14, lastOutput = 0, },
-						["party1"] = {absolute = 100, steps = 14, lastOutput = 0, },
-						["party2"] = {absolute = 100, steps = 14, lastOutput = 0, },
-						["party3"] = {absolute = 100, steps = 14, lastOutput = 0, },
-						["party4"] = {absolute = 100, steps = 14, lastOutput = 0, },
-					}
+				if tHealthAbsoluteValue and SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt[tRoleID] then
+					if tHealthAbsoluteValue <= SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyStartAt[tRoleID] or aForce== true then
+						SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth = SkuOptions.db.char[MODULE_NAME].aq.party.health2.prevHealth or {
+							["player"] = {absolute = 100, steps = 14, lastOutput = 0, },
+							["party1"] = {absolute = 100, steps = 14, lastOutput = 0, },
+							["party2"] = {absolute = 100, steps = 14, lastOutput = 0, },
+							["party3"] = {absolute = 100, steps = 14, lastOutput = 0, },
+							["party4"] = {absolute = 100, steps = 14, lastOutput = 0, },
+						}
 
-					local tUnitNumber, tVolume, tPitch = tUnitNumbers[tUnitID], SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyVolume, (((tHealthStepsValue * 5) - 35) * -1)
-					if tPitch == 0 then tPitch = 0 end --dnd, we need this in case of -0
-					local tAddlSpeedMod = 1
-					if aForce then
-						tAddlSpeedMod = 0.5
+						local tUnitNumber, tVolume, tPitch = tUnitNumbers[tUnitID], SkuOptions.db.char[MODULE_NAME].aq.party.health2.continouslyVolume, (((tHealthStepsValue * 5) - 35) * -1)
+						if tPitch == 0 then tPitch = 0 end --dnd, we need this in case of -0
+						local tAddlSpeedMod = 1
+						if aForce then
+							tAddlSpeedMod = 0.5
+						end
+						ttimeMonParty2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonParty2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay / 100)) * tAddlSpeedMod, tRoleID, tHealthAbsoluteValue, true)
 					end
-					ttimeMonParty2QueueAdd(tUnitNumber, tVolume, tPitch, (ttimeMonParty2QueueDefaultOutputLength * (SkuOptions.db.char[MODULE_NAME].aq.party.health2.outputQueueDelay / 100)) * tAddlSpeedMod, tRoleID, tHealthAbsoluteValue, true)
 				end
 			end
 		end

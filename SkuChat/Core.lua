@@ -1653,7 +1653,7 @@ function SkuChat_MessageEventHandler(self, event, ...)
 		elseif (type == "LOOT") then
 			-- Append [Share] hyperlink if this is a valid social item and you are the looter.
 			-- arg5 contains the name of the player who looted
-			if (C_Social.IsSocialEnabled() and UnitName("player") == arg5) then
+			if C_Social and (C_Social.IsSocialEnabled() and UnitName("player") == arg5) then
 				local itemID, strippedItemLink = GetItemInfoFromHyperlink(arg1) 
 				if (itemID and C_Social.GetLastItem() == itemID) then
 					arg1 = arg1 .. " " .. Social_GetShareItemLink(strippedItemLink, true) 
@@ -1672,7 +1672,7 @@ function SkuChat_MessageEventHandler(self, event, ...)
 
 		elseif ( strsub(type,1,11) == "ACHIEVEMENT" ) then
 			-- Append [Share] hyperlink
-			if (arg12 == UnitGUID("player") and C_Social.IsSocialEnabled()) then
+			if C_Social and (arg12 == UnitGUID("player") and C_Social.IsSocialEnabled()) then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1) 
 				if (achieveID) then
 					arg1 = arg1 .. " " .. Social_GetShareAchievementLink(achieveID, true) 
@@ -1682,7 +1682,7 @@ function SkuChat_MessageEventHandler(self, event, ...)
 
 		elseif ( strsub(type,1,18) == "GUILD_ACHIEVEMENT" ) then
 			local message = arg1:format(SkuChat:GetPlayerLink(arg2, ("[%s]"):format(coloredName))) 
-			if (C_Social.IsSocialEnabled()) then
+			if C_Social and (C_Social.IsSocialEnabled()) then
 				local achieveID = GetAchievementInfoFromHyperlink(arg1) 
 				if (achieveID) then
 					local isGuildAchievement = select(12, GetAchievementInfo(achieveID)) 

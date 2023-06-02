@@ -1515,7 +1515,7 @@ function SkuNav:ProcessGlobalDirection()
 				[10] = {deg = -181, file = "male-Süd"},
 			}
 			for x = 1, #tDeg do
-				if afinal < tDeg[x].deg and afinal > tDeg[x + 1].deg then
+				if tDeg[x] and tDeg[x + 1] and afinal < tDeg[x].deg and afinal > tDeg[x + 1].deg then
 					if ((IsShiftKeyDown() and IsAltKeyDown()) and (GetServerTime() - ttimeDistanceOutput > 0.5)) or ( tPrevGlobalDeg ~= x and (tPrevGlobalDeg ~= x and ((tPrevGlobalDeg == 9 and x == 1) or (tPrevGlobalDeg == 1 and x == 9)) == false)) then
 						tPrevGlobalDeg = x
 						ttimeDistanceOutput = GetServerTime()

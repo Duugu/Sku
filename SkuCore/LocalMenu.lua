@@ -787,7 +787,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 								self:Cancel() 
 								SkuCore.CursorSilent = false
 								SkuOptions.Voice.TutorialPlaying = 0
-								SkuVoice:StopOutputEmptyQueue()
+								SkuOptions.Voice:StopOutputEmptyQueue()
 								SortProcessingSoundHelper()
 							end
 						end)
@@ -851,7 +851,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				self:Cancel() 
 				SkuCore.CursorSilent = false
 				SkuOptions.Voice.TutorialPlaying = 0
-				SkuVoice:StopOutputEmptyQueue()
+				SkuOptions.Voice:StopOutputEmptyQueue()
 				SortProcessingSoundHelper()
 			end
 		end)
@@ -962,7 +962,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				self:Cancel() 
 				SkuCore.CursorSilent = false
 				SkuOptions.Voice.TutorialPlaying = 0
-				SkuVoice:StopOutputEmptyQueue()
+				SkuOptions.Voice:StopOutputEmptyQueue()
 				SortProcessingSoundHelper()
 			end
 		end)
