@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.15](https://github.com/Duugu/Sku/releases/download/r34.15/Sku-r34.15-wrath.zip) (May 23rd 2023)<br>
+- [Sku r34.16](https://github.com/Duugu/Sku/releases/download/r34.16/Sku-r34.16-wrath.zip) (June 2nd 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,15 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.16
+- Map data updated:
+	- Terokkar Forest completed, and parts of Shadowmoon Valley in Outlands mapped by Emilylorange.
+	- A lot of fixes for most bugs/issues reported during the last 2 month
+	- A lot of broken routes fixed all over the world
+	- Added layer information to several locations all over the world
+- Fixed a bug with sounds in the bag > sort menus
+- Internal changes to prepare for the upcoming game patch 3.4.3 ToC on June, 20th
+
 ## Changes in Sku r34.15
 (May 23rd 2023)
 - Fixed a bug with the Mob > Options > Sound if target is in combat setting. Setting will now be saved as intended.
