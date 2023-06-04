@@ -2185,8 +2185,12 @@ function SkuChat:OnInitialize()
 	end
 
 	-- OnSkuChatToggle to actually handle the chat key binds
+	tSkuCurrentLineDatalinktTextFirstLine = ""
+	tSkuCurrentLineDatalinktTextFull = ""
+	tSkuCurrentLineDatalinktItemId = ""
 	local a = _G["OnSkuChatToggle"] or CreateFrame("Button", "OnSkuChatToggle", UIParent, "SecureActionButtonTemplate")
 	a.timeCounter = 0
+	local ttime = 0
 	a:SetScript("OnUpdate", function(self, atime)
 		self.timeCounter = self.timeCounter + atime
 		if self.timeCounter > 5 then
@@ -2202,6 +2206,29 @@ function SkuChat:OnInitialize()
 				end
 			end
 			self.timeCounter = 0
+		end
+
+		ttime = ttime + atime
+		if ttime > 0.1 then
+			if SkuOptions.TTS:IsVisible() == true then
+				if IsShiftKeyDown() == false and SkuOptions.TTS:IsAutoRead() ~= true then
+					if SkuOptions.currentMenuPosition then
+						if SkuOptions.currentMenuPosition.textFullInitial then
+							SkuOptions.currentMenuPosition.textFull = SkuOptions.currentMenuPosition.textFullInitial
+						end
+						SkuOptions.currentMenuPosition.textFullInitial = nil
+						SkuOptions.currentMenuPosition.links = {}
+						SkuOptions.currentMenuPosition.linksSelected = 0
+						SkuOptions.currentMenuPosition.currentLinkName = nil
+						SkuOptions.currentMenuPosition.linksHistory = nil
+					end
+		
+					SkuOptions.TTS:Output("", -1)
+					SkuOptions.TTS:Hide()
+				end
+			end
+
+			ttime = 0
 		end
 	end)
 
@@ -2226,6 +2253,10 @@ function SkuChat:OnInitialize()
 						self:ClearBinding(self:GetAttribute("SKU_KEY_CHAT_TABPREV"))
 						self:ClearBinding(self:GetAttribute("SKU_KEY_CHAT_TABNEXT"))
 						self:ClearBinding(self:GetAttribute("SKU_KEY_CHAT_LINEMENU"))
+						self:ClearBinding(self:GetAttribute("SHIFT-DOWN"))
+						self:ClearBinding(self:GetAttribute("SHIFT-UP"))
+						self:ClearBinding(self:GetAttribute("CTRL-SHIFT-DOWN"))
+						self:ClearBinding(self:GetAttribute("CTRL-SHIFT-UP"))
 						self:ClearBinding(self:GetAttribute("ESCAPE"))
 						self:SetAttribute("ChatOpen", false)
 					end
@@ -2248,10 +2279,60 @@ function SkuChat:OnInitialize()
 
 	a:SetScript("OnClick", function(self, aKey)
 		--handle chat navigation
-		if self.menuOpen == false then
-			--if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEMENU"].key then
+		local tTextFirstLine, tTextFull = nil, "", ""
+
+		if aKey ~= "SHIFT-UP" and aKey ~= "SHIFT-DOWN" and aKey ~= "CTRL-SHIFT-UP" and aKey ~= "CTRL-SHIFT-DOWN" then
+			if SkuOptions.TTS:IsAutoRead() == true then
+				SkuOptions.TTS:ToggleAutoRead()
+				SkuOptions.Voice:StopOutputEmptyQueue(true, nil)
+			end
+			if SkuOptions.TTS:IsVisible() then
+				SkuOptions.TTS:Hide()
+			end
+		end
+
+		local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+		
+		if tLineData.itemLinks and #tLineData.itemLinks > 0 and self.menuOpen == false then
+			if self.menuOpen == false then
+				for w = 1, #tLineData.itemLinks do
+					local ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = "", ""
+					_G["SkuScanningTooltip"]:SetHyperlink(tLineData.itemLinks[w])
+
+					if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+							local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+							ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
+						end
+					end
+					_G["SkuScanningTooltip"]:ClearLines()
+
+					if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
+						if w == 1 then
+							tSkuCurrentLineDatalinktItemId = SkuGetItemIdFromItemLink(tLineData.itemLinks[w]) 
+							tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull = ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull
+							tSkuCurrentLineDatalinktTextFull = tSkuCurrentLineDatalinktTextFirstLine.."\r\n"..tSkuCurrentLineDatalinktTextFull
+
+							local ttf = SkuCore:AuctionHouseGetAuctionPriceHistoryData(tSkuCurrentLineDatalinktItemId)
+							if not ttf then
+								ttf = {}
+							end
+							local tFull = tSkuCurrentLineDatalinktTextFull
+							if type(ttf) ~= "table" then
+								ttf = { (ttf or tSkuCurrentLineDatalinktTextFirstLine or ""), }
+							end
+							table.insert(ttf, 1, tFull)
+							SkuCore:InsertComparisnSections(tSkuCurrentLineDatalinktItemId, ttf)
+							tSkuCurrentLineDatalinktTextFull = ttf
+						end
+					end
+				end
+			end
+		end		
+
+		if self.menuOpen == false or (aKey == "SHIFT-UP" or aKey == "SHIFT-DOWN" or  aKey == "CTRL-SHIFT-UP" or aKey == "CTRL-SHIFT-DOWN") then
 			if aKey == "CTRL-ENTER" then
-					--build/open the line menu
+				--build/open the line menu
 				self.menuOpen = true
 				SkuOptions.Menu = {}
 
@@ -2285,7 +2366,54 @@ function SkuChat:OnInitialize()
 				]]
 
 				--
+				local tLineDataitemLinks = tLineData.itemLinks
+				if tLineDataitemLinks and #tLineDataitemLinks > 0 then
+					for w = 1, #tLineDataitemLinks do
+						local ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = "", ""
+						local ltSkuCurrentLineDatalinktItemId = ""
+						_G["SkuScanningTooltip"]:SetHyperlink(tLineDataitemLinks[w])
+		
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								ltSkuCurrentLineDatalinktTextFirstLine, ltSkuCurrentLineDatalinktTextFull = SkuCore:ItemName_helper(tText)
+							end
+						end
+						_G["SkuScanningTooltip"]:ClearLines()
+						if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
+							local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["link"].." "..w.." "..ltSkuCurrentLineDatalinktTextFirstLine}, SkuGenericMenuItem)
+							tNewMenuEntry.tSkuCurrentLineDatalinktTextFirstLine = ltSkuCurrentLineDatalinktTextFirstLine
+							tNewMenuEntry.tSkuCurrentLineDatalinktItemId = SkuGetItemIdFromItemLink(tLineDataitemLinks[w]) 
+							local ttf = SkuCore:AuctionHouseGetAuctionPriceHistoryData(tNewMenuEntry.tSkuCurrentLineDatalinktItemId)
+							if not ttf then
+								ttf = {}
+							end
+							local tFull = ltSkuCurrentLineDatalinktTextFull
+							if type(ttf) ~= "table" then
+								ttf = { (ttf or tSkuCurrentLineDatalinktTextFirstLine or ""), }
+							end
+							table.insert(ttf, 1, tFull)
+							SkuCore:InsertComparisnSections(tNewMenuEntry.tSkuCurrentLineDatalinktItemId, ttf)
+							tNewMenuEntry.tSkuCurrentLineDatalinktTextFull = ttf
+							tNewMenuEntry.OnEnter = function(self, aValue, aName)
+								tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull = self.tSkuCurrentLineDatalinktTextFirstLine, self.tSkuCurrentLineDatalinktTextFull
+								tSkuCurrentLineDatalinktItemId = self.tSkuCurrentLineDatalinktItemId
+							end
+					
+							if w == 1 then
+								tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull = ltSkuCurrentLineDatalinktTextFirstLine, ttf
+								tSkuCurrentLineDatalinktItemId = SkuGetItemIdFromItemLink(tLineDataitemLinks[w]) 
+							end
+						end
+					end
+				end
+
+
+				--
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["send to channel"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self, aValue, aName)
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self)
 					if tAccessID then
@@ -2298,6 +2426,9 @@ function SkuChat:OnInitialize()
 				end
 
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["send item link to channel"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self, aValue, aName)
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					local tBagSlotListSorted = {
@@ -2358,7 +2489,10 @@ function SkuChat:OnInitialize()
 				--whisper
 				if tLineData.arg2 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["whisper sender"]}, SkuGenericMenuItem)
-					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+					end
+						tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
 						if tLineData.messageTypeGroup ~= "BN_WHISPER" then
 							SkuChat:SetEditboxToCustom("WHISPER", MaskBattleNetNames(tLineData.arg2), "")
@@ -2372,7 +2506,10 @@ function SkuChat:OnInitialize()
 				--invite
 				if tLineData.arg2 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["invite sender"]}, SkuGenericMenuItem)
-					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+					end
+						tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
 						InviteUnit(MaskBattleNetNames(tLineData.arg2))
 						C_Timer.After(0.01, function() CloseChatMenuHelper() end)
@@ -2389,7 +2526,10 @@ function SkuChat:OnInitialize()
 				--copy sender name
 				if tLineData.arg2 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["copy sender name"]}, SkuGenericMenuItem)
-					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+					end
+						tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
 						PlaySound(88)
 						SkuOptions.Voice:OutputStringBTtts(L["Copy text with control plus C and press escape"], true, true, 0.2, nil, nil, nil, 2)
@@ -2402,6 +2542,9 @@ function SkuChat:OnInitialize()
 
 				--copy line
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["copy chat line"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self, aValue, aName)
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self)
 					PlaySound(88)
@@ -2414,6 +2557,9 @@ function SkuChat:OnInitialize()
 
 				--copy all lines
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["copy all chat lines"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self, aValue, aName)
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self)
 					PlaySound(88)
@@ -2440,7 +2586,10 @@ function SkuChat:OnInitialize()
 				--add friend
 				if tLineData.arg2 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["add sender to friend list"]}, SkuGenericMenuItem)
-					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+					end
+						tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
 						PlaySound(88)
 						SkuOptions.Voice:OutputStringBTtts(L["Notiz eingeben und Enter drücken"], true, true, 0.2, nil, nil, nil, 2)
@@ -2457,7 +2606,10 @@ function SkuChat:OnInitialize()
 				--ignore
 				if tLineData.arg2 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["ignore sender"]}, SkuGenericMenuItem)
-					tNewMenuEntry.isSelect = true
+					tNewMenuEntry.OnEnter = function(self, aValue, aName)
+						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+					end
+						tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self)
 						PlaySound(88)
 						if tLineData.arg2 then
@@ -2468,6 +2620,9 @@ function SkuChat:OnInitialize()
 				end	
 
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Clear history"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self, aValue, aName)
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self)
 					PlaySound(88)
@@ -2485,6 +2640,9 @@ function SkuChat:OnInitialize()
 				end
 
 				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Delete tab"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self, aValue, aName)
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 				tNewMenuEntry.isSelect = true
 				tNewMenuEntry.OnAction = function(self)
 					PlaySound(88)
@@ -2496,6 +2654,81 @@ function SkuChat:OnInitialize()
 				SkuOptions.Voice:OutputStringBTtts(SkuOptions.Menu[1].name, true, true, 0.3, nil, nil, nil, 2)
 
 			--more chat/tab navigation
+
+
+
+
+
+
+
+			elseif aKey ==  "SHIFT-UP" then
+				SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+				SkuOptions.currentMenuPosition.textFull = tSkuCurrentLineDatalinktTextFull
+				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, tSkuCurrentLineDatalinktItemId)
+					if not SkuOptions.TTS:IsVisible() then
+						SkuOptions.TTS:Output(tTextFull, 1000)
+					end
+					SkuOptions.currentMenuPosition.links = {}
+					SkuOptions.currentMenuPosition.linksSelected = 0
+					if SkuOptions.TTS:IsAutoRead() == true then
+						SkuOptions.TTS:ToggleAutoRead()
+						SkuOptions.TTS.AutoReadEventFlag = nil
+					end					
+					SkuOptions.TTS:PreviousLine(SkuOptions.currentMenuPosition.ttsEngine)
+				end
+			
+			elseif aKey ==  "SHIFT-DOWN" then
+				SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+				SkuOptions.currentMenuPosition.textFull = tSkuCurrentLineDatalinktTextFull
+				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, tSkuCurrentLineDatalinktItemId)
+					if SkuOptions.TTS:IsVisible() == false then
+						SkuOptions.TTS:Output(tTextFull, 1000)
+					end
+					SkuOptions.currentMenuPosition.links = {}
+					SkuOptions.currentMenuPosition.linksSelected = 0
+					if SkuOptions.TTS:IsAutoRead() == true then
+						SkuOptions.TTS:ToggleAutoRead()
+						SkuOptions.TTS.AutoReadEventFlag = nil
+					end					
+					SkuOptions.TTS:NextLine(SkuOptions.currentMenuPosition.ttsEngine)
+				end
+			
+			elseif aKey ==  "CTRL-SHIFT-UP" then
+				SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+				SkuOptions.currentMenuPosition.textFull = tSkuCurrentLineDatalinktTextFull
+				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, tSkuCurrentLineDatalinktItemId)
+					if not SkuOptions.TTS:IsVisible() then
+						SkuOptions.TTS:Output(tTextFull, 1000)
+					end
+					SkuOptions.currentMenuPosition.links = {}
+					SkuOptions.currentMenuPosition.linksSelected = 0
+					if SkuOptions.TTS:IsAutoRead() == true then
+						SkuOptions.TTS:ToggleAutoRead()
+						SkuOptions.TTS.AutoReadEventFlag = nil
+					end					
+					SkuOptions.TTS:PreviousSection(SkuOptions.currentMenuPosition.ttsEngine)
+				end
+			
+			elseif aKey ==  "CTRL-SHIFT-DOWN" then
+				SkuOptions.currentMenuPosition = SkuOptions.currentMenuPosition or {}
+				SkuOptions.currentMenuPosition.textFull = tSkuCurrentLineDatalinktTextFull
+				if SkuOptions.currentMenuPosition.textFull ~= "" then
+					local tTextFull = SkuOptions:AddExtraTooltipData(SkuOptions.currentMenuPosition.textFull, tSkuCurrentLineDatalinktItemId)
+					if not SkuOptions.TTS:IsVisible() then
+						SkuOptions.TTS:Output(tTextFull, 1000)
+					end
+					SkuOptions.currentMenuPosition.links = {}
+					SkuOptions.currentMenuPosition.linksSelected = 0
+					if SkuOptions.TTS:IsAutoRead() == true then
+						SkuOptions.TTS:ToggleAutoRead()
+						SkuOptions.TTS.AutoReadEventFlag = nil
+					end					
+					SkuOptions.TTS:NextSection(SkuOptions.currentMenuPosition.ttsEngine)
+				end
+			
 			elseif aKey == "UP" then
 			--elseif aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEPREV"].key then
 			local tHistoryCurrentLine = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine
@@ -2503,17 +2736,23 @@ function SkuChat:OnInitialize()
 					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = tHistoryCurrentLine - 1
 				end
 				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine)
+				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				if (not tLineData.itemLinks or #tLineData.itemLinks == 0) and self.menuOpen == false then
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 
 			elseif aKey == "DOWN" then
-			--elseif aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINENEXT"].key then
 				local tHistoryCurrentLine = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine
 				if tHistoryCurrentLine < #SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history then
 					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = tHistoryCurrentLine + 1
 				end
 				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine)
+				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				if (not tLineData.itemLinks or #tLineData.itemLinks == 0) and self.menuOpen == false then
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 
 			elseif aKey == "LEFT" then
-			--elseif aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_TABPREV"].key then
 				if SkuChat.currentTab > 1 then
 					SkuChat.currentTab = SkuChat.currentTab - 1
 				else
@@ -2523,9 +2762,12 @@ function SkuChat:OnInitialize()
 					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = 1
 				end
 				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine, true)
+				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				if (not tLineData.itemLinks or #tLineData.itemLinks == 0) and self.menuOpen == false then
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 
 			elseif aKey == "RIGHT" then
-			--elseif aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_TABNEXT"].key then
 				if SkuChat.currentTab < #SkuOptions.db.profile["SkuChat"].tabs then
 					SkuChat.currentTab = SkuChat.currentTab + 1
 				else
@@ -2535,6 +2777,10 @@ function SkuChat:OnInitialize()
 					SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine = 1
 				end
 				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine, true)
+				local tLineData = SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].history[SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine]
+				if (not tLineData.itemLinks or #tLineData.itemLinks == 0) and self.menuOpen == false then
+					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
+				end
 
 			end
 
@@ -2542,7 +2788,6 @@ function SkuChat:OnInitialize()
 		else
 			--if user is leaving the line menu with SKU_KEY_CHAT_TABPREV
 			if aKey == "LEFT" and self.menuOpen == true then
-			--if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_TABPREV"].key and self.menuOpen == true then
 				CloseChatMenuHelper()
 				SkuChat:ReadLine(SkuChat.currentTab, SkuOptions.db.profile["SkuChat"].tabs[SkuChat.currentTab].historyCurrentLine)
 			end
@@ -2554,22 +2799,21 @@ function SkuChat:OnInitialize()
 					SkuOptions:VocalizeCurrentMenuName(true)
 				end
 				if aKey == "UP" then
-				--if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEPREV"].key then
 					SkuOptions.currentMenuPosition:OnPrev()
 					SkuOptions:VocalizeCurrentMenuName(true)
 				end
 				if aKey == "DOWN" then
-				--if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINENEXT"].key then
 					SkuOptions.currentMenuPosition:OnNext()
 					SkuOptions:VocalizeCurrentMenuName(true)
 				end
 				--menu entry selected
 				if aKey == "CTRL-ENTER" then
-				--if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEMENU"].key then
 					SkuOptions.currentMenuPosition:OnAction()
 				end
+
 			end
 		end
+
 	end)
 end
 
@@ -2595,6 +2839,10 @@ function SkuChat:OnEnable()
 			self:SetBindingClick(true, self:GetAttribute("SKU_KEY_CHAT_TABPREV"), "OnSkuChatToggle", self:GetAttribute("SKU_KEY_CHAT_TABPREV"))
 			self:SetBindingClick(true, self:GetAttribute("SKU_KEY_CHAT_TABNEXT"), "OnSkuChatToggle", self:GetAttribute("SKU_KEY_CHAT_TABNEXT"))
 			self:SetBindingClick(true, self:GetAttribute("SKU_KEY_CHAT_LINEMENU"), "OnSkuChatToggle", self:GetAttribute("SKU_KEY_CHAT_LINEMENU"))
+			self:SetBindingClick(true, self:GetAttribute("SHIFT-DOWN"), "OnSkuChatToggle", self:GetAttribute("SHIFT-DOWN"))
+			self:SetBindingClick(true, self:GetAttribute("SHIFT-UP"), "OnSkuChatToggle", self:GetAttribute("SHIFT-UP"))
+			self:SetBindingClick(true, self:GetAttribute("CTRL-SHIFT-DOWN"), "OnSkuChatToggle", self:GetAttribute("CTRL-SHIFT-DOWN"))
+			self:SetBindingClick(true, self:GetAttribute("CTRL-SHIFT-UP"), "OnSkuChatToggle", self:GetAttribute("CTRL-SHIFT-UP"))
 			self:SetBindingClick(true, self:GetAttribute("ESCAPE"), "OnSkuChatToggleSecureHandler", self:GetAttribute("ESCAPE"))
 			self:SetAttribute("ChatOpen", true)
 		else
@@ -2605,6 +2853,10 @@ function SkuChat:OnEnable()
 				self:ClearBinding(self:GetAttribute("SKU_KEY_CHAT_TABPREV"))
 				self:ClearBinding(self:GetAttribute("SKU_KEY_CHAT_TABNEXT"))
 				self:ClearBinding(self:GetAttribute("SKU_KEY_CHAT_LINEMENU"))
+				self:ClearBinding(self:GetAttribute("SHIFT-DOWN"))
+				self:ClearBinding(self:GetAttribute("SHIFT-UP"))
+				self:ClearBinding(self:GetAttribute("CTRL-SHIFT-DOWN"))
+				self:ClearBinding(self:GetAttribute("CTRL-SHIFT-UP"))
 				self:ClearBinding(self:GetAttribute("ESCAPE"))
 				self:SetAttribute("ChatOpen", false)
 			end
@@ -2615,19 +2867,15 @@ function SkuChat:OnEnable()
 	b:Hide()
 
 	-- attributes with button names for SetBindingClick. can only be updated ooc
-	--[[
-	b:SetAttribute("SKU_KEY_CHAT_LINEPREV", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEPREV"].key)
-	b:SetAttribute("SKU_KEY_CHAT_LINENEXT", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINENEXT"].key)
-	b:SetAttribute("SKU_KEY_CHAT_TABPREV", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_TABPREV"].key)
-	b:SetAttribute("SKU_KEY_CHAT_TABNEXT", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_TABNEXT"].key)
-	b:SetAttribute("SKU_KEY_CHAT_LINEMENU", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHAT_LINEMENU"].key)
-	]]
 	b:SetAttribute("SKU_KEY_CHAT_LINEPREV", "UP")
 	b:SetAttribute("SKU_KEY_CHAT_LINENEXT", "DOWN")
 	b:SetAttribute("SKU_KEY_CHAT_TABPREV", "LEFT")
 	b:SetAttribute("SKU_KEY_CHAT_TABNEXT", "RIGHT")
 	b:SetAttribute("SKU_KEY_CHAT_LINEMENU", "CTRL-ENTER")
-
+	b:SetAttribute("SHIFT-DOWN", "SHIFT-DOWN")
+	b:SetAttribute("SHIFT-UP", "SHIFT-UP")
+	b:SetAttribute("CTRL-SHIFT-DOWN", "CTRL-SHIFT-DOWN")
+	b:SetAttribute("CTRL-SHIFT-UP", "CTRL-SHIFT-UP")
 	b:SetAttribute("ESCAPE", "ESCAPE")
 	b:SetAttribute("ChatOpen", false)
 
@@ -2764,7 +3012,22 @@ function SkuChat:DEFAULT_CHAT_FRAME_AddMessage(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:VARIABLES_LOADED(...)
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:PLAYER_LOGIN(...)
+	SkuCore.outputSoundFiles["sound-newChatLine"] =L["aura;sound"].."#"..L["default new Chat Line sound"]
+	SkuCore.outputSoundFiles["sound-silence0.1"] = L["aura;sound"].."#"..L["silent"]
+	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
+		if SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == true then
+			SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = "sound-newChatLine"
+		elseif SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == false then
+			SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = "sound-silence0.1"
+		end
+	end
+
 	hooksecurefunc(DEFAULT_CHAT_FRAME, "AddMessage", SkuChat.DEFAULT_CHAT_FRAME_AddMessage)
 
 	ChatFrame1:HookScript("OnShow", function(self)
@@ -3154,6 +3417,17 @@ function SkuChat:InitTab(tNewTabIndex)
 			print(messageTypeGroup, body, r, g, b, id, accessID, typeID, arg2)
 		end
 		]]
+		local tLink = string.match(body, "|Hitem:(.+)|h%[")
+		if tLink then
+			tLink = "item:"..tLink
+		end
+
+		local tItemLinks = {}
+		for i in string.gmatch(body, "|Hitem:([^Hitem]+)|h%[") do
+			tItemLinks[#tItemLinks + 1] = "item:"..i
+			dprint(string.gsub(i, "|", "!"))
+		end
+		
 		if not body then
 			return
 		end
@@ -3161,6 +3435,8 @@ function SkuChat:InitTab(tNewTabIndex)
 		if body == "" or body == " " then
 			return
 		end
+
+
 
 		--mask bnet names
 		local tNewBody
@@ -3211,17 +3487,19 @@ function SkuChat:InitTab(tNewTabIndex)
 				SkuOptions.Voice:OutputStringBTtts(tFlatBody, false, true, 0.2, nil, nil, nil, 2)
 			end
 
-			if a.tab.audioOnNewMessage == true then
+			if a.tab.audioOnNewMessage then
 				if SkuCore.inCombat == true then
 					SkuChatNewLineInCombat = true
 				else
-					SkuOptions.Voice:OutputString("sound-newChatLine", false, true, 0.1)
+					SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].audioOnNewMessage, false, true, 0.1)
 				end
 			end
 
 			--add to history
 			table.insert(a.tab.history, 1, {
 				body = tFlatBody,
+				link = tLink,
+				itemLinks = tItemLinks,
 				messageTypeGroup = messageTypeGroup, 
 				audio = tAudio, 
 				accessID = accessID, 
@@ -3233,7 +3511,9 @@ function SkuChat:InitTab(tNewTabIndex)
 			--change the current line if the chat is open
 			if SkuChat.ChatOpen == true then
 				if a.tab.historyCurrentLine < #a.tab.history then
-					a.tab.historyCurrentLine = a.tab.historyCurrentLine + 1
+					if _G["OnSkuChatToggle"].menuOpen ~= true then
+						a.tab.historyCurrentLine = a.tab.historyCurrentLine + 1
+					end
 				end
 			end
 
@@ -3268,7 +3548,7 @@ function SkuChat:NewTab(aName)
 			history = {},
 			historyCurrentLine = 1,
 			historyMax = SkuChat.defaultHistoryMax,
-			audioOnNewMessage = SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage,
+			audioOnNewMessage = "sound-newChatLine",--SkuOptions.db.profile[MODULE_NAME].chatSettings.audioOnNewMessage,
 			createdAt = time(),
 			lastActivityAt = time(),
 		}

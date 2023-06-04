@@ -59,6 +59,7 @@ local defaults = {
 function SkuOptions:CloseMenu()
 	if SkuOptions:IsMenuOpen() == true then
 		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
+		_G["SkuDebug"]:Hide()
 	end
 end
 
