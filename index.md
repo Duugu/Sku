@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.16](https://github.com/Duugu/Sku/releases/download/r34.16/Sku-r34.16-wrath.zip) (June 2nd 2023)<br>
+- [Sku r34.17](https://github.com/Duugu/Sku/releases/download/r34.17/Sku-r34.17-wrath.zip) (June 4th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.17
+- You can now show/read the usual tooltips for all item links in chat lines. To read the first item link in a chat line just press Shift + Down to read the first tooltip from that specific line. If there is more than one link in a chat line, press Control + Enter to open the line context menu. You will find all items as menu entries at the top of that chat line context menu. Use Shift + Down on each menu entry to read the tooltip.
+- New setting "Chat > Tabs > tabname > Audio notification on chat message" to adjust the sound on new messages for each tab. Default: "default new Chat Line sound". Set to "mute" to disable sound.
+
 ## Changes in Sku r34.16
 - Map data updated:
 	- Terokkar Forest completed, and parts of Shadowmoon Valley in Outlands mapped by Emilylorange.
