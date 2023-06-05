@@ -221,8 +221,8 @@ SkuDB.ExternalMapID = { --https://wow.tools/dbc/?dbc=uimap&build=1.13.7.38386&lo
 [227] = {Name_lang = {["deDE"] = "Neu-Tüftlerstadt", ["enUS"] = "Gnomeregan",}, ParentExternalMapID = "1426", Type = "4", AreaId = 133,},
 [228] = {Name_lang = {["deDE"] = "Neu-Tüftlerstadt", ["enUS"] = "Gnomeregan",}, ParentExternalMapID = "1426", Type = "4", AreaId = 133,},
 [229] = {Name_lang = {["deDE"] = "Neu-Tüftlerstadt", ["enUS"] = "Gnomeregan",}, ParentExternalMapID = "1426", Type = "4", AreaId = 133,},
-[230] = {Name_lang = {["deDE"] = "Uldaman", ["enUS"] = "Uldaman",}, ParentExternalMapID = "1418", Type = "4", AreaId = 1337,},
-[231] = {Name_lang = {["deDE"] = "Uldaman", ["enUS"] = "Uldaman",}, ParentExternalMapID = "1418", Type = "4", AreaId = 1337,},
+[230] = {Name_lang = {["deDE"] = "Uldaman", ["enUS"] = "Uldaman",}, ParentExternalMapID = "1418", Type = "4", AreaId = 1517,},
+[231] = {Name_lang = {["deDE"] = "Uldaman", ["enUS"] = "Uldaman",}, ParentExternalMapID = "1418", Type = "4", AreaId = 1517,},
 [232] = {Name_lang = {["deDE"] = "Geschmolzener Kern", ["enUS"] = "Molten Core",}, ParentExternalMapID = "1428", Type = "4", AreaId = 2717,},
 [233] = {Name_lang = {["deDE"] = "Zul'Gurub", ["enUS"] = "Zul'Gurub",}, ParentExternalMapID = "1434", Type = "6", AreaId = 19,},
 [234] = {Name_lang = {["deDE"] = "Düsterbruch", ["enUS"] = "Dire Maul",}, ParentExternalMapID = "1444", Type = "6", AreaId = 2557,},
@@ -3322,4 +3322,12 @@ SkuDB.InternalAreaTable = {
 
 --Sku fake subzone entries
 [250000] = {ZoneName = "", AreaName_lang = {["deDE"] = "Versteck der Defias", ["enUS"] = "Defias hideout", }, ContinentID = 0, ParentAreaID = 20, Faction = -1, Flags = -1,},
+[250001] = {ZoneName = "", AreaName_lang = {["deDE"] = "Südliche Bankenhalle", ["enUS"] = "South Common Hall", }, ContinentID = 0, ParentAreaID = 1517, Faction = -1, Flags = -1,},
+[250002] = {ZoneName = "", AreaName_lang = {["deDE"] = "Ausgrabungszentrum", ["enUS"] = "Excavation Center", }, ContinentID = 0, ParentAreaID = 1517, Faction = -1, Flags = -1,},
+[250003] = {ZoneName = "", AreaName_lang = {["deDE"] = "Grabungs Eins", ["enUS"] = "Dig One", }, ContinentID = 0, ParentAreaID = 1517, Faction = -1, Flags = -1,},
+[250004] = {ZoneName = "", AreaName_lang = {["deDE"] = "Nördliche Bankenhalle", ["enUS"] = "North Common Hall", }, ContinentID = 0, ParentAreaID = 1517, Faction = -1, Flags = -1,},
+[250005] = {ZoneName = "", AreaName_lang = {["deDE"] = "Die versiegelte Halle", ["enUS"] = "The Sealed Hall", }, ContinentID = 0, ParentAreaID = 1517, Faction = -1, Flags = -1,},
+
+
+
 }

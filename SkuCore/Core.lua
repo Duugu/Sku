@@ -294,6 +294,7 @@ function SkuCore:OnInitialize()
 	SkuCore:GameWorldObjectsOnInitialize()
 	SkuCore:DialTargetingOnInitialize()
 	SkuCore:TurnToUnitOnInitialize()
+	SkuCore:CalendarOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2141,6 +2142,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:DialTargetingOnLogin()
 		SkuCore:DamageMeterOnLogin()
 		SkuCore:TurnToUnitOnLogin()
+		SkuCore:CalendarOnLogin()
 
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)

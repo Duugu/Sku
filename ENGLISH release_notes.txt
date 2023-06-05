@@ -2,6 +2,12 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34.18
+	- Fixed the routes to the zeppelin from Durotar to Undercity/Grom'Gol
+	- Fixed a bunch of broken areas in Uldaman
+	- Re-linked Deputy Willem to the route network
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.17

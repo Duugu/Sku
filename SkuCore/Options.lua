@@ -2732,6 +2732,12 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.MonitorMenuBuilder
 
+	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Calendar"].." (Work In Progress)"}, SkuGenericMenuItem)
+	tNewMenuParentEntry.dynamic = true
+	tNewMenuParentEntry.filterable = true
+	tNewMenuParentEntry.BuildChildren = SkuCore.CalendarMenuBuilder
+
+
 	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Dial Targeting"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
