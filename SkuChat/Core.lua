@@ -3020,11 +3020,13 @@ end
 function SkuChat:PLAYER_LOGIN(...)
 	SkuCore.outputSoundFiles["sound-newChatLine"] =L["aura;sound"].."#"..L["default new Chat Line sound"]
 	SkuCore.outputSoundFiles["sound-silence0.1"] = L["aura;sound"].."#"..L["silent"]
-	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-		if SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == true then
-			SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = "sound-newChatLine"
-		elseif SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == false then
-			SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = "sound-silence0.1"
+	if SkuOptions.db.profile["SkuChat"].tabs then
+		for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
+			if SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == true then
+				SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = "sound-newChatLine"
+			elseif SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage == false then
+				SkuOptions.db.profile["SkuChat"].tabs[x].audioOnNewMessage = "sound-silence0.1"
+			end
 		end
 	end
 

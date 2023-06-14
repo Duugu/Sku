@@ -855,6 +855,8 @@ function SkuCore:OnEnable()
 
 		SkuCore:UpdateInteractMove()
 
+		SkuCore:CalendarQueryQueueOnQueue()
+
 		SkuCore:DoRangeCheck()
 
 		if SkuCore.inCombat ~= true then
@@ -1941,7 +1943,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 			--this is the first load of wow ever
 			--set up account wide things
 			
-			C_Timer.After(5, function()
+			C_Timer.After(10, function()
 				SkuCore:ResetBindings()
 				--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 				--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
@@ -2040,6 +2042,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		--remove deprecated key binds
 		SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMMOPEN"] = nil
 		SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKURTMMDISPLAY"] = nil
+
 	end
 
 	if isInitialLogin == true or isReloadingUi == true then
@@ -2142,7 +2145,6 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:DialTargetingOnLogin()
 		SkuCore:DamageMeterOnLogin()
 		SkuCore:TurnToUnitOnLogin()
-		SkuCore:CalendarOnLogin()
 
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")
 		--SetOverrideBindingClick(_G["OnSkuChatToggle"], true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key)
@@ -2169,6 +2171,9 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		end
 	end)
 	]]
+
+	SkuCore:CalendarOnLogin(event, isInitialLogin, isReloadingUi)
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
