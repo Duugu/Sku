@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.18](https://github.com/Duugu/Sku/releases/download/r34.18/Sku-r34.18-wrath.zip) (June 5th 2023)<br>
+- [Sku r34.19](https://github.com/Duugu/Sku/releases/download/r34.19/Sku-r34.19-wrath.zip) (June 14th 2023)<br>
 - [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
 
 *Older updates:* <br>
@@ -23,6 +23,15 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.19
+- New feature: Ingame calendar under Core > Calendar. At them moment you can read calendar events and react to them. You can't create own events. I will add that in a later step.
+	All calendar events are listed under Core > Calendar > Events. Each event has a tooltip with all details. If you can react (sign-up, decline, etc.) on an event then the events submenu has those options.
+	All calendar data is synced from the server. Therefore it may take a few seconds before details are available. In that case the menu will show "Querying" and there is a sound until the data is synced.
+	There are options for notifications on new calendar events under Core > Calendar > Options. Notifications are Off by default. The calendar will be checked for new events every 2 minutes.
+	The Core > Calendar > New events menu has new events only. Events are "New" until you are accessing the event in the calendar menu or logout.
+	There are some options to filter the shown events under Core > Calendar > Options. As default the calendar is showing Player, Guild and Holiday events.
+	Please test and report any issues. Thanks!
+
 ## Changes in Sku r34.18
 - Fixed the routes to the zeppelin from Durotar to Undercity/Grom'Gol
 - Fixed a bunch of broken areas in Uldaman
