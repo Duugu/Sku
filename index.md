@@ -24,7 +24,7 @@ DEUTSCH - Erste Schritte:<br>
 # Release notes
 -------------------------------------------------------------------------------------------------------
 ## Changes in Sku r34.19
-- New feature: Ingame calendar under Core > Calendar. At them moment you can read calendar events and react to them. You can't create own events. I will add that in a later step.
+- New feature: Ingame calendar under Core > Calendar. At the moment you can read calendar events and react to them. You can't create own events. I will add that in a later step.
 	- All calendar events are listed under Core > Calendar > Events. Each event has a tooltip with all details. If you can react (sign-up, decline, etc.) on an event then the events submenu has those options.
 	- All calendar data is synced from the server. Therefore it may take a few seconds before details are available. In that case the menu will show "Querying" and there is a sound until the data is synced.
 	- There are options for notifications on new calendar events under Core > Calendar > Options. Notifications are Off by default. The calendar will be checked for new events every 2 minutes.
