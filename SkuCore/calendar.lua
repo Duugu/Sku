@@ -345,7 +345,11 @@ local function BuildEventInviteesTooltip(aEventID)
       for x = 1, tEvent.numInvitees do
          local tInviteeInfo = tEvent.invitees[x]
          if x > 1 then tReturnString = tReturnString.."\r\n" end
-         tReturnString = tReturnString..x.." "..tInviteeInfo.name..", "..Enum.CalendarStatusStrings[tInviteeInfo.inviteStatus].." ("..(tInviteeInfo.className or L["No class info"]).." "..(tInviteeInfo.level or L["No level info"])..")"
+         if tInviteeInfo.name then
+            tReturnString = tReturnString..x.." "..(tInviteeInfo.name)..", "..Enum.CalendarStatusStrings[tInviteeInfo.inviteStatus].." ("..(tInviteeInfo.className or L["No class info"]).." "..(tInviteeInfo.level or L["No level info"])..")"
+         else
+            tReturnString = tReturnString..x.." "..(tInviteeInfo.name or L["Querying data..."])
+         end
       end
       return tReturnString
    end

@@ -553,7 +553,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 		if tMaxMsg > 100 then tMaxMsg = 100 end
 		for q = tMaxMsg, 1, -1 do
 			local ttype, name, itemLink, count = GetGuildBankTransaction(tSelectedBankTab, q)
-			tMessageFull = tMessageFull..ttype.." "..name.." "..(SkuChat:Unescape(itemLink) or "").." "..count.."\r\n"
+			tMessageFull = tMessageFull..ttype.." "..(name or L["no data"]).." "..(SkuChat:Unescape(itemLink) or "").." "..count.."\r\n"
 		end
 
 		local tFrameName = "GuildBankMessageFrame"

@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.20
+	- A bunch of internal bug fixes
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.19
 	- New feature: Ingame calendar under Core > Calendar. At the moment you can read calendar events and react to them. You can't create own events. I will add that in a later step.
 		All calendar events are listed under Core > Calendar > Events. Each event has a tooltip with all details. If you can react (sign-up, decline, etc.) on an event then the events submenu has those options.

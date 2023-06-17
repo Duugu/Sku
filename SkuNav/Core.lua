@@ -2425,9 +2425,11 @@ function SkuNav:GetAllLinkedWPsInRangeToCoords(aX, aY, aRange)
 		local tWpData = WaypointCache[tIndex]
 		if tWpData.links.byId then
 			local tDistance  = SkuNav:Distance(aX, aY, tWpData.worldX, tWpData.worldY)
-			if tDistance < aRange then
-				tFoundWps[tName] = {["nearestWP"] = tName, ["nearestWpRange"] = tDistance}
-				tCount = tCount + 1
+			if tDistance ~= nil and aRange ~= nil then
+				if tDistance < aRange then
+					tFoundWps[tName] = {["nearestWP"] = tName, ["nearestWpRange"] = tDistance}
+					tCount = tCount + 1
+				end
 			end
 		end
 	end
