@@ -9,10 +9,10 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.19](https://github.com/Duugu/Sku/releases/download/r34.19/Sku-r34.19-wrath.zip) (June 14th 2023)<br>
-- [Wow Menu r3.12](https://github.com/Duugu/wow_menu/releases/download/r3.12/wow_menu-r3.12-wrath.zip) (May 7th 2023)<br>
+- [Wow Menu r3.14](https://github.com/Duugu/wow_menu/releases/download/r3.14/wow_menu-r3.14-wrath.zip) (June 24th 2023)<br>
 
 *Older updates:* <br>
+- [Sku r34.19](https://github.com/Duugu/Sku/releases/download/r34.19/Sku-r34.19-wrath.zip) (June 14th 2023)<br>
 - [SkuAudioData_en r10 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r10/SkuAudioData_en-r10-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2023)<br>
@@ -23,6 +23,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in WoW Menu r3.14
+- Better detection and auto accepting the Outdated Addons warning to load outdated addons.
+
 ## Changes in Sku r34.19
 - New feature: Ingame calendar under Core > Calendar. At the moment you can read calendar events and react to them. You can't create own events. I will add that in a later step.
 	- All calendar events are listed under Core > Calendar > Events. Each event has a tooltip with all details. If you can react (sign-up, decline, etc.) on an event then the events submenu has those options.
