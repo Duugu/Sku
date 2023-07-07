@@ -2882,3 +2882,7 @@ L["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"] = "Kampfmonitor; aktuelle Anzahl Fein
 L["New follow unit"] = "Neues folgen ziel: "
 L["Count deaths up"] = "Tode hochzählen"
 L["Setting"] = "Einstellung"
+L["combat notification"] = "kampfbenachrichtigung"
+L["Notification volume"] = "Lautstärke von Audiobenachrichtigungen"
+L["Low"] = "Niedrig"
+L["High"] = "Noch"

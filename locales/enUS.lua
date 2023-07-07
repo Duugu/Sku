@@ -2891,3 +2891,7 @@ L["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"] = "Combat monitor; output current num
 L["New follow unit"] = "New follow target: "
 L["Count deaths up"] = "Count deaths up"
 L["Setting"] = "Setting"
+L["combat notification"] = "combat notification"
+L["Notification volume"] = "Audio notification volume"
+L["Low"] = "Low"
+L["High"] = "High"

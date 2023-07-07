@@ -13,9 +13,16 @@ local aqCombatVoices = {
 local aqCombatAudioOutputs = {
    ["vocalized"] = "1 "..L["vocalized"],
 }
+--[[
 for x = 12, 61, 4 do
    aqCombatAudioOutputs["sound-synth"..(string.format("%02d", x))] = L["Synth"].." "..(string.format("%02d", x))
    aqCombatAudioOutputs["sound-synth"..(string.format("%02d", x))..";vocalized"] = L["Synth"].." "..(string.format("%02d", x)).." "..L["plus"].." "..L["vocalized"]
+end
+]]
+
+for x = 1, 20 do
+   aqCombatAudioOutputs["sound-combat-notification"..(string.format("%02d", x))] = L["combat notification"].." "..(string.format("%02d", x))
+   aqCombatAudioOutputs["sound-combat-notification"..(string.format("%02d", x))..";vocalized"] = L["combat notification"].." "..(string.format("%02d", x)).." "..L["plus"].." "..L["vocalized"]
 end
 
 SkuCore.RaidTargetValues = {
@@ -98,7 +105,11 @@ SkuCore.partyDeadCountCounter = 0
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCoreAqCombatGetVoiceString(aString, aTable)
-   return (aString:gsub('($%b{})', function(w) return aTable[w:sub(3, -2)] or w end))
+   local tResult = (aString:gsub('($%b{})', function(w) return aTable[w:sub(3, -2)] or w end))
+   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume == 1 then
+      tResult = string.gsub(tResult, "sound%-combat%-notification", "sound-combat-notification-low")
+   end
+   return tResult
 end
  
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -129,6 +140,7 @@ local function SkuCoreAqCombatOutput(aPattern, aValuesTable, aQueueSettings, aSk
    end
    aValuesTable.sound = tSound
    aPattern = string.gsub(aPattern, ";", ";${voice}-")
+
    SkuOptions.Voice:OutputString(SkuCoreAqCombatGetVoiceString(aPattern, aValuesTable), {wait = aQueueSettings.wait, overwrite = aQueueSettings.overwrite, instant = aQueueSettings.instant, doNotOverwrite = aQueueSettings.doNotOverwrite,}) 
 end
 
@@ -700,6 +712,11 @@ function SkuCore:aqCombatOnLogin()
          SkuOptions.db.char[MODULE_NAME].aq[x].combat.voice = 1
       end
 
+      if SkuOptions.db.char[MODULE_NAME].aq[x].combat.notificationVolume == nil then
+         SkuOptions.db.char[MODULE_NAME].aq[x].combat.notificationVolume = 1
+      end
+
+
       --hostile
          if SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile == nil then
             SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile = {}
@@ -1266,6 +1283,9 @@ local function tSoundMenuBuilder(self, aSetting)
                      SkuOptions.Voice:StopOutputEmptyQueue(true, true)
                      C_Timer.After(0.01, function()
                         SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = "party1", unit2 = "party2", action1 = "out", number1 = "1"}, {wait = false, overwrite = true}, tSetting, i)
+                        C_Timer.After(1.0, function()
+                           SkuOptions.Voice:OutputStringBTtts(SkuOptions.currentMenuPosition.name, false, true, 0.2, true, nil, nil, 2)
+                        end)
                      end)
                   end)
                end
@@ -1319,6 +1339,29 @@ function SkuCore:aqCombatMenuBuilder()
       for x = 1, #aqCombatVoices do
          SkuOptions:InjectMenuItems(self, {aqCombatVoices[x]}, SkuGenericMenuItem)
       end
+   end
+
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Notification volume"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.filterable = true
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume == 1 then
+         return L["Low"]
+      else
+         return L["High"]
+      end
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      if aName == L["Low"] then
+         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume = 1
+      elseif aName == L["High"] then
+         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume = 2
+      end
+   end
+   tNewMenuEntry.BuildChildren = function(self)
+      SkuOptions:InjectMenuItems(self, {L["Low"]}, SkuGenericMenuItem)
+      SkuOptions:InjectMenuItems(self, {L["High"]}, SkuGenericMenuItem)
    end
 
    ----
