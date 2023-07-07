@@ -38,7 +38,8 @@ DEUTSCH - Erste Schritte:<br>
 	"Core > Monitor > Combat > Friendly > Distance to party member" is to set an out of range warning for one party or raid member that you are usually following. With that option enabled, and "Set unit for out of range" set to the group member, you will be notified if that group member is getting more than the specified distance away from you. <br>
 	There are new sku key binds specifically for the combat monitor:<br>
 	- There is a new sku key bind "Combat monitor set current target as follow target" for the "Distance to party member" feature. There's also a slash command for that: /sku mon,combat,follow,target
-	- There is a new sku key bind to instantly output the number of creatures in combat: "Combat monitor; output current number of enemies in combat"<br>
+	- There is a new sku key bind to instantly output the number of creatures in combat: "Combat monitor; output current number of enemies in combat"
+   
 	Combat monitor settings are for party and raid groups. There is no difference.<br>
 	Combat monitor outputs are always first in our output queue.<br>
 	Combat monitor settings are saved per character and talent spec.
