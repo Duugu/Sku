@@ -9,10 +9,10 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Wow Menu r3.14](https://github.com/Duugu/wow_menu/releases/download/r3.14/wow_menu-r3.14-wrath.zip) (June 24th 2023)<br>
+- [Sku r34.20](https://github.com/Duugu/Sku/releases/download/r34.20/Sku-r34.20-wrath.zip) (July 8th 2023)<br>
 
 *Older updates:* <br>
-- [Sku r34.19](https://github.com/Duugu/Sku/releases/download/r34.19/Sku-r34.19-wrath.zip) (June 14th 2023)<br>
+- [Wow Menu r3.14](https://github.com/Duugu/wow_menu/releases/download/r3.14/wow_menu-r3.14-wrath.zip) (June 24th 2023)<br>
 - [SkuAudioData_en r10 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r10/SkuAudioData_en-r10-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2023)<br>
@@ -23,6 +23,25 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.20
+- Fixed an issue with the calender leading to errors
+- Data for Core > Best in Slot updated to Pre Raid, T8, T9
+- Fixed the "Output current hard target" and "Output current soft target" Sku key binds
+- Fixed a bug where the first whisper chat message in new whisper tabs was empty.
+- Each fight under "Core > Damage meter > Reports" now has a submenu with the same entries as in the fights tooltip (DPS by rank). Every submenu entry has a tooltip with the used spells and details on those spells for the specific player.
+- All monitor settings under Core > Monitor are now saved per character and talent spec. This is to have different monitor settings for classes with different roles. Like, for example, the Druid, who can be tank in spec one and healer in spec two. If you have dual talent specialization, and therefore two talent specs, the monitor settings can be different for both specs. The addon will automatically show and use the monitor settings for your currently active talent spec (1 or 2). If you don't have dual talent specialization yet, you will always use spec 1 and only have one monitor settings set that won't change. All your existing monitor settings will be kept. You don't need to do or configuare anything. On first login the addon will automatically copy all your existing monitor settings to the two new different monitor setting sets for the two specs.
+- New monitor: Combat (Core > Monitor > Combat)<br>
+	The combat monitor is for all general combat events like threat warning, aggro gained or lost, enemies added to combat, enemies casting, enemies dead, party members dead, etc.<br>
+	The combat monitor is off as default and all options are off as default. You need to enable the Combat monitor itself and all settings you would like to use.<br>
+	There are two main menus: Hostile for everything that is about mobs/enemies and Friendly for everything that is about your party/raid members.<br>
+	The options should be quite self explaining. Just take your time and browse through them, and enable what is usefull for you. Then test and adjust.<br>
+	There are new sku key binds specifically for the combat monitor:
+	- "Core > Monitor > Combat > Friendly > Distance to party member" is to set an out of range warning for one party or raid member that you are usually following. With that option enabled, and "Set unit for out of range" set to the group member, you will be notified if that group member is getting more than the specified distance away from you. You can do that via the audio menu, but there also is a new sku key bind "Combat monitor; set current target as follow target" for that. And additionally there is a slash command for that: /sku mon,combat,follow,target
+	- There is a new sku key bind to instantly output the number of creatures in combat: "Combat monitor; output current number of enemies in combat"
+	
+ 	Combat monitor outputs are always first in our output queue.<br>
+	Combat monitor settings are saved per character and talent spec.
+
 ## Changes in WoW Menu r3.14
 - Better detection and auto accepting the Outdated Addons warning to load outdated addons.
 
