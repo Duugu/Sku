@@ -1502,6 +1502,8 @@ function SkuCore:ACTIVE_TALENT_GROUP_CHANGED(aEvent, aCurr, aPrev)
 			end)
 		end
 	end
+
+	SkuCore:UpdateCurrentTalentSet()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

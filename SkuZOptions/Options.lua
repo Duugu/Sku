@@ -1087,6 +1087,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		SkuOptions.db:SetProfile(aName)
+		SkuCore:UpdateCurrentTalentSet()
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tList = SkuOptions.db:GetProfiles()
@@ -1114,6 +1115,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 						end
 					end
 					SkuOptions.db:SetProfile(tText)
+					SkuCore:UpdateCurrentTalentSet()
 				end
 			end,
 			nil
@@ -1128,6 +1130,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		SkuOptions.db:CopyProfile(aName, true)
+		SkuCore:UpdateCurrentTalentSet()
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tList = SkuOptions.db:GetProfiles()
@@ -1142,6 +1145,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		SkuOptions.db:DeleteProfile(aName, silent)
+		SkuCore:UpdateCurrentTalentSet()
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tList = SkuOptions.db:GetProfiles()
@@ -1165,6 +1169,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 			Misc = {},
 		}
 		SkuOptions:OnProfileReset()
+		SkuCore:UpdateCurrentTalentSet()
 	end
 
 	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Fehlende Audio Wörter kopieren"]}, SkuGenericMenuItem)

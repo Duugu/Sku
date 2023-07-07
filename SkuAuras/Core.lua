@@ -617,14 +617,19 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:COMBAT_LOG_EVENT_UNFILTERED(aEventName, aCustomEventData)
 	local tEventData = aCustomEventData or {CombatLogGetCurrentEventInfo()}
-
+	--print("COMBAT_LOG_EVENT_UNFILTERED", tEventData[CleuBase.subevent])
 	SkuAuras:LogRecorder(aEventName, tEventData)
 
 	SkuAuras:RoleChecker(aEventName, tEventData)
 
 	if tEventData[CleuBase.subevent] == "UNIT_DIED" then
-		SkuDispatcher:TriggerSkuEvent("SKU_UNIT_DIED", tEventData[8])
+		SkuDispatcher:TriggerSkuEvent("SKU_UNIT_DIED", tEventData[8], tEventData[9])
 	end
+
+	if tEventData[CleuBase.subevent] == "SPELL_CAST_START" then
+		SkuDispatcher:TriggerSkuEvent("SKU_SPELL_CAST_START", tEventData)
+	end
+
 
 	if tEventData[CleuBase.subevent] == "SPELL_CAST_SUCCESS" then
 		C_Timer.After(0.1, function()
@@ -1163,8 +1168,8 @@ function SkuAuras:RoleCheckerGetUnitRole(aUnitGUID)
 			if tUnitGUID and tUnitGUID == aUnitGUID then
 				for y = 1, #SkuCore.Monitor.UnitNumbersIndexedRaid do
 					if SkuCore.Monitor.UnitNumbersIndexedRaid[y] ~= nil and SkuCore.Monitor.UnitNumbersIndexedRaid[y] == "raid"..x then
-						if SkuOptions.db.char["SkuCore"].aq.raid.health2.roleAssigments[y] ~= 0 then
-							return SkuOptions.db.char["SkuCore"].aq.raid.health2.roleAssigments[y], "raid"..x
+						if SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.roleAssigments[y] ~= 0 then
+							return SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.roleAssigments[y], "raid"..x
 						end
 					end
 				end

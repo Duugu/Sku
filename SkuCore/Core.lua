@@ -286,7 +286,7 @@ function SkuCore:OnInitialize()
 	SkuCore:UIErrorsOnInitialize()
 	SkuCore:RangeCheckOnInitialize()
 	SkuCore:AqOnInitialize()
-	SkuCore:TankingOnInitialize()
+	SkuCore:aqCombatOnInitialize()
 	SkuCore:DamageMeterOnInitialize()
 	SkuCore:AuctionHouseOnInitialize()
 	SkuCore:FriendsOnInitialize()
@@ -676,11 +676,6 @@ function SkuCore:NAME_PLATE_UNIT_ADDED(aEvent, aPlateName) --aPlateName is the u
 			if tName then
 				local tFramePlateFrame = SkuCore:GetNamePlateFrameForUnit(aPlateName)
 				if tFramePlateFrame then
-					--SkuOptions.Voice:OutputString(string.sub(aPlateName, 10, string.len(aPlateName))..";"..tMaxRange, false, true, 0.2)
-					--local tFile = SkuAudioFileIndex[string.sub(aPlateName, 10, string.len(aPlateName))]
-					--local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..tFile, SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
-					--local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\plate_in.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
-
 					if tFramePlateFrame.UnitFrame then
 						if not tFramePlateFrame.UnitFrame.SkuPlate then
 							tFramePlateFrame.UnitFrame.SkuPlate = CreateFrame("Frame", tFramePlateFrame:GetName().."SkuPlate", tFramePlateFrame.UnitFrame)
@@ -750,11 +745,6 @@ function SkuCore:NAME_PLATE_UNIT_REMOVED(aEvent, aPlateName)
 	
 	-- NAMEPLATE TEST -->
 	if Sku.testMode == true then
-		--print("NAME_PLATE_UNIT_REMOVED", aPlateName, UnitName(aPlateName))
-		--local tFile = SkuAudioFileIndex[string.sub(aPlateName, 10, string.len(aPlateName))]
-		--local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..tFile, SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
-		--local willPlay, soundHandle = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\plate_out.mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
-
 		local tName = UnitName(aPlateName)
 		if tName then
 			local tFramePlateFrame = SkuCore:GetNamePlateFrameForUnit(aPlateName)
@@ -1885,6 +1875,15 @@ function SkuCore:CheckInteractObjectShow()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:UpdateCurrentTalentSet()
+	if GetActiveTalentGroup then
+		SkuCore.talentSet = GetActiveTalentGroup()
+	else
+		SkuCore.talentSet = GetActiveSpecGroup()
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:CheckInteractObjectHide()
 	dprint("CheckInteractObjectHide", SkuCore.noMouseOverNotification)
 
@@ -1905,6 +1904,8 @@ local SkuDropdownlistGenericFlag = false
 function SkuCore:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
 	dprint("PLAYER_ENTERING_WORLD", isInitialLogin, isReloadingUi)
+
+	SkuCore:UpdateCurrentTalentSet()
 
 	SkuOptions.db.global[MODULE_NAME] = SkuOptions.db.global[MODULE_NAME] or {}
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
@@ -2046,7 +2047,6 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 	end
 
 	if isInitialLogin == true or isReloadingUi == true then
-
 		--update profile for sku r28 error output change
 		for i, v in pairs(SkuOptions.db.profile["SkuCore"].UIErrors) do
 			if string.find(v, "marlene_") or string.find(v, "hans_")then
@@ -2141,7 +2141,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:UpdateInteractMove(true)
 		SkuCore:GameWorldObjectsOnLogin()
 		SkuCore:AqOnLogin()
-		SkuCore:TankingOnLogin()
+		SkuCore:aqCombatOnLogin()
 		SkuCore:DialTargetingOnLogin()
 		SkuCore:DamageMeterOnLogin()
 		SkuCore:TurnToUnitOnLogin()

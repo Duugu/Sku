@@ -973,7 +973,11 @@ function SkuNav:GetUiMapIdFromAreaId(aAreaId)
 	local tPrevId = aAreaId
 	while tCurrentId > 0 do
 		tPrevId = tCurrentId
-		tCurrentId = SkuDB.InternalAreaTable[tCurrentId].ParentAreaID
+		if SkuDB.InternalAreaTable[tCurrentId] then
+			tCurrentId = SkuDB.InternalAreaTable[tCurrentId].ParentAreaID
+		else
+			tCurrentId = 0
+		end
 	end
 
 	for i, v in pairs(SkuDB.ExternalMapID) do
@@ -1339,7 +1343,7 @@ function SkuNav:ProcessPlayerDead()
 		SkuNav:EndFollowingWpOrRt()
 	end
 
-	if distance > 10 then
+	if distance and distance > 10 then
 		if SkuNav:GetWaypointData2(L["Quick waypoint"]..";4") then
 			SkuNav:GetWaypointData2(L["Quick waypoint"]..";4").worldX = tX
 			SkuNav:GetWaypointData2(L["Quick waypoint"]..";4").worldY = tY								

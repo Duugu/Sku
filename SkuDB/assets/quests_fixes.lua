@@ -504,9 +504,6 @@ local SkuQuestFixes = {
         [questKeys.startedBy] = {{15298},nil,{20483}},
         [questKeys.requiredRaces] = raceIDs.BLOOD_ELF,
     },
-    [8344] = {
-        [questKeys.requiredRaces] = raceIDs.BLOOD_ELF,
-    },
     [8345] = {
         [questKeys.requiredRaces] = raceIDs.BLOOD_ELF,
     },

@@ -1505,6 +1505,7 @@ do
 end
 
 function SkuChat_MessageEventHandler(self, event, ...)
+	--print("SkuChat_MessageEventHandler", self, event, ...)
 	--find messagetype group
 	local tMessagetype = event
 	for i, v in pairs(SkuChatChatTypeGroup) do
@@ -2919,6 +2920,8 @@ function SkuChat:NewWhisperTab(aType, ...)
 	if SkuOptions.db.profile[MODULE_NAME].chatSettings.openWhispersInNewTab == true then
 		local event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons = ...
 
+		--print("NewWhisperTab", aType, event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons)
+
 		playerName = SkuChat:GetFullPlayerName(playerName)
 		playerName2 = SkuChat:GetFullPlayerName(playerName2)
 
@@ -2975,8 +2978,13 @@ function SkuChat:NewWhisperTab(aType, ...)
 			SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].channels = {}
 			SkuChat:InitTab(tTabNumber)
 
-			
-			SkuChat_MessageEventHandler(_G[SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].frameName], ...)
+			C_Timer.After(0.1, function() 
+				--print("cu", SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].history[1])
+				if SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].history[1] and SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].history[1].body == L["Empty"] then
+					--print("C_Timer.After", _G[SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].frameName], event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons)
+					SkuChat_MessageEventHandler(_G[SkuOptions.db.profile["SkuChat"].tabs[tTabNumber].frameName], event, text, playerName, languageName, channelName, playerName2, specialFlags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, guid, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, supressRaidIcons)
+				end
+			end)
 		end
 
 		return tTabNumber
@@ -3252,7 +3260,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:ResetTab(aIndex)
-	dprint("ResetTab", aIndex)
+	--print("ResetTab", aIndex)
 	--set default message groups
 	if not SkuOptions.db.profile["SkuChat"].tabs[aIndex] then
 		return
@@ -3314,7 +3322,8 @@ function SkuChat:ResetTab(aIndex)
 	tTab.privateMessages = nil
 	tTab.excludePrivateMessages = nil
 
-	tTab.history = {}
+	
+	tTab.history = tTab.history or {}
 	table.insert(tTab.history, 1, {
 		body = L["Empty"], 
 		messageTypeGroup = "SAY", 
@@ -3324,6 +3333,7 @@ function SkuChat:ResetTab(aIndex)
 		arg2 = nil, 
 		time = time(),
 	})		
+	
 
 	return true
 end
@@ -3357,6 +3367,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:InitTab(tNewTabIndex)
+	--print("InitTab")
 	--build virtual chat frame that is registering chat events
 	local a = _G[SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].frameName] or CreateFrame("Button", SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].frameName, UIParent, "SecureActionButtonTemplate")
 	a.tab = SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex]
@@ -3414,11 +3425,11 @@ function SkuChat:InitTab(tNewTabIndex)
 
 	--AddMessage handler
 	function a:AddMessage(messageTypeGroup, body, r, g, b, id, accessID, typeID, arg2)
-		--[[
+		
 		if messageTypeGroup ~= "ADDON" then
-			print(messageTypeGroup, body, r, g, b, id, accessID, typeID, arg2)
+			--print(messageTypeGroup, body, r, g, b, id, accessID, typeID, arg2)
 		end
-		]]
+		
 		local tLink = string.match(body, "|Hitem:(.+)|h%[")
 		if tLink then
 			tLink = "item:"..tLink

@@ -2769,12 +2769,6 @@ function SkuCore:MenuBuilder(aParentEntry)
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.alIntegrationMenuBuilder
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Tanking"]}, SkuGenericMenuItem)
-	tNewMenuParentEntry.dynamic = true
-	tNewMenuParentEntry.filterable = true
-	tNewMenuParentEntry.BuildChildren = SkuCore.TankingMenuBuilder
-
-
 	local tDungeonDifficultyIDs = {
 		[1] = L["5 Player normal"],
 		[2] = L["5 Player heroic"],

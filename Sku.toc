@@ -1,5 +1,5 @@
-## Interface: 30401
-## Interface-Wrath: 30401
+## Interface: 30402
+## Interface-Wrath: 30402
 ## Title: Sku (34.20)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
@@ -45,7 +45,7 @@ SkuCore\Achievements.lua
 SkuCore\itemRating.lua
 SkuCore\mail.lua
 SkuCore\aq.lua
-SkuCore\tanking.lua
+SkuCore\aqCombat.lua
 SkuCore\dialogkey.lua
 SkuCore\damageMeter.lua
 SkuCore\alIntegration.lua

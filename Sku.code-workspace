@@ -46,6 +46,9 @@
 		},
 		{
 			"path": "SkuDispatcher"
+		},
+		{
+			"path": "SkuAudioData"
 		}
 	],
 	"settings": {

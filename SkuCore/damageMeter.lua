@@ -171,6 +171,39 @@ local function BuildCombatTooltip(aCombat, aName, aAll)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function tDPSDetailsTooltip(spell)
+   spell.o_amt = spell.n_amt + spell.c_amt + spell.g_amt + spell.r_amt + spell.b_amt + spell.a_amt
+   spell.o_dmg = spell.n_dmg + spell.c_dmg + spell.g_dmg + spell.r_dmg + spell.b_dmg + spell.a_dmg
+
+   local tTip = L["Total hits: "]..spell.o_amt.."\r\n"
+   tTip = tTip..L["Total Damage: "]..spell.o_dmg.."\r\n"
+
+   tTip = tTip..L["Normal hits: "]..spell.n_amt.."\r\n"
+   tTip = tTip..L["Normal Damage: "]..spell.n_dmg.."\r\n"
+   tTip = tTip..L["Normal Min hit: "]..spell.n_min.."\r\n"
+   tTip = tTip..L["Normal Max hit: "]..spell.n_max.."\r\n"
+
+   tTip = tTip..L["Critical hits: "]..spell.c_amt.."\r\n"
+   tTip = tTip..L["Critical Damage: "]..spell.c_dmg.."\r\n"
+   tTip = tTip..L["Critical Min hit: "]..spell.c_min.."\r\n"
+   tTip = tTip..L["Critical Max hit: "]..spell.c_max.."\r\n"
+
+   tTip = tTip..L["Glancing hits: "]..spell.g_amt.."\r\n"
+   tTip = tTip..L["Glancing Damage: "]..spell.g_dmg.."\r\n"
+
+   tTip = tTip..L["Resisted hits: "]..spell.r_amt.."\r\n"
+   tTip = tTip..L["Resisted Damage: "]..spell.r_dmg.."\r\n"
+
+   tTip = tTip..L["Blocked hits: "]..spell.b_amt.."\r\n"
+   tTip = tTip..L["Blocked Damage: "]..spell.b_dmg.."\r\n"
+
+   tTip = tTip..L["Absorbed hits: "]..spell.a_amt.."\r\n"
+   tTip = tTip..L["Absorbed Damage: "]..spell.a_dmg.."\r\n"
+
+   return tTip
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DamageMeterMenuBuilder()
    if Details == nil then
       local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
@@ -208,6 +241,53 @@ function SkuCore:DamageMeterMenuBuilder()
                body = BuildCombatTooltip(Combat, self.name, tAll)
             end
             SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = aName, body
+         end
+
+         tNewMenuEntry.BuildChildren = function(self)
+            local Combat = Details:GetCombat(self.combatID)
+            local tPlayerName = UnitName("player")
+
+            local tActorList = Combat:GetActorList(DETAILS_ATTRIBUTE_DAMAGE)
+            if tActorList then
+               table.sort(tActorList, function(a, b)
+                  return a.total / Combat:GetCombatTime() > b.total / Combat:GetCombatTime()
+               end)
+               for i, actor in ipairs(tActorList) do
+                  if (Combat.playing_solo == true and actor.displayName == tPlayerName) or (Combat.playing_solo ~= true and Combat.raid_roster[actor.displayName]) or tAll == true then
+                     self.dynamic = true
+                     local efDPS = math.floor(actor.total / Combat:GetCombatTime())
+                     tNewMenuEntrysub = SkuOptions:InjectMenuItems(self, {actor.nome.." "..(SkuQuest.classesFriendly[actor.classe] or L["unknown"]).." "..efDPS.." DPS"}, SkuGenericMenuItem)                  
+                     if actor.spells and actor.spells._ActorTable then
+                        tNewMenuEntrysub.spells = actor.spells._ActorTable
+                     end
+            
+                     tNewMenuEntrysub.OnEnter = function(self, aValue, aName)
+                        local tTips = {L["no data"]}
+                        if self.spells then
+                           tTips = {L["Spell details for "]..actor.nome.." "..(SkuQuest.classesFriendly[actor.classe] or L["unknown"]).." "..efDPS.." DPS"}
+
+                           for iId, vDa in pairs(self.spells) do
+                              local body = ""
+                              if iId then
+                                 if iId == 1 then
+                                    body = body..L["Spell: "]..L["Melee combat"].."\r\n"
+                                 elseif SkuDB.SpellDataTBC[iId] then
+                                    body = body..L["Spell: "]..SkuDB.SpellDataTBC[iId][Sku.Loc][1].."\r\n"
+                                 end
+                                 local tPartTip = tDPSDetailsTooltip(vDa)
+                                 body = body..tPartTip.."\r\n"
+                              end
+                              table.insert(tTips, body)
+                           end
+                        end
+                        SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = aName, tTips
+                     end
+                  end
+               end
+
+
+               --DETAILS_ATTRIBUTE_HEAL
+            end
          end
 
          tEmpty = false

@@ -674,8 +674,28 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	aString = aString:gsub("\"", "")
 
 	local tStrings = {}
-	if (string.find(aString, "sound-") or string.find(aString, "male%-")) then
-		table.insert(tStrings, aString)
+	if (string.find(aString, "sound-") or string.find(aString, "male%-") or string.find(aString, "brian%-") or string.find(aString, "emma%-")) then
+		--table.insert(tStrings, aString)
+		local a, b = string.find(aString, "sound-")
+		if not b then
+			a, b = string.find(aString, "male%-")
+			if not b then
+				a, b = string.find(aString, "brian%-")
+				if not b then
+					a, b = string.find(aString, "emma%-")
+				end
+			end
+		end
+		if b == nil then
+			table.insert(tStrings, aString)
+		else
+			local tSplittedString = {}
+			local pattern = string.format("([^%s]+)", ";")
+			aString:gsub(pattern, function(c) tSplittedString[#tSplittedString+1] = c end)
+			for x = 1, #tSplittedString do
+				table.insert(tStrings, tSplittedString[x])
+			end
+		end		
 	else
 		aString = string.lower(aString)
 		aString= SplitStringBTTS(aString)
@@ -732,7 +752,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 
 		tStrings[x] = string.gsub(tStrings[x], "§", " ")
 
-		if (string.find(tStrings[x], "sound%-") or string.find(tStrings[x], "male%-")) then
+		if (string.find(tStrings[x], "sound%-") or string.find(tStrings[x], "male%-") or string.find(tStrings[x], "brian%-") or string.find(aString, "emma%-")) then
 			SkuVoice:OutputString(tStrings[x], aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
 		else
 			if (string.find(tStrings[x], "aura;sound")) then
@@ -871,7 +891,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		end
 
 
-		if not (string.find(aString, "sound%-") or string.find(aString, "male%-")) and SkuOptions.db.profile["SkuChat"].allChatViaBlizzardTts == true then
+		if not (string.find(aString, "sound%-") or string.find(aString, "male%-") or string.find(aString, "brian%-") or string.find(aString, "emma%-")) and SkuOptions.db.profile["SkuChat"].allChatViaBlizzardTts == true then
 			SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotOverwrite, aIsMulti, aSoundChannel, engine, aSpell, aVocalizeAsIs, aInstant, aDnQ, aIgnoreLinks) -- for strings with lookup in string index
 			return
 		end
@@ -995,8 +1015,27 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		end
 
 		local tStrings = {}
-		if (string.find(aString, "sound-") or string.find(aString, "male%-")) then
-			table.insert(tStrings, aString)
+		if (string.find(aString, "sound-") or string.find(aString, "male%-") or string.find(aString, "brian%-") or string.find(aString, "emma%-")) then
+			local a, b = string.find(aString, "sound-")
+			if not b then
+				a, b = string.find(aString, "male%-")
+				if not b then
+					a, b = string.find(aString, "brian%-")
+					if not b then
+						a, b = string.find(aString, "emma%-")
+					end
+				end
+			end
+			if b == nil then
+				table.insert(tStrings, aString)
+			else
+				local tSplittedString = {}
+				local pattern = string.format("([^%s]+)", ";")
+				aString:gsub(pattern, function(c) tSplittedString[#tSplittedString+1] = c end)
+				for x = 1, #tSplittedString do
+					table.insert(tStrings, tSplittedString[x])
+				end
+			end
 		else
 			aString = string.lower(aString)
 			aString = SplitString(aString)
@@ -1059,20 +1098,21 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 		end
 
 		for x = 1, #tStrings do
-			local tFile
+			local tFile, tPath, tLength
+
 			if not tIsSound then
 				if tStrings[x] == "§01" then
 					tStrings[x] = "sound-silence0.1"
 				end
-				tFile = SkuAudioFileIndex[tostring(tStrings[x])]
+				tFile, tPath, tLength = SkuVoice:GetAudiodata(tostring(tStrings[x]))
 
 				if tFile == nil then
 					local tModString = string.lower(tostring(tStrings[x]))
-					tFile = SkuAudioFileIndex[tModString]
+					tFile, tPath, tLength = SkuVoice:GetAudiodata(tModString)
 				end
 				if tFile == nil then
 					local tModString = string.upper(string.sub(tostring(tStrings[x]),1,1))..string.sub(tostring(tStrings[x]),2)
-					tFile = SkuAudioFileIndex[tModString]
+					tFile, tPath, tLength = SkuVoice:GetAudiodata(tModString)
 				end
 				--dprint(tStrings[x], "tFile", tFile)
 
@@ -1080,13 +1120,13 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 					local tModString = string.lower(tostring(tStrings[x]))
 					for i, v in pairs(tGenderSuffixes) do
 						if string.sub(tModString, string.len(tModString) - string.len(i) + 1) == i then
-							tFile = SkuAudioFileIndex[string.sub(tModString, 1, string.len(tModString) - string.len(i))..v]
+							tFile, tPath, tLength = SkuVoice:GetAudiodata(string.sub(tModString, 1, string.len(tModString) - string.len(i))..v)
 						end
 					end
 				end
 
 				if tFile == nil then
-					tFile = SkuAudioFileIndex["sound-audiofehltbeep"]
+					tFile, tPath, tLength = SkuVoice:GetAudiodata("sound-audiofehltbeep")
 					if SkuOptions.db then
 						if SkuOptions.db.realm.missingAudio == nil then
 							SkuOptions.db.realm.missingAudio = {}
@@ -1099,7 +1139,7 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 					end
 				end
 			else
-				tFile = SkuAudioFileIndex[tStrings[x]]
+				tFile, tPath, tLength = SkuVoice:GetAudiodata(tStrings[x])
 			end
 
 			if aAudioFile ~= nil then
@@ -1108,14 +1148,14 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 
 			if tFile then
 				if tFile ~= "" then
-					local tLength = SkuAudioDataLenIndex[tFile] or aLength
+					tLength = tLength or aLength
 
 					--if isMulti == true then
 						--tLength = tLength - ((100 - tonumber(SkuOptions.db.profile["SkuOptions"].TTSSepPause)) / 100) -- - 0.15
 					--end
 
 					if aAudioFile == nil then
-						tFile = "Interface\\AddOns\\"..Sku.AudiodataPath.."\\assets\\audio\\"..tFile
+						tFile = tPath..tFile
 					end
 					aOverwrite = aOverwrite or false
 					aWait = aWait or false
@@ -1130,8 +1170,9 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 							SkuVoiceQueue = {}
 						end]]
 					end
-
-					--dprint(tFile)
+					if x > 1 then
+						aWait = true
+					end
 
 					if aInstant == true then
 						table.insert(mSkuVoiceQueue, 0 + x, {
@@ -1196,8 +1237,28 @@ function SkuVoice:CollectString(aString, aOverwrite, aWait, aLength, aDoNotOverw
 	aString = aString:gsub("\"", "")
 
 	local tStrings = {}
-	if (string.find(aString, "sound-") or string.find(aString, "male%-")) then
-		table.insert(tStrings, aString)
+	if (string.find(aString, "sound-") or string.find(aString, "male%-") or string.find(aString, "brian%-") or string.find(aString, "emma%-")) then
+		--table.insert(tStrings, aString)
+		local a, b = string.find(aString, "sound-")
+		if not b then
+			a, b = string.find(aString, "male%-")
+			if not b then
+				a, b = string.find(aString, "brian%-")
+				if not b then
+					a, b = string.find(aString, "emma%-")
+				end
+			end
+		end
+		if b == nil then
+			table.insert(tStrings, aString)
+		else
+			local tSplittedString = {}
+			local pattern = string.format("([^%s]+)", ";")
+			aString:gsub(pattern, function(c) tSplittedString[#tSplittedString+1] = c end)
+			for x = 1, #tSplittedString do
+				table.insert(tStrings, tSplittedString[x])
+			end
+		end		
 	else
 		aString = string.lower(aString)
 		aString= SplitString(aString)
@@ -1318,5 +1379,29 @@ end
 ---------------------------------------------------------------------------------------------------------
 function SkuVoice:RegisterBttsCallback(aFunc)
 	mSkuVoiceQueueBTTS_Callback = aFunc
+end
+
+
+---------------------------------------------------------------------------------------------------------
+function SkuVoice:GetAudiodata(aString)
+	tFile = nil
+	tPath = nil
+	tLen = nil
+	
+	if SkuAudioFileIndexIntegrated[Sku.Loc][aString] ~= nil then
+		tFile = SkuAudioFileIndexIntegrated[Sku.Loc][aString]
+		tPath = [[Interface\AddOns\Sku\SkuAudioData\assets\audio\]]..Sku.Loc..[[\]]
+		tLen = SkuAudioDataLenIndexIntegrated[Sku.Loc][SkuAudioFileIndexIntegrated[Sku.Loc][aString]]
+	end
+	
+	if tFile == nil then
+		if SkuAudioFileIndex[aString] ~= nil then
+			tFile = SkuAudioFileIndex[aString]
+			tPath = [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\]]
+			tLen = SkuAudioDataLenIndex[SkuAudioFileIndex[aString]]
+		end
+	end
+
+	return tFile, tPath, tLen
 end
 

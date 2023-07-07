@@ -104,7 +104,7 @@ local function CreateControlFrame()
                   tFound = true
                elseif SkuCore.TurnToUnit.gameMarker and GetRaidTargetIndex("mouseover") and SkuCore.TurnToUnit.gameMarker == GetRaidTargetIndex("mouseover") then
                   tFound = true
-               elseif SkuCore.TurnToUnit.skuMarker and SkuCore:TankingGetSkuRaidTarget(UnitGUID("mouseover")) == SkuCore.TurnToUnit.skuMarker then
+               elseif SkuCore.TurnToUnit.skuMarker and SkuCore:aqCombatGetSkuRaidTarget(UnitGUID("mouseover")) == SkuCore.TurnToUnit.skuMarker then
                   tFound = true
                end      
                if tFound == true then
@@ -150,7 +150,7 @@ function SkuCore:TurnToUnit_UPDATE_MOUSEOVER_UNIT(aEvent)
                tFound = true
             end
             if SkuCore.TurnToUnit.skuMarker then
-               if SkuCore:TankingGetSkuRaidTarget(UnitGUID("mouseover")) == SkuCore.TurnToUnit.skuMarker then
+               if SkuCore:aqCombatGetSkuRaidTarget(UnitGUID("mouseover")) == SkuCore.TurnToUnit.skuMarker then
                   tFound = true
                end
             end      
@@ -182,7 +182,7 @@ function SkuCore:TurnToUnit_NAME_PLATE_UNIT_ADDED(aEvent, aNameplateId)
       end
 
       if SkuCore.TurnToUnit.skuMarker then
-         if SkuCore:TankingGetSkuRaidTarget(UnitGUID(aNameplateId)) == SkuCore.TurnToUnit.skuMarker then
+         if SkuCore:aqCombatGetSkuRaidTarget(UnitGUID(aNameplateId)) == SkuCore.TurnToUnit.skuMarker then
             tFound = true
          end
       end      

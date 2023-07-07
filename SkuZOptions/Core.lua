@@ -469,6 +469,8 @@ function SkuOptions:OnProfileChanged()
 
 	SkuOptions:SkuKeyBindsUpdate()
 
+	SkuCore:UpdateCurrentTalentSet()
+
 	SkuOptions.Voice:OutputStringBTtts(L["Profil gewechselt"], false, true, 0.2, nil, nil, nil, 2)
 end
 
@@ -507,6 +509,8 @@ function SkuOptions:OnProfileCopied()
 	end
 
 	SkuOptions:SkuKeyBindsUpdate()
+
+	SkuCore:UpdateCurrentTalentSet()
 
 	SkuOptions.Voice:OutputStringBTtts(L["Profil kopiert"], false, true, 0.2, nil, nil, nil, 2)
 end
@@ -566,6 +570,8 @@ function SkuOptions:OnProfileReset()
 	end
 
 	SkuOptions:SkuKeyBindsUpdate()
+
+	SkuCore:UpdateCurrentTalentSet()
 
 	SkuOptions.Voice:OutputStringBTtts(L["Profil zurückgesetzt"], false, true, 0.2, nil, nil, nil, 2)
 end
@@ -1328,7 +1334,7 @@ function SkuOptions:CreateMainFrame()
 					tMarkerIndex = SkuCore.SkuRaidTargetIndex[8]
 				end
 				if tMarkerIndex ~= nil then
-					SkuCore:TankingSetSkuRaidTarget(tTargetGUID, tMarkerIndex)
+					SkuCore:aqCombatSetSkuRaidTarget(tTargetGUID, tMarkerIndex)
 					C_Timer.After(0.1, function()
 						SkuMob:PLAYER_TARGET_CHANGED("PLAYER_TARGET_CHANGED", "target")
 					end)
@@ -1337,7 +1343,7 @@ function SkuOptions:CreateMainFrame()
 		end
 
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMARKERCLEARALL"].key then
-			SkuCore:TankingClearSkuRaidTargets()
+			SkuCore:aqCombatClearSkuRaidTargets()
 			local tTargetGUID = UnitGUID("target")
 			if tTargetGUID then
 				C_Timer.After(0.1, function()
@@ -1349,37 +1355,53 @@ function SkuOptions:CreateMainFrame()
 		--monitor
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_ENABLEPARTYRAIDHEALTHMONITOR"].key then
 			if UnitInRaid("player") then
-				SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = false
-				if SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled == true then
-					SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = false
-					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = true
+				SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].party.health2.enabled = false
+				if SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.enabled == true then
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.enabled = false
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].player.health.enabled = true
 					print(L["Player health monitor enabled"])
 				else
-					SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = true
-					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = false
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.enabled = true
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].player.health.enabled = false
 					print(L["Raid health monitor enabled"])
 				end
 			elseif UnitInParty("player") == true then
-				SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = false
-				if SkuOptions.db.char["SkuCore"].aq.party.health2.enabled == true then
-					SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = false
-					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = true
+				SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.enabled = false
+				if SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].party.health2.enabled == true then
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].party.health2.enabled = false
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].player.health.enabled = true
 					print(L["Player health monitor enabled"])
 				else
-					SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = true
-					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = false
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].party.health2.enabled = true
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].player.health.enabled = false
 					print(L["Party health monitor enabled"])
 				end
 			else
-				SkuOptions.db.char["SkuCore"].aq.raid.health2.enabled = false
-				SkuOptions.db.char["SkuCore"].aq.party.health2.enabled = false
-				if SkuOptions.db.char["SkuCore"].aq.player.health.enabled == true then
-					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = false
+				SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].raid.health2.enabled = false
+				SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].party.health2.enabled = false
+				if SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].player.health.enabled == true then
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].player.health.enabled = false
 					print(L["Player health monitor disabled"])
 				else
-					SkuOptions.db.char["SkuCore"].aq.player.health.enabled = true
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].player.health.enabled = true
 					print(L["Player health monitor enabled"])
 				end
+			end
+		end
+
+		--combat monitor
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key then
+			if SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].combat.enabled == true then
+				if UnitName("target") and UnitIsPlayer("target") then
+					SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].combat.friendly.oorUnitName = UnitName("target")
+					SkuOptions.Voice:OutputStringBTtts(L["New follow unit"].." "..UnitName("target"), {overwrite = true, wait = true, doNotOverwrite = true, engine = 2})
+				end
+			end
+		end
+
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key then
+			if SkuOptions.db.char["SkuCore"].aq[SkuCore.talentSet].combat.enabled == true then
+				SkuOptions.Voice:OutputString(SkuCore.inOutCombatQueue.current.." "..L["In Combat"], true, true, 0.3, true)
 			end
 		end
 
@@ -1468,12 +1490,12 @@ function SkuOptions:CreateMainFrame()
 			SkuOptions:UpdateSoftTargetingSettings("SKU_KEY_ENABLESOFTTARGETINGINTERACT")
 		end
 
-		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTHARDTARGET"].key then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTSOFTTARGET"].key then
 			SkuMob:PLAYER_SOFT_ENEMY_CHANGED()
 			SkuMob:PLAYER_SOFT_FRIEND_CHANGED()
 			SkuMob:PLAYER_SOFT_INTERACT_CHANGED()
 		end
-		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTSOFTTARGET"].key then
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTHARDTARGET"].key then
 			SkuMob:PLAYER_TARGET_CHANGED()
 		end
 
@@ -2034,7 +2056,8 @@ function SkuOptions:CreateMainFrame()
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTHARDTARGET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTHARDTARGET"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTSOFTTARGET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OUTPUTSOFTTARGET"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key)
-	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_QUESTSHARE"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key)
 	SetOverrideBindingClick(tFrame, true, "SHIFT-UP", tFrame:GetName(), "SHIFT-UP")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-DOWN", tFrame:GetName(), "SHIFT-DOWN")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-UP", tFrame:GetName(), "CTRL-SHIFT-UP")
@@ -4132,7 +4155,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:StopSounds(aNumberOfSounds, aForce)
-	--print("StopSounds", aNumberOfSounds, [[Interface\AddOns\]]..Sku.AudiodataPath..[[\assets\audio\silence_1s.mp3]])
 	if SkuOptions.db.profile["SkuCore"].playNPCGreetings == true and not aForce then
 		return
 	end

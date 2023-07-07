@@ -290,318 +290,322 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
-	aUnitId = aUnitId or "target"
+	C_Timer.After(0.01, function() --this delay is to provide the combat monitor an option to first send output to the tts queue
 
-	dprint("SkuMob PLAYER_TARGET_CHANGED(event, ", event, aUnitId)
+		aUnitId = aUnitId or "target"
 
-	if aUnitId == "target" then
-		SkuCore:DoRangeCheck(true, nil, "target")
+		dprint("SkuMob PLAYER_TARGET_CHANGED(event, ", event, aUnitId)
 
-		if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
-			if UnitExists("target") == true then
+		if aUnitId == "target" then
+			SkuCore:DoRangeCheck(true, nil, "target")
 
-				if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 or (SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 2 and UnitCanAttack("player", "target") == true) then
-					SkuMob.interactTempDisabled = true
-					SkuOptions:UpdateSoftTargetingSettings("all")
+			if SkuOptions.db.profile["SkuOptions"].softTargeting.interact.enabled == true then
+				if UnitExists("target") == true then
+
+					if SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 1 or (SkuOptions.db.profile["SkuOptions"].softTargeting.matchLocked == 2 and UnitCanAttack("player", "target") == true) then
+						SkuMob.interactTempDisabled = true
+						SkuOptions:UpdateSoftTargetingSettings("all")
+					else
+						SkuMob.interactTempDisabled = nil
+						SkuOptions:UpdateSoftTargetingSettings("all")
+					end
 				else
 					SkuMob.interactTempDisabled = nil
 					SkuOptions:UpdateSoftTargetingSettings("all")
 				end
-			else
-				SkuMob.interactTempDisabled = nil
-				SkuOptions:UpdateSoftTargetingSettings("all")
 			end
 		end
-	end
 
-	if not UnitExists(aUnitId) and aUnitId ~= "softinteract" then
-		return
-	end
-
-	local tUnitName = GetUnitName(aUnitId, false)
-	local tUnitLevel = UnitLevel(aUnitId)
-	local tUnitIsEnemy = UnitIsEnemy("player",aUnitId)
-	local tUnitIsFriend = UnitIsFriend("player",aUnitId)
-	local tCreatureType = UnitCreatureType(aUnitId)
-	local tCreatureFamily = UnitCreatureFamily(aUnitId)
-	local tClassification = UnitClassification(aUnitId)
-	local tInteractDistance = CheckInteractDistance(aUnitId, 4)
-
-	local noSubText
-
-	local tIsPlayerControled = false
-	if UnitIsPlayer(aUnitId) then
-		if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders == true then
-			if UnitIsFriend("player", aUnitId) then
-				if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
-					tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
-				else
-					tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["freundlicher spieler"]
-				end
-					tIsPlayerControled = true
-			else
-				if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
-					tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
-				else
-					tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["feindlicher spieler"]
-				end
-				tIsPlayerControled = true
-			end
-			noSubText = true
-		else
+		if not UnitExists(aUnitId) and aUnitId ~= "softinteract" then
 			return
 		end
-	end
-	if UnitPlayerControlled(aUnitId) == true and UnitIsPlayer(aUnitId) == false then
-		if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
-			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
-		else
-			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["fremder begleiter"]
-		end
-		tIsPlayerControled = true
-		noSubText = true
-	end
-	if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName(aUnitId, false)) then
-		tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)--L["dein begleiter"]
-		tIsPlayerControled = true
-		noSubText = true
-	end
-	if GetUnitName(aUnitId, false) == GetUnitName("player", false) then
-		tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)--L["du selbst"]
-		tIsPlayerControled = true
-		noSubText = true
-	end
 
-	local tUnitReaction = UnitReaction("player", aUnitId)
-		--[[
-		1 Exceptionally hostile
-		2 Very Hostile
-		3 Hostile
-		4 Neutral
-		5 Friendly
-		6 Very Friendly
-		7 Exceptionally friendly
-		8 Exalted
-		]]
+		local tUnitName = GetUnitName(aUnitId, false)
+		local tUnitLevel = UnitLevel(aUnitId)
+		local tUnitIsEnemy = UnitIsEnemy("player",aUnitId)
+		local tUnitIsFriend = UnitIsFriend("player",aUnitId)
+		local tCreatureType = UnitCreatureType(aUnitId)
+		local tCreatureFamily = UnitCreatureFamily(aUnitId)
+		local tClassification = UnitClassification(aUnitId)
+		local tInteractDistance = CheckInteractDistance(aUnitId, 4)
 
-	--threat meter
-	local status = UnitThreatSituation("player", aUnitId)
-	--dprint(tUnitLevel, tUnitIsEnemy, tUnitIsFriend, tCreatureType, tCreatureFamily, tClassification, tInteractDistance, tUnitReaction, status, isTanking, status, threatpct, rawthreatpct, threatvalue)
-	if status then
-		local isTanking, status, threatpct, rawthreatpct, threatvalue = UnitDetailedThreatSituation("player", aUnitId) --https://wowwiki-archive.fandom.com/wiki/API_UnitDetailedThreatSituation
-		--local statustxts = { "low on threat",  "overnuking", "losing threat", "tanking securely" }
-		--dprint("You are " .. statustxts[status + 1] .. ".")
-	end
+		local noSubText
 
-	--target in combat indicator
-	local tRosterNames = {}
-	for x = 1, 4 do
-		local name, realm = SkuMob:GetTtsAwareUnitName("party"..x)
-		if name then
-			tRosterNames[name] = name
-		end
-	end
-	for x = 1, 40 do
-		local name, realm = SkuMob:GetTtsAwareUnitName("raid"..x)
-		if name then
-			tRosterNames[name] = name
-		end
-	end
-	local name, realm = SkuMob:GetTtsAwareUnitName("pet")
-	if name then
-		tRosterNames[name] = name
-	end
-	local name, realm = SkuMob:GetTtsAwareUnitName("player")
-	tRosterNames[name] = name
-
-	local status = nil
-	for x = 1, 4 do
-		if UnitThreatSituation("party"..x, aUnitId) then
-			status = UnitThreatSituation("party"..x, aUnitId)
-		end
-	end
-	for x = 1, 40 do
-		if UnitThreatSituation("raid"..x, aUnitId) then
-			status = UnitThreatSituation("raid"..x, aUnitId)
-		end
-	end
-	if UnitThreatSituation("pet", aUnitId) then
-		status = UnitThreatSituation("pet", aUnitId)
-	end
-	if UnitThreatSituation("player", aUnitId) then
-		status = UnitThreatSituation("player", aUnitId)
-	end
-
-	local name, realm = SkuMob:GetTtsAwareUnitName("targettarget")
-	if name then
-		if tRosterNames[name] then
-			status = true
-		end
-	end
-
-	if status and tIsPlayerControled == false then
-		--creature in combat indicator
-		local tAudioFile = SkuOptions.db.profile[MODULE_NAME].InCombatSound or "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
-		local willPlay, soundHandle = PlaySoundFile(tAudioFile, SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
-	end
-
-	--raidtarget
-	local tRaidtarget = GetRaidTargetIndex(aUnitId)
-	local tRaidTargetString = ""
-	if tRaidtarget then
-		if SkuCore.RaidTargetValues[tRaidtarget] then
-			if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
-				tRaidTargetString = SkuCore.RaidTargetValues[tRaidtarget].name..";"..SkuCore.RaidTargetValues[tRaidtarget].name..";"
-			else
-				tRaidTargetString = SkuCore.RaidTargetValues[tRaidtarget].name..";"
-			end
-		end
-	end
-	
-	local tUnitGUID = UnitGUID(aUnitId)
-	--sku raid target
-	if tRaidtarget == nil or tRaidtarget == "" then
-		if SkuCore:TankingGetSkuRaidTarget(tUnitGUID) ~= nil then
-			tRaidTargetString = SkuCore.RaidTargetValues[SkuCore:TankingGetSkuRaidTarget(tUnitGUID)].color..";"
-		else
-			if UnitCanAttack("player", aUnitId) and tIsPlayerControled == false and status then
-				if SkuOptions.db.profile[MODULE_NAME].autoSetSkuRaidTargetsToInCombatCreatures == true then
-					local tNewRaidTargetId = SkuCore:TankingSetSkuRaidTarget(tUnitGUID, 0)
-					if tNewRaidTargetId then
-						tRaidTargetString = SkuCore.RaidTargetValues[tNewRaidTargetId].color..";"
-					end
-				end
-			end
-		end
-		if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
-			tRaidTargetString = tRaidTargetString..tRaidTargetString
-		end
-	end
-
-	--for passive but attackable targets
-	local tReactionText = ""
-	if UnitCanAttack("player", aUnitId) then
-		if TargetFrameNameBackground then
-			local r, g, b, a = TargetFrameNameBackground:GetVertexColor()
-			if r > 0.99 and g > 0.99 and b == 0 then
-				tReactionText = L["passive"]..";"
-			end
-		end
-	end
-
-	local hp = math.floor(UnitHealth(aUnitId) / (UnitHealthMax(aUnitId) / 100))
-
-	if aUnitId == "softinteract" then
-		if UnitExists("softinteract") == false then
-			noSubText = true
-			tIsPlayerControled = false
-			tUnitLevel = -1
-			hp = 100
-			tReactionText = ""
-		end
-		tUnitName = UnitName("softinteract")
-	end
-
-	local tOutputString = ""
-	local tOutputStringB = ""
-
-
-	if tUnitName then
-		if hp == 0 then
-			if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-				tOutputString = tRaidTargetString.." "..L["dead"].." "..tUnitName
-			else
-				tOutputStringB = tRaidTargetString.." "..L["dead"].." "..tUnitName
-			end
-		else
-			if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
-				if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					tOutputString = tOutputString.." "..tRaidTargetString
-				else
-					tOutputStringB = tOutputStringB.." "..tRaidTargetString
-				end
-			else
-				if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					tOutputString = tOutputString.." "..tRaidTargetString..tReactionText..tUnitName
-				else
-					tOutputStringB = tOutputStringB.." "..tRaidTargetString..tReactionText..tUnitName
-				end
-			end
-		end
-	end
-	
-	local tClassification = UnitClassification(aUnitId) or ""
-	local tClassifications = {
-		["worldboss"] = L["world boss"] , 
-		["rareelite"] = L["Rare Elite"], 
-		["elite"] = L["Elite"], 
-		["rare"] = L["Rare"], 
-		["normal"] = "", 
-		["trivial"] = "", 
-		["minus"] = "",
-	}
-
-	if tRaidTargetString == "" or SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == false then
-		if tUnitLevel then
-			if tUnitLevel ~= -1 then
-				if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-					if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true or SkuCore.inCombat == false) then
-						tOutputString = tOutputString.." "..L["level"]
-						tOutputString = tOutputString.." "..string.format("%02d", tUnitLevel).." "..tClassifications[tClassification]
-					end
-				else
-					if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
-						tOutputStringB = tOutputStringB.." "..L["level"].." "..string.format("%02d", tUnitLevel)
-					end
-				end
-			else
-				if aUnitId ~= "softinteract" then
-					if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-						if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
-							tOutputString = tOutputString.." "..L["level"]
-							tOutputString = tOutputString.." "..L["Unknown"]
-						end
+		local tIsPlayerControled = false
+		if UnitIsPlayer(aUnitId) then
+			if SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholders == true then
+				if UnitIsFriend("player", aUnitId) then
+					if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
 					else
-						if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
-							tOutputStringB = tOutputStringB.." "..L["level"].." "..L["Unknown"]
+						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["freundlicher spieler"]
+					end
+						tIsPlayerControled = true
+				else
+					if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
+					else
+						tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["feindlicher spieler"]
+					end
+					tIsPlayerControled = true
+				end
+				noSubText = true
+			else
+				return
+			end
+		end
+		if UnitPlayerControlled(aUnitId) == true and UnitIsPlayer(aUnitId) == false then
+			if SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat == true and SkuCore.inCombat == true then
+				tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)
+			else
+				tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)..", "..L["fremder begleiter"]
+			end
+			tIsPlayerControled = true
+			noSubText = true
+		end
+		if UnitExists("pet") and (GetUnitName("pet", false) == GetUnitName(aUnitId, false)) then
+			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)--L["dein begleiter"]
+			tIsPlayerControled = true
+			noSubText = true
+		end
+		if GetUnitName(aUnitId, false) == GetUnitName("player", false) then
+			tUnitName = SkuMob:GetTtsAwareUnitName(aUnitId)--L["du selbst"]
+			tIsPlayerControled = true
+			noSubText = true
+		end
+
+		local tUnitReaction = UnitReaction("player", aUnitId)
+			--[[
+			1 Exceptionally hostile
+			2 Very Hostile
+			3 Hostile
+			4 Neutral
+			5 Friendly
+			6 Very Friendly
+			7 Exceptionally friendly
+			8 Exalted
+			]]
+
+		--threat meter
+		local status = UnitThreatSituation("player", aUnitId)
+		--dprint(tUnitLevel, tUnitIsEnemy, tUnitIsFriend, tCreatureType, tCreatureFamily, tClassification, tInteractDistance, tUnitReaction, status, isTanking, status, threatpct, rawthreatpct, threatvalue)
+		if status then
+			local isTanking, status, threatpct, rawthreatpct, threatvalue = UnitDetailedThreatSituation("player", aUnitId) --https://wowwiki-archive.fandom.com/wiki/API_UnitDetailedThreatSituation
+			--local statustxts = { "low on threat",  "overnuking", "losing threat", "tanking securely" }
+			--dprint("You are " .. statustxts[status + 1] .. ".")
+		end
+
+		--target in combat indicator
+		local tRosterNames = {}
+		for x = 1, 4 do
+			local name, realm = SkuMob:GetTtsAwareUnitName("party"..x)
+			if name then
+				tRosterNames[name] = name
+			end
+		end
+		for x = 1, 40 do
+			local name, realm = SkuMob:GetTtsAwareUnitName("raid"..x)
+			if name then
+				tRosterNames[name] = name
+			end
+		end
+		local name, realm = SkuMob:GetTtsAwareUnitName("pet")
+		if name then
+			tRosterNames[name] = name
+		end
+		local name, realm = SkuMob:GetTtsAwareUnitName("player")
+		tRosterNames[name] = name
+
+		local status = nil
+		for x = 1, 4 do
+			if UnitThreatSituation("party"..x, aUnitId) then
+				status = UnitThreatSituation("party"..x, aUnitId)
+			end
+		end
+		for x = 1, 40 do
+			if UnitThreatSituation("raid"..x, aUnitId) then
+				status = UnitThreatSituation("raid"..x, aUnitId)
+			end
+		end
+		if UnitThreatSituation("pet", aUnitId) then
+			status = UnitThreatSituation("pet", aUnitId)
+		end
+		if UnitThreatSituation("player", aUnitId) then
+			status = UnitThreatSituation("player", aUnitId)
+		end
+
+		local name, realm = SkuMob:GetTtsAwareUnitName("targettarget")
+		if name then
+			if tRosterNames[name] then
+				status = true
+			end
+		end
+
+		if status and tIsPlayerControled == false then
+			--creature in combat indicator
+			local tAudioFile = SkuOptions.db.profile[MODULE_NAME].InCombatSound or "Interface\\AddOns\\Sku\\SkuMob\\assets\\Target_in_combat_low.mp3"
+			local willPlay, soundHandle = PlaySoundFile(tAudioFile, SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+		end
+
+		--raidtarget
+		local tRaidtarget = GetRaidTargetIndex(aUnitId)
+		local tRaidTargetString = ""
+		if tRaidtarget then
+			if SkuCore.RaidTargetValues[tRaidtarget] then
+				if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
+					tRaidTargetString = SkuCore.RaidTargetValues[tRaidtarget].name..";"..SkuCore.RaidTargetValues[tRaidtarget].name..";"
+				else
+					tRaidTargetString = SkuCore.RaidTargetValues[tRaidtarget].name..";"
+				end
+			end
+		end
+		
+		local tUnitGUID = UnitGUID(aUnitId)
+		--sku raid target
+		if tRaidtarget == nil or tRaidtarget == "" then
+			if SkuCore:aqCombatGetSkuRaidTarget(tUnitGUID) ~= nil then
+				tRaidTargetString = SkuCore.RaidTargetValues[SkuCore:aqCombatGetSkuRaidTarget(tUnitGUID)].color..";"
+			else
+				if UnitCanAttack("player", aUnitId) and tIsPlayerControled == false and status then
+					if SkuOptions.db.profile[MODULE_NAME].autoSetSkuRaidTargetsToInCombatCreatures == true then
+						local tNewRaidTargetId = SkuCore:aqCombatSetSkuRaidTarget(tUnitGUID, 0)
+						if tNewRaidTargetId then
+							tRaidTargetString = SkuCore.RaidTargetValues[tNewRaidTargetId].color..";"
 						end
 					end
 				end
 			end
+			if SkuOptions.db.profile[MODULE_NAME].repeatRaidTargetMarkers == true then
+				tRaidTargetString = tRaidTargetString..tRaidTargetString
+			end
 		end
 
-		if noSubText ~= true then
-			GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
-			GameTooltip:SetUnit(aUnitId)
-			GameTooltip:Show()
-			local left = _G["GameTooltipTextLeft" .. 2]
-			if left then
-				local tLineTwoText = left:GetText()
-				if tLineTwoText then
-					if tLineTwoText ~= "" then
-						if not string.find(tLineTwoText, L["level"]) then
-							--SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
-							tOutputString = tOutputString.." "..tLineTwoText
-						end
+		--for passive but attackable targets
+		local tReactionText = ""
+		if UnitCanAttack("player", aUnitId) then
+			if TargetFrameNameBackground then
+				local r, g, b, a = TargetFrameNameBackground:GetVertexColor()
+				if r > 0.99 and g > 0.99 and b == 0 then
+					tReactionText = L["passive"]..";"
+				end
+			end
+		end
+
+		local hp = math.floor(UnitHealth(aUnitId) / (UnitHealthMax(aUnitId) / 100))
+
+		if aUnitId == "softinteract" then
+			if UnitExists("softinteract") == false then
+				noSubText = true
+				tIsPlayerControled = false
+				tUnitLevel = -1
+				hp = 100
+				tReactionText = ""
+			end
+			tUnitName = UnitName("softinteract")
+		end
+
+		local tOutputString = ""
+		local tOutputStringB = ""
+
+
+		if tUnitName then
+			if hp == 0 then
+				if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+					tOutputString = tRaidTargetString.." "..L["dead"].." "..tUnitName
+				else
+					tOutputStringB = tRaidTargetString.." "..L["dead"].." "..tUnitName
+				end
+			else
+				if tRaidTargetString ~= "" and SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == true then
+					if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+						tOutputString = tOutputString.." "..tRaidTargetString
+					else
+						tOutputStringB = tOutputStringB.." "..tRaidTargetString
+					end
+				else
+					if tIsPlayerControled == false  or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+						tOutputString = tOutputString.." "..tRaidTargetString..tReactionText..tUnitName
+					else
+						tOutputStringB = tOutputStringB.." "..tRaidTargetString..tReactionText..tUnitName
 					end
 				end
 			end
 		end
 		
-		--layer info
-		if SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true) then
-			local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, nil, true))
-			if tLayerText then
-				tOutputString = tOutputString.." "..tLayerText
-				tOutputStringB = tOutputStringB.." "..tLayerText
+		local tClassification = UnitClassification(aUnitId) or ""
+		local tClassifications = {
+			["worldboss"] = L["world boss"] , 
+			["rareelite"] = L["Rare Elite"], 
+			["elite"] = L["Elite"], 
+			["rare"] = L["Rare"], 
+			["normal"] = "", 
+			["trivial"] = "", 
+			["minus"] = "",
+		}
+
+		if tRaidTargetString == "" or SkuOptions.db.profile["SkuMob"].vocalizeRaidTargetOnly == false then
+			if tUnitLevel then
+				if tUnitLevel ~= -1 then
+					if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+						if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true or SkuCore.inCombat == false) then
+							tOutputString = tOutputString.." "..L["level"]
+							tOutputString = tOutputString.." "..string.format("%02d", tUnitLevel).." "..tClassifications[tClassification]
+						end
+					else
+						if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+							tOutputStringB = tOutputStringB.." "..L["level"].." "..string.format("%02d", tUnitLevel)
+						end
+					end
+				else
+					if aUnitId ~= "softinteract" then
+						if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+							if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+								tOutputString = tOutputString.." "..L["level"]
+								tOutputString = tOutputString.." "..L["Unknown"]
+							end
+						else
+							if tIsPlayerControled ~= true or (SkuOptions.db.profile[MODULE_NAME].dontVocalizePlayerReactionAndLevelInCombat ~= true  or SkuCore.inCombat == false) then
+								tOutputStringB = tOutputStringB.." "..L["level"].." "..L["Unknown"]
+							end
+						end
+					end
+				end
 			end
+
+			if noSubText ~= true then
+				GameTooltip_SetDefaultAnchor(GameTooltip, UIParent)
+				GameTooltip:SetUnit(aUnitId)
+				GameTooltip:Show()
+				local left = _G["GameTooltipTextLeft" .. 2]
+				if left then
+					local tLineTwoText = left:GetText()
+					if tLineTwoText then
+						if tLineTwoText ~= "" then
+							if not string.find(tLineTwoText, L["level"]) then
+								--SkuOptions.Voice:OutputString(tLineTwoText, false, true, 0.3)
+								tOutputString = tOutputString.." "..tLineTwoText
+							end
+						end
+					end
+				end
+			end
+			
+			--layer info
+			if SkuDB.routedata["global"].WaypointLevels and (tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true) then
+				local tLayerText = SkuNav:GetLayerText(SkuNav:GetNonAutoLevel(nil, nil, nil, true))
+				if tLayerText then
+					tOutputString = tOutputString.." "..tLayerText
+					tOutputStringB = tOutputStringB.." "..tLayerText
+				end
+			end
+
 		end
 
-	end
+		if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
+			SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
+		else
+			SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
+		end
 
-	if tIsPlayerControled == false or SkuOptions.db.profile[MODULE_NAME].vocalizePlayerNamePlaceholdersSkuTts == true then
-		SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
-	else
-		SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
-	end
+	end)
 end
