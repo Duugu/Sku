@@ -25,7 +25,7 @@ DEUTSCH - Erste Schritte:<br>
 -------------------------------------------------------------------------------------------------------
 ## Changes in Sku r34.21
 - Fixed the German "Noch" setting under "Lautstärke von Audiobenachrichtigungen". Should now be "Hoch".
-- Splitted the "Hostile > Units in combat > Announce enemies entering or leaving combat" setting into two: "Announce enemies entering combat" and "Announce enemies leaving combat". Please be aware that at the moment "Announce enemies leaving combat" is equivalent to enemies killed. There are other ways how enemies could leave combat. For example if you are running away and out of combat. Or in some boss fights, where enemies are disappearing. The addon can't that those cases.
+- Splitted the "Hostile > Units in combat > Announce enemies entering or leaving combat" setting into two: "Announce enemies entering combat" and "Announce enemies leaving combat". Please be aware that at the moment "Announce enemies leaving combat" is equivalent to enemies killed. There are other ways how enemies could leave combat. For example if you are running away and out of combat. Or in some boss fights, where enemies are disappearing. The addon can't track those scenarios.
 - Removed the "in combat" suffix from the "Announce relative number of enemies in combat" output. It's now just the number.
 - Fixed the broken "show tooltip for current loot item" key bind.
 - Fixed a bug in Core > Damage Meter that was breaking the menu.
