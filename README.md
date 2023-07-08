@@ -1,6 +1,6 @@
 A World of Warcraft Classic: Wrath of the Lich King addon for blind players.
 
-Download and first steps guide:
+Download, release notes, and first steps guide:
 https://duugu.github.io/Sku
 
 Discord:
