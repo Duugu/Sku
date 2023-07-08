@@ -172,33 +172,33 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tDPSDetailsTooltip(spell)
-   spell.o_amt = spell.n_amt + spell.c_amt + spell.g_amt + spell.r_amt + spell.b_amt + spell.a_amt
-   spell.o_dmg = spell.n_dmg + spell.c_dmg + spell.g_dmg + spell.r_dmg + spell.b_dmg + spell.a_dmg
+   spell.o_amt = (spell.n_amt or 0) + (spell.c_amt or 0) + (spell.g_amt or 0) + (spell.r_amt or 0) + (spell.b_amt or 0) + (spell.a_amt or 0)
+   spell.o_dmg = (spell.n_dmg or 0) + (spell.c_dmg or 0) + (spell.g_dmg or 0) + (spell.r_dmg or 0) + (spell.b_dmg or 0) + (spell.a_dmg or 0)
 
-   local tTip = L["Total hits: "]..spell.o_amt.."\r\n"
-   tTip = tTip..L["Total Damage: "]..spell.o_dmg.."\r\n"
+   local tTip = L["Total hits: "]..(spell.o_amt or 0).."\r\n"
+   tTip = tTip..L["Total Damage: "]..(spell.o_dmg or 0).."\r\n"
 
-   tTip = tTip..L["Normal hits: "]..spell.n_amt.."\r\n"
-   tTip = tTip..L["Normal Damage: "]..spell.n_dmg.."\r\n"
-   tTip = tTip..L["Normal Min hit: "]..spell.n_min.."\r\n"
-   tTip = tTip..L["Normal Max hit: "]..spell.n_max.."\r\n"
+   tTip = tTip..L["Normal hits: "]..(spell.n_amt or 0).."\r\n"
+   tTip = tTip..L["Normal Damage: "]..(spell.n_dmg or 0).."\r\n"
+   tTip = tTip..L["Normal Min hit: "]..(spell.n_min or 0).."\r\n"
+   tTip = tTip..L["Normal Max hit: "]..(spell.n_max or 0).."\r\n"
 
-   tTip = tTip..L["Critical hits: "]..spell.c_amt.."\r\n"
-   tTip = tTip..L["Critical Damage: "]..spell.c_dmg.."\r\n"
-   tTip = tTip..L["Critical Min hit: "]..spell.c_min.."\r\n"
-   tTip = tTip..L["Critical Max hit: "]..spell.c_max.."\r\n"
+   tTip = tTip..L["Critical hits: "]..(spell.c_amt or 0).."\r\n"
+   tTip = tTip..L["Critical Damage: "]..(spell.c_dmg or 0).."\r\n"
+   tTip = tTip..L["Critical Min hit: "]..(spell.c_min or 0).."\r\n"
+   tTip = tTip..L["Critical Max hit: "]..(spell.c_max or 0).."\r\n"
 
-   tTip = tTip..L["Glancing hits: "]..spell.g_amt.."\r\n"
-   tTip = tTip..L["Glancing Damage: "]..spell.g_dmg.."\r\n"
+   tTip = tTip..L["Glancing hits: "]..(spell.g_amt or 0).."\r\n"
+   tTip = tTip..L["Glancing Damage: "]..(spell.g_dmg or 0).."\r\n"
 
-   tTip = tTip..L["Resisted hits: "]..spell.r_amt.."\r\n"
-   tTip = tTip..L["Resisted Damage: "]..spell.r_dmg.."\r\n"
+   tTip = tTip..L["Resisted hits: "]..(spell.r_amt or 0).."\r\n"
+   tTip = tTip..L["Resisted Damage: "]..(spell.r_dmg or 0).."\r\n"
 
-   tTip = tTip..L["Blocked hits: "]..spell.b_amt.."\r\n"
-   tTip = tTip..L["Blocked Damage: "]..spell.b_dmg.."\r\n"
+   tTip = tTip..L["Blocked hits: "]..(spell.b_amt or 0).."\r\n"
+   tTip = tTip..L["Blocked Damage: "]..(spell.b_dmg or 0).."\r\n"
 
-   tTip = tTip..L["Absorbed hits: "]..spell.a_amt.."\r\n"
-   tTip = tTip..L["Absorbed Damage: "]..spell.a_dmg.."\r\n"
+   tTip = tTip..L["Absorbed hits: "]..(spell.a_amt or 0).."\r\n"
+   tTip = tTip..L["Absorbed Damage: "]..(spell.a_dmg or 0).."\r\n"
 
    return tTip
 end

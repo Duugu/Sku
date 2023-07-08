@@ -569,7 +569,10 @@ local function aqCombatCreateControlFrame()
                ttime2 = 0
             end
 
-         elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value > 1 then
+         elseif 
+            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value > 1 or
+            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value > 1
+         then
             ttime1 = ttime1 + time
 
             if ttime1 > 1.0 then
@@ -636,12 +639,12 @@ local function aqCombatCreateControlFrame()
                
                SkuCore.inOutCombatQueue.combatOut = {}
 
-               if tCountIn > 0 then
+               if tCountIn > 0 and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value > 1 then
                   local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = tCountIn, action1 = "in",}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
-               if tCountOut > 0 then
-                  local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat
+               if tCountOut > 0 and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value > 1 then
+                  local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = tCountOut, action1 = "out",}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
 
@@ -808,7 +811,7 @@ function SkuCore:aqCombatOnLogin()
 
 
          --units in combat
-            --Announce enemies entering or leaving combat
+            --Announce enemies entering combat
             SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsAddedToCombat = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsAddedToCombat or 
             {
                value = 1,
@@ -816,13 +819,25 @@ function SkuCore:aqCombatOnLogin()
             }
             SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsAddedToCombat.voiceOutput = "${sound};${number1};${action1}"
 
+            --Announce enemies leaving combat
+            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsLeavingCombat = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsLeavingCombat or 
+            {
+               value = 1,
+               sound = "vocalized",
+            }
+            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.unitsLeavingCombat.voiceOutput = "${sound};${number1};${action1}"
+
+            if SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages == nil then
+               SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = false
+            end
+
             --Announce relative number of enemies in combat
             SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.relativeNumberUnitsInCombat = SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.relativeNumberUnitsInCombat or 
             {
                value = 1,
                sound = "vocalized",
             }
-            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.relativeNumberUnitsInCombat.voiceOutput = "${sound};${number1};in;combat"
+            SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile.relativeNumberUnitsInCombat.voiceOutput = "${sound};${number1}"
 
       --friendly
       SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly or {}
@@ -1733,7 +1748,7 @@ function SkuCore:aqCombatMenuBuilder()
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.BuildChildren = function(self)
          ---
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce enemies entering or leaving combat"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce enemies entering combat"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
          tNewMenuEntry.filterable = true
          tNewMenuEntry.BuildChildren = function(self)
@@ -1772,6 +1787,45 @@ function SkuCore:aqCombatMenuBuilder()
          end   
 
          ---
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce enemies leaving combat"]}, SkuGenericMenuItem)
+         tNewMenuEntry.dynamic = true
+         tNewMenuEntry.filterable = true
+         tNewMenuEntry.BuildChildren = function(self)
+            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Setting"]}, SkuGenericMenuItem)
+            tNewMenuEntry.dynamic = true
+            tNewMenuEntry.isSelect = true
+            tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 1 then
+                  return L["Off"]
+               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 2 then
+                  return L["All enemies"]
+               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 3 then
+                  return L["Enemies attacking party or you"]
+               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value == 4 then
+                  return L["Enemies attacking you"]
+               end
+            end
+            tNewMenuEntry.OnAction = function(self, aValue, aName)
+               if aName == L["Off"] then
+                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 1
+               elseif aName == L["All enemies"] then
+                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 2
+               elseif aName == L["Enemies attacking party or you"] then
+                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 3
+               elseif aName == L["Enemies attacking you"] then
+                  SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value = 4
+               end
+            end
+            tNewMenuEntry.BuildChildren = function(self)
+               SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+               --SkuOptions:InjectMenuItems(self, {L["All enemies"]}, SkuGenericMenuItem)
+               SkuOptions:InjectMenuItems(self, {L["Enemies attacking party or you"]}, SkuGenericMenuItem)
+               SkuOptions:InjectMenuItems(self, {L["Enemies attacking you"]}, SkuGenericMenuItem)
+            end     
+            tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat)
+         end            
+
+         ---
          local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce relative number of enemies in combat"]}, SkuGenericMenuItem)
          tNewMenuEntry.dynamic = true
          tNewMenuEntry.filterable = true
@@ -1808,7 +1862,34 @@ function SkuCore:aqCombatMenuBuilder()
                SkuOptions:InjectMenuItems(self, {L["Enemies attacking you"]}, SkuGenericMenuItem)
             end     
             tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat)
-         end            
+         end          
+         
+         --[[
+         ----
+         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Announce only numbers for entering or leaving combat notifications"]}, SkuGenericMenuItem)
+         tNewMenuEntry.dynamic = true
+         tNewMenuEntry.filterable = true
+         tNewMenuEntry.isSelect = true
+         tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+            if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages == true then
+               return L["Yes"]
+            else
+               return L["No"]
+            end
+         end
+         tNewMenuEntry.OnAction = function(self, aValue, aName)
+            if aName == L["No"] then
+               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = false
+            elseif aName == L["Yes"] then
+               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.shortUnitsAddedOrLeavingToCombatMessages = true
+            end
+         end
+         tNewMenuEntry.BuildChildren = function(self)
+            SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+            SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+         end               
+         ]]
+
       end      
    end
    

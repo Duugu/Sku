@@ -3,6 +3,16 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.21
+	- Fixed the German "Noch" setting under "Lautstärke von Audiobenachrichtigungen". Should now be "Hoch".
+	- Splitted the "Hostile > Units in combat > Announce enemies entering or leaving combat" setting into two: "Announce enemies entering combat" and "Announce enemies leaving combat". Please be aware that at the moment "Announce enemies leaving combat" is equivalent to enemies killed. There are other ways how enemies could leave combat. For example if you are running away and out of combat. Or in some boss fights, where enemies are disappearing. The addon can't track those scenarios.
+	- Removed the "in combat" suffix from the "Announce relative number of enemies in combat" output. It's now just the number.
+	- Fixed the broken "show tooltip for current loot item" key bind.
+	- Fixed a bug in Core > Damage Meter that was breaking the menu.
+	- Added some missing localizations for combat monitor menu strings.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.20
 	- Fixed an issue with the calender leading to errors
 	- Data for Core > Best in Slot updated to Pre Raid, T8, T9
@@ -15,9 +25,10 @@ Changes in Sku r34.20
 		The combat monitor is off as default and all options are off as default. You need to enable the Combat monitor itself and all settings you would like to use.
 		There are two main menus: Hostile for everything that is about mobs/enemies and Friendly for everything that is about your party/raid members.
 		The options should be quite self explaining. Just take your time and browse through them, and enable what is usefull for you. Then test and adjust.
+		"Core > Monitor > Combat > Friendly > Distance to party member" is to set an out of range warning for one party or raid member that you are usually following. With that option enabled, and "Set unit for out of range" set to the group member, you will be notified if that group member is getting more than the specified distance away from you.
 		There are new sku key binds specifically for the combat monitor:
-			- "Core > Monitor > Combat > Friendly > Distance to party member" is to set and out of range warning for one party or raid member that you are usually following. With that option enabled, and "Set unit for out of range" set to the group member, you will be notified if that group member is getting more than the specified distance away from you. You can do that via the audio menu, but there also is a new sku key bind "Combat monitor; set current target as follow target" for that. And additionally there is a slash command for that: /sku mon,combat,follow,target
-			- There is a new sku key bind to instantly output the number of creatures in combat: "Combat monitor; output current number of enemies in combat"
+			- There is a new sku key bind "Combat monitor set current target as follow target" for the "Distance to party member" feature. There's also a slash command for that: /sku mon,combat,follow,target
+			- There is a new sku key bind to instantly output the number of creatures in combat: "Combat monitor; output current number of enemies in combat"		
 		Combat monitor settings are for party and raid groups. There is no difference.
 		Combat monitor outputs are always first in our output queue.
 		Combat monitor settings are saved per character and talent spec.
