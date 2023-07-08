@@ -39,4 +39,4 @@ jobs:
       - name: Package and release for wrath classic
         uses: BigWigsMods/packager@v2
         with:
-          args: -g wrath -p
+          args: -g wrath -p 880019
