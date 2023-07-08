@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.20](https://github.com/Duugu/Sku/releases/download/r34.20/Sku-r34.20-wrath.zip) (July 8th 2023)<br>
+- [Sku r34.21](https://github.com/Duugu/Sku/releases/download/r34.21/Sku-r34.21-wrath.zip) (July 9th 2023)<br>
 
 *Older updates:* <br>
 - [Wow Menu r3.14](https://github.com/Duugu/wow_menu/releases/download/r3.14/wow_menu-r3.14-wrath.zip) (June 24th 2023)<br>
@@ -23,6 +23,14 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.21
+- Fixed the German "Noch" setting under "Lautstärke von Audiobenachrichtigungen". Should now be "Hoch".
+- Splitted the "Hostile > Units in combat > Announce enemies entering or leaving combat" setting into two: "Announce enemies entering combat" and "Announce enemies leaving combat". Please be aware that at the moment "Announce enemies leaving combat" is equivalent to enemies killed. There are other ways how enemies could leave combat. For example if you are running away and out of combat. Or in some boss fights, where enemies are disappearing. The addon can't that those cases.
+- Removed the "in combat" suffix from the "Announce relative number of enemies in combat" output. It's now just the number.
+- Fixed the broken "show tooltip for current loot item" key bind.
+- Fixed a bug in Core > Damage Meter that was breaking the menu.
+- Added some missing localizations for combat monitor menu strings.
+
 ## Changes in Sku r34.20
 - Fixed an issue with the calender leading to errors
 - Data for Core > Best in Slot updated to Pre Raid, T8, T9
