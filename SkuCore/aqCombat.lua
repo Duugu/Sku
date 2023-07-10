@@ -106,9 +106,15 @@ SkuCore.partyDeadCountCounter = 0
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCoreAqCombatGetVoiceString(aString, aTable)
    local tResult = (aString:gsub('($%b{})', function(w) return aTable[w:sub(3, -2)] or w end))
+
    if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume == 1 then
-      tResult = string.gsub(tResult, "sound%-combat%-notification", "sound-combat-notification-low")
+      tResult = string.gsub(tResult, "sound%-combat%-notification%d%d;", "sound-combat-notification-low%d%d;")
    end
+
+   if string.sub(tResult, 1, 5) == "-low;" then
+      tResult = string.sub(tResult, 6)
+   end
+
    return tResult
 end
  
@@ -140,6 +146,11 @@ local function SkuCoreAqCombatOutput(aPattern, aValuesTable, aQueueSettings, aSk
    end
    aValuesTable.sound = tSound
    aPattern = string.gsub(aPattern, ";", ";${voice}-")
+
+   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voiceVolume == 1 then
+      aPattern = string.gsub(aPattern, ";", "-low;")
+      aPattern = aPattern.."-low"
+   end
 
    SkuOptions.Voice:OutputString(SkuCoreAqCombatGetVoiceString(aPattern, aValuesTable), {wait = aQueueSettings.wait, overwrite = aQueueSettings.overwrite, instant = aQueueSettings.instant, doNotOverwrite = aQueueSettings.doNotOverwrite,}) 
 end
@@ -719,6 +730,10 @@ function SkuCore:aqCombatOnLogin()
          SkuOptions.db.char[MODULE_NAME].aq[x].combat.notificationVolume = 1
       end
 
+      if SkuOptions.db.char[MODULE_NAME].aq[x].combat.voiceVolume == nil then
+         SkuOptions.db.char[MODULE_NAME].aq[x].combat.voiceVolume = 2
+      end
+      
 
       --hostile
          if SkuOptions.db.char[MODULE_NAME].aq[x].combat.hostile == nil then
@@ -864,6 +879,9 @@ function SkuCore:aqCombatOnLogin()
             sound = "vocalized",
          }
          SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.outOfRangeEnabled.voiceOutput = "${sound};${unit1};leaving"
+
+         --
+         SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.ignoreDeadPartyPets = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.ignoreDeadPartyPets or true
 
          --
          SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.oorAt = SkuOptions.db.char[MODULE_NAME].aq[x].combat.friendly.oorAt or 10
@@ -1090,6 +1108,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
+   --print(aEvent, aUnitGUID, aUnitName)
    if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
       if aqCombatCheckElite(aUnitGUID) == true then
          if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value > 1 then
@@ -1133,20 +1152,31 @@ function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
             SkuCore:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aUnitGUID, nil, aUnitName)
          end
       else
-         SkuCore.partyDeadCountCounter = SkuCore.partyDeadCountCounter + 1
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == true then
-            local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount
-            SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = SkuCore.partyDeadCountCounter,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+         local tPartyUnitId = SkuCore:aqCombatGroupGuidToUnitId(aUnitGUID)
+         if tPartyUnitId == nil then
+            tPartyUnitId = ""
          end
-
-
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead.value == true then
-            local tPartyUnitId = SkuCore:aqCombatGroupGuidToUnitId(aUnitGUID)
-            if tPartyUnitId == nil then
-               tPartyUnitId = ""
+         
+         if 
+            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets == false or
+            tPartyUnitId == "" or
+            (
+               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets == true and
+               string.find(tPartyUnitId, "pet") == nil and
+               UnitIsOtherPlayersPet(tPartyUnitId) == false and
+               aUnitGUID ~= UnitGUID("pet")
+            )
+         then
+            SkuCore.partyDeadCountCounter = SkuCore.partyDeadCountCounter + 1
+            if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == true then
+               local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount
+               SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = SkuCore.partyDeadCountCounter,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
             end
-            local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead
-            SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tPartyUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+
+            if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead.value == true then
+               local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead
+               SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tPartyUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+            end
          end
       end
    end
@@ -1378,6 +1408,31 @@ function SkuCore:aqCombatMenuBuilder()
       SkuOptions:InjectMenuItems(self, {L["Low"]}, SkuGenericMenuItem)
       SkuOptions:InjectMenuItems(self, {L["High"]}, SkuGenericMenuItem)
    end
+
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice volume"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.filterable = true
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voiceVolume == 1 then
+         return L["Low"]
+      else
+         return L["High"]
+      end
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      if aName == L["Low"] then
+         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voiceVolume = 1
+      elseif aName == L["High"] then
+         SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.voiceVolume = 2
+      end
+   end
+   tNewMenuEntry.BuildChildren = function(self)
+      SkuOptions:InjectMenuItems(self, {L["Low"]}, SkuGenericMenuItem)
+      SkuOptions:InjectMenuItems(self, {L["High"]}, SkuGenericMenuItem)
+   end
+
+
 
    ----
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Hostile"]}, SkuGenericMenuItem)
@@ -1953,6 +2008,29 @@ function SkuCore:aqCombatMenuBuilder()
             SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
          end     
          tSoundMenuBuilder(self, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount)
+      end
+
+      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Ignore dead party pets"]}, SkuGenericMenuItem)
+      tNewMenuEntry.dynamic = true
+      tNewMenuEntry.filterable = true
+      tNewMenuEntry.isSelect = true
+      tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets == true then
+            return L["Yes"]
+         else
+            return L["No"]
+         end
+      end
+      tNewMenuEntry.OnAction = function(self, aValue, aName)
+         if aName == L["No"] then
+            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets = false
+         elseif aName == L["Yes"] then
+            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets = true
+         end
+      end
+      tNewMenuEntry.BuildChildren = function(self)
+         SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
+         SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
       end
 
       ----
