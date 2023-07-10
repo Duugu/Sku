@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku r34.21](https://github.com/Duugu/Sku/releases/download/r34.21/Sku-r34.21-wrath.zip) (July 9th 2023)<br>
+- [Sku r34.22](https://github.com/Duugu/Sku/releases/download/r34.22/Sku-r34.22-wrath.zip) (July 11th 2023)<br>
 
 *Older updates:* <br>
 - [Wow Menu r3.14](https://github.com/Duugu/wow_menu/releases/download/r3.14/wow_menu-r3.14-wrath.zip) (June 24th 2023)<br>
@@ -23,6 +23,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.22
+- Added combat monitor voices with higher volume and a new option "Core > Monitor > Combat > Voice volume".
+- Slightly lowered the volume of high volume combat monitor notifications.
+- Added a "Ignore dead party pets" to "Core > Monitor > Combat > Friendly > Deaths". Default: yes
+
 ## Changes in Sku r34.21
 - Fixed the German "Noch" setting under "Lautstärke von Audiobenachrichtigungen". Should now be "Hoch".
 - Splitted the "Hostile > Units in combat > Announce enemies entering or leaving combat" setting into two: "Announce enemies entering combat" and "Announce enemies leaving combat". Please be aware that at the moment "Announce enemies leaving combat" is equivalent to enemies killed. There are other ways how enemies could leave combat. For example if you are running away and out of combat. Or in some boss fights, where enemies are disappearing. The addon can't track those scenarios.
