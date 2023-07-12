@@ -9,8 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku r34.23](https://github.com/Duugu/Sku/releases/download/r34.23/Sku-r34.23-wrath.zip) (July 13th 2023)<br>
 - [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
-- [Sku r34.22](https://github.com/Duugu/Sku/releases/download/r34.22/Sku-r34.22-wrath.zip) (July 11th 2023)<br>
 
 *Older updates:* <br>
 - [Wow Menu r3.14](https://github.com/Duugu/wow_menu/releases/download/r3.14/wow_menu-r3.14-wrath.zip) (June 24th 2023)<br>
@@ -24,6 +24,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.23
+- Fixed and issue with combat monitor outputs that could lead to errors spam
+- Combat monitor should not longer consider hunter Feign Death as dead friendly unit
+- Routes for Netherstorm & Shadowmoon Valley mapped by Emily added
+- Changed the internal map data structur
+
 ## Changes in SkuMapper r3.3
 - Fixed an issue with the new Blizzard options panel and key bindings.
 - Changed the map file format.
