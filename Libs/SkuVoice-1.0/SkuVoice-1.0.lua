@@ -46,7 +46,7 @@ local SapiLangIds = {
 	["enAU"] = 409,
 	}
 
-local mSkuVoiceQueue = {}
+ mSkuVoiceQueue = {}
 local mSkuVoiceQueueBTTS = {}
 local mSkuVoiceQueueBTTS_Speaking = {}
 local mSkuVoiceQueueBTTS_Callback = nil
@@ -208,7 +208,7 @@ function SkuVoice:Create()
 
 				--play everything that is not flagged for queuing (wait == true)
 				for i = 1, table.getn(mSkuVoiceQueue) do
-					if mSkuVoiceQueue[i].wait == false and not mSkuVoiceQueue[i].soundHandle then
+					if mSkuVoiceQueue[i] and mSkuVoiceQueue[i].wait == false and not mSkuVoiceQueue[i].soundHandle then
 						local willPlay, soundHandle = PlaySoundFile(mSkuVoiceQueue[i].file, mSkuVoiceQueue[i].soundChannel)
 						if willPlay then
 							SkuVoice.LastPlayedString = mSkuVoiceQueue[i].text
@@ -220,7 +220,7 @@ function SkuVoice:Create()
 
 				--play everything that is flagged for dnq
 				for i = 1, table.getn(mSkuVoiceQueue) do
-					if mSkuVoiceQueue[i].dnq == true and not mSkuVoiceQueue[i].soundHandle then
+					if mSkuVoiceQueue[i] and mSkuVoiceQueue[i].dnq == true and not mSkuVoiceQueue[i].soundHandle then
 						local willPlay, soundHandle = PlaySoundFile(mSkuVoiceQueue[i].file, mSkuVoiceQueue[i].soundChannel)
 						if willPlay then
 							SkuVoice.LastPlayedString = mSkuVoiceQueue[i].text
@@ -232,7 +232,7 @@ function SkuVoice:Create()
 
 				--check if there is something finished and should be tombstoned
 				for i = 1, table.getn(mSkuVoiceQueue) do
-					if mSkuVoiceQueue[i].soundHandle then
+					if mSkuVoiceQueue[i] and mSkuVoiceQueue[i].soundHandle then
 						if (GetTime() - mSkuVoiceQueue[i].endTimestamp) > 0 then
 							mSkuVoiceQueue[i].tombstone = true
 						end
@@ -264,7 +264,7 @@ function SkuVoice:Create()
 
 				local tPlayNext = true
 				for i = 1, table.getn(mSkuVoiceQueue) do
-					if mSkuVoiceQueue[i].soundHandle and mSkuVoiceQueue[i].dnq ~= true then
+					if mSkuVoiceQueue[i] and mSkuVoiceQueue[i].soundHandle and mSkuVoiceQueue[i].dnq ~= true then
 						--is playing; check remaining time modifyed  by pause setting
 						local tRemainingTime = (GetTime() - mSkuVoiceQueue[i].endTimestamp) + (mSkuVoiceQueue[i].length - (mSkuVoiceQueue[i].length * (tFinalSpeed / 100)))
 						if tRemainingTime < 0 then
@@ -276,7 +276,7 @@ function SkuVoice:Create()
 
 				--it can play
 				for i = 1, table.getn(mSkuVoiceQueue) do
-					if not mSkuVoiceQueue[i].soundHandle and mSkuVoiceQueue[i].tombstone ~= true and tPlayNext == true and mSkuVoiceQueue[i].wait ~= false then
+					if mSkuVoiceQueue[i] and not mSkuVoiceQueue[i].soundHandle and mSkuVoiceQueue[i].tombstone ~= true and tPlayNext == true and mSkuVoiceQueue[i].wait ~= false then
 						local willPlay, soundHandle = PlaySoundFile(mSkuVoiceQueue[i].file, mSkuVoiceQueue[i].soundChannel)
 						if willPlay then
 							SkuVoice.LastPlayedString = mSkuVoiceQueue[i].text

@@ -3,6 +3,14 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.23
+	- Fixed and issue with combat monitor outputs that could lead to errors spam
+	- Combat monitor should not longer consider hunter Feign Death as dead friendly unit
+	- Routes for Netherstorm & Shadowmoon Valley mapped by Emily added
+	- Changed the internal map data structur
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.22
 	- Added combat monitor voices with higher volume and a new option "Core > Monitor > Combat > Voice volume".
 	- Slightly lowered the volume of high volume combat monitor notifications.
