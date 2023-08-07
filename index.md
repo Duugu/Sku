@@ -9,11 +9,11 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Wow Menu r4.0](https://github.com/Duugu/wow_menu/releases/download/r4.0/wow_menu-r4.0-wrath.zip) (August 7th 2023)<br>
 - [Sku r34.23](https://github.com/Duugu/Sku/releases/download/r34.23/Sku-r34.23-wrath.zip) (July 13th 2023)<br>
 - [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
 
 *Older updates:* <br>
-- [Wow Menu r3.14](https://github.com/Duugu/wow_menu/releases/download/r3.14/wow_menu-r3.14-wrath.zip) (June 24th 2023)<br>
 - [SkuAudioData_en r10 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r10/SkuAudioData_en-r10-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2023)<br>
@@ -24,6 +24,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in WoW Menu r4.0
+- You now can create and select up to 50 characters per server
+- Newly created characters are not selected as default. After character creation the first character is selected. You need to select the new character to login with that character.
+- On login, server change, switching to login mode, etc. the script will always select the first character in your list. No matter what character was selected previously.
+
 ## Changes in Sku r34.23
 - Fixed and issue with combat monitor outputs that could lead to errors spam
 - Combat monitor should not longer consider hunter Feign Death as dead friendly unit
