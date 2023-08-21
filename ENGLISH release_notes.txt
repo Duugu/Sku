@@ -3,6 +3,39 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.24
+	- New auras feature
+		Caution: This is a complex feature that needs to be tested carefully. I did tests, but errors are of course possible. In worst case you could lose all your existing auras. 
+		I highly suggest to export and save ALL your existing auras before taking hands on it!
+
+		You now can use other sku auras as regular conditions in auras. So, you can "nest" auras and build much, much more complex and flexible logic in auras.
+		On building a new aura the appropiate (more below) existing auras are available in the attributes list with their aura name (and the prefix "sku aura").
+		If you're adding an existing aura as a condition in a new aura, the addon will evaluate the full existing aura like every other condition in that aura. 
+		That is, if the result of the existing aura is or is not true or false.
+
+		Until now there wasn no control over how aura conditions were evaluated.
+		All conditions in an aura were evaluated using AND in there order of occurence. Like "if condition 1 AND condition 2 AND condition 3".
+		That was restricting use cases and made some scenarios impossible.
+		Example: You would like to build an aura that is notifying you if you have five stacks of some buff named "Explosion" AND if your target is casting Fireball.
+		In pseudo aura code that would be something like "if source equal self and aura stacks equal 5 and and spell name equal Explosion and source equal target and event equal spell cast start and spell name equal Fireball".
+		I guess it is clear why that wasn't possible, as you would have to use two "spell name equal" conditions in one aura, etc.
+		From now on you can build a first aura to test if your target is casting Fireball, and a second aura to test if you have 5 stacks of Explosion AND if the first aura is true.
+
+		Example:
+		First aura, with the custom name "casting fireball": if source (L) contains target AND event equal spell cast start AND spell name equal fireball.
+		Second aura: if source (L) contains self AND aura stack equal 5 AND spell name equal Explosion AND sku aura casting fireball equal true then... some output
+		The first aura "casting fireball" has no own output. It is just there to be used as an additional condition in the second aura.
+
+		Requirements:
+			- You can only use auras with custom names in other auras. Auras with auto generated names from their conditions can't be used. So, if you would like to use an aura in other auras, you need to explicit rename that aura.
+			- You can't delete any auras that are currently used in other auras. Remove them from all other auras first.
+			- You can always rename auras. But you can't set auras back to "auto generate name from conditions" as long as they are used in other auras.
+			- You can't nest auras for more than one level. If you're using aura A in aura B, then you can't use aura B in aura C.
+			- But you can of course use an aura in more than one other auras. A in B and A in C and A in D is ok.
+			- There is a new action type "no action" and a new output "nothing". Use them to avoid that any auras you would nest into other auras later on are triggering unwanted outputs. Example: "then no action nothing".
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.23
 	- Fixed and issue with combat monitor outputs that could lead to errors spam
 	- Combat monitor should not longer consider hunter Feign Death as dead friendly unit

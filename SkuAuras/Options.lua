@@ -133,6 +133,7 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
 				tText = tText.."("..SkuAuras.Types[tCurrent.internalName].tooltip..")"
 			end
 		elseif tCurrent.elementType == "attribute" then
+			--print("tCurrent.internalName", tCurrent.internalName)			
 			if SkuAuras.attributes[tCurrent.internalName].tooltip then
 				tText = tText.."("..SkuAuras.attributes[tCurrent.internalName].tooltip..")"
 			end
@@ -165,8 +166,10 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
 		end
 		tConditions = {}
 		for tName, tData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].attributes) do
-			for tDataIndex, tDataData in pairs(tData) do
-				tConditions[#tConditions + 1] = {attribute = SkuAuras.attributes[tName].friendlyName, operator = SkuAuras.Operators[tDataData[1]].friendlyName, value = SkuAuras.values[tDataData[2]].friendlyName}
+			if SkuAuras.attributes[tName] then
+				for tDataIndex, tDataData in pairs(tData) do
+					tConditions[#tConditions + 1] = {attribute = SkuAuras.attributes[tName].friendlyName, operator = SkuAuras.Operators[tDataData[1]].friendlyName, value = SkuAuras.values[tDataData[2]].friendlyName}
+				end
 			end
 		end
 		tAction = SkuAuras.actions[SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].actions[1]].friendlyName
@@ -266,21 +269,41 @@ function SkuAuras:NewAuraAttributeBuilder(self)
 				for x = 1, #tSortedList do
 					local i, v = tSortedList[x], tSortedList[x]
 					
-					tItemCount = true
-
-					local tAttributeEntry = SkuOptions:InjectMenuItems(self, {SkuAuras.attributes[v].friendlyName}, SkuGenericMenuItem)
-					tAttributeEntry.internalName = v
-					tAttributeEntry.dynamic = true
-					tAttributeEntry.filterable = true
-					tAttributeEntry.vocalizeAsIs = true
-					tAttributeEntry.elementType = "attribute"
-					tAttributeEntry.OnEnter = function(self, aValue, aName)
-						self.BuildChildren = SkuAuras:NewAuraOperatorBuilder(self)		
-						SkuAuras:BuildAuraTooltip(self)
+					local tIsInvalid
+					if string.find(i , "skuAura") ~= nil and SkuAuras:AuraUsedInOtherAuras(self.parent.parent.parent.name) ~= nil then
+						tIsInvalid = true
+					else
+						if SkuAuras.attributes["skuAura"..i] ~= nil then
+							tIsInvalid = true
+						else
+							if i ~= "skuAura"..self.parent.parent.parent.name then
+								if SkuAuras:AuraHasOtherAuras(string.gsub(i, "skuAura", "")) ~= true then
+								else
+									tIsInvalid = true
+								end
+							else
+								tIsInvalid = true
+							end
+						end
 					end
-					tAttributeEntry.BuildChildren = function(self)
-						--dprint("build content of", self.name)
-						--dprint("self.internalName", self.internalName)
+
+					if tIsInvalid ~= true then
+						tItemCount = true
+
+						local tAttributeEntry = SkuOptions:InjectMenuItems(self, {SkuAuras.attributes[v].friendlyName}, SkuGenericMenuItem)
+						tAttributeEntry.internalName = v
+						tAttributeEntry.dynamic = true
+						tAttributeEntry.filterable = true
+						tAttributeEntry.vocalizeAsIs = true
+						tAttributeEntry.elementType = "attribute"
+						tAttributeEntry.OnEnter = function(self, aValue, aName)
+							self.BuildChildren = SkuAuras:NewAuraOperatorBuilder(self)		
+							SkuAuras:BuildAuraTooltip(self)
+						end
+						tAttributeEntry.BuildChildren = function(self)
+							--dprint("build content of", self.name)
+							--dprint("self.internalName", self.internalName)
+						end
 					end
 				end
 
@@ -485,6 +508,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:BuildAuraName(aNewType, aNewAttributes, aNewActions, aNewOutputs)
+	--print("BuildAuraName(", aNewType, aNewAttributes, aNewActions, aNewOutputs)
 	local tAuraName = SkuAuras.Types[aNewType].friendlyName..";"
 	local tOuterCount = 0
 	for tAttributeName, tAttributeValue in pairs(aNewAttributes) do
@@ -569,22 +593,26 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			self.selectTarget.targetAuraName = self.parent.name
 		end
 		if SkuOptions.db.char[MODULE_NAME].Auras[self.selectTarget.targetAuraName] and SkuOptions.db.char[MODULE_NAME].Auras[self.selectTarget.targetAuraName].customName then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set name to auto generated"]}, SkuGenericMenuItem)
-			tNewMenuEntry.OnEnter = function(self)
-				self.selectTarget.targetAuraName = self.parent.name
+			if SkuAuras:AuraUsedInOtherAuras(self.selectTarget.targetAuraName) ~= true then
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Set name to auto generated"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self)
+					self.selectTarget.targetAuraName = self.parent.name
+				end
 			end
 		end
 
-		if self.parent.name == L["Aktivierte"] then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Deaktivieren"]}, SkuGenericMenuItem)
-			tNewMenuEntry.OnEnter = function(self)
-				self.selectTarget.targetAuraName = self.parent.name
+		if SkuAuras:AuraUsedInOtherAuras(self.selectTarget.targetAuraName) ~= true then
+			if self.parent.name == L["Aktivierte"] then
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Deaktivieren"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self)
+					self.selectTarget.targetAuraName = self.parent.name
+				end
+			else
+				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Aktivieren"]}, SkuGenericMenuItem)
+				tNewMenuEntry.OnEnter = function(self)
+					self.selectTarget.targetAuraName = self.parent.name
+				end			
 			end
-		else
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Aktivieren"]}, SkuGenericMenuItem)
-			tNewMenuEntry.OnEnter = function(self)
-				self.selectTarget.targetAuraName = self.parent.name
-			end			
 		end
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Bearbeiten"]}, SkuGenericMenuItem)
 		tNewMenuEntry.OnEnter = function(self)
@@ -752,8 +780,9 @@ function SkuAuras:BuildManageSubMenu(aParentEntry, aNewEntry)
 			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Wirklich duplizieren?"]}, SkuGenericMenuItem)
 		end
 
-
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Löschen"]}, SkuGenericMenuItem)
+		if SkuAuras:AuraUsedInOtherAuras(self.selectTarget.targetAuraName) ~= true then
+			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Löschen"]}, SkuGenericMenuItem)
+		end
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Exportieren"]}, SkuGenericMenuItem)
 	end
 end
@@ -855,6 +884,8 @@ function SkuAuras:MenuBuilder(aParentEntry)
 
 					if SkuAuras:CreateAura(self.internalName, tFinalAttributes) == true then
 						SkuOptions.Voice:OutputStringBTtts(L["Aura erstellt"], false, true, 0.1, true)
+
+						SkuAuras:UpdateAttributesListWithCurrentAuras()
 					else
 						SkuOptions.Voice:OutputStringBTtts(L["Aura nicht erstellt"], false, true, 0.1, true)
 					end
@@ -869,7 +900,6 @@ function SkuAuras:MenuBuilder(aParentEntry)
 				tTypeItem.BuildChildren = function(self)
 					--dprint("generic build content of", self.name, "this should not happen")
 				end
-
 			end		
 		end
 		--[[
@@ -907,6 +937,31 @@ function SkuAuras:MenuBuilder(aParentEntry)
 					SkuOptions.db.char[MODULE_NAME].Auras[tAutoName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName], true)
 					SkuOptions.db.char[MODULE_NAME].Auras[tAutoName].customName = nil
 					SkuOptions.db.char[MODULE_NAME].Auras[self.targetAuraName] = nil
+
+
+
+
+
+
+
+
+
+
+					SkuAuras:UpdateAttributesWithUpdatedAuraName(tAutoName, tAutoName)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				end
 
 			elseif aName == L["Umbenennen"] then				
@@ -926,6 +981,26 @@ function SkuAuras:MenuBuilder(aParentEntry)
 							SkuOptions.db.char[MODULE_NAME].Auras[tNewName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[tCurrentName], true)
 							SkuOptions.db.char[MODULE_NAME].Auras[tNewName].customName = true
 							SkuOptions.db.char[MODULE_NAME].Auras[tCurrentName] = nil
+
+
+
+
+
+
+
+
+							SkuAuras:UpdateAttributesWithUpdatedAuraName(tCurrentName, tNewName)
+
+
+
+
+
+
+
+
+
+
+
 							PlaySound(88)
 							C_Timer.After(0.01, function()
 								SkuOptions.Voice:OutputStringBTtts(L["Renamed"], false, false, 0.2, true, nil, nil, 2)
@@ -943,6 +1018,8 @@ function SkuAuras:MenuBuilder(aParentEntry)
 	
 
 			end
+
+			SkuAuras:UpdateAttributesListWithCurrentAuras()
 		end
 		tNewMenuEntry.BuildChildren = function(self)
 			local tTypeItem = SkuOptions:InjectMenuItems(self, {L["Aktivierte"]}, SkuGenericMenuItem)
@@ -995,6 +1072,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tdel.isSelect = true
 		tdel.OnAction = function(self, aValue, aName)
 			SkuAuras:ImportAuraData()
+			SkuAuras:UpdateAttributesListWithCurrentAuras()
 		end		
 
 		local tdel = SkuOptions:InjectMenuItems(self, {L["Alle Auren löschen"]}, SkuGenericMenuItem)
@@ -1003,6 +1081,7 @@ function SkuAuras:MenuBuilder(aParentEntry)
 		tdel.OnAction = function(self, aValue, aName)
 			SkuOptions.db.char[MODULE_NAME].Auras = {}
 			SkuOptions.Voice:OutputStringBTtts(L["Alle auren gelöscht"], true, true, 0.1, true)
+			SkuAuras:UpdateAttributesListWithCurrentAuras()
 		end
 
 		local tdel = SkuOptions:InjectMenuItems(self, {L["Alle Auren exportieren"]}, SkuGenericMenuItem)
@@ -1030,12 +1109,14 @@ function SkuAuras:MenuBuilder(aParentEntry)
 					SkuOptions.db.char[MODULE_NAME].Auras[tAuraData.friendlyNameShort] = tAuraData
 				end
 				SkuOptions.Voice:OutputStringBTtts(L["Set angewendet"], false, true, 0.3, true)	
+				SkuAuras:UpdateAttributesListWithCurrentAuras()
 			elseif aName == L["Übernehmen hinzufügen"] then
 				tSetData = SkuAuras.AuraSets[self.selectedSetInternalName]
 				for tAuraName, tAuraData in pairs(tSetData.auras) do
 					SkuOptions.db.char[MODULE_NAME].Auras[tAuraData.friendlyNameShort] = tAuraData
 				end
 				SkuOptions.Voice:OutputStringBTtts(L["Set hinzugefügt"], false, true, 0.3, true)	
+				SkuAuras:UpdateAttributesListWithCurrentAuras()
 			elseif aName == L["Bearbeiten"] then
 				SkuOptions.Voice:OutputStringBTtts(L["noch nicht implementiert"], false, true, 0.1, true)
 

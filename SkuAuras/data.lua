@@ -53,7 +53,13 @@ function SkuAuras:RemoveTags(aValue)
    local tCleanValue = sgsub(aValue, "item:", "")
    tCleanValue = sgsub(tCleanValue, "spell:", "")
    tCleanValue = sgsub(tCleanValue, "output:", "")
-   return tCleanValue
+   if tCleanValue == "true" then
+      return true
+   elseif tCleanValue == "false" then
+      return false
+   else
+      return tCleanValue
+   end
 end
 
 ------------------------------------------------------------------------------------------------------------------
@@ -82,6 +88,15 @@ SkuAuras.itemTypes = {
 }
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.actions = {
+   nothing = {
+      tooltip = "No action",
+      friendlyName = "No action",
+      func = function(tAuraName, tEvaluateData)
+      	--print("    SkuAuras.actions nothing")
+      end,
+      single = false,
+   },
+
    notifyAudio = {
       tooltip = L["Die Ausgaben werden als Audio ausgegeben"],
       friendlyName = L["audio ausgabe"],
@@ -138,6 +153,16 @@ SkuAuras.actions = {
 ------------------------------------------------------------------------------------------------------------------
 --local tPrevAuraPlaySoundFileHandle
 SkuAuras.outputs = {
+   nothing = {
+      tooltip = L["No output"],
+      friendlyName = L["nothing"],
+      functs = {
+         ["nothing"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
+            --print("    SkuAuras.outputs nothing nothing","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
+            return
+         end,
+      },
+   },
    event = {
       tooltip = L["Der Name des auslösenden Ereignisses der Aura"],
       friendlyName = L["ereignis"],
@@ -1131,6 +1156,7 @@ SkuAuras.attributes = {
       	--dprint("    ","SkuAuras.attributes.action.evaluate")
       end,
       values = {
+         "nothing",
          "notifyAudio",
          "notifyAudioSingle",
          --"notifyAudioSingleInstant",
@@ -1929,6 +1955,7 @@ SkuAuras.Operators = {
                end
             end
          else
+            --print("aValueA", "-"..tostring(SkuAuras:RemoveTags(aValueA)).."-", "aValueB", "-"..tostring(SkuAuras:RemoveTags(aValueB)).."-", SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(aValueB), tostring(aValueA) == tostring(aValueB))
             if SkuAuras:RemoveTags(aValueA) == SkuAuras:RemoveTags(aValueB) then 
                return true 
             end

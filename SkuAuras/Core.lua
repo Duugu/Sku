@@ -136,6 +136,17 @@ function SkuAuras:OnDisable()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:GetBaseAuraName(aAuraName)
+	local tF = string.find(aAuraName, L["dann;"])
+	if tF then
+		return string.sub(aAuraName, 1, tF - 1)
+	end
+
+	return aAuraName
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:GetBestUnitId(aUnitGUID)
 
 	if not aUnitGUID then
@@ -337,7 +348,123 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		end
 		SkuOptions.db.char[MODULE_NAME].pre327AuraUpdate = true
 	end
+
+
+	--add existing auras to attributes list
+	SkuAuras:UpdateAttributesListWithCurrentAuras()
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:UpdateAttributesListWithCurrentAuras()
+	for tName, tData in pairs(SkuAuras.attributes) do
+		if string.find(tName, "skuAura") then
+			SkuAuras.attributes[tName] = nil
+		end
+	end
+
+	for tName, tData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
+		if tData.customName == true then
+			local tBaseName = SkuAuras:GetBaseAuraName(tName)
+			if not SkuAuras.attributes["skuAura"..tBaseName] then
+				--print("INSERT", tBaseName)
+				SkuAuras.attributes["skuAura"..tBaseName] = {
+					tooltip = "sku aura "..tBaseName,
+					friendlyName = "sku aura "..tBaseName,
+					type = "BINARY",
+					evaluate = function(self, aEventData, aOperator, aValue, aRawData)
+						local tResult = SkuAuras:EvaluateAllAuras(aRawData, tName)
+						local tEvaluation = SkuAuras.Operators[aOperator].func(tResult, SkuAuras:RemoveTags(aValue))
+						if tEvaluation == true then
+							--print("tEvaluation", true)
+							return true
+						end
+						return false
+					end,
+					values = {
+						"true",
+						"false",
+					},    
+				}
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:AuraUsedInOtherAuras(aAuraName)
+	local tBaseName = "skuAura"..SkuAuras:GetBaseAuraName(aAuraName)
+	for tName, tData in pairs (SkuOptions.db.char[MODULE_NAME].Auras) do
+		if tName ~= aAuraName then
+			for tAttName, tAttData in pairs(tData.attributes) do
+				if tAttName == tBaseName then
+					return true
+				end
+			end
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:AuraHasOtherAuras(aAuraName)
+	--print("-------")
+	--print("AuraHasOtherAuras", aAuraName)
+	if not SkuOptions.db.char[MODULE_NAME].Auras[aAuraName] then
+		return
+	end
+	for tAttName, tAttData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].attributes) do
+		--print("  ", tAttName)
+		if string.find(tAttName, "skuAura") ~= nil then
+			return true
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:UpdateAttributesWithUpdatedAuraName(aOldAuraName, aNewAuraName)
+	local aOldAuraNameBaseName = "skuAura"..SkuAuras:GetBaseAuraName(aOldAuraName)
+	local aNewAuraNameBaseName = "skuAura"..SkuAuras:GetBaseAuraName(aNewAuraName)
+	--print("------------------- UpdateAttributesWithUpdatedAuraName")
+	--print("  aOldAuraNameBaseName", aOldAuraNameBaseName)
+	--print("  aNewAuraNameBaseName", aNewAuraNameBaseName)
+	for tName, tData in pairs (SkuOptions.db.char[MODULE_NAME].Auras) do
+		--print("  checking aura", tName)
+		--print("   tData.attributes[aOldAuraNameBaseName]", tData.attributes[aOldAuraNameBaseName])
+		local tUpdated
+		if tData.attributes[aOldAuraNameBaseName] ~= nil then
+			local tExistingData = tData.attributes[aOldAuraNameBaseName]
+			tData.attributes[aOldAuraNameBaseName] = nil
+			tData.attributes[aNewAuraNameBaseName] = tExistingData
+			tUpdated = true
+			--print("      RENAME ATTRIBUTE", tName, "renamed att:", aOldAuraNameBaseName, "TO", aNewAuraNameBaseName, "DATA", tExistingData)
+		end
+
+		if tUpdated == true and tData.customName ~= true then
+			SkuAuras:UpdateAttributesListWithCurrentAuras()
+			--print("     rebuild name")
+			local tAutoName = SkuAuras:BuildAuraName(tData.type, tData.attributes, tData.actions, tData.outputs)
+			--print("       ", tName, tAutoName)
+			if tAutoName ~= tName then
+				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[tName], true)
+				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName].customName = nil
+				SkuOptions.db.char[MODULE_NAME].Auras[tName] = nil
+				SkuAuras:UpdateAttributesWithUpdatedAuraName(tName, tAutoName)
+			end
+		end
+
+	end
+	SkuAuras:UpdateAttributesListWithCurrentAuras()
+end
+
+
+
+
+
+
+
+
+
+
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:SPELL_COOLDOWN_START(aEventData)
@@ -647,10 +774,13 @@ local CombatLogFilterAttackable =  bit.bor(
 	COMBATLOG_FILTER_HOSTILE_PLAYERS,
 	COMBATLOG_FILTER_NEUTRAL_UNITS
 )
-function SkuAuras:EvaluateAllAuras(tEventData)
+function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	if not SkuOptions.db.char[MODULE_NAME].Auras then
 		SkuOptions.db.char[MODULE_NAME].Auras = {}
 	end
+
+	local tRawEventData = tEventData
+
 	--build non event related data to evaluate
 	local tSourceUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.sourceGUID])
 	local tDestinationUnitID = SkuAuras:GetBestUnitId(tEventData[CleuBase.destGUID])
@@ -853,167 +983,177 @@ function SkuAuras:EvaluateAllAuras(tEventData)
 	--evaluate all auras
 	local tFirst = true
 	for tAuraName, tAuraData in pairs(SkuOptions.db.char[MODULE_NAME].Auras) do
-		if tAuraData.enabled == true then
-			tEvaluateData.buffListTarget = toBuffListTarget
-			tEvaluateData.debuffListTarget = toDebuffListTarget
-			tEvaluateData.spellNameOnCd = toSpellNameOnCd
+		if tSpecificAuraToTestIndex == nil or (tSpecificAuraToTestIndex ~= nil and tSpecificAuraToTestIndex == tAuraName) then
+			if tAuraData.enabled == true then
+				tEvaluateData.buffListTarget = toBuffListTarget
+				tEvaluateData.debuffListTarget = toDebuffListTarget
+				tEvaluateData.spellNameOnCd = toSpellNameOnCd
 
-			local tOverallResult = true
-			local tHasApplicableAttributes = false
+				local tOverallResult = true
+				local tHasApplicableAttributes = false
 
-			local tSingleBuffListTargetValue
-			local tSingleDebuffListTargetValue
+				local tSingleBuffListTargetValue
+				local tSingleDebuffListTargetValue
 
-			local tHasCountCondition_NumConditions = 0
-			local tHasCountCondition_NumCountConditions = 0
-			local tHasCountCondition_NumCountConditionsTrue = 0
-			local tHasCountCondition_NumConditionsWoCountIsTrue = 0
+				local tHasCountCondition_NumConditions = 0
+				local tHasCountCondition_NumCountConditions = 0
+				local tHasCountCondition_NumCountConditionsTrue = 0
+				local tHasCountCondition_NumConditionsWoCountIsTrue = 0
 
-			--add tEvaluateData for durations of buff/debuff list conditions
-			local tAtts = {
-				buffListPlayer = {"player", "HELPFUL"},
-				debuffListPlayer = {"player", "HARMFUL"},
-				buffListTarget = {"target", "HELPFUL"},
-				debuffListTarget = {"target", "HARMFUL"},
-			}
-			for tAttsI, tAttsV in pairs(tAtts) do
-				if tAuraData.attributes[tAttsI] and tAuraData.attributes[tAttsI.."Duration"] then
-					local tduration = getAuraList(tAttsV[1], tAttsV[2], tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])])
-					if tduration then
-						tEvaluateData[tAttsI.."Duration"] = tduration
-					end
-				end
-			end
-			
-			--evaluate all attributes
-			for tAttributeName, tAttributeValue in pairs(tAuraData.attributes) do
-				if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
-					tHasCountCondition_NumCountConditions = tHasCountCondition_NumCountConditions + 1
-				end
-				tHasCountCondition_NumConditions = tHasCountCondition_NumConditions + 1
-
-				tHasApplicableAttributes = true
-				if #tAttributeValue > 1 then
-					local tLocalResult = false
-					for tInd, tLocalValue in pairs(tAttributeValue) do
-						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2])
-						if tResult == true then
-							tLocalResult = true
-							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
-								tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
-							else
-								tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
-							end							
+				--add tEvaluateData for durations of buff/debuff list conditions
+				local tAtts = {
+					buffListPlayer = {"player", "HELPFUL"},
+					debuffListPlayer = {"player", "HARMFUL"},
+					buffListTarget = {"target", "HELPFUL"},
+					debuffListTarget = {"target", "HARMFUL"},
+				}
+				for tAttsI, tAttsV in pairs(tAtts) do
+					if tAuraData.attributes[tAttsI] and tAuraData.attributes[tAttsI.."Duration"] then
+						local tduration = getAuraList(tAttsV[1], tAttsV[2], tEvaluateData[tAttsI][SkuAuras:RemoveTags(tAuraData.attributes[tAttsI][1][2])])
+						if tduration then
+							tEvaluateData[tAttsI.."Duration"] = tduration
 						end
 					end
-					if tLocalResult ~= true then
-						tOverallResult = false
-						break
+				end
+				
+				--evaluate all attributes
+				for tAttributeName, tAttributeValue in pairs(tAuraData.attributes) do
+					if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
+						tHasCountCondition_NumCountConditions = tHasCountCondition_NumCountConditions + 1
 					end
-				else
-					local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2])
-					for tInd, tLocalValue in pairs(tAttributeValue) do
-						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2])
-						if tResult == true then
-							tLocalResult = true
-							if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
-								tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
-							else
-								tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
-							end							
-						end
-					end
+					tHasCountCondition_NumConditions = tHasCountCondition_NumConditions + 1
 
-					if tResult ~= true then
-						tOverallResult = false
-						break
-					end
-				end
-
-				if tAttributeName == "buffListTarget" then
-					tSingleBuffListTargetValue = sgsub(tAttributeValue[1][2], "spell:", "")
-				end
-				if tAttributeName == "debuffListTarget" then
-					tSingleDebuffListTargetValue = sgsub(tAttributeValue[1][2], "spell:", "")
-				end
-				if tAttributeName == "spellNameOnCd" then
-					tSpellNameOnCdValue = sgsub(tAttributeValue[1][2], "spell:", "")
-				end
-			end				
-
-			--add data for outputs
-			tEvaluateData.buffListTarget = tSingleBuffListTargetValue
-			tEvaluateData.debuffListTarget = tSingleDebuffListTargetValue
-			tEvaluateData.spellNameOnCd = tSpellNameOnCdValue
-
-			--overall result
-			if tAuraData.type == "if" then
-				if tOverallResult == true and tHasApplicableAttributes == true then
-					if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then
-						tAuraData.used = true
-
-						for i, v in pairs(tAuraData.outputs) do
-							if SkuAuras.outputs[sgsub(v, "output:", "")] then
-								local tAction = tAuraData.actions[1]
-								if tAction ~= "notifyAudioAndChatSingle" then
-									if tAction == "notifyAudioSingle" or tAction == "notifyAudioSingleInstant" then
-										tAction = "notifyAudio"
-									end
-									if tAction == "notifyChatSingle" then
-										tAction = "notifyChat"
-									end
-
-									SkuAuras.outputs[sgsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+					tHasApplicableAttributes = true
+					if #tAttributeValue > 1 then
+						local tLocalResult = false
+						for tInd, tLocalValue in pairs(tAttributeValue) do
+							local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2], tRawEventData)
+							if tResult == true then
+								tLocalResult = true
+								if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
+									tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
 								else
-									SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
-									SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
-								end
-
-								tFirst = false
+									tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
+								end							
 							end
 						end
-					end
-				else
-					--set aura to unused
-					if tHasCountCondition_NumCountConditions > 0 then --es großer oder kleiner hat 
-						if (tHasCountCondition_NumConditionsWoCountIsTrue - tHasCountCondition_NumCountConditionsTrue == tHasCountCondition_NumConditions - tHasCountCondition_NumCountConditions) and ( tHasCountCondition_NumCountConditionsTrue < tHasCountCondition_NumCountConditions) then--alles außer größer oder kleiner = true und größer kleiner = false
-							tAuraData.used = false
+						if tLocalResult ~= true then
+							tOverallResult = false
+							break
 						end
 					else
-						tAuraData.used = false
-					end
-
-				end		
-			else
-				if tOverallResult == false and tHasApplicableAttributes == true then
-					if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then					
-						--set aura to used
-						tAuraData.used = true
-
-						for i, v in pairs(tAuraData.outputs) do
-							if SkuAuras.outputs[sgsub(v, "output:", "")] then
-								local tAction = tAuraData.actions[1]
-								if tAction ~= "notifyAudioAndChatSingle" then
-									if tAction == "notifyAudioSingle" then
-										tAction = "notifyAudio"
-									end
-									if tAction == "notifyChatSingle" then
-										tAction = "notifyChat"
-									end							
-									SkuAuras.outputs[sgsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+						local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tAttributeValue[1][1], tAttributeValue[1][2], tRawEventData)
+						for tInd, tLocalValue in pairs(tAttributeValue) do
+							local tResult = SkuAuras.attributes[tAttributeName]:evaluate(tEvaluateData, tLocalValue[1], tLocalValue[2], tRawEventData)
+							if tResult == true then
+								tLocalResult = true
+								if tAttributeValue[1][1] == "bigger" or tAttributeValue[1][1] == "smaller" then
+									tHasCountCondition_NumCountConditionsTrue = tHasCountCondition_NumCountConditionsTrue + 1
 								else
-									SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
-									SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
-								end
-								
-								tFirst = false
+									tHasCountCondition_NumConditionsWoCountIsTrue = tHasCountCondition_NumConditionsWoCountIsTrue + 1
+								end							
 							end
 						end
+
+						if tResult ~= true then
+							tOverallResult = false
+							break
+						end
 					end
+
+					if tAttributeName == "buffListTarget" then
+						tSingleBuffListTargetValue = sgsub(tAttributeValue[1][2], "spell:", "")
+					end
+					if tAttributeName == "debuffListTarget" then
+						tSingleDebuffListTargetValue = sgsub(tAttributeValue[1][2], "spell:", "")
+					end
+					if tAttributeName == "spellNameOnCd" then
+						tSpellNameOnCdValue = sgsub(tAttributeValue[1][2], "spell:", "")
+					end
+				end				
+
+				--add data for outputs
+				tEvaluateData.buffListTarget = tSingleBuffListTargetValue
+				tEvaluateData.debuffListTarget = tSingleDebuffListTargetValue
+				tEvaluateData.spellNameOnCd = tSpellNameOnCdValue
+
+				--overall result
+				if tAuraData.type == "if" then
+					if tOverallResult == true and tHasApplicableAttributes == true then
+						if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then
+							tAuraData.used = true
+
+							if tSpecificAuraToTestIndex ~= nil then
+								return true
+							end
+
+							for i, v in pairs(tAuraData.outputs) do
+								if SkuAuras.outputs[sgsub(v, "output:", "")] then
+									local tAction = tAuraData.actions[1]
+									if tAction ~= "notifyAudioAndChatSingle" then
+										if tAction == "notifyAudioSingle" or tAction == "notifyAudioSingleInstant" then
+											tAction = "notifyAudio"
+										end
+										if tAction == "notifyChatSingle" then
+											tAction = "notifyChat"
+										end
+
+										SkuAuras.outputs[sgsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									else
+										SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+										SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									end
+
+									tFirst = false
+								end
+							end
+						end
+					else
+						--set aura to unused
+						if tHasCountCondition_NumCountConditions > 0 then --es großer oder kleiner hat 
+							if (tHasCountCondition_NumConditionsWoCountIsTrue - tHasCountCondition_NumCountConditionsTrue == tHasCountCondition_NumConditions - tHasCountCondition_NumCountConditions) and ( tHasCountCondition_NumCountConditionsTrue < tHasCountCondition_NumCountConditions) then--alles außer größer oder kleiner = true und größer kleiner = false
+								tAuraData.used = false
+							end
+						else
+							tAuraData.used = false
+						end
+
+					end		
 				else
-					--set aura to unused
-					tAuraData.used = false
-				end	
+					if tOverallResult == false and tHasApplicableAttributes == true then
+						if ((tAuraData.used ~= true and SkuAuras.actions[tAuraData.actions[1]].single == true) or SkuAuras.actions[tAuraData.actions[1]].single ~= true) then					
+							--set aura to used
+							tAuraData.used = true
+
+							if tSpecificAuraToTestIndex ~= nil then
+								return true
+							end
+
+							for i, v in pairs(tAuraData.outputs) do
+								if SkuAuras.outputs[sgsub(v, "output:", "")] then
+									local tAction = tAuraData.actions[1]
+									if tAction ~= "notifyAudioAndChatSingle" then
+										if tAction == "notifyAudioSingle" then
+											tAction = "notifyAudio"
+										end
+										if tAction == "notifyChatSingle" then
+											tAction = "notifyChat"
+										end							
+										SkuAuras.outputs[sgsub(v, "output:", "")].functs[tAction](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									else
+										SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyAudio"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+										SkuAuras.outputs[sgsub(v, "output:", "")].functs["notifyChat"](tAuraName, tEvaluateData, tFirst, SkuAuras.actions[tAuraData.actions[1]].instant)
+									end
+									
+									tFirst = false
+								end
+							end
+						end
+					else
+						--set aura to unused
+						tAuraData.used = false
+					end	
+				end
 			end
 		end
 	end
