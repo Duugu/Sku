@@ -30,8 +30,8 @@ DEUTSCH - Erste Schritte:<br>
 - Fixed a bug with sub auras and no action/output nothing
 - Added a new attribute for aura conditions: Spell usable (L)<br>
 	Spell usable (L) checks all spells on your actionbars. You can do checks like "Spell usable (L) contains Revenge".
-	The checks are considering cooldown, range and general stuff like stance, in-/outdoors, etc.
-	Important things to consider with this aura specific attribute:
+	The checks are considering cooldown, range and general stuff like stance, in-/outdoors, etc.<br>
+	There are some important things to consider with this aura specific attribute:<br>
 	- The attribute is only available for spells that are on any visible(!) actionbar button.
 	- You can't use this aura attribute to check some spell that isn't on some button on your bars.
 	- You can't use this aura attribute to check some spell that is on some bar, but that isn't visible. Example: Your Druid Bear actionbar button 1 is Growl, but you are in Cat form and the cat actionbar is visible, and the Bear actionbar is hidden. Then the check if Growl is usable won't work, unless you're switching to Bear and the bear actionbar is getting visible.
