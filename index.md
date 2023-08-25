@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r34.25](https://github.com/Duugu/Sku/releases/download/r34.24/Sku-r34.25-wrath.zip) (August 25th 2023)<br>
+- [Sku WRATH r34.25](https://github.com/Duugu/Sku/releases/download/r34.25/Sku-r34.25-wrath.zip) (August 25th 2023)<br>
 - [Wow Menu ERA r4.2](https://github.com/Duugu/wow_menu_era/releases/download/r4.2/wow_menu-r4.2-classic.zip) (August 8th 2023)<br>
 - [Sku ERA r32.21](https://github.com/Duugu/SkuEra/releases/download/r32.21/Sku-r32.21-classic.zip) (August 8th 2023)<br>
 - [Wow Menu WRATH r4.0](https://github.com/Duugu/wow_menu/releases/download/r4.0/wow_menu-r4.0-wrath.zip) (August 7th 2023)<br>
