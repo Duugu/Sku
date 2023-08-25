@@ -231,7 +231,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local tItemHook
 function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
-	dprint("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
+	--print("PLAYER_ENTERING_WORLD", aEvent, aIsInitialLogin, aIsReloadingUi)
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
 	SkuOptions.db.char[MODULE_NAME].Auras = SkuOptions.db.char[MODULE_NAME].Auras or {}
 
@@ -406,13 +406,11 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:AuraHasOtherAuras(aAuraName)
-	--print("-------")
 	--print("AuraHasOtherAuras", aAuraName)
 	if not SkuOptions.db.char[MODULE_NAME].Auras[aAuraName] then
 		return
 	end
 	for tAttName, tAttData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].attributes) do
-		--print("  ", tAttName)
 		if string.find(tAttName, "skuAura") ~= nil then
 			return true
 		end
@@ -423,26 +421,19 @@ end
 function SkuAuras:UpdateAttributesWithUpdatedAuraName(aOldAuraName, aNewAuraName)
 	local aOldAuraNameBaseName = "skuAura"..SkuAuras:GetBaseAuraName(aOldAuraName)
 	local aNewAuraNameBaseName = "skuAura"..SkuAuras:GetBaseAuraName(aNewAuraName)
-	--print("------------------- UpdateAttributesWithUpdatedAuraName")
-	--print("  aOldAuraNameBaseName", aOldAuraNameBaseName)
-	--print("  aNewAuraNameBaseName", aNewAuraNameBaseName)
+
 	for tName, tData in pairs (SkuOptions.db.char[MODULE_NAME].Auras) do
-		--print("  checking aura", tName)
-		--print("   tData.attributes[aOldAuraNameBaseName]", tData.attributes[aOldAuraNameBaseName])
 		local tUpdated
 		if tData.attributes[aOldAuraNameBaseName] ~= nil then
 			local tExistingData = tData.attributes[aOldAuraNameBaseName]
 			tData.attributes[aOldAuraNameBaseName] = nil
 			tData.attributes[aNewAuraNameBaseName] = tExistingData
 			tUpdated = true
-			--print("      RENAME ATTRIBUTE", tName, "renamed att:", aOldAuraNameBaseName, "TO", aNewAuraNameBaseName, "DATA", tExistingData)
 		end
 
 		if tUpdated == true and tData.customName ~= true then
 			SkuAuras:UpdateAttributesListWithCurrentAuras()
-			--print("     rebuild name")
 			local tAutoName = SkuAuras:BuildAuraName(tData.type, tData.attributes, tData.actions, tData.outputs)
-			--print("       ", tName, tAutoName)
 			if tAutoName ~= tName then
 				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName] = TableCopy(SkuOptions.db.char[MODULE_NAME].Auras[tName], true)
 				SkuOptions.db.char[MODULE_NAME].Auras[tAutoName].customName = nil
@@ -454,17 +445,6 @@ function SkuAuras:UpdateAttributesWithUpdatedAuraName(aOldAuraName, aNewAuraName
 	end
 	SkuAuras:UpdateAttributesListWithCurrentAuras()
 end
-
-
-
-
-
-
-
-
-
-
-
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:SPELL_COOLDOWN_START(aEventData)
@@ -905,7 +885,19 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		targetCanAttack = UnitCanAttack("player", "target"),
 		tInCombat = SkuCore.inCombat,
 		pressedKey = tEventData[50],
-		spellsNamesOnCd = SkuAuras.thingsNamesOnCd,
+		spellNameOnCd = SkuAuras.thingsNamesOnCd,
+		
+		spellNameUsable = SkuAuras:GetSpellNamesUsable(),
+
+
+
+
+
+
+
+
+
+
 	}		
 	if UnitPowerMax("target") > 0 then
 		tEvaluateData.unitPowerTarget = UnitName("target") and mfloor(UnitPower("target") / (UnitPowerMax("target") / 100))
@@ -1161,6 +1153,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:CreateAura(aType, aAttributes)
+	--print("SkuAuras:CreateAura")
 	if not aType or not aAttributes then
 		return false
 	end
@@ -1375,4 +1368,230 @@ function SkuAuras:LogRecorder(aEventName, aEventData)
 			SkuOptions.db.global[MODULE_NAME].log.data[#SkuOptions.db.global[MODULE_NAME].log.data + 1] = {event = aEventName, data = aEventData,}
 		end
 	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:GetSpellNamesUsable()
+	local tResult = {}
+	for x = 1, 132 do
+		local type, id = GetActionInfo(x)
+		if (type == "spell" and id ~= nil) then
+			local abilityName = GetSpellInfo(id)
+			local tUsable = SkuAuras:ActionButtonUsable(x)
+
+			if tUsable == true then
+				tResult["spell:"..abilityName] = "spell:"..abilityName
+			end
+		end
+	end
+
+	--[[
+	for i, v in pairs(tResult) do
+		print(i)
+	end
+	]]
+
+	return tResult
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:ActionButton_UpdateUsable(self, aActionID)
+	local isUsable, notEnoughMana = IsUsableAction(aActionID)
+	
+	if ( isUsable ) then
+		return true
+	elseif ( notEnoughMana ) then
+		return false
+	else
+		return false
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:ActionButton_CheckColor(self, aActionID)
+	if not self then
+		return false
+	end
+
+	local r, g, b, a = self.icon:GetVertexColor()
+	if r < 1 or g < 1 or b < 1 or a < 1 then
+		return false
+	end
+
+	return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:ActionButton_CheckRangeIndicator(self, aActionID)
+	local valid = IsActionInRange(aActionID)
+	local checksRange = (valid ~= nil)
+	local inRange = checksRange and valid
+
+	if (self and self.HotKey:GetText() == RANGE_INDICATOR ) then
+		if ( checksRange ) then
+			if ( inRange ) then
+				return true
+			else
+				return false
+			end
+		end
+	else
+		if ( checksRange and not inRange ) then
+			return false
+		else
+			return true
+		end
+	end
+
+	return true
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:ActionButton_IsOnCooldown(self, aActionID)
+	local start, duration, enable, charges, maxCharges, chargeStart, chargeDuration
+	local modRate = 1.0
+	local chargeModRate = 1.0
+
+	local type, id = GetActionInfo(aActionID)
+	
+	if (type == "spell" and id ~= nil) then
+		start, duration, enable, modRate = GetSpellCooldown(id)
+		charges, maxCharges, chargeStart, chargeDuration, chargeModRate = GetSpellCharges(id)
+	else
+		start, duration, enable, modRate = GetActionCooldown(aActionID)
+		charges, maxCharges, chargeStart, chargeDuration, chargeModRate = GetActionCharges(aActionID)
+	end
+
+	if ( charges and maxCharges and maxCharges > 1 and charges < maxCharges ) then
+		return true
+	end
+
+	if enable and enable ~= 0 and start > 0 and duration > 0 then
+		return true
+	end
+
+	return false
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuAuras:ActionButtonUsable(aActionID)
+	if not aActionID then
+		return false
+	end
+
+	local DRUID, WARRIOR, ROGUE, PRIEST, SHAMAN, WARLOCK = 11, 1, 4, 5, 7, 9
+	local _, _, tClassId = UnitClass("player")
+
+	local self
+	--additional bars
+	if aActionID >= 61 and aActionID <= 72 then
+		self = _G["MultiBarBottomLeftButton"..aActionID - 60]
+	elseif aActionID >= 49 and aActionID <= 60 then
+		self = _G["MultiBarBottomRightButton"..aActionID - 48]
+	elseif aActionID >= 25 and aActionID <= 36 then
+		self = _G["MultiBarRightButton"..aActionID - 24]
+	elseif aActionID >= 37 and aActionID <= 48 then
+		self = _G["MultiBarLeftButton"..aActionID - 36]
+
+	--action bar page 1
+	elseif aActionID >= 1 and aActionID <= 12 and GetActionBarPage() == 1 and 
+		(
+			((GetShapeshiftFormID() ~= CAT_FORM and GetShapeshiftFormID() ~= 2 and GetShapeshiftFormID() ~= MOONKIN_FORM and GetShapeshiftFormID() ~= BEAR_FORM  and GetShapeshiftFormID() ~= 8 and tClassId == DRUID))
+			or
+			((GetShapeshiftFormID() ~= 17 and GetShapeshiftFormID() ~= 18 and GetShapeshiftFormID() ~= 19 and tClassId == WARRIOR))
+			or
+			((GetShapeshiftFormID() ~= 30 and tClassId == ROGUE))
+			or
+			((GetShapeshiftFormID() ~= 28 and tClassId == PRIEST))
+			or GetShapeshiftFormID() == nil
+		)
+	then
+		self = _G["ActionButton"..aActionID]
+
+	--stance bars		
+	elseif 	aActionID >= 73 and aActionID <= 84  and GetActionBarPage() ~= 2
+		and (
+			(GetShapeshiftFormID() == CAT_FORM and tClassId == DRUID)
+			or
+			(GetShapeshiftFormID() == 17 and tClassId == WARRIOR)
+			or
+			(GetShapeshiftFormID() == 30 and tClassId == ROGUE)
+			or
+			(GetShapeshiftFormID() == 28 and tClassId == PRIEST)
+		)
+	then
+		self = _G["ActionButton"..aActionID - 72]
+	elseif aActionID >= 85 and aActionID <= 96 and GetActionBarPage() ~= 2
+		and (
+			(GetShapeshiftFormID() == 2 and tClassId == DRUID)
+			or
+			(GetShapeshiftFormID() == 18 and tClassId == WARRIOR)
+		)
+	then
+		self = _G["ActionButton"..aActionID - 84]
+	elseif aActionID >= 97 and aActionID <= 108 and GetActionBarPage() ~= 2
+		and (
+			((GetShapeshiftFormID() == BEAR_FORM or GetShapeshiftFormID() == 8) and tClassId == DRUID)
+			or
+			(GetShapeshiftFormID() == 19 and tClassId == WARRIOR)
+		)
+	then
+		self = _G["ActionButton"..aActionID - 96]
+	elseif aActionID >= 109 and aActionID <= 120  and GetActionBarPage() ~= 2
+		and (
+			((GetShapeshiftFormID() == MOONKIN_FORM) and tClassId == DRUID)
+		)
+	then
+		self = _G["ActionButton"..aActionID - 108]
+
+	--action bar page 2
+	elseif aActionID >= 13 and aActionID <= 24 and GetActionBarPage() == 2 then
+		self = _G["ActionButton"..aActionID - 12]
+	end
+
+	local action = aActionID
+
+	if not ( HasAction(action) ) then
+		return false
+	end
+
+	local type, id = GetActionInfo(action)
+
+	--[[
+		local abilityName = GetSpellInfo(id)
+		print("abilityName", abilityName)
+		print("IsHarmfulSpell", IsHarmfulSpell(abilityName))
+		print("IsHelpfulSpell", IsHelpfulSpell(abilityName))
+		print("IsUsableSpell", IsUsableSpell(abilityName))
+		print("IsPassiveSpell", IsPassiveSpell(abilityName))
+		print("SpellIsSelfBuff", SpellIsSelfBuff(id))
+	]]
+
+	if self and self.icon and self.icon:IsDesaturated() == true then
+		return false
+	end
+
+	if ((type == "spell" or type == "companion") and ZoneAbilityFrame and ZoneAbilityFrame.baseName and not HasZoneAbility()) then
+		local name = GetSpellInfo(ZoneAbilityFrame.baseName)
+		local abilityName = GetSpellInfo(id)
+		if (name == abilityName) then
+			return false
+		end
+	end
+
+	if SkuAuras:ActionButton_UpdateUsable(self, aActionID) ~= true then
+		return false
+	end
+	if SkuAuras:ActionButton_IsOnCooldown(self, aActionID) == true then
+		return false
+	end
+	if SkuAuras:ActionButton_CheckColor(self, aActionID) ~= true then
+		return false
+	end
+	
+	if SkuAuras:ActionButton_CheckRangeIndicator(self, aActionID) ~= true then
+		return false
+	end
+
+	return true
 end

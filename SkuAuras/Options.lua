@@ -68,7 +68,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
-															
+	--print("SkuAuras:BuildAuraTooltip(", aCurrentMenuItem, aAuraName)	
 	local tMenuItem = aCurrentMenuItem
 	local tSections = {}
 
@@ -390,6 +390,10 @@ function SkuAuras:NewAuraOperatorBuilder(self)
 			return
 		end
 
+		if SkuAuras.attributes[self.internalName] and SkuAuras.attributes[self.internalName].updateValues then
+			SkuAuras.attributes[self.internalName]:updateValues()
+		end
+
 		if self.internalName == "action" then
 			local tAttributeEntry = SkuOptions:InjectMenuItems(self, {L["then"]}, SkuGenericMenuItem)
 			tAttributeEntry.internalName = "then"
@@ -543,7 +547,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:UpdateAura(aAuraNameToUpdate, aNewType, aEnabled, aNewAttributes, aNewActions, aNewOutputs)
-	--dprint("UpdateAura", aAuraNameToUpdate)
+	--print("UpdateAura", aAuraNameToUpdate)
 	--build the new name
 	local tAuraName = SkuAuras:BuildAuraName(aNewType, aNewAttributes, aNewActions, aNewOutputs)
 	if SkuOptions.db.char[MODULE_NAME].Auras[aAuraNameToUpdate].customName == true then

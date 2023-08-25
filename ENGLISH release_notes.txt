@@ -3,6 +3,22 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.25
+	- Fixed a bug with sub auras and no action/output nothing
+	- Added a new attribute for aura conditions: Spell usable (L)
+		Spell usable (L) checks all spells on your actionbars. You can do checks like "Spell usable (L) contains Revenge".
+		The checks are considering cooldown, range and general stuff like stance, in-/outdoors, etc.
+		Important things to consider with this aura specific attribute:
+		- The attribute is only available for spells that are on any visible(!) actionbar button.
+		- You can't use this aura attribute to check some spell that isn't on some button on your bars.
+		- You can't use this aura attribute to check some spell that is on some bar, but that isn't visible. Example: Your Druid Bear actionbar button 1 is Growl, but you are in Cat form and the cat actionbar is visible, and the Bear actionbar is hidden. Then the check if Growl is usable won't work, unless you're switching to Bear and the bear actionbar is getting visible.
+		- If the spell either isn't on any of your buttons, or the button isn't visible atm, then the condition will always report the spell as NOT usable. No matter if it actually is usable.
+		On building an aura with "Spell usable (L) contains" the list of spells that can be checked contains all spells that are currently (!) on your action bars buttons.
+		If the spell you would like to check isn't in the list, add it to some action bar button first.
+		Caution: If you are removing the spell from the button later on, the aura/condition will start to always evaluate that spell as NOT usable. (See above)
+	
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.24
 	- New auras feature
 		Caution: This is a complex feature that needs to be tested carefully. I did tests, but errors are of course possible. In worst case you could lose all your existing auras. 

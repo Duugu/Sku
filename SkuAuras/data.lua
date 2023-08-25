@@ -89,8 +89,8 @@ SkuAuras.itemTypes = {
 ------------------------------------------------------------------------------------------------------------------
 SkuAuras.actions = {
    nothing = {
-      tooltip = "No action",
-      friendlyName = "No action",
+      tooltip = L["No action"],
+      friendlyName = L["No action"],
       func = function(tAuraName, tEvaluateData)
       	--print("    SkuAuras.actions nothing")
       end,
@@ -150,6 +150,11 @@ SkuAuras.actions = {
    },
 }
 
+local function tNothingOutputFunction(tAuraName, tEvaluateData, aFirst, aInstant)
+   --print("    SkuAuras.outputs nothing nothing","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
+   return
+end
+
 ------------------------------------------------------------------------------------------------------------------
 --local tPrevAuraPlaySoundFileHandle
 SkuAuras.outputs = {
@@ -157,16 +162,16 @@ SkuAuras.outputs = {
       tooltip = L["No output"],
       friendlyName = L["nothing"],
       functs = {
-         ["nothing"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
-            --print("    SkuAuras.outputs nothing nothing","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
-            return
-         end,
+         ["nothing"] = tNothingOutputFunction,
+         ["notifyAudio"] = tNothingOutputFunction,
+         ["notifyChat"] = tNothingOutputFunction,
       },
    },
    event = {
       tooltip = L["Der Name des auslösenden Ereignisses der Aura"],
       friendlyName = L["ereignis"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aInstant)
             --dprint("    ","SkuAuras.outputs.event", tEvaluateData.event, aFirst, aInstant)
             if not tEvaluateData.event then return end
@@ -192,6 +197,7 @@ SkuAuras.outputs = {
       tooltip = L["Die Einheiten ID der Quelle für das ausgelöste Ereignis"],
       friendlyName = L["quell einheit"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.sourceUnitId then
                --dprint("    ","tEvaluateData.sourceUnitId", tEvaluateData.sourceUnitId)
@@ -209,6 +215,7 @@ SkuAuras.outputs = {
       tooltip = L["Die Einheiten ID des Ziels für das ausgelöste Ereignis"],
       friendlyName = L["ziel einheit"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             --dprint("    ","tEvaluateData.destUnitId", tEvaluateData.destUnitId)
             if tEvaluateData.destUnitId then
@@ -226,6 +233,7 @@ SkuAuras.outputs = {
       tooltip = L["Dein Gesundheit in Prozent"],
       friendlyName = L["eigene Gesundheit"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthPlayer then
                SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, true)
@@ -242,6 +250,7 @@ SkuAuras.outputs = {
       tooltip = L["Die Stapel Anzahl der Aura"],
       friendlyName = L["aura stapel"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.auraAmount then
                SkuOptions.Voice:OutputString(tEvaluateData.auraAmount, aFirst, true, 0.1, true)
@@ -259,6 +268,7 @@ SkuAuras.outputs = {
       tooltip = L["Die Klasse der Einheit für das ausgelöste Ereignis",
       friendlyName = L["klasse",
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.class then
                SkuOptions.Voice:OutputString(tEvaluateData.class, aFirst, true, 0.1, true)
@@ -276,6 +286,7 @@ SkuAuras.outputs = {
       tooltip = L["Deine Ressourcen Menge (Mana, Wut, Energie) für das ausgelöste Ereignis"],
       friendlyName = L["eigene Ressource"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitPowerPlayer then
                SkuOptions.Voice:OutputString(tEvaluateData.unitPowerPlayer, aFirst, true, 0.1, true)
@@ -292,6 +303,7 @@ SkuAuras.outputs = {
       tooltip = L["Deine combopunkte auf dein aktuelles ziel"],
       friendlyName = L["Eigene combopunkte"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitComboPlayer then
                SkuOptions.Voice:OutputString(tEvaluateData.unitComboPlayer, aFirst, true, 0.1, true)
@@ -309,6 +321,7 @@ SkuAuras.outputs = {
       tooltip = L["Deine Gesundheits Menge für das ausgelöste Ereignis"],
       friendlyName = L["eigene gesundheit"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthPlayer then
                SkuOptions.Voice:OutputString(tEvaluateData.unitHealthPlayer, aFirst, true, 0.1, true)
@@ -325,6 +338,7 @@ SkuAuras.outputs = {
       tooltip = L["Your target's health percentage"],
       friendlyName = L["Your target's health"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthTarget then
                SkuOptions.Voice:OutputString(tEvaluateData.unitHealthTarget, aFirst, true, 0.1, true)
@@ -341,6 +355,7 @@ SkuAuras.outputs = {
       tooltip = L["Percentage of your target's primary resource, for example mana or rage"],
       friendlyName = L["Your target's resource"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitPowerTarget then
                SkuOptions.Voice:OutputString(tEvaluateData.unitPowerTarget, aFirst, true, 0.1, true)
@@ -357,6 +372,7 @@ SkuAuras.outputs = {
       tooltip = L["The updated health or resource percentage from a health update or resource update event"],
       friendlyName = L["Health/Resource update"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.unitHealthOrPowerUpdate then
                SkuOptions.Voice:OutputString(tEvaluateData.unitHealthOrPowerUpdate, aFirst, true, 0.1, true)
@@ -373,6 +389,7 @@ SkuAuras.outputs = {
       tooltip = L["The amount of damage from a spell, melee, or ranged attack"],
       friendlyName = L["Damage amount"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.damageAmount then
                SkuOptions.Voice:OutputString(tEvaluateData.damageAmount, aFirst, true, 0.1, true)
@@ -389,6 +406,7 @@ SkuAuras.outputs = {
       tooltip = L["The amount of healing"],
       friendlyName = L["Healing amount"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.healAmount then
                SkuOptions.Voice:OutputString(tEvaluateData.healAmount, aFirst, true, 0.1, true)
@@ -405,6 +423,7 @@ SkuAuras.outputs = {
       tooltip = L["The amount of overhealing"],
       friendlyName = L["Overhealing amount"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.overhealingAmount then
                SkuOptions.Voice:OutputString(tEvaluateData.overhealingAmount, aFirst, true, 0.1, true)
@@ -421,6 +440,7 @@ SkuAuras.outputs = {
       tooltip = L["How much of the healing amount was overhealing"],
       friendlyName = L["Overhealing percentage"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.overhealingPercentage then
                SkuOptions.Voice:OutputString(tEvaluateData.overhealingPercentage, aFirst, true, 0.1, true)
@@ -437,6 +457,7 @@ SkuAuras.outputs = {
       tooltip = L["Der Name des Zaubers, der die Aura ausgelöst hat"],
       friendlyName = L["zauber name"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.spellName then
                SkuOptions.Voice:OutputString(tEvaluateData.spellName, aFirst, true, 0.1, true)
@@ -453,6 +474,7 @@ SkuAuras.outputs = {
       tooltip = L["Der Name des Gegenstands, der die Aura ausgelöst hat"],
       friendlyName = L["gegenstand name"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.itemName then
                SkuOptions.Voice:OutputString(tEvaluateData.itemName, aFirst, true, 0.1, true)
@@ -469,6 +491,7 @@ SkuAuras.outputs = {
       tooltip = L["Die Anzahl in deiner Tasche des Gegenstands, der die Aura ausgelöst hat"],
       friendlyName = L["gegenstand anzahl"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.itemCount then
                SkuOptions.Voice:OutputString(tEvaluateData.itemCount, aFirst, true, 0.1, true)
@@ -485,6 +508,7 @@ SkuAuras.outputs = {
       tooltip = L["Aura, die in der Buff liste des Ziels gesucht oder ausgeschlossen wurde"],
       friendlyName = L["wert buff liste ziel"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.buffListTarget then
                SkuOptions.Voice:OutputString(tEvaluateData.buffListTarget, aFirst, true, 0.1, true)
@@ -501,6 +525,7 @@ SkuAuras.outputs = {
       tooltip = L["Aura, die in der Debuff liste des Ziels gesucht oder ausgeschlossen wurde"],
       friendlyName = L["wert debuff liste ziel"],
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst)
             if tEvaluateData.debuffListTarget then
                SkuOptions.Voice:OutputString(tEvaluateData.debuffListTarget, aFirst, true, 0.1, true)
@@ -523,6 +548,7 @@ for tOutputString, tFriendlyName in pairs(SkuAuras.outputSoundFiles) do
       outputString = tOutputString,
       friendlyName = tFriendlyName,
       functs = {
+         ["nothing"] = tNothingOutputFunction,
          ["notifyAudio"] = function(tAuraName, tEvaluateData, aFirst, aOutputName, aDelay)
             --if aFirst == true then
                --[[
@@ -1637,8 +1663,8 @@ SkuAuras.attributes = {
             aOperator = "containsNot"
          end
 
-         if aEventData.spellsNamesOnCd then
-            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.spellsNamesOnCd, SkuAuras:RemoveTags(aValue))
+         if aEventData.spellNameOnCd then
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.spellNameOnCd, SkuAuras:RemoveTags(aValue))
             if tEvaluation == true then
                return true
             end
@@ -1900,7 +1926,6 @@ SkuAuras.attributes = {
 
 
 
-
       end,
       values = {
          "Warrior",
@@ -1917,6 +1942,45 @@ SkuAuras.attributes = {
          "Demon Hunter",
       },      
    },
+   spellNameUsable = {
+      tooltip = L["If a spell is usable (range, cooldown, stance, etc.)"],--L["Der Zauber-name, der die Aura auslösen soll"],
+      friendlyName = L["Spell usable"], --L["zauber name"],
+      type = "SET",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	--dprint("    ","SkuAuras.attributes.spellNameOnCd.evaluate", aEventData, aOperator, aValue)
+         if aOperator == "is" then
+            aOperator = "contains"
+         elseif aOperator == "isNot" then
+            aOperator = "containsNot"
+         end
+
+         if aEventData.spellNameUsable then
+            local tEvaluation = SkuAuras.Operators[aOperator].func(aEventData.spellNameUsable, SkuAuras:RemoveTags(aValue))
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = {
+      },      
+      updateValues = function(self)
+         SkuAuras.attributes.spellNameUsable.values = {}
+         for spellId, spellData in pairs(SkuDB.SpellDataTBC) do
+            if C_ActionBar.FindSpellActionButtons(spellId) then
+               local spellName = spellData[Sku.Loc][SkuDB.spellKeys["name_lang"]]
+               SkuAuras.attributes.spellNameUsable.values[#SkuAuras.attributes.spellNameUsable.values + 1] = "spell:"..tostring(spellName)
+
+               if not SkuAuras.values["spell:"..tostring(spellId)] then
+                  SkuAuras.values["spell:"..tostring(spellId)] = {friendlyName = spellId.." ("..spellName..")",}
+               end
+               if not SkuAuras.values["spell:"..tostring(spellName)] then
+                  SkuAuras.values["spell:"..tostring(spellName)] = {friendlyName = spellName,}
+               end
+            end
+         end
+      end,
+   },
+
 }
 local tKeys = KeyValuesHelper()
 for i, v in pairs (tKeys) do

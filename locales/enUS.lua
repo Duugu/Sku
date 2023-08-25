@@ -2907,3 +2907,6 @@ L["Ignore dead party pets"] = "Ignore dead party pets"
 
 L["No output"] = "No output"
 L["nothing"] = "nothing"
+L["Spell usable"] = "Spell usable (L)"
+L["If a spell is usable (range, cooldown, stance, etc.)"] = "If a spell is usable (range, cooldown, stance, etc.)"
+L["No action"] = "No action"
