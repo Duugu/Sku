@@ -28,7 +28,7 @@ DEUTSCH - Erste Schritte:<br>
 -------------------------------------------------------------------------------------------------------
 ## Changes in Sku r34.25
 - Fixed a bug with sub auras and no action/output nothing
-- Added a new attribute for aura conditions: Spell usable (L)
+- Added a new attribute for aura conditions: Spell usable (L)<br>
 	Spell usable (L) checks all spells on your actionbars. You can do checks like "Spell usable (L) contains Revenge".
 	The checks are considering cooldown, range and general stuff like stance, in-/outdoors, etc.
 	Important things to consider with this aura specific attribute:
