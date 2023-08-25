@@ -36,8 +36,8 @@ DEUTSCH - Erste Schritte:<br>
 	- You can't use this aura attribute to check some spell that isn't on some button on your bars.
 	- You can't use this aura attribute to check some spell that is on some bar, but that isn't visible. Example: Your Druid Bear actionbar button 1 is Growl, but you are in Cat form and the cat actionbar is visible, and the Bear actionbar is hidden. Then the check if Growl is usable won't work, unless you're switching to Bear and the bear actionbar is getting visible.
 	- If the spell either isn't on any of your buttons, or the button isn't visible atm, then the condition will always report the spell as NOT usable. No matter if it actually is usable.
-	On building an aura with "Spell usable (L) contains" the list of spells that can be checked contains all spells that are currently (!) on your action bars buttons.<br>
-	- If the spell you would like to check isn't in the list, add it to some action bar button first.<br>
+	- On building an aura with "Spell usable (L) contains" the list of spells that can be checked contains all spells that are currently (!) on your action bars buttons.<br>
+	If the spell you would like to check isn't in the list, add it to some action bar button first.<br>
 	Caution: If you are removing the spell from the button later on, the aura/condition will start to always evaluate that spell as NOT usable. (See above)
 
 ## Changes in Sku r34.24
