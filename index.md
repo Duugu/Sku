@@ -9,8 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Wow Menu ERA r4.3](https://github.com/Duugu/wow_menu_era/releases/download/r4.3/wow_menu-r4.3-classic.zip) (August 27th 2023)<br>
 - [Sku WRATH r34.25](https://github.com/Duugu/Sku/releases/download/r34.25/Sku-r34.25-wrath.zip) (August 25th 2023)<br>
-- [Wow Menu ERA r4.2](https://github.com/Duugu/wow_menu_era/releases/download/r4.2/wow_menu-r4.2-classic.zip) (August 8th 2023)<br>
 - [Sku ERA r32.21](https://github.com/Duugu/SkuEra/releases/download/r32.21/Sku-r32.21-classic.zip) (August 8th 2023)<br>
 - [Wow Menu WRATH r4.0](https://github.com/Duugu/wow_menu/releases/download/r4.0/wow_menu-r4.0-wrath.zip) (August 7th 2023)<br>
 - [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
@@ -26,6 +26,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in WoW Menu ERA r4.4
+- Updated the server names lists with the released hardcore servers
+- Script is now handeling login queues. If you are queued for login on starting the game or switching to another server, the script will let you know. It then will play a constant blip sound every five seconds, until you made it through the queue and are on the character selection screen. While in the queue there is only one entry under the main menu: to switch to another server (that hopefully has no queue).
+  
 ## Changes in Sku r34.25
 - Fixed a bug with sub auras and no action/output nothing
 - Added a new attribute for aura conditions: Spell usable (L)<br>
