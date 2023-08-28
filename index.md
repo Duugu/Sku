@@ -9,8 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku WRATH r34.26](https://github.com/Duugu/Sku/releases/download/r34.26/Sku-r34.26-wrath.zip) (August 29th 2023)<br>
 - [Wow Menu ERA r4.3](https://github.com/Duugu/wow_menu_era/releases/download/r4.3/wow_menu-r4.3-classic.zip) (August 27th 2023)<br>
-- [Sku WRATH r34.25](https://github.com/Duugu/Sku/releases/download/r34.25/Sku-r34.25-wrath.zip) (August 25th 2023)<br>
 - [Sku ERA r32.21](https://github.com/Duugu/SkuEra/releases/download/r32.21/Sku-r32.21-classic.zip) (August 8th 2023)<br>
 - [Wow Menu WRATH r4.0](https://github.com/Duugu/wow_menu/releases/download/r4.0/wow_menu-r4.0-wrath.zip) (August 7th 2023)<br>
 - [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
@@ -26,6 +26,15 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.26
+- Addon is not longer reading object numbers in waypoint names
+- Added a new sku key bind: "Select closest unvisited waypoint of same type". Default: not bound <br>
+	With this key bind you are auto selecting the closest unvisited waypoint of the same type as the last selected waypoint.<br>
+	Can be used for mobs, creature, npcs or resources like ore and herbs.<br>
+	Example: If your last selected waypoint was "Rotting Dead Tirisfal 24", then the key bind will auto select the closest unvisited waypoint for "Rotting Dead" as a new destination.<br>
+	The feature is always selecting a waypoint. It's not starting a route or close route. <br>
+	It's of course only working if you already had selected at a waypoint or started a route or close route to some waypoint before.
+  
 ## Changes in WoW Menu ERA r4.4
 - Updated the server names lists with the released hardcore servers
 - Script is now handeling login queues. If you are queued for login on starting the game or switching to another server, the script will let you know. It then will play a constant blip sound every five seconds, until you made it through the queue and are on the character selection screen. While in the queue there is only one entry under the main menu: to switch to another server (that hopefully has no queue).
