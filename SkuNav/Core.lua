@@ -60,6 +60,8 @@ SkuNav.MaxMetaWPs = 100
 SkuNav.MaxMetaEntryRange = 300
 SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
 
+SkuNav.lastSelectedWaypointFullName = nil
+
 local WaypointCache = {}
 local WaypointCacheLookupAll = {}
 local WaypointCacheLookupIdForCacheIndex = {}
@@ -1993,11 +1995,9 @@ function SkuNav:CreateSkuNavMain()
 	tFrame:SetPoint("CENTER")
 
 	tFrame:SetScript("OnClick", function(self, a, b)
-
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOBEACON"].key then
 			SkuCore:GameWorldObjectsTurnToWp()
 		end
-
 
 		--[[
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKURTMMDISPLAY"].key then
@@ -2036,7 +2036,24 @@ function SkuNav:CreateSkuNavMain()
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STARTRRFOLLOW"].key then
 			SkuNav:StartReverseRtFollow()
 		end
-		
+
+
+		--select next base waypoint
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SELECTNEXTBASEWAYPOINT"].key then
+			if SkuNav.lastSelectedWaypointFullName then
+				local tBaseName = SkuNav:StripBaseNameFromWaypointName(SkuNav.lastSelectedWaypointFullName)
+				if tBaseName then
+					local tNextWaypointName = SkuNav:GetClosestWaypointFromBaseName(tBaseName, SkuNav.lastSelectedWaypointFullName)
+					if tNextWaypointName then
+						SkuNav.lastSelectedWaypointFullName = tNextWaypointName
+						SkuNav:EndFollowingWpOrRt()
+						SkuNav:SelectWP(tNextWaypointName)
+					end
+				end
+			end
+		end
+
+
 		--move to prev/next wp on following a rt
 		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_MOVETONEXTWP"].key then
 			SkuNav.MoveToWp = 1
@@ -2113,6 +2130,7 @@ function SkuNav:CreateSkuNavMain()
 	end)
 	tFrame:Hide()
 	
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SELECTNEXTBASEWAYPOINT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SELECTNEXTBASEWAYPOINT"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOBEACON"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOBEACON"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STARTRRFOLLOW"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_STARTRRFOLLOW"].key)
 	--SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMMOPEN"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SKUMMOPEN"].key)
@@ -3510,3 +3528,71 @@ function SkuNav:GetLayerText(aNonAutoLevel, aNonAutoLevelNotUnique, aLongFlag)
 	return ""
 end
 	
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:StripBaseNameFromWaypointName(aWaypointName)
+	if string.find(aWaypointName, "auto ") then
+		return
+	end
+
+	local tWaypointType = string.gsub(aWaypointName, "OBJEKT;%d+;", "")
+
+	if string.find(tWaypointType, ";") then
+		tWaypointType = string.sub(tWaypointType, 1, string.find(tWaypointType, ";") - 1)
+	end
+
+	return tWaypointType
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:GetClosestWaypointFromBaseName(aBaseName, aOriginWaypointName)
+	local tCurrentAreaId = SkuNav:GetAreaIdFromUiMapId(SkuNav:GetBestMapForUnit("player"))
+	local tSubAreaIds = SkuNav:GetSubAreaIds(tCurrentAreaId)
+	tSubAreaIds[tCurrentAreaId] = tCurrentAreaId
+
+	local tWaypointList = {}
+	local tListWPs = SkuNav:ListWaypoints2(true, nil, tCurrentAreaId)
+	if tListWPs then
+		for i, v in SkuNav:ListWaypoints2(true, nil, tCurrentAreaId) do
+			local tWayP = SkuNav:GetWaypointData2(v)
+			if tWayP then
+				if tSubAreaIds[tonumber(tWayP.areaId)] then
+					if ssub(v, 1, tAutoLen) ~= L["auto"].." " then
+						local tWpX, tWpY = tWayP.worldX, tWayP.worldY
+						local tPlayX, tPlayY = UnitPosition("player")
+						local tDistance, _  = SkuNav:Distance(tPlayX, tPlayY, tWpX, tWpY)
+
+						-- add direction to wp
+						local tDirectionTargetWp = ""
+						--[[
+						if SkuOptions.db.profile["SkuNav"].showGlobalDirectionInWaypointLists == true then
+							local tDirectionString = SkuNav:GetDirectionToAsString(tWpX, tWpY)
+							if tDirectionString then
+								tDirectionTargetWp = ";"..tDirectionString
+							end
+						end
+						]]									
+
+						tWaypointList[v] = {distance = tDistance, direction = tDirectionTargetWp,}
+					end
+				end
+			end
+		end
+	end
+
+	local tSortedWaypointList = {}
+	for k,v in SkuSpairs(tWaypointList, function(t,a,b) return t[b].distance > t[a].distance end) do --nach wert
+		table.insert(tSortedWaypointList, k)
+	end
+	if #tSortedWaypointList > 0 then
+		for i, waypointName in pairs(tSortedWaypointList) do
+			if aOriginWaypointName ~= waypointName then
+				local tBase = SkuNav:StripBaseNameFromWaypointName(waypointName) 
+				if tBase and aBaseName == tBase then
+					if not SkuNav:waypointWasVisited(waypointName) then
+						return waypointName
+					end
+				end
+			end
+		end		
+	end
+end

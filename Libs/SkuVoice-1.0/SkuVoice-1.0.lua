@@ -566,7 +566,6 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 		return
 	end
 	
-	--print("OutputStringBTtts", SkuVoice.TutorialPlaying, aString)
 	--changing to a new approach with passing a table of arguments instead of a lot of values, but still need to update that everywhere
 	if type(aOverwrite) == "table" then
 		aWait = aOverwrite.wait
@@ -585,6 +584,10 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	end
 
 	--SkuNav:NavigationModeWoCoordinatesCheckTaskTrigger(aString)
+
+	--strip object numbers
+	aString = string.gsub(aString, L["OBJECT"]..";%d+;", L["OBJECT"]..";")
+
 
 	if SkuVoice:CheckIgnore(aString) then
 		aIgnoreLinks = true

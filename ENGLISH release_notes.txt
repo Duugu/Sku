@@ -3,6 +3,17 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r34.26
+	- Addon is not longer reading object numbers in waypoint names
+	- Added a new sku key bind: "Select closest unvisited waypoint of same type". Default: not bound 
+		With this key bind you are auto selecting the closest unvisited waypoint of the same type as the last selected waypoint.
+		Can be used for mobs, creature, npcs or resources like ore and herbs.
+		Example: If your last selected waypoint was "Rotting Dead Tirisfal 24", then the key bind will auto select the closest unvisited waypoint for "Rotting Dead" as a new destination.
+		The feature is always selecting a waypoint. It's not starting a route or close route. 
+		It's of course only working if you already had selected at a waypoint or started a route or close route to some waypoint before.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.25
 	- Fixed a bug with sub auras and no action/output nothing
 	- Added a new attribute for aura conditions: Spell usable (L)

@@ -2910,3 +2910,5 @@ L["nothing"] = "nothing"
 L["Spell usable"] = "Spell usable (L)"
 L["If a spell is usable (range, cooldown, stance, etc.)"] = "If a spell is usable (range, cooldown, stance, etc.)"
 L["No action"] = "No action"
+
+L["SKU_KEY_SELECTNEXTBASEWAYPOINT"] = "Select closest unvisited waypoint of same type"

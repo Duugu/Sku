@@ -533,6 +533,12 @@ function SkuNav:MenuBuilder(aParentEntry)
 						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget] = SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingTarget]
 						table.insert(SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget].pathWps, SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget)
 						SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
+
+						local tBaseName = SkuNav:StripBaseNameFromWaypointName(SkuOptions.db.profile["SkuNav"].metapathFollowingTarget)
+						if tBaseName then
+							SkuNav.lastSelectedWaypointFullName = SkuOptions.db.profile["SkuNav"].metapathFollowingTarget
+						end
+
 						SkuOptions.db.profile["SkuNav"].metapathFollowingCurrentWp = 1
 						SkuOptions.db.profile["SkuNav"].metapathFollowing = true
 						SkuNav:SelectWP(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, true)
@@ -561,6 +567,11 @@ function SkuNav:MenuBuilder(aParentEntry)
 				end
 
 				if SkuNav:GetWaypointData2(aName) then
+					local tBaseName = SkuNav:StripBaseNameFromWaypointName(aName)
+					if tBaseName then
+						SkuNav.lastSelectedWaypointFullName = aName
+					end
+
 					SkuNav:SelectWP(aName)
 					--dprint("auswahl", aName)
 					--lastDirection = SkuNav:GetDirectionTo(worldx, worldy, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldX, SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint).worldY)
@@ -977,6 +988,11 @@ function SkuNav:MenuBuilder(aParentEntry)
 				SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = aName
 				SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = 1
 				SkuOptions.db.profile[MODULE_NAME].metapathFollowing = true
+
+				local tBaseName = SkuNav:StripBaseNameFromWaypointName(SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget)
+				if tBaseName then
+					SkuNav.lastSelectedWaypointFullName = SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget
+				end
 
 				SkuNav:SelectWP(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, true)
 				SkuOptions.Voice:OutputStringBTtts(L["Metaroute folgen gestartet"], false, true, 0.2)

@@ -2901,3 +2901,5 @@ L["nothing"] = "Nichts"
 L["Spell usable"] = "Zauber benutzbar (L)"
 L["If a spell is usable (range, cooldown, stance, etc.)"] = "Ob ein Zauber benutzerbar ist (Reichweite, Cooldown, Haltung etc.)"
 L["No action"] = "Keine Aktion"
+
+L["SKU_KEY_SELECTNEXTBASEWAYPOINT"] = "Nächsten gleichen unbesuchten Wegpunkt auswählen"
