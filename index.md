@@ -9,10 +9,10 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Wow Menu WRATH r4.1](https://github.com/Duugu/wow_menu/releases/download/r4.1/wow_menu-r4.1-wrath.zip) (Sep 1st 2023)<br>
+- [Wow Menu ERA r4.4](https://github.com/Duugu/wow_menu_era/releases/download/r4.4/wow_menu-r4.4-classic.zip) (Sep 1st 2023)<br>
 - [Sku WRATH r34.26](https://github.com/Duugu/Sku/releases/download/r34.26/Sku-r34.26-wrath.zip) (August 29th 2023)<br>
-- [Wow Menu ERA r4.3](https://github.com/Duugu/wow_menu_era/releases/download/r4.3/wow_menu-r4.3-classic.zip) (August 27th 2023)<br>
 - [Sku ERA r32.21](https://github.com/Duugu/SkuEra/releases/download/r32.21/Sku-r32.21-classic.zip) (August 8th 2023)<br>
-- [Wow Menu WRATH r4.0](https://github.com/Duugu/wow_menu/releases/download/r4.0/wow_menu-r4.0-wrath.zip) (August 7th 2023)<br>
 - [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
 
 *Older updates:* <br>
@@ -26,6 +26,14 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in WoW Menu ERA r4.4
+- Fixed an issue with hardcore warning on character creation. Should now be automatically clicked away by the script
+- Fixed an issue with creating troll characters with no class submenu
+- Again tried to fix the non working auto acceptance of the social contract. Script should auto accept the contract now. If not, I am officially out of ideas.
+  
+## Changes in WoW Menu WRATH r4.1
+- Again tried to fix the not working auto acceptance of the social contract. Script should auto accept the contract now. If not, I am officially out of ideas.
+
 ## Changes in Sku r34.26
 - Addon is not longer reading object numbers in waypoint names
 - Added a new sku key bind: "Select closest unvisited waypoint of same type". Default: not bound <br>
@@ -35,7 +43,7 @@ DEUTSCH - Erste Schritte:<br>
 	The feature is always selecting a waypoint. It's not starting a route or close route. <br>
 	It's of course only working if you already had selected at a waypoint or started a route or close route to some waypoint before.
   
-## Changes in WoW Menu ERA r4.4
+## Changes in WoW Menu ERA r4.3
 - Updated the server names lists with the released hardcore servers
 - Script is now handeling login queues. If you are queued for login on starting the game or switching to another server, the script will let you know. It then will play a constant blip sound every five seconds, until you made it through the queue and are on the character selection screen. While in the queue there is only one entry under the main menu: to switch to another server (that hopefully has no queue).
   
