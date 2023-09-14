@@ -2912,3 +2912,9 @@ L["If a spell is usable (range, cooldown, stance, etc.)"] = "If a spell is usabl
 L["No action"] = "No action"
 
 L["SKU_KEY_SELECTNEXTBASEWAYPOINT"] = "Select closest unvisited waypoint of same type"
+L["Heirlooms"] = "Heirlooms"
+L["Create"] = "Create"
+
+L["Auto switching to next similar waypoint"] = "Next similar waypoint settings"
+L["Don't announce waypoint switching"] = "No voice outputs for waypoints"
+L["Range for counting a waypoint as reached and switching to next waypoint"] = "Range for counting a waypoint as reached and switching to next waypoint"

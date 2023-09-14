@@ -57,6 +57,10 @@ if Sku.toc >= 30401 then
 	GetTrackingInfo = C_Minimap.GetTrackingInfo
 	GetNumTrackingTypes = C_Minimap.GetNumTrackingTypes
 end
+if Sku.toc >= 30403 then
+	Sku.IsWrathICC = true
+end
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 Sku.metric = {}

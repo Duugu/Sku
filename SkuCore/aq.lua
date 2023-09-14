@@ -510,24 +510,26 @@ local function AqCreateControlFrame()
 				if ttimeMonHp > (SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.continouslyTimer) and tHealthMonitorPause == false then
 					local health = UnitHealth("player")
 					local healthMax = UnitHealthMax("player")
-					local healthPer = math.floor((health / healthMax) * 100)
-					if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.continouslyStartAt >= 0 and (math.floor(healthPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.continouslyStartAt) then
-						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.steps)
-						local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
-		
-						tPrevHpDir = healthPer > tPrevHpPer
-						local tPrevNumberToUtteranceOutput = tNumberToUtterance
-						if tPrevHpDir == false then
-							tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
+					if healthMax > 0 then
+						local healthPer = math.floor((health / healthMax) * 100)
+						if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.continouslyStartAt >= 0 and (math.floor(healthPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.continouslyStartAt) then
+							local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.steps)
+							local tNumberToUtterance = ((math.floor(healthPer / tsinglestep)) * tsinglestep) / 10
+			
+							tPrevHpDir = healthPer > tPrevHpPer
+							local tPrevNumberToUtteranceOutput = tNumberToUtterance
+							if tPrevHpDir == false then
+								tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
+							end
+
+							tPrevHpPer = healthPer
+
+							if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
+								SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.voice].path)
+							end							
 						end
-
-						tPrevHpPer = healthPer
-
-						if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
-							SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.voice].path)
-						end							
 					end
-
+					
 					ttimeMonHp = 0
 
 					if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.continouslyTimer == SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyTimer then

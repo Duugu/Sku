@@ -61,6 +61,9 @@ SkuNav.MaxMetaEntryRange = 300
 SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
 
 SkuNav.lastSelectedWaypointFullName = nil
+SkuNav.isAutoSelectTime = 0
+SkuNav.isAutoSelectEnabled = false
+
 
 local WaypointCache = {}
 local WaypointCacheLookupAll = {}
@@ -1642,7 +1645,11 @@ function SkuNav:ProcessCheckReachingWp()
 				--not rt recording/following, just a single wp
 				local distance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 				if distance then
-					if distance < SkuNavWpSize[tWpObject.size] + SkuNav.CurrentStandardWpReachedRange and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
+					if 
+						(SkuNav.isAutoSelectWp ~= true and (distance < SkuNavWpSize[tWpObject.size] + SkuNav.CurrentStandardWpReachedRange and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= ""))
+						or
+						(SkuNav.isAutoSelectWp == true and (distance < SkuNavWpSize[tWpObject.size] + SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.reachRange and SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= ""))
+					then
 						SkuNav:PlayWpComments(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 						SkuOptions.Voice:OutputString("sound-success2", true, true, 0.3)
 
@@ -1652,13 +1659,31 @@ function SkuNav:ProcessCheckReachingWp()
 							lastLayer = tLayerText
 							tOutput = tLayerText..";"..tOutput
 						end
-						SkuOptions.Voice:OutputString(tOutput, false, true, 0, true)
+						if SkuNav.isAutoSelectWp ~= true or (SkuNav.isAutoSelectWp == true and SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.nonVocalized ~= true) then
+							SkuOptions.Voice:OutputString(tOutput, false, true, 0, true)
+						end
 							
 						if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 							SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 						end
 						SkuNav:setWaypointVisited(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 						SkuNav:SelectWP("", true)
+
+						if SkuNav.isAutoSelectEnabled == true then
+							if SkuNav.lastSelectedWaypointFullName then
+								local tBaseName = SkuNav:StripBaseNameFromWaypointName(SkuNav.lastSelectedWaypointFullName)
+								if tBaseName then
+									local tNextWaypointName = SkuNav:GetClosestWaypointFromBaseName(tBaseName, SkuNav.lastSelectedWaypointFullName)
+									if tNextWaypointName then
+										SkuNav.isAutoSelectTimer = nil
+										SkuNav.lastSelectedWaypointFullName = tNextWaypointName
+										SkuNav:EndFollowingWpOrRt(SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.nonVocalized)
+										SkuNav:SelectWP(tNextWaypointName, nil, SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.nonVocalized)
+										SkuNav.isAutoSelectWp = true
+									end
+								end
+							end
+						end
 					end
 				end
 			end
@@ -2045,9 +2070,30 @@ function SkuNav:CreateSkuNavMain()
 				if tBaseName then
 					local tNextWaypointName = SkuNav:GetClosestWaypointFromBaseName(tBaseName, SkuNav.lastSelectedWaypointFullName)
 					if tNextWaypointName then
-						SkuNav.lastSelectedWaypointFullName = tNextWaypointName
-						SkuNav:EndFollowingWpOrRt()
-						SkuNav:SelectWP(tNextWaypointName)
+						if GetTime() - SkuNav.isAutoSelectTime < 0.5 and SkuNav.isAutoSelectTime > 0 then
+							--toggle auto
+							SkuNav.isAutoSelectTime = GetTime() - 3
+							if SkuNav.isAutoSelectTimer then
+								SkuNav.isAutoSelectTimer:Cancel()
+							end
+							if SkuNav.isAutoSelectEnabled == false then
+								SkuNav.isAutoSelectEnabled = true
+								SkuOptions.Voice:OutputString(L["Next"]..";"..L["auto"], false, true, 0.3, true)
+							else
+								SkuNav.isAutoSelectEnabled = false
+								SkuOptions.Voice:OutputString(L["Next"]..";"..L["Manually"], false, true, 0.3, true)
+							end
+						else
+							--switch to next
+							SkuNav.isAutoSelectTime = GetTime()
+							SkuNav.isAutoSelectTimer = C_Timer.NewTimer (0.3, function()
+								SkuNav.isAutoSelectTimer = nil
+								SkuNav.lastSelectedWaypointFullName = tNextWaypointName
+								SkuNav:EndFollowingWpOrRt(SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.nonVocalized)
+								SkuNav:SelectWP(tNextWaypointName, nil, SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.nonVocalized)
+								SkuNav.isAutoSelectWp = true
+							end)
+						end
 					end
 				end
 			end
@@ -2462,14 +2508,18 @@ function SkuNav:GetAllLinkedWPsInRangeToCoords(aX, aY, aRange)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuNav:EndFollowingWpOrRt()
+function SkuNav:EndFollowingWpOrRt(aSilent)
+	SkuNav.isAutoSelectWp = false
+
 	if SkuNav:GetWaypointData2(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 		if SkuOptions.db.profile[MODULE_NAME].selectedWaypoint ~= "" then
 			if SkuOptions.BeaconLib:GetBeaconStatus("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) then
 				SkuOptions.BeaconLib:DestroyBeacon("SkuOptions", SkuOptions.db.profile[MODULE_NAME].selectedWaypoint)
 			end
 			SkuNav:SelectWP("", true)
-			SkuOptions.Voice:OutputString(L["following stopped"], false, true, 0.3, true)
+			if not aSilent then
+				SkuOptions.Voice:OutputString(L["following stopped"], false, true, 0.3, true)
+			end
 		end
 	end
 	SkuOptions.db.profile[MODULE_NAME].metapathFollowing = nil
@@ -2481,11 +2531,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 ---@param aWpName number
 ---@param aNoVoice bool if the selection should be vocalized
-function SkuNav:SelectWP(aWpName, aNoVoice)
+function SkuNav:SelectWP(aWpName, aNoVoice, aSilent)
 	--dprint("SkuNav:SelectWP(aWpName, aNoVoice", aWpName, aNoVoice)
 	if not aWpName then
 		return
 	end
+
+	SkuNav.isAutoSelectWp = false
 
 	if aWpName == "" then
 		for i, v in SkuOptions.BeaconLib:GetBeacons("SkuOptions") do
@@ -2540,7 +2592,9 @@ function SkuNav:SelectWP(aWpName, aNoVoice)
 
 	if not aNoVoice then
 		--PlaySound(835)
-		SkuOptions:VocalizeMultipartString(aWpName..";"..L["selected"], true, true, 0.2)
+		if not aSilent then
+			SkuOptions:VocalizeMultipartString(aWpName..";"..L["selected"], true, true, 0.2)
+		end
 	end
 end
 

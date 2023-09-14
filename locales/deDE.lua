@@ -2903,3 +2903,9 @@ L["If a spell is usable (range, cooldown, stance, etc.)"] = "Ob ein Zauber benut
 L["No action"] = "Keine Aktion"
 
 L["SKU_KEY_SELECTNEXTBASEWAYPOINT"] = "Nächsten gleichen unbesuchten Wegpunkt auswählen"
+L["Heirlooms"] = "Erbstücke"
+L["Create"] = "Erstellen"
+
+L["Auto switching to next similar waypoint"] = "Einstellungen für nächsten Wegpunkt vom selben Typ"
+L["Don't announce waypoint switching"] = "Keine Sprachausgabe für Wegpunkte"
+L["Range for counting a waypoint as reached and switching to next waypoint"] = "Reichweite für Wegpunkt erreicht und wechsel zum nächsten Wegpunkt"

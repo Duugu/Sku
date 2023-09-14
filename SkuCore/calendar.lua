@@ -200,10 +200,16 @@ local function GetDateStringFromCurrentMonth(aMonthFromNow, aDay)
    local tCurrentDate = C_DateAndTime.GetCurrentCalendarTime()
    local tThisMonthInfo = C_Calendar.GetMonthInfo(aMonthFromNow)
    local tWkd = (tThisMonthInfo.firstWeekday + aDay - (math.floor(aDay / 7) * 7)) - 1
+   if tWkd <= 0 then
+      tWkd = 1
+   end
    if tWkd > 7 then
       tWkd = tWkd - 7
    end
    local tWeekdayName = CALENDAR_WEEKDAY_NAMES[tWkd]
+   if not tWeekdayName then
+      tWeekdayName = ""
+   end
    local tMonthName = CALENDAR_FULLDATE_MONTH_NAMES[tThisMonthInfo.month]
 
    return tWeekdayName.." "..aDay..". "..tMonthName

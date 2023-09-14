@@ -2,6 +2,22 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34.27
+	- Netherstorm and Western Plaguelands mapped and some waypoints added to agent tournament grounds by emily.
+	- Added 3 waypoints for tailoring cloth to Dragonblight (filter for "tailoring" to find them).
+	- Fixed a bug with the ingame calendar. Calendar should work again.
+	- Fixed a questie error on login / reload.
+	- "Auto switch to next waypoint of same type feature" updated:
+		- Pressing the "Select closest unvisited waypoint of same type" key once will switch to the next unvisited waypoint, as before. Pressing the key twice very fast toggles between auto and manual mode. In auto mode sku is automatically selecting the next waypoint on reaching the current waypoint.
+		- There are options under Navigation > Options > Next similar waypoint settings
+			- No voice outputs for waypoints: default On
+			- Range for counting a waypoint as reached and switching to next waypoint: default 3 meters
+	- New menu for upcoming ICC patch: Core > Heirlooms, to create account wide heirloom items for the current char. Menu won't be visible before ICC patch.
+	- Action bar menu fix for upcoming ICC patch, for adding pets and mounts to action buttons.
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.26
 	- Addon is not longer reading object numbers in waypoint names

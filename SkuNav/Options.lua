@@ -281,8 +281,41 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].tomtomWp
 			end
 		},			
+
+		autoNextWaypoint={
+			name = L["Auto switching to next similar waypoint"],
+			type = "group",
+			order = 20,
+			args= {
+				nonVocalized = {
+					order = 5,
+					name = L["Don't announce waypoint switching"],
+					desc = "",
+					type = "toggle",
+					set = function(info, val)
+						SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.nonVocalized = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.nonVocalized
+					end
+				},		
+				reachRange = {
+					order = 10,
+					name = L["Range for counting a waypoint as reached and switching to next waypoint"],
+					desc = "",
+					type = "range",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.reachRange = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].autoNextWaypoint.reachRange
+					end
+				},
+			},
+		},
 	}
 }
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuNav.defaults = {
 	enable = true,
@@ -310,6 +343,10 @@ SkuNav.defaults = {
 	trackVisited = true,
 	timeForVisitedToExpire = 6, -- 5 minutes
 	showGatherWaypoints = false,
+	autoNextWaypoint = {
+		nonVocalized = true,
+		reachRange = 3,
+	},
 }
 
 local slower = string.lower
@@ -728,7 +765,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Abwählen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
-			--dprint("OnAction Aktuellen abwählen", self.name, aName)
+			SkuNav.isAutoSelectEnabled = false
+
 			if SkuOptions.db.profile[MODULE_NAME].metapathFollowing == true or SkuOptions.db.profile[MODULE_NAME].routeRecording == true then
 				SkuOptions.Voice:OutputStringBTtts(L["Error"], false, true, 0.3, true)
 				SkuOptions.Voice:OutputStringBTtts(L["Active waypoint or route or recording"], false, true, 0.3, true)

@@ -1165,9 +1165,9 @@ function SkuQuest:PLAYER_ENTERING_WORLD(isInitialLogin, isReloadingUi)
 	
 	end)	
 
-	local tTime = 20
+	local tTime = 40
 	if isInitialLogin == true or isReloadingUi == true then
-		tTime = 60
+		tTime = 120
 	end
 
 	C_Timer.After(tTime, function()

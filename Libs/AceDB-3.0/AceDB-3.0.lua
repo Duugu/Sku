@@ -263,7 +263,7 @@ local factionKey = UnitFactionGroup("player")
 local factionrealmKey = factionKey .. " - " .. realmKey
 local localeKey = GetLocale():lower()
 
-local regionTable = { "US", "KR", "EU", "TW", "CN" }
+local regionTable = { "US", "KR", "EU", "TW", "CN", [72] = "US" }
 local regionKey = regionTable[GetCurrentRegion()]
 local factionrealmregionKey = factionrealmKey .. " - " .. regionKey
 
