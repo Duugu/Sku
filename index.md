@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku WRATH r34.27](https://github.com/Duugu/Sku/releases/download/r34.27/Sku-r34.27-wrath.zip) (September 15th 2023)<br>
 - [Wow Menu WRATH r4.1](https://github.com/Duugu/wow_menu/releases/download/r4.1/wow_menu-r4.1-wrath.zip) (Sep 1st 2023)<br>
 - [Wow Menu ERA r4.4](https://github.com/Duugu/wow_menu_era/releases/download/r4.4/wow_menu-r4.4-classic.zip) (Sep 1st 2023)<br>
-- [Sku WRATH r34.26](https://github.com/Duugu/Sku/releases/download/r34.26/Sku-r34.26-wrath.zip) (August 29th 2023)<br>
 - [Sku ERA r32.21](https://github.com/Duugu/SkuEra/releases/download/r32.21/Sku-r32.21-classic.zip) (August 8th 2023)<br>
 - [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
 
@@ -26,6 +26,19 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.27
+- Netherstorm and Western Plaguelands mapped and some waypoints added to agent tournament grounds by emily.
+- Added 3 waypoints for tailoring cloth to Dragonblight (filter for "tailoring" to find them).
+- Fixed a bug with the ingame calendar. Calendar should work again.
+- Fixed a questie error on login / reload.
+- "Auto switch to next waypoint of same type feature" updated:
+	- Pressing the "Select closest unvisited waypoint of same type" key once will switch to the next unvisited waypoint, as before. Pressing the key twice very fast toggles between auto and manual mode. In auto mode sku is automatically selecting the next waypoint on reaching the current waypoint.
+	- There are options under Navigation > Options > Next similar waypoint settings
+		- No voice outputs for waypoints: default On
+		- Range for counting a waypoint as reached and switching to next waypoint: default 3 meters
+- New menu for upcoming ICC patch: Core > Heirlooms, to create account wide heirloom items for the current char. Menu won't be visible before ICC patch.
+- Action bar menu fix for upcoming ICC patch, for adding pets and mounts to action buttons.
+ 
 ## Changes in WoW Menu ERA r4.4
 - Fixed an issue with hardcore warning on character creation. Should now be automatically clicked away by the script
 - Fixed an issue with creating troll characters with no class submenu
