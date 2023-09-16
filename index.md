@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r34.27](https://github.com/Duugu/Sku/releases/download/r34.27/Sku-r34.27-wrath.zip) (September 15th 2023)<br>
+- [Sku WRATH r34.28](https://github.com/Duugu/Sku/releases/download/r34.28/Sku-r34.28-wrath.zip) (September 16th 2023)<br>
 - [Wow Menu WRATH r4.1](https://github.com/Duugu/wow_menu/releases/download/r4.1/wow_menu-r4.1-wrath.zip) (Sep 1st 2023)<br>
 - [Wow Menu ERA r4.4](https://github.com/Duugu/wow_menu_era/releases/download/r4.4/wow_menu-r4.4-classic.zip) (Sep 1st 2023)<br>
 - [Sku ERA r32.21](https://github.com/Duugu/SkuEra/releases/download/r32.21/Sku-r32.21-classic.zip) (August 8th 2023)<br>
@@ -26,6 +26,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r34.28
+- Fixed a bug with key binds that could have lead to some missing default key binds on first login.
+- Added price details for vendor items that require badges to the vendor menu.
+- Fixed a bug that limited the Character > Currencies menu to 10 currencies. Should show all currencies now.
+
 ## Changes in Sku r34.27
 - Netherstorm and Western Plaguelands mapped and some waypoints added to agent tournament grounds by emily.
 - Added 3 waypoints for tailoring cloth to Dragonblight (filter for "tailoring" to find them).
