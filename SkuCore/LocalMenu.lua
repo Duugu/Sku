@@ -3288,7 +3288,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 	}   
 	local tParentCurrency = aParentChilds[tFriendlyName].childs
 
-		for i = 1, 10 do
+		for i = 1, 100 do
 			local name, isHeader, isExpanded, isUnused, isWatched, count, icon, maxQuantity, maxEarnable, quantityEarned, isTradeable, itemID = GetCurrencyListInfo(i)
 			--print(name, isHeader, isExpanded, isUnused, isWatched, count, icon, maxQuantity, maxEarnable, quantityEarned, isTradeable, itemID)
 			if name and isHeader ~= true then

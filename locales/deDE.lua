@@ -2909,3 +2909,5 @@ L["Create"] = "Erstellen"
 L["Auto switching to next similar waypoint"] = "Einstellungen für nächsten Wegpunkt vom selben Typ"
 L["Don't announce waypoint switching"] = "Keine Sprachausgabe für Wegpunkte"
 L["Range for counting a waypoint as reached and switching to next waypoint"] = "Reichweite für Wegpunkt erreicht und wechsel zum nächsten Wegpunkt"
+
+L["Badge"] = "Marke"

@@ -2440,6 +2440,7 @@ local tButtonsWoFontstrings = {
 	MoneyFrameCopper = L["Copper"],
 	MoneyFrameSilver = L["Silver"],
 	MoneyFrameGold = L["Gold"],
+	AltCurrencyFrame = L["Badge"],
 	FrameTab = L["Tab"],
 	CollapseAll = L["Collapse all"],
 	NextPageButton = L["Next"],
@@ -2537,6 +2538,7 @@ local friendlyFrameNamesParts = {
 	["ScrollFrame"] = L["Sub panel"],
 	["RewardsFrame"] = L["Rewards"],
 	["MoneyFrame"] = L["Money"],
+	["AltCurrency"] = L["Badge"],
 	["PaperDollFrame"] = L["Equiment"] ,
 	["CharacterAttributesFrame"] = L["Attributes"],
 	["CharacterResistanceFrame"] = L["Resistance"],
@@ -2957,6 +2959,24 @@ local function CleanUpGossipList(aTable)
 			end
 		end
 
+		--badge prices
+		if value.textFirstLine == L["Badge"] then
+			local tBadgeText = L["Text"]..": "
+			for z = 1, 4 do
+				if _G[value.frameName.."Item"..z] then
+					if _G[value.frameName.."Item"..z]:IsVisible() == true then
+						local titemLink = _G[value.frameName.."Item"..z].itemLink
+						if titemLink then
+							local tItemName = SkuCore:ItemName_helper(titemLink)
+							tBadgeText = tBadgeText..";".. _G[value.frameName.."Item"..z]:GetText().. " "..SkuCore:ItemName_helper(string.sub(tItemName, 2, string.len(tItemName) - 1))
+						end
+					end
+				end
+			end
+			value.textFirstLine = tBadgeText
+		end
+
+
 		if value.type == "FontString" then
 			value.textFirstLine = L["Text"]..": "..value.textFirstLine
 		end
@@ -3138,6 +3158,7 @@ end
 -------------------------------------------------------------------------------------------------
 function SkuCore:GetBinding(aIndex)
 	local aBindingSet = GetCurrentBindingSet()
+	print(aIndex, aBindingSet)
 	local tCommand, tCategory, tKey1, tKey2 = GetBinding(aIndex, aBindingSet)
 
 	return tCommand, tCategory, tKey1, tKey2

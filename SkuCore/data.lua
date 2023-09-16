@@ -798,12 +798,14 @@ SkuCore.Keys.SkuDefaultBindings = {
 		["TOGGLECHARACTER0"] = {
 			["index"] = 166,
 		},
+		--[[
 		["TOGGLELFGPARENT"] = {
 			["index"] = 268,
 		},
 		["TOGGLELFGLISTINGTAB"] = {
 			["index"] = 269,
 		},
+		]]
 		["TOGGLEACHIEVEMENT"] = {
 			["index"] = 202,
 		},

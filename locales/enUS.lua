@@ -2918,3 +2918,5 @@ L["Create"] = "Create"
 L["Auto switching to next similar waypoint"] = "Next similar waypoint settings"
 L["Don't announce waypoint switching"] = "No voice outputs for waypoints"
 L["Range for counting a waypoint as reached and switching to next waypoint"] = "Range for counting a waypoint as reached and switching to next waypoint"
+
+L["Badge"] = "Badge"

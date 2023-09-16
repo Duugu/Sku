@@ -1199,9 +1199,6 @@ local function CompanionMenuBuilder(aParentEntry)
 	tNewMenuSubEntry.BuildChildren = function(self)
 		if not Sku.IsWrathICC then
 			--pre icc
-
-
-
 			local tCompanionTypes = {
 				["CRITTER"] = L["Pets"],
 				["MOUNT"] = L["Mounts"],

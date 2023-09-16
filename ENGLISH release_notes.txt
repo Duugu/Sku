@@ -2,6 +2,12 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r34.28
+	- Fixed a bug with key binds that could have lead to some missing default key binds on first login.
+	- Added price details for vendor items that require badges to the vendor menu.
+	- Fixed a bug that limited the Character > Currencies menu to 10 currencies. Should show all currencies now.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r34.27
