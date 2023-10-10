@@ -9,23 +9,32 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r34.28](https://github.com/Duugu/Sku/releases/download/r34.28/Sku-r34.28-wrath.zip) (September 16th 2023)<br>
+- [Sku WRATH r35](https://github.com/Duugu/Sku/releases/download/r35/Sku-r35-wrath.zip) (October 11th 2023)<br>
+- [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
+- [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
+- [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
+- [SkuCustomBeaconsAdditional r32](https://github.com/Duugu/SkuCustomBeaconsAdditional/releases/download/r32/SkuCustomBeaconsAdditional-r32-wrath.zip) (October 11th 2023)<br>
+- [SkuCustomBeaconsEssential r32](https://github.com/Duugu/SkuCustomBeaconsEssential/releases/download/r32/SkuCustomBeaconsEssential-r32-wrath.zip) (October 11th 2023)<br>
+
+*Older updates:* <br>
+- [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [Wow Menu WRATH r4.1](https://github.com/Duugu/wow_menu/releases/download/r4.1/wow_menu-r4.1-wrath.zip) (Sep 1st 2023)<br>
 - [Wow Menu ERA r4.4](https://github.com/Duugu/wow_menu_era/releases/download/r4.4/wow_menu-r4.4-classic.zip) (Sep 1st 2023)<br>
 - [Sku ERA r32.21](https://github.com/Duugu/SkuEra/releases/download/r32.21/Sku-r32.21-classic.zip) (August 8th 2023)<br>
-- [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
-
-*Older updates:* <br>
-- [SkuAudioData_en r10 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r10/SkuAudioData_en-r10-wrath.zip) (April 15th 2023)<br>
-- [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
-- [SkuAudioData r38 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r38/SkuAudioData-r38-wrath.zip) (April 15th 2023)<br>
 
 *Addons for sighted players:* <br>
-- [SkuMapper r3.2](https://github.com/Duugu/SkuMapper/releases/download/r3.2/SkuMapper-r3.2-wrath.zip) (May 8th 2023), mapping addon for sighted players<br>
+- [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35, SkuAudioData_en r12, SkuAudioData r40 (GERMAN), SkuBeaconSoundsets r22, SkuCustomBeaconsAdditional r32, SkuCustomBeaconsEssential 
+- Addon version updated to 3.4.3 (ICC patch) to avoid "outdated addons" popups on login.
+- More fixes and updates for ICC patch (3.4.3). Addon should work with the patch.<br>
+	The RDF/LFG panel generally should work for random dungeon finder. But, due to the feature being broken on the test server for the last two weeks, I had no chance to test that. Please expect issues. The LFG part (organized groups) isn't completed yet.<br>
+	The collections panel still is work in progress and not avalable yet. Pets and mount can still be added to action bars as usual. Toys and herlooms will be added later.<br>
+	There could of course be millions of unrecognized issues and problems, as with every major patch. Please report everything, with /sku errors outputs and screenshots.
+
 ## Changes in Sku r34.28
 - Fixed a bug with key binds that could have lead to some missing default key binds on first login.
 - Added price details for vendor items that require badges to the vendor menu.
