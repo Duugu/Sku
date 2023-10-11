@@ -3648,6 +3648,11 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 						tNewMenuEntry.itemId = tItemId
 				end
 			end
+
+			if aGossipListTable[index].onEnter then
+				tNewMenuEntry.OnEnter = aGossipListTable[index].onEnter
+			end
+			
 			if tNewMenuEntry and aGossipListTable[index].click == true then
 				if aGossipListTable[index].func then
 					tNewMenuEntry.BuildChildren = function(self)
@@ -3975,11 +3980,17 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 					tNewMenuEntry.textFull = aGossipListTable[index].textFull
 				end
 			end
+
+			if aGossipListTable[index].onEnter then
+				tNewMenuEntry.OnEnter = aGossipListTable[index].onEnter
+			end
+
 			tNewMenuEntry.BuildChildren = function(self)
 				self.children = {}
 				SkuIterateGossipList(aGossipListTable[index].childs, self, aTab.."  ")
 			end
 		end
+
 	end
 end
 

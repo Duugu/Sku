@@ -174,11 +174,16 @@ SkuCore.interactFramesListManual = {
 	["CharacterFrame"] = function(...) SkuCore:Build_CharacterFrame(...) end,
 	["BarberShopFrame"] = function(...) SkuCore:Build_BarberShopFrame(...) end,
 	["PlayerTalentFrame"] = function(...) SkuCore:Build_TalentFrame(...) end,
-	["LFGListingFrame"] = function(...) SkuCore:Build_LfgFrame(...) end,
-	["LFGBrowseFrame"] = function(...) SkuCore:Build_LfgFrame(...) end,
 	["RolePollPopup"] = function(...) SkuCore:Build_RolePollPopup(...) end,
-	
+	["GroupFinderFrame"] = function(...) SkuCore:Build_GroupFinderFrame(...) end,
+	--["LFGListCreateRoleDialog"] = function(...) SkuCore:LFGListCreateRoleDialogFrame(...) end,
+	--["LFDRoleCheckPopup"] = function(...) SkuCore:LFDRoleCheckPopupFrame(...) end,
 }
+
+if Sku.IsWrathICC ~= true then
+	SkuCore.interactFramesListManual["LFGListingFrame"] = function(...) SkuCore:Build_LfgFrame(...) end
+	SkuCore.interactFramesListManual["LFGBrowseFrame"] = function(...) SkuCore:Build_LfgFrame(...) end
+end
 
 SkuCore.interactFramesList = {
 	"ItemTextFrame",
@@ -191,14 +196,8 @@ SkuCore.interactFramesList = {
 	"StaticPopup3",
 	"PetStableFrame",
 	"ContainerFrame1",
-	--"ContainerFrame2",
-	--"ContainerFrame3",
-	--"ContainerFrame4",
-	--"ContainerFrame5",
-	--"ContainerFrame6",
 	"DropDownList1",
 	"TalentFrame",
-	--"AuctionFrame",
 	"ClassTrainerFrame",
 	"CharacterFrame",
 	"BarberShopFrame",
@@ -207,8 +206,6 @@ SkuCore.interactFramesList = {
 	"HonorFrame",
 	"PlayerTalentFrame",
 	"InspectFrame",
-	--"BagnonInventoryFrame1",
-	--"BagnonBankFrame1",
 	"GuildBankFrame",
 	--"BankFrame",
 	"CraftFrame",
@@ -219,18 +216,25 @@ SkuCore.interactFramesList = {
 	--"FriendsFrame",
 	--"GameMenuFrame",
 	--"SpellBookFrame",
-	--"MultiBarLeft",
-	--"MultiBarRight",
-	--"MultiBarBottomLeft",
-	--"MultiBarBottomRight",
-	--"BagnonGuildFrame1",
-	--"MainMenuBar",
 	"ReadyCheckFrame",
 	"ItemSocketingFrame",
-	"LFGListingFrame",
-	"LFGBrowseFrame",
 	"RolePollPopup",
+	"GroupFinderFrame",
+
+	"LFGListCreateRoleDialog",
+	"LFDRoleCheckPopup",
+	"LFGListApplicationDialog",
+	"LFGListInviteDialog",
+	"LFGDungeonReadyDialog",
+	--"LFGDungeonReadyStatus",
+	"QueueStatusFrame",
+	
 }
+
+if Sku.IsWrathICC ~= true then
+	SkuCore.interactFramesList[#SkuCore.interactFramesList + 1] = "LFGListingFrame"
+	SkuCore.interactFramesList[#SkuCore.interactFramesList + 1] = "LFGBrowseFrame"
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:OnInitialize()
@@ -2478,11 +2482,6 @@ local friendlyFrameNames = {
 	["PetStableFrame"] = L["Pet Stable"],
 	["MailFrame"] = L["Mail"],
 	["ContainerFrame1"] = L["local Bags"],
-	--["ContainerFrame2"] = L["Bag 2"],
-	--["ContainerFrame3"] = L["Bag 3"],
-	--["ContainerFrame4"] = L["Bag 4"],
-	--["ContainerFrame5"] = L["Bag 5"],
-	--["ContainerFrame6"] = L["Bag 6"],
 	["DropDownList2"] = L["Dropdown List 2"],
 	["DropDownList1"] = L["Dropdown List 1"],
 	["TalentFrame"] = L["Talents"],
@@ -2498,18 +2497,22 @@ local friendlyFrameNames = {
 	["BagnonInventoryFrame1"] = L["Bagnon Taschen"],
 	["SpellBookFrame"] = L["Spellbook"],
 	["PlayerTalentFrame"] = L["Talents"],
-	["LFGListingFrame"] = L["Looking for group"],
-	["LFGBrowseFrame"] = L["Looking for group"],
+	["GroupFinderFrame"] = L["Looking for group"],
+	--["LFGListCreateRoleDialog"] = L["role selection"],
+	--["LFDRoleCheckPopup"] = L["role selection"],
+	
+	["LFGListCreateRoleDialog"] = L["role selection"],
+	["LFGDungeonReadyDialog"] = "Ready check",
+	["LFDRoleCheckPopup"] = L["role selection"],
+	["LFGListApplicationDialog"] = "application dialog",
+	["LFGListInviteDialog"] = "invite dialog",
+	--["LFGDungeonReadyStatus"] = "ready status",
+	["QueueStatusFrame"] = "QueueStatusFrame",
+		
+	
 	["RolePollPopup"] = L["Role Poll"],
 	["FriendsFrame"] = L["Social"],
 	["TradeFrame"] = L["Trade"],
-	--["GameMenuFrame"] = L["Game Menu"],
-	--["MainMenuBar"] = "",
-	--["MultiBarLeft"] = "",
-	--["MultiBarRight"] = "",
-	--["MultiBarBottomLeft"] = "",
-	--["MultiBarBottomRight"] = "",
-	--["BagnonGuildFrame1"] = L["Bagnon Guild"],
 	["BagnonBankFrame1"] = L["Bagnon Bank"],
 	["BankFrame"] = L["Bank"],
 	["GuildBankFrame"] = L["Guild Bank"],
@@ -2518,6 +2521,12 @@ local friendlyFrameNames = {
 	["ItemSocketingFrame"] = L["Socketing"],
 	[""] = "",
 }
+
+if Sku.IsWrathICC ~= true then
+	friendlyFrameNames["LFGListingFrame"] = L["Looking for group"]
+	friendlyFrameNames["LFGBrowseFrame"] = L["Looking for group"]
+end
+
 --[[
 local containerFrames = {
 	["BagnonInventoryFrame1"] = "BagnonInventoryFrame1",
@@ -2676,6 +2685,28 @@ function SkuCore:IterateChildren(t, tab)
 								tResults[fName].func = tResults[fName].obj:GetScript("OnClick")
 							end
 							tResults[fName].containerFrameName = fName
+
+
+							--[[
+								ignore containerFrameName for role check dialogs
+							]]
+							local tIgnoredDialogFrames = {
+								["LFGListCreateRoleDialog"] = true,
+								["LFDRoleCheckPopup"] = true,
+								["LFGListApplicationDialog"] = true,
+								["LFGListInviteDialog"] = true,
+								["LFGDungeonReadyDialog"] = true,
+								--["LFGDungeonReadyStatus"] = true,
+							}
+							if tResults[fName].obj.GetParent then
+								local tParentName = tResults[fName].obj:GetParent():GetName() or ""
+								if tIgnoredDialogFrames[tParentName] ~= nil then
+									tResults[fName].containerFrameName = nil
+								end
+							end	
+
+
+
 							tResults[fName].onActionFunc = function(self, aTable, aChildName)
 								--empty
 							end
@@ -2787,6 +2818,18 @@ function SkuCore:IterateChildren(t, tab)
 														table.insert(tResults[fName].textFull, tBisText)
 													end
 												end
+											end
+										end
+
+										--for role check dialogs
+										if tResults[fName].obj.CheckButton then
+											if tResults[fName].obj.CheckButton:GetChecked() == true then
+												tResults[fName].textFirstLine = L["checked"]..";"..tResults[fName].textFirstLine
+											end
+										end
+										if tResults[fName].obj.checkButton then
+											if tResults[fName].obj.checkButton:GetChecked() == true then
+												tResults[fName].textFirstLine = L["checked"]..";"..tResults[fName].textFirstLine
 											end
 										end
 									end
@@ -2919,6 +2962,7 @@ function SkuCore:IterateChildren(t, tab)
 							end							
 
 						end
+
 					end
 				end
 			end

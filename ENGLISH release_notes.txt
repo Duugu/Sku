@@ -3,6 +3,14 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35
+	- More fixes and updates for ICC patch (3.4.3). Addon should work with the patch.
+		The RDF/LFG panel generally should work for random dungeon finder. But, due to the feature being broken on the test server for the last two weeks, I had no chance to test that. Please expect issues. The LFG part (organized groups) isn't completed yet.
+		The collections panel still is work in progress and not avalable yet. Pets and mount can still be added to action bars as usual. Toys and herlooms will be added later.
+		There could of course be millions of unrecognized issues and problems, as with every major patch. Please report everything, with /sku errors outputs and screenshots.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r34.28
 	- Fixed a bug with key binds that could have lead to some missing default key binds on first login.
 	- Added price details for vendor items that require badges to the vendor menu.

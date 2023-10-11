@@ -1,9 +1,9 @@
-## Interface: 30402
-## Interface-Wrath: 30402
-## Title: Sku (34.28)
+## Interface: 30403
+## Interface-Wrath: 30403
+## Title: Sku (35)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 34.28
+## Version: 35
 ## X-Curse-Project-ID: 880019
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
@@ -37,6 +37,7 @@ SkuCore\data.lua
 SkuCore\gameWorldObjects.lua
 SkuCore\minimapScanner.lua
 SkuCore\LocalMenu.lua
+SkuCore\LocalMenuGroupFinderFrame.lua
 SkuCore\JunkAndRepair.lua
 SkuCore\UIErrors.lua
 SkuCore\RangeCheck.lua
