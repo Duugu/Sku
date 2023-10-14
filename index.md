@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35](https://github.com/Duugu/Sku/releases/download/r35/Sku-r35-wrath.zip) (October 11th 2023)<br>
+- [Sku WRATH r35.1](https://github.com/Duugu/Sku/releases/download/r35.1/Sku-r35.1-wrath.zip) (October 14th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,16 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.1
+- Bis lists updated with ICC items and T10. T8 removed.
+- Added toys to the action bar config menu.
+- Added waypoints and routes to icc raid/dungeons entrances, summoning stones, and graveyard.
+- Fixed a bug with missing mounts in action bar config menus (flying mounts in no-fly zones).
+- Sku is now auto closing the new Questie popup on first login/reload.
+- Fixed a bug that was leading to "You are not in a party" chat spam in LFD groups.
+- Fixed a bug with RDF "specific" selection. You now should be able to select specific dungons you would like to queue for.
+- Fixed a few missing translations in RDF menu
+ 
 ## Changes in Sku r35, SkuAudioData_en r12, SkuAudioData r40 (GERMAN), SkuBeaconSoundsets r22, SkuCustomBeaconsAdditional r32, SkuCustomBeaconsEssential 
 - Addon version updated to 3.4.3 (ICC patch) to avoid "outdated addons" popups on login.
 - More fixes and updates for ICC patch (3.4.3). Addon should work with the patch.<br>
