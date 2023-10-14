@@ -3,6 +3,18 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.1
+	- Bis lists updated with ICC items and T10. T8 removed.
+	- Added toys to the action bar config menu.
+	- Added waypoints and routes to icc raid/dungeons entrances, summoning stones, and graveyard.
+	- Fixed a bug with missing mounts in action bar config menus (flying mounts in no-fly zones).
+	- Sku is now auto closing the new Questie popup on first login/reload.
+	- Fixed a bug that was leading to "You are not in a party" chat spam in LFD groups.
+	- Fixed a bug with RDF "specific" selection. You now should be able to select specific dungons you would like to queue for.
+	- Fixed a few missing translations in RDF menu
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35
 	- More fixes and updates for ICC patch (3.4.3). Addon should work with the patch.
 		The RDF/LFG panel generally should work for random dungeon finder. But, due to the feature being broken on the test server for the last two weeks, I had no chance to test that. Please expect issues. The LFG part (organized groups) isn't completed yet.

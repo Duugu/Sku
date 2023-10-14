@@ -1,9 +1,9 @@
 ## Interface: 30403
 ## Interface-Wrath: 30403
-## Title: Sku (35)
+## Title: Sku (35.1)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 35
+## Version: 35.1
 ## X-Curse-Project-ID: 880019
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
@@ -59,6 +59,7 @@ SkuCore\DialTargeting.lua
 SkuCore\calendar.lua
 SkuCore\skuFocus.lua
 SkuCore\Heirlooms.lua
+SkuCore\QuestieIntegration.lua
 
 SkuDB\Core.lua
 SkuDB\assets\maps.lua

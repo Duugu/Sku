@@ -442,13 +442,13 @@ function SkuCore:Build_LFDQueueFrame(aParentChilds)
             }      
 
             local tParentType = tParentLFD["Type"].childs
-            table.insert(tParentType, "Specific")
-            tParentType["Specific"] = {
+            table.insert(tParentType, L["specific"])
+            tParentType[L["specific"]] = {
                frameName = "",
                RoC = "Child",
                type = "Button",
                --obj = "",
-               textFirstLine = "Specific",
+               textFirstLine = L["specific"],
                childs = {},
                func = function()
                   local mode, subMode = GetLFGMode(LE_LFG_CATEGORY_LFD);
@@ -526,10 +526,12 @@ function SkuCore:Build_LFDQueueFrame(aParentChilds)
                   RoC = "Child",
                   type = "Button",
                   --obj = _G["GroupFinderFrame"],
-                  textFirstLine = "Specific dungeon selection",
+                  textFirstLine = L["Specific dungeon selection"],
                   textFull = "",
                   childs = {},
                }      
+
+               local tCurrentHeader = ""
 
                local tParentSpecificList = tParentLFD["tParentSpecificList"].childs
                for x = 1, #LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection do
@@ -540,22 +542,26 @@ function SkuCore:Build_LFDQueueFrame(aParentChilds)
                   --print(name, typeID, subtypeID, minLevel, maxLevel, recLevel, minRecLevel, maxRecLevel, expansionLevel, "groupID", groupID, textureFilename, difficulty, maxPlayers, description, isHoliday, bonusRepAmount, minPlayers, isTimeWalker, name2, minGearLevel, isScalingDungeon, lfgMapID)
                   if LFGEnabledList then
                      if LFGEnabledList[LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection[x].dungeonID] and LFGEnabledList[LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection[x].dungeonID] == true then
-                        tChecked = "checked"
+                        tChecked = L["checked"]
                         tHasSelection = true
                      end
                   end
 
-                  local tLocked = "LOCKED"
+                  local tLocked = L["LOCKED"]
                   if not LFGLockList[LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection[x].dungeonID] then --or not LFGLockList[LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection[x].dungeonID].hideEntry then
                      tLocked = ""
                   end
 
                   local tHeader = ""
+                  local tCat = ""
                   if LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection[x].dungeonID < 0 then
-                     tHeader = "KATEGORIE"
+                     tHeader = L["KATEGORIE"]
+                     tCurrentHeader = displayName
+                  else
+                     tCat = tCurrentHeader
                   end
 
-                  local tName = x..";"..tLocked..";"..tHeader..";"..displayName..";"..tChecked,-- .." - " ..(groupID or LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection[x].dungeonID).." - "..tLocked.." "..tHeader.." "..displayName.." "..LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection[x].dungeonID.." ("..tChecked..")", --" "..LFDQueueFrameSpecific.ScrollBox.view.dataProvider.collection[x].dungeonID..
+                  local tName = x..";"..tChecked..";"..tLocked..";"..tHeader..";"..displayName..";("..tCat..")",
                   table.insert(tParentSpecificList, x..displayName)
                   tParentSpecificList[x..displayName] = {
                      frameName = "",
@@ -591,7 +597,7 @@ function SkuCore:Build_LFDQueueFrame(aParentChilds)
                      end,            
                      --click = true,            
                   }  
-                  if tLocked == "LOCKED" then
+                  if tLocked == L["LOCKED"] then
                      tParentSpecificList[x..displayName].type = "Text"
                   end
                end
@@ -601,7 +607,7 @@ function SkuCore:Build_LFDQueueFrame(aParentChilds)
 
          --rewards
          --https://github.com/Gethe/wow-ui-source/blob/d306d7354ad1f1d0ac118ec6a4dfc14746c04720/Interface/FrameXML/LFGFrame.lua#L1178
-         if tSelectedValue ~= L["specific"] then
+         if tSelectedValue and tSelectedValue ~= "specific" then
             table.insert(tParentLFD, L["Description and Rewards"])
             tParentLFD[L["Description and Rewards"]] = {
                frameName = "",
@@ -810,7 +816,7 @@ function SkuCore:Build_LFDQueueFrame(aParentChilds)
          end
 
          local mode, subMode = GetLFGMode(LE_LFG_CATEGORY_LFD);
-         if tSelectedValue ~= L["specific"] or tHasSelection == true or (mode == "queued" or mode == "listed") then
+         if tSelectedValue ~= "specific" or tHasSelection == true or (mode == "queued" or mode == "listed") then
             table.insert(tParentLFD, LFG_LIST_FIND_A_GROUP)
             tParentLFD[LFG_LIST_FIND_A_GROUP] = {
                frameName = "LFDQueueFrameFindGroupButton",

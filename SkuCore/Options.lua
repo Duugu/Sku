@@ -1283,7 +1283,7 @@ local function CompanionMenuBuilder(aParentEntry)
 				local tMountIDs = C_MountJournal.GetMountIDs()
 				for x = 1, #tMountIDs do
 					local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID = C_MountJournal.GetMountInfoByID(tMountIDs[x])
-					if isCollected == true and isUsable == true then
+					if isCollected == true then
 						local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
 						tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 							self.selectTarget.companionType = "MOUNT"
@@ -1326,6 +1326,45 @@ local function ItemsMenuBuilder(aParentEntry)
 				local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
 				if itemLink then
 					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
+					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.itemID = itemID
+						_G["SkuScanningTooltip"]:ClearLines()
+						_G["SkuScanningTooltip"]:SetItemByID(itemID)
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+							end
+						end
+					end
+					tHasEntries = true
+				end
+			end
+		end
+
+		if tHasEntries == false then
+			SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+		end
+	end
+end
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function ToysMenuBuilder(aParentEntry)
+	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Toys"]}, SkuGenericMenuItem)
+	tNewMenuSubEntry.dynamic = true
+	tNewMenuSubEntry.filterable = true
+	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
+		self.selectTarget.itemID = nil
+	end
+	tNewMenuSubEntry.BuildChildren = function(self)
+		local tHasEntries = false
+		for tbi = 1, C_ToyBox.GetNumToys() do
+			local itemID = C_ToyBox.GetToyFromIndex(tbi)
+			if itemID and PlayerHasToy(itemID) == true then
+				local _, toyName = C_ToyBox.GetToyInfo(itemID)
+				if toyName then
+					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {toyName}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.itemID = itemID
 						_G["SkuScanningTooltip"]:ClearLines()
@@ -1634,6 +1673,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 					SpellBookMenuBuilder(self, aBooktype)
 				end
 				ItemsMenuBuilder(self)
+				ToysMenuBuilder(self)
 				CompanionMenuBuilder(self)
 				EquipmentSetActionMenuBuilder(self)
 				MacrosMenuBuilder(self)

@@ -4318,7 +4318,7 @@ function SkuOptions:SendTrackingStatusUpdates(aStatusUpdate)
 	for x = 1, #tUpdateList do
 		if UnitInRaid("player") == true then
 			SkuOptions:SendCommMessage("Sku", tUpdateList[x], "RAID", nil, "ALERT")
-		elseif UnitInParty("player") == true then
+		elseif UnitInParty("player") == true and IsPartyLFG() == false then
 			SkuOptions:SendCommMessage("Sku", tUpdateList[x], "PARTY", nil, "ALERT")
 		else
 			if SkuOptions.TrackingTargets then
