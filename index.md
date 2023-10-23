@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35.1](https://github.com/Duugu/Sku/releases/download/r35.1/Sku-r35.1-wrath.zip) (October 14th 2023)<br>
+- [Sku WRATH r35.2](https://github.com/Duugu/Sku/releases/download/r35.2/Sku-r35.2-wrath.zip) (October 23th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,39 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.2
+- Fixed the action bar mount menu. Should now contain only mounts that are usable by the current character.
+- Fixed a bug with combat monitor creatures in combat counting. Should now count correct.
+- New aura attribute: target distance<br>
+	To validate against your targets distance in auras. The Equal operator ("Range equal x") won't be usefull in most cases. This is using the same ranges as Core > Range. Usually steps of 5 meters. Therefore "Range small 40" will work. But "Range Equal 41" won't. Because the ranges steps are 35, 40, 45, 50, etc.
+- New slash command: /dquit<br>
+	To leave random dungeon finder dungeon groups.
+- Added unit roles to party and raid overview pages.
+- New dial targeting option: Core > Dial targeting > Single key action in raids up to 10 players<br>
+	Default: Off<br>
+	If set to On, dial targeting will use a single key press to target raid members if there are 10 or less raid members. That is 1 to 9 to target raid members 1 to 9 and 0 to target raid member 10. Dial targeting will auto switch to the usual two button targeting if the raid size is more than 10 players.
+- New option for monitors: Core > Monitor > Global > Speak number first<br>
+	Default: Off<br>
+	If set to On, the monitor will output debuffs with the unit id followed by the debuff type (like "party 1 poison"), instead of debuff type plus unit id.
+- New option for monitors: Core > Monitor > Global > Speak numbers only for units<br>
+	Default: Off<br>
+	If set to On, the output will be numbers only. Example: instead of "raid 6 dead" the output will be "6 dead".
+- Added a "Copy macro text" option to existing macros audio menus.
+- New option for beacons: Navigation > Options > Output Distance to next waypoint<br>
+	Default: 0 (disabled)<br>
+	If set to higher than 0, the addon will output the distance to the next waypoint every x meters. Example: if set to 10, the addon will output the remaining distance to the next waypoint every 10 meters.
+- New option: Core > Range > Friendly/Hostile/Other > Output range on target change<br>
+	Default: Off<br>
+	If set to On, the addon will do an instant range output if you're changing your target.
+- New option for all health monitors (player, pet, party, raid): Factor in incoming heals<br>
+	Default: Off<br>
+	If this is set to On, the health monitors will consider the amount of incoming heals from other healers on outputing a units health.<br>
+	Incoming heals are all healing spells with casting time, that are currently casted by any healer and that are targeting the particular unit.<br>
+	Example: party member 2 is dropping to 50% health and there is an incoming heal for around 20% health from another healer. With this option set to On, the output will be for 70% health (party members 50% actual health plus 20% "virtual" incoming heal), instead of 50%.<br>
+	You own heals won't be considered as "incoming heals" (that wouldn't make any sense). Only heals from other healers are added as incoming.<br>
+	Only direct heals are considered as "Incoming heals". HoTs, shields, etc. are NOT considered.<br>
+	Keep in mind that incoming heals are not guaranteed to happen. Other healers could decide to stop casting the heal before it is completed.
+
 ## Changes in Sku r35.1
 - Bis lists updated with ICC items and T10. T8 removed.
 - Added toys to the action bar config menu.
