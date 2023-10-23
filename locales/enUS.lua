@@ -2925,6 +2925,7 @@ L["role selection"] = "role selection"
 L["ui-lfg-roleicon-tank-micro"] = "Tank"
 L["ui-lfg-roleicon-healer-micro"] = "Healer"
 L["ui-lfg-roleicon-dps-micro"] = "DPS"
+L["ui-lfg-roleicon-generic-micro"] = "No role"
 L["groupfinder-icon-emptyslot"] = "Empty"
 
 
@@ -2974,3 +2975,19 @@ L["LOCKED"] = "LOCKED"
 L["KATEGORIE"] = "CATEGORY"
 L["Specific dungeon selection"] = "Specific dungeon selection"
 L["Toys"] = "Toys"
+
+L["Single key action in raids up to 10 players"] = "Single key action in raids up to 10 players"
+
+L["Unit number first"] = "Unit number first"
+L["Only unit numbers"] = "Only unit numbers"
+L["Global"] = "Global"
+L["Blood dps"] = "Blood dps"
+
+L["Copy macro text"] = "Copy macro text"
+L["Press control c to copy the macro text, then press escape"] = "Press control c to copy the macro text, then press escape"
+L["output Distance to next waypoint"] = "output Distance to next waypoint"
+L["Do range check on target change"] = "Output range on target change"
+L["ranges still loading"] = "ranges still loading"
+L["Distance to your current target"] = "Distance to your current target"
+L["target distance"] = "target distance"
+L["Factor in incoming heals"] = "Factor in incoming heals"

@@ -1197,100 +1197,23 @@ local function CompanionMenuBuilder(aParentEntry)
 		self.selectTarget.companionPetId = nil
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
-		if not Sku.IsWrathICC then
-			--pre icc
-			local tCompanionTypes = {
-				["CRITTER"] = L["Pets"],
-				["MOUNT"] = L["Mounts"],
-			}
-
-			for i, v in pairs(tCompanionTypes) do
-				local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
-				tNewMenuSubSubEntry.dynamic = true
-				tNewMenuSubSubEntry.filterable = true
-				tNewMenuSubSubEntry.BuildChildren = function(self)
-
-
-					local tHasEntries = false
-					local tNumComp = GetNumCompanions(i)
-					if tNumComp > 0 then
-						for x = 1, tNumComp do
-							local creatureID, creatureName, creatureSpellID, icon, issummoned, mountType = GetCompanionInfo(i, x)
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {creatureName}, SkuGenericMenuItem)
-							tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
-								self.selectTarget.companionType = i
-								self.selectTarget.companionID = x
-								self.selectTarget.companionSpellId = creatureSpellID
-								_G["SkuScanningTooltip"]:ClearLines()
-								_G["SkuScanningTooltip"]:SetSpellByID(creatureSpellID)
-								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-										local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-									end
-								end
-							end
-							tHasEntries = true
-						end
-					end
-					if tHasEntries == false then
-						SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
-					end
-				end
-			end
-		else
-			--post icc
-			local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Pets"]}, SkuGenericMenuItem)
-			tNewMenuSubSubEntry.dynamic = true
-			tNewMenuSubSubEntry.filterable = true
-			tNewMenuSubSubEntry.BuildChildren = function(self)
-				local tHasEntries = false
-
-				local numPets, numOwned = C_PetJournal.GetNumPets()
-				if numOwned > 0 then
-					for x = 1, numPets do
-						local petID, speciesID, owned, customName, level, favorite, isRevoked, speciesName, icon, petType, companionID, tooltip, description, isWild, canBattle, isTradeable, isUnique, obtainable = C_PetJournal.GetPetInfoByIndex(x)
-						if owned == true then
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {speciesName}, SkuGenericMenuItem)
-							tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
-								self.selectTarget.companionType = "CRITTER"
-								self.selectTarget.companionID = x
-								self.selectTarget.companionPetId = petID
-								_G["SkuScanningTooltip"]:ClearLines()
-								_G["SkuScanningTooltip"]:SetCompanionPet(petID)
-								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
-									if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
-										local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
-										SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
-									end
-								end
-							end
-							tHasEntries = true
-						end
-					end
-				end
-
-				if tHasEntries == false then
-					SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
-				end
-			end
-
-			local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Mounts"]}, SkuGenericMenuItem)
-			tNewMenuSubSubEntry.dynamic = true
-			tNewMenuSubSubEntry.filterable = true
-			tNewMenuSubSubEntry.BuildChildren = function(self)
-				local tHasEntries = false
-				local tMountIDs = C_MountJournal.GetMountIDs()
-				for x = 1, #tMountIDs do
-					local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID = C_MountJournal.GetMountInfoByID(tMountIDs[x])
-					if isCollected == true then
-						local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
+		local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Pets"]}, SkuGenericMenuItem)
+		tNewMenuSubSubEntry.dynamic = true
+		tNewMenuSubSubEntry.filterable = true
+		tNewMenuSubSubEntry.BuildChildren = function(self)
+			local tHasEntries = false
+			local numPets, numOwned = C_PetJournal.GetNumPets()
+			if numOwned > 0 then
+				for x = 1, numPets do
+					local petID, speciesID, owned, customName, level, favorite, isRevoked, speciesName, icon, petType, companionID, tooltip, description, isWild, canBattle, isTradeable, isUnique, obtainable = C_PetJournal.GetPetInfoByIndex(x)
+					if owned == true then
+						local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {speciesName}, SkuGenericMenuItem)
 						tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
-							self.selectTarget.companionType = "MOUNT"
-							self.selectTarget.companionID = spellID
-							self.selectTarget.companionMountId = mountID
+							self.selectTarget.companionType = "CRITTER"
+							self.selectTarget.companionID = x
+							self.selectTarget.companionPetId = petID
 							_G["SkuScanningTooltip"]:ClearLines()
-							_G["SkuScanningTooltip"]:SetSpellByID(spellID)
+							_G["SkuScanningTooltip"]:SetCompanionPet(petID)
 							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
 								if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
 									local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
@@ -1301,10 +1224,43 @@ local function CompanionMenuBuilder(aParentEntry)
 						tHasEntries = true
 					end
 				end
+			end
 
-				if tHasEntries == false then
-					SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+			if tHasEntries == false then
+				SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+			end
+		end
+
+		local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Mounts"]}, SkuGenericMenuItem)
+		tNewMenuSubSubEntry.dynamic = true
+		tNewMenuSubSubEntry.filterable = true
+		tNewMenuSubSubEntry.BuildChildren = function(self)
+			local tHasEntries = false
+			local tMountIDs = C_MountJournal.GetMountIDs()
+			local tFaction = UnitFactionGroup("player")
+			for x = 1, #tMountIDs do
+				local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID = C_MountJournal.GetMountInfoByID(tMountIDs[x])
+				if (isCollected == true and shouldHideOnChar ~= true) and (isFactionSpecific == true and ((faction == 0 and tFaction == "Horde") or (faction == 1 and tFaction == "Alliance"))) then
+					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
+					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
+						self.selectTarget.companionType = "MOUNT"
+						self.selectTarget.companionID = spellID
+						self.selectTarget.companionMountId = mountID
+						_G["SkuScanningTooltip"]:ClearLines()
+						_G["SkuScanningTooltip"]:SetSpellByID(spellID)
+						if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+							if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+								local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+							end
+						end
+					end
+					tHasEntries = true
 				end
+			end
+
+			if tHasEntries == false then
+				SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
 			end
 		end
 	end
@@ -1773,6 +1729,34 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function RangecheckMenuBuilder(aParent, aType)
 	local tEntriesFound = false
+	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["Do range check on target change"]}, SkuGenericMenuItem)
+	tNewMenuEntry.dynamic = true
+	tNewMenuEntry.filterable = true
+	tNewMenuEntry.isSelect = true
+	tNewMenuEntry.GetCurrentValue = function(aParent, aValue, aName)
+		if SkuOptions.db.char[MODULE_NAME].RangeChecks[aType].rangeCheckOnTargetChange == true then
+			return L["On"]
+		else
+			return L["Off"]
+		end
+	end
+	tNewMenuEntry.OnAction = function(aParent, aValue, aName)
+		if aName == L["On"] then
+			SkuOptions.db.char[MODULE_NAME].RangeChecks[aType].rangeCheckOnTargetChange = true
+		else
+			SkuOptions.db.char[MODULE_NAME].RangeChecks[aType].rangeCheckOnTargetChange = false
+		end
+	end
+	tNewMenuEntry.BuildChildren = function(self)
+		SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
+		SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+	end
+
+
+
+
+
+	
 	for i = 1, 100 do 
 		if SkuCore.RangeCheckValues.Ranges[aType][i] then 
 			local tIsConfiguredWith = ";"..L["silent"]
@@ -1810,7 +1794,7 @@ local function RangecheckMenuBuilder(aParent, aType)
 		end
 	end
 	if tEntriesFound == false then
-		local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["leer"]}, SkuGenericMenuItem)
+		local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["ranges still loading"]}, SkuGenericMenuItem)
 	end
 
 end
@@ -2394,6 +2378,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Misc")
 		end
+
+
+
+
+
 
 		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Range for group members in range checks"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true

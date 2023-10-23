@@ -649,6 +649,21 @@ function SkuCore:PLAYER_TARGET_CHANGED()
 			end
 		end
 	end
+
+
+	if UnitGUID("target") then
+		local tCheckType = "Misc"
+		if UnitIsDead("target") == false then
+			if UnitCanAttack("player", "target") then
+				tCheckType = "Hostile"
+			elseif UnitCanAssist("player", "target") then
+				tCheckType = "Friendly"
+			end
+		end
+		if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType].rangeCheckOnTargetChange == true then
+			SkuCore:DoRangeCheck(true)
+		end
+	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

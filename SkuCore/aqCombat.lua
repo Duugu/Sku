@@ -105,7 +105,26 @@ SkuCore.partyDeadCountCounter = 0
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCoreAqCombatGetVoiceString(aString, aTable)
-   local tResult = (aString:gsub('($%b{})', function(w) return aTable[w:sub(3, -2)] or w end))
+   local tResult = (aString:gsub('($%b{})', function(w) 
+      local tFinalString = aTable[w:sub(3, -2)] or w
+      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].global.numberOnly == true then
+         if string.find(tFinalString, "raidpet") then
+            tFinalString = string.gsub(tFinalString, "raidpet", "")
+         elseif string.find(tFinalString, "raid") then
+            tFinalString = string.gsub(tFinalString, "raid", "")
+         elseif string.find(tFinalString, "partypet") then
+            tFinalString = string.gsub(tFinalString, "partypet", "")
+         elseif string.find(tFinalString, "party") then
+            tFinalString = string.gsub(tFinalString, "party", "")
+         end
+      end
+
+      if string.find(tFinalString, "nameplate") then
+         tFinalString = "creature"
+      end
+
+      return tFinalString
+   end))
 
    if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.notificationVolume == 1 then
       tResult = string.gsub(tResult, "sound%-combat%-notification%d%d;", "sound-combat-notification-low%d%d;")
@@ -533,6 +552,7 @@ local function aqCombatCreateControlFrame()
                         end
 
                      elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 3 then
+                        local tAdded
                         for q = 1, #tAllPartyRaidUnits do
                            local tPartyUnitToTest = tAllPartyRaidUnits[q]
                            local tPartyGuid = UnitGUID(tPartyUnitToTest)
@@ -540,11 +560,19 @@ local function aqCombatCreateControlFrame()
                               if SkuCore.threatTable[creatureGUID][tPartyGuid] then   
                                  if SkuCore.threatTable[creatureGUID][tPartyGuid].status then
                                     if SkuCore.threatTable[creatureGUID][tPartyGuid].isTanking == true then
-                                       SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
+                                       if not tAdded then
+                                          tAdded = creatureGUID
+                                          SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
+                                       end
+
                                        tChanged = true
                                     end
                                  elseif SkuCore:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
-                                    SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
+                                    if not tAdded then
+                                       tAdded = creatureGUID
+                                       SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
+                                    end
+
                                     tChanged = true
                                  end
                               end
@@ -608,6 +636,7 @@ local function aqCombatCreateControlFrame()
                         end
 
                      elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 3 then
+                        local tAdded
                         for q = 1, #tAllPartyRaidUnits do
                            local tPartyUnitToTest = tAllPartyRaidUnits[q]
                            local tPartyGuid = UnitGUID(tPartyUnitToTest)
@@ -615,12 +644,18 @@ local function aqCombatCreateControlFrame()
                               if SkuCore.threatTable[creatureGUID][tPartyGuid] then   
                                  if SkuCore.threatTable[creatureGUID][tPartyGuid].status then
                                     if SkuCore.threatTable[creatureGUID][tPartyGuid].isTanking == true then
+                                       if not tAdded then
+                                          tAdded = creatureGUID
+                                          tCountIn = tCountIn + 1
+                                          tChanged = true
+                                       end
+                                    end
+                                 elseif SkuCore:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
+                                    if not tAdded then
+                                       tAdded = creatureGUID
                                        tCountIn = tCountIn + 1
                                        tChanged = true
                                     end
-                                 elseif SkuCore:aqCombatIsPartyOrRaidMember(SkuCore.inOutCombatQueue.combatIn[creatureGUID]) then
-                                    tCountIn = tCountIn + 1
-                                    tChanged = true
                                  end
                               end
                            end
@@ -926,13 +961,13 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatUNIT_THREAT_LIST_UPDATE(aEven, aUnitId)
-   print("TankingUNIT_THREAT_LIST_UPDATE", aEven, aUnitId)
+   --print("TankingUNIT_THREAT_LIST_UPDATE", aEven, aUnitId)
    --for i = 1, #tUnitsToTestOnGameRaidTargets do
       --local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
       --if tguid then
          local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
          --if status then
-            print(" ", "player", aUnitId, isTanking, status, scaledPercentage, rawPercentage, threatValue)
+            --print(" ", "player", aUnitId, isTanking, status, scaledPercentage, rawPercentage, threatValue)
 
          --end
       --end
@@ -957,13 +992,13 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatUNIT_THREAT_SITUATION_UPDATE(aEven, aUnitId)
-   print("TankingUNIT_THREAT_SITUATION_UPDATE", aEven, aUnitId)
+   --print("TankingUNIT_THREAT_SITUATION_UPDATE", aEven, aUnitId)
    --for i = 1, #tUnitsToTestOnGameRaidTargets do
       --local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
       --if tguid then
          local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
          --if status then
-            print(" ", "player", aUnitId, isTanking, status, scaledPercentage, rawPercentage, threatValue)
+            --print(" ", "player", aUnitId, isTanking, status, scaledPercentage, rawPercentage, threatValue)
          --end
       --end
    --end
@@ -1108,7 +1143,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
-   --print(aEvent, aUnitGUID, aUnitName)
    if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
       if aqCombatCheckElite(aUnitGUID) == true then
          if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value > 1 then

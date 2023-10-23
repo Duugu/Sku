@@ -1,8 +1,23 @@
 local MODULE_NAME = "SkuCore"
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 local L = Sku.L
+
 ---------------------------------------------------------------------------------------------------------------------------------------
-function MacroMenuBuilderNew(aParent)
+local function CreateTextBox(aParent, name, message, setterFunction, aMultilineFlag, aContent)
+    local tNewTextMenuEntry = SkuOptions:InjectMenuItems(aParent, { name }, SkuGenericMenuItem)
+
+    tNewTextMenuEntry.OnAction = function(self)
+        PlaySound(88)
+        SkuOptions.Voice:OutputStringBTtts(message, false, true, 0.2, nil, nil, nil, 2)
+        SkuOptions:EditBoxShow(aContent or "", function(self)
+            local tText = SkuOptionsEditBoxEditBox:GetText()
+            setterFunction(tText)
+        end, true)
+    end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function MacroMenuBuilderNew(aParent)
     CreateTextBox(aParent, L["MacroName"], L["EnterMacroName"], function(value)
         aParent["Name"] = value
         C_Timer.After(0.1, function()
@@ -54,27 +69,36 @@ function MacroMenuBuilderNew(aParent)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:MacroMenuBuilder()
-    local aParent = self
-    local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["NewMacro"] }, SkuGenericMenuItem)
-    tNewMenuEntry.dynamic = true
-    tNewMenuEntry.BuildChildren = MacroMenuBuilderNew
-    local tGlobalMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["MacroScopeGlobal"] }, SkuGenericMenuItem)
-    tGlobalMenuEntry.dynamic = true
-    tGlobalMenuEntry.BuildChildren = MacroMenuBuilderGlobalList
-    local tCharMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["MacroScopeChar"] }, SkuGenericMenuItem)
-    tCharMenuEntry.dynamic = true
-    tCharMenuEntry.BuildChildren = MacroMenuBuilderCharList
+function MacroMenuBuilderEntryButtons(aParent)
+    local tDeleteEntry = SkuOptions:InjectMenuItems(aParent, { L["Delete"] }, SkuGenericMenuItem)
+    tDeleteEntry.dynamic = true
+    tDeleteEntry.BuildChildren = function(menuEntry) 
+        SkuOptions:ConfirmationDialog(menuEntry, function(self)
+            DeleteMacro(aParent["Id"])
+            C_Timer.After(0.1, function()
+                SkuOptions.currentMenuPosition.parent.parent.parent:OnSelect()
+                SkuOptions.currentMenuPosition:OnUpdate()
+            end)
+        end)
+    end
+
+    CreateTextBox(aParent, L["Rename"], L["Enter name and press ENTER key"], function(value) 
+        EditMacro(aParent["Id"],value,nil,1)
+        aParent.Name = value
+        C_Timer.After(0.1, function()
+            SkuOptions.currentMenuPosition:OnUpdate()
+        end)
+    end)
+
+    CreateTextBox(aParent, L["Copy macro text"], L["Press control c to copy the macro text, then press escape"], function(value) 
+        aParent.Name = value
+        C_Timer.After(0.1, function()
+            SkuOptions.currentMenuPosition:OnUpdate()
+        end)
+    end, nil, GetMacroBody(aParent["Id"]))
 end
 
-function MacroMenuBuilderGlobalList(aParent)
-    MacroMenuBuilderList(aParent, true)
-end
-
-function MacroMenuBuilderCharList(aParent)
-    MacroMenuBuilderList(aParent, false)
-end
-
+---------------------------------------------------------------------------------------------------------------------------------------
 function MacroMenuBuilderList(aParent, isGlobal)
     local firstCharNumber = 121
     local numGlobal, numChar = GetNumMacros()
@@ -96,36 +120,27 @@ function MacroMenuBuilderList(aParent, isGlobal)
     end
 end
 
-function MacroMenuBuilderEntryButtons(aParent)
-    local tDeleteEntry = SkuOptions:InjectMenuItems(aParent, { L["Delete"] }, SkuGenericMenuItem)
-    tDeleteEntry.dynamic = true
-    tDeleteEntry.BuildChildren = function(menuEntry) 
-        SkuOptions:ConfirmationDialog(menuEntry, function(self)
-            DeleteMacro(aParent["Id"])
-            C_Timer.After(0.1, function()
-                SkuOptions.currentMenuPosition.parent.parent.parent:OnSelect()
-                SkuOptions.currentMenuPosition:OnUpdate()
-            end)
-        end)
-    end
-    CreateTextBox(aParent, L["Rename"], L["Enter name and press ENTER key"], function(value) 
-        EditMacro(aParent["Id"],value,nil,1)
-        aParent.Name = value
-        C_Timer.After(0.1, function()
-            SkuOptions.currentMenuPosition:OnUpdate()
-        end)
-    end)
+---------------------------------------------------------------------------------------------------------------------------------------
+function MacroMenuBuilderGlobalList(aParent)
+    MacroMenuBuilderList(aParent, true)
 end
 
-function CreateTextBox(aParent, name, message, setterFunction, aMultilineFlag)
-    local tNewTextMenuEntry = SkuOptions:InjectMenuItems(aParent, { name }, SkuGenericMenuItem)
-
-    tNewTextMenuEntry.OnAction = function(self)
-        PlaySound(88)
-        SkuOptions.Voice:OutputStringBTtts(message, false, true, 0.2)
-        SkuOptions:EditBoxShow("", function(self)
-            local tText = SkuOptionsEditBoxEditBox:GetText()
-            setterFunction(tText)
-        end, true)
-    end
+---------------------------------------------------------------------------------------------------------------------------------------
+function MacroMenuBuilderCharList(aParent)
+    MacroMenuBuilderList(aParent, false)
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:MacroMenuBuilder()
+    local aParent = self
+    local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["NewMacro"] }, SkuGenericMenuItem)
+    tNewMenuEntry.dynamic = true
+    tNewMenuEntry.BuildChildren = MacroMenuBuilderNew
+    local tGlobalMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["MacroScopeGlobal"] }, SkuGenericMenuItem)
+    tGlobalMenuEntry.dynamic = true
+    tGlobalMenuEntry.BuildChildren = MacroMenuBuilderGlobalList
+    local tCharMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["MacroScopeChar"] }, SkuGenericMenuItem)
+    tCharMenuEntry.dynamic = true
+    tCharMenuEntry.BuildChildren = MacroMenuBuilderCharList
+end
+

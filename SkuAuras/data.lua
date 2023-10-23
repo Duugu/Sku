@@ -1547,6 +1547,21 @@ SkuAuras.attributes = {
          "RESIST",
       },
    },
+   targetUnitDistance = {
+      tooltip = L["Distance to your current target"],
+      friendlyName = L["target distance"],
+      type = "ORDINAL",
+      evaluate = function(self, aEventData, aOperator, aValue)
+      	dprint("    ","SkuAuras.attributes.targetUnitDistance.evaluate", aEventData.targetUnitDistance)
+         if aEventData.targetUnitDistance then
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.targetUnitDistance), tonumber(aValue))
+            if tEvaluation == true then
+               return true
+            end
+         end
+      end,
+      values = zeroToOneHundred,
+   },   
    unitPowerPlayer = {
       tooltip = L["Dein Ressourcen Level in Prozent, das die Aura auslösen soll (deine Primärressource wie Mana, Energie, Wut etc."],
       friendlyName = L["Eigene Ressource"],

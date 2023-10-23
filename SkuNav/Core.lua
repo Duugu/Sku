@@ -1636,6 +1636,7 @@ function SkuNav:UpdateReverseRtData()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------------
+local tLastCheckedDistance = 1000000
 function SkuNav:ProcessCheckReachingWp()
 	if SkuOptions.db.profile[MODULE_NAME].routeRecording ~= true and SkuOptions.db.profile[MODULE_NAME].metapathFollowing ~= true then
 		--we're following a single wp
@@ -1682,6 +1683,14 @@ function SkuNav:ProcessCheckReachingWp()
 										SkuNav.isAutoSelectWp = true
 									end
 								end
+							end
+						end
+						tLastCheckedDistance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) or 10000
+					else
+						if SkuOptions.db.profile[MODULE_NAME].outputDistance > 0 then
+							if (tLastCheckedDistance - distance > SkuOptions.db.profile[MODULE_NAME].outputDistance) or tLastCheckedDistance - distance < -(SkuOptions.db.profile[MODULE_NAME].outputDistance) then
+								SkuOptions.Voice:OutputStringBTtts(distance, false, true, 0.2)
+								tLastCheckedDistance = distance
 							end
 						end
 					end
@@ -1766,6 +1775,14 @@ function SkuNav:ProcessCheckReachingWp()
 								SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = nil
 								SkuNav:UpdateReverseRtData()
 								SkuNav:SelectWP("", true)
+							end
+						end
+						tLastCheckedDistance = SkuNav:GetDistanceToWp(SkuOptions.db.profile[MODULE_NAME].selectedWaypoint) or 10000
+					else
+						if SkuOptions.db.profile[MODULE_NAME].outputDistance > 0 then
+							if (tLastCheckedDistance - distance > SkuOptions.db.profile[MODULE_NAME].outputDistance) or tLastCheckedDistance - distance < -(SkuOptions.db.profile[MODULE_NAME].outputDistance) then
+								SkuOptions.Voice:OutputStringBTtts(distance, false, true, 0.2)
+								tLastCheckedDistance = distance
 							end
 						end
 					end

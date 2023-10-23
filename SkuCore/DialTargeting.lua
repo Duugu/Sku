@@ -12,6 +12,7 @@ function SkuCore:DialTargetingOnLogin()
    SkuOptions.db.profile[MODULE_NAME].dialTargeting = SkuOptions.db.profile[MODULE_NAME].dialTargeting or {}
    SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled = SkuOptions.db.profile[MODULE_NAME].dialTargeting.enabled or L["Off"]
    SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound = SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound or L["On first and second key"]
+   SkuOptions.db.profile[MODULE_NAME].dialTargeting.singleKeyinRaid10 = SkuOptions.db.profile[MODULE_NAME].dialTargeting.singleKeyinRaid10 or L["Off"]
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -63,7 +64,7 @@ function SkuCore:DialTargetingOnInitialize()
             self:GetFrameRef("SkuSecureTargetingToggleHandler"):SetAttribute("lastButton", "")
             self:SetAttribute("unit", "none")
          else
-            if button == "Button0" and (self:GetFrameRef("SkuSecureTargetingToggleHandler"):GetAttribute("lastButton") == "" or self:GetFrameRef("SkuSecureTargetingToggleHandler"):GetAttribute("lastButton") == "Button0") then
+            if button == "Button0" and (self:GetFrameRef("SkuSecureTargetingToggleHandler"):GetAttribute("lastButton") == "" or self:GetFrameRef("SkuSecureTargetingToggleHandler"):GetAttribute("lastButton") == "Button0") and self:GetAttribute("groupType") ~= "raid10" then
                self:GetFrameRef("SkuSecureTargetingToggleHandler"):SetAttribute("lastButton", "")
                self:SetAttribute("unit", "player")
             else
@@ -78,6 +79,18 @@ function SkuCore:DialTargetingOnInitialize()
                         self:SetAttribute("unit", self:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS)))
                      end
                      self:GetFrameRef("SkuSecureTargetingToggleHandler"):SetAttribute("lastButton", "")
+                  end
+               elseif self:GetAttribute("groupType") == "raid10" then
+                  local tId = tonumber(string.sub(self:GetFrameRef("SkuSecureTargetingToggleHandler"):GetAttribute("lastButton"), 7)..string.sub(button, 7))
+                  if button == "Button0" then
+                     tId = 10
+                     local tG = 2
+                     local tS = 5
+                     self:SetAttribute("unit", self:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS)))
+                  else
+                     local tG = math.ceil(tId / 5)
+                     local tS = tId - ((tG - 1) * 5)
+                     self:SetAttribute("unit", self:GetAttribute("unitNameSlot"..string.format("%02d", tG).."-"..string.format("%02d", tS)))
                   end
                elseif self:GetAttribute("groupType") == "party" then
                   local tId = tonumber(string.sub(self:GetFrameRef("SkuSecureTargetingToggleHandler"):GetAttribute("lastButton"), 7)..string.sub(button, 7))
@@ -182,41 +195,64 @@ function SkuCore:DialTargetingRosterUpdate()
       _G["SkuSecureTargetingFrame"]:SetAttribute("playername", tPlayerName)
 
       if UnitInRaid("player") then
-         _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid")
-         
-         for x = 1, 10 do
-            for y = 1, 5 do
-               _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil)
-            end
-         end
-         local tsubgroupcounter = {}
+         local tNumCurMembers = 0
          for x = 1, MAX_RAID_MEMBERS do
-            local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
-            if name and subgroup then
-               tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
-               tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
-               _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", subgroup).."-"..string.format("%02d", tsubgroupcounter[subgroup]), name)
+            local name = GetRaidRosterInfo(x)
+            if name then
+               tNumCurMembers = tNumCurMembers + 1
             end
          end
 
-         --[[
-         for x = 1, 10 do
-            for y = 1, 5 do
-               if _G["SkuSecureTargetingFrame"]:GetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y)) then
-                  print("G", x, "S", y, _G["SkuSecureTargetingFrame"]:GetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil))
+         if SkuOptions.db.profile[MODULE_NAME].dialTargeting.singleKeyinRaid10 == L["Off"] or tNumCurMembers > 10 then
+            _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid")
+            
+            for x = 1, 10 do
+               for y = 1, 5 do
+                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil)
                end
             end
+            local tsubgroupcounter = {}
+            for x = 1, MAX_RAID_MEMBERS do
+               local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
+               if name and subgroup then
+                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
+                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
+                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", subgroup).."-"..string.format("%02d", tsubgroupcounter[subgroup]), name)
+               end
+            end
+            ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
+            ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])
+            for x = 0, 9 do
+               SetOverrideBindingClick(_G["SkuSecureTargetingToggleHandler"], true, "NUMPAD"..x, "SkuSecureTargetingToggleHandler", "Button"..x)
+            end
+            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADPLUS", "SkuSecureTargetingFrame", "Button100")
+            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADDECIMAL", "SkuSecureTargetingFrame", "Button99")
+         else
+            _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "raid10")
+         
+            for x = 1, 10 do
+               for y = 1, 5 do
+                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", x).."-"..string.format("%02d", y), nil)
+               end
+            end
+            local tsubgroupcounter = {}
+            for x = 1, MAX_RAID_MEMBERS do
+               local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
+               if name and subgroup then
+                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
+                  tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
+                  _G["SkuSecureTargetingFrame"]:SetAttribute("unitNameSlot"..string.format("%02d", subgroup).."-"..string.format("%02d", tsubgroupcounter[subgroup]), name)
+               end
+            end
+   
+            ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
+            ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])
+            for x = 0, 9 do
+               SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPAD"..x, "SkuSecureTargetingFrame", "Button"..x)
+            end
+            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADPLUS", "SkuSecureTargetingFrame", "Button100")
+            SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADDECIMAL", "SkuSecureTargetingFrame", "Button99")
          end
-         ]]
-
-         ClearOverrideBindings(_G["SkuSecureTargetingFrame"])
-         ClearOverrideBindings(_G["SkuSecureTargetingToggleHandler"])
-         for x = 0, 9 do
-            SetOverrideBindingClick(_G["SkuSecureTargetingToggleHandler"], true, "NUMPAD"..x, "SkuSecureTargetingToggleHandler", "Button"..x)
-         end
-         SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADPLUS", "SkuSecureTargetingFrame", "Button100")
-         SetOverrideBindingClick(_G["SkuSecureTargetingFrame"], true, "NUMPADDECIMAL", "SkuSecureTargetingFrame", "Button99")
-            
 
       elseif UnitInParty("player") == true then
          _G["SkuSecureTargetingFrame"]:SetAttribute("groupType", "party")
@@ -400,4 +436,22 @@ function SkuCore:DialTargetingMenuBuilder()
       SkuOptions:InjectMenuItems(self, {L["On second key"]}, SkuGenericMenuItem)
       SkuOptions:InjectMenuItems(self, {L["On first and second key"]}, SkuGenericMenuItem)
    end
+
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Single key action in raids up to 10 players"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.filterable = true
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      return SkuOptions.db.profile["SkuCore"].dialTargeting.singleKeyinRaid10
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      SkuOptions.db.profile["SkuCore"].dialTargeting.singleKeyinRaid10 = aName
+      SkuCore:DialTargeting_EndableDisable()
+   end
+   tNewMenuEntry.BuildChildren = function(self)
+      SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
+      SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+   end
+   
+
 end

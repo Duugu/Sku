@@ -313,6 +313,21 @@ SkuNav.options = {
 				},
 			},
 		},
+		outputDistance = {
+			order = 2,
+			name = L["output Distance to next waypoint"],
+			desc = "",
+			type = "range",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].outputDistance = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].outputDistance
+			end
+		},
+
+
+
 	}
 }
 
@@ -347,6 +362,7 @@ SkuNav.defaults = {
 		nonVocalized = true,
 		reachRange = 3,
 	},
+	outputDistance = 0,
 }
 
 local slower = string.lower

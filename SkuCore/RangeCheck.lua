@@ -139,6 +139,9 @@ function SkuCore:RangeCheckUpdateRanges()
       }      
    end
    SkuOptions.db.char[MODULE_NAME].RangeChecks.groupChecksRange = SkuOptions.db.char[MODULE_NAME].RangeChecks.groupChecksRange or 10
+   SkuOptions.db.char[MODULE_NAME].RangeChecks["Misc"].rangeCheckOnTargetChange = SkuOptions.db.char[MODULE_NAME].RangeChecks["Misc"].rangeCheckOnTargetChange or false
+   SkuOptions.db.char[MODULE_NAME].RangeChecks["Friendly"].rangeCheckOnTargetChange = SkuOptions.db.char[MODULE_NAME].RangeChecks["Friendly"].rangeCheckOnTargetChange or false
+   SkuOptions.db.char[MODULE_NAME].RangeChecks["Hostile"].rangeCheckOnTargetChange = SkuOptions.db.char[MODULE_NAME].RangeChecks["Hostile"].rangeCheckOnTargetChange or false
 
    if tFirstRangeUpdateSilent then
       tFirstRangeUpdateSilent = nil

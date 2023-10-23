@@ -886,18 +886,7 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 		tInCombat = SkuCore.inCombat,
 		pressedKey = tEventData[50],
 		spellNameOnCd = SkuAuras.thingsNamesOnCd,
-		
 		spellNameUsable = SkuAuras:GetSpellNamesUsable(),
-
-
-
-
-
-
-
-
-
-
 	}		
 	if UnitPowerMax("target") > 0 then
 		tEvaluateData.unitPowerTarget = UnitName("target") and mfloor(UnitPower("target") / (UnitPowerMax("target") / 100))
@@ -905,21 +894,12 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 	tEvaluateData.spellId = tEventData[CleuBase.spellId]
 	tEvaluateData.spellName = tEventData[CleuBase.spellName]
 
-	--[[						15					16						17					18					19					20						21					22						23					24
-	_DAMAGE					amount			overkill				school			resisted			blocked			absorbed				critical			glancing				crushing			isOffHand
-	_MISSED					missType			isOffHand			amountMissed	critical
-	_HEAL						amount			overhealing			absorbed			critical
-	_HEAL_ABSORBED			extraGUID		extraName			extraFlags		extraRaidFlags	extraSpellID	extraSpellName		extraSchool		absorbedAmount		#totalAmount
-	_ENERGIZE				amount			overEnergize		powerType		#maxPower
-	_DRAIN					amount			powerType			extraAmount		#maxPower
-	_LEECH					amount			powerType			extraAmount
-	_INTERRUPT				extraSpellId	extraSpellName		extraSchool
-	_DISPEL					extraSpellId	extraSpellName		extraSchool		auraType
-	_DISPEL_FAILED			extraSpellId	extraSpellName		extraSchool
-	_STOLEN					extraSpellId	extraSpellName		extraSchool		auraType
-	_EXTRA_ATTACKS			amount
-	_CAST_FAILED			failedType
-	]]
+	if UnitName("target") then
+   	local tMaxRange, tMinRange = SkuOptions.RangeCheck:GetRange("target")
+		if tMinRange then
+			tEvaluateData.targetUnitDistance = tMinRange
+		end
+	end
 
 	if sfind(subevent, "_AURA_") then
 		tEvaluateData.auraType = tEventData[15]

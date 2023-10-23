@@ -108,6 +108,15 @@ function SkuOptions:SlashFuncPquit(input)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+---@param input string
+function SkuOptions:SlashFuncDquit(input)
+	if IsPartyLFG() ~= true then
+		return
+	end
+	ConfirmOrLeaveLFGParty()
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:GetMenuIndexAndBreadString(aMenuItem)
 	local tTable = aMenuItem
 	if tTable then
@@ -661,7 +670,8 @@ function SkuOptions:UpdateOverviewText(aPageId)
 				tSubgroups[subgroup] = tSubgroups[subgroup] or {}
             tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] or 0
             tsubgroupcounter[subgroup] = tsubgroupcounter[subgroup] + 1
-				tSubgroups[subgroup][tsubgroupcounter[subgroup]] = {level = level, class = class, zone = zone, online = online, isDead = isDead, name = name,}
+				local tRole = UnitGroupRolesAssigned("raid"..x) or "None"
+				tSubgroups[subgroup][tsubgroupcounter[subgroup]] = {level = level, class = class, zone = zone, online = online, isDead = isDead, name = name, role = L[tRole]}
          end
       end
 
@@ -679,7 +689,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 					if vUnit.isDead then vUnit.isDead = L["tot"]..", " else vUnit.isDead = "" end
 					if vUnit.online == L["offline"]..", " then vUnit.isDead = "" vUnit.zone = "" vUnit.level = "" end
 					if vUnit.online == L["online"]..", " then vUnit.online = "" end
-					tTmpText = tTmpText.." "..iUnit..", "..vUnit.name..", "..vUnit.isDead..vUnit.class..", "..vUnit.level..vUnit.zone..vUnit.online.."\r\n"
+					tTmpText = tTmpText.." "..iUnit..", "..vUnit.name..", "..vUnit.isDead..vUnit.class..", "..vUnit.role..", "..vUnit.level..vUnit.zone..vUnit.online.."\r\n"
 				end
 			end
 		end
@@ -713,16 +723,26 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		end
 	end
 
+	local tPartyRoles = {}
+	for q = 1, 4 do
+		local tPlayerName = UnitName("party"..q)
+		if tPlayerName then
+			local tRole = UnitGroupRolesAssigned("party"..q)
+			tPartyRoles[tPlayerName] = L[tRole]
+		end
+	end
+
 	for x = 1, 40 do
 		local name, rank, subgroup, level, class, fileName, zone, online, isDead, role, isML, combatRole = GetRaidRosterInfo(x)
 		if online then online = L["online"] else online = L["offline"] end
 		if isDead then isDead = L["tot"] else isDead = L["lebt"] end
+		
 		if name then
 			if subgroup == tPlayersSubgroup then
 				local tPlayerName = UnitName("player")
 				if name ~= tPlayerName then
 					tCount = tCount + 1
-					tTmpText = tTmpText..tCount.." "..name..", "..class..", "..level..", "..zone..", "..online..", "..isDead.."\r\n"
+					tTmpText = tTmpText..tCount.." "..name..", "..class..", "..level..", "..(tPartyRoles[name] or "")..", "..zone..", "..online..", "..isDead.."\r\n"
 				end
 			end
 		end
@@ -2988,6 +3008,7 @@ function SkuOptions:OnInitialize()
 	end
 
 	SkuOptions:RegisterChatCommand("pquit", "SlashFuncPquit")
+	SkuOptions:RegisterChatCommand("dquit", "SlashFuncDquit")
 	SkuOptions:RegisterChatCommand("Sku", "SlashFunc")
 	SkuOptions:RegisterChatCommand("Skuchat", "SlashFuncSkuChat")
 	SkuOptions:RegisterChatCommand("Sc", "SlashFuncSkuChat")
