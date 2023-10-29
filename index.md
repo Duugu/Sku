@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35.2](https://github.com/Duugu/Sku/releases/download/r35.2/Sku-r35.2-wrath.zip) (October 23th 2023)<br>
+- [Sku WRATH r35.3](https://github.com/Duugu/Sku/releases/download/r35.3/Sku-r35.3-wrath.zip) (October 29th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,19 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+##Changes in Sku r35.3
+- Next try to fix the action bar mount menu. Mount list now should show all mounts?
+- Fixed the broken main route in Wetlands
+- Fixed the main route in Winterspring
+- Fixed chest of nesting waypoint
+- Added emblems of frost vendor in Dalaran
+- Linked pvp vendors in Dalaran Sewers
+- Added waypoint for Vordrassil's Sapling
+- Added waypoints for portable seismograph
+- Added a couple of spawn points for Thorim
+- Added waypoints for quest Putting Olakin Back Together Again
+- Reworked the waypoint comments for the elevator at Fizzcrank Airstrip
+
 ## Changes in Sku r35.2
 - Fixed the action bar mount menu. Should now contain only mounts that are usable by the current character.
 - Fixed a bug with combat monitor creatures in combat counting. Should now count correct.
