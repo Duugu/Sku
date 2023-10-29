@@ -3,6 +3,21 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.3
+	- Next try to fix the action bar mount menu. Mount list now should show all mounts?
+	- Fixed the broken main route in Wetlands
+	- Fixed the main route in Winterspring
+	- Fixed chest of nesting waypoint
+	- Added emblems of frost vendor in Dalaran
+	- Linked pvp vendors in Dalaran Sewers
+	- Added waypoint for Vordrassil's Sapling
+	- Added waypoints for portable seismograph
+	- Added a couple of spawn points for Thorim
+	- Added waypoints for quest Putting Olakin Back Together Again
+	- Reworked the waypoint comments for the elevator at Fizzcrank Airstrip
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.2
 	- Fixed the action bar mount menu. Should now contain only mounts that are usable by the current character.
 	- Fixed a bug with combat monitor creatures in combat counting. Should now count correct.

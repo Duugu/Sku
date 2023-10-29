@@ -1240,7 +1240,7 @@ local function CompanionMenuBuilder(aParentEntry)
 			local tFaction = UnitFactionGroup("player")
 			for x = 1, #tMountIDs do
 				local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID = C_MountJournal.GetMountInfoByID(tMountIDs[x])
-				if (isCollected == true and shouldHideOnChar ~= true) and (isFactionSpecific == true and ((faction == 0 and tFaction == "Horde") or (faction == 1 and tFaction == "Alliance"))) then
+				if (isCollected == true and shouldHideOnChar ~= true) and ((isFactionSpecific == true and ((faction == 0 and tFaction == "Horde") or (faction == 1 and tFaction == "Alliance") or (faction == nil))) or isFactionspecific == false) then
 					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.companionType = "MOUNT"
