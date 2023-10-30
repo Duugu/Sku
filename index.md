@@ -28,7 +28,7 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
-##Changes in Sku r35.3
+## Changes in Sku r35.3
 - Next try to fix the action bar mount menu. Mount list now should show all mounts?
 - Fixed the broken main route in Wetlands
 - Fixed the main route in Winterspring
