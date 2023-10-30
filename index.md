@@ -9,6 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku ERA r32.22](https://github.com/Duugu/SkuEra/releases/download/r32.22/Sku-r32.22-classic.zip) (August 30th 2023)<br>
 - [Sku WRATH r35.3](https://github.com/Duugu/Sku/releases/download/r35.3/Sku-r35.3-wrath.zip) (October 29th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -20,7 +21,6 @@ DEUTSCH - Erste Schritte:<br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [Wow Menu WRATH r4.1](https://github.com/Duugu/wow_menu/releases/download/r4.1/wow_menu-r4.1-wrath.zip) (Sep 1st 2023)<br>
 - [Wow Menu ERA r4.4](https://github.com/Duugu/wow_menu_era/releases/download/r4.4/wow_menu-r4.4-classic.zip) (Sep 1st 2023)<br>
-- [Sku ERA r32.21](https://github.com/Duugu/SkuEra/releases/download/r32.21/Sku-r32.21-classic.zip) (August 8th 2023)<br>
 
 *Addons for sighted players:* <br>
 - [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
@@ -28,6 +28,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku ERA r32.22
+- Chat tab, auction house, and bank errors fixed by Chaos
+- Added soft targeting feature
+- Added sound on falling feature
+- Fixed several bugs leading to Fatality warnings
+
 ## Changes in Sku r35.3
 - Next try to fix the action bar mount menu. Mount list now should show all mounts?
 - Fixed the broken main route in Wetlands
@@ -178,7 +184,7 @@ DEUTSCH - Erste Schritte:<br>
 ## Changes in WoW Menu ERA r4.2
 - Initial release of the login script for Classic ERA servers. Won't work with Wrath. Just with ERA!
 
-## Changes in Sku ERA r34.21
+## Changes in Sku ERA r32.21
 - Initial release of the Sku addon for Classic ERA servers. Won't work with Wrath. Just with ERA! You need the usual additional addons (audio data, beacons). Just take them from Wrath. There are no customized versions for Era.
 
 ## Changes in WoW Menu WRATH r4.0
