@@ -9,8 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku WRATH r35.4](https://github.com/Duugu/Sku/releases/download/r35.4/Sku-r35.4-wrath.zip) (October 30th 2023)<br>
 - [Sku ERA r32.22](https://github.com/Duugu/SkuEra/releases/download/r32.22/Sku-r32.22-classic.zip) (August 30th 2023)<br>
-- [Sku WRATH r35.3](https://github.com/Duugu/Sku/releases/download/r35.3/Sku-r35.3-wrath.zip) (October 29th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.4
+- Fixed the mount list in action bars. This time for real.
+- The Turn to beacon hot key (default: I) is not longer fixed and can be set to any key. Starting the wow menu script isn't required anymore to use that feature.
+- Fixed a bug with aura names that lead to an error
+
 ## Changes in Sku ERA r32.22
 - Chat tab, auction house, and bank errors fixed by Chaos
 - Added soft targeting feature
