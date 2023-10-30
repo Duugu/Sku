@@ -168,7 +168,12 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
 		for tName, tData in pairs(SkuOptions.db.char[MODULE_NAME].Auras[aAuraName].attributes) do
 			if SkuAuras.attributes[tName] then
 				for tDataIndex, tDataData in pairs(tData) do
-					tConditions[#tConditions + 1] = {attribute = SkuAuras.attributes[tName].friendlyName, operator = SkuAuras.Operators[tDataData[1]].friendlyName, value = SkuAuras.values[tDataData[2]].friendlyName}
+					local tFname = tDataData[2]
+					if  SkuAuras.values[tDataData[2]] then
+						tFname = SkuAuras.values[tDataData[2]].friendlyName
+					end
+					tFname = SkuAuras:RemoveTags(tFname)					
+					tConditions[#tConditions + 1] = {attribute = SkuAuras.attributes[tName].friendlyName, operator = SkuAuras.Operators[tDataData[1]].friendlyName, value = tFname}
 				end
 			end
 		end
@@ -522,10 +527,16 @@ function SkuAuras:BuildAuraName(aNewType, aNewAttributes, aNewActions, aNewOutpu
 		if #tAttributeValue > 1 then
 			local tCount = 0
 			for tInd, tLocalValue in pairs(tAttributeValue) do
+				local tFname = tLocalValue[2]
+				if SkuAuras.values[tLocalValue[2]] then
+					tFname = SkuAuras.values[tLocalValue[2]].friendlyName
+				end
+				tFname = SkuAuras:RemoveTags(tFname)
+
 				if tCount > 0 then
-					tAuraName = tAuraName..L["oder;"]..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..SkuAuras.values[tLocalValue[2]].friendlyName..";"
+					tAuraName = tAuraName..L["oder;"]..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..tFname..";"
 				else
-					tAuraName = tAuraName..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..SkuAuras.values[tLocalValue[2]].friendlyName..";"
+					tAuraName = tAuraName..SkuAuras.attributes[tAttributeName].friendlyName..";"..SkuAuras.Operators[tLocalValue[1]].friendlyName..";"..tFname..";"
 				end
 				tCount = tCount + 1
 			end

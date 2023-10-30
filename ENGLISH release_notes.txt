@@ -3,6 +3,13 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.4
+	- Fixed the mount list in action bars. This time for real.
+	- The Turn to beacon hot key (default: I) is not longer fixed and can be set to any key. Starting the wow menu script isn't required anymore to use that feature.
+	- Fixed a bug with aura names that lead to an error
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.3
 	- Next try to fix the action bar mount menu. Mount list now should show all mounts?
 	- Fixed the broken main route in Wetlands

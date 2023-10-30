@@ -1240,7 +1240,7 @@ local function CompanionMenuBuilder(aParentEntry)
 			local tFaction = UnitFactionGroup("player")
 			for x = 1, #tMountIDs do
 				local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID = C_MountJournal.GetMountInfoByID(tMountIDs[x])
-				if (isCollected == true and shouldHideOnChar ~= true) and ((isFactionSpecific == true and ((faction == 0 and tFaction == "Horde") or (faction == 1 and tFaction == "Alliance") or (faction == nil))) or isFactionspecific == false) then
+				if (isCollected == true and shouldHideOnChar ~= true) and ((isFactionSpecific == true and ((faction == 0 and tFaction == "Horde") or (faction == 1 and tFaction == "Alliance") or (faction == nil))) or isFactionspecific == false or faction == nil) then
 					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.companionType = "MOUNT"
@@ -2576,11 +2576,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					tFriendlyKey1 = gsub(tFriendlyKey1, "%-%-", "-"..L["Minus"])
 				end
 
-				local tFix = ""
-				if tBindingConst == "SKU_KEY_TURNTOBEACON" then
-					tFix = L["fixed"]
-				end
-				local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {L[tBindingConst].." "..L["Taste"]..":"..(tFriendlyKey1 or L["nichts"]).." "..tFix}, SkuGenericMenuItem)
+				local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {L[tBindingConst].." "..L["Taste"]..":"..(tFriendlyKey1 or L["nichts"])}, SkuGenericMenuItem)
 				tNewMenuEntryKey.isSelect = true
 				tNewMenuEntryKey.dynamic = true
 				tNewMenuEntryKey.OnAction = function(self, aValue, aName)
@@ -2706,12 +2702,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 				--tNewMenuEntryKey.index = v1.index
 				
 				tNewMenuEntryKey.BuildChildren = function(self)
-					if tBindingConst ~= "SKU_KEY_TURNTOBEACON" then
-						local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Neu belegen"]}, SkuGenericMenuItem)
-						local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
-					else
-						local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["fixed"]}, SkuGenericMenuItem)
-					end
+					local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Neu belegen"]}, SkuGenericMenuItem)
+					local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
 				end
 			end
 		end
