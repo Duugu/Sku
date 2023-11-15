@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35.4](https://github.com/Duugu/Sku/releases/download/r35.4/Sku-r35.4-wrath.zip) (October 30th 2023)<br>
+- [Sku WRATH r35.5](https://github.com/Duugu/Sku/releases/download/r35.5/Sku-r35.5-wrath.zip) (November 15th 2023)<br>
 - [Sku ERA r32.22](https://github.com/Duugu/SkuEra/releases/download/r32.22/Sku-r32.22-classic.zip) (August 30th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -23,11 +23,17 @@ DEUTSCH - Erste Schritte:<br>
 - [Wow Menu ERA r4.4](https://github.com/Duugu/wow_menu_era/releases/download/r4.4/wow_menu-r4.4-classic.zip) (Sep 1st 2023)<br>
 
 *Addons for sighted players:* <br>
-- [SkuMapper r3.3](https://github.com/Duugu/SkuMapper/releases/download/r3.3/SkuMapper-r3.3-wrath.zip) (July 13th 2023), mapping addon for sighted players<br>
+- [SkuMapper r3.4](https://github.com/Duugu/SkuMapper/releases/download/r3.4/SkuMapper-r3.4-wrath.zip) (November 15th 2023), mapping addon for sighted players<br>
 - [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.5
+- Added a bunch of missing creature, quest, item, and object data for Wrath phase 3 & 4 from Questie.
+
+## r3.4
+- Added a bunch of missing creature, quest, item, and object data for phase 3 & 4 from Questie.
+ 
 ## Changes in Sku r35.4
 - Fixed the mount list in action bars. This time for real.
 - The Turn to beacon hot key (default: I) is not longer fixed and can be set to any key. Starting the wow menu script isn't required anymore to use that feature.
