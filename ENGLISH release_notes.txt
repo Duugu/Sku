@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.5
+	- Added a bunch of missing creature, quest, item, and object data for Wrath phase 3 & 4 from Questie.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.4
 	- Fixed the mount list in action bars. This time for real.
 	- The Turn to beacon hot key (default: I) is not longer fixed and can be set to any key. Starting the wow menu script isn't required anymore to use that feature.

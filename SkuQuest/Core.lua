@@ -1126,8 +1126,14 @@ function SkuQuest:PLAYER_LOGIN(...)
 		end
 	end
 	SkuDB.questLookup = SkuDB.WotLK.questLookup
-	--print("questDataTBC", tcount)
 
+	for i, v in pairs(SkuDB.WotLK.questDataTBC) do
+		for i1, v1 in pairs(SkuDB.questLookup) do
+			if v1[i] == nil then
+				v1[i] = {v[SkuDB.questKeys.name], nil, {v[SkuDB.questKeys.objectivesText],},}
+			end
+		end
+	end
 
 	-- do final stuff
 	SkuQuest:BuildQuestZoneCache()

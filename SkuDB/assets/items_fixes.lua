@@ -1,4 +1,7 @@
-
+local itemClasses = {
+    QUEST = 12,
+ }
+ 
     local itemKeys = {
         ['name'] = 1, -- string
         ['npcDrops'] = 2, -- table or nil, NPC IDs
