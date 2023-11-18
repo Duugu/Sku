@@ -1655,9 +1655,9 @@ SkuAuras.attributes = {
       friendlyName = L["zauber nr"],
       type = "CATEGORY",
       evaluate = function(self, aEventData, aOperator, aValue)
-      	--dprint("    ","SkuAuras.attributes.spellId.evaluate")
+      	--print("SkuAuras.attributes.spellId.evaluate aEventData", aEventData, "aOperator", aOperator, "aValue", aValue)
          if aEventData.spellId then
-            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.spellId), tonumber(aValue))
+            local tEvaluation = SkuAuras.Operators[aOperator].func(tonumber(aEventData.spellId), tonumber(SkuAuras:RemoveTags(aValue)))
             if tEvaluation == true then
                return true
             end

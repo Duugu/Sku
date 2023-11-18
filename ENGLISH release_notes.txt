@@ -3,6 +3,15 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.6
+	- Fixed a bug with auras using spell id instead of spell name conditions.
+	- Completely re-worked the routes pathfinding algorithm. Routes are now always taking the shortest path to the destination. Previously it could happen in specific scenarios that a route was leading you over a path that was longer than the shortest one, but had fewer waypoints. For example in Wetlands. This won't happen anymore. And there are now more routes with distance just showing "far" in waypoint lists. From now own all routes in lists will show correct distance in meters. No matter how far the target is.
+	- Added a waypoint for the warlock summoning circle to the basement of The Slaughtered Lamb in Stormwind.
+	- Added the currently equiped item to auction house tooltips.
+	- Fixed the route to Arcanist Uovril, Emblem of Frost vendor in Dalaran.
+	
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.5
 	- Added a bunch of missing creature, quest, item, and object data for Wrath phase 3 & 4 from Questie.
 

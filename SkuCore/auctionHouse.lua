@@ -330,6 +330,8 @@ function SkuCore:AuctionBuildItemTooltip(aItemData, aIndex, aAddCurrentPriceData
 
    table.insert(tPriceHistoryData, 1, tTextFull)
 
+   SkuCore:InsertComparisnSections(aItemData[17], tPriceHistoryData)
+
    _G["SkuScanningTooltip"]:ClearLines()
 
    return tTextFirstLine, tPriceHistoryData

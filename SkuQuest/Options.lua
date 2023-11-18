@@ -935,7 +935,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 						if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") then
 							SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") + 1)
 						end
-						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, aName)--
+						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, aName)--
 						if not SkuOptions.db.profile["SkuNav"].metapathFollowingTarget then
 							SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = aName
 						end
@@ -981,7 +981,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 									if #tSortedWaypointList == 0 then
 										local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 									else
-										local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(string.sub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs)--
+										local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(string.sub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs)--
 										SkuOptions.db.profile["SkuNav"].metapathFollowingStart = v
 										SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
 										SkuOptions.db.profile["SkuNav"].metapathFollowingTarget = nil
@@ -1007,7 +1007,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 														if string.find(tV, wpName) then
 															local tDistText = tMetapaths[tV].distance..L[";Meter"]
 															if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
-																tDistText = L["weit"]
+																--tDistText = L["weit"]
 															end
 
 															-- add direction to wp
@@ -1059,7 +1059,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 							if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") then
 								SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") + 1)
 							end
-							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp4(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
+							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
 							--setmetatable(SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths, SkuPrintMTWo)
 							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[#SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths+1] = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
 							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget] = SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingTarget]
@@ -1102,7 +1102,7 @@ local function CreateRtWpSubmenu(aParent, aSubIDTable, aSubType, aQuestID)
 								tNewMenuEntry.dynamic = true
 								tNewMenuEntry.filterable = true
 								tNewMenuEntry.BuildChildren = function(self)
-									local tMetapaths = SkuNav:GetAllMetaTargetsFromWp4(string.sub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, nil, true)
+									local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(string.sub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, nil, true)
 									SkuOptions.db.profile["SkuNav"].metapathFollowingStart = v
 									SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
 
