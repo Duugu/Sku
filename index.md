@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35.5](https://github.com/Duugu/Sku/releases/download/r35.5/Sku-r35.5-wrath.zip) (November 15th 2023)<br>
+- [Sku WRATH r35.6](https://github.com/Duugu/Sku/releases/download/r35.6/Sku-r35.6-wrath.zip) (November 19th 2023)<br>
 - [Sku ERA r32.22](https://github.com/Duugu/SkuEra/releases/download/r32.22/Sku-r32.22-classic.zip) (August 30th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.6
+- Fixed a bug with auras using spell id instead of spell name conditions.
+- Completely re-worked the routes pathfinding algorithm. Routes are now always taking the shortest path to the destination. Previously it could happen in specific scenarios that a route was leading you over a path that was longer than the shortest one, but had fewer waypoints. For example in Wetlands. This won't happen anymore. And there are now more routes with distance just showing "far" in waypoint lists. From now own all routes in lists will show correct distance in meters. No matter how far the target is.
+- Added a waypoint for the warlock summoning circle to the basement of The Slaughtered Lamb in Stormwind.
+- Added the currently equiped item to auction house tooltips.
+- Fixed the route to Arcanist Uovril, Emblem of Frost vendor in Dalaran.
+- 
 ## Changes in Sku r35.5
 - Added a bunch of missing creature, quest, item, and object data for Wrath phase 3 & 4 from Questie.
 
