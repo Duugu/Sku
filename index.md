@@ -34,11 +34,11 @@ DEUTSCH - Erste Schritte:<br>
 - Added a waypoint for the warlock summoning circle to the basement of The Slaughtered Lamb in Stormwind.
 - Added the currently equiped item to auction house tooltips.
 - Fixed the route to Arcanist Uovril, Emblem of Frost vendor in Dalaran.
-- 
+
 ## Changes in Sku r35.5
 - Added a bunch of missing creature, quest, item, and object data for Wrath phase 3 & 4 from Questie.
 
-## r3.4
+## Changes in SkuMapper r3.4
 - Added a bunch of missing creature, quest, item, and object data for phase 3 & 4 from Questie.
  
 ## Changes in Sku r35.4
