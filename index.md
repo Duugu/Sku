@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35.6](https://github.com/Duugu/Sku/releases/download/r35.6/Sku-r35.6-wrath.zip) (November 19th 2023)<br>
+- [Sku WRATH r35.8](https://github.com/Duugu/Sku/releases/download/r35.8/Sku-r35.8-wrath.zip) (November 23rd 2023)<br>
 - [Sku ERA r32.22](https://github.com/Duugu/SkuEra/releases/download/r32.22/Sku-r32.22-classic.zip) (August 30th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.8
+- Fixed a bug with the new routes algorithm that could lead to unreachable waypoints
+- Removed routes to auto waypoints from routes list (shift + f10)
+- Enhanced the performance of the routes menu (shift + f10) by limiting the listed routes to a maximum of 5000 meters distance
+- New option: Navigation > Options > Maximum distance for destinations in routes list. Default: 5000 meters. Use a lower value to enhance the performance of the routes menu (shift + f10.)
+
 ## Changes in Sku r35.6
 - Fixed a bug with auras using spell id instead of spell name conditions.
 - Completely re-worked the routes pathfinding algorithm. Routes are now always taking the shortest path to the destination. Previously it could happen in specific scenarios that a route was leading you over a path that was longer than the shortest one, but had fewer waypoints. For example in Wetlands. This won't happen anymore. And there are now more routes with distance just showing "far" in waypoint lists. From now own all routes in lists will show correct distance in meters. No matter how far the target is.
