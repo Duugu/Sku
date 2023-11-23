@@ -2,6 +2,20 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r35.8
+	- Fixed a bug with the new routes algorithm that could lead to unreachable waypoints
+	- Removed routes to auto waypoints from routes list (shift + f10)
+	- Enhanced the performance of the routes menu (shift + f10) by limiting the listed routes to a maximum of 5000 meters distance
+	- New option: Navigation > Options > Maximum distance for destinations in routes list. Default: 5000 meters. Use a lower value to enhance the performance of the routes menu (shift + f10.)
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r35.7
+	- Fixed the route to Zamah in Thunder Bluff
+	
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r35.6
 	- Fixed a bug with auras using spell id instead of spell name conditions.

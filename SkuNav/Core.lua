@@ -55,7 +55,6 @@ SkuNav.WpTypes = {
 	[4] = "standard",
 }
 
-SkuNav.MaxMetaRange = 2000
 SkuNav.MaxMetaWPs = 100
 SkuNav.MaxMetaEntryRange = 300
 SkuNav.BestRouteWeightedLengthModForMetaDistance = 37 -- this is a modifier for close routes
@@ -486,42 +485,40 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 	local fPlayerPosX, fPlayerPosY = UnitPosition("player")
 	local tDistanceToStartWp = SkuNav:Distance(aStartWpNameData.worldX, aStartWpNameData.worldY, fPlayerPosX, fPlayerPosY)	
 
-	local tWpToCheckNextRound = {}
-	tWpToCheckNextRound[WaypointCacheLookupAll[aStartWpName]] = tDistanceToStartWp
-	local tStillWpToCheckNextRound = true
 	local tFinalWpDistances = {}
 	tFinalWpDistances[WaypointCacheLookupAll[aStartWpName]] = tDistanceToStartWp
 
-	while tStillWpToCheckNextRound == true do
-		tStillWpToCheckNextRound = false
+	do
+		local WaypointCache = WaypointCache
+		local tWpToCheckNextRound = {}
+		tWpToCheckNextRound[WaypointCacheLookupAll[aStartWpName]] = tDistanceToStartWp
+		local tStillWpToCheckNextRound = true
 		local tTempWpToCheckNextRound = {}
-		for tWaypointCacheIndex, tDistance in pairs(tWpToCheckNextRound) do
-			--print("tWaypointCacheIndex, tDistance", tWaypointCacheIndex, tDistance)
-			local tCurrentWP = WaypointCache[tWaypointCacheIndex]
-			if tCurrentWP.links then
-				--print("tCurrentWP.links", tCurrentWP.name, tCurrentWP.links)
-				if tCurrentWP.links.byId then
-					--print("tCurrentWP.links.byId", tCurrentWP.links.byId)
-					for tLinktWaypointCacheIndex, tLinkDistance in pairs(tCurrentWP.links.byId) do
-						--print(tLinktWaypointCacheIndex, tLinkDistance)
+		while tStillWpToCheckNextRound == true do
+			tStillWpToCheckNextRound = false
+			tTempWpToCheckNextRound = {}
+			for tWaypointCacheIndex, tDistance in pairs(tWpToCheckNextRound) do
+				for tLinktWaypointCacheIndex, tLinkDistance in pairs(WaypointCache[tWaypointCacheIndex].links.byId) do
+					local tDisPlusLink = tDistance + tLinkDistance
+					if tDisPlusLink < aMaxDistance then
 						if tFinalWpDistances[tLinktWaypointCacheIndex] == nil then
-							tFinalWpDistances[tLinktWaypointCacheIndex] = tDistance + tLinkDistance
-							tTempWpToCheckNextRound[tLinktWaypointCacheIndex] = tDistance + tLinkDistance
+							tFinalWpDistances[tLinktWaypointCacheIndex] = tDisPlusLink
+							tTempWpToCheckNextRound[tLinktWaypointCacheIndex] = tDisPlusLink
 							tStillWpToCheckNextRound = true
 						else
-							if tFinalWpDistances[tLinktWaypointCacheIndex] > tDistance + tLinkDistance then
-								tFinalWpDistances[tLinktWaypointCacheIndex] = tDistance + tLinkDistance
-								tTempWpToCheckNextRound[tLinktWaypointCacheIndex] = tDistance + tLinkDistance
+							if tFinalWpDistances[tLinktWaypointCacheIndex] > tDisPlusLink then
+								tFinalWpDistances[tLinktWaypointCacheIndex] = tDisPlusLink
+								tTempWpToCheckNextRound[tLinktWaypointCacheIndex] = tDisPlusLink
 								tStillWpToCheckNextRound = true
 							end
 						end
 					end
 				end
 			end
+			tWpToCheckNextRound = tTempWpToCheckNextRound
 		end
-		tWpToCheckNextRound = tTempWpToCheckNextRound
 	end
-
+	
 	local tAuto = L["auto"]
 	if aIncludeAutoWps then
 		tAuto = ""
@@ -531,15 +528,14 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 	local tcount = 0
 	for i, v in pairs(tFinalWpDistances) do
 		local tCurrentWP = WaypointCache[i]
-		--if tAuto == "" or ssub(tCurrentWP.name, 1, 4) ~= tAuto then
+		if tAuto == "" or ssub(tCurrentWP.name, 1, 4) ~= tAuto or aReturnPathForWp ~= nil then
 			tcount = tcount + 1
 			rMetapathData[tCurrentWP.name] = {
 				distance = v,
 				distanceToStartWp = tDistanceToStartWp,
 			}
-		--end
+		end
 	end
-	--print("tcount", tcount)
 
 	if aReturnPathForWp then
 		local tmprMetapathData = {}
@@ -563,14 +559,12 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 						local tBestDistance = tFinalWpDistances[tNextWp]
 						for tLinktWaypointCacheIndex, tLinkDistance in pairs(tCurrentWP.links.byId) do
 							if tFinalWpDistances[tLinktWaypointCacheIndex] then
-								if tFinalWpDistances[tLinktWaypointCacheIndex] < tBestDistance then
+								if tFinalWpDistances[tLinktWaypointCacheIndex] <= tBestDistance then
 									tinsert(tpathWps, 1, WaypointCache[tLinktWaypointCacheIndex].name)
 									tBestDistance = tFinalWpDistances[tLinktWaypointCacheIndex]
 									tContinue = true
 									tNextWp = tLinktWaypointCacheIndex
 								end
-							--else
-								--print("  links to no full dist:", tLinktWaypointCacheIndex, tLinkDistance)
 							end
 						end
 					end
@@ -581,7 +575,7 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 		tmprMetapathData[aReturnPathForWp].pathWps = tpathWps
 		rMetapathData = tmprMetapathData
 	end
-
+	
 	return rMetapathData
 end
 
@@ -1362,7 +1356,7 @@ function SkuNav:ProcessPlayerDead()
 			if #tSortedWaypointList == 0 then
 				SkuNav:SelectWP(L["Quick waypoint"]..";4", true)
 			else
-				local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, nil, true)
+				local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuOptions.db.profile["SkuNav"].routesMaxDistance, SkuNav.MaxMetaWPs, nil, true)
 				SkuOptions.db.profile["SkuNav"].metapathFollowingStart = SkuNav:GetCleanWpName(tSortedWaypointList[1])
 				SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
 
@@ -1412,7 +1406,7 @@ function SkuNav:ProcessPlayerDead()
 							if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") then
 								SkuOptions.db.profile["SkuNav"].metapathFollowingStart = string.sub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") + 1)
 							end
-							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
+							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuOptions.db.profile["SkuNav"].routesMaxDistance, SkuNav.MaxMetaWPs, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
 							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[#SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths+1] = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
 							SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget] = SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingTarget]
 							table.insert(SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget].pathWps, SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget)

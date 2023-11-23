@@ -6,11 +6,21 @@ local slen = string.len
 
 SkuNav.ClickClackSoundsets = {}
 
+
 SkuNav.StandardWpReachedRanges = {
    [1] = L["1 Meter"],
    [2] = L["2 Meter"],
    [3] = L["3 Meter"],
    [4] = L["Auto"],
+}
+
+SkuNav.RoutesMaxDistances = {
+   [2000] = "3000 "..L["meters"],
+   [4000] = "4000 "..L["meters"],
+   [5000] = "5000 "..L["meters"],
+   [6000] = "6000 "..L["meters"],
+   [8000] = "8000 "..L["meters"],
+   [20000] = L["Unlimited"],
 }
 
 local timeForVisitedToExpireValues = {L["disabled"], "1 "..L["minute"]}
@@ -328,6 +338,20 @@ SkuNav.options = {
 
 
 
+		
+		routesMaxDistance = {
+			order = 20,
+			name = L["Maximum distance for destinations in routes list"],
+			desc = "",
+			type = "select",
+			values = SkuNav.RoutesMaxDistances,
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].routesMaxDistance = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].routesMaxDistance
+			end
+		},
 	}
 }
 
@@ -363,6 +387,7 @@ SkuNav.defaults = {
 		reachRange = 3,
 	},
 	outputDistance = 0,
+	routesMaxDistance = 5000,
 }
 
 local slower = string.lower
@@ -448,7 +473,7 @@ local function SkuNav_MenuBuilder_WaypointSelectionMenu(aParent, aSortedWaypoint
 				if #tSortedWaypointList == 0 then
 					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty;list"]}, SkuGenericMenuItem)
 				else
-					local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, nil, true)
+					local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuNav:GetCleanWpName(tSortedWaypointList[1]), SkuOptions.db.profile["SkuNav"].routesMaxDistance, SkuNav.MaxMetaWPs, nil, true)
 					SkuOptions.db.profile["SkuNav"].metapathFollowingStart = SkuNav:GetCleanWpName(tSortedWaypointList[1])
 					SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = tMetapaths
 
@@ -581,7 +606,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 						if string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") then
 							SkuOptions.db.profile["SkuNav"].metapathFollowingStart = ssub(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, string.find(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, "#") + 1)
 						end
-						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
+						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuOptions.db.profile["SkuNav"].metapathFollowingStart, SkuOptions.db.profile["SkuNav"].routesMaxDistance, SkuNav.MaxMetaWPs, SkuOptions.db.profile["SkuNav"].metapathFollowingTarget, true)--
 						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[#SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths+1] = SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget
 						SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget] = SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingTarget]
 						table.insert(SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths[SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget].pathWps, SkuOptions.db.profile["SkuNav"].metapathFollowingEndTarget)
@@ -1038,7 +1063,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 				if string.find(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, "#") then
 					SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart = ssub(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, string.find(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, "#") + 1)
 				end
-				SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs, aName)--
+				SkuOptions.db.profile["SkuNav"].metapathFollowingMetapaths = SkuNav:GetAllMetaTargetsFromWp5(SkuOptions.db.profile[MODULE_NAME].metapathFollowingStart, SkuOptions.db.profile["SkuNav"].routesMaxDistance, SkuNav.MaxMetaWPs, aName)--
 				SkuOptions.db.profile[MODULE_NAME].metapathFollowingTarget = aName
 				SkuOptions.db.profile[MODULE_NAME].metapathFollowingCurrentWp = 1
 				SkuOptions.db.profile[MODULE_NAME].metapathFollowing = true
@@ -1096,7 +1121,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 						tNewMenuEntry.filterable = true
 						tNewMenuEntry.BuildChildren = function(self)
 							SkuOptions.db.profile[MODULE_NAME].metapathFollowingStartTMP = v
-							local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(ssub(v, string.find(v, "#") + 1), SkuNav.MaxMetaRange, SkuNav.MaxMetaWPs)--
+							local tMetapaths = SkuNav:GetAllMetaTargetsFromWp5(ssub(v, string.find(v, "#") + 1), SkuOptions.db.profile["SkuNav"].routesMaxDistance, SkuNav.MaxMetaWPs)--
 							SkuMetapathFollowingMetapathsTMP = tMetapaths
 							local tData = {}
 							for i, v in pairs(tMetapaths) do--
@@ -1112,7 +1137,7 @@ function SkuNav:MenuBuilder(aParentEntry)
 							else
 								for tK, tV in ipairs(tSortedList) do
 									local tDistText = tMetapaths[tV].distance..L[";Meter"]..""--
-									if tMetapaths[tV].distance >= SkuNav.MaxMetaRange then
+									if tMetapaths[tV].distance >= SkuOptions.db.profile["SkuNav"].routesMaxDistance then
 										--tDistText = L["weit"]
 									end
 
