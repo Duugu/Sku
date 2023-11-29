@@ -2,6 +2,12 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r35.9
+	- Fixed another bug with the new route calculation algorithm that could lead to script timeout errors in some scenarios.
+	- Removed xd from the list of read out emojis.
+	- Added a new option: Chat > Options > Do not read out emojis. Default: off
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r35.8

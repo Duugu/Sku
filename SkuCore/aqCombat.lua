@@ -270,34 +270,43 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
+   local beginTime2 = debugprofilestop()   
+
    if aUnitId then
       if UnitIsPlayer(aUnitId) ~= true then
          --return nil
       end
       if UnitGUID("player") == UnitGUID(aUnitId) then
+         Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "player"
       end
       if UnitGUID("pet") == UnitGUID(aUnitId) then
+         Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "pet"
       end
       for x = 1, 4 do
          if UnitGUID("party"..x) == UnitGUID(aUnitId) then
+            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "party"..x
          end
          if UnitGUID("partypet"..x) == UnitGUID(aUnitId) then
+            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "partypet"..x
          end
       end
       for x = 1, 40 do
          if UnitGUID("raid"..x) == UnitGUID(aUnitId) then
+            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raid"
          end
          if UnitGUID("raidpet"..x) == UnitGUID(aUnitId) then
+            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raidpet"..x
          end
       end
 
       if UnitIsEnemy("player", aUnitId) ~= true then
+         Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return --"friendly"
       end
 
@@ -307,10 +316,13 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
          local tPartyUnitToTest = tAllPartyRaidUnits[q]
          local tPartyGuid = UnitGUID(tPartyUnitToTest)
          if tPartyGuid and tPartyGuid == aUnitGUID then
+            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                     
             return tPartyUnitToTest
          end
       end
    end
+
+   Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -327,6 +339,8 @@ local function aqCombatCreateControlFrame()
       end
 
       if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value == true and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+         local beginTime1 = debugprofilestop()
+
          if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName ~= L["Nothing selected"] then
             local tUniId = SkuCore:aqCombatGroupNameToUnitId(SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName)
             if tUniId then
@@ -358,19 +372,15 @@ local function aqCombatCreateControlFrame()
                end
             end
          end
+         Sku.PerformanceData["combat.friendly.outOfRangeEnabled"] = ((Sku.PerformanceData["combat.friendly.outOfRangeEnabled"] or 0) + (debugprofilestop() - beginTime1)) / 2
+
       end
             
       --clearnup lost guids from SkuCore.SkuRaidTargetRepo?
 
-
-
-
-
-
-
-
-
       if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+         local beginTime2 = debugprofilestop()
+
          for i = 1, #tUnitsToTestOnGameRaidTargets do
             local tTargetUnitIdToTest = tUnitsToTestOnGameRaidTargets[i]
             local tCreatureGUID = UnitGUID(tTargetUnitIdToTest)
@@ -424,10 +434,14 @@ local function aqCombatCreateControlFrame()
                end
             end
          end
+         Sku.PerformanceData["combat num in c"] = ((Sku.PerformanceData["combat num in c"] or 0) + (debugprofilestop() - beginTime2)) / 2         
+
       end
 
       if SkuCore.aqCombatCheckThreat then
          if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+            local beginTime3 = debugprofilestop()
+
             local tPlayerGUID = UnitGUID("player")
             local tTargetGUID = UnitGUID("target")
 
@@ -504,6 +518,8 @@ local function aqCombatCreateControlFrame()
                   end
                end
             end
+            Sku.PerformanceData["combat threat 2"] = ((Sku.PerformanceData["combat threat 2"] or 0) + (debugprofilestop() - beginTime3)) / 2                     
+
          end
 
          --[[
@@ -522,6 +538,10 @@ local function aqCombatCreateControlFrame()
          ]]
       end
 
+
+
+
+
       ttime = 0
    end)
 
@@ -531,6 +551,13 @@ local function aqCombatCreateControlFrame()
    local ttime2 = 0
    f:SetScript("OnUpdate", function(self, time)
       if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+local beginTime = debugprofilestop()
+
+
+
+
+
+
          if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value > 1 then
             ttime2 = ttime2 + time
             if ttime2 > 0.1 then
@@ -698,6 +725,8 @@ local function aqCombatCreateControlFrame()
             end
 
          end
+
+         Sku.PerformanceData["aqCombatQueue onupdate"] = ((Sku.PerformanceData["aqCombatQueue onupdate"] or 0) + (debugprofilestop() - beginTime)) / 2
       end
    end)   
 end

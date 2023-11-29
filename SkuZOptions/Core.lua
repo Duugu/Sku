@@ -233,6 +233,11 @@ function SkuOptions:SlashFunc(input, aSilent)
 			print(title)
 		end
 
+		if fields[1] == "performance" then
+			Sku:Performance()
+			return
+		end
+
 		if fields[1] == "devmode" then
 			-- Oh, hai there. You've found the secrect dev mode switch. Good boy. :P
 			-- I would suggest to not use it, if you don't know what that is leading to.

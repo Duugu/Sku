@@ -18,8 +18,8 @@ local tEmojis = {
 	["%^%^"] = L["Emoji"].." "..L["Smile"],
 	[":%-d"] = L["Emoji"].." "..L["Laughing"],
 	[":d"] = L["Emoji"].." "..L["Laughing"],
-	["xd"] = L["Emoji"].." "..L["Laughing"],
-	["Xd"] = L["Emoji"].." "..L["Laughing"],
+	--["xd"] = L["Emoji"].." "..L["Laughing"],
+	--["Xd"] = L["Emoji"].." "..L["Laughing"],
 	[":%-%("] = L["Emoji"].." "..L["Sad"],
 	[":%("] = L["Emoji"].." "..L["Sad"],
 	[":%-%*"] = L["Emoji"].." "..L["Kiss"],
@@ -316,8 +316,10 @@ local function SplitStringBTTS(aString)
 		return aString
 	end
 
-	for i, v in pairs(tEmojis) do
-		aString = string.gsub(aString, i, v)
+	if SkuOptions.db.profile["SkuChat"].doNotReadoutEmojis ~= true then
+		for i, v in pairs(tEmojis) do
+			aString = string.gsub(aString, i, v)
+		end
 	end
 
 	aString = string.gsub(aString, "\r\n", ";")
@@ -605,7 +607,7 @@ function SkuVoice:OutputStringBTtts(aString, aOverwrite, aWait, aLength, aDoNotO
 	end
 
 
-	aString = string.gsub(aString, "%.%.%.", ";"..L["period"]..";"..L["period"]..";"..L["period"]..";")
+	--aString = string.gsub(aString, "%.%.%.", ";"..L["period"]..";"..L["period"]..";"..L["period"]..";")
 
 	local tString = ""
 	if aSpell == true then

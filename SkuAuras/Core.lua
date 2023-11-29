@@ -755,6 +755,8 @@ local CombatLogFilterAttackable =  bit.bor(
 	COMBATLOG_FILTER_NEUTRAL_UNITS
 )
 function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
+	local beginTime = debugprofilestop()
+
 	if not SkuOptions.db.char[MODULE_NAME].Auras then
 		SkuOptions.db.char[MODULE_NAME].Auras = {}
 	end
@@ -1129,6 +1131,8 @@ function SkuAuras:EvaluateAllAuras(tEventData, tSpecificAuraToTestIndex)
 			end
 		end
 	end
+
+	Sku.PerformanceData["EvaluateAllAuras"] = ((Sku.PerformanceData["EvaluateAllAuras"] or 0) + (debugprofilestop() - beginTime)) / 2
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

@@ -462,6 +462,12 @@ local function AqCreateControlFrame()
 
    f:SetScript("OnUpdate", function(self, time)
 		--party health 2 queue manager
+
+local beginTime = debugprofilestop()
+
+
+
+
 		if #ttimeMonParty2Queue > 0 then
 			if ttimeMonParty2QueueCurrentTime <= 0 then
 				local tUnitNumber, tVolume, tPitch, tLength = ttimeMonParty2Queue[1].tUnitNumber , ttimeMonParty2Queue[1].tVolume , ttimeMonParty2Queue[1].tPitch , ttimeMonParty2Queue[1].lenght
@@ -783,6 +789,8 @@ local function AqCreateControlFrame()
 				end
 			end			
 		end
+
+		Sku.PerformanceData["aq onupdate"] = ((Sku.PerformanceData["aq onupdate"] or 0) + (debugprofilestop() - beginTime)) / 2
    end)
 end
 

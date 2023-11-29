@@ -76,3 +76,106 @@ function dprint(...)
 		print("Debug:", ...)
 	end
 end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+-- Performance monitoring
+Sku.PerformanceStart = false
+Sku.PerformanceData = {}
+function Sku:Performance()
+	if not _G["SkuPerformance"] then
+		local f = _G["SkuPerformance"] or CreateFrame("Frame", "SkuPerformance", UIParent, BackdropTemplateMixin and "BackdropTemplate")
+		local ttime = 0
+		f:SetMovable(true)
+		f:EnableMouse(true)
+		f:SetClampedToScreen(true)
+		f:RegisterForDrag("LeftButton")
+		f:SetFrameStrata("DIALOG")
+		f:SetFrameLevel(129)
+		f:SetSize(450, 170)
+		f:SetPoint("TOP", UIParent, "TOP")
+		f:SetBackdrop({bgFile = [[Interface\ChatFrame\ChatFrameBackground]], edgeFile = "", tile = false, tileSize = 0, edgeSize = 32, insets = {left = 0, right = 0, top = 0, bottom = 0}})
+		f:SetBackdropColor(0, 0, 0, 1)
+		f:SetScript("OnDragStart", function(self) self:StartMoving() end)
+		f:SetScript("OnDragStop", function(self) self:StopMovingOrSizing() end)
+		f:SetResizable(true)
+      --f:SetResizeBounds(500, 500)
+
+		local rb = CreateFrame("Button", "SkuPerformanceResizeButton", f)
+		rb:SetPoint("BOTTOMRIGHT", -6, 7)
+		rb:SetSize(16, 16)
+
+		rb:SetNormalTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Up")
+		rb:SetHighlightTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Highlight")
+		rb:SetPushedTexture("Interface\\ChatFrame\\UI-ChatIM-SizeGrabber-Down")
+
+		rb:SetScript("OnMouseDown", function(self, button)
+			if button == "LeftButton" then
+				f:StartSizing("BOTTOMRIGHT")
+				self:GetHighlightTexture():Hide() -- more noticeable
+			end
+		end)
+		rb:SetScript("OnMouseUp", function(self, button)
+			f:StopMovingOrSizing()
+			self:GetHighlightTexture():Show()
+			f:SetWidth(f:GetWidth())
+
+			for x = 1, 10 do
+				local fs = _G["SkuPerformanceFSl"..x]
+				fs:SetSize(f:GetWidth() / 2, 200)
+				local fs = _G["SkuPerformanceFSr"..x]
+				fs:SetPoint("TOPLEFT", f, "TOPLEFT", f:GetWidth() / 2, -((x-1) * 15))
+				fs:SetSize(f:GetWidth() / 2, 200)
+			end			
+		end)
+
+		local SkuPerformanceOnUpdateTime = 0
+		f:SetScript('OnUpdate', function(self, time)
+			if Sku.PerformanceStart ~= true then
+				return
+			end
+			SkuPerformanceOnUpdateTime = SkuPerformanceOnUpdateTime + time
+			if SkuPerformanceOnUpdateTime > 0.1 then
+				local xs = 1
+				for i, v in pairs(Sku.PerformanceData) do
+					_G["SkuPerformanceFSl"..xs]:SetText(i)
+					_G["SkuPerformanceFSr"..xs]:SetText(tostring(v))
+					xs = xs + 1
+				end
+
+				SkuPerformanceOnUpdateTime = 0
+			end
+		end)
+
+		for x = 1, 10 do
+			local fs = f:CreateFontString("SkuPerformanceFSl"..x)
+			fs:SetFontObject(SystemFont_Small)
+			fs:SetTextColor(1, 1, 1, 1)
+			fs:SetJustifyH("LEFT")
+			fs:SetJustifyV("TOP")
+			
+			fs:SetPoint("TOPLEFT", f, "TOPLEFT", 0, -((x-1) * 15))
+			fs:SetText("")
+			fs:SetSize(f:GetWidth() / 2, 200)
+			local fs = f:CreateFontString("SkuPerformanceFSr"..x)
+			fs:SetFontObject(SystemFont_Small)
+			fs:SetTextColor(1, 1, 1, 1)
+			fs:SetJustifyH("LEFT")
+			fs:SetJustifyV("TOP")
+			fs:SetPoint("TOPLEFT", f, "TOPLEFT", f:GetWidth() / 2, -((x-1) * 15))
+			fs:SetText("")
+			fs:SetSize(f:GetWidth() / 2, 200)
+		end
+
+		_G["SkuPerformance"]:Show()
+		Sku.PerformanceStart = true
+		return
+	end
+
+	if _G["SkuPerformance"]:IsShown() == true then
+		_G["SkuPerformance"]:Hide()
+		Sku.PerformanceStart = false
+	else
+		_G["SkuPerformance"]:Show()
+		Sku.PerformanceStart = true
+	end
+end

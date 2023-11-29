@@ -322,6 +322,19 @@ SkuChat.options = {
 				return SkuOptions.db.profile[MODULE_NAME].allChatViaBlizzardTts
 			end,
 		},
+		doNotReadoutEmojis = {
+			order = 20,
+			name = L["Do not read out emojis"] ,
+			desc = "",
+			type = "toggle",
+			set = function(info,val)
+				SkuOptions.db.profile[MODULE_NAME].doNotReadoutEmojis = val
+			end,
+			get = function(info)
+				return SkuOptions.db.profile[MODULE_NAME].doNotReadoutEmojis
+			end
+		},
+
 	},
 }
 
@@ -346,6 +359,7 @@ SkuChat.defaults = {
 	joinSkuChannel = true,
 	neverResetQueues = false,
 	allChatViaBlizzardTts = false,
+	doNotReadoutEmojis = false,
 }
 
 --------------------------------------------------------------------------------------------------------------------------------------
