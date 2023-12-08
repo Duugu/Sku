@@ -9,6 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [Sku WRATH r35.10](https://github.com/Duugu/Sku/releases/download/r35.10/Sku-r35.10-wrath.zip) (December 7th 2023)<br>
 - [Sku ERA r32.22](https://github.com/Duugu/SkuEra/releases/download/r32.22/Sku-r32.22-classic.zip) (August 30th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
@@ -20,7 +21,6 @@ DEUTSCH - Erste Schritte:<br>
 *Older updates:* <br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [Wow Menu WRATH r4.1](https://github.com/Duugu/wow_menu/releases/download/r4.1/wow_menu-r4.1-wrath.zip) (Sep 1st 2023)<br>
-- [Wow Menu ERA r4.4](https://github.com/Duugu/wow_menu_era/releases/download/r4.4/wow_menu-r4.4-classic.zip) (Sep 1st 2023)<br>
 
 *Addons for sighted players:* <br>
 - [SkuMapper r3.4](https://github.com/Duugu/SkuMapper/releases/download/r3.4/SkuMapper-r3.4-wrath.zip) (November 15th 2023), mapping addon for sighted players<br>
@@ -28,6 +28,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in WoW Menu ERA r4.5
+- Updated the realms list for Season of Discovery.
+
 ## Changes in Sku r35.10
 - Finally fixed the "Interface action failed because of an Addon" thanks to the help from Mitälie on WoWUIDev Discord. :)
 - Fixed an error with Incoming Heal in health monitors.
