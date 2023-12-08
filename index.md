@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35.9](https://github.com/Duugu/Sku/releases/download/r35.9/Sku-r35.9-wrath.zip) (November 28th 2023)<br>
+- [Sku WRATH r35.10](https://github.com/Duugu/Sku/releases/download/r35.10/Sku-r35.10-wrath.zip) (December 7th 2023)<br>
 - [Sku ERA r32.22](https://github.com/Duugu/SkuEra/releases/download/r32.22/Sku-r32.22-classic.zip) (August 30th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.10
+- Finally fixed the "Interface action failed because of an Addon" thanks to the help from Mitälie on WoWUIDev Discord. :)
+- Fixed an error with Incoming Heal in health monitors.
+- Fixed an aura error with spell cooldowns that are resetted before the regular cooldown end.
+- Re-added routes to mushrooms in Dalaran.
+- Fixed a bug with the pathfinding algorithm and waypoints in 0 meters distance.
+
 ## Changes in Sku r35.9
 - Fixed another bug with the new route calculation algorithm that could lead to script timeout errors in some scenarios.
 - Removed xd from the list of read out emojis.
