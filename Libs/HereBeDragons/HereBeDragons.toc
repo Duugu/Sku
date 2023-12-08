@@ -14,7 +14,7 @@ CallbackHandler-1.0\CallbackHandler-1.0.lua
 
 # WoW 8.0+ version
 HereBeDragons-2.0.lua
-HereBeDragons-Pins-2.0.lua
+
 
 # Migration Data for 7.x -> 8.0 migration
 HereBeDragons-Migrate.lua

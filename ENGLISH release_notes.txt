@@ -2,6 +2,16 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r35.10
+	- Finally fixed the "Interface action failed because of an Addon" thanks to the help from Mitälie on WoWUIDev Discord. :)
+	- Fixed an error with Incoming Heal in health monitors.
+	- Fixed an aura error with spell cooldowns that are resetted before the regular cooldown end.
+	- Re-added routes to mushrooms in Dalaran.
+	- Fixed a bug with the pathfinding algorithm and waypoints in 0 meters distance.
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r35.9
 	- Fixed another bug with the new route calculation algorithm that could lead to script timeout errors in some scenarios.

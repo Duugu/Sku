@@ -559,7 +559,7 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 						local tBestDistance = tFinalWpDistances[tNextWp]
 						for tLinktWaypointCacheIndex, tLinkDistance in pairs(tCurrentWP.links.byId) do
 							if tFinalWpDistances[tLinktWaypointCacheIndex] then
-								if tFinalWpDistances[tLinktWaypointCacheIndex] < tBestDistance then
+								if tLinkDistance == 0 or tFinalWpDistances[tLinktWaypointCacheIndex] < tBestDistance then
 									tinsert(tpathWps, 1, WaypointCache[tLinktWaypointCacheIndex].name)
 									tBestDistance = tFinalWpDistances[tLinktWaypointCacheIndex]
 									tContinue = true
@@ -2815,6 +2815,7 @@ function SkuNav:PLAYER_LOGIN(...)
 	SkuOptions.db.profile[MODULE_NAME].routeRecordingLastWp = nil
 		
 	--tomtom integration for adding beacons to the arrow
+	--[[
 	if TomTom then
 		SkuOptions.tomtomBeaconName = "SkuTomTomBeacon"
 		C_Timer.NewTimer(5, function() 
@@ -2843,6 +2844,7 @@ function SkuNav:PLAYER_LOGIN(...)
 			end)
 		end)
 	end
+	]]
 
 	--SkuNav:SkuNavMMOpen()
 end

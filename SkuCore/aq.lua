@@ -419,13 +419,18 @@ function SkuCore:MonitorRaidRosterUpdate()
 			end
       end
 
+		--[[
 		C_Timer.After(1, function()
-			for x = 1, 10 do 
-				if _G["CompactRaidGroup"..x] then
-					CompactRaidGroup_InitializeForGroup(_G["CompactRaidGroup"..x], x)
+			if SkuCore.inCombat ~= true then
+				print("SkuCore.inCombat", SkuCore.inCombat)
+				for x = 1, 10 do 
+					if _G["CompactRaidGroup"..x] then
+						CompactRaidGroup_InitializeForGroup(_G["CompactRaidGroup"..x], x)
+					end
 				end
 			end
 		end)
+		]]
    end
 end
 
@@ -1258,19 +1263,19 @@ end
 function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 	local tIncomingHealAmount = 0
 	if aUnitID == "player" and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.factorInIncomingHeals == true then
-		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID)
+		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
 		local tIncomingHealPlayer = UnitGetIncomingHeals(aUnitID, "player")
 		tIncomingHealAmount = (tIncomingHealAll - tIncomingHealPlayer)
 	elseif (aUnitID == "playerpet" or aUnitID == "pet") and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].pet.health.factorInIncomingHeals == true then
-		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID)
+		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
 		local tIncomingHealPlayer = UnitGetIncomingHeals(aUnitID, "player")
 		tIncomingHealAmount = (tIncomingHealAll - tIncomingHealPlayer)
 	elseif (aUnitID == "player" or aUnitID == "party1" or aUnitID == "party2" or aUnitID == "party3" or aUnitID == "party4") and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].party.health2.factorInIncomingHeals == true then
-		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID)
+		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
 		local tIncomingHealPlayer = UnitGetIncomingHeals(aUnitID, "player")
 		tIncomingHealAmount = (tIncomingHealAll - tIncomingHealPlayer)
 	elseif (string.sub(aUnitID, 1, 4) == "raid" and string.sub(aUnitID, 1, 7) ~= "raidpet") and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].raid.health2.factorInIncomingHeals == true then
-		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID)
+		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
 		local tIncomingHealPlayer = UnitGetIncomingHeals(aUnitID, "player")
 		tIncomingHealAmount = (tIncomingHealAll - tIncomingHealPlayer)
 	end
@@ -1796,14 +1801,15 @@ function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice
 		tPause = tPause + (string.len(aPrefix) * 0.03) + 0.2	
 	end
 	C_Timer.After(tPause, function()
-		_, tPrevOutputHandle[aVoice] = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..aValue.."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+		local a, b = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..aValue.."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+		tPrevOutputHandle[aVoice] = b
 	end)
 
-	--[[
 	if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.iceCreamBought ~= true then
 		if math.random(1, 750) == 750 then	
 			C_Timer.After(tPause + 1, function()
-				_, tPrevOutputHandle[aVoice] = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..tRandomSt[tRandomStC].."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+				local a, b = PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\aq\\"..aVoice.."\\"..aVoice.."_"..tRandomSt[tRandomStC].."_"..aVol..".mp3", SkuOptions.db.profile["SkuOptions"].soundChannels.SkuChannel or "Talking Head")
+				tPrevOutputHandle[aVoice] = b
 			end)
 			tRandomStC = tRandomStC + 1
 			if tRandomStC > 7 then
@@ -1811,7 +1817,6 @@ function SkuCore:MonitorOutputPlayerPercent(aValue, aVol, aInstancesOnly, aVoice
 			end
 		end
 	end
-	]]
 
 end
 

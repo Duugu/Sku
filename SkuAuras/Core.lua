@@ -607,8 +607,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuAuras:COOLDOWN_TICKER()
 	for spellId, cooldownData in pairs(SkuAuras.SpellCDRepo) do
-		--dprint("COOLDOWN_TICKER", cooldownData.spellname, GetTime() - cooldownData.start, cooldownData.duration)
-		if (GetTime() - cooldownData.start) >= cooldownData.duration then
+		local start, duration, enabled, modRate = GetSpellCooldown(spellId)
+		if start == 0 or ((GetTime() - cooldownData.start) >= cooldownData.duration) then
 			cooldownData.subevent = "SPELL_COOLDOWN_END"
 			SkuAuras:SPELL_COOLDOWN_END(cooldownData.eventData)
 			SkuAuras.SpellCDRepo[spellId] = nil

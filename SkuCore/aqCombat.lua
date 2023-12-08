@@ -228,17 +228,40 @@ local function aqCombatGetUnitIndexFromUnitGUID(aUnitGUID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-local function aqCombatCheckElite(aUnitGUID)
-   if aUnitGUID == nil then
+function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
+   if aUnitGUID == nil and aTargetUnitIdToTest == nil then
       return
    end
 
+   local beginTime6 = debugprofilestop() 
+
    if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.ignoreNonElite == true then   
+
+      if aTargetUnitIdToTest == nil then
+         local tUnitId = SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
+         if tUnitId then
+            aTargetUnitIdToTest = tUnitId
+         end
+      end
+
+
+      if aTargetUnitIdToTest ~= nil  then
+         local tUnitClassification = UnitClassification(aTargetUnitIdToTest)
+         Sku.PerformanceData["aqCombatCheckElite"] = ((Sku.PerformanceData["aqCombatCheckElite"] or 0) + (debugprofilestop() - beginTime6)) / 2
+
+         if tUnitClassification and (tUnitClassification == "elite" or tUnitClassification == "rareelite" or tUnitClassification == "worldboss") then
+            return true
+         else
+            return false
+         end
+      end
+         
       local index = aqCombatGetUnitIndexFromUnitGUID(aUnitGUID)
       if index then
-         local tData = SkuDB.NpcData.Data[tonumber(index)]
+         local tData = SkuDB.NpcData.Data[index]
          if tData then
             if tData[SkuDB.NpcData.Keys.rank] then
+               Sku.PerformanceData["aqCombatCheckElite1"] = ((Sku.PerformanceData["aqCombatCheckElite1"] or 0) + (debugprofilestop() - beginTime6)) / 2
                if 
                   tData[SkuDB.NpcData.Keys.rank] ~= 1 and
                   tData[SkuDB.NpcData.Keys.rank] ~= 2 and
@@ -256,6 +279,7 @@ local function aqCombatCheckElite(aUnitGUID)
       if tUnitId then
          local t = UnitClassification(tUnitId)
          if t then
+            Sku.PerformanceData["aqCombatCheckElite2"] = ((Sku.PerformanceData["aqCombatCheckElite2"] or 0) + (debugprofilestop() - beginTime6)) / 2
             if t ~= "worldboss" and t ~= "rareelite" and t ~= "elite" then
                return false
             else
@@ -264,6 +288,7 @@ local function aqCombatCheckElite(aUnitGUID)
          end
       end
    else
+      Sku.PerformanceData["aqCombatCheckElite3"] = ((Sku.PerformanceData["aqCombatCheckElite3"] or 0) + (debugprofilestop() - beginTime6)) / 2
       return true
    end
 end
@@ -315,14 +340,14 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
       for q = 1, #tAllPartyRaidUnits do
          local tPartyUnitToTest = tAllPartyRaidUnits[q]
          local tPartyGuid = UnitGUID(tPartyUnitToTest)
-         if tPartyGuid and tPartyGuid == aUnitGUID then
-            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                     
+         if tPartyGuid == aUnitGUID then
+            Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] or 0) + (debugprofilestop() - beginTime2)) / 2                     
             return tPartyUnitToTest
          end
       end
    end
 
-   Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+   Sku.PerformanceData["aqCombatIsPartyOrRaidMember3"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember3"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -384,7 +409,7 @@ local function aqCombatCreateControlFrame()
          for i = 1, #tUnitsToTestOnGameRaidTargets do
             local tTargetUnitIdToTest = tUnitsToTestOnGameRaidTargets[i]
             local tCreatureGUID = UnitGUID(tTargetUnitIdToTest)
-            if aqCombatCheckElite(tCreatureGUID) == true then
+            if aqCombatCheckElite(tCreatureGUID, tTargetUnitIdToTest) == true then
                if tCreatureGUID and SkuCore.threatTable[tCreatureGUID] ~= false then
                   local t = SkuCore:aqCombatIsPartyOrRaidMember(tTargetUnitIdToTest)
                   if t == nil then
@@ -446,7 +471,7 @@ local function aqCombatCreateControlFrame()
             local tTargetGUID = UnitGUID("target")
 
             if tTargetGUID then
-               if aqCombatCheckElite(tTargetGUID) == true then               
+               if aqCombatCheckElite(tTargetGUID, "target") == true then               
                   if SkuCore.threatTable[tTargetGUID] then
                      if SkuCore.threatTable[tTargetGUID][tPlayerGUID] and SkuCore.threatTable[tTargetGUID][tPlayerGUID].isTanking ~= nil then
                         --Threat warning if you are first place (tanking) and second place threat percentage is higher than
