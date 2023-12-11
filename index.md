@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku ERA r33.23](https://github.com/Duugu/SkuEra/releases/download/r33.23/Sku-r33.23-classic.zip) (December 11th 2023)<br>
 - [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [Sku WRATH r35.10](https://github.com/Duugu/Sku/releases/download/r35.10/Sku-r35.10-wrath.zip) (December 7th 2023)<br>
-- [Sku ERA r32.22](https://github.com/Duugu/SkuEra/releases/download/r32.22/Sku-r32.22-classic.zip) (August 30th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku Era r32.23
+- Added a runes menu: Core > Options > Runes. Select a rune and the Engrave submenu entry. That will highlight your mouse cursor with the engraving spell. Then do a left click on an appropiate item in your bags or character inventory to engrave that item. Just as with Enchanting.
+- Added rune skills/spells to the F11 action bar config menu: Core > Action Bars > Action bar > Action button x > Runes. That menu has only spells if you are wearing engraved items that do provide spells/abilities.
+- Added known Season of Discovery items, npcs, spells, etc. to the databases
+
 ## Changes in WoW Menu ERA r4.5
 - Updated the realms list for Season of Discovery.
 
