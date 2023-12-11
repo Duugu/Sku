@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku ERA r33.23](https://github.com/Duugu/SkuEra/releases/download/r32.23/Sku-r32.23-classic.zip) (December 11th 2023)<br>
+- [Sku ERA r32.23](https://github.com/Duugu/SkuEra/releases/download/r32.23/Sku-r32.23-classic.zip) (December 11th 2023)<br>
 - [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [Sku WRATH r35.10](https://github.com/Duugu/Sku/releases/download/r35.10/Sku-r35.10-wrath.zip) (December 7th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
