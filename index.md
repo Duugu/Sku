@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35.11](https://github.com/Duugu/Sku/releases/download/r35.11/Sku-r35.11-wrath.zip) (December 19th 2023)<br>
+- [Sku WRATH r35.12](https://github.com/Duugu/Sku/releases/download/r35.12/Sku-r35.12-wrath.zip) (December 19th 2023)<br>
 - [Sku ERA r32.24](https://github.com/Duugu/SkuEra/releases/download/r32.24/Sku-r32.24-classic.zip) (December 19th 2023)<br>
 - [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.12
+- More fixes for pathfinding leading to broken routes in specific scenarios.
+ 
 ## Changes in Sku Era r32.24
 - Moved the runes menu to the character menu
 - Fixed the talent menu. Should work now.
