@@ -2994,3 +2994,5 @@ L["Factor in incoming heals"] = "Factor in incoming heals"
 L["Maximum distance for destinations in routes list"] = "Maximum distance for destinations in routes list"
 L["Unlimited"] = "Unlimited"
 L["Do not read out emojis"] = "Do not read out emojis"
+
+L["Update rate (performance)"] = "Update rate (performance)"

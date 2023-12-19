@@ -2,6 +2,13 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r35.11
+	- Fixed a bug with empty target lists for route selection in quest log.
+	- Fixed another bug with the pathfinding algorithm in specific scenarios that lead to the game being locked for 20 seconds followed by a "Script ran to long" error.
+	- Optimized the combat monitor code. That may or may not improve the performance in 25 men raid scenarios.
+	- Added a new setting to Core > Monitor > Combat: Update rate (performance). Default value: 20. This setting is to enhance the performance in 25 men raid scenarios. If you are experiencing bad performance, try to lower the value step for step to do less updates and decreasing the addons workload. High value means timely updates but high workload/bad performance. Lower values are less updates, but better performance.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r35.10

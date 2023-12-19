@@ -530,6 +530,10 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 		local tCurrentWP = WaypointCache[i]
 		if tAuto == "" or ssub(tCurrentWP.name, 1, 4) ~= tAuto or aReturnPathForWp ~= nil then
 			tcount = tcount + 1
+			local tDist = v
+			if tDist == 0 then
+				tDist = 1
+			end
 			rMetapathData[tCurrentWP.name] = {
 				distance = v,
 				distanceToStartWp = tDistanceToStartWp,
@@ -559,7 +563,7 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 						local tBestDistance = tFinalWpDistances[tNextWp]
 						for tLinktWaypointCacheIndex, tLinkDistance in pairs(tCurrentWP.links.byId) do
 							if tFinalWpDistances[tLinktWaypointCacheIndex] then
-								if tLinkDistance == 0 or tFinalWpDistances[tLinktWaypointCacheIndex] < tBestDistance then
+								if tFinalWpDistances[tLinktWaypointCacheIndex] < tBestDistance then
 									tinsert(tpathWps, 1, WaypointCache[tLinktWaypointCacheIndex].name)
 									tBestDistance = tFinalWpDistances[tLinktWaypointCacheIndex]
 									tContinue = true
@@ -2492,8 +2496,15 @@ function SkuNav:GetAllLinkedWPsInRangeToCoords(aX, aY, aRange)
 			local tDistance  = SkuNav:Distance(aX, aY, tWpData.worldX, tWpData.worldY)
 			if tDistance ~= nil and aRange ~= nil then
 				if tDistance < aRange then
-					tFoundWps[tName] = {["nearestWP"] = tName, ["nearestWpRange"] = tDistance}
-					tCount = tCount + 1
+					local tc = 0
+					for li,lv in pairs(tWpData.links.byId) do
+						tc = tc + 1
+						break
+					end
+					if tc > 0 then
+						tFoundWps[tName] = {["nearestWP"] = tName, ["nearestWpRange"] = tDistance}
+						tCount = tCount + 1
+					end
 				end
 			end
 		end

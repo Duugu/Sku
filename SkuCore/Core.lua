@@ -660,7 +660,7 @@ function SkuCore:PLAYER_TARGET_CHANGED()
 				tCheckType = "Friendly"
 			end
 		end
-		if SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType].rangeCheckOnTargetChange == true then
+		if SkuOptions.db.char[MODULE_NAME].RangeChecks and SkuOptions.db.char[MODULE_NAME].RangeChecks[tCheckType].rangeCheckOnTargetChange == true then
 			SkuCore:DoRangeCheck(true)
 		end
 	end

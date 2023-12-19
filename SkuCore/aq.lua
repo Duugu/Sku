@@ -846,7 +846,7 @@ function SkuCore:AqOnInitialize()
    SkuDispatcher:RegisterEventCallback("GROUP_LEFT", SkuCore.Monitor_GROUP_LEFT)
    SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.Monitor_GROUP_ROSTER_UPDATE)	
 
-	SkuCore:aqCombatOnInitialize()
+	--SkuCore:aqCombatOnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

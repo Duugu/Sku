@@ -121,10 +121,10 @@ function Sku:Performance()
 
 			for x = 1, 10 do
 				local fs = _G["SkuPerformanceFSl"..x]
-				fs:SetSize(f:GetWidth() / 2, 200)
+				fs:SetSize((f:GetWidth() / 3)*2, 200)
 				local fs = _G["SkuPerformanceFSr"..x]
 				fs:SetPoint("TOPLEFT", f, "TOPLEFT", f:GetWidth() / 2, -((x-1) * 15))
-				fs:SetSize(f:GetWidth() / 2, 200)
+				fs:SetSize((f:GetWidth() / 3)*1, 200)
 			end			
 		end)
 

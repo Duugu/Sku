@@ -2983,3 +2983,5 @@ L["Factor in incoming heals"] = "Eingehende Heilungen berücksichtigen"
 L["Maximum distance for destinations in routes list"] = "Maximale Entferung für Ziele in Routenliste"
 L["Unlimited"] = "Unbegrenzt"
 L["Do not read out emojis"] = "Emojis nicht als Text vorlesen"
+
+L["Update rate (performance)"] = "Aktualisierungsrate (Leistung)"

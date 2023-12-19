@@ -3,6 +3,8 @@ local MODULE_NAME, MODULE_PART = "SkuCore", "aqCombat"
 local L = Sku.L
 local _G = _G
 
+local sfind = string.find
+
 SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0", "AceEvent-3.0")
 
 local aqCombatVoices = {
@@ -75,7 +77,7 @@ for x = 1, 4 do
    table.insert(tUnitsToTestOnGameRaidTargets, "party"..x.."targettarget")
    table.insert(tUnitsToTestOnGameRaidTargets, "partypet"..x.."targettarget")
 end
-for x = 1, 40 do
+for x = 1, 25 do
    table.insert(tAllPartyRaidUnits, "raid"..x)
    table.insert(tAllPartyRaidUnits, "raidpet"..x)
 
@@ -103,23 +105,27 @@ SkuCore.inOutCombatQueue = {
 
 SkuCore.partyDeadCountCounter = 0
 
+local aqCombatIsPartyOrRaidMemberCache = {}
+
+local tCurrentUpdateRate = 1
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCoreAqCombatGetVoiceString(aString, aTable)
    local tResult = (aString:gsub('($%b{})', function(w) 
       local tFinalString = aTable[w:sub(3, -2)] or w
       if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].global.numberOnly == true then
-         if string.find(tFinalString, "raidpet") then
+         if sfind(tFinalString, "raidpet") then
             tFinalString = string.gsub(tFinalString, "raidpet", "")
-         elseif string.find(tFinalString, "raid") then
+         elseif sfind(tFinalString, "raid") then
             tFinalString = string.gsub(tFinalString, "raid", "")
-         elseif string.find(tFinalString, "partypet") then
+         elseif sfind(tFinalString, "partypet") then
             tFinalString = string.gsub(tFinalString, "partypet", "")
-         elseif string.find(tFinalString, "party") then
+         elseif sfind(tFinalString, "party") then
             tFinalString = string.gsub(tFinalString, "party", "")
          end
       end
 
-      if string.find(tFinalString, "nameplate") then
+      if sfind(tFinalString, "nameplate") then
          tFinalString = "creature"
       end
 
@@ -140,12 +146,12 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SkuCoreAqCombatOutput(aPattern, aValuesTable, aQueueSettings, aSkuSetting, aExtraSound)
    if aValuesTable.Unit1 then
-      if string.find(aValuesTable.Unit1, "nameplate") then
+      if sfind(aValuesTable.Unit1, "nameplate") then
          aValuesTable.Unit1 = "creature"
       end
    end
    if aValuesTable.Unit2 then
-      if string.find(aValuesTable.Unit2, "nameplate") then
+      if sfind(aValuesTable.Unit2, "nameplate") then
          aValuesTable.Unit2 = "creature"
       end
    end
@@ -154,9 +160,9 @@ local function SkuCoreAqCombatOutput(aPattern, aValuesTable, aQueueSettings, aSk
    aValuesTable.voice = tVoice
 
    local tSound = ""
-   if string.find(aExtraSound or aSkuSetting.sound, ";") then
+   if sfind(aExtraSound or aSkuSetting.sound, ";") then
       tSound = string.match(aExtraSound or aSkuSetting.sound, "(.+);(.+)")
-   elseif string.find(aExtraSound or aSkuSetting.sound, "sound-") then
+   elseif sfind(aExtraSound or aSkuSetting.sound, "sound-") then
       aValuesTable = {
          voice = tVoice,
       }
@@ -177,11 +183,9 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
    for i = 1, #tUnitsToTestOnGameRaidTargets do
-      local tTargetUnitIdToTest = tUnitsToTestOnGameRaidTargets[i]
-      local tCreatureGUID = UnitGUID(tTargetUnitIdToTest)
-      if tCreatureGUID then
+      if UnitGUID(tUnitsToTestOnGameRaidTargets[i]) then
          if tCreatureGUID == aUnitGUID then
-            return tTargetUnitIdToTest
+            return tUnitsToTestOnGameRaidTargets[i]
          end
       end
    end
@@ -228,7 +232,8 @@ local function aqCombatGetUnitIndexFromUnitGUID(aUnitGUID)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
+local tKeysRank
+local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
    if aUnitGUID == nil and aTargetUnitIdToTest == nil then
       return
    end
@@ -260,12 +265,12 @@ function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
       if index then
          local tData = SkuDB.NpcData.Data[index]
          if tData then
-            if tData[SkuDB.NpcData.Keys.rank] then
+            if tData[tKeysRank] then
                Sku.PerformanceData["aqCombatCheckElite1"] = ((Sku.PerformanceData["aqCombatCheckElite1"] or 0) + (debugprofilestop() - beginTime6)) / 2
                if 
-                  tData[SkuDB.NpcData.Keys.rank] ~= 1 and
-                  tData[SkuDB.NpcData.Keys.rank] ~= 2 and
-                  tData[SkuDB.NpcData.Keys.rank] ~= 3
+                  tData[tKeysRank] ~= 1 and
+                  tData[tKeysRank] ~= 2 and
+                  tData[tKeysRank] ~= 3
                then
                   return false
                else
@@ -298,33 +303,43 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
    local beginTime2 = debugprofilestop()   
 
    if aUnitId then
+      local aUnitIdGuid = UnitGUID(aUnitId)
+
+      --[[
       if UnitIsPlayer(aUnitId) ~= true then
          --return nil
       end
-      if UnitGUID("player") == UnitGUID(aUnitId) then
+      ]]
+
+      if aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] then
+         return aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid]
+      end
+
+      --[[
+      if UnitGUID("player") == aUnitIdGuid then
          Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "player"
       end
-      if UnitGUID("pet") == UnitGUID(aUnitId) then
+      if UnitGUID("pet") == aUnitIdGuid then
          Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "pet"
       end
       for x = 1, 4 do
-         if UnitGUID("party"..x) == UnitGUID(aUnitId) then
+         if UnitGUID("party"..x) == aUnitIdGuid then
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "party"..x
          end
-         if UnitGUID("partypet"..x) == UnitGUID(aUnitId) then
+         if UnitGUID("partypet"..x) == aUnitIdGuid then
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "partypet"..x
          end
       end
       for x = 1, 40 do
-         if UnitGUID("raid"..x) == UnitGUID(aUnitId) then
+         if UnitGUID("raid"..x) == aUnitIdGuid then
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raid"
          end
-         if UnitGUID("raidpet"..x) == UnitGUID(aUnitId) then
+         if UnitGUID("raidpet"..x) == aUnitIdGuid then
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raidpet"..x
          end
@@ -334,6 +349,7 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
          Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return --"friendly"
       end
+      ]]
 
       return --"unknown"
    elseif aUnitGUID then
@@ -359,20 +375,23 @@ local function aqCombatCreateControlFrame()
    local ttime = 0
    f:SetScript("OnUpdate", function(self, time)
       ttime = ttime + time
-      if ttime < 0.1 then
+      if ttime < (0.1 * tCurrentUpdateRate) then
          return
       end
 
-      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled.value == true and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+      local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+      tCurrentUpdateRate = (21 - tCurrentSettings.combat.updateRate)
+
+      if tCurrentSettings.combat.friendly.outOfRangeEnabled.value == true and tCurrentSettings.combat.enabled == true then
          local beginTime1 = debugprofilestop()
 
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName ~= L["Nothing selected"] then
-            local tUniId = SkuCore:aqCombatGroupNameToUnitId(SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName)
+         if tCurrentSettings.combat.friendly.oorUnitName ~= L["Nothing selected"] then
+            local tUniId = SkuCore:aqCombatGroupNameToUnitId(tCurrentSettings.combat.friendly.oorUnitName)
             if tUniId then
                local _, tMinRange = SkuOptions.RangeCheck:GetRange(tUniId)
-               if tMinRange and tMinRange > SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorAt then
+               if tMinRange and tMinRange > tCurrentSettings.combat.friendly.oorAt then
                   local tDoOutput = false
-                  if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorInterval == 0 then
+                  if tCurrentSettings.combat.friendly.oorInterval == 0 then
                      if tOorIntervalTime ~= -1 then
                         tDoOutput = true
                         tOorIntervalTime = -1
@@ -382,14 +401,14 @@ local function aqCombatCreateControlFrame()
                         tDoOutput = true
                         tOorIntervalTime = GetTimePreciseSec() 
                      else
-                        if GetTimePreciseSec() - tOorIntervalTime > SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorInterval then
+                        if GetTimePreciseSec() - tOorIntervalTime > tCurrentSettings.combat.friendly.oorInterval then
                            tDoOutput = true
                            tOorIntervalTime = GetTimePreciseSec() 
                         end
                      end
                   end
                   if tDoOutput == true then
-                     local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.outOfRangeEnabled
+                     local tSetting = tCurrentSettings.combat.friendly.outOfRangeEnabled
                      SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tUniId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                   end
                else
@@ -403,7 +422,7 @@ local function aqCombatCreateControlFrame()
             
       --clearnup lost guids from SkuCore.SkuRaidTargetRepo?
 
-      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+      if tCurrentSettings.combat.enabled == true then
          local beginTime2 = debugprofilestop()
 
          for i = 1, #tUnitsToTestOnGameRaidTargets do
@@ -427,14 +446,14 @@ local function aqCombatCreateControlFrame()
                                  if SkuCore.threatTable[tCreatureGUID] then
                                     if SkuCore.threatTable[tCreatureGUID][tPartyGuid] then
                                        if SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking == true and SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking ~= true then
-                                          if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou.value == true then
-                                             local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToYou
+                                          if tCurrentSettings.combat.hostile.warnIfTargetSwitchingToYou.value == true then
+                                             local tSetting = tCurrentSettings.combat.hostile.warnIfTargetSwitchingToYou
                                              SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                           end
                                           SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = true
                                        elseif SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking ~= true and SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking == true then
-                                          if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty.value == true then
-                                             local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.warnIfTargetSwitchingToParty
+                                          if tCurrentSettings.combat.hostile.warnIfTargetSwitchingToParty.value == true then
+                                             local tSetting = tCurrentSettings.combat.hostile.warnIfTargetSwitchingToParty
                                              SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                           end
                                           SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = false                                      
@@ -464,7 +483,7 @@ local function aqCombatCreateControlFrame()
       end
 
       if SkuCore.aqCombatCheckThreat then
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+         if tCurrentSettings.combat.enabled == true then
             local beginTime3 = debugprofilestop()
 
             local tPlayerGUID = UnitGUID("player")
@@ -477,13 +496,13 @@ local function aqCombatCreateControlFrame()
                         --Threat warning if you are first place (tanking) and second place threat percentage is higher than
                         if SkuCore.threatTable[tTargetGUID][tPlayerGUID].scaledPercentage >= 100 then
                            tthreatWarningNotFirstHigherThanLastWarning = 0
-                           if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value > 0 then
+                           if tCurrentSettings.combat.hostile.threatWarningIsFirstSecondHigherThan.value > 0 then
                               local tWarnUnitId, tWarnPercent = nil, 0
                               for i, v in pairs(SkuCore.threatTable[tTargetGUID]) do
                                  if type(v) == "table" then
                                     if i ~= tPlayerGUID then
                                        if v.scaledPercentage then
-                                          if v.scaledPercentage > SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan.value then
+                                          if v.scaledPercentage > tCurrentSettings.combat.hostile.threatWarningIsFirstSecondHigherThan.value then
                                              if v.scaledPercentage < 110 then
                                                 if tWarnPercent < v.scaledPercentage then
                                                    tWarnUnitId = i
@@ -497,15 +516,15 @@ local function aqCombatCreateControlFrame()
                               end
                               
                               if tWarnUnitId then
-                                 if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningInterval > 0 then
-                                    if tthreatWarningIsFirstSecondHigherThanLastWarning == -1 or GetTimePreciseSec() - tthreatWarningIsFirstSecondHigherThanLastWarning > SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningInterval then
+                                 if tCurrentSettings.combat.hostile.threatWarningInterval > 0 then
+                                    if tthreatWarningIsFirstSecondHigherThanLastWarning == -1 or GetTimePreciseSec() - tthreatWarningIsFirstSecondHigherThanLastWarning > tCurrentSettings.combat.hostile.threatWarningInterval then
                                        tthreatWarningIsFirstSecondHigherThanLastWarning = GetTimePreciseSec() 
-                                       local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan
+                                       local tSetting = tCurrentSettings.combat.hostile.threatWarningIsFirstSecondHigherThan
                                        SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                     end
                                  else
                                     if tthreatWarningIsFirstSecondHigherThanLastWarning > -1  then
-                                       local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningIsFirstSecondHigherThan
+                                       local tSetting = tCurrentSettings.combat.hostile.threatWarningIsFirstSecondHigherThan
                                        SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                        tthreatWarningIsFirstSecondHigherThanLastWarning = -1
                                     end
@@ -519,17 +538,17 @@ local function aqCombatCreateControlFrame()
                         --elseif SkuCore.threatTable[tTargetGUID][tPlayerGUID].isTanking == false then
                         else
                            tthreatWarningIsFirstSecondHigherThanLastWarning = 0
-                           if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value > 0  then
-                              if SkuCore.threatTable[tTargetGUID][tPlayerGUID].scaledPercentage > SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan.value then
-                                 if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningInterval > 0 then
-                                    if tthreatWarningNotFirstHigherThanLastWarning == -1 or GetTimePreciseSec() - tthreatWarningNotFirstHigherThanLastWarning > SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningInterval then
+                           if tCurrentSettings.combat.hostile.threatWarningNotFirstHigherThan.value > 0  then
+                              if SkuCore.threatTable[tTargetGUID][tPlayerGUID].scaledPercentage > tCurrentSettings.combat.hostile.threatWarningNotFirstHigherThan.value then
+                                 if tCurrentSettings.combat.hostile.threatWarningInterval > 0 then
+                                    if tthreatWarningNotFirstHigherThanLastWarning == -1 or GetTimePreciseSec() - tthreatWarningNotFirstHigherThanLastWarning > tCurrentSettings.combat.hostile.threatWarningInterval then
                                        tthreatWarningNotFirstHigherThanLastWarning = GetTimePreciseSec() 
-                                       local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan
+                                       local tSetting = tCurrentSettings.combat.hostile.threatWarningNotFirstHigherThan
                                        SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                     end
                                  else
                                     if tthreatWarningNotFirstHigherThanLastWarning > -1  then
-                                       local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatWarningNotFirstHigherThan
+                                       local tSetting = tCurrentSettings.combat.hostile.threatWarningNotFirstHigherThan
                                        SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                                        tthreatWarningNotFirstHigherThanLastWarning = -1
                                     end
@@ -575,7 +594,9 @@ local function aqCombatCreateControlFrame()
    local ttime1 = 0
    local ttime2 = 0
    f:SetScript("OnUpdate", function(self, time)
-      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+      local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+
+      if tCurrentSettings.combat.enabled == true then
 local beginTime = debugprofilestop()
 
 
@@ -583,15 +604,17 @@ local beginTime = debugprofilestop()
 
 
 
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value > 1 then
+         if tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value > 1 then
             ttime2 = ttime2 + time
-            if ttime2 > 0.1 then
+            if ttime2 > (0.1 * tCurrentUpdateRate) then
+               tCurrentUpdateRate = (21 - tCurrentSettings.combat.updateRate)
+
                local tPlayerGUID = UnitGUID("player")
                local tChanged = false
                local tCount = 0
                for creatureGUID, value in pairs(SkuCore.inOutCombatQueue.combatIn) do
                   if aqCombatCheckElite(creatureGUID) == true then
-                     if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 4 then
+                     if tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value == 4 then
                         if SkuCore.threatTable[creatureGUID] then
                            if SkuCore.threatTable[creatureGUID][tPlayerGUID] then   
                               if SkuCore.threatTable[creatureGUID][tPlayerGUID].status then
@@ -603,7 +626,7 @@ local beginTime = debugprofilestop()
                            end
                         end
 
-                     elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 3 then
+                     elseif tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value == 3 then
                         local tAdded
                         for q = 1, #tAllPartyRaidUnits do
                            local tPartyUnitToTest = tAllPartyRaidUnits[q]
@@ -631,7 +654,7 @@ local beginTime = debugprofilestop()
                            end
                         end
                      
-                     elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat.value == 2 then
+                     elseif tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value == 2 then
                         SkuCore.inOutCombatQueue.current = SkuCore.inOutCombatQueue.current + 1
                         tChanged = true
                      end
@@ -653,20 +676,19 @@ local beginTime = debugprofilestop()
                end
 
                if tChanged == true then
-                  local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.relativeNumberUnitsInCombat
+                  local tSetting = tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = SkuCore.inOutCombatQueue.current,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
 
                ttime2 = 0
             end
 
-         elseif 
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value > 1 or
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value > 1
-         then
+         elseif tCurrentSettings.combat.hostile.unitsAddedToCombat.value > 1 or tCurrentSettings.combat.hostile.unitsLeavingCombat.value > 1 then
             ttime1 = ttime1 + time
 
-            if ttime1 > 1.0 then
+            if ttime1 > (1.0) then
+               tCurrentUpdateRate = (21 - tCurrentSettings.combat.updateRate)
+
                local tCountIn = 0
 
                local tPlayerGUID = UnitGUID("player")
@@ -675,7 +697,7 @@ local beginTime = debugprofilestop()
                local tCount = 0
                for creatureGUID, value in pairs(SkuCore.inOutCombatQueue.combatIn) do
                   if aqCombatCheckElite(creatureGUID) == true then
-                     if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 4 then
+                     if tCurrentSettings.combat.hostile.unitsAddedToCombat.value == 4 then
                         if SkuCore.threatTable[creatureGUID] then
                            if SkuCore.threatTable[creatureGUID][tPlayerGUID] then   
                               if SkuCore.threatTable[creatureGUID][tPlayerGUID].status then
@@ -687,7 +709,7 @@ local beginTime = debugprofilestop()
                            end
                         end
 
-                     elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 3 then
+                     elseif tCurrentSettings.combat.hostile.unitsAddedToCombat.value == 3 then
                         local tAdded
                         for q = 1, #tAllPartyRaidUnits do
                            local tPartyUnitToTest = tAllPartyRaidUnits[q]
@@ -713,7 +735,7 @@ local beginTime = debugprofilestop()
                            end
                         end
                      
-                     elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value == 2 then
+                     elseif tCurrentSettings.combat.hostile.unitsAddedToCombat.value == 2 then
                         tCountIn = tCountIn + 1
                         tChanged = true
                      end
@@ -737,12 +759,12 @@ local beginTime = debugprofilestop()
                
                SkuCore.inOutCombatQueue.combatOut = {}
 
-               if tCountIn > 0 and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat.value > 1 then
-                  local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsAddedToCombat
+               if tCountIn > 0 and tCurrentSettings.combat.hostile.unitsAddedToCombat.value > 1 then
+                  local tSetting = tCurrentSettings.combat.hostile.unitsAddedToCombat
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = tCountIn, action1 = "in",}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
-               if tCountOut > 0 and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat.value > 1 then
-                  local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.unitsLeavingCombat
+               if tCountOut > 0 and tCurrentSettings.combat.hostile.unitsLeavingCombat.value > 1 then
+                  local tSetting = tCurrentSettings.combat.hostile.unitsLeavingCombat
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = tCountOut, action1 = "out",}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
 
@@ -777,6 +799,8 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatOnInitialize()
+   tKeysRank = SkuDB.NpcData.Keys.rank
+
 	aqCombatCreateControlFrame()
 
    SkuDispatcher:RegisterEventCallback("COMBAT_LOG_EVENT_UNFILTERED", SkuCore.aqCombat_COMBAT_LOG_EVENT_UNFILTERED)
@@ -791,6 +815,10 @@ function SkuCore:aqCombatOnInitialize()
 	--SkuDispatcher:RegisterEventCallback("UNIT_THREAT_SITUATION_UPDATE", SkuCore.aqCombatUNIT_THREAT_SITUATION_UPDATE)
 
 	SkuDispatcher:RegisterEventCallback("PLAYER_TARGET_CHANGED", SkuCore.aqCombatPLAYER_TARGET_CHANGED)
+   SkuDispatcher:RegisterEventCallback("GROUP_ROSTER_UPDATE", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:RegisterEventCallback("GROUP_FORMED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
+   SkuDispatcher:RegisterEventCallback("GROUP_JOINED", SkuCore.aqCombat_GROUP_ROSTER_UPDATE)
+
    
    hooksecurefunc("SetRaidTarget", function(aUnit, aIconIndex)
       if aIconIndex == 0 then
@@ -809,6 +837,10 @@ function SkuCore:aqCombatOnLogin()
 
       if SkuOptions.db.char[MODULE_NAME].aq[x].combat.enabled == nil then
          SkuOptions.db.char[MODULE_NAME].aq[x].combat.enabled = false
+      end
+
+      if SkuOptions.db.char[MODULE_NAME].aq[x].combat.updateRate == nil then
+         SkuOptions.db.char[MODULE_NAME].aq[x].combat.updateRate = 20
       end
 
       if SkuOptions.db.char[MODULE_NAME].aq[x].combat.voice == nil then
@@ -989,19 +1021,51 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuCore:aqCombat_GROUP_ROSTER_UPDATE()
+   aqCombatIsPartyOrRaidMemberCache = {}
+   
+   if UnitGUID("player") then
+      aqCombatIsPartyOrRaidMemberCache[UnitGUID("player")] = "player"
+   end
+
+   if UnitGUID("pet") then
+      aqCombatIsPartyOrRaidMemberCache[UnitGUID("pet")] = "pet"
+   end
+
+   for x = 1, 4 do
+      if UnitGUID("party"..x) then
+         aqCombatIsPartyOrRaidMemberCache[UnitGUID("party"..x)] = "party"..x
+      end
+      if UnitGUID("partypet"..x) then
+         aqCombatIsPartyOrRaidMemberCache[UnitGUID("partypet"..x)] = "partypet"..x
+      end
+   end
+
+   for x = 1, 40 do
+      if UnitGUID("raid"..x) then
+         aqCombatIsPartyOrRaidMemberCache[UnitGUID("raid"..x)] = "raid"..x
+      end
+      if UnitGUID("raidpet"..x) then
+         aqCombatIsPartyOrRaidMemberCache[UnitGUID("raidpet"..x)] = "raidpet"..x
+      end
+   end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
-   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
-      if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value > 1 then
+   local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+   if tCurrentSettings.combat.enabled == true then
+      if tCurrentSettings.combat.hostile.threatOutputTot.value > 1 then
          if UnitExists("playertargettarget") then
-            local tOutput = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.voiceOutput
+            local tOutput = tCurrentSettings.combat.hostile.threatOutputTot.voiceOutput
             for x = 1, #tAllPartyRaidUnits do
                if UnitGUID(tAllPartyRaidUnits[x]) == UnitGUID("playertargettarget") then
                   if aqCombatCheckElite(UnitGUID("playertargettarget")) == true then
-                     if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value == 2 then
-                        SkuCoreAqCombatOutput(tOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot)
-                     elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot.value == 3 then
+                     if tCurrentSettings.combat.hostile.threatOutputTot.value == 2 then
+                        SkuCoreAqCombatOutput(tOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tCurrentSettings.combat.hostile.threatOutputTot)
+                     elseif tCurrentSettings.combat.hostile.threatOutputTot.value == 3 then
                         if UnitGUID(tAllPartyRaidUnits[x]) ~= UnitGUID("player") then
-                           SkuCoreAqCombatOutput(tOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.threatOutputTot)
+                           SkuCoreAqCombatOutput(tOutput, {unit1 = tAllPartyRaidUnits[x],}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tCurrentSettings.combat.hostile.threatOutputTot)
                         end
                      end
                      break
@@ -1019,7 +1083,7 @@ function SkuCore:aqCombatUNIT_THREAT_LIST_UPDATE(aEven, aUnitId)
    --for i = 1, #tUnitsToTestOnGameRaidTargets do
       --local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
       --if tguid then
-         local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
+         --local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
          --if status then
             --print(" ", "player", aUnitId, isTanking, status, scaledPercentage, rawPercentage, threatValue)
 
@@ -1031,17 +1095,6 @@ function SkuCore:aqCombatUNIT_THREAT_LIST_UPDATE(aEven, aUnitId)
    --if status == nil then
       --print(" unit left combat", aUnitId)
    --end
-
-
-
-
-
-
-
-
-
-
-
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1050,77 +1103,74 @@ function SkuCore:aqCombatUNIT_THREAT_SITUATION_UPDATE(aEven, aUnitId)
    --for i = 1, #tUnitsToTestOnGameRaidTargets do
       --local tguid = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
       --if tguid then
-         local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
+         --local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation("player", aUnitId)
          --if status then
             --print(" ", "player", aUnitId, isTanking, status, scaledPercentage, rawPercentage, threatValue)
          --end
       --end
    --end
-
-
-
-
-
-
-
-
-
-
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
-   local arg1, event, arg3, sourceGUID, sourceName, arg6, arg7, targetGUID, targetName, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18 = CombatLogGetCurrentEventInfo()
+local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname)
+   if 
+      sfind(event, "_DAMAGE") or 
+      sfind(event, "_MISSED") or 
+      sfind(event, "_APPLIED") or 
+      sfind(event, "_CAST_SUCCESS") or 
+      sfind(event, "_CAST_START") or 
+      sfind(event, "_CAST_FAILED")
+   then      
+      C_Timer.After(0.5, function()
+         local tMobUnitId = SkuCore:aqCombatCreatureGuidToUnitId(tCreatureGUID)
+         local tPartyUnitId = SkuCore:aqCombatCreatureGuidToUnitId(tPartyGuid)
+         --local isTanking, status, scaledPercentage, rawPercentage, threatValue
+         
+         if tMobUnitId and tPartyUnitId then
+            --isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation(tPartyUnitId, tMobUnitId)
+         
+            if UnitIsDeadOrGhost(tMobUnitId) ~= true then
+               SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tMobName, tPartyGuid, tPartyUnitId, tPartyname)
 
-   local function tAdd(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname)
-      if 
-         string.find(event, "_DAMAGE") or 
-         string.find(event, "_MISSED") or 
-         string.find(event, "_APPLIED") or 
-         string.find(event, "_CAST_SUCCESS") or 
-         string.find(event, "_CAST_START") or 
-         string.find(event, "_CAST_FAILED")
-      then      
-         C_Timer.After(0.5, function()
-            local tMobUnitId = SkuCore:aqCombatCreatureGuidToUnitId(tCreatureGUID)
-            local tPartyUnitId = SkuCore:aqCombatCreatureGuidToUnitId(tPartyGuid)
-            local isTanking, status, scaledPercentage, rawPercentage, threatValue
-            
-            if tMobUnitId and tPartyUnitId then
-               --isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation(tPartyUnitId, tMobUnitId)
-            
-               if UnitIsDeadOrGhost(tMobUnitId) ~= true then
-                  SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tMobUnitId, tMobName, tPartyGuid, tPartyUnitId, tPartyname)
+               SkuCore.threatTable[tCreatureGUID].name = tMobName
+               SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec() 
 
-                  SkuCore.threatTable[tCreatureGUID].name = tMobName
-                  SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec() 
-
-                  if SkuCore.threatTable[tCreatureGUID][tPartyGuid] == nil then
-                     SkuCore.threatTable[tCreatureGUID][tPartyGuid] = {}
-                     SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking = nil
-                     SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = nil
-                     SkuCore.threatTable[tCreatureGUID][tPartyGuid].status = nil
-                     SkuCore.threatTable[tCreatureGUID][tPartyGuid].scaledPercentage = nil
-                     SkuCore.threatTable[tCreatureGUID][tPartyGuid].rawPercentage = nil
-                     SkuCore.threatTable[tCreatureGUID][tPartyGuid].threatValue = nil      
-                  end
-
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].lastUpdate = GetTimePreciseSec()
-                  SkuCore.aqCombatCheckThreat = true
+               if SkuCore.threatTable[tCreatureGUID][tPartyGuid] == nil then
+                  SkuCore.threatTable[tCreatureGUID][tPartyGuid] = {}
+                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking = nil
+                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = nil
+                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].status = nil
+                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].scaledPercentage = nil
+                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].rawPercentage = nil
+                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].threatValue = nil      
                end
+
+               SkuCore.threatTable[tCreatureGUID][tPartyGuid].lastUpdate = GetTimePreciseSec()
+               SkuCore.aqCombatCheckThreat = true
             end
-         end)
-      end
+         end
+      end)
    end
+end
+
+local tCreatureGUIDCache = {}
+function SkuCore:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
+   local arg1, event, arg3, sourceGUID, sourceName, arg6, arg7, targetGUID, targetName = CombatLogGetCurrentEventInfo()
 
    if sourceGUID and targetGUID then
-      if SkuCore:aqCombatIsPartyOrRaidMember(nil, sourceGUID) then
-         if string.find(targetGUID, "Creature-") then
-            tAdd(event, targetGUID, targetName, sourceGUID, sourceName)
+      if tCreatureGUIDCache[sourceGUID] == nil and SkuCore:aqCombatIsPartyOrRaidMember(nil, sourceGUID) then
+         if tCreatureGUIDCache[targetGUID] then
+            tAddHelper(event, targetGUID, targetName, sourceGUID, sourceName)
+         elseif sfind(targetGUID, "Creature-") then
+            tCreatureGUIDCache[targetGUID] = true
+            tAddHelper(event, targetGUID, targetName, sourceGUID, sourceName)
          end
-      elseif SkuCore:aqCombatIsPartyOrRaidMember(nil, targetGUID) then
-         if string.find(sourceGUID, "Creature-") then
-            tAdd(event, sourceGUID, sourceName, targetGUID, targetName)
+      elseif tCreatureGUIDCache[targetGUID] == nil and SkuCore:aqCombatIsPartyOrRaidMember(nil, targetGUID) then
+         if tCreatureGUIDCache[sourceGUID] then
+            tAddHelper(event, sourceGUID, sourceName, targetGUID, targetName)
+         elseif sfind(sourceGUID, "Creature-") then
+            tCreatureGUIDCache[sourceGUID] = true
+            tAddHelper(event, sourceGUID, sourceName, targetGUID, targetName)
          end
       end
    end
@@ -1141,9 +1191,11 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
 	spellName = 13,
    ]]
 
-   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+   local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+
+   if tCurrentSettings.combat.enabled == true then
       if aqCombatCheckElite(aEventData[4]) == true then
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value > 1 then
+         if tCurrentSettings.combat.hostile.yourTargetCasting.value > 1 then
             local tUnitGUID = aEventData[4]
             if tUnitGUID and tUnitGUID == UnitGUID("target") then
                local tTargetTargetGuid = UnitGUID("targettarget")
@@ -1152,15 +1204,15 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
                   if aEventData[12] then
                      name, rank, icon, castTime = GetSpellInfo(aEventData[12])
                   end
-                  if castTime == nil or (castTime > (SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.minimumCastDuration * 1000)) then
-                     if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 2 then
+                  if castTime == nil or (castTime > (tCurrentSettings.combat.hostile.minimumCastDuration * 1000)) then
+                     if tCurrentSettings.combat.hostile.yourTargetCasting.value == 2 then
                         if tTargetTargetGuid == UnitGUID("player") then
-                           local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting
+                           local tSetting = tCurrentSettings.combat.hostile.yourTargetCasting
                            SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                         end
-                     elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting.value == 3 then
+                     elseif tCurrentSettings.combat.hostile.yourTargetCasting.value == 3 then
                         if SkuCore:aqCombatIsPartyOrRaidMember(nil, tTargetTargetGuid) then
-                           local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.yourTargetCasting
+                           local tSetting = tCurrentSettings.combat.hostile.yourTargetCasting
                            SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                         end
                      end
@@ -1169,7 +1221,7 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
             end
          end
 
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value > 1 then
+         if tCurrentSettings.combat.hostile.allEnemiesCasting.value > 1 then
             local tUnitGUID = aEventData[4]
             if tUnitGUID then
                if SkuCore:aqCombatGroupGuidToUnitId(tUnitGUID) == nil then
@@ -1177,14 +1229,14 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
                   if aEventData[12] then
                      name, rank, icon, castTime = GetSpellInfo(aEventData[12])
                   end
-                  if castTime == nil or (castTime > (SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.minimumCastDuration * 1000)) then
-                     if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 2 then
+                  if castTime == nil or (castTime > (tCurrentSettings.combat.hostile.minimumCastDuration * 1000)) then
+                     if tCurrentSettings.combat.hostile.allEnemiesCasting.value == 2 then
                         if SkuCore.threatTable[tUnitGUID] then
-                           local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting
+                           local tSetting = tCurrentSettings.combat.hostile.allEnemiesCasting
                            SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                         end
-                     elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting.value == 3 then
-                        local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.allEnemiesCasting
+                     elseif tCurrentSettings.combat.hostile.allEnemiesCasting.value == 3 then
+                        local tSetting = tCurrentSettings.combat.hostile.allEnemiesCasting
                         SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                      end
                   end
@@ -1197,28 +1249,30 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
-   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+   local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
+
+   if tCurrentSettings.combat.enabled == true then
       if aqCombatCheckElite(aUnitGUID) == true then
-         if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value > 1 then
-            if (SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat == true and SkuCore.threatTable[aUnitGUID] ~= nil) or SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.deathsIgnoreUnitsNotInCombat == false then
+         if tCurrentSettings.combat.hostile.outputDeadUnits.value > 1 then
+            if (tCurrentSettings.combat.hostile.deathsIgnoreUnitsNotInCombat == true and SkuCore.threatTable[aUnitGUID] ~= nil) or tCurrentSettings.combat.hostile.deathsIgnoreUnitsNotInCombat == false then
                local tCreateUnitId = SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
                if tCreateUnitId == nil then
                   tCreateUnitId = "creature"
                end
 
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 2 then
-                  local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits
+               if tCurrentSettings.combat.hostile.outputDeadUnits.value == 2 then
+                  local tSetting = tCurrentSettings.combat.hostile.outputDeadUnits
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tCreateUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 3 then
+               elseif tCurrentSettings.combat.hostile.outputDeadUnits.value == 3 then
                   if SkuCore.threatTable[aUnitGUID] and SkuCore.threatTable[aUnitGUID][UnitGUID("player")] then
                      if SkuCore.threatTable[aUnitGUID][UnitGUID("player")].scaledPercentage >= 100 then
-                        local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits
+                        local tSetting = tCurrentSettings.combat.hostile.outputDeadUnits
                         SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tCreateUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                      end
                   end
-               elseif SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits.value == 4 then
+               elseif tCurrentSettings.combat.hostile.outputDeadUnits.value == 4 then
                   if SkuCore.threatTable[aUnitGUID] then
-                     local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.outputDeadUnits
+                     local tSetting = tCurrentSettings.combat.hostile.outputDeadUnits
                      SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tCreateUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                   end
                end
@@ -1233,9 +1287,9 @@ function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
       SkuCore.SkuRaidTargetRepo[aUnitGUID] = nil
    end
 
-   if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.enabled == true then
+   if tCurrentSettings.combat.enabled == true then
       if SkuCore:aqCombatIsPartyOrRaidMember(nil, aUnitGUID) == nil then
-         if string.find(aUnitGUID, "Creature-") then
+         if sfind(aUnitGUID, "Creature-") then
             SkuCore:aqCombat_CREATURE_REMOVED_FROM_COMBAT(aUnitGUID, nil, aUnitName)
          end
       else
@@ -1245,24 +1299,24 @@ function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
          end
          
          if 
-            SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets == false or
+            tCurrentSettings.combat.friendly.ignoreDeadPartyPets == false or
             tPartyUnitId == "" or
             (
-               SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.ignoreDeadPartyPets == true and
-               string.find(tPartyUnitId, "pet") == nil and
+               tCurrentSettings.combat.friendly.ignoreDeadPartyPets == true and
+               sfind(tPartyUnitId, "pet") == nil and
                UnitIsOtherPlayersPet(tPartyUnitId) == false and
                aUnitGUID ~= UnitGUID("pet")
             )
          then
             if tPartyUnitId == "" or UnitIsDeadOrGhost(tPartyUnitId) == true then
                SkuCore.partyDeadCountCounter = SkuCore.partyDeadCountCounter + 1
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount.value == true then
-                  local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDeadCount
+               if tCurrentSettings.combat.friendly.partyDeadCount.value == true then
+                  local tSetting = tCurrentSettings.combat.friendly.partyDeadCount
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {number1 = SkuCore.partyDeadCountCounter,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
 
-               if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead.value == true then
-                  local tSetting = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.partyDead
+               if tCurrentSettings.combat.friendly.partyDead.value == true then
+                  local tSetting = tCurrentSettings.combat.friendly.partyDead
                   SkuCoreAqCombatOutput(tSetting.voiceOutput, {unit1 = tPartyUnitId,}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
                end
             end
@@ -1370,7 +1424,7 @@ function SkuCore:aqCombatCheckGameRaidTargets()
          if tRti then
             SkuCore.SkuRaidTargetRepo[tguid] = nil
             SkuCore.SkuRaidTargetRepoDead[tguid] = nil
-            break
+            return
          end
       end
    end
@@ -1453,6 +1507,24 @@ function SkuCore:aqCombatMenuBuilder()
       SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
       SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
    end
+
+   ---
+   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Update rate (performance)"]}, SkuGenericMenuItem)
+   tNewMenuEntry.dynamic = true
+   tNewMenuEntry.filterable = true
+   tNewMenuEntry.isSelect = true
+   tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
+      return SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.updateRate
+   end
+   tNewMenuEntry.OnAction = function(self, aValue, aName)
+      SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.updateRate = tonumber(aName)
+      tCurrentUpdateRate = (21 - SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.updateRate)
+   end
+   tNewMenuEntry.BuildChildren = function(self)
+      for x = 1, 20 do
+         SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+      end
+   end   
 
    ----
    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Voice"]}, SkuGenericMenuItem)
@@ -2186,10 +2258,10 @@ function SkuCore:aqCombatMenuBuilder()
                if UnitName("focus") and UnitIsPlayer("focus") then
                   SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName = UnitName("focus")
                end
-            elseif string.find(aName, L["Party"]) then
+            elseif sfind(aName, L["Party"]) then
                local tName = strsplit(";", aName)
                SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName = tName
-            elseif string.find(aName, L["Raid"]) then
+            elseif sfind(aName, L["Raid"]) then
                local tName = strsplit(";", aName)
                SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.friendly.oorUnitName = tName
             end
