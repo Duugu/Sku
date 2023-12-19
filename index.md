@@ -28,6 +28,20 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku Era r32.24
+- Moved the runes menu to the character menu
+- Fixed the talent menu. Should work now.
+- The Turn to beacon hot key (default: I) is not longer fixed and can be set to any key. Starting the wow menu script isn't required anymore to use that feature.
+- Added the Turn to Unit feature from Wrath<br>
+This is auto turning you to units like your target, party members, mobs with game markers like Skull, or mobs with sku markers like Blue.<br>
+The feature is not 100% accurate. Sometimes it is turning you straight to the unit. Sometimes it ends up left or right of the unit. It gets less accurate the closer the unit is. It gets less accurate the faster the speed setting is (see below). It depends on your machines speed/your fps. Faster is more accurate. Low fps can lead to completely inaccurate results.<br>
+It works reliably with units up to 41 meters away. If the unit is more than 41 meters away, the success rate will be quite worse. It works everywhere. Open world, dungeons, even battlegrounds. It works for all unit types. However, the unit must by on your physical level. Units above or below you, or units behind walls etc. won’t work.<br>
+There are 6 new keybindings to use this feature: Sku key binds > Turn to unit 1-6. They are are bound to no key by default. Each keybind is turning you to a different unit (see below). 1 is your target, 2 is skull, 3 is cross, 4 is square, and 5 & 6 are nothing<br>
+There are settings under Core > Options > Turn to target:
+	- Unit selection: This is where you set the units for the 6 key bindings. The default units for key 1-6 are: target, skull, cross, square, nothing, nothing
+	- Speed: the faster, the less accurate
+	- Enhanced settings: do not touch unless prompted	
+
 ## Changes in Sku r35.11
 - Fixed a bug with empty target lists for route selection in quest log.
 - Fixed another bug with the pathfinding algorithm in specific scenarios that lead to the game being locked for 20 seconds followed by a "Script ran to long" error.
