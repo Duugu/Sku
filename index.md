@@ -30,6 +30,7 @@ DEUTSCH - Erste Schritte:<br>
 -------------------------------------------------------------------------------------------------------
 ## Changes in Sku r35.12
 - More fixes for pathfinding leading to broken routes in specific scenarios.
+- Added a new sku key bind Output target health. Default: not bound.
  
 ## Changes in Sku Era r32.24
 - Moved the runes menu to the character menu
