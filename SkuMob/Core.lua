@@ -40,6 +40,48 @@ function SkuMob:OnInitialize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuMob:OutputTargetHealth(aForce)
+	if UnitGUID("target") then
+		if UnitCanAttack("player","target") ~= false then
+			if aForce then
+				SkuMobDB.lastAudioQ = ""
+			end
+
+			local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
+			local hpPer = math.floor(((hp / 10)) + 1) * 10
+			if (hpPer < 100 and hpPer > 0) or aForce then
+				if hpPer > 100 then hpPer = 100 end
+				if hpPer < 10 then hpPer = 0 end
+				if hp == 0 then hpPer = 0 end
+
+				if (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
+					SkuMobDB.nextAudioQ = hpPer--SkuMobDB.soundFiles[hpPer]
+				end
+				
+				if  (SkuMobDB.nextAudioQ ~= hpPer) then
+					SkuMobDB.nextAudioQ = hpPer
+				end
+				
+				if SkuMobDB.nextAudioQ ~= "" then
+					if (SkuMobDB.nextAudioQ ~= SkuMobDB.lastAudioQ) or (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
+						SkuOptions.Voice:OutputString(SkuMobDB.nextAudioQ, false, false, 0.3)
+						SkuMobDB.lastAudioQ = SkuMobDB.nextAudioQ
+						SkuMobDB.nextAudioQ = ""
+					end
+				end
+			end
+				
+			SkuMobDB.lastTargetGuid = UnitGUID("target")
+		end
+	else
+		SkuMobDB.lastTargetGuid = 0
+		SkuMobDB.nextAudioQ = ""
+		SkuMobDB.lastAudioQ = ""
+	end
+
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuMob:OnEnable()
 	local ttime = 0
 	local f = _G["SkuMobControl"] or CreateFrame("Frame", "SkuMobControl", UIParent)
@@ -61,39 +103,7 @@ function SkuMob:OnEnable()
 				end
 			end
 
-			if UnitGUID("target") then
-				if UnitCanAttack("player","target") ~= false then
-					local hp = math.floor(UnitHealth("target") / (UnitHealthMax("target") / 100))
-					local hpPer = math.floor(((hp / 10)) + 1) * 10
-					if hpPer < 100 and hpPer > 0 then
-						if hpPer > 100 then hpPer = 100 end
-						if hpPer < 10 then hpPer = 0 end
-						if hp == 0 then hpPer = 0 end
-
-						if (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
-							SkuMobDB.nextAudioQ = hpPer--SkuMobDB.soundFiles[hpPer]
-						end
-						
-						if  (SkuMobDB.nextAudioQ ~= hpPer) then
-							SkuMobDB.nextAudioQ = hpPer
-						end
-						
-						if SkuMobDB.nextAudioQ ~= "" then
-							if (SkuMobDB.nextAudioQ ~= SkuMobDB.lastAudioQ) or (UnitGUID("target") ~= SkuMobDB.lastTargetGuid) then
-								SkuOptions.Voice:OutputString(SkuMobDB.nextAudioQ, false, false, 0.3)
-								SkuMobDB.lastAudioQ = SkuMobDB.nextAudioQ
-								SkuMobDB.nextAudioQ = ""
-							end
-						end
-					end
-						
-					SkuMobDB.lastTargetGuid = UnitGUID("target")
-				end
-			else
-				SkuMobDB.lastTargetGuid = 0
-				SkuMobDB.nextAudioQ = ""
-				SkuMobDB.lastAudioQ = ""
-			end
+			SkuMob:OutputTargetHealth()
 			
 			ttime = 0 
 		end 

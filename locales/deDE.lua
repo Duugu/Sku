@@ -2620,3 +2620,5 @@ L["Zones"] = "Zonen"
 L["Zurück Metaroute folgen gestartet"] = "Zurück Metaroute folgen gestartet"
 L["Zurücksetzen"] = "Zurücksetzen"
 L["Zwerg"] = "Zwerg"
+
+L["SKU_KEY_TARGETHEALTH"] = "Gesundheit des Ziels ausgeben"

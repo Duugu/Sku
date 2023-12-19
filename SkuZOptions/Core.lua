@@ -1329,6 +1329,10 @@ function SkuOptions:CreateMainFrame()
 			end
 		end
 
+		if a == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TARGETHEALTH"].key then
+			SkuMob:OutputTargetHealth(true)
+		end
+
 		local tTargetGUID = UnitGUID("target")
 		if tTargetGUID then
 			local tRaidtarget = GetRaidTargetIndex("target")
@@ -2084,6 +2088,8 @@ function SkuOptions:CreateMainFrame()
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DEBUGMODE"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONSETFOLLOWTARGET"].key)
 	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"].key)
+	SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TARGETHEALTH"].key, tFrame:GetName(), SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TARGETHEALTH"].key)
+	
 	SetOverrideBindingClick(tFrame, true, "SHIFT-UP", tFrame:GetName(), "SHIFT-UP")
 	SetOverrideBindingClick(tFrame, true, "SHIFT-DOWN", tFrame:GetName(), "SHIFT-DOWN")
 	SetOverrideBindingClick(tFrame, true, "CTRL-SHIFT-UP", tFrame:GetName(), "CTRL-SHIFT-UP")

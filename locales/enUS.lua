@@ -2616,3 +2616,5 @@ L["Zones"]  = "Zones" --
 L["Zurück Metaroute folgen gestartet"]  = "Reversal Metaroute started" --
 L["Zurücksetzen"]  = "Reset" --
 L["Zwerg"]  = "Dwarf" --
+
+L["SKU_KEY_TARGETHEALTH"] = "Output target health"

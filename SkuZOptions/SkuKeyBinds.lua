@@ -116,7 +116,8 @@ SkuOptions.skuDefaultKeyBindings = {
    ["SKU_KEY_COMBATMONSETFOLLOWTARGET"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
    ["SKU_KEY_COMBATMONOUTPUTNUMBERINCOMBAT"] = {key = "", object = "SkuOptions", func = "CreateMainFrame",},
 
-
+   ["SKU_KEY_TARGETHEALTH"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
+   
 
 
 
