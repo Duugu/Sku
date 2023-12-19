@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
+- [Sku WRATH r35.11](https://github.com/Duugu/Sku/releases/download/r35.11/Sku-r35.11-wrath.zip) (December 19th 2023)<br>
 - [Sku ERA r32.23](https://github.com/Duugu/SkuEra/releases/download/r32.23/Sku-r32.23-classic.zip) (December 11th 2023)<br>
 - [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
-- [Sku WRATH r35.10](https://github.com/Duugu/Sku/releases/download/r35.10/Sku-r35.10-wrath.zip) (December 7th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.11
+- Fixed a bug with empty target lists for route selection in quest log.
+- Fixed another bug with the pathfinding algorithm in specific scenarios that lead to the game being locked for 20 seconds followed by a "Script ran to long" error.
+- Optimized the combat monitor code. That may or may not improve the performance in 25 men raid scenarios.
+- Added a new setting to Core > Monitor > Combat: Update rate (performance). Default value: 20. This setting is to enhance the performance in 25 men raid scenarios. If you are experiencing bad performance, try to lower the value step for step to do less updates and decreasing the addons workload. High value means timely updates but high workload/bad performance. Lower values are less updates, but better performance.
+
 ## Changes in Sku Era r32.23
 - Added a runes menu: Core > Options > Runes. Select a rune and the Engrave submenu entry. That will highlight your mouse cursor with the engraving spell. Then do a left click on an appropiate item in your bags or character inventory to engrave that item. Just as with Enchanting.
 - Added rune skills/spells to the F11 action bar config menu: Core > Action Bars > Action bar > Action button x > Runes. That menu has only spells if you are wearing engraved items that do provide spells/abilities.
