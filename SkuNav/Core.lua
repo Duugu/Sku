@@ -500,6 +500,9 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 			for tWaypointCacheIndex, tDistance in pairs(tWpToCheckNextRound) do
 				for tLinktWaypointCacheIndex, tLinkDistance in pairs(WaypointCache[tWaypointCacheIndex].links.byId) do
 					local tDisPlusLink = tDistance + tLinkDistance
+					if tLinkDistance == 0 then
+						tDisPlusLink = tDisPlusLink + 0.5
+					end
 					if tDisPlusLink < aMaxDistance then
 						if tFinalWpDistances[tLinktWaypointCacheIndex] == nil then
 							tFinalWpDistances[tLinktWaypointCacheIndex] = tDisPlusLink
@@ -551,6 +554,7 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 
 		local tContinue = true
 		local tNextWp = WaypointCacheLookupAll[aReturnPathForWp]
+
 		local tpathWps = {}
 		tinsert(tpathWps, 1, WaypointCache[tNextWp].name)
 
@@ -575,6 +579,7 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 				end
 			end
 		end
+		
 
 		tmprMetapathData[aReturnPathForWp].pathWps = tpathWps
 		rMetapathData = tmprMetapathData

@@ -3,6 +3,11 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.12
+	- More fixes for pathfinding leading to broken routes in specific scenarios.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.11
 	- Fixed a bug with empty target lists for route selection in quest log.
 	- Fixed another bug with the pathfinding algorithm in specific scenarios that lead to the game being locked for 20 seconds followed by a "Script ran to long" error.
