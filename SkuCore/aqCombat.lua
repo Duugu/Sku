@@ -183,6 +183,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
    for i = 1, #tUnitsToTestOnGameRaidTargets do
+      local tCreatureGUID = UnitGUID(tUnitsToTestOnGameRaidTargets[i])
       if UnitGUID(tUnitsToTestOnGameRaidTargets[i]) then
          if tCreatureGUID == aUnitGUID then
             return tUnitsToTestOnGameRaidTargets[i]
@@ -193,6 +194,10 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatGroupGuidToUnitId(aUnitGUID)
+   if aqCombatIsPartyOrRaidMemberCache[aUnitGUID] then
+      return aqCombatIsPartyOrRaidMemberCache[aUnitGUID]
+   end
+
    for i = 1, #tAllPartyRaidUnits do
       local tTargetUnitIdToTest = tAllPartyRaidUnits[i]
       local tCreatureGUID = UnitGUID(tTargetUnitIdToTest)
@@ -219,19 +224,26 @@ end
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tAqCombatGetUnitIndexFromUnitGUIDCache = {}
 local function aqCombatGetUnitIndexFromUnitGUID(aUnitGUID)
    if aUnitGUID == nil then
       return
    end   
 
+   if tAqCombatGetUnitIndexFromUnitGUIDCache[aUnitGUID] then
+      return tAqCombatGetUnitIndexFromUnitGUIDCache[aUnitGUID]
+   end
+
    local unit_type = strsplit("-", aUnitGUID)
    if unit_type == "Creature" or unit_type == "Vehicle" then
       local _, _, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", aUnitGUID)
+      tAqCombatGetUnitIndexFromUnitGUIDCache[aUnitGUID] = npc_id
       return npc_id
    end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local tUnitClassificationCache = {}
 local tKeysRank
 local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
    if aUnitGUID == nil and aTargetUnitIdToTest == nil then
@@ -242,6 +254,11 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
 
    if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].combat.hostile.ignoreNonElite == true then   
 
+      if aUnitGUID and tUnitClassificationCache[aUnitGUID] then
+         return tUnitClassificationCache[aUnitGUID]
+      end
+
+
       if aTargetUnitIdToTest == nil then
          local tUnitId = SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
          if tUnitId then
@@ -249,15 +266,18 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
          end
       end
 
-
       if aTargetUnitIdToTest ~= nil  then
+         aUnitGUID = UnitGUID(aTargetUnitIdToTest)
          local tUnitClassification = UnitClassification(aTargetUnitIdToTest)
          Sku.PerformanceData["aqCombatCheckElite"] = ((Sku.PerformanceData["aqCombatCheckElite"] or 0) + (debugprofilestop() - beginTime6)) / 2
 
-         if tUnitClassification and (tUnitClassification == "elite" or tUnitClassification == "rareelite" or tUnitClassification == "worldboss") then
-            return true
-         else
-            return false
+         if aUnitGUID then
+            if (tUnitClassification == "elite" or tUnitClassification == "rareelite" or tUnitClassification == "worldboss") then
+               tUnitClassificationCache[aUnitGUID] = true
+            else
+               tUnitClassificationCache[aUnitGUID] = false
+            end
+            return tUnitClassificationCache[aUnitGUID]
          end
       end
          
@@ -272,24 +292,27 @@ local function aqCombatCheckElite(aUnitGUID, aTargetUnitIdToTest)
                   tData[tKeysRank] ~= 2 and
                   tData[tKeysRank] ~= 3
                then
-                  return false
+                  tUnitClassificationCache[aUnitGUID] = false
                else
-                  return true
+                  tUnitClassificationCache[aUnitGUID] = true
                end
+               return tUnitClassificationCache[aUnitGUID]
             end
          end
       end
 
       local tUnitId = SkuCore:aqCombatCreatureGuidToUnitId(aUnitGUID)
       if tUnitId then
+         aUnitGUID = UnitGUID(aTargetUnitIdToTest)
          local t = UnitClassification(tUnitId)
-         if t then
+         if aUnitGUID and t then
             Sku.PerformanceData["aqCombatCheckElite2"] = ((Sku.PerformanceData["aqCombatCheckElite2"] or 0) + (debugprofilestop() - beginTime6)) / 2
             if t ~= "worldboss" and t ~= "rareelite" and t ~= "elite" then
-               return false
+               tUnitClassificationCache[aUnitGUID] = false
             else
-               return true
+               tUnitClassificationCache[aUnitGUID] = true
             end
+            return tUnitClassificationCache[aUnitGUID]
          end
       end
    else
@@ -304,42 +327,41 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
 
    if aUnitId then
       local aUnitIdGuid = UnitGUID(aUnitId)
-
-      --[[
-      if UnitIsPlayer(aUnitId) ~= true then
-         --return nil
-      end
-      ]]
-
+      
       if aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] then
          return aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid]
       end
-
-      --[[
+      
       if UnitGUID("player") == aUnitIdGuid then
+         aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "player"
          Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "player"
       end
       if UnitGUID("pet") == aUnitIdGuid then
+         aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "pet"
          Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "pet"
       end
       for x = 1, 4 do
          if UnitGUID("party"..x) == aUnitIdGuid then
+            aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "party"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "party"..x
          end
          if UnitGUID("partypet"..x) == aUnitIdGuid then
+            aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "partypet"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "partypet"..x
          end
       end
       for x = 1, 40 do
          if UnitGUID("raid"..x) == aUnitIdGuid then
+            aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "raid"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raid"
          end
          if UnitGUID("raidpet"..x) == aUnitIdGuid then
+            aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "raidpet"..x
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raidpet"..x
          end
@@ -347,9 +369,9 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
 
       if UnitIsEnemy("player", aUnitId) ~= true then
          Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
-         return --"friendly"
+         return
       end
-      ]]
+      
 
       return --"unknown"
    elseif aUnitGUID then
@@ -357,6 +379,7 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
          local tPartyUnitToTest = tAllPartyRaidUnits[q]
          local tPartyGuid = UnitGUID(tPartyUnitToTest)
          if tPartyGuid == aUnitGUID then
+            aqCombatIsPartyOrRaidMemberCache[aUnitGUID] = tPartyUnitToTest
             Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] or 0) + (debugprofilestop() - beginTime2)) / 2                     
             return tPartyUnitToTest
          end
@@ -428,49 +451,51 @@ local function aqCombatCreateControlFrame()
          for i = 1, #tUnitsToTestOnGameRaidTargets do
             local tTargetUnitIdToTest = tUnitsToTestOnGameRaidTargets[i]
             local tCreatureGUID = UnitGUID(tTargetUnitIdToTest)
-            if aqCombatCheckElite(tCreatureGUID, tTargetUnitIdToTest) == true then
-               if tCreatureGUID and SkuCore.threatTable[tCreatureGUID] ~= false then
-                  local t = SkuCore:aqCombatIsPartyOrRaidMember(tTargetUnitIdToTest)
-                  if t == nil then
-                     -- is mob
-                     for q = 1, #tAllPartyRaidUnits do
-                        local tPartyUnitToTest = tAllPartyRaidUnits[q]
-                        local tPartyGuid = UnitGUID(tPartyUnitToTest)
-                        local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation(tPartyUnitToTest, tTargetUnitIdToTest)
-                        if status then
-                           if UnitIsDeadOrGhost(tPartyUnitToTest) ~= true then
-                              SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), UnitGUID(tPartyUnitToTest), tPartyUnitToTest, UnitName(tPartyUnitToTest))
+            if tCreatureGUID then
+               if aqCombatCheckElite(tCreatureGUID, tTargetUnitIdToTest) == true then
+                  if tCreatureGUID and SkuCore.threatTable[tCreatureGUID] ~= false then
+                     local t = SkuCore:aqCombatIsPartyOrRaidMember(tTargetUnitIdToTest)
+                     if t == nil then
+                        -- is mob
+                        for q = 1, #tAllPartyRaidUnits do
+                           local tPartyUnitToTest = tAllPartyRaidUnits[q]
+                           local isTanking, status, scaledPercentage, rawPercentage, threatValue = UnitDetailedThreatSituation(tPartyUnitToTest, tTargetUnitIdToTest)
+                           if status then
+                              local tPartyGuid = UnitGUID(tPartyUnitToTest)
+                              if UnitIsDeadOrGhost(tPartyUnitToTest) ~= true then
+                                 SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(tCreatureGUID, tTargetUnitIdToTest, UnitName(tTargetUnitIdToTest), UnitGUID(tPartyUnitToTest), tPartyUnitToTest, UnitName(tPartyUnitToTest))
 
-                              local tPlayerGUID = UnitGUID("player")
-                              if tCreatureGUID == UnitGUID("target") and tPartyGuid == tPlayerGUID then
-                                 if SkuCore.threatTable[tCreatureGUID] then
-                                    if SkuCore.threatTable[tCreatureGUID][tPartyGuid] then
-                                       if SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking == true and SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking ~= true then
-                                          if tCurrentSettings.combat.hostile.warnIfTargetSwitchingToYou.value == true then
-                                             local tSetting = tCurrentSettings.combat.hostile.warnIfTargetSwitchingToYou
-                                             SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                 local tPlayerGUID = UnitGUID("player")
+                                 if tCreatureGUID == UnitGUID("target") and tPartyGuid == tPlayerGUID then
+                                    if SkuCore.threatTable[tCreatureGUID] then
+                                       if SkuCore.threatTable[tCreatureGUID][tPartyGuid] then
+                                          if SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking == true and SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking ~= true then
+                                             if tCurrentSettings.combat.hostile.warnIfTargetSwitchingToYou.value == true then
+                                                local tSetting = tCurrentSettings.combat.hostile.warnIfTargetSwitchingToYou
+                                                SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                             end
+                                             SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = true
+                                          elseif SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking ~= true and SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking == true then
+                                             if tCurrentSettings.combat.hostile.warnIfTargetSwitchingToParty.value == true then
+                                                local tSetting = tCurrentSettings.combat.hostile.warnIfTargetSwitchingToParty
+                                                SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
+                                             end
+                                             SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = false                                      
                                           end
-                                          SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = true
-                                       elseif SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking ~= true and SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking == true then
-                                          if tCurrentSettings.combat.hostile.warnIfTargetSwitchingToParty.value == true then
-                                             local tSetting = tCurrentSettings.combat.hostile.warnIfTargetSwitchingToParty
-                                             SkuCoreAqCombatOutput(tSetting.voiceOutput, {}, {wait = true, overwrite = false, instant = true, doNotOverwrite = true}, tSetting)
-                                          end
-                                          SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = false                                      
                                        end
                                     end
                                  end
-                              end
 
-                              SkuCore.threatTable[tCreatureGUID].name = UnitName(tTargetUnitIdToTest) 
-                              SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec() 
-                              SkuCore.threatTable[tCreatureGUID][tPartyGuid] = SkuCore.threatTable[tCreatureGUID][tPartyGuid] or {}
-                              SkuCore.threatTable[tCreatureGUID][tPartyGuid].lastUpdate = GetTimePreciseSec()
-                              SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking = isTanking
-                              SkuCore.threatTable[tCreatureGUID][tPartyGuid].status = status
-                              SkuCore.threatTable[tCreatureGUID][tPartyGuid].scaledPercentage = scaledPercentage
-                              SkuCore.threatTable[tCreatureGUID][tPartyGuid].rawPercentage = rawPercentage
-                              SkuCore.threatTable[tCreatureGUID][tPartyGuid].threatValue = threatValue                
+                                 SkuCore.threatTable[tCreatureGUID].name = UnitName(tTargetUnitIdToTest) 
+                                 SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec() 
+                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid] = SkuCore.threatTable[tCreatureGUID][tPartyGuid] or {}
+                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid].lastUpdate = GetTimePreciseSec()
+                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking = isTanking
+                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid].status = status
+                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid].scaledPercentage = scaledPercentage
+                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid].rawPercentage = rawPercentage
+                                 SkuCore.threatTable[tCreatureGUID][tPartyGuid].threatValue = threatValue                
+                              end
                            end
                         end
                      end
@@ -582,10 +607,6 @@ local function aqCombatCreateControlFrame()
          ]]
       end
 
-
-
-
-
       ttime = 0
    end)
 
@@ -597,13 +618,7 @@ local function aqCombatCreateControlFrame()
       local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
 
       if tCurrentSettings.combat.enabled == true then
-local beginTime = debugprofilestop()
-
-
-
-
-
-
+         local beginTime = debugprofilestop()
          if tCurrentSettings.combat.hostile.relativeNumberUnitsInCombat.value > 1 then
             ttime2 = ttime2 + time
             if ttime2 > (0.1 * tCurrentUpdateRate) then
@@ -792,7 +807,6 @@ function SkuCore:aqCombat_CREATURE_ADDED_TO_COMBAT(aCreatureGuid, aCreatureUnitI
    if SkuCore.threatTable[aCreatureGuid] then
       return
    end
-   local tCreatureUnitId = SkuCore:aqCombatCreatureGuidToUnitId(aCreatureGuid)
    SkuCore.threatTable[aCreatureGuid] = SkuCore.threatTable[aCreatureGuid] or {}
    SkuCore.inOutCombatQueue.combatIn[aCreatureGuid] = aPartyUnitId
 end
@@ -1124,6 +1138,7 @@ local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname
       C_Timer.After(0.5, function()
          local tMobUnitId = SkuCore:aqCombatCreatureGuidToUnitId(tCreatureGUID)
          local tPartyUnitId = SkuCore:aqCombatCreatureGuidToUnitId(tPartyGuid)
+
          --local isTanking, status, scaledPercentage, rawPercentage, threatValue
          
          if tMobUnitId and tPartyUnitId then
@@ -1136,13 +1151,14 @@ local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname
                SkuCore.threatTable[tCreatureGUID].lastUpdate = GetTimePreciseSec() 
 
                if SkuCore.threatTable[tCreatureGUID][tPartyGuid] == nil then
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid] = {}
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].isTanking = nil
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].wasTanking = nil
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].status = nil
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].scaledPercentage = nil
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].rawPercentage = nil
-                  SkuCore.threatTable[tCreatureGUID][tPartyGuid].threatValue = nil      
+                  SkuCore.threatTable[tCreatureGUID][tPartyGuid] = {
+                     isTanking = nil,
+                     wasTanking = nil,
+                     status = nil,
+                     scaledPercentage = nil,
+                     rawPercentage = nil,
+                     threatValue = nil,
+                  }
                end
 
                SkuCore.threatTable[tCreatureGUID][tPartyGuid].lastUpdate = GetTimePreciseSec()
@@ -1153,23 +1169,33 @@ local function tAddHelper(event, tCreatureGUID, tMobName, tPartyGuid, tPartyname
    end
 end
 
-local tCreatureGUIDCache = {}
+local tGUIDCache = {creatures = {}, nonCreatures = {}}
+local tNonCreatureGUIDCache = {}
 function SkuCore:aqCombat_COMBAT_LOG_EVENT_UNFILTERED()
    local arg1, event, arg3, sourceGUID, sourceName, arg6, arg7, targetGUID, targetName = CombatLogGetCurrentEventInfo()
 
    if sourceGUID and targetGUID then
-      if tCreatureGUIDCache[sourceGUID] == nil and SkuCore:aqCombatIsPartyOrRaidMember(nil, sourceGUID) then
-         if tCreatureGUIDCache[targetGUID] then
-            tAddHelper(event, targetGUID, targetName, sourceGUID, sourceName)
-         elseif sfind(targetGUID, "Creature-") then
-            tCreatureGUIDCache[targetGUID] = true
+      if SkuCore:aqCombatIsPartyOrRaidMember(nil, sourceGUID) then
+         if not tGUIDCache.nonCreatures[targetGUID] then
+            if sfind(targetGUID, "Creature-") then
+               tGUIDCache.creatures[targetGUID] = true
+            else
+               tGUIDCache.nonCreatures[targetGUID] = true
+            end
+         end
+         if tGUIDCache.creatures[targetGUID] then
             tAddHelper(event, targetGUID, targetName, sourceGUID, sourceName)
          end
-      elseif tCreatureGUIDCache[targetGUID] == nil and SkuCore:aqCombatIsPartyOrRaidMember(nil, targetGUID) then
-         if tCreatureGUIDCache[sourceGUID] then
-            tAddHelper(event, sourceGUID, sourceName, targetGUID, targetName)
-         elseif sfind(sourceGUID, "Creature-") then
-            tCreatureGUIDCache[sourceGUID] = true
+      elseif SkuCore:aqCombatIsPartyOrRaidMember(nil, targetGUID) then
+         if not tGUIDCache.creatures[sourceGUID] then
+            if sfind(sourceGUID, "Creature-") then
+               tGUIDCache.creatures[sourceGUID] = true
+            else
+               tGUIDCache.nonCreatures[sourceGUID] = true
+            end
+         end
+
+         if tGUIDCache.creatures[sourceGUID] then
             tAddHelper(event, sourceGUID, sourceName, targetGUID, targetName)
          end
       end

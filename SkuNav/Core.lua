@@ -527,7 +527,7 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 		tAuto = ""
 	end
 
-	local rMetapathData = {}
+	 rMetapathData = {}
 	local tcount = 0
 	for i, v in pairs(tFinalWpDistances) do
 		local tCurrentWP = WaypointCache[i]
@@ -585,6 +585,10 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 		rMetapathData = tmprMetapathData
 	end
 	
+	for i, v in pairs(rMetapathData) do
+		v.distance = floor(v.distance)
+	end
+
 	return rMetapathData
 end
 
