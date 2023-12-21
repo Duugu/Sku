@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Recent updates:* <br>
-- [Sku WRATH r35.12](https://github.com/Duugu/Sku/releases/download/r35.12/Sku-r35.12-wrath.zip) (December 19th 2023)<br>
+- [Sku WRATH r35.13](https://github.com/Duugu/Sku/releases/download/r35.13/Sku-r35.13-wrath.zip) (December 21st 2023)<br>
 - [Sku ERA r32.24](https://github.com/Duugu/SkuEra/releases/download/r32.24/Sku-r32.24-classic.zip) (December 19th 2023)<br>
 - [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.13
+- More performance updates for combat monitor. Performance in 25 men raids may or may not be better. :)
+- Fixed a combat monitor bug with number of enemies in combat and enemies entering/leaving combat.
+
 ## Changes in Sku r35.12
 - More fixes for pathfinding leading to broken routes in specific scenarios.
 - Added a new sku key bind Output target health. Default: not bound.
