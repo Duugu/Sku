@@ -2,6 +2,12 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r35.14
+	- Fixed a bunch of words/string without translations that could lead to German words in English clients and/or fatalities.
+	- Fixed a pathing issue in Descolace.
+	- Tried to fix a bug with incoming heal in monitors.
+
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r35.13

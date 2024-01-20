@@ -1265,18 +1265,22 @@ function SkuCore:UNIT_HEALTH(eventName, aUnitID)
 	if aUnitID == "player" and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.health.factorInIncomingHeals == true then
 		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
 		local tIncomingHealPlayer = UnitGetIncomingHeals(aUnitID, "player")
+		tIncomingHealPlayer = tIncomingHealPlayer - 0
 		tIncomingHealAmount = (tIncomingHealAll - tIncomingHealPlayer)
 	elseif (aUnitID == "playerpet" or aUnitID == "pet") and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].pet.health.factorInIncomingHeals == true then
 		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
 		local tIncomingHealPlayer = UnitGetIncomingHeals(aUnitID, "player")
+		tIncomingHealPlayer = tIncomingHealPlayer - 0
 		tIncomingHealAmount = (tIncomingHealAll - tIncomingHealPlayer)
 	elseif (aUnitID == "player" or aUnitID == "party1" or aUnitID == "party2" or aUnitID == "party3" or aUnitID == "party4") and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].party.health2.factorInIncomingHeals == true then
 		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
 		local tIncomingHealPlayer = UnitGetIncomingHeals(aUnitID, "player")
+		tIncomingHealPlayer = tIncomingHealPlayer - 0
 		tIncomingHealAmount = (tIncomingHealAll - tIncomingHealPlayer)
 	elseif (string.sub(aUnitID, 1, 4) == "raid" and string.sub(aUnitID, 1, 7) ~= "raidpet") and SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].raid.health2.factorInIncomingHeals == true then
 		local tIncomingHealAll = UnitGetIncomingHeals(aUnitID) or 0
 		local tIncomingHealPlayer = UnitGetIncomingHeals(aUnitID, "player")
+		tIncomingHealPlayer = tIncomingHealPlayer - 0
 		tIncomingHealAmount = (tIncomingHealAll - tIncomingHealPlayer)
 	end
 

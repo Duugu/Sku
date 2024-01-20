@@ -47,6 +47,202 @@ SkuNav.PrintMT = {
 	end,
 	}
 
+
+------------------------------------------------------------------------------------------------------------------------
+local COSMIC_MAP_ID = 946
+local WORLD_MAP_ID = 947
+
+local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
+local WoWBC = (WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC)
+
+mapData          = {}
+local worldMapData     = {}
+local transforms       = {}
+
+local function buildMapData()
+	-- gather map info, but only if this isn't an upgrade (or the upgrade version forces a re-map)
+	-- wipe old data, if required, otherwise the upgrade path isn't triggered
+	if oldversion then
+		wipe(mapData)
+		wipe(worldMapData)
+		wipe(transforms)
+	end
+
+	-- map transform data extracted from UIMapAssignment.db2 (see HereBeDragons-Scripts on GitHub)
+	-- format: instanceID, newInstanceID, minY, maxY, minX, maxX, offsetY, offsetX
+	local transformData
+	if WoWBC then
+		transformData = {
+			{ 530, 0, 4800, 16000, -10133.3, -2666.67, -2400, 2662.8 },
+			{ 530, 1, -6933.33, 533.33, -16000, -8000, 10339.7, 17600 },
+		}
+	else
+		transformData = {
+			{ 530, 1, -6933.33, 533.33, -16000, -8000, 9916, 17600 },
+			{ 530, 0, 4800, 16000, -10133.3, -2666.67, -2400, 2400 },
+			{ 732, 0, -3200, 533.3, -533.3, 2666.7, -611.8, 3904.3 },
+			{ 1064, 870, 5391, 8148, 3518, 7655, -2134.2, -2286.6 },
+			{ 1208, 1116, -2666, -2133, -2133, -1600, 10210.7, 2411.4 },
+			{ 1460, 1220, -1066.7, 2133.3, 0, 3200, -2333.9, 966.7 },
+			{ 1599, 1, 4800, 5866.7, -4266.7, -3200, -490.6, -0.4 },
+			{ 1609, 571, 6400, 8533.3, -1600, 533.3, 512.8, 545.3 },
+		}
+	end
+
+	local function processTransforms()
+		for _, transform in pairs(transformData) do
+			local instanceID, newInstanceID, minY, maxY, minX, maxX, offsetY, offsetX = unpack(transform)
+			if not transforms[instanceID] then
+					transforms[instanceID] = {}
+			end
+			table.insert(transforms[instanceID], { newInstanceID = newInstanceID, minY = minY, maxY = maxY, minX = minX, maxX = maxX, offsetY = offsetY, offsetX = offsetX })
+		end
+	end
+
+	local function applyMapTransforms(instanceID, left, right, top, bottom)
+		if transforms[instanceID] then
+			for _, data in ipairs(transforms[instanceID]) do
+					if left <= data.maxX and right >= data.minX and top <= data.maxY and bottom >= data.minY then
+						instanceID = data.newInstanceID
+						left   = left   + data.offsetX
+						right  = right  + data.offsetX
+						top    = top    + data.offsetY
+						bottom = bottom + data.offsetY
+						break
+					end
+			end
+		end
+		return instanceID, left, right, top, bottom
+	end
+
+	local vector00, vector05 = CreateVector2D(0, 0), CreateVector2D(0.5, 0.5)
+	-- gather the data of one map (by uiMapID)
+	local function processMap(id, data, parent)
+		if not id or not data or mapData[id] then return end
+
+		if data.parentMapID and data.parentMapID ~= 0 then
+			parent = data.parentMapID
+		elseif not parent then
+			parent = 0
+		end
+
+		-- get two positions from the map, we use 0/0 and 0.5/0.5 to avoid issues on some maps where 1/1 is translated inaccurately
+		local instance, topLeft = C_Map.GetWorldPosFromMapPos(id, vector00)
+		local _, bottomRight = C_Map.GetWorldPosFromMapPos(id, vector05)
+		if topLeft and bottomRight then
+			local top, left = topLeft:GetXY()
+			local bottom, right = bottomRight:GetXY()
+			bottom = top + (bottom - top) * 2
+			right = left + (right - left) * 2
+
+			instance, left, right, top, bottom = applyMapTransforms(instance, left, right, top, bottom)
+			mapData[id] = {left - right, top - bottom, left, top, instance = instance, name = data.name, mapType = data.mapType, parent = parent }
+		else
+			mapData[id] = {0, 0, 0, 0, instance = instance or -1, name = data.name, mapType = data.mapType, parent = parent }
+		end
+	end
+
+	local function processMapChildrenRecursive(parent)
+		local children = C_Map.GetMapChildrenInfo(parent)
+		if children and #children > 0 then
+			for i = 1, #children do
+					local id = children[i].mapID
+					if id and not mapData[id] then
+						processMap(id, children[i], parent)
+						processMapChildrenRecursive(id)
+
+						-- process sibling maps (in the same group)
+						-- in some cases these are not discovered by GetMapChildrenInfo above
+						local groupID = C_Map.GetMapGroupID(id)
+						if groupID then
+							local groupMembers = C_Map.GetMapGroupMembersInfo(groupID)
+							if groupMembers then
+									for k = 1, #groupMembers do
+										local memberId = groupMembers[k].mapID
+										if memberId and not mapData[memberId] then
+											processMap(memberId, C_Map.GetMapInfo(memberId), parent)
+											processMapChildrenRecursive(memberId)
+										end
+									end
+							end
+						end
+					end
+			end
+		end
+	end
+
+	local function fixupZones()
+		local cosmic = C_Map.GetMapInfo(COSMIC_MAP_ID)
+		if cosmic then
+			mapData[COSMIC_MAP_ID] = {0, 0, 0, 0}
+			mapData[COSMIC_MAP_ID].instance = -1
+			mapData[COSMIC_MAP_ID].name = cosmic.name
+			mapData[COSMIC_MAP_ID].mapType = cosmic.mapType
+		end
+
+		-- data for the azeroth world map
+		if WoWClassic then
+			worldMapData[0] = { 44688.53, 29795.11, 32601.04,  9894.93 }
+			worldMapData[1] = { 44878.66, 29916.10,  8723.96, 14824.53 }
+		elseif WoWBC then
+			worldMapData[0] = { 44688.53, 29791.24, 32681.47, 11479.44 }
+			worldMapData[1] = { 44878.66, 29916.10,  8723.96, 14824.53 }
+		else
+			worldMapData[0] = { 76153.14, 50748.62, 65008.24, 23827.51 }
+			worldMapData[1] = { 77803.77, 51854.98, 13157.6, 28030.61 }
+			worldMapData[571] = { 71773.64, 50054.05, 36205.94, 12366.81 }
+			worldMapData[870] = { 67710.54, 45118.08, 33565.89, 38020.67 }
+			worldMapData[1220] = { 82758.64, 55151.28, 52943.46, 24484.72 }
+			worldMapData[1642] = { 77933.3, 51988.91, 44262.36, 32835.1 }
+			worldMapData[1643] = { 76060.47, 50696.96, 55384.8, 25774.35 }
+		end
+	end
+
+	local function gatherMapData()
+		processTransforms()
+
+		-- find all maps in well known structures
+		if WoWClassic then
+			processMap(WORLD_MAP_ID)
+			processMapChildrenRecursive(WORLD_MAP_ID)
+		else
+			processMapChildrenRecursive(COSMIC_MAP_ID)
+		end
+
+		fixupZones()
+
+		-- try to fill in holes in the map list
+		for i = 1, 2000 do
+			if not mapData[i] then
+					local mapInfo = C_Map.GetMapInfo(i)
+					if mapInfo and mapInfo.name then
+						processMap(i, mapInfo, nil)
+					end
+			end
+		end
+	end
+
+	gatherMapData()
+
+end
+
+------------------------------------------------------------------------------------------------------------------------
+function SkuNav:GetWorldCoordinatesFromZone(x, y, zone)
+	if not mapData[zone] then
+		buildMapData()
+	end
+
+
+	local data = mapData[zone]
+	if not data or data[1] == 0 or data[2] == 0 then return nil, nil, nil end
+	if not x or not y then return nil, nil, nil end
+
+	local width, height, left, top = data[1], data[2], data[3], data[4]
+	x, y = left - width * x, top - height * y
+
+	return x, y
+end
+
 ------------------------------------------------------------------------------------------------------------------------
 SkuNav.WpTypes = {
 	[1] = "custom",

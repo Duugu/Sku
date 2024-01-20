@@ -853,7 +853,8 @@ function SkuNav:MenuBuilder(aParentEntry)
 								tCoords.y = tonumber(tText)
 								if SkuNav:GetCurrentAreaId() then
 									if SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()) then
-										local tx, ty = SkuOptions.HBD:GetWorldCoordinatesFromZone(tCoords.x / 100, tCoords.y / 100, SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()))
+										local tx, ty = SkuNav:GetWorldCoordinatesFromZone(tCoords.x / 100, tCoords.y / 100, SkuNav:GetUiMapIdFromAreaId(SkuNav:GetCurrentAreaId()))
+										print(tx, ty)
 										SkuNav:UpdateQuickWP(L["Quick waypoint"]..";"..self.tQWPNumber, false, ty, tx)
 									end
 								end

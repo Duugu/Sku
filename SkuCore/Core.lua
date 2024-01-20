@@ -1261,7 +1261,15 @@ function SkuCore:OnEnable()
 			SkuCore:TurnToUnitTurn180()
 		end
 	
-		
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_DOMONITORPARTYHEALTH2CONTI"].key then
+			SkuCore:MonitorPartyHealth2Conti()
+		end
+
+
+		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TARGETDISTANCE"].key then
+			SkuCore:DoRangeCheck(true)
+		end
+
 		if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_GROUPMEMBERSRANGECHECK"].key then
 			SkuCore:DoGroupRangeCheck()
 		end
@@ -1433,6 +1441,7 @@ function SkuCore:OnEnable()
 		for x = 1, 6 do
 			SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNIT"..x].key)
 		end
+		
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNITTURN180"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_TURNTOUNITTURN180"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCANCONTINUE"].key)
 		SetOverrideBindingClick(tFrame, true, SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key, "SkuCoreControlOption1", SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_SCAN1"].key)
@@ -3218,7 +3227,7 @@ end
 -------------------------------------------------------------------------------------------------
 function SkuCore:GetBinding(aIndex)
 	local aBindingSet = GetCurrentBindingSet()
-	print(aIndex, aBindingSet)
+	--print(aIndex, aBindingSet)
 	local tCommand, tCategory, tKey1, tKey2 = GetBinding(aIndex, aBindingSet)
 
 	return tCommand, tCategory, tKey1, tKey2
