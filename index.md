@@ -9,8 +9,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Sku WRATH r35.14](https://github.com/Duugu/Sku/releases/download/r35.14/Sku-r35.14-wrath.zip) (January 20th 2024)<br>
 - [Sku ERA r32.25](https://github.com/Duugu/SkuEra/releases/download/r32.25/Sku-r32.25-classic.zip) (January 19th 2024)<br>
-- [Sku WRATH r35.13](https://github.com/Duugu/Sku/releases/download/r35.13/Sku-r35.13-wrath.zip) (December 21st 2023)<br>
 - [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.14
+- Fixed a bunch of words/string without translations that could lead to German words in English clients and/or fatalities.
+- Fixed a pathing issue in Descolace.
+- Tried to fix a bug with incoming heal in monitors.
+ 
 ## Changes in Sku Era r32.25
 - Fixed a bug that was breaking the loot roll feature. Should work again.
 - Fixed the stable master.
