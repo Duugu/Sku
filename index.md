@@ -8,9 +8,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Updates
 
-*Recent updates:* <br>
+*Last updates:* <br>
+- [Sku ERA r32.25](https://github.com/Duugu/SkuEra/releases/download/r32.25/Sku-r32.25-classic.zip) (January 19th 2024)<br>
 - [Sku WRATH r35.13](https://github.com/Duugu/Sku/releases/download/r35.13/Sku-r35.13-wrath.zip) (December 21st 2023)<br>
-- [Sku ERA r32.24](https://github.com/Duugu/SkuEra/releases/download/r32.24/Sku-r32.24-classic.zip) (December 19th 2023)<br>
 - [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,17 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku Era r32.25
+- Fixed a bug that was breaking the loot roll feature. Should work again.
+- Fixed the stable master.
+- Fixed a bug that was causing empty lists from auction house full scans.
+- Added/updated a bunch of features from Wrath version. That could have introduced unexpected errors. Please report if there are any.
+- Added turn to unit feature from wrath
+- Added all monitors from wrath
+- Added sku makers from wrath
+- Added sku auras from wrath
+- Added the auto select next resource waypoint feature from Wrath
+
 ## Changes in Sku r35.13
 - More performance updates for combat monitor. Performance in 25 men raids may or may not be better. :)
 - Fixed a combat monitor bug with number of enemies in combat and enemies entering/leaving combat.
