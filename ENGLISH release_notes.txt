@@ -3,6 +3,14 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.15
+	- Fall sound will now stop after a few seconds on max pitch if you're falling endless.
+	- Fixed more words/string without translations that could lead to fatalities.
+	- Fixed a bug with the heirloom menu.
+	- Fixed a bugh with combat monitor that lead to a fatality.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.14
 	- Fixed a bunch of words/string without translations that could lead to German words in English clients and/or fatalities.
 	- Fixed a pathing issue in Descolace.

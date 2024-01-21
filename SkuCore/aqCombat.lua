@@ -328,47 +328,51 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
    if aUnitId then
       local aUnitIdGuid = UnitGUID(aUnitId)
       
+      if not aUnitIdGuid then
+         return
+      end
+
       if aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] then
          return aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid]
       end
       
       if UnitGUID("player") == aUnitIdGuid then
          aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "player"
-         Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+         --Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "player"
       end
       if UnitGUID("pet") == aUnitIdGuid then
          aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "pet"
-         Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+         --Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return "pet"
       end
       for x = 1, 4 do
          if UnitGUID("party"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "party"..x
-            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+            --Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "party"..x
          end
          if UnitGUID("partypet"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "partypet"..x
-            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+            --Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "partypet"..x
          end
       end
       for x = 1, 40 do
          if UnitGUID("raid"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "raid"..x
-            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+            --Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raid"
          end
          if UnitGUID("raidpet"..x) == aUnitIdGuid then
             aqCombatIsPartyOrRaidMemberCache[aUnitIdGuid] = "raidpet"..x
-            Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+            --Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
             return "raidpet"..x
          end
       end
 
       if UnitIsEnemy("player", aUnitId) ~= true then
-         Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+         --Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
          return
       end
       
@@ -380,13 +384,13 @@ function SkuCore:aqCombatIsPartyOrRaidMember(aUnitId, aUnitGUID)
          local tPartyGuid = UnitGUID(tPartyUnitToTest)
          if tPartyGuid == aUnitGUID then
             aqCombatIsPartyOrRaidMemberCache[aUnitGUID] = tPartyUnitToTest
-            Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] or 0) + (debugprofilestop() - beginTime2)) / 2                     
+            --Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember2"] or 0) + (debugprofilestop() - beginTime2)) / 2                     
             return tPartyUnitToTest
          end
       end
    end
 
-   Sku.PerformanceData["aqCombatIsPartyOrRaidMember3"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember3"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
+   --Sku.PerformanceData["aqCombatIsPartyOrRaidMember3"] = ((Sku.PerformanceData["aqCombatIsPartyOrRaidMember3"] or 0) + (debugprofilestop() - beginTime2)) / 2                              
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

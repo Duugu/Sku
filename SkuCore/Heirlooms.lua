@@ -15,9 +15,11 @@ function SkuCore:HeirloomsMenuBuilder()
    for x = 1, tNumHLs do
       if C_Heirloom.PlayerHasHeirloom(tHlItemIDs[x]) == true then
          local name, itemEquipLoc, isPvP, itemTexture, upgradeLevel, source, searchFiltered, effectiveLevel, minLevel, maxLevel = C_Heirloom.GetHeirloomInfo(tHlItemIDs[x])
-         tItems[itemEquipLoc] = tItems[itemEquipLoc] or {}
-         tItems[itemEquipLoc][tHlItemIDs[x]] = name
-         tHasEntries = true
+         if itemEquipLoc then
+            tItems[itemEquipLoc] = tItems[itemEquipLoc] or {}
+            tItems[itemEquipLoc][tHlItemIDs[x]] = name
+            tHasEntries = true
+         end
       end
    end
 

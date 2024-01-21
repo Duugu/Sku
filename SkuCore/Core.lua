@@ -904,6 +904,7 @@ function SkuCore:OnEnable()
 	end)
 
 	local tLastFallSoundNum = 0
+	local tFallSoundStop = 0
 	local ttime = 0
 	local f = _G["SkuCoreControl"] or CreateFrame("Frame", "SkuCoreControl", UIParent)
 	local tClassTrainerFrameHooked = false
@@ -970,11 +971,16 @@ function SkuCore:OnEnable()
 						tLastFallSoundNum = tLastFallSoundNum + 1
 						if tLastFallSoundNum > 99 then
 							tLastFallSoundNum = 99
+							tFallSoundStop = tFallSoundStop + 1
+						else
+							tFallSoundStop = 0
 						end
 						if tLastFallSoundNum == 1 and SkuOptions.db.profile[MODULE_NAME].fallSettings.voiceOutput == true then
 							SkuOptions.Voice:OutputString("male-Fallen", true, true, 0.2)
 						end
-						PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\fall_sound\\1\\fall_sound-"..string.format("%02d", tLastFallSoundNum)..".mp3", "Talking Head")
+						if tFallSoundStop < 300 then
+							PlaySoundFile("Interface\\AddOns\\Sku\\SkuCore\\assets\\audio\\fall_sound\\1\\fall_sound-"..string.format("%02d", tLastFallSoundNum)..".mp3", "Talking Head")
+						end
 					end
 				end
 			else
