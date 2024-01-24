@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Sku WRATH r35.15](https://github.com/Duugu/Sku/releases/download/r35.15/Sku-r35.15-wrath.zip) (January 21st 2024)<br>
+- [Sku WRATH r35.16](https://github.com/Duugu/Sku/releases/download/r35.16/Sku-r35.16-wrath.zip) (January 24st 2024)<br>
 - [Sku ERA r32.25](https://github.com/Duugu/SkuEra/releases/download/r32.25/Sku-r32.25-classic.zip) (January 19th 2024)<br>
 - [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
@@ -28,6 +28,19 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r35.16
+- Finally fixed all remaining missing translations.
+- Added English translation for Flying Stopped notification.
+- Added two new optional chat tabs: Audio Log and Combat Log.
+	Both are disabled by default. There are options to enable them under Chat > Options > Chat Settings.<br>
+	The Audio Log just contains the sku audio output history like zones, names, etc.<br>
+	The Combat Log contains the same combat log that sighted players have in their chat frame.<br>
+	Combat log entries are filtered. There are 3 pre-definied filters: Everything (default), My Actions, and What happend to me?<br>
+	Go to Chat > Options > Chat Settings > Combat Log > Filters to select a specific filter.<br>
+	You can add additional customized filters via Chat > Options > Chat Settings > Combat Log > Filters > New filter.<br>
+	Under each filter are three categories to specify what the filter is showning: events, source, destination. Enable the appropiate values in those cateogries, to modify a filter.
+- Fixed a chat bug that was unintentionally deleting the chat tabs history on zone transfers if Delete History On Login was enabled. History will now be deleted on login only, as intended.
+
 ## Changes in Sku r35.15
 - Fall sound will now stop after a few seconds on max pitch if you're falling endless.
 - Fixed more words/string without translations that could lead to fatalities.
