@@ -179,3 +179,12 @@ function Sku:Performance()
 		Sku.PerformanceStart = true
 	end
 end
+
+
+
+function Sku:SKU_COMBATLOG(a, b, c, d)
+	print(a, b, c, d)
+end
+function testf()
+	SkuDispatcher:RegisterEventCallback("SKU_COMBATLOG", Sku.SKU_COMBATLOG)
+end

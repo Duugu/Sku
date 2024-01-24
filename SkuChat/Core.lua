@@ -4,6 +4,9 @@ local L = Sku.L
 
 SkuChat = LibStub("AceAddon-3.0"):NewAddon("SkuChat", "AceConsole-3.0", "AceEvent-3.0")
 
+Sku_CombatLog_Filter_Defaults = {}
+
+
 local play = 2	--this is just a local constant for output type (play, true, false)
 local zoneChannels = {
 	general = 1,
@@ -207,6 +210,17 @@ SkuChat.ChatFrameMessageTypes = {
 			type = "COMBAT_MISC_INFO",
 			default = true,
 		},
+	},
+
+	SKU = {
+		[1] = {
+			type = "COMBATLOG",
+			default = false,
+		},
+		[2] = {
+			type = "AUDIOLOG",
+			default = false,
+		}
 	},
 }
 
@@ -963,6 +977,13 @@ SkuChatChatTypeGroup["VOICE_TEXT"] = {
 	"CHAT_MSG_VOICE_TEXT",
 } 
 
+SkuChatChatTypeGroup["COMBATLOG"] = {
+	"SKU_COMBATLOG",
+} 
+SkuChatChatTypeGroup["AUDIOLOG"] = {
+	"SKU_AUDIOLOG",
+} 
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 SkuChatChatTypeGroupInverted = {} 
 for group, values in pairs(SkuChatChatTypeGroup) do
@@ -1101,7 +1122,11 @@ function SkuChat_AddMessageGroup(chatFrame, group)
 	if ( info ) then
 		tinsert(chatFrame.messageTypeList, group) 
 		for index, value in pairs(info) do
-			chatFrame:RegisterEvent(value) 
+			if group == "COMBATLOG" or group == "AUDIOLOG" then
+				SkuDispatcher:RegisterEventCallback(value, SkuChat_SkuMessageEventHandler)
+			else
+				chatFrame:RegisterEvent(value) 
+			end
 		end
 	end
 end
@@ -1504,8 +1529,19 @@ do
 	end
 end
 
+function SkuChat_SkuMessageEventHandler(self, event, tMessagetype, message)
+	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
+		if tMessagetype == "COMBATLOG" and SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes["SKU"] and SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes["SKU"][1] == true then
+			_G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName]:AddMessage(tMessagetype, message) 
+		end
+		if tMessagetype == "AUDIOLOG" and  SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes["SKU"] and SkuOptions.db.profile["SkuChat"].tabs[x].messageTypes["SKU"][2] == true then
+			_G[SkuOptions.db.profile["SkuChat"].tabs[x].frameName]:AddMessage(tMessagetype, message) 
+		end
+	end
+	
+end
+
 function SkuChat_MessageEventHandler(self, event, ...)
-	--print("SkuChat_MessageEventHandler", self, event, ...)
 	--find messagetype group
 	local tMessagetype = event
 	for i, v in pairs(SkuChatChatTypeGroup) do
@@ -2173,12 +2209,21 @@ function SkuChat:GetChannelAccessIdFromChannelName(aName)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:COMBAT_LOG_EVENT()
+	local text, r, g, b, a = CombatLog_OnEvent(Blizzard_CombatLog_CurrentSettings, CombatLogGetCurrentEventInfo() );
+	if ( text ) then
+		SkuDispatcher:TriggerSkuEvent("SKU_COMBATLOG", "COMBATLOG", text)
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuChat:OnInitialize()
 	SkuChat:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuChat:RegisterEvent("PLAYER_LOGIN")
 	SkuChat:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 	SkuChat:RegisterEvent("CHAT_MSG_WHISPER")
 	SkuChat:RegisterEvent("CHAT_MSG_WHISPER_INFORM")
+	SkuChat:RegisterEvent("COMBAT_LOG_EVENT")
 
 	local function CloseChatMenuHelper()
 		_G["OnSkuChatToggle"].menuOpen = false
@@ -3009,10 +3054,13 @@ function SkuChat:DEFAULT_CHAT_FRAME_AddMessage(...)
 	end
 	--SkuCore:Debug((a or "nil").." "..(b or "nil").." "..(c or "nil").." "..(d or "nil").." "..(e or "nil").." "..(f or "nil"))
 	for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs) do
-		if _G[v.frameName] then
-			if _G[v.frameName].AddMessage then
-				if b == nil and c == nil and  d == nil and  e == nil and  f == nil then
-					_G[v.frameName]:AddMessage("ADDON", a, 1, 1, 1, 0, 0, 0, "AddMessage")
+
+		if v.name ~= L["Combat Log"] and v.name ~= L["Audio Log"] then
+			if _G[v.frameName] then
+				if _G[v.frameName].AddMessage then
+					if b == nil and c == nil and  d == nil and  e == nil and  f == nil then
+						_G[v.frameName]:AddMessage("ADDON", a, 1, 1, 1, 0, 0, 0, "AddMessage")
+					end
 				end
 			end
 		end
@@ -3097,10 +3145,317 @@ function SkuChat:JoinOrLeaveSkuChatChannel()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:CombatLogTabIndex()
+	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
+		if SkuOptions.db.profile["SkuChat"].tabs[x].name == L["Combat Log"] then
+			return x
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:InitCombatLogTab()
+	if SkuOptions.db.profile["SkuChat"].CombatLog.enabled == true then
+		if not SkuChat:CombatLogTabIndex() then
+
+			local tabIndex = SkuChat:NewTab(L["Combat Log"])
+			for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tabIndex].messageTypes) do
+				for u = 1, #v do
+					v[u] = false
+				end
+			end
+			for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tabIndex].channels) do
+				v.status = false
+			end
+
+			SkuOptions.db.profile["SkuChat"].tabs[tabIndex].audioOnNewMessage = "sound-silence0.1"
+			SkuOptions.db.profile["SkuChat"].tabs[tabIndex].messageTypes["SKU"][1] = true
+
+			SkuChat:InitTab(tabIndex)
+		end
+	else
+		if SkuChat:CombatLogTabIndex() then
+			SkuChat:DeleteTab(SkuChat:CombatLogTabIndex())
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:AudioLogTabIndex()
+	for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
+		if SkuOptions.db.profile["SkuChat"].tabs[x].name == L["Audio Log"] then
+			return x
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuChat:InitAudioLogTab()
+	if SkuOptions.db.profile["SkuChat"].AudioLog.enabled == true then
+		if not SkuChat:AudioLogTabIndex() then
+			local tabIndex = SkuChat:NewTab(L["Audio Log"])
+			for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tabIndex].messageTypes) do
+				for u = 1, #v do
+					v[u] = false
+				end
+			end
+			for i, v in pairs(SkuOptions.db.profile["SkuChat"].tabs[tabIndex].channels) do
+				v.status = false
+			end
+
+			SkuOptions.db.profile["SkuChat"].tabs[tabIndex].audioOnNewMessage = "sound-silence0.1"
+			SkuOptions.db.profile["SkuChat"].tabs[tabIndex].messageTypes["SKU"][2] = true
+
+			SkuChat:InitTab(tabIndex)
+		end
+	else
+		if SkuChat:AudioLogTabIndex() then
+			SkuChat:DeleteTab(SkuChat:AudioLogTabIndex())
+		end
+	end			
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function CreateSkuDefaultFilters()
+	SkuOptions.db.global["SkuChat"] = SkuOptions.db.global["SkuChat"] or {}
+	SkuOptions.db.global["SkuChat"].CombatLogFilters = SkuOptions.db.global["SkuChat"].CombatLogFilters or {
+		[1] = {
+			custom = false,
+			name = "Everything",
+			hasQuickButton = true,
+			quickButtonName = "Everything",
+			quickButtonDisplay = {
+				solo = true,
+				party = true,
+				raid = true,
+			},
+			tooltip = "Everything",
+			settings = CopyTable(COMBATLOG_DEFAULT_SETTINGS),
+			colors = CopyTable(COMBATLOG_DEFAULT_COLORS),
+			filters = {
+				[1] = {
+					eventList = Blizzard_CombatLog_GenerateFullEventList(),
+					sourceFlags = {
+						--[COMBATLOG_FILTER_ME] = true,
+						[COMBATLOG_FILTER_MINE] = true,
+						[COMBATLOG_FILTER_MY_PET] = true,
+						[COMBATLOG_FILTER_FRIENDLY_UNITS] = true,
+						[COMBATLOG_FILTER_HOSTILE_PLAYERS] = true,
+						[COMBATLOG_FILTER_HOSTILE_UNITS] = true,
+						[COMBATLOG_FILTER_NEUTRAL_UNITS] = true,
+						[COMBATLOG_FILTER_UNKNOWN_UNITS] = true,
+						--[COMBATLOG_FILTER_EVERYTHING] = false,
+					},
+				},
+				[2] = {
+					eventList = Blizzard_CombatLog_GenerateFullEventList(),
+					destFlags = {
+						--[COMBATLOG_FILTER_ME] = true,
+						[COMBATLOG_FILTER_MINE] = true,
+						[COMBATLOG_FILTER_MY_PET] = true,
+						[COMBATLOG_FILTER_FRIENDLY_UNITS] = true,
+						[COMBATLOG_FILTER_HOSTILE_PLAYERS] = true,
+						[COMBATLOG_FILTER_HOSTILE_UNITS] = true,
+						[COMBATLOG_FILTER_NEUTRAL_UNITS] = true,
+						[COMBATLOG_FILTER_UNKNOWN_UNITS] = true,
+						--[COMBATLOG_FILTER_EVERYTHING] = false,
+					},
+				},				
+			},
+		},
+		[2] = {
+			custom = false,
+			name = "My actions",
+			hasQuickButton = true,
+			quickButtonName = "My actions",
+			quickButtonDisplay = {
+				solo = true,
+				party = true,
+				raid = true,
+			},
+			tooltip = "My actions",
+			settings = CopyTable(COMBATLOG_DEFAULT_SETTINGS),
+			colors = CopyTable(COMBATLOG_DEFAULT_COLORS),
+			filters = {
+				[1] = {
+					eventList = {
+						["ENVIRONMENTAL_DAMAGE"] = false,
+						["SWING_DAMAGE"] = true,
+						["SWING_MISSED"] = false,
+						["RANGE_DAMAGE"] = true,
+						["RANGE_MISSED"] = false,
+						--["SPELL_CAST_START"] = true,
+						--["SPELL_CAST_SUCCESS"] = true,
+						--["SPELL_CAST_FAILED"] = true,
+						["SPELL_MISSED"] = false,
+						["SPELL_DAMAGE"] = true,
+						["SPELL_HEAL"] = true,
+						["SPELL_ENERGIZE"] = true,
+						["SPELL_DRAIN"] = false,
+						["SPELL_LEECH"] = false,
+						["SPELL_INSTAKILL"] = false,
+						["SPELL_INTERRUPT"] = false,
+						["SPELL_EXTRA_ATTACKS"] = false,
+						["SPELL_DURABILITY_DAMAGE"] = false,
+						["SPELL_DURABILITY_DAMAGE_ALL"] = false,
+						["SPELL_AURA_APPLIED"] = false,
+						["SPELL_AURA_APPLIED_DOSE"] = false,
+						["SPELL_AURA_REMOVED"] = false,
+						["SPELL_AURA_REMOVED_DOSE"] = false,
+						["SPELL_AURA_BROKEN"] = false,
+					  ["SPELL_AURA_BROKEN_SPELL"] = false,
+					  ["SPELL_AURA_REFRESH"] = false,
+						["SPELL_DISPEL"] = false,
+						["SPELL_STOLEN"] = false,
+						["ENCHANT_APPLIED"] = false,
+						["ENCHANT_REMOVED"] = false,
+						["SPELL_PERIODIC_MISSED"] = false,
+						["SPELL_PERIODIC_DAMAGE"] = true,
+						["SPELL_PERIODIC_HEAL"] = true,
+						["SPELL_PERIODIC_ENERGIZE"] = true,
+						["SPELL_PERIODIC_DRAIN"] = false,
+						["SPELL_PERIODIC_LEECH"] = false,
+						["SPELL_DISPEL_FAILED"] = false,
+						--["DAMAGE_SHIELD"] = true,
+						--["DAMAGE_SHIELD_MISSED"] = true,
+						["DAMAGE_SPLIT"] = true,
+						["PARTY_KILL"] = true,
+						["UNIT_DIED"] = false,
+						["UNIT_DESTROYED"] = true,
+						["UNIT_DISSIPATES"] = true,
+					  ["UNIT_LOYALTY"] = false
+					};
+					sourceFlags = {
+						[COMBATLOG_FILTER_MINE] = true
+					};
+					destFlags = nil;
+				},
+				[2] = {
+					eventList = {
+						--["ENVIRONMENTAL_DAMAGE"] = true,
+						["SWING_DAMAGE"] = true,
+						["SWING_MISSED"] = true,
+						["RANGE_DAMAGE"] = true,
+						["RANGE_MISSED"] = true,
+						--["SPELL_CAST_START"] = true,
+						--["SPELL_CAST_SUCCESS"] = true,
+						--["SPELL_CAST_FAILED"] = true,
+						["SPELL_MISSED"] = true,
+						["SPELL_DAMAGE"] = true,
+						["SPELL_HEAL"] = true,
+						["SPELL_ENERGIZE"] = true,
+						["SPELL_DRAIN"] = true,
+						["SPELL_LEECH"] = true,
+						["SPELL_INSTAKILL"] = true,
+						["SPELL_INTERRUPT"] = true,
+						["SPELL_EXTRA_ATTACKS"] = true,
+						["SPELL_DURABILITY_DAMAGE"] = true,
+						["SPELL_DURABILITY_DAMAGE_ALL"] = true,
+						--["SPELL_AURA_APPLIED"] = true,
+						--["SPELL_AURA_APPLIED_DOSE"] = true,
+						--["SPELL_AURA_REMOVED"] = true,
+						--["SPELL_AURA_REMOVED_DOSE"] = true,
+						["SPELL_DISPEL"] = true,
+						["SPELL_STOLEN"] = true,
+						["ENCHANT_APPLIED"] = true,
+						["ENCHANT_REMOVED"] = true,
+						--["SPELL_PERIODIC_MISSED"] = true,
+						--["SPELL_PERIODIC_DAMAGE"] = true,
+						--["SPELL_PERIODIC_HEAL"] = true,
+						--["SPELL_PERIODIC_ENERGIZE"] = true,
+						--["SPELL_PERIODIC_DRAIN"] = true,
+						--["SPELL_PERIODIC_LEECH"] = true,
+						["SPELL_DISPEL_FAILED"] = true,
+						--["DAMAGE_SHIELD"] = true,
+						--["DAMAGE_SHIELD_MISSED"] = true,
+						["DAMAGE_SPLIT"] = true,
+						["PARTY_KILL"] = true,
+						["UNIT_DIED"] = true,
+						["UNIT_DESTROYED"] = true,
+						["UNIT_DISSIPATES"] = true,
+					  ["UNIT_LOYALTY"] = false
+					};
+					sourceFlags = nil;
+					destFlags =  {
+						[COMBATLOG_FILTER_MINE] = false,
+						[COMBATLOG_FILTER_MY_PET] = false;
+					};
+				},				
+			},
+		},
+		[3] = {
+			custom = false,
+			name = "What happend to me",
+			hasQuickButton = true,
+			quickButtonName = "What happend to me",
+			quickButtonDisplay = {
+				solo = true,
+				party = true,
+				raid = true,
+			},
+			tooltip = "What happend to me",
+			settings = CopyTable(COMBATLOG_DEFAULT_SETTINGS),
+			colors = CopyTable(COMBATLOG_DEFAULT_COLORS),
+			filters = {
+				[1] = {
+					eventList = {
+					      ["ENVIRONMENTAL_DAMAGE"] = true,
+					      ["SWING_DAMAGE"] = true,
+					      ["RANGE_DAMAGE"] = true,
+					      ["SPELL_DAMAGE"] = true,
+					      ["SPELL_HEAL"] = true,
+					      ["SPELL_PERIODIC_DAMAGE"] = true,
+					      ["SPELL_PERIODIC_HEAL"] = true,
+					      ["DAMAGE_SPLIT"] = true,
+					      ["UNIT_DIED"] = true,
+					      ["UNIT_DESTROYED"] = true,
+					      ["UNIT_DISSIPATES"] = true
+					};
+					sourceFlags = Blizzard_CombatLog_GenerateFullFlagList(false);
+					destFlags = nil;
+				};
+				[2] = {
+					eventList = Blizzard_CombatLog_GenerateFullEventList();
+					sourceFlags = nil;
+					destFlags =  {
+						[COMBATLOG_FILTER_MINE] = true,
+						[COMBATLOG_FILTER_MY_PET] = false;
+					};
+				};
+			},
+		},				
+	}
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 local SkuChatEditboxHookFlag = false
 function SkuChat:PLAYER_ENTERING_WORLD(...)
 	local event, isInitialLogin, isReloadingUi = ...
 
+	--init combat log stuff
+	SkuOptions.db.profile["SkuChat"].CombatLog = SkuOptions.db.profile["SkuChat"].CombatLog or {
+		enabled = false,
+		currentFilter = 1,
+	}
+
+	-- we need to delay this to entering world because of global constants availablity
+	CreateSkuDefaultFilters()
+
+	if not SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter] then
+		SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter = 1
+	end
+
+	Blizzard_CombatLog_CurrentSettings = SkuOptions.db.global["SkuChat"].CombatLogFilters[SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter]
+	Blizzard_CombatLog_ApplyFilters(Blizzard_CombatLog_CurrentSettings)
+	
+
+	--init audio log stuff
+	SkuOptions.db.profile["SkuChat"].AudioLog = SkuOptions.db.profile["SkuChat"].AudioLog or {
+		enabled = false,
+	}
+
+
+	--remove aws polly dev voices on my system
 	SkuChat.WowTtsVoices = {}
 	for i, v in pairs(C_VoiceChat.GetTtsVoices()) do
 		if not string.find(v.name, "Polly") then
@@ -3109,6 +3464,7 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 	end
 	SkuChat.options.args.WowTtsVoice.values = SkuChat.WowTtsVoices
 
+	--create default tabs
 	if not SkuOptions.db.profile["SkuChat"].tabs or #SkuOptions.db.profile["SkuChat"].tabs == 0 then
 		SkuOptions.db.profile["SkuChat"].tabs = {}
 		SkuChat:NewTab(L["Default"])
@@ -3152,7 +3508,13 @@ function SkuChat:PLAYER_ENTERING_WORLD(...)
 
 	SkuChat.currentTab = 1
 
-	if SkuOptions.db.profile["SkuChat"].chatSettings.deleteHistoryOnLogin == true then
+	--add new - because we want them at the last position
+	SkuChat:InitAudioLogTab()
+	SkuChat:InitCombatLogTab()	
+
+	
+	--delete history of all tabs if required
+	if SkuOptions.db.profile["SkuChat"].chatSettings.deleteHistoryOnLogin == true  and isInitialLogin == true then
 		for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
 			SkuOptions.db.profile["SkuChat"].tabs[x].history = {}
 			table.insert(SkuOptions.db.profile["SkuChat"].tabs[x].history, 1, {
@@ -3504,7 +3866,9 @@ function SkuChat:InitTab(tNewTabIndex)
 				if SkuCore.inCombat == true then
 					SkuChatNewLineInCombat = true
 				else
-					SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].audioOnNewMessage, false, true, 0.1)
+					if SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].audioOnNewMessage ~= "sound-silence0.1" then
+						SkuOptions.Voice:OutputString(SkuOptions.db.profile["SkuChat"].tabs[tNewTabIndex].audioOnNewMessage, false, true, 0.1)
+					end
 				end
 			end
 
@@ -3554,6 +3918,7 @@ function SkuChat:NewTab(aName)
 				PVP = {},
 				SYSTEM = {},
 				COMBAT = {},
+				SKU = {},
 			},
 			channels = {},
 			privateMessages = {},

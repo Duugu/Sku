@@ -1147,7 +1147,7 @@ function SkuCore:OnEnable()
 		else
 			if SkuStatus.flying > 0 then
 				SkuStatus.flying = 0
-				SkuOptions.Voice:OutputString("Fliegen beendet", false, true, 0.2)
+				SkuOptions.Voice:OutputString(L["Fliegen beendet"], false, true, 0.2)
 				SkuOptions:SendTrackingStatusUpdates()
 			end
 		end

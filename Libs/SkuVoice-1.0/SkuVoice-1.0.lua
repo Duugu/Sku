@@ -1042,6 +1042,8 @@ function SkuVoice:OutputString(aString, aOverwrite, aWait, aLength, aDoNotOverwr
 				end
 			end
 		else
+			SkuDispatcher:TriggerSkuEvent("SKU_AUDIOLOG", "AUDIOLOG", aString)
+
 			aString = string.lower(aString)
 			aString = SplitString(aString)
 

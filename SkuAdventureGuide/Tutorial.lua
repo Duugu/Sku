@@ -719,22 +719,25 @@ function SkuAdventureGuide.Tutorial:PLAYER_ENTERING_WORLD(...)
 
    --add the tutorial help macro to MultiBarBottomLeftButton1 (F1)
    if SkuOptions.db.char[MODULE_NAME].Tutorials.ftuExperience == 0 then
-      for x = 15, 60, 15 do
-         C_Timer.After(x, function()
-            SkuAdventureGuide.Tutorial.HelpMacroId = GetMacroIndexByName(L["Tutorial helper macro"])
-            if not SkuAdventureGuide.Tutorial.HelpMacroId or SkuAdventureGuide.Tutorial.HelpMacroId == 0 then
-               SkuAdventureGuide.Tutorial.HelpMacroId = CreateMacro(L["Tutorial helper macro"], "INV_MISC_QUESTIONMARK", '/script SkuAdventureGuide.Tutorial:OpenTutorialHelpMenu()', true)
-               if SkuAdventureGuide.Tutorial.HelpMacroId then
-                  local tType, tId = GetActionInfo(MultiBarBottomLeftButton1.action)
-                  if not tType then
-                     ClearCursor()
-                     PickupMacro(SkuAdventureGuide.Tutorial.HelpMacroId)
-                     PlaceAction(MultiBarBottomLeftButton1.action)
-                     ClearCursor()
+      local global, perChar = GetNumMacros()
+      if perChar < 18 then
+         for x = 15, 60, 15 do
+            C_Timer.After(x, function()
+               SkuAdventureGuide.Tutorial.HelpMacroId = GetMacroIndexByName(L["Tutorial helper macro"])
+               if not SkuAdventureGuide.Tutorial.HelpMacroId or SkuAdventureGuide.Tutorial.HelpMacroId == 0 then
+                  SkuAdventureGuide.Tutorial.HelpMacroId = CreateMacro(L["Tutorial helper macro"], "INV_MISC_QUESTIONMARK", '/script SkuAdventureGuide.Tutorial:OpenTutorialHelpMenu()', true)
+                  if SkuAdventureGuide.Tutorial.HelpMacroId then
+                     local tType, tId = GetActionInfo(MultiBarBottomLeftButton1.action)
+                     if not tType then
+                        ClearCursor()
+                        PickupMacro(SkuAdventureGuide.Tutorial.HelpMacroId)
+                        PlaceAction(MultiBarBottomLeftButton1.action)
+                        ClearCursor()
+                     end
                   end
                end
-            end
-         end)
+            end)
+         end
       end
    end
 end

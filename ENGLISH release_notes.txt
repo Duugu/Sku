@@ -3,6 +3,21 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.16
+	- Finally fixed all remaining missing translations.
+	- Added English translation for Flying Stopped notification.
+	- Added two new optional chat tabs: Audio Log and Combat Log.
+		Both are disabled by default. There are options to enable them under Chat > Options > Chat Settings.
+		The Audio Log just contains the sku audio output history like zones, names, etc.
+		The Combat Log contains the same combat log that sighted players have in their chat frame.
+		Combat log entries are filtered. There are 3 pre-definied filters: Everything (default), My Actions, and What happend to me?
+		Go to Chat > Options > Chat Settings > Combat Log > Filters to select a specific filter.
+		You can add additional customized filters via Chat > Options > Chat Settings > Combat Log > Filters > New filter.
+		Under each filter are three categories to specify what the filter is showning: events, source, destination. Enable the appropiate values in those cateogries, to modify a filter.
+	- Fixed a chat bug that was unintentionally deleting the chat tabs history on zone transfers if Delete History On Login was enabled. History will now be deleted on login only, as intended.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.15
 	- Fall sound will now stop after a few seconds on max pitch if you're falling endless.
 	- Fixed more words/string without translations that could lead to fatalities.

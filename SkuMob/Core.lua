@@ -286,8 +286,10 @@ function SkuMob:PLAYER_SOFT_INTERACT_CHANGED(aEvent, aGuid)
 						end
 						if hp == 0 then
 							SkuOptions.Voice:OutputStringBTtts(L["dead"].." "..tName, true, true, 0.2, true, nil, nil, 2)
+							SkuDispatcher:TriggerSkuEvent("SKU_AUDIOLOG", "AUDIOLOG", L["dead"].." "..tName)
 						else
 							SkuOptions.Voice:OutputStringBTtts(tName, true, true, 0.2, true, nil, nil, 2)
+							SkuDispatcher:TriggerSkuEvent("SKU_AUDIOLOG", "AUDIOLOG", tName)
 						end
 					end)
 				end
@@ -615,6 +617,7 @@ function SkuMob:PLAYER_TARGET_CHANGED(event, aUnitId)
 			SkuOptions.Voice:OutputString(tOutputString, true, true, 0.3)
 		else
 			SkuOptions.Voice:OutputStringBTtts(tOutputStringB, true, true, 0.3, nil, nil, nil, 1)
+			SkuDispatcher:TriggerSkuEvent("SKU_AUDIOLOG", "AUDIOLOG", tOutputStringB)
 		end
 
 	end)
