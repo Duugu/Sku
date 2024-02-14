@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Wow Login Too r1.5](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.5/WoW_Login_Tool-r1.5.zip) (February 14th 2024)<br>
 - [Sku WRATH r35.16](https://github.com/Duugu/Sku/releases/download/r35.16/Sku-r35.16-wrath.zip) (January 24st 2024)<br>
 - [Sku ERA r32.25](https://github.com/Duugu/SkuEra/releases/download/r32.25/Sku-r32.25-classic.zip) (January 19th 2024)<br>
-- [Wow Menu ERA r4.5](https://github.com/Duugu/wow_menu_era/releases/download/r4.5/wow_menu-r4.5-classic.zip) (December 8th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -20,7 +20,6 @@ DEUTSCH - Erste Schritte:<br>
 
 *Older updates:* <br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
-- [Wow Menu WRATH r4.1](https://github.com/Duugu/wow_menu/releases/download/r4.1/wow_menu-r4.1-wrath.zip) (Sep 1st 2023)<br>
 
 *Addons for sighted players:* <br>
 - [SkuMapper r3.4](https://github.com/Duugu/SkuMapper/releases/download/r3.4/SkuMapper-r3.4-wrath.zip) (November 15th 2023), mapping addon for sighted players<br>
@@ -28,6 +27,13 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in WoW Login Tool r1.5
+The new WoW Login Tool is a replacement for the wow menu login scripts. It basically offers the same features and works the same way, but it's no longer split into different scripts for different regions and languages. And it can now be used for Retail too.<br>
+With the WoW Login Tool there is only one script for all, START.ahk.<br>
+The WoW Login Tool will take you through a quick setup on first start to choose your voice, language, region and game type. Everything else will be the same as the old wow menu script.<br>
+You don't need wow menu anymore. Feel free to delete it.<br>
+See the readme.txt in the WoW Login Tool folder for more information.<br>
+
 ## Changes in Sku r35.16
 - Finally fixed all remaining missing translations.
 - Added English translation for Flying Stopped notification.
