@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Wow Login Too r1.5](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.5/WoW_Login_Tool-r1.5.zip) (February 14th 2024)<br>
+- [Wow Login Tool r1.5](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.5/WoW_Login_Tool-r1.5.zip) (February 14th 2024)<br>
 - [Sku WRATH r35.16](https://github.com/Duugu/Sku/releases/download/r35.16/Sku-r35.16-wrath.zip) (January 24st 2024)<br>
 - [Sku ERA r32.25](https://github.com/Duugu/SkuEra/releases/download/r32.25/Sku-r32.25-classic.zip) (January 19th 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
