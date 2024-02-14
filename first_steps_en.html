@@ -178,7 +178,7 @@
             Then download all required addons. We have bundled them in a starter package. You will find the starter packages at the following URLs:<br>
             <ul>
 <li><p>For Wrath of the Lich King: <a href="https://1drv.ms/u/s!Aqgp3J_s6MM7iMBeDbkftaLwJB993w?e=S7NxgN">https://1drv.ms/u/s!Aqgp3J_s6MM7iMBeDbkftaLwJB993w?e=S7NxgN</a> </p></li>
-<li><p>OR for Classic Era: <a href="https://1drv.ms/u/s!Aqgp3J_s6MM7iL8z3MabNr_gbcs_xA?e=rHcAaA">https://1drv.ms/u/s!Aqgp3J_s6MM7iL8z3MabNr_gbcs_xA?e=rHcAaA</a> </p></li>
+<li><p>OR for Classic Era and SoD: <a href="https://1drv.ms/u/s!Aqgp3J_s6MM7iL8z3MabNr_gbcs_xA?e=rHcAaA">https://1drv.ms/u/s!Aqgp3J_s6MM7iL8z3MabNr_gbcs_xA?e=rHcAaA</a> </p></li>
 </ul>
             <br>
             That download is quite big too (about 573 MB). It may take quite a while.
@@ -188,31 +188,31 @@
             Assuming you accepted the default settings during installation, the directory most probably is "C:\Program Files (x86)\World of Warcraft". Otherwise, you'll have to manually find it.
          </p></li>
          <li><p>
-            Open the folder "_classic_" in that directory. Then open the folder "Interface" and then "AddOns".
+            Open the folder "_classic_" (or _Classic_era_ for Era and SoD) in that directory. Then open the folder "Interface" and then "AddOns".
          </p></li>
          <li><p>
             Unzip all the folders and files from the downloaded starter package to that folder ("AddOns").<br>
             The starter package contains many, many, many files. Therefore, and depending on your machine, extracting them may take quite a lot of time. That only happens during the initial setup and is expected.
          </p></li>
          <li><p>
-            After extracting the files you will find many new folders in that AddOns folder. One of them is named wow_menu. Open the folder wow_menu.
+            After extracting the files you will find many new folders in that AddOns folder. One of them is named WoW Login Tool. Open the folder WoW Login Tool.
          </p></li>
          <li><p>
             Then complete the following steps:</p>
             <ol>
-               <li><p>Go to the folder "CopyTheContentOfThisFolderToInterface" in you "wow_menu" folder. There should be 3 folders in there.</p></li>
-               <li><p>Copy all 3 folders ("DialogFrame", "GLUES", "HELPFRAME").</p></li>
+               <li><p>Go to the folder "CopyTheContentOfThisFolderToInterface" in you WoW Login Tool folder. There should be 5 folders in there.</p></li>
+               <li><p>Copy all 3 folders ("DialogFrame", "GLUES", "HELPFRAME", etc.).</p></li>
                <li><p>Go to the "Interface" folder ("C:\Program Files (x86)\World of Warcraft\_classic_\Interface").</p></li>
-               <li><p>Insert the just copied 3 folders in that "Interface" folder.</p></li>
+               <li><p>Insert the just copied 5 folders in that "Interface" folder.</p></li>
             </ol>
-            <p>Caution: You need to really carefully follow the instructions above. Do NOT just copy the full "wow_menu" folder from the downloaded .zip file to "Interface". That won't work.            
+            <p>Caution: You need to really carefully follow the instructions above. Do NOT just copy the full WoW Login Tool folder from the downloaded .zip file to "Interface". That won't work.            
             <p>Caution: The next steps below are important too. You still need to do them if you're a Mac user and can't use the scripts!
             <ol>
                <li><p>Go to the Addons-Folder again (..\World of Warcraft_classic\Interface\AddOns).</p></li>
-               <li><p>Cut out the wow_menu folder containing the login scripts. (Don't just copy the folder. Cut it. It needs to be removed from the Addons folder!)</p></li>
+               <li><p>Cut out the WoW Login Tool folder containing the login tool. (Don't just copy the folder. Cut it. It needs to be removed from the Addons folder!)</p></li>
                <li><p>Go to some other folder of your choice (outside of the "World of Warcraft" folder structure) or to the desktop.</p></li>
-               <li><p>Paste that wow_menu folder there.</p></li>
-               <li><p>In the wow_menu folder you will find two script files named wow-menu_EU.ahk and wow-menu_US.ahk. Choose the correct script for the region you've selected during subscribing to WoW. Either wow-menu_EU.ahk, if your region is Europe or wow-menu_US.ahk if your region is Americas & Oceania.<br>
+               <li><p>Paste that WoW Login Tool folder there.</p></li>
+               <li><p>In the WoW Login Tool folder you will find the START.ahk script.<br>
                You need to start that script later to play the game. It will support you with character selection, looting and other things. Therefore it might be helpful if you create a shortcut to that script on your desktop.<br>
                Attention: The script needs to stay in the folder. Don't move it to the desktop. Create a shortcut instead!</p></li>
             </ol>
@@ -247,21 +247,23 @@
       <h4>Start the mouse script</h4>
          <ul>
          <li><p>
-            To select a realm and create a character you need the script wow-menu_EN_EU.ahk or wow-menu_EN_US.ahk (depending on your region). Start the script by pressing enter on it.
+            To select a realm and create a character you need the WoW Login Tool START.ahk script. Start the script by pressing enter on it.
          </p></li>
          <li><p>
-            The script has a voice prompt. It says Paused if it is started. It silently waits for the game to be started and launched. If it detects the WoW game window the script automatically switches to Login mode.
+            The WoW Login Tool has a voice prompt. On first start it will do a quick set up. You need to choose voice, language, region and game.
+            Then is says Paused. It silently waits for the game to be started and launched. If it detects the WoW game window the WoW Login Tool automatically switches to Login mode.<br>            
          </p></li>
          <li><p>
-            It says, Switched to Login. That means that the script is now in login mode, and will assist you with logging into the game, realm selection, and character creation.<br>
-            Note: It would be helpful to read/listen to the next steps on another device (tablet, smartphone, whatever is available). The mouse script will be activated every time the WoW window gets focused upon. It pauses whenever the WoW window loses focus (for example, if you're switching to this page to listen to the next step). On every new activation (if you're switching back to the WoW window) it needs to be reanitialized and starts with the main menu again. All your previously completed steps in that script will be lost every time you switch to another window and back. Reading/listening to the steps on another device would avoid that. Alternatively just read all the steps and complete them without leaving the WoW window.
+            It says, Login Mode. That means that the tool is now in login mode, and will assist you with logging into the game, realm selection, and character creation.<br>
+            Note: It would be helpful to read/listen to the next steps on another device (tablet, smartphone, whatever is available). The WoW Login Tool will be activated every time the WoW window gets focused upon. It pauses whenever the WoW window loses focus (for example, if you're switching to this page to listen to the next step). On every new activation (if you're switching back to the WoW window) it needs to be reanitialized and starts with the main menu again. All your previously completed steps in that script will be lost every time you switch to another window and back. Reading/listening to the steps on another device would avoid that. Alternatively just read all the steps and complete them without leaving the WoW window.
          </p></li>
          <li><p>
-            The script performs an initialization and automatically gets you to the character selection screen of the game. While the script is processing, you will hear a sound. Wait for that sound to stop. Do not move the mouse, press any key or switch to other windows until processing is completed.
+            The tool performs an initialization and automatically gets you to the character selection screen of the game. While the tool is processing, you will hear a sound. Wait for that sound to stop. Do not move the mouse, press any key or switch to other windows until processing is completed.
          </p></li>
          <li><p>
-            After a while the sound stops and the script says "Main menu". Then you can use the script to select a realm.<br>
-            Tip: If something goes wrong, then the script will try for 60 seconds to recognize the WoW window (you'll hear a sound indicating the script is doing something.). Then the script stops (the sound stops) and asks you to restart the client and try again. On some machines such issues were solved by starting the WoW client first and then starting the script.
+            After a while the sound stops and the script says "Main menu". Then you can use the tool to select a realm.<br>
+            Tip: If something goes wrong, then the tool will try for 60 seconds to recognize the WoW window (you'll hear a sound indicating the script is doing something.). Then the tool stops (the sound stops) and asks you to restart the client and try again. On some machines such issues were solved by starting the WoW client first and then starting the script.<br>
+            There are more information and troubleshoting steps in the readme.txt file in the WoW Login Tool folder.
          </p></li>
       </ul>
             
@@ -276,7 +278,7 @@
          You need to select a realm first. Go to Change realm and press RIGHT to enter the submenu of Change realm. There you will find a list of languages (these are the languages for available realms). Select a language and move right to the submenu of the selected language. That submenu contains a list of all realms in that language. Select a realm. Then press ENTER to choose it.
       </p></li>
       <li><p>
-         The script gets active and selects the new realm. You will hear the sound again. Don't do anything until the script has completed the process. Do not move the mouse. Do not press any key. Just put your hands in the air. :)
+         The WoW Login Tool gets active and selects the new realm. You will hear the sound again. Don't do anything until the tool has completed the process. Do not move the mouse. Do not press any key. Just put your hands in the air. :)
       </p></li>
       </ul>      
             
@@ -285,7 +287,7 @@
       
       <ul>
       <li><p>
-         Once the script has changed your realm, you are back in the menu at Select character. You don't have a character yet and have to create one first. Press DOWN to get to the menu item Create character.
+         Once the tool has changed your realm, you are back in the menu at Select character. You don't have a character yet and have to create one first. Press DOWN to get to the menu item Create character.
       </p></li>
       <li><p>
          Go right to the submenu. There you need to select the gender. Then go right again to select a race.
@@ -306,7 +308,7 @@
          </ul>            
          </p></li>
          <li><p>
-            Again, wait for the script. It will create the character and ask you to enter a character name. Type your desired name and press ENTER. The script will check if that name is available and valid. If it is not, you will have to enter a new name and press ENTER again. That continues until the name is available and valid. Then the script actually creates the character and you end up back in the audio menu.<br>
+            Again, wait for the tool. It will create the character and ask you to enter a character name. Type your desired name and press ENTER. The script will check if that name is available and valid. If it is not, you will have to enter a new name and press ENTER again. That continues until the name is available and valid. Then the tool actually creates the character and you end up back in the audio menu.<br>
             Tips on character names:</p>
             <ul>
                <li><p>
@@ -324,7 +326,7 @@
             Once you have created your character, it will automatically be placed in slot #1 of your character list. There are 10 slots for characters. New characters are automatically placed on the next free slot. So the next one you create would be slot #2 and so on.
          </p></li>
          <li><p>
-            If you have more than one character, you might want to write down the name, race, class and slot # of the created character. The script only works with the slot numbers, not with the names of the characters.
+            If you have more than one character, you might want to write down the name, race, class and slot # of the created character. The tool only works with the slot numbers, not with the names of the characters.
          </p></li>
          <li><p>
             Once you have created your first character, you can enter the game world with that character.
@@ -336,7 +338,7 @@
             The script will select the character in slot #1, and automatically switches to the Log in with selected character menu item. That is what you want to do. Just press ENTER to select the option.
          </p></li>
          <li><p>
-            Now you are entering the game world with your new character. The script says Switched to play, and will now be in play mode. If that doesn't happen, you can always press ALT + F1 to switch between login and play mode.
+            Now you are entering the game world with your new character. The tool says Play Mode, and will now be in play mode. If that doesn't happen, you can always press ALT + F1 to switch between login and play mode.
          </p></li>
          <li><p>
             There will be an introduction video playing, and you should hear a narrator. As soon as the narrator ends, you will find yourself in the game world at the starting location of your race.
@@ -373,22 +375,7 @@
       </p></li>
       </ul>            
       <p>Now your key bindings are set to the standard Sku key bindings. More information on the audio menu and the key bindings can be found in the next chapter.</p>
-      <p>Next you need to set up the AudioQS addon. That addon provides information on your health and mana.</p>
-      
-      <ul>
-         <li><p>
-            To do this, enter the following commands via the chat. Press ENTER to open the char input box. Then enter the commands below and press ENTER to submit them. The interface will be reloaded after each of the first three commands. Reloading the interface takes several seconds. Just wait until you hear the Sku Addon say Outside. Then you know that the reload is finished and you can input the next command. There won't be a reload after the fourth command.
-         </p></li>
-         <li><p>
-            Enter the following commands one after another:<br>
-            /aq load healthmonitor<br>
-            /aq load manamonitor<br>
-            /aq load crowdcontrol<br>
-            /aq mm 10 30 50 70 90<br>
-         </p></li>
-      </ul>
-
-      <p>With this last step, you can personalize settings in the Sku addon. The most important one is the volume:</p>
+      <p>As a last step, you can personalize settings in the Sku addon. The most important one is the volume:</p>
       
       <ul>
       <li><p>
