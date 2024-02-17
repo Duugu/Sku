@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Sku ERA r32.26](https://github.com/Duugu/SkuEra/releases/download/r32.26/Sku-r32.26-classic.zip) (February 17th 2024)<br>
 - [Wow Login Tool r1.6](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.6/WoW_Login_Tool-r1.6.zip) (February 15th 2024)<br>
 - [Sku WRATH r35.16](https://github.com/Duugu/Sku/releases/download/r35.16/Sku-r35.16-wrath.zip) (January 24st 2024)<br>
-- [Sku ERA r32.25](https://github.com/Duugu/SkuEra/releases/download/r32.25/Sku-r32.25-classic.zip) (January 19th 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -27,6 +27,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku ERA r32.26
+- Fixed a bug with game key binds, that was breaking Core > Game Key Binds > Reset all.
+
 ## Changes in WoW Login Tool r1.6
 - Tried to fix the contract accept feature for low resolutions
 - Some translation fixes
