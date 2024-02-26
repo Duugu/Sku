@@ -3632,7 +3632,7 @@ function SkuChat:ResetTab(aIndex)
 	local tTab = SkuOptions.db.profile["SkuChat"].tabs[aIndex]
 	for tCatName, tData in pairs(SkuChat.ChatFrameMessageTypes) do
 		for x = 1, #tData do
-			if SkuChat.ChatFrameDefaultTabs[tTab.name] then
+			if SkuChat.ChatFrameDefaultTabs[tTab.name] and SkuChat.ChatFrameDefaultTabs[tTab.name][tCatName] then
 				tTab.messageTypes[tCatName][x] = SkuChat.ChatFrameDefaultTabs[tTab.name][tCatName][x].default
 			else
 				tTab.messageTypes[tCatName][x] = tData[x].default

@@ -1347,6 +1347,7 @@ L["MacroScope"]="Macro scope"
 L["MacroScopeChar"]="Character"
 L["MacroScopeGlobal"]="Global"
 L["MAGE"] = "MAGE"
+L["Mage"] = "Mage"
 L["magic"] = "magic"
 L["magic_short"] = "m"
 L["Magie"]  = "Mage" --

@@ -162,9 +162,15 @@ SkuGenericMenuItem = {
 			PlaySound(681)
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
+
+		C_Timer.After(0.01, function()
+			local tIndexString, tBreadString = SkuOptions:GetMenuIndexAndBreadString(SkuOptions.currentMenuPosition)
+			SkuDispatcher:TriggerSkuEvent("SKU_SLASH_MENU_ITEM_SELECTED", tIndexString, tBreadString)
+		end)
+
 	end,
 	OnNext = function(self)
-		--dprint("OnNext generic", self.name)
+		--print("OnNext generic", self.name)
 		SkuOptions.currentMenuPosition:OnLeave(self, value, aValue)
 
 		if self.next then
@@ -173,6 +179,11 @@ SkuGenericMenuItem = {
 			PlaySound(681)
 		end
 		SkuOptions.currentMenuPosition:OnEnter()
+
+		C_Timer.After(0.01, function()
+			local tIndexString, tBreadString = SkuOptions:GetMenuIndexAndBreadString(SkuOptions.currentMenuPosition)
+			SkuDispatcher:TriggerSkuEvent("SKU_SLASH_MENU_ITEM_SELECTED", tIndexString, tBreadString)
+		end)		
 	end,
 	OnFirst = function(self)
 		--dprint("OnFirst generic", self.name)

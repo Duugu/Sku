@@ -3,6 +3,12 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.17
+	- Fixed a bug that was leading to an incomplete default setup (missing chat tabs, etc.) on first login.
+	- Fixed a bug in the priest tutorial, where the tutorial was instructing to go to the next menu entry for action bar slot 2, but did not trigger the next step on doing so.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.16
 	- Finally fixed all remaining missing translations.
 	- Added English translation for Flying Stopped notification.

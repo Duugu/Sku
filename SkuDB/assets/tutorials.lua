@@ -19179,8 +19179,8 @@ SkuDB.AllLangs = {
                ["triggers"] = {
                   {
                      ["value"] = {
-                        ["deDE"] = "SKU_SLASH_MENU_ITEM_SELECTED",
-                        ["enUS"] = "SKU_SLASH_MENU_ITEM_SELECTED",
+                        ["deDE"] = "5,4,1,2",
+                        ["enUS"] = "5,4,1,2",
                      },
                      ["type"] = "MENU_ITEM",
                   }, -- [1]

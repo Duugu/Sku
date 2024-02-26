@@ -6,7 +6,7 @@ SkuCore = SkuCore or LibStub("AceAddon-3.0"):NewAddon("SkuCore", "AceConsole-3.0
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:QuestieIntegrationOnLogin()
-   for x = 1, 4 do
+   for x = 1, 8 do
       C_Timer.After(x * 30, function()
          local tQT = QuestieTutorialChooseObjectiveType
          if tQT and tQT:IsVisible() == true then
@@ -18,8 +18,14 @@ function SkuCore:QuestieIntegrationOnLogin()
                end
             end
          end
+
+         local tQT = _G["WorldMapFrameCloseButton"]
+         if tQT and tQT:IsVisible() == true then
+            _G["WorldMapFrameCloseButton"]:Click()
+         end
       end)
    end
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------

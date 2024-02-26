@@ -471,7 +471,9 @@ local function AqCreateControlFrame()
 local beginTime = debugprofilestop()
 
 
-
+		if not SkuOptions.db.char[MODULE_NAME].aq then
+			return
+		end
 
 		if #ttimeMonParty2Queue > 0 then
 			if ttimeMonParty2QueueCurrentTime <= 0 then
@@ -1575,6 +1577,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:UNIT_AURA(aEventName, aUnitID)
+	if not SkuOptions.db.char[MODULE_NAME].aq then
+		return
+	end
 	local tSubR
 	local tUnitIdList = {}
 	if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].party.debuffs.enabled == true and SkuCore:UnitIsInUnitGroup("party", aUnitID) then

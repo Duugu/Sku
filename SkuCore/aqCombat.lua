@@ -405,7 +405,9 @@ local function aqCombatCreateControlFrame()
       if ttime < (0.1 * tCurrentUpdateRate) then
          return
       end
-
+      if not SkuOptions.db.char[MODULE_NAME].aq then
+         return
+      end
       local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
       tCurrentUpdateRate = (21 - tCurrentSettings.combat.updateRate)
 
@@ -619,6 +621,9 @@ local function aqCombatCreateControlFrame()
    local ttime1 = 0
    local ttime2 = 0
    f:SetScript("OnUpdate", function(self, time)
+      if not SkuOptions.db.char[MODULE_NAME].aq then
+         return
+      end
       local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
 
       if tCurrentSettings.combat.enabled == true then
@@ -1071,6 +1076,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombatPLAYER_TARGET_CHANGED(aEvent, a, b, c, d)
+   if not SkuOptions.db.char[MODULE_NAME].aq then
+      return
+   end   
    local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
    if tCurrentSettings.combat.enabled == true then
       if tCurrentSettings.combat.hostile.threatOutputTot.value > 1 then
@@ -1221,6 +1229,9 @@ function SkuCore:aqCombat_SKU_SPELL_CAST_START(aEvent, aEventData)
 	spellName = 13,
    ]]
 
+   if not SkuOptions.db.char[MODULE_NAME].aq then
+      return
+   end
    local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
 
    if tCurrentSettings.combat.enabled == true then
@@ -1279,6 +1290,9 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:aqCombat_SKU_UNIT_DIED(aEvent, aUnitGUID, aUnitName)
+   if not SkuOptions.db.char[MODULE_NAME].aq then
+      return
+   end   
    local tCurrentSettings = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet]
 
    if tCurrentSettings.combat.enabled == true then

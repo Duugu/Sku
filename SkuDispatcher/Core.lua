@@ -57,6 +57,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuDispatcher:RegisterEventCallback(aEventName, aCallbackFunc, aOnlyOneCallbackFlag)
 	aOnlyOneCallbackFlag = aOnlyOneCallbackFlag or false
+
 	if not SkuDispatcher.Registered[aEventName] then
 		SkuDispatcher[aEventName] = function(...)
 			for callbackFunc, tOnlyOneCallbackFlag in pairs(SkuDispatcher.Registered[aEventName].callbacks) do
