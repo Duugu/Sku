@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Sku WRATH r35.17](https://github.com/Duugu/Sku/releases/download/r35.17/Sku-r35.17-wrath.zip) (Februaray 26th 2024)<br>
 - [Sku ERA r32.26](https://github.com/Duugu/SkuEra/releases/download/r32.26/Sku-r32.26-classic.zip) (February 17th 2024)<br>
 - [Wow Login Tool r1.6](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.6/WoW_Login_Tool-r1.6.zip) (February 15th 2024)<br>
-- [Sku WRATH r35.16](https://github.com/Duugu/Sku/releases/download/r35.16/Sku-r35.16-wrath.zip) (January 24st 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -27,6 +27,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku Wrath r35.17
+- Fixed a bug that was leading to an incomplete default setup (missing chat tabs, etc.) on first login.
+- Fixed a bug in the priest tutorial, where the tutorial was instructing to go to the next menu entry for action bar slot 2, but did not trigger the next step on doing so.
+
 ## Changes in Sku ERA r32.26
 - Fixed a bug with game key binds, that was breaking Core > Game Key Binds > Reset all.
 
