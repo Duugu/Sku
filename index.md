@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Sku ERA r32.27](https://github.com/Duugu/SkuEra/releases/download/r32.27/Sku-r32.27-classic.zip) (February 29th 2024)<br>
 - [Wow Login Tool r1.7](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.7/WoW_Login_Tool-r1.7.zip) (February 27th 2024)<br>
 - [Sku WRATH r35.17](https://github.com/Duugu/Sku/releases/download/r35.17/Sku-r35.17-wrath.zip) (Februaray 26th 2024)<br>
-- [Sku ERA r32.26](https://github.com/Duugu/SkuEra/releases/download/r32.26/Sku-r32.26-classic.zip) (February 17th 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -27,6 +27,16 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku Era r32.27
+- Added bag sorting options to bag menus (below the last slot of each bag, same as in Wrath)
+- Moved the Pre-Quests entry in quest log down.
+- Fixed the Hearthstone details on overview page.
+- Fixed a bug with the Control + Shift + T key for reading the tooltip of the item you're currently rolling on.
+- Fixed a bug with the Select next waypoint of same type	feature.
+- Fixed a bug that was leading to several missing audio outputs.
+- Fixed a bug in route calculation that was leading to incorrect routes, like in Wetlands leading over Murloc camps and stuff.
+- Fixed auction house categories with weird results.
+
 ## Changes in WoW Login Tool r1.7
 - Fixed an issue with switching to realms > 17 in Classic ERA.
 - Fixed an issue where the first realm name in some switch server lists was empty.
