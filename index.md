@@ -9,9 +9,9 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Sku ERA r32.27](https://github.com/Duugu/SkuEra/releases/download/r32.27/Sku-r32.27-classic.zip) (February 29th 2024)<br>
+- [Sku ERA r32.28](https://github.com/Duugu/SkuEra/releases/download/r32.28/Sku-r32.28-classic.zip) (March 5th 2024)<br>
+- [Sku WRATH r35.18](https://github.com/Duugu/Sku/releases/download/r35.18/Sku-r35.18-wrath.zip) (March 5th 2024)<br>
 - [Wow Login Tool r1.7](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.7/WoW_Login_Tool-r1.7.zip) (February 27th 2024)<br>
-- [Sku WRATH r35.17](https://github.com/Duugu/Sku/releases/download/r35.17/Sku-r35.17-wrath.zip) (Februaray 26th 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
@@ -27,6 +27,39 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku Era r32.28
+- Fixed a bug with the route calculation that was sometimes generating incorrect routes leading into walls, etc.
+- Fixed another bug with the auction house categories for full scan results by item and removed overlooked debug outputs.
+- Added a new feature: Sku focus units
+	This is adding 8 extra focus units. Basically they are working like the usual focus slash command, but they are using unit names instead of specific units. <br>
+	This means, they won't always target a specific unit like the standard /focus command. They will target the next available mob with a specific name (!) or part of a name.<br>
+	Imagine that like you doing /tar with a name. It's exactly the same. If there is only one npc, mob or player with that name around, then it will target that one. If there are multiple units with the name (or part of then name), then it will target a random unit of those.<br>
+	There are 8 new Sku key binds to set focus 1 to 8 to your current target. ("Set focus x to the name of your current target")<br>
+	There are 8 new Sku key binds to target focus 1 to 8. ("Target focus x")<br>
+	There is a new slash command to set focus 1 to 8 to your current target: /focusX (/focus1, /focus2, and so on. Attention for screenreader users: /focus1 is one command. There's space before the number.) <br>
+	And there is a slash command to target focus 1 to 8: /click focusX (/click focus1, /click focus2, and so on. Again, focus1 without a space before the number! So, /click space focus1.)<br>
+	The /focusX command provides some enhanced options. Using it without any additions will set the focus x to your targets name.<br>
+	Using it with any addition will set the focusx to that name. Example: /focus1 william. This will target every unit with a name starting with "William".<br>
+	And you can use it with fixed game unit ids. Like party1, party2, pet, player, raid1 to raidx, boss1 to bossx, and so on. With a unit id added it will use the name of that unit (if the unit exists). Example: /focus1 party1 will target the name of party member one.
+- Fixed a bug that was breaking the sort feature for the bank.
+- Updated/fixed a view routes in Strangle, Westfall and Dun Morogh
+- Added a Share Quest sub menu option to quest menu entries
+- Added the End key to jump to the last audio menu entry
+
+## Changes in Sku r35.18
+- Fixed a bug with the route calculation that was sometimes generating incorrect routes leading into walls, etc.
+- Added a new feature: Sku focus units
+	This is adding 8 extra focus units. Basically they are working like the usual focus slash command, but they are using unit names instead of specific units. <br>
+	This means, they won't always target a specific unit like the standard /focus command. They will target the next available mob with a specific name (!) or part of a name.<br>
+	Imagine that like you doing /tar with a name. It's exactly the same. If there is only one npc, mob or player with that name around, then it will target that one. If there are multiple units with the name (or part of then name), then it will target a random unit of those.<br>
+	There are 8 new Sku key binds to set focus 1 to 8 to your current target. ("Set focus x to the name of your current target")<br>
+	There are 8 new Sku key binds to target focus 1 to 8. ("Target focus x")<br>
+	There is a new slash command to set focus 1 to 8 to your current target: /focusX (/focus1, /focus2, and so on. Attention for screenreader users: /focus1 is one command. There's space before the number.) <br>
+	And there is a slash command to target focus 1 to 8: /click focusX (/click focus1, /click focus2, and so on. Again, focus1 without a space before the number! So, /click space focus1.)<br>
+	The /focusX command provides some enhanced options. Using it without any additions will set the focus x to your targets name.<br>
+	Using it with any addition will set the focusx to that name. Example: /focus1 william. This will target every unit with a name starting with "William".<br>
+	And you can use it with fixed game unit ids. Like party1, party2, pet, player, raid1 to raidx, boss1 to bossx, and so on. With a unit id added it will use the name of that unit (if the unit exists). Example: /focus1 party1 will target the name of party member one.
+
 ## Changes in Sku Era r32.27
 - Added bag sorting options to bag menus (below the last slot of each bag, same as in Wrath)
 - Moved the Pre-Quests entry in quest log down.
