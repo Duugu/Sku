@@ -2646,3 +2646,11 @@ L["Destination"] = "Ziel"
 L["Source"] = "Quelle"
 L["current filter"] = "aktueller filter"
 L["Delete this filter"] = "Diesen Filter löschen"
+for x = 1, 8 do
+	L["SKU_KEY_FOCUSGET"..x] = "Focus "..x.." ins Ziel nehmen"
+	L["SKU_KEY_FOCUSSET"..x] = "Focus "..x.." auf Name des aktuellen Ziel festlegen"
+end
+L["focus"] = "focus"
+L[" set to nothing"] = " auf nichts festgelegt"
+L[" set to "] = " festgelegt auf "
+L["not available in combat"] = "nicht im kampf möglich"

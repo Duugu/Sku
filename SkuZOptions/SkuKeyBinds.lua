@@ -118,11 +118,6 @@ SkuOptions.skuDefaultKeyBindings = {
 
    ["SKU_KEY_TARGETHEALTH"] = {key = "", object = "SkuCoreControlOption1", script = "OnHide",},
    
-
-
-
-   
-
    --["SKU_KEY_CHAT_LINEPREV"] = {key = "UP", object = "SkuChat", func = "OnEnable",},
    --["SKU_KEY_CHAT_LINENEXT"] = {key = "DOWN", object = "SkuChat", func = "OnEnable",},
    --["SKU_KEY_CHAT_TABPREV"] = {key = "LEFT", object = "SkuChat", func = "OnEnable",},
@@ -130,6 +125,11 @@ SkuOptions.skuDefaultKeyBindings = {
    --["SKU_KEY_CHAT_LINEMENU"] = {key = "CTRL-ENTER", object = "SkuChat", func = "OnEnable",},
    
 }
+for x = 1, 8 do
+   SkuOptions.skuDefaultKeyBindings["SKU_KEY_FOCUSGET"..x] = {key = "", object = "SkuCoreSkuFocusControl", script = "OnHide",}
+   SkuOptions.skuDefaultKeyBindings["SKU_KEY_FOCUSSET"..x] = {key = "", object = "SkuCoreSkuFocusControl", script = "OnHide",}
+end
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:SkuKeyBindsResetBindings()

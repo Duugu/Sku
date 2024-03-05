@@ -761,15 +761,21 @@ function SkuNav:GetAllMetaTargetsFromWp5(aStartWpName, aMaxDistance, aMaxWPs, aR
 				if tCurrentWP.links then
 					if tCurrentWP.links.byId then
 						local tBestDistance = tFinalWpDistances[tNextWp]
+						local tBestLinkedDistance = 10000000000
+						local tBestLinkedWaypointIndex = -1
 						for tLinktWaypointCacheIndex, tLinkDistance in pairs(tCurrentWP.links.byId) do
 							if tFinalWpDistances[tLinktWaypointCacheIndex] then
-								if tFinalWpDistances[tLinktWaypointCacheIndex] < tBestDistance then
-									tinsert(tpathWps, 1, WaypointCache[tLinktWaypointCacheIndex].name)
-									tBestDistance = tFinalWpDistances[tLinktWaypointCacheIndex]
-									tContinue = true
-									tNextWp = tLinktWaypointCacheIndex
+								if tFinalWpDistances[tLinktWaypointCacheIndex] < tBestDistance and tFinalWpDistances[tLinktWaypointCacheIndex] < tBestLinkedDistance then
+									tBestLinkedWaypointIndex = tLinktWaypointCacheIndex
+									tBestLinkedDistance = tFinalWpDistances[tLinktWaypointCacheIndex]
 								end
 							end
+						end
+						if tBestLinkedWaypointIndex > -1 then
+							tinsert(tpathWps, 1, WaypointCache[tBestLinkedWaypointIndex].name)
+							tBestDistance = tFinalWpDistances[tBestLinkedWaypointIndex]
+							tContinue = true
+							tNextWp = tBestLinkedWaypointIndex
 						end
 					end
 				end

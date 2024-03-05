@@ -810,20 +810,40 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				for count = 1, tNumSlots - 1 do
 					local tPickContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count)
 					local tPlaceContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count + 1)
-					_G["SkuScanningTooltip"]:ClearLines()
-					_G["SkuScanningTooltip"]:SetBagItem(i, count)
-					local itemName, pickItemLink = _G["SkuScanningTooltip"]:GetItem()
-					local tPickQuali = 99999
-					if pickItemLink then
-						tPickQuali = C_Item.GetItemQualityByID(pickItemLink)
+					local tPickQuali, tPlaceQuali
+					if i == -1 then
+						local invSlot = BankButtonIDToInvSlotID(count)
+						local pickItemLink = GetInventoryItemLink("player", invSlot)
+						if not pickItemLink then
+							tPickQuali = "zzzzzzzzzz"
+						else
+							tPickQuali = C_Item.GetItemQualityByID(pickItemLink)
+						end
+
+						local invSlot = BankButtonIDToInvSlotID(count + 1)
+						local placeItemlink = GetInventoryItemLink("player", invSlot)
+						if not placeItemlink then
+							tPlaceQuali = "zzzzzzzzzz"
+						else
+							tPlaceQuali = C_Item.GetItemQualityByID(placeItemlink)
+						end
+					else
+						_G["SkuScanningTooltip"]:ClearLines()
+						_G["SkuScanningTooltip"]:SetBagItem(i, count)
+						local itemName, pickItemLink = _G["SkuScanningTooltip"]:GetItem()
+						tPickQuali = 99999
+						if pickItemLink then
+							tPickQuali = C_Item.GetItemQualityByID(pickItemLink)
+						end
+						_G["SkuScanningTooltip"]:ClearLines()
+						_G["SkuScanningTooltip"]:SetBagItem(i, count + 1)
+						local itemName, placeItemLink = _G["SkuScanningTooltip"]:GetItem()
+						tPlaceQuali = 99999
+						if placeItemLink then
+							tPlaceQuali = C_Item.GetItemQualityByID(placeItemLink)
+						end
 					end
-					_G["SkuScanningTooltip"]:ClearLines()
-					_G["SkuScanningTooltip"]:SetBagItem(i, count + 1)
-					local itemName, placeItemLink = _G["SkuScanningTooltip"]:GetItem()
-					local tPlaceQuali = 99999
-					if placeItemLink then
-						tPlaceQuali = C_Item.GetItemQualityByID(placeItemLink)
-					end
+
 					if aEvaluateFunc(tPickQuali, tPlaceQuali) == true then
 						if pickItemLink then
 							tPickContainerFrame:GetScript("OnClick")(tPickContainerFrame, "LeftButton")
@@ -923,17 +943,36 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				for count = 1, tNumSlots - 1 do
 					local tPickContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count)
 					local tPlaceContainerFrame = tGetContainerFrameHelper(tCurrentContainerFrameNumber, tNumSlots, count + 1)
-					_G["SkuScanningTooltip"]:ClearLines()
-					_G["SkuScanningTooltip"]:SetBagItem(i, count)
-					local pickitemName, pickItemLink = _G["SkuScanningTooltip"]:GetItem()
-					if not pickitemName then
-						pickitemName = "zzzzzzzzzz"
-					end
-					_G["SkuScanningTooltip"]:ClearLines()
-					_G["SkuScanningTooltip"]:SetBagItem(i, count + 1)
-					local placeitemName = _G["SkuScanningTooltip"]:GetItem()
-					if not placeitemName then
-						placeitemName = "zzzzzzzzzz"
+					local pickitemName, placeitemName
+					if i == -1 then
+						local invSlot = BankButtonIDToInvSlotID(count)
+						local pickItemLink = GetInventoryItemLink("player", invSlot)
+						if not pickItemLink then
+							pickitemName = "zzzzzzzzzz"
+						else
+							pickitemName = C_Item.GetItemNameByID(pickItemLink)
+						end
+
+						local invSlot = BankButtonIDToInvSlotID(count + 1)
+						local placeItemlink = GetInventoryItemLink("player", invSlot)
+						if not placeItemlink then
+							placeitemName = "zzzzzzzzzz"
+						else
+							placeitemName = C_Item.GetItemNameByID(placeItemlink)
+						end
+					else
+						_G["SkuScanningTooltip"]:ClearLines()
+						_G["SkuScanningTooltip"]:SetBagItem(i, count)
+						pickitemName, pickItemLink = _G["SkuScanningTooltip"]:GetItem()
+						if not pickitemName then
+							pickitemName = "zzzzzzzzzz"
+						end
+						_G["SkuScanningTooltip"]:ClearLines()
+						_G["SkuScanningTooltip"]:SetBagItem(i, count + 1)
+						placeitemName = _G["SkuScanningTooltip"]:GetItem()
+						if not placeitemName then
+							placeitemName = "zzzzzzzzzz"
+						end
 					end
 					if aEvaluateFunc(pickitemName, placeitemName) == true then
 						if pickItemLink then

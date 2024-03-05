@@ -299,7 +299,7 @@ function SkuCore:OnInitialize()
 	SkuCore:DialTargetingOnInitialize()
 	SkuCore:TurnToUnitOnInitialize()
 	SkuCore:CalendarOnInitialize()
-	SkuCore:SkuFocusOnInitialize()
+	SkuCore.SkuFocus:OnInitialize()
 
 end
 
@@ -2181,7 +2181,7 @@ function SkuCore:PLAYER_ENTERING_WORLD(...)
 		SkuCore:DialTargetingOnLogin()
 		SkuCore:DamageMeterOnLogin()
 		SkuCore:TurnToUnitOnLogin()
-		SkuCore:SkuFocusOnLogin()
+		SkuCore.SkuFocus:OnLogin()
 		SkuCore:QuestieIntegrationOnLogin()
 
 		--SetBindingClick(SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_CHATOPEN"].key, "OnSkuChatToggle")

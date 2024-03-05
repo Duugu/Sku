@@ -3,6 +3,27 @@
 -------------------------------------------------------------------------------------------------------	
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r35.18
+	- Fixed a bug with the route calculation that was sometimes generating incorrect routes leading into walls, etc.
+	- Added a new feature: Sku focus units
+		This is adding 8 extra focus units. Basically they are working like the usual focus slash command, but they are using unit names instead of specific units. 
+		This means, they won't always target a specific unit like the standard /focus command. They will target the next available mob with a specific name (!) or part of a name.
+		Imagine that like you doing /tar with a name. It's exactly the same. If there is only one npc, mob or player with that name around, then it will target that one. If there are multiple units with the name (or part of then name), then it will target a random unit of those.
+		There are 8 new Sku key binds to set focus 1 to 8 to your current target. ("Set focus x to the name of your current target")
+		There are 8 new Sku key binds to target focus 1 to 8. ("Target focus x")
+		There is a new slash command to set focus 1 to 8 to your current target: /focusX (/focus1, /focus2, and so on. Attention for screenreader users: /focus1 is one command. There's space before the number.) 
+		And there is a slash command to target focus 1 to 8: /click focusX (/click focus1, /click focus2, and so on. Again, focus1 without a space before the number! So, /click space focus1.)
+		The /focusX command provides some enhanced options. Using it without any additions will set the focus x to your targets name.
+		Using it with any addition will set the focusx to that name. Example: /focus1 william. This will target every unit with a name starting with "William".
+		And you can use it with fixed game unit ids. Like party1, party2, pet, player, raid1 to raidx, boss1 to bossx, and so on. With a unit id added it will use the name of that unit (if the unit exists). Example: /focus1 party1 will target the name of party member one.
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r35.17
+	- Fixed a bug that was breaking the sort feature for the bank.
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.17
 	- Fixed a bug that was leading to an incomplete default setup (missing chat tabs, etc.) on first login.
 	- Fixed a bug in the priest tutorial, where the tutorial was instructing to go to the next menu entry for action bar slot 2, but did not trigger the next step on doing so.
