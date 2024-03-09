@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Sku ERA r32.28](https://github.com/Duugu/SkuEra/releases/download/r32.28/Sku-r32.28-classic.zip) (March 5th 2024)<br>
+- [Sku ERA r32.29](https://github.com/Duugu/SkuEra/releases/download/r32.29/Sku-r32.29-classic.zip) (March 9th 2024)<br>
 - [Sku WRATH r35.18](https://github.com/Duugu/Sku/releases/download/r35.18/Sku-r35.18-wrath.zip) (March 5th 2024)<br>
 - [Wow Login Tool r1.7](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.7/WoW_Login_Tool-r1.7.zip) (February 27th 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
@@ -27,6 +27,12 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku Era r32.29
+- Tried to change the target sku focus x key code to remove lag.
+- Fixed a bug with Pet Action Bar with pets that don't have special abilities. Pet action bar should now show up as intended with not special pet abilities.
+- Fixed Train button in the Beast Training menu for hunter pets. Should not be blocked anymore.
+- Fixed the blocked Enchant button in Enchanting menu. Should not be blocked anymore.
+
 ## Changes in Sku Era r32.28
 - Fixed a bug with the route calculation that was sometimes generating incorrect routes leading into walls, etc.
 - Fixed another bug with the auction house categories for full scan results by item and removed overlooked debug outputs.
