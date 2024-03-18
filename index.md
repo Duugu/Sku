@@ -9,7 +9,6 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Wow Login Tool r1.8](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.8/WoW_Login_Tool-r1.8.zip) (March 9th 2024)<br>
 - [Sku ERA r32.29](https://github.com/Duugu/SkuEra/releases/download/r32.29/Sku-r32.29-classic.zip) (March 9th 2024)<br>
 - [Sku WRATH r35.18](https://github.com/Duugu/Sku/releases/download/r35.18/Sku-r35.18-wrath.zip) (March 5th 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
@@ -27,11 +26,6 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
-## Changes in WoW Login Tool r1.7
-- Tried to fix the only first character in the list is recognized issue that some users have. As the root cause of that issue still is unclear, it's just a try. Any feedback if it is working now is highly appreciated.
-- Added an 9th main menu entry Version without a submenu to output the current WoW Login Tool version.
-
-
 ## Changes in Sku Era r32.29
 - Tried to change the target sku focus x key code to remove lag.
 - Fixed a bug with Pet Action Bar with pets that don't have special abilities. Pet action bar should now show up as intended with not special pet abilities.
