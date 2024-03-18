@@ -5,7 +5,7 @@ DEUTSCH - Erste Schritte:<br>
 <a href="https://duugu.github.io/Sku/first_steps_de.html">https://duugu.github.io/Sku/first_steps_de.html</a><br>
 Русский - Первые шаги:<br>
 <a href="https://duugu.github.io/Sku/first_steps_ru.html">https://duugu.github.io/Sku/first_steps_ru.html</a><br>
-
+ 
 # Updates
 
 *Last updates:* <br>
