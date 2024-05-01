@@ -3218,32 +3218,40 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 	}   
 	local tParentStats = aParentChilds[tFriendlyName].childs
 
-		for i, v in pairs(PLAYERSTAT_DROPDOWN_OPTIONS) do
-			local tFrameName = v
-			local tFriendlyName = _G[v]
+	--Make sure to iterate over the default order
+	--Should probably be fixed in future on the off-chance someone changes their tab order
+		for i, k in ipairs(PAPERDOLL_STATCATEGORY_DEFAULTORDER) do
+			local v = PAPERDOLL_STATCATEGORIES[k]
+			local categoryFrame = _G["CharacterStatsPaneCategory" .. v.id]
+
+			--only add stats if category frame is present (can be changed with a cvar)
+			if categoryFrame:IsShown() then
+			local tFrameName = k
+			local tFriendlyName = categoryFrame.NameText:GetText()
 			table.insert(tParentStats, tFriendlyName)
 			tParentStats[tFriendlyName] = {
 				frameName = tFrameName,
 				RoC = "Child",
 				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = _G[v],
+				obj = v,
+				textFirstLine = tFriendlyName,
 				textFull = "",
 				childs = {},
 				--click = true,
 			}
 			local tParentStatsValues = tParentStats[tFriendlyName].childs
-			UpdatePaperdollStats("PlayerStatFrameLeft", v)
-			for x = 1, 6 do 
-				local button = getglobal("PlayerStatFrameLeft"..x)
-				local label = getglobal("PlayerStatFrameLeft"..x.."Label")
-				local text = getglobal("PlayerStatFrameLeft"..x.."StatText")
-
-				button.type = "stat"
-				local tName, tFullText = GetButtonTooltipLines(button)
-
+			PaperDollFrame_UpdateStatCategory(categoryFrame)
+			for x = 1,#v.stats do 
+				--A bit hacky, character frames aren't created for irrelevant stats
+				--Iterate over frames matching all possible stats; the data on the frames should make up the difference
+				local statFrame = _G[categoryFrame:GetName() .. "Stat" ..x]
+				if statFrame ~= nil and statFrame:IsShown() then
+				local label = statFrame.Label:GetText()
+				local value = statFrame.Value:GetText()
+				statFrame.type = "stat"
+				local tName, tFullText = GetButtonTooltipLines(statFrame)
 				local tFrameName = ""
-				local tFriendlyName = SkuChat:Unescape(label:GetText().." "..text:GetText())
+				local tFriendlyName = SkuChat:Unescape(label.." "..value)
 				table.insert(tParentStatsValues, tFriendlyName)
 				tParentStatsValues[tFriendlyName] = {
 					frameName = tFrameName,
@@ -3257,7 +3265,10 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				}
 			end
 		end
+			end
+		end
 
+	--[[
 		local tFrameName = v
 		local tFriendlyName = L["Resistances"]
 		table.insert(tParentStats, tFriendlyName)
@@ -3293,7 +3304,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				--click = true,
 			}
 		end
-
+]]--
 
 	--Currency
 	local tFrameName = ""
@@ -3316,6 +3327,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			--print(name, isHeader, isExpanded, isUnused, isWatched, count, icon, maxQuantity, maxEarnable, quantityEarned, isTradeable, itemID)
 			if name and isHeader ~= true then
 				--print(, itemID)
+				if isUnused ~= true then
 				local tFrameName = ""
 				local tFriendlyName = SkuChat:Unescape(name.." "..count)
 				table.insert(tParentCurrency, tFriendlyName)
@@ -3329,6 +3341,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 					childs = {},
 					--click = true,
 				}				
+			end
 			end
 		end
 
