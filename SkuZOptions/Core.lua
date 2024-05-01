@@ -1175,7 +1175,7 @@ function SkuOptions:UpdateOverviewText(aPageId)
 		if numEntries > 0 then
 			for y = offset + 1, offset + numEntries do
 				local spellName, spellSubName, spellID = GetSpellBookItemName(y, "BOOKTYPE_SPELL") --BOOKTYPE_PET
-				if spellName then
+				if spellID then
 					local tIsPassive = IsPassiveSpell(spellID)
 					local isKnown = IsSpellKnown(spellID, aIsPet)
 					if not tIsPassive and isKnown then

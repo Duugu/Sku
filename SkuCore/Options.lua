@@ -1377,7 +1377,7 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 			if numEntries > 0 then
 				for y = offset + 1, offset + numEntries do
 					local spellName, spellSubName, spellID = GetSpellBookItemName(y, aBooktype) --BOOKTYPE_PET
-					if spellName then
+					if spellID then
 						local tIsPassive = IsPassiveSpell(spellID)
 						local isKnown = IsSpellKnown(spellID, aIsPet)
 						if not tIsPassive and isKnown then
