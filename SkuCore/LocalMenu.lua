@@ -12,7 +12,7 @@ local tRolenamesLookup = {
 	["DAMAGER"] = 1,
 	["TANK"] = 2,
 	["HEALER"] = 3,
-}	
+}
 
 local tBagSlotListSorted = {
 	[1] = 0,
@@ -62,7 +62,7 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 	if ItemLink then
 		for x = 0, #ITEM_QUALITY_COLORS do
 			local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-			if tItemCol == "ffa334ee" then 
+			if tItemCol == "ffa334ee" then
 				tItemCol = "ffa335ee"
 			end
 			if string.find(ItemLink, tItemCol) then
@@ -101,7 +101,7 @@ local function GetButtonTooltipLines(aButtonObj, aTooltipObject)
 			aButtonObj:GetScript("OnLeave")(aButtonObj)
 		end
 	end
-	
+
 	if tTooltipText ~= "asd" then
 		if tTooltipText ~= "" then
 			tTooltipText = SkuChat:Unescape(tTooltipText)
@@ -148,7 +148,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 			if ItemLink then
 				for x = 0, #ITEM_QUALITY_COLORS do
 					local tItemCol = ITEM_QUALITY_COLORS[x].color:GenerateHexColor()
-					if tItemCol == "ffa334ee" then 
+					if tItemCol == "ffa334ee" then
 						tItemCol = "ffa335ee"
 					end
 					if string.find(ItemLink, tItemCol) then
@@ -178,7 +178,7 @@ local function getItemTooltipTextFromBagItem(bag, slot, itemId, button)
 						tLineCounter = tLineCounter + 1
 					end
 				end
-			end		
+			end
 			getItemTooltipTextHelper(function(tooltip)
 				if itemId then
 					tooltip:SetItemByID(itemId)
@@ -353,7 +353,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 		textFull = "",
 		--noMenuNumbers = true,
 		childs = {},
-	}   
+	}
 
 		for x = 1, 20 do
 			if _G["GuildBankTab"..x] and _G["GuildBankTab"..x].Button.tooltip and _G["GuildBankTab"..x]:IsVisible() == true then
@@ -376,11 +376,11 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 					childs = {},
 					click = true,
 					func = _G["GuildBankTab"..x].Button:GetScript("OnClick"),
-				}   
+				}
 			end
 		end
-		
-		
+
+
 	local friendlyName = L["current Bank box"] --.." "..SkuChat:Unescape(tgbf.TabTitle:GetText())
 	table.insert(aParentChilds, friendlyName)
 	aParentChilds[friendlyName] = {
@@ -417,7 +417,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 					childs = {},
 					click = true,
 					func = tgbf["Column"..col]["Button"..slot]:GetScript("OnClick"),
-				}   
+				}
 
 				--update blizzard container object
 				aParentChilds[friendlyName].childs[tSlotName].obj.info = aParentChilds[friendlyName].childs[tSlotName].obj.info or {}
@@ -442,17 +442,17 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 						bagItemButton.click = true
 					end
 				end
-				
+
 				_G["SkuScanningTooltip"]:ClearLines()
 				if GetCurrentGuildBankTab() and bagItemButton.obj.info.gbankslot then
-					_G["SkuScanningTooltip"]:SetGuildBankItem(GetCurrentGuildBankTab(), bagItemButton.obj.info.gbankslot) 
+					_G["SkuScanningTooltip"]:SetGuildBankItem(GetCurrentGuildBankTab(), bagItemButton.obj.info.gbankslot)
 				end
 				local itemName, tItemLink = _G["SkuScanningTooltip"]:GetItem()
 				local tItemId = SkuGetItemIdFromItemLink(tItemLink)
 				if tItemId ~= nil then
 					GameTooltip:ClearLines()
-					GameTooltip:SetGuildBankItem(GetCurrentGuildBankTab(), bagItemButton.obj.info.gbankslot) 
-					
+					GameTooltip:SetGuildBankItem(GetCurrentGuildBankTab(), bagItemButton.obj.info.gbankslot)
+
 					local _, maybeText = GetButtonTooltipLines(nil, GameTooltip)
 					if maybeText then
 						local tText = maybeText
@@ -475,7 +475,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 							bagItemButton.textFull = { (bagItemButton.textFull or bagItemButton.textFirstLine or ""), }
 						end
 						table.insert(bagItemButton.textFull, 1, tFull)
-						
+
 						SkuCore:InsertComparisnSections(bagItemButton.itemId, bagItemButton.textFull, inventoryTooltipTextCache)
 					end
 
@@ -499,13 +499,13 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 							if not isEmpty and containerFrame.info.count > 1 then
 								bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. containerFrame.info.count
 							end
-						end								
+						end
 					end
 				else
 					bagItemButton.textFirstLine = slotIndex.." "..L["Empty"]
 					bagItemButton.textFull = slotIndex.." "..L["Empty"]
 					bagItemButton.itemId = nil
-				
+
 				end
 			end
 		end
@@ -523,7 +523,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 			childs = {},
 			click = true,
 			func = _G["GuildBankFrameTab1"]:GetScript("OnClick"),
-		}   		
+		}
 	end
 --gold
 	--available
@@ -582,7 +582,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 			childs = {},
 			click = true,
 			func = _G["GuildBankFrameTab2"]:GetScript("OnClick"),
-		}   		
+		}
 	end
 
 	--money log
@@ -608,7 +608,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 			local ttype, name, amount = GetGuildBankMoneyTransaction(q)
 			tMessageFull = tMessageFull..ttype.." "..(name or "").." "..(SkuGetCoinText(amount) or "").."\r\n"
 		end
-		
+
 		local tFrameName = "GuildBankMessageFrame"
 		local tFriendlyName = SkuChat:Unescape(tgbf.TabTitle:GetText()).." ..."
 		table.insert(aParentChilds[tName].childs, "GuildBankMessageFrame")
@@ -635,7 +635,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 			childs = {},
 			click = true,
 			func = _G["GuildBankFrameTab3"]:GetScript("OnClick"),
-		}   		
+		}
 	end
 
 --[[
@@ -670,7 +670,7 @@ function SkuCore:Build_GuildBankFrame(aParentChilds)
 			childs = {},
 			click = true,
 			func = _G["GuildBankFrameTab4"]:GetScript("OnClick"),
-		}   		
+		}
 	end
 ]]
 end
@@ -689,14 +689,14 @@ local function SortProcessingSoundHelper()
 			if tIsProcessing > 0 then
 				--SkuOptions.Voice:OutputStringBTtts("sound-notification24", false, true)
 			else
-				self:Cancel() 
+				self:Cancel()
 				tIsProcessingHandle = nil
 				C_Timer.After(0.1, function()
 					SkuOptions.currentMenuPosition.parent:OnUpdate()
 					SkuOptions.Voice:OutputStringBTtts("sound-notification16", false, true)--24
 				end)
 			end
-		
+
 		end)
 	end
 end
@@ -748,7 +748,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 										tCurrentContainerFrameNumber = -1
 										containerFrameName = "BankFrameItem"..slotId
 									end
-						
+
 									local containerFrame = _G[containerFrameName]
 									local maybeText = getItemTooltipTextFromBagItem(nil, nil, nil, containerFrame)
 									local tFirst, tFull
@@ -759,7 +759,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 
 									if tFirst and tLastEmptySlotFrame ~= nil then
 										containerFrame:GetScript("OnClick")(containerFrame, "LeftButton")
-										tLastEmptySlotFrame:GetScript("OnClick")(tLastEmptySlotFrame, "LeftButton") 
+										tLastEmptySlotFrame:GetScript("OnClick")(tLastEmptySlotFrame, "LeftButton")
 										tLastEmptySlotFrame = containerFrame
 										tCompleted = true
 										coroutine.yield()
@@ -778,13 +778,13 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 
 						tIsProcessing = tIsProcessing + 1
 						SortProcessingSoundHelper()
-						cbObject = C_Timer.NewTicker(0.5, function(self) 
+						cbObject = C_Timer.NewTicker(0.5, function(self)
 							if coroutine.status(co) == "suspended" then
 								SortProcessingSoundHelper()
 								coroutine.resume(co)
 							else
 								tIsProcessing = tIsProcessing - 1
-								self:Cancel() 
+								self:Cancel()
 								SkuCore.CursorSilent = false
 								SkuOptions.Voice.TutorialPlaying = 0
 								SkuOptions.Voice:StopOutputEmptyQueue()
@@ -795,7 +795,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				end
 			end
 		end,
-	}   
+	}
 
 
 
@@ -862,13 +862,13 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 
 		tIsProcessing = tIsProcessing + 1
 		SortProcessingSoundHelper()
-		cbObject = C_Timer.NewTicker(0.01, function(self) 
+		cbObject = C_Timer.NewTicker(0.01, function(self)
 			if coroutine.status(co) == "suspended" then
 				SortProcessingSoundHelper()
 				local tret = coroutine.resume(co)
 			else
 				tIsProcessing = tIsProcessing - 1
-				self:Cancel() 
+				self:Cancel()
 				SkuCore.CursorSilent = false
 				SkuOptions.Voice.TutorialPlaying = 0
 				SkuOptions.Voice:StopOutputEmptyQueue()
@@ -901,7 +901,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				end
 			end
 		end,
-	}   
+	}
 	local tFriendlyName = L["Sort items by quality"].." "..L["descending"]
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
@@ -926,7 +926,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				end
 			end
 		end,
-	}   
+	}
 
 
 
@@ -992,13 +992,13 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 
 		tIsProcessing = tIsProcessing + 1
 		SortProcessingSoundHelper()
-		cbObject = C_Timer.NewTicker(0.01, function(self) 
+		cbObject = C_Timer.NewTicker(0.01, function(self)
 			if coroutine.status(co) == "suspended" then
 				SortProcessingSoundHelper()
 				local tret = coroutine.resume(co)
 			else
 				tIsProcessing = tIsProcessing - 1
-				self:Cancel() 
+				self:Cancel()
 				SkuCore.CursorSilent = false
 				SkuOptions.Voice.TutorialPlaying = 0
 				SkuOptions.Voice:StopOutputEmptyQueue()
@@ -1031,7 +1031,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				end
 			end
 		end,
-	}   
+	}
 	local tFriendlyName = L["Sort items by name"].." "..L["descending"]
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
@@ -1055,7 +1055,7 @@ local function BagSortMenuHelper(aParentChilds, aBagId)
 				end
 			end
 		end,
-	}   
+	}
 
 
 
@@ -1115,7 +1115,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 						textFull = "",
 						noMenuNumbers = true,
 						childs = {},
-					}   
+					}
 
 					tBagResultsByBag[(tCurrentContainerFrameNumber)] = { obj = aParentChilds[bagName], childs = {} }
 				end
@@ -1126,7 +1126,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				local bagItemButton
 
 				--update blizzard container object
-				containerFrame.GetBag = function() 
+				containerFrame.GetBag = function()
 					return bagId
 				end
 				containerFrame.info = containerFrame.info or {}
@@ -1145,7 +1145,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 						noMenuNumbers = true,
 						childs = {},
 						isNewItem = C_NewItems.IsNewItem(bagId, slotId),
-					}   
+					}
 					bagItemButton = aParentChilds[tFriendlyName]
 					--get the onclick func if there is one
 					if bagItemButton.obj:IsMouseClickEnabled() == true then
@@ -1198,7 +1198,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							end
 						end
 					end
-					
+
 					if _G[containerFrameName .. "Count"] and not containerFrame.info then
 						if bagItemButton and _G[containerFrameName .. "Count"]:GetText() then
 							if not isEmpty then
@@ -1223,10 +1223,10 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 							if not isEmpty and containerFrame.info.count > 1 then
 								bagItemButton.textFirstLine = bagItemButton.textFirstLine .. " " .. containerFrame.info.count
 							end
-						end								
-					end							
+						end
+					end
 				end
-				
+
 				tBagResultsByBag[(tCurrentContainerFrameNumber)].childs[#tBagResultsByBag[(tCurrentContainerFrameNumber)].childs + 1] = bagItemButton
 				-- if the item slot isn't empty and is in one of the bags, add it to allBagResults
 				if not isEmpty and bagId >= 0 and bagId <= 4 then
@@ -1239,9 +1239,9 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 					table.insert(allBagResults, copy)
 					allBagResults[copy] = copy
 				end
-				
+
 			end
-		end  
+		end
 	end
 
 	for q = -3, 40 do
@@ -1266,7 +1266,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 				childs = {},
 				func = nil,
 				click = true,
-			}   
+			}
 			BagSortMenuHelper(v.obj.childs[tFriendlyName].childs, v.obj.obj:GetBag(), v)
 		end
 	end
@@ -1315,7 +1315,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		childs = {},
 		func = nil,
 		click = true,
-	}   
+	}
 
 	tCurrentParentContainer = aParentChilds[tFriendlyName]
 
@@ -1344,12 +1344,12 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 					func = tBarBagSlots[x]:GetScript("OnClick"),
 					click = true,
 					isBag = true,
-				}   
+				}
 				if x == 1 or x == 6 then
 					aParentChilds[tFriendlyName].childs = {}
 					aParentChilds[tFriendlyName].type = "Text"
 					aParentChilds[tFriendlyName].func = nil
-				end   
+				end
 
 				GameTooltip:ClearLines()
 				aParentChilds[tFriendlyName].obj:GetScript("OnEnter")(aParentChilds[tFriendlyName].obj)
@@ -1370,8 +1370,8 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 			table.insert(tCurrentParentContainer.childs, aParentChilds[tFriendlyName])
 			tCurrentParentContainer.childs[aParentChilds[tFriendlyName] ] = aParentChilds[tFriendlyName]
 		end
-	end    
-	
+	end
+
 	if _G["BankSlotsFrame"] and _G["BankSlotsFrame"].Bag1:IsVisible() == true then
 		local numPurBankSlots, fullBankSlots = GetNumBankSlots()
 		local costForNextPur = GetBankSlotCost(numPurBankSlots)
@@ -1392,7 +1392,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 					func = _G["BankSlotsFrame"]["Bag"..x]:GetScript("OnClick"),
 					click = true,
 					isBag = true,
-				}   
+				}
 
 				GameTooltip:ClearLines()
 				aParentChilds[tFriendlyName].obj:GetScript("OnEnter")(aParentChilds[tFriendlyName].obj)
@@ -1408,7 +1408,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 
 			table.insert(tCurrentParentContainer.childs, aParentChilds[tFriendlyName])
 			tCurrentParentContainer.childs[aParentChilds[tFriendlyName] ] = aParentChilds[tFriendlyName]
-		end  	
+		end
 
 		if fullBankSlots ~= true then
 			local cost = SkuGetCoinText(GetBankSlotCost(numPurBankSlots))
@@ -1429,7 +1429,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 					click = true,
 					isBag = true,
 					isPurchasable = true,
-				}   
+				}
 			end
 
 			table.insert(tCurrentParentContainer.childs, aParentChilds[tFriendlyName])
@@ -1451,7 +1451,7 @@ function SkuCore:Build_BagsFrame(aParentChilds)
 		childs = {},
 		func = nil,
 		click = true,
-	}   
+	}
 
 	BagSortMenuHelper(aParentChilds[tFriendlyName].childs, nil)
 end
@@ -1514,7 +1514,7 @@ function SkuCore:PLAYER_TALENT_UPDATE()
 			end)
 		end
 	end
-end	
+end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:ACTIVE_TALENT_GROUP_CHANGED(aEvent, aCurr, aPrev)
@@ -1547,60 +1547,323 @@ function SkuCore:GLYPH_UPDATED()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
-function SkuCore:Build_TalentFrame(aParentChilds)
-
-	local tFrameName = "PlayerTalentFrameTitleText"
-	if _G["GlyphFrame"] and _G["GlyphFrame"]:IsVisible() == true then
-		tFrameName = "GlyphFrameTitleText"
-	end
-	local tFriendlyName = "Text: ".._G[tFrameName]:GetText()
+local function Build_BonusFrame(aParentChilds, bonusFrame)
+	local ttFirst, ttFull = GetTooltipLines(bonusFrame)
+	local tFrameName = bonusFrame:GetName()
+	local tFriendlyName = bonusFrame.Label:GetText()
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
 		frameName = tFrameName,
 		RoC = "Child",
 		type = "Text",
-		obj = _G[tFrameName],
+		obj = bonusFrame,
 		textFirstLine = tFriendlyName,
-		textFull = "",
+		textFull = ttFull,
 		childs = {},
-	}   
+		click = false,
+	}
+end
 
+local function Build_TalentSummaryOrSpecChoice(aParentChilds, specPanel)
+	local summary = specPanel.Summary
+	if not summary then
+		return
+	end
 
-	if not _G["GlyphFrame"] or _G["GlyphFrame"]:IsVisible() == false then
-		
-		local tFrameName = "PlayerTalentFrameActivateButton"
-		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then
-			local tFriendlyName = _G[tFrameName]:GetText()
+	--Spec description
+	local description = summary.Description
+	local tFrameName = description:GetName()
+	local descriptionText = "Text: "..description.ScrollChild.Text:GetText()
+	table.insert(aParentChilds, descriptionText)
+	aParentChilds[descriptionText] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Text",
+		obj = description,
+		textFirstLine = descriptionText,
+		childs = {},
+		click = false,
+			}
+
+			--Major/active spec bonuses
+			--This is a bit hacky for now, the number in the while loop is arbitrary
+			local index = 1
+			while index <= 100 do
+			local bonusFrame = _G[summary:GetName().."ActiveBonus"..index]
+			if bonusFrame and bonusFrame:IsShown() then
+			Build_BonusFrame(aParentChilds, bonusFrame)
+			else --all frames after this are hidden or nil too, so just break
+				break
+			end
+			index = index + 1
+		end
+
+		--Small/passive bonuses (Note: includes mastery as the last minor bonus)
+		--Again a bit hacky, see above
+		local index = 1
+		while index < 100 do
+			local bonusFrame = _G[summary:GetName().."Bonus"..index]
+			if bonusFrame and bonusFrame:IsShown() then
+				Build_BonusFrame(aParentChilds, bonusFrame)
+			else
+				break
+			end
+			index = index + 1
+		end
+
+		--Choose spec button
+		--Unfortunately this is just labeled with the name of the spec (since you just click on the header visually)
+		--As a result we will need to add some localizable text.
+		local chooseSpecButton = _G[specPanel:GetName().."SelectTreeButton"]
+		if chooseSpecButton and chooseSpecButton:IsShown() then
+			--localize later
+			local tFrameName = chooseSpecButton:GetName()
+			local tFriendlyName = "Select Specialization"
 			table.insert(aParentChilds, tFriendlyName)
 			aParentChilds[tFriendlyName] = {
 				frameName = tFrameName,
 				RoC = "Child",
 				type = "Button",
-				obj = _G[tFrameName],
 				textFirstLine = tFriendlyName,
-				textFull = "",
+				obj = chooseSpecButton,
+				func = chooseSpecButton:GetScript("OnClick"),
 				childs = {},
-				func = _G[tFrameName]:GetScript("OnClick"),
 				click = true,
-			}   
-		else
-			local tFrameName = "PlayerTalentFrameStatusText"
-			--if _G[tFrameName]:IsVisible() == true then
-				local tFriendlyName = "Text: ".._G[tFrameName]:GetText()
-				table.insert(aParentChilds, tFriendlyName)
-				aParentChilds[tFriendlyName] = {
-					frameName = tFrameName,
-					RoC = "Child",
-					type = "Text",
-					obj = _G[tFrameName],
-					textFirstLine = tFriendlyName,
-					textFull = "",
-					childs = {},
-				}   
-			--end			
+			}
+		end
+end
+
+local function Build_SpecTalentTree(aParentChilds, specPanel)
+	--There is a maximum of 28 talent buttons (4 to a row)
+	--Not all are visible at any one time
+	--first add them to a table to be sorted properly
+	talentOrder = {}
+	for x=1,28 do
+		local tFrameName = specPanel:GetName() .. "Talent" .. x
+		local talentButton = _G[tFrameName]
+		if talentButton and talentButton:IsVisible() then
+		table.insert(talentOrder, talentButton)
 		end
 	end
 
+	--Now sort the table (this sorts in-place)
+	table.sort(talentOrder, function(a, b)
+	local _, _, _, x1, y1 = a:GetPoint(1)
+	local _, _, _, x2, y2 = b:GetPoint(1)
+		if y2 < y1 then
+			return true
+		elseif y1 == y2 and x1 < x2 then
+			return true
+		end
+		return false
+	end)
+
+	for index=1,#talentOrder do
+		local talentButton = talentOrder[index]
+		if talentButton and talentButton:IsVisible() then
+			--There seems to be a bug with the Blizzard tooltips
+			--Single rank talents don't update rank in their tooltip when a point is invested
+			local ttFirst, ttFull = GetTooltipLines(talentButton)
+			local tFriendlyName = ttFirst .. "(" .. talentButton.Rank:GetText() or "nil" .. ")"
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = talentButton:GetName(),
+				RoC = "Child",
+				type = "Button",
+				textFirstLine = tFriendlyName,
+				textFull = ttFull,
+				obj = talentButton,
+				childs = {},
+			func = talentButton:GetScript("OnClick"),
+				click = true,
+			}
+		end
+	end
+end
+
+local function Build_SpecPanel(aParentChilds, panelIndex)
+	local tFrameName ="PlayerTalentFramePanel" .. panelIndex
+	local specPanel = _G[tFrameName]
+	if not specPanel or not specPanel:IsVisible() then
+		return
+	end
+
+	local tFriendlyName = specPanel.Name:GetText()
+	if specPanel.HeaderIcon.LockIcon:IsVisible() then
+		--Localize later
+		tFriendlyName = tFriendlyName .. " (Locked)"
+	end
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type="Button",
+		obj = specPanel,
+		textFirstLine = tFriendlyName,
+		childs = {},
+		click = false,
+	}
+
+	local tParentChilds = aParentChilds[tFriendlyName].childs
+	if specPanel.Summary:IsVisible() then
+		Build_TalentSummaryOrSpecChoice(tParentChilds, specPanel)
+	else
+		Build_SpecTalentTree(tParentChilds, specPanel)
+	end
+end
+
+local function Build_TalentFramePlayerTalentsTab(aParentChilds)
+	--The three panels for the specializations
+	--Each panel can be in two states: summary or talent tree view
+	--All panels have to be in the same state
+	for index=1,3 do
+		Build_SpecPanel(aParentChilds, index)
+	end
+end
+
+local function Build_PetInfo(aParentChilds)
+	--Pet info is just a few text fields
+
+	--pet name
+	local tFrameName = "PlayerTalentFramePetNameText"
+	local petName = _G[tFrameName]
+	if petName and petName:IsVisible() then
+		local nameText = petName:GetText()
+		if nameText ~= "" then
+			tFriendlyName = "Text: " .. nameText
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Text",
+				obj = petLevel,
+				textFirstLine = tFriendlyName,
+				childs = {},
+			}
+		end
+	end
+
+	local tFrameName = "PlayerTalentFramePetLevelText"
+	local petLevel = _G[tFrameName]
+	if petLevel and petLevel:IsVisible() then
+		local levelText = petLevel:GetText()
+		if levelText ~= "" then
+			tFriendlyName = "Text: " .. levelText
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Text",
+				obj = petLevel,
+				textFirstLine = tFriendlyName,
+				childs = {},
+			}
+		end
+	end
+
+	--Pet Type
+	local tFrameName = "PlayerTalentFramePetTypeText"
+	local petType = _G[tFrameName]
+	if petType and petType:IsShown() then
+		local typeText = petType:GetText()
+		if typeText ~= "" then
+			local tFriendlyName = "Text: " .. typeText
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Text",
+				obj = petType,
+				textFirstLine = tFriendlyName,
+				childs = {},
+			}
+	end
+end
+
+	local tFrameName = "PlayerTalentFramePetDiet"
+	local petDiet = _G[tFrameName]
+	if petDiet and petDiet:IsVisible() then
+		local ttFirst, ttFull = GetTooltipLines(petDiet)
+		--Only ttFirst has text
+		local tFriendlyName = "Text: " .. ttFirst
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Text",
+			obj = petDiet,
+			textFirstLine = tFriendlyName,
+			childs = {},
+					}
+	end
+end
+
+local function Build_PetTalents(aParentChilds)
+		--Pets only have one spec
+
+	local tFrameName = "PlayerTalentFramePetPanel"
+	local specPanel = _G[tFrameName]
+	if specPanel and specPanel:IsVisible() then
+		local tFriendlyName = specPanel.Name:GetText()
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFriendlyName,
+			RoC = "Child",
+			type = "Button",
+			obj = specPanel,
+			textFirstLine = tFriendlyName,
+			childs = {},
+			click = true,
+		}
+		local tParentChilds = aParentChilds[tFriendlyName].childs
+		--Pet talent buttons
+		local talentOrder = {}
+		for x=1,24 do
+			local tFrameName = "PlayerTalentFramePetPanelTalent" .. x
+			local talentButton = _G[tFrameName]
+			if talentButton and talentButton:IsVisible() then
+				table.insert(talentOrder, talentButton)
+			end
+		end
+
+		table.sort(talentOrder, function(a, b)
+			local _, _, _, x1, y1 = a:GetPoint(1)
+			local _, _, _, x2, y2 = b:GetPoint(1)
+				if y2 < y1 then
+					return true
+				elseif y1 == y2 and x1 < x2 then
+					return true
+				end
+				return false
+		end)
+		for index=1,#talentOrder do
+			local talentButton = talentOrder[index]
+				local ttFirst, ttFull = GetTooltipLines(talentButton)
+				local tFriendlyName = ttFirst .. "(" .. talentButton.Rank:GetText() .. ")"
+			table.insert(tParentChilds, tFriendlyName)
+			tParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Button",
+				obj = talentButton,
+				textFirstLine = tFriendlyName,
+				textFull = ttFull,
+				childs = {},
+				func = talentButton:GetScript("OnClick"),
+				click = true,
+			}
+		end
+	end
+end
+
+local function Build_TalentFramePlayerPetsTab(aParentChilds)
+	Build_PetInfo(aParentChilds)
+	Build_PetTalents(aParentChilds)
+end
+
+function SkuCore:Build_TalentFrame(aParentChilds)
+	--Primary and secondary talent sets
+	--These buttons are always available (when unlocked.)
 	local tFrameName = ""
 	local tFriendlyName = L["Talent Sets"]
 	table.insert(aParentChilds, tFriendlyName)
@@ -1612,252 +1875,142 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
-		--click = true,
+		click = true,
 	}
-	local tParent = aParentChilds[tFriendlyName].childs	
 
-
-	local tCurrentShownSpec
-	for x = 1, 3 do
+	local tParent = aParentChilds[tFriendlyName].childs
+	for x=1,2 do
 		local tFrameName = "PlayerSpecTab"..x
-		if _G[tFrameName] and _G[tFrameName]:IsVisible() == true then
-			local tttFirst, tttFull = GetTooltipLines(_G[tFrameName])
-			local tFriendlyName = tttFirst
+		local specFrame = _G[tFrameName]
+		if specFrame and specFrame:IsVisible() then
+			local ttFirst, ttFull = GetTooltipLines(specFrame)
+			local tFriendlyName = ttFirst
 			table.insert(tParent, tFriendlyName)
+			local tTextFirstLine = ""
+			if specFrame:GetChecked() then
+				tTextFirstLine = ttFirst .. " (".. L["selected"] .. ")"
+			else
+				tTextFirstLine = ttFirst
+			end
 			tParent[tFriendlyName] = {
 				frameName = tFrameName,
 				RoC = "Child",
 				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = tttFull,
+				obj = specFrame,
+				textFirstLine = tTextFirstLine,
+				textFull = ttFull,
 				childs = {},
-				func = _G[tFrameName]:GetScript("OnClick"),
-				click = true,
-			}   	
-			if _G[tFrameName]:GetChecked() == true then
-				tParent[tFriendlyName].textFirstLine = tParent[tFriendlyName].textFirstLine.." ("..L["selected"]..")"
-				tParent[tFriendlyName].func = nil
-				tParent[tFriendlyName].click = false
-				tCurrentShownSpec = x
-			end
+				func = specFrame:GetScript("OnClick"),
+				click = not specFrame:GetChecked(), --only show a click option if it isn't the current talent set
+			}
 		end
-	end	
+	end
 
-	if not tCurrentShownSpec then
-		local tFriendlyName = L["Empty"]
-		table.insert(tParent, tFriendlyName)
-		tParent[tFriendlyName] = {
-			frameName = nil,
+	--Activate button when changing active talents
+	-- Only visible when necessary
+	local tFrameName = "PlayerTalentFrameActivateButton"
+	local activateButton = _G[tFrameName]
+	if activateButton and activateButton:IsVisible() then
+		local tFriendlyName = activateButton:GetText()
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = activateButton,
+			textFirstLine = tFriendlyName,
+			childs = {},
+			func = activateButton:GetScript("OnClick"),
+			click = true,
+		}
+	end
+
+	--The currently selected tab
+	local selectedTab = PanelTemplates_GetSelectedTab(PlayerTalentFrame)
+
+	--The three tabs (player talents, pet talents, and glyphs)
+	for x = 1,3 do
+		local tFrameName = "PlayerTalentFrameTab" .. x
+		local frameTab = _G[tFrameName]
+		if frameTab and frameTab:IsVisible() then
+			local tFriendlyName = frameTab:GetText()
+			if selectedTab == x then
+				tFriendlyName = tFriendlyName .. "(" .. L["selected"] .. ")"
+			end
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFriendlyName,
+				RoC = "Child",
+				type = "Button",
+				obj = frameTab,
+				textFirstLine = tFriendlyName,
+				func = frameTab:GetScript("OnClick"),
+				childs = {},
+				click = frameTab:IsEnabled(),
+			}
+		end
+	end
+
+	--Talent frame header text
+	--Includes elements such as unspent talent points and level to next talent
+	--Only visible on the player talents and pet talents tabs
+	local tFrameName = "PlayerTalentFrameHeaderText"
+	local headerTextFrame = _G[tFrameName]
+	if headerTextFrame and headerTextFrame:IsVisible() then
+		local tFriendlyName = "Text: " .. SkuChat:Unescape(headerTextFrame:GetText())
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			friendlyName = tFriendlyName,
 			RoC = "Child",
 			type = "Text",
-			obj = nil,
+			obj = headerTextFrame,
 			textFirstLine = tFriendlyName,
-			textFull = "",
 			childs = {},
-		}   	
-
-		tCurrentShownSpec = 1
-	end
-
-	if not _G["GlyphFrame"] or _G["GlyphFrame"]:IsVisible() == false then
-		if tCurrentShownSpec < 3 then
-			local tFrameName = ""
-			local tFriendlyName = L["Change Role"].." ("..L[GetTalentGroupRole(tCurrentShownSpec)]..")"
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-				--click = true,
-			}
-			local tParent = aParentChilds[tFriendlyName].childs	
-
-			for x = 1, 3 do
-				local tFrameName = "PlayerTalentFrameRoleButton"
-				local tFriendlyName = L[tRolenamesLookup[x]]
-				table.insert(tParent, tFriendlyName)
-				tParent[tFriendlyName] = {
-					frameName = tFrameName,
-					RoC = "Child",
-					type = "Button",
-					obj = _G[tFrameName],
-					textFirstLine = tFriendlyName,
-					textFull = "",
-					childs = {},
-					func = function()
-						SetTalentGroupRole(tCurrentShownSpec, tRolenamesLookup[x])
-						C_Timer.After(0.01, function() 
-							SkuOptions.currentMenuPosition.parent:OnUpdate()
-						end)
-					end,
-					click = true,
-				} 
-				if GetTalentGroupRole(tCurrentShownSpec) == tRolenamesLookup[x] then
-					tParent[tFriendlyName].textFirstLine = tParent[tFriendlyName].textFirstLine.." ("..L["selected"]..")"
-					tParent[tFriendlyName].func = nil
-					tParent[tFriendlyName].click = false
-				end
-			end
-		end	
-	end
-
-	for x = 1, 4 do
-		local tFrameName = "PlayerTalentFrameTab"..x
-		if _G[tFrameName] and _G[tFrameName]:IsVisible() == true then
-			local tttFirst, tttFull = _G[tFrameName]:GetText()
-			local tFriendlyName = tttFirst
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = tttFull,
-				childs = {},
-				func = _G[tFrameName]:GetScript("OnClick"),
-				click = true,
-			}   	
-			
-			local tSelected
-			for i, v in pairs({_G[tFrameName]:GetRegions()}) do
-				if v.GetText then
-					if v:GetText() == _G[tFrameName]:GetText() then
-						local r, g, b, a = v:GetTextColor()
-						if r > 0.9 and g > 0.9 and b > 0.9 then
-							tSelected = true
-						end
-					end
-				end
-			end
-			if tSelected then
-				aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..L["selected"]..")"
-				aParentChilds[tFriendlyName].func = nil
-				aParentChilds[tFriendlyName].click = false
-			end
-			aParentChilds[tFriendlyName].textFirstLine = L["Tab"].." "..aParentChilds[tFriendlyName].textFirstLine
-		end
-	end		
-	
-	if not _G["GlyphFrame"] or _G["GlyphFrame"]:IsVisible() == false then
-
-		local tFrameName = "PlayerTalentFrameSpentPointsText"
-		if _G[tFrameName]:IsVisible() == true then
-			local tFriendlyName = SkuChat:Unescape("Text: "..L["Spent for"].." ".._G[tFrameName]:GetText())
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Text",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-			}   
-		end
-		local tFrameName = "PlayerTalentFrameTalentPointsText"
-		if _G[tFrameName]:IsVisible() == true then
-			local tFriendlyName = SkuChat:Unescape("Text: ".._G[tFrameName]:GetText())
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Text",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = "",
-				childs = {},
-			}   
-		end
-
-
-		local tTalentsUnsorted = {}
-		local tMax = 0
-		for x = 1, 100 do
-			local tFrameName = "PlayerTalentFrameTalent"..x
-			if _G[tFrameName] and _G[tFrameName]:IsVisible() == true then
-				local tttFirst, tttFull = GetTooltipLines(_G[tFrameName])
-				local p1, parent, p2, px, py = _G[tFrameName]:GetPoint(1)
-				local column = math.floor(px / 63) + 1
-				local tier = math.floor(py / 63) * -1
-				tMax = column + (tier * 4)
-				tTalentsUnsorted[tMax] = tFrameName
-			end
-		end
-
-		local tTalentsSorted = {}
-		local tCounter = 1
-		for x = 1, 10000 do
-			if tTalentsUnsorted[x] then
-				tTalentsSorted[tCounter] = tTalentsUnsorted[x]
-				tCounter = tCounter + 1
-			end
-		end
-
-		for i, v in ipairs(tTalentsSorted) do
-			local tFrameName = v
-			if _G[tFrameName] and _G[tFrameName]:IsVisible() == true then
-				local tttFirst, tttFull = GetTooltipLines(_G[tFrameName])
-				if _G[tFrameName.."Rank"] and _G[tFrameName.."Rank"].GetText then
-					tttFirst = tttFirst.." ("..(_G[tFrameName.."Rank"]:GetText() or "nil")..")"
-				end
-				local tFriendlyName = tttFirst
-				table.insert(aParentChilds, tFriendlyName)
-				aParentChilds[tFriendlyName] = {
-					frameName = tFrameName,
-					RoC = "Child",
-					type = "Button",
-					obj = _G[tFrameName],
-					textFirstLine = tFriendlyName,
-					textFull = tttFull,
-					childs = {},
-					func = _G[tFrameName]:GetScript("OnClick"),
-					click = true,
-				}  
-				
-				local tTexture = _G[tFrameName]:GetRegions()
-				if tTexture:GetDesaturation() > 0 then
-					aParentChilds[tFriendlyName].func = nil
-					aParentChilds[tFriendlyName].click = false
-					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..L["disabled"]..")"
-				end
-			end		
-		end
-	end
-
-	if _G["GlyphFrame"] and _G["GlyphFrame"]:IsVisible() == true then
-		local tSlots = {
-			[1] = L["Major"],
-			[2] = L["Minor"],
-			[3] = L["Minor"],
-			[4] = L["Major"],
-			[5] = L["Minor"],
-			[6] = L["Major"],
+			click = false,
 		}
-		for x = 1, 6 do
+	end
 
-			local tFrameName = "GlyphFrameGlyph"..x
-			local tttFirst, tttFull = GetTooltipLines(_G[tFrameName])
-			local tFriendlyName = x.." "..tttFirst.." ("..tSlots[x]..")"
-			table.insert(aParentChilds, tFriendlyName)
-			aParentChilds[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = tttFull,
-				childs = {},
-				func = _G[tFrameName]:GetScript("OnClick"),
-				click = true,
-			}  
-		end
+	if selectedTab == TALENTS_TAB then
+		Build_TalentFramePlayerTalentsTab(aParentChilds)
+	elseif selectedTab == PET_TALENTS_TAB then
+		Build_TalentFramePlayerPetsTab(aParentChilds)
+	end
+	--Learn talents button
+	-- This learns all talents selected in the preview (if preview is enabled)
+	local learnButton = _G["PlayerTalentFrameLearnButton"]
+	if learnButton and learnButton:IsVisible() then
+		local tFrameName = learnButton:GetName()
+		local tFriendlyName = learnButton:GetText()
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = learnButton,
+			textFirstLine = tFriendlyName,
+			childs = {},
+			func = learnButton:GetScript("OnClick"),
+			click = true,
+		}
+	end
 
+	--The reset button
+	--Note that this only clears the talent preview (if enabled)
+	local resetButton = _G["PlayerTalentFrameResetButton"]
+	if resetButton and resetButton:IsVisible() then
+		local tFrameName = resetButton:GetName()
+		local tFriendlyName = resetButton:GetText()
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			textFirstLine = tFriendlyName,
+			obj = resetButton,
+			childs = {},
+			func = resetButton:GetScript("OnClick"),
+			click = true,
+		}
 	end
 end
 
@@ -1865,7 +2018,7 @@ end
 local function BarberShopOutputHelper(aTable, aName)
 	SkuCore.BarberShopLastBannerCaption = _G["BarberShopBannerFrameCaption"]:GetText()
 	aTable.obj:GetScript("OnClick")(aTable.obj)
-	C_Timer.After(1, function() 
+	C_Timer.After(1, function()
 		if SkuCore.BarberShopLastBannerCaption ~= _G["BarberShopBannerFrameCaption"]:GetText() and _G["BarberShopBannerFrameCaption"]:GetText() ~= L["Barber Shop"] then
 			--print(aName..": ".._G["BarberShopBannerFrameCaption"]:GetText())
 			SkuOptions.Voice:OutputStringBTtts(aName..": ".._G["BarberShopBannerFrameCaption"]:GetText(), false, true, 0.8, true, nil, nil, 1, nil, nil, true)
@@ -1910,7 +2063,7 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 		childs = {},
 		func = _G[tFrameName]:GetScript("OnClick"),
 		click = true,
-	}   
+	}
 	local tFrameName = "BarberShopFrameFemaleButton"
 	local tFriendlyName = L["Female"]
 	if _G[tFrameName]:IsEnabled() == true then
@@ -1925,7 +2078,7 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 			childs = {},
 			func = _G[tFrameName]:GetScript("OnClick"),
 			click = true,
-		}   
+		}
 	end
 
 	--other
@@ -1951,7 +2104,7 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 			--click = true,
 		}
 		local tParent = aParentChilds[tFriendlyName]
-		
+
 		local tFrameName = "BarberShopFrame."..tSelectors[x]..".Next"
 		local tFriendlyName = L["Next_generic"]
 		local tObj = _G["BarberShopFrame"][tSelectors[x]].Next
@@ -1964,11 +2117,11 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 			textFirstLine = tFriendlyName,
 			textFull = "",
 			childs = {},
-			func = function() 
+			func = function()
 				BarberShopOutputHelper(tParent.childs[tFriendlyName], tParent.textFirstLine)
 			end,
 			click = true,
-		}   
+		}
 
 		local tFrameName = "BarberShopFrame."..tSelectors[x]..".Prev"
 		local tFriendlyName = L["previous_generic"]
@@ -1982,7 +2135,7 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 			textFirstLine = tFriendlyName,
 			textFull = "",
 			childs = {},
-			func = function() 
+			func = function()
 				BarberShopOutputHelper(tParent.childs[tFriendlyName], tParent.textFirstLine)
 			end,
 			click = true,
@@ -2007,10 +2160,10 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
-		func = _G[tFrameName]:GetScript("OnClick"),            
+		func = _G[tFrameName]:GetScript("OnClick"),
 		click = tClick,
-	}   
-	
+	}
+
 	local tFrameName = "BarberShopFrameResetButton"
 	local tFriendlyName = _G[tFrameName]:GetText()
 	local tClick = true
@@ -2027,9 +2180,9 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
-		func = _G[tFrameName]:GetScript("OnClick"),            
+		func = _G[tFrameName]:GetScript("OnClick"),
 		click = tClick,
-	}   		
+	}
 
 	local tFrameName = "BarberShopFrameCancelButton"
 	local tFriendlyName = L["Close"]
@@ -2042,9 +2195,9 @@ function SkuCore:Build_BarberShopFrame(aParentChilds)
 		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
-		func = C_BarberShop.Cancel,--()_G[tFrameName]:GetScript("OnClick"),            
+		func = C_BarberShop.Cancel,--()_G[tFrameName]:GetScript("OnClick"),
 		click = true,
-	}  		
+	}
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -2122,9 +2275,9 @@ function SkuCore:UpdateResults(aEvent)
 					end
 
 					SkuLFGBrowse_DoSearch(tBrowseCatSelected, tidtable)
-				end,            
+				end,
 				click = true,
-			}   
+			}
 
 			for x = 1, totalResults do
 				if results[x] then
@@ -2138,7 +2291,7 @@ function SkuCore:UpdateResults(aEvent)
 
 					if tSearchResultData.numMembers == 1 then
 						local name, role, classFile, className, level = C_LFGList.GetSearchResultMemberInfo(results[x], 1);
-						tFull = 
+						tFull =
 						L["solo"].."\r\n"..
 						L["name"]..": "..(SkuChat:Unescape(tSearchResultData.leaderName) or L["unknown"]).."\r\n"..
 						L["klasse"]..": "..(SkuChat:Unescape(className) or L["unknown"]).."\r\n"..
@@ -2157,7 +2310,7 @@ function SkuCore:UpdateResults(aEvent)
 							tFull = tFull.."\r\n"..L["is Delisted"]
 						end
 					else
-						tFull = 
+						tFull =
 						L["Party"].."\r\n"..
 						L["leader"]..": "..(SkuChat:Unescape(tSearchResultData.leaderName) or L["unknown"]).."\r\n"..
 						L["comment"]..": "..(SkuChat:Unescape(tSearchResultData.comment) or L["unknown"]).."\r\n"..
@@ -2237,7 +2390,7 @@ function SkuCore:UpdateResults(aEvent)
 						end
 					end
 					local activitiesToDisplay = hasMatchingActivity and matchingActivities or tSearchResultData.activityIDs;
-				
+
 					local activityText = "";
 					if ( tSearchResultData.hasSelf ) then
 						activityText = LFG_SELF_LISTING;
@@ -2247,7 +2400,7 @@ function SkuCore:UpdateResults(aEvent)
 					else
 						local activityString = hasMatchingActivity and LFGBROWSE_ACTIVITY_MATCHING_COUNT or LFGBROWSE_ACTIVITY_COUNT;
 						--activityText = string.format(activityString, #activitiesToDisplay);
-						activityText = #activitiesToDisplay.." "..L["Activities"] 
+						activityText = #activitiesToDisplay.." "..L["Activities"]
 					end
 
 					--build title string
@@ -2281,8 +2434,8 @@ function SkuCore:UpdateResults(aEvent)
 						func = function()
 							local tSearchResultData = C_LFGList.GetSearchResultInfo(results[x])
 							if tSearchResultData.isDelisted == true then
-								C_Timer.After(0.4, function()		
-									print(L["Not longer available. Refresh list."])						
+								C_Timer.After(0.4, function()
+									print(L["Not longer available. Refresh list."])
 									SkuOptions.Voice:OutputStringBTtts(L["Not longer available. Refresh list."], true, true, 0.8, true, nil, nil, 1, nil, nil, true)
 								end)
 							else
@@ -2294,9 +2447,9 @@ function SkuCore:UpdateResults(aEvent)
 									end)
 								end)
 							end
-						end,            
+						end,
 						click = true,
-					}  
+					}
 				else
 					print("this should not happen; missing data")
 				end
@@ -2380,7 +2533,7 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 						C_Timer.After(0.3, function()
 							SkuOptions.currentMenuPosition.parent:OnUpdate()
 						end)
-					end,            
+					end,
 					click = true,
 				}
 			end
@@ -2404,9 +2557,9 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					C_Timer.After(0.3, function()
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
-				end,            
+				end,
 				click = true,
-			}   
+			}
 
 			--to implement: update post
 
@@ -2435,11 +2588,11 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					textFull = SkuChat:Unescape(tFull),
 					childs = {},
 					click = false,
-				}   
+				}
 			end
 		end
 
-		-- rolle dd 
+		-- rolle dd
 		local tFrameName = ""
 		local tFriendlyName = L["your role"]
 		table.insert(tEnlistParent, tFriendlyName)
@@ -2472,18 +2625,18 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					for x = 1, 3 do
 						tEnlistRolesSelected[x].selected = false
 					end
-		
+
 					tEnlistRolesSelected[x].selected = true
 					UnitSetRole("player", tRolenamesLookup[x])
 
 					C_Timer.After(0.3, function()
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
-				end,            
+				end,
 				click = true,
-			}   
+			}
 		end
-		
+
 	else
 		--no group
 		--role selection on solo
@@ -2550,9 +2703,9 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					C_Timer.After(0.3, function()
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
-				end,            
+				end,
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -2589,7 +2742,7 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 				textFull = SkuChat:Unescape(tCurrentGemTooltip),
 				childs = {},
 				click = false,
-			}   		
+			}
 		else
 			local currentSelectedValue = UIDropDownMenu_GetSelectedValue(self) or 0;
 			local foundChecked = false;
@@ -2628,9 +2781,9 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 							SkuOptions.currentMenuPosition:OnUpdate()
 						end)
 						--SkuLFGEnlist_DoSearch(tEnlistCategories[i])
-					end,            
+					end,
 					click = true,
-				}   
+				}
 			end
 		end
 
@@ -2703,9 +2856,9 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 				end)
 				--tEnlistResultsUpdate = true
 				--SkuLFGEnlist_DoSearch(tEnlistCatSelected)
-			end,            
+			end,
 			click = true,
-		}   
+		}
 
 		--add activities
 		for x = 1, #tActivityList do
@@ -2739,11 +2892,11 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					C_Timer.After(0.3, function()
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
-		
+
 					--SkuLFGEnlist_DoSearch(tEnlistCatSelected, tidtable)
-				end,            
+				end,
 				click = true,
-			}   
+			}
 		end
 
 		local tFrameName = ""
@@ -2766,15 +2919,15 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					LFGListingComment.EditBox:SetFocus()
 					LFGListingComment.EditBox:HookScript("OnEditFocusLost", function(self)
 						C_Timer.After(0.1, function()
-							PlaySound(89) 
+							PlaySound(89)
 							tEnlistCurrentCommentText = _G["LFGListingComment"].EditBox:GetText() or ""
 							SkuOptions.currentMenuPosition:OnUpdate()
 						end)
 
 					end)
-					
+
 				end
-			end,            
+			end,
 			click = true,
 		}
 
@@ -2901,7 +3054,7 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					textFull = SkuChat:Unescape(tCurrentGemTooltip),
 					childs = {},
 					click = false,
-				}   		
+				}
 			else
 				local currentSelectedValue = UIDropDownMenu_GetSelectedValue(self) or 0;
 				local foundChecked = false;
@@ -2928,7 +3081,7 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 						[5] = 120,
 					}
 					]]
-					
+
 					tBrowseCategories = categories
 
 					local tFriendlyName = name
@@ -2948,9 +3101,9 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 							tBrowseResultsUpdate = true
 							tBrowseCatSelected = tBrowseCategories[i]
 							SkuLFGBrowse_DoSearch(tBrowseCategories[i])
-						end,            
+						end,
 						click = true,
-					}   
+					}
 				end
 			end
 
@@ -2989,7 +3142,7 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 						-- Grouped activities.
 						local groupButtonInfo = {}
 						tActivityList[#tActivityList + 1] = {title = string.gsub(C_LFGList.GetActivityGroupInfo(activityGroupID), "  ", " "), id = activityGroupID}
-	
+
 						if (#activityGroupIDs == 1) then -- If we only have one activityGroup, do everything in one menu.
 							for _, activityID in pairs(activityIDs) do
 								local activityInfo = C_LFGList.GetActivityInfoTable(activityID);
@@ -3021,9 +3174,9 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 					tBrowseActsSelected = {}
 					tBrowseResultsUpdate = true
 					SkuLFGBrowse_DoSearch(tBrowseCatSelected)
-				end,            
+				end,
 				click = true,
-			}   
+			}
 
 			--add activities
 			for x = 1, #tActivityList do
@@ -3056,9 +3209,9 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 						end
 
 						SkuLFGBrowse_DoSearch(tBrowseCatSelected, tidtable)
-					end,            
+					end,
 					click = true,
-				}   
+				}
 			end
 
 			--results
@@ -3074,17 +3227,17 @@ function SkuCore:Build_LfgFrame(aParentChilds)
 				textFull = "",
 				childs = {},
 			}
-			tBrowseResultsParent = tBrowseParent[tFriendlyName].childs			
+			tBrowseResultsParent = tBrowseParent[tFriendlyName].childs
 			if tBrowseResultsParentResults then
 				tBrowseParent[tFriendlyName].childs = tBrowseResultsParentResults
 			end
-		
+
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:Build_RolePollPopup(aParentChilds)
 
-	
+
 	local tButtons = {
 		[1] = _G["RolePollPopupRoleButtonTank"],
 		[2] = _G["RolePollPopupRoleButtonHealer"],
@@ -3094,7 +3247,7 @@ function SkuCore:Build_RolePollPopup(aParentChilds)
 	for x = 1, #tButtons do
 		if tButtons[x].checkButton:IsVisible() == true then
 			local tFriendlyName = _G[tButtons[x].role]
-			
+
 			if tButtons[x].checkButton:GetChecked() == true then
 				tFriendlyName = tFriendlyName.." ("..L["selected"]..")"
 			end
@@ -3113,13 +3266,13 @@ function SkuCore:Build_RolePollPopup(aParentChilds)
 					C_Timer.After(0.3, function()
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
-				end,            
+				end,
 				click = true,
 			}
 		end
 	end
 
-			
+
 	if _G["RolePollPopupAcceptButton"]:IsEnabled() == true then
 		local tFriendlyName = _G["RolePollPopupAcceptButton"]:GetText()
 
@@ -3134,7 +3287,7 @@ function SkuCore:Build_RolePollPopup(aParentChilds)
 			childs = {},
 			func = function()
 				_G["RolePollPopupAcceptButton"]:Click("LeftMouse")
-			end,            
+			end,
 			click = true,
 		}
 	end
@@ -3173,7 +3326,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		textFull = "",
 		childs = {},
 		--click = true,
-	}   
+	}
 	local tParentEquipment = aParentChilds[tFriendlyName].childs
 
 		--items submenu
@@ -3201,7 +3354,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 				tParentEquipment[tFriendlyName].childs["GearManagerToggleButton"] = nil
 			end
 		end
-		
+
 	--stats
 	local tFrameName = ""
 	local tFriendlyName = L["Stats"]
@@ -3215,7 +3368,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		textFull = "",
 		childs = {},
 		--click = true,
-	}   
+	}
 	local tParentStats = aParentChilds[tFriendlyName].childs
 
 	--Make sure to iterate over the default order
@@ -3241,8 +3394,8 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			}
 			local tParentStatsValues = tParentStats[tFriendlyName].childs
 			PaperDollFrame_UpdateStatCategory(categoryFrame)
-			for x = 1,#v.stats do 
-				--A bit hacky, character frames aren't created for irrelevant stats
+			for x = 1,#v.stats do
+				--A bit hacky, character frames aren't created for irrelevant stats and are sometimes reused on stat changes
 				--Iterate over frames matching all possible stats; the data on the frames should make up the difference
 				local statFrame = _G[categoryFrame:GetName() .. "Stat" ..x]
 				if statFrame ~= nil and statFrame:IsShown() then
@@ -3268,44 +3421,6 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 			end
 		end
 
-	--[[
-		local tFrameName = v
-		local tFriendlyName = L["Resistances"]
-		table.insert(tParentStats, tFriendlyName)
-		tParentStats[tFriendlyName] = {
-			frameName = tFrameName,
-			RoC = "Child",
-			type = "Button",
-			obj = _G[tFrameName],
-			textFirstLine = L["Resistances"],
-			textFull = "",
-			childs = {},
-			--click = true,
-		}
-		local tParentStatsValues = tParentStats[tFriendlyName].childs
-
-		for x = 1, NUM_RESISTANCE_TYPES do
-			local text = getglobal("MagicResText"..x);
-			local frame = getglobal("MagicResFrame"..x);
-			frame.type = "stat"
-			local tName, tFullText = GetButtonTooltipLines(frame)
-
-			local tFrameName = ""
-			local tFriendlyName = SkuChat:Unescape(tName)
-			table.insert(tParentStatsValues, tFriendlyName)
-			tParentStatsValues[tFriendlyName] = {
-				frameName = tFrameName,
-				RoC = "Child",
-				type = "Button",
-				obj = _G[tFrameName],
-				textFirstLine = tFriendlyName,
-				textFull = SkuChat:Unescape(tFullText),
-				childs = {},
-				--click = true,
-			}
-		end
-]]--
-
 	--Currency
 	local tFrameName = ""
 	local tFriendlyName = L["Currency"]
@@ -3319,7 +3434,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 		textFull = "",
 		childs = {},
 		--click = true,
-	}   
+	}
 	local tParentCurrency = aParentChilds[tFriendlyName].childs
 
 		for i = 1, 100 do
@@ -3340,7 +3455,7 @@ function SkuCore:Build_CharacterFrame(aParentChilds)
 					textFull = "",
 					childs = {},
 					--click = true,
-				}				
+				}
 			end
 			end
 		end
@@ -3392,18 +3507,18 @@ function SkuCore:Build_ItemSocketingFrame(aParentChilds)
 				childs = {},
 				func = function(self, aButton)
 					self:Click()
-				end,            
+				end,
 				click = true,
-			}   
+			}
 		end
-	
+
 	end
 
 	local tFriendlyName = _G["ItemSocketingSocketButton"]:GetText()
 	local tFrameName = "ItemSocketingSocketButton"
 	local tFunc = function(self, aButton)
-		self:GetScript("OnClick")(self, aButton)             
-		self:GetScript("OnClick")(self, aButton)             
+		self:GetScript("OnClick")(self, aButton)
+		self:GetScript("OnClick")(self, aButton)
 	end
 	if _G[tFrameName]:IsEnabled() ~= true then
 		tFriendlyName = tFriendlyName.." ("..L["disabled"]..")"
@@ -3418,16 +3533,16 @@ function SkuCore:Build_ItemSocketingFrame(aParentChilds)
 		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
-		func = tFunc,            
+		func = tFunc,
 		click = true,
-	}   
+	}
 
 
 	local tFriendlyName = L["Close"]
 	local tFrameName = "ItemSocketingCloseButton"
 	local tFunc = function(self, aButton)
-		self:GetScript("OnClick")(self, aButton)             
-		self:GetScript("OnClick")(self, aButton)             
+		self:GetScript("OnClick")(self, aButton)
+		self:GetScript("OnClick")(self, aButton)
 	end
 	if _G[tFrameName]:IsEnabled() ~= true then
 		tFriendlyName = tFriendlyName.." ("..L["disabled"]..")"
@@ -3442,9 +3557,9 @@ function SkuCore:Build_ItemSocketingFrame(aParentChilds)
 		textFirstLine = tFriendlyName,
 		textFull = "",
 		childs = {},
-		func = tFunc,            
+		func = tFunc,
 		click = true,
-	}   	
+	}
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3490,11 +3605,11 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 				textFull = "",
 				childs = {},
 				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
+					self:GetScript("OnClick")(self, aButton)
+					self:GetScript("OnClick")(self, aButton)
+				end,
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -3534,7 +3649,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 						childs = {},
 						func = _G[tFrameName]:GetScript("OnClick"),
 						click = true,
-					}   
+					}
 				end
 
 				if tDifficulty == "subheader" or tDifficulty == "header" then
@@ -3563,11 +3678,11 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 				textFull = "",
 				childs = {},
 				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
+					self:GetScript("OnClick")(self, aButton)
+					self:GetScript("OnClick")(self, aButton)
+				end,
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -3579,7 +3694,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 	end
 	local tRequirements = ""
 	if _G["ClassTrainerSkillRequirements"] and _G["ClassTrainerSkillRequirements"]:IsVisible() and _G["ClassTrainerSkillRequirements"]:GetText() then
-		for i, v in string.gmatch(_G["ClassTrainerSkillRequirements"]:GetText(), "([^,]+)") do 
+		for i, v in string.gmatch(_G["ClassTrainerSkillRequirements"]:GetText(), "([^,]+)") do
 			if string.sub(i, 1, 1) == " " then
 				i = string.sub(i, 2)
 			end
@@ -3610,7 +3725,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 				textFirstLine = tFriendlyName.."...",
 				textFull = tName..(("\r\n"..tCost) or "")..(("\r\n"..tRequirements) or "").."\r\n"..tSkillFullText,
 				childs = {},
-			}   
+			}
 		end
 	end
 
@@ -3632,7 +3747,7 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 					click = true,
 					--containerFrameName = "ClassTrainerTrain",
 					onActionFunc = function(self, aTable, aChildName) end,
-				}   
+				}
 			end
 		end
 	end
@@ -3652,8 +3767,8 @@ function SkuCore:Build_ClassTrainerFrame(aParentChilds)
 			childs = {},
 			func = _G[tFrameName]:GetScript("OnClick"),
 			click = true,
-		}   
-	end   
+		}
+	end
 
 
 end
@@ -3707,7 +3822,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 				TradeSkillFrameEditBox:SetFocus()
 				TradeSkillFrameEditBox:HookScript("OnEscapePressed", function(self)
 					C_Timer.After(0.1, function()
-						PlaySound(89) 
+						PlaySound(89)
 						TradeSkillFrameEditBox:SetText("")
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
@@ -3715,14 +3830,14 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 				end)
 				TradeSkillFrameEditBox:HookScript("OnEnterPressed", function(self)
 					C_Timer.After(0.1, function()
-						PlaySound(89) 
+						PlaySound(89)
 						SkuOptions.currentMenuPosition:OnUpdate()
 					end)
 
 				end)
-				
+
 			end
-		end,            
+		end,
 		click = true,
 	}
 
@@ -3750,10 +3865,10 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 						self:SetChecked(true)
 					end
 
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
+					self:GetScript("OnClick")(self, aButton)
+				end,
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -3771,11 +3886,11 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 				textFull = "",
 				childs = {},
 				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
+					self:GetScript("OnClick")(self, aButton)
+					self:GetScript("OnClick")(self, aButton)
+				end,
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -3827,7 +3942,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 						childs = {},
 						func = _G[tFrameName]:GetScript("OnClick"),
 						click = true,
-					}   
+					}
 				end
 
 				if tDifficulty ~= "subheader" and tDifficulty ~= "header" then
@@ -3851,11 +3966,11 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 				textFull = "",
 				childs = {},
 				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
+					self:GetScript("OnClick")(self, aButton)
+					self:GetScript("OnClick")(self, aButton)
+				end,
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -3865,7 +3980,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	end
 	local tRequirements = ""
 	if _G["TradeSkillRequirementText"] and _G["TradeSkillRequirementText"]:IsVisible() and _G["TradeSkillRequirementText"]:GetText() then
-		for i, v in string.gmatch(_G["TradeSkillRequirementText"]:GetText(), "([^,]+)") do 
+		for i, v in string.gmatch(_G["TradeSkillRequirementText"]:GetText(), "([^,]+)") do
 			if string.sub(i, 1, 1) == " " then
 				i = string.sub(i, 2)
 			end
@@ -3881,12 +3996,12 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 	if _G["CraftCost"] and _G["CraftCost"]:GetText() then
 		tCost = SkuChat:Unescape(_G["CraftCost"]:GetText()) or ""
 	end
-]]	
+]]
 	local tDescription = ""
 	if _G["TradeSkillDescription"] and _G["TradeSkillDescription"]:GetText() then
 		tDescription = SkuChat:Unescape(_G["TradeSkillDescription"]:GetText()) or ""
 	end
-	
+
 
 	local tReagents = ""
 	if _G["TradeSkillReagentLabel"] and _G["TradeSkillReagentLabel"]:IsVisible() == true then
@@ -3898,7 +4013,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 				tReagents = tReagents.."\r\n"..SkuChat:Unescape(_G["TradeSkillReagent"..x.."Name"]:GetText())
 				tReagents = tReagents.." "..SkuChat:Unescape(_G["TradeSkillReagent"..x.."Count"]:GetText())
 			end
-		end   
+		end
 	end
 
 	_G["TradeSkillSkillIcon"].type = "sku"
@@ -3916,9 +4031,9 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 			textFirstLine = tFriendlyName.."...",
 			textFull = tName..(("\r\n"..tRequirements) or "")..(("\r\n"..tReagents) or "")..(("\r\n"..L["gegenstand"]..":\r\n"..tSkillFullText) or "")..(("\r\n"..L["description"]..": "..tDescription) or ""),
 			childs = {},
-		}   
+		}
 	end
-	
+
 	local tFrameName = "TradeSkillCreateButton"
 	if _G[tFrameName] then
 		if _G[tFrameName]:IsVisible() == true and _G[tFrameName]:IsEnabled() == true then --IsMouseClickEnabled()
@@ -3937,7 +4052,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 					click = true,
 					--containerFrameName = "TradeSkillCreateButton",
 					onActionFunc = function(self, aTable, aChildName) end,
-				}   
+				}
 			end
 		end
 	end
@@ -3959,7 +4074,7 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 					click = true,
 					--containerFrameName = "TradeSkillCreateAllButton",
 					onActionFunc = function(self, aTable, aChildName) end,
-				}   
+				}
 			end
 		end
 	end
@@ -3979,8 +4094,8 @@ function SkuCore:Build_TradeSkillFrame(aParentChilds)
 			childs = {},
 			func = _G[tFrameName]:GetScript("OnClick"),
 			click = true,
-		}   
-	end   
+		}
+	end
 
 end
 
@@ -4013,7 +4128,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 			textFirstLine = tFriendlyName,
 			textFull = "",
 			childs = {},
-		}  
+		}
 	end
 
 	local tFrameName = "CraftListScrollFrameScrollBarScrollUpButton"
@@ -4030,11 +4145,11 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 				textFull = "",
 				childs = {},
 				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
+					self:GetScript("OnClick")(self, aButton)
+					self:GetScript("OnClick")(self, aButton)
+				end,
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -4075,7 +4190,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 						childs = {},
 						func = _G[tFrameName]:GetScript("OnClick"),
 						click = true,
-					}   
+					}
 				end
 
 				if tDifficulty == "subheader" or tDifficulty == "header" then
@@ -4083,7 +4198,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..L["category"]..")"
 				else
 					aParentChilds[tFriendlyName].textFirstLine = aParentChilds[tFriendlyName].textFirstLine.." ("..(tDifficulty or "")..")"
-				end            
+				end
 			end
 		end
 	end
@@ -4102,11 +4217,11 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 				textFull = "",
 				childs = {},
 				func = function(self, aButton)
-					self:GetScript("OnClick")(self, aButton)             
-					self:GetScript("OnClick")(self, aButton)             
-				end,            
+					self:GetScript("OnClick")(self, aButton)
+					self:GetScript("OnClick")(self, aButton)
+				end,
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -4140,7 +4255,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 				tReagents = tReagents.."\r\n"..SkuChat:Unescape(_G["CraftReagent"..x.."Name"]:GetText())
 				tReagents = tReagents.." "..SkuChat:Unescape(_G["CraftReagent"..x.."Count"]:GetText())
 			end
-		end   
+		end
 	end
 
 	_G["CraftIcon"].type = "sku"
@@ -4159,7 +4274,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 			textFirstLine = tFriendlyName.."...",
 			textFull = tName..(("\r\n"..tRequirements) or "")..(("\r\n"..tCost) or "")..(("\r\n"..tDescription) or "")..(("\r\n"..tReagents) or "")..(("\r\n"..L["gegenstand"]..":\r\n"..tSkillFullText) or ""),
 			childs = {},
-		}   
+		}
 	end
 
 	local tFrameName = "CraftCreateButton"
@@ -4180,7 +4295,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 					click = true,
 					--containerFrameName = "CraftCreateButton",
 					onActionFunc = function(self, aTable, aChildName) end,
-				}   
+				}
 			end
 		end
 	end
@@ -4199,7 +4314,7 @@ function SkuCore:Build_CraftFrame(aParentChilds)
 			childs = {},
 			func = _G[tFrameName]:GetScript("OnClick"),
 			click = true,
-		}   
+		}
 	end
 end
 
@@ -4225,7 +4340,7 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 		textFull = L["Derzeitiger Begleiter"].." "..tFullText,
 		childs = {},
 		func = function(...)
-			local tCursorInfo = GetCursorInfo() 
+			local tCursorInfo = GetCursorInfo()
 			if tCursorInfo then
 				tFrame:GetScript("OnReceiveDrag")(...)
 			else
@@ -4233,7 +4348,7 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 			end
 		end,
 		click = true,
-	}   
+	}
 
 	for x = 1, 4 do
 		local tId, tName, tLevel, _, tType = GetStablePetInfo(x)
@@ -4255,7 +4370,7 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 				textFull = L["Stall "..x].." "..tFullText,
 				childs = {},
 				func = function(...)
-					local tCursorInfo = GetCursorInfo() 
+					local tCursorInfo = GetCursorInfo()
 					if tCursorInfo then
 						tFrame:GetScript("OnReceiveDrag")(...)
 					else
@@ -4281,7 +4396,7 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 				childs = {},
 				func = tFrame:GetScript("OnClick"),
 				click = true,
-			}   
+			}
 		end
 	end
 
@@ -4298,7 +4413,7 @@ function SkuCore:Build_PetStableFrame(aParentChilds)
 			childs = {},
 			func = tFrame:GetScript("OnClick"),
 			click = true,
-		}   
+		}
 	end
 end
 
@@ -4405,7 +4520,7 @@ function SkuCore:GossipFrame(aParentChilds)
 			textFirstLine = gossipText,
 			textFull = gossipText,
 			childs = {},
-		} 
+		}
 	end
 
 	local info = C_GossipInfo.GetOptions()
@@ -4424,9 +4539,9 @@ function SkuCore:GossipFrame(aParentChilds)
 				C_GossipInfo.SelectOption(v.gossipOptionID)
 			end,
 			click = true,
-		} 
+		}
 	end
-	
+
 	local info = C_GossipInfo.GetAvailableQuests()
 	for i, v in pairs(info) do
 		local tBl = ""
@@ -4448,8 +4563,8 @@ function SkuCore:GossipFrame(aParentChilds)
 				C_GossipInfo.SelectAvailableQuest(v.questID)
 			end,
 			click = true,
-		} 
-	end		
+		}
+	end
 
 	local info = C_GossipInfo.GetActiveQuests()
 	for i, v in pairs(info) do
@@ -4472,8 +4587,8 @@ function SkuCore:GossipFrame(aParentChilds)
 				C_GossipInfo.SelectActiveQuest(v.questID)
 			end,
 			click = true,
-		} 
-	end	
+		}
+	end
 
 end
 
@@ -4521,7 +4636,7 @@ function SkuCore:QuestFrame(aParentChilds)
 											textFirstLine = tText,
 											textFull = "",
 											childs = {},
-										} 
+										}
 										tc = tc + 1
 									end
 								end
@@ -4553,7 +4668,7 @@ function SkuCore:QuestFrame(aParentChilds)
 										textFirstLine = tText,
 										textFull = tFullText,
 										childs = {},
-									} 
+									}
 									tc = tc + 1
 								end
 							end
@@ -4578,7 +4693,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					} 
+					}
 
 					for x = 1, 10 do
 						local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
@@ -4605,7 +4720,7 @@ function SkuCore:QuestFrame(aParentChilds)
 											childs = {},
 											func = _G[tFrameName]:GetScript("OnClick"),
 											click = true,
-										} 
+										}
 										if aInfoOnly then
 											tQuestInfoRewardsFrameChilds[tFriendlyName].func = nil
 											tQuestInfoRewardsFrameChilds[tFriendlyName].click = nil
@@ -4634,7 +4749,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					} 
+					}
 					for x = 1, 10 do
 						if not tTaken[x] then
 							local tFrameName = "QuestInfoRewardsFrameQuestInfoItem"..x
@@ -4661,7 +4776,7 @@ function SkuCore:QuestFrame(aParentChilds)
 												childs = {},
 												func = _G[tFrameName]:GetScript("OnClick"),
 												click = true,
-											} 
+											}
 											if aInfoOnly then
 												tQuestInfoRewardsFrameChilds[tFriendlyName].func = nil
 												tQuestInfoRewardsFrameChilds[tFriendlyName].click = nil
@@ -4693,7 +4808,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						}
 					end
 				end
-			end   
+			end
 
 
 			if _G["QuestInfoTalentFrame"] then
@@ -4713,8 +4828,8 @@ function SkuCore:QuestFrame(aParentChilds)
 						}
 					end
 				end
-			end 			
-				
+			end
+
 
 
 			if _G["QuestInfoXPFrame"] then
@@ -4734,8 +4849,8 @@ function SkuCore:QuestFrame(aParentChilds)
 						}
 					end
 				end
-			end 			
-				
+			end
+
 
 
 
@@ -4758,7 +4873,7 @@ function SkuCore:QuestFrame(aParentChilds)
 
 
 	--QuestFrameGreetingPanel
-	if _G["QuestFrameGreetingPanel"] then 
+	if _G["QuestFrameGreetingPanel"] then
 		if _G["QuestFrameGreetingPanel"]:IsVisible() == true then
 
 			local tFrameName = "QuestFrameGreetingPanel"
@@ -4773,7 +4888,7 @@ function SkuCore:QuestFrame(aParentChilds)
 				textFirstLine = tFrst,
 				textFull = tFll,
 				childs = {},
-			}  
+			}
 
 			local tGreetingChilds = aParentChilds[tFriendlyName].childs
 			local dtc = { _G["QuestGreetingScrollChildFrame"]:GetRegions() }
@@ -4793,7 +4908,7 @@ function SkuCore:QuestFrame(aParentChilds)
 							textFirstLine = tFrst,
 							textFull = tFll,
 							childs = {},
-						}  
+						}
 					end
 				end
 			end
@@ -4829,7 +4944,7 @@ function SkuCore:QuestFrame(aParentChilds)
 									childs = {},
 									func = _G[tFrameName]:GetScript("OnClick"),
 									click = true,
-								} 
+								}
 							end
 						end
 					end
@@ -4839,7 +4954,7 @@ function SkuCore:QuestFrame(aParentChilds)
 	end
 
 	--QuestFrameProgressPanel
-	if _G["QuestFrameProgressPanel"] then 
+	if _G["QuestFrameProgressPanel"] then
 		if _G["QuestFrameProgressPanel"]:IsVisible() == true then
 			local tFrameName = "QuestFrameProgressPanel"
 			local tFriendlyName = L["Progress"]
@@ -4853,7 +4968,7 @@ function SkuCore:QuestFrame(aParentChilds)
 				textFirstLine = tFrst,
 				textFull = tFll,
 				childs = {},
-			}  
+			}
 
 			local tProgressChilds = aParentChilds[tFriendlyName].childs
 			local dtc = { _G["QuestProgressScrollChildFrame"]:GetRegions() }
@@ -4873,7 +4988,7 @@ function SkuCore:QuestFrame(aParentChilds)
 							textFirstLine = tFrst,
 							textFull = tFll,
 							childs = {},
-						}  
+						}
 					end
 				end
 			end
@@ -4893,7 +5008,7 @@ function SkuCore:QuestFrame(aParentChilds)
 							textFirstLine = tFrst,
 							textFull = tFll,
 							childs = {},
-						}  
+						}
 					end
 				end
 
@@ -4917,7 +5032,7 @@ function SkuCore:QuestFrame(aParentChilds)
 										childs = {},
 										--func = _G[tFrameName]:GetScript("OnClick"),
 										--click = true,
-									} 
+									}
 								--end
 							end
 						end
@@ -4941,7 +5056,7 @@ function SkuCore:QuestFrame(aParentChilds)
 							textFirstLine = tFrst,
 							textFull = tFll,
 							childs = {},
-						}  
+						}
 					end
 				end
 			end
@@ -4962,7 +5077,7 @@ function SkuCore:QuestFrame(aParentChilds)
 							childs = {},
 							func = _G[tFrameName]:GetScript("OnClick"),
 							click = true,
-						} 
+						}
 					end
 				end
 			end
@@ -4970,7 +5085,7 @@ function SkuCore:QuestFrame(aParentChilds)
 	end
 
 	--QuestFrameDetailPanel
-	if _G["QuestFrameDetailPanel"] then 
+	if _G["QuestFrameDetailPanel"] then
 		if _G["QuestFrameDetailPanel"]:IsVisible() == true then
 			local tFrameName = "QuestFrameDetailPanel"
 			local tFriendlyName = L["Detail"]
@@ -4984,7 +5099,7 @@ function SkuCore:QuestFrame(aParentChilds)
 				textFirstLine = tFrst,
 				textFull = tFll,
 				childs = {},
-			}  
+			}
 
 
 			local tDetailChilds = aParentChilds[tFriendlyName].childs
@@ -5016,7 +5131,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					}  
+					}
 				end
 			end
 			local tFrameName = "QuestInfoDescriptionText"
@@ -5034,7 +5149,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					}  
+					}
 				end
 			end
 
@@ -5053,7 +5168,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					}  
+					}
 				end
 			end
 			local tFrameName = "QuestInfoObjectivesText"
@@ -5071,12 +5186,12 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					}  
+					}
 				end
 			end
 
 			--rewards
-			if _G["QuestInfoRewardsFrame"] then 
+			if _G["QuestInfoRewardsFrame"] then
 				QuestInfoRewardsFrameHelper(tDetailChilds, true)
 			end
 
@@ -5095,7 +5210,7 @@ function SkuCore:QuestFrame(aParentChilds)
 					childs = {},
 					func = _G[tFrameName]:GetScript("OnClick"),
 					click = true,
-				}  
+				}
 			end
 			local tFrameName = "QuestFrameDeclineButton"
 			local tFriendlyName = L["Ablehnen"]
@@ -5112,14 +5227,14 @@ function SkuCore:QuestFrame(aParentChilds)
 					childs = {},
 					func = _G[tFrameName]:GetScript("OnClick"),
 					click = true,
-				}  			
+				}
 			end
 		end
 	end
 
 
 	--QuestFrameRewardPanel
-	if _G["QuestFrameRewardPanel"] then 
+	if _G["QuestFrameRewardPanel"] then
 		if _G["QuestFrameRewardPanel"]:IsVisible() == true then
 			local tFrameName = "QuestFrameRewardPanel"
 			local tFriendlyName = L["Abgabe"]
@@ -5133,7 +5248,7 @@ function SkuCore:QuestFrame(aParentChilds)
 				textFirstLine = tFrst,
 				textFull = tFll,
 				childs = {},
-			}  
+			}
 
 			local tDetailChilds = aParentChilds[tFriendlyName].childs
 
@@ -5152,7 +5267,7 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					}  
+					}
 				end
 			end
 			local tFrameName = "QuestInfoRewardText"
@@ -5170,14 +5285,14 @@ function SkuCore:QuestFrame(aParentChilds)
 						textFirstLine = tFrst,
 						textFull = tFll,
 						childs = {},
-					}  
+					}
 				end
 			end
 
 			if QuestInfoRewardsFrame.ItemChooseText:IsVisible() == true or QuestInfoRewardsFrame.ItemReceiveText:IsVisible() == true or (QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame:IsVisible() == true and QuestInfoMoneyFrame.staticMoney) then
 				QuestInfoRewardsFrameHelper(tDetailChilds)
 			end
-			
+
 			local tFrameName = "QuestFrameCompleteQuestButton"
 			local tFriendlyName = L["Complete"]
 			local tFrst, tFll = tFriendlyName, ""
@@ -5192,8 +5307,8 @@ function SkuCore:QuestFrame(aParentChilds)
 				childs = {},
 				func = _G[tFrameName]:GetScript("OnClick"),
 				click = true,
-			}  
-						
+			}
+
 		end
 	end
 end
