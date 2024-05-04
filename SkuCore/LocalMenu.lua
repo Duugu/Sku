@@ -1743,6 +1743,7 @@ local function Build_PetInfo(aParentChilds)
 		end
 	end
 
+	--Pet level
 	local tFrameName = "PlayerTalentFramePetLevelText"
 	local petLevel = _G[tFrameName]
 	if petLevel and petLevel:IsVisible() then
@@ -1780,6 +1781,7 @@ local function Build_PetInfo(aParentChilds)
 	end
 end
 
+	--Pet diet
 	local tFrameName = "PlayerTalentFramePetDiet"
 	local petDiet = _G[tFrameName]
 	if petDiet and petDiet:IsVisible() then
@@ -1816,6 +1818,7 @@ local function Build_PetTalents(aParentChilds)
 			click = true,
 		}
 		local tParentChilds = aParentChilds[tFriendlyName].childs
+
 		--Pet talent buttons
 		local talentOrder = {}
 		for x=1,24 do
@@ -1836,6 +1839,7 @@ local function Build_PetTalents(aParentChilds)
 				end
 				return false
 		end)
+
 		for index=1,#talentOrder do
 			local talentButton = talentOrder[index]
 				local ttFirst, ttFull = GetTooltipLines(talentButton)
@@ -1859,6 +1863,121 @@ end
 local function Build_TalentFramePlayerPetsTab(aParentChilds)
 	Build_PetInfo(aParentChilds)
 	Build_PetTalents(aParentChilds)
+end
+
+local function Build_GlyphSlot(aParentChilds, index)
+	local tFrameName = "GlyphFrameGlyph" .. index
+	local glyphSlotButton = _G[tFrameName]
+	if not glyphSlotButton or not glyphSlotButton:IsVisible() then
+		return
+	end
+	local ttFirst, ttFull = GetTooltipLines(glyphSlotButton)
+	local tFriendlyName = "" .. index .. ": " .. ttFirst
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Button",
+		obj = glyphSlotButton,
+		textFirstLine = tFriendlyName,
+		textFull = ttFull,
+		childs = {},
+		func = glyphSlotButton:GetScript("OnClick"),
+		click = true,
+	}
+end
+
+local function Build_GlyphSlots(aParentChilds)
+	local tFrameName = "GlyphFrame" --not an actual in-game name but the sku object needs a frame name
+	local tFriendlyName = "Glyph Slots" --localize later
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Button",
+		obj = GlyphFrame,
+		textFirstLine = tFriendlyName,
+		childs = {},
+		click = false,
+	}
+	local tParentChilds = aParentChilds[tFriendlyName].childs
+	for i=1,NUM_GLYPH_SLOTS do
+		Build_GlyphSlot(tParentChilds, i)
+	end
+end
+
+function Build_KnownGlyphs(aParentChilds)
+	local tFrameName = "GlyphFrame"
+	local tFriendlyName = "Known Glyphs" --Localize later
+	table.insert(aParentChilds, tFriendlyName)
+	aParentChilds[tFriendlyName] = {
+		frameName = tFrameName,
+		RoC = "Child",
+		type = "Button",
+		obj = GlyphFrame,
+		textFirstLine = tFriendlyName,
+		childs = {},
+		click = false,
+	}
+	local tParentChilds = aParentChilds[tFriendlyName].childs
+	local buttons = GlyphFrame.scrollFrame.buttons
+	local headerNum = 1
+	for i=1,#buttons do
+		local button = buttons[i]
+		--Note that a button can either be a header or a glyph itself (header = {minor, major, prime})
+			-- for simplicity just check using the glyph info using similar code to the Blizzard UI
+			if i <= GetNumGlyphs() then
+			local name, glyphType, isKnown, icon, glyphID = GetGlyphInfo(i)
+			if name == "header" then
+				local tFrameName = "GlyphFrameHeader"..headerNum
+				local headerButton = _G[tFrameName]
+				if headerButton and headerButton:IsShown() then
+					local tFriendlyName = headerButton.name:GetText()
+					table.insert(tParentChilds, tFriendlyName)
+					tParentChilds[tFriendlyName] = {
+						frameName = tFrameName,
+						RoC = "Child",
+						type = "Button",
+						obj = headerButton,
+						textFirstLine = tFriendlyName,
+						childs = {},
+						func = headerButton:GetScript("OnClick"),
+						click = true,
+					}
+				end
+				headerNum = headerNum + 1
+			else
+				local tFrameName = button:GetName()
+				local ttFirst, ttFull = GetTooltipLines(button)
+				local tFriendlyName = ttFirst
+				if isKnown then
+					tFriendlyName = tFriendlyName .. " (Known)" --Localize later
+				end
+				
+				table.insert(tParentChilds, tFriendlyName)
+				tParentChilds[tFriendlyName] = {
+					frameName = tFrameName,
+					RoC = "Child",
+					type = "Button",
+					obj = button,
+					textFirstLine = tFriendlyName,
+					textFull = ttFull,
+					childs = {},
+					
+					func = function(self, clickbutton)
+						GlyphFrameSpell_OnClick(self, clickbutton)
+					end,
+					click = false,
+				}
+				
+			end --mark
+		end
+	end
+end
+
+local function Build_TalentFramePlayerGlyphsTab(aParentChilds)
+	Build_GlyphSlots(aParentChilds)
+	Build_KnownGlyphs(aParentChilds)
 end
 
 function SkuCore:Build_TalentFrame(aParentChilds)
@@ -1974,11 +2093,14 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 		Build_TalentFramePlayerTalentsTab(aParentChilds)
 	elseif selectedTab == PET_TALENTS_TAB then
 		Build_TalentFramePlayerPetsTab(aParentChilds)
+	elseif selectedTab == GLYPH_TALENT_TAB then
+		Build_TalentFramePlayerGlyphsTab(aParentChilds)
 	end
+
 	--Learn talents button
 	-- This learns all talents selected in the preview (if preview is enabled)
 	local learnButton = _G["PlayerTalentFrameLearnButton"]
-	if learnButton and learnButton:IsVisible() then
+	if learnButton and learnButton:IsEnabled() and learnButton:IsVisible() then
 		local tFrameName = learnButton:GetName()
 		local tFriendlyName = learnButton:GetText()
 		table.insert(aParentChilds, tFriendlyName)
@@ -1997,7 +2119,7 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 	--The reset button
 	--Note that this only clears the talent preview (if enabled)
 	local resetButton = _G["PlayerTalentFrameResetButton"]
-	if resetButton and resetButton:IsVisible() then
+	if resetButton and resetButton:IsEnabled() and resetButton:IsVisible() then
 		local tFrameName = resetButton:GetName()
 		local tFriendlyName = resetButton:GetText()
 		table.insert(aParentChilds, tFriendlyName)
