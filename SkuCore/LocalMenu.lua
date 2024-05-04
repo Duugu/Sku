@@ -1966,8 +1966,7 @@ function Build_KnownGlyphs(aParentChilds)
 					func =button:GetScript("OnClick"),
 					click = true,
 				}
-				
-			end --mark
+			end
 		end
 	end
 end
