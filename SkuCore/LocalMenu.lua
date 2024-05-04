@@ -1963,11 +1963,8 @@ function Build_KnownGlyphs(aParentChilds)
 					textFirstLine = tFriendlyName,
 					textFull = ttFull,
 					childs = {},
-					
-					func = function(self, clickbutton)
-						GlyphFrameSpell_OnClick(self, clickbutton)
-					end,
-					click = false,
+					func =button:GetScript("OnClick"),
+					click = true,
 				}
 				
 			end --mark
