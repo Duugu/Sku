@@ -2068,7 +2068,7 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 
 	--Talent frame header text
 	--Includes elements such as unspent talent points and level to next talent
-	--Only visible on the player talents and pet talents tabs
+	--Only visible on the player talents and pet talents tabs and only when talents aren't maxed out
 	local tFrameName = "PlayerTalentFrameHeaderText"
 	local headerTextFrame = _G[tFrameName]
 	if headerTextFrame and headerTextFrame:IsVisible() then
@@ -2127,6 +2127,181 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 			obj = resetButton,
 			childs = {},
 			func = resetButton:GetScript("OnClick"),
+			click = true,
+		}
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local function Build_ReforgingStat(aParentChilds, stat)
+	if stat:IsShown() then
+		local tFrameName = stat:GetName()
+		local tFriendlyName = SkuChat:Unescape(stat.text:GetText())
+		if stat:GetChecked() then
+			tFriendlyName = tFriendlyName .. "(" .. L["selected"] .. ")"
+		end
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = stat,
+			textFirstLine = tFriendlyName,
+			childs = {},
+			func = function(self, downbutton) stat:Click() end, --Usual OnClick doesn't work correctly for some reason
+			click = true,
+		}
+	end
+end
+
+function SkuCore:Build_ReforgingFrame(aParentChilds)
+--Note: this mostly works, but the frame does not dynamically update correctly and has the wrong name in the local menu at runtime (blizzard frame name and no friendly localized name)
+
+	--item button
+	local tFrameName = "ReforgingFrameItemButton"
+	local itemButton = _G[tFrameName]
+
+	if itemButton:IsVisible() then
+		local tFriendlyName, tDescription = "", ""
+		if itemButton.missingText:IsVisible() then
+			tFriendlyName = itemButton.missingText:GetText()
+			tDescription = ReforgingFrame.missingDescription:GetText()
+	else
+		tFriendlyName = itemButton.name:GetText()
+		tDescription = itemButton.boundStatus:GetText()
+	end
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = ReforgingFrame,
+			textFirstLine = tFriendlyName,
+			textFull = tDescription,
+			childs = {},
+			func = itemButton:GetScript("OnClick"),
+			click = true,
+		}
+	end
+
+	--Left and right stat panels
+--left = current stats, right = reforge stats
+	local tLeftFrameName = "ReforgingFrameTitleTextLeft"
+	local tRightFrameName = "ReforgingFrameTitleTextRight"
+	local tLeftFriendlyName = "left stat"
+	local tRightFriendlyName = "right stats"
+	local tLeftChilds, tRightChilds = nil, nil
+	if ReforgingFrameTitleTextLeft:IsVisible() then
+		tLeftFriendlyName = ReforgingFrameTitleTextLeft:GetText() .. " stats"
+		table.insert(aParentChilds, tLeftFriendlyName)
+		aParentChilds[tLeftFriendlyName] = {
+			frameName = tLeftFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = ReforgingFrameTitleTextLeft,
+			textFirstLine = tLeftFriendlyName,
+			childs = {},
+			click = false,
+		}
+		tLeftChilds = aParentChilds[tLeftFriendlyName].childs
+	end
+	if ReforgingFrameTitleTextRight:IsVisible() then
+		tRightFriendlyName = ReforgingFrameTitleTextRight:GetText() .. " stats"
+		table.insert(aParentChilds, tRightFriendlyName)
+		aParentChilds[tRightFriendlyName] = {
+			frameName = tRightFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = ReforgingFrameTitleTextRight,
+			textFirstLine = tRightFriendlyName,
+			childs = {},
+			click = false,
+		}
+		tRightChilds = aParentChilds[tRightFriendlyName].childs
+	end
+
+	for i=1,REFORGE_MAX_STATS_SHOWN do
+		local leftStat = _G["ReforgingFrameLeftStat" .. i]
+		local rightStat = _G["ReforgingFrameRightStat" .. i]
+		if tLeftChilds and leftStat then Build_ReforgingStat(tLeftChilds, leftStat) end
+		if tRightChilds and rightStat then Build_ReforgingStat(tRightChilds, rightStat) end
+	end
+
+	--Restore message
+	local  tFrameName = "ReforgingFrameRestoreMessage"
+	local restoreMessage = _G[tFrameName]
+	if restoreMessage:IsVisible() then
+		local tFriendlyName = "Text: " .. restoreMessage:GetText()
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Text",
+			obj = restoreMessage,
+			textFirstLine = tFriendlyName,
+			childs = {},
+		}
+	end
+
+	--Money frame
+		local tFrameName = "ReforgingFrameMoneyFrame"
+	local moneyFrame = _G[tFrameName]
+		if moneyFrame and moneyFrame:IsVisible() then
+			local tFriendlyName = "text: " .. SkuGetCoinText(moneyFrame.staticMoney)
+			table.insert(aParentChilds, tFriendlyName)
+			aParentChilds[tFriendlyName] = {
+				frameName = tFrameName,
+				RoC = "Child",
+				type = "Text",
+				obj = moneyFrame,
+				textFirstLine = tFriendlyName,
+				childs = {},
+			}
+	end
+
+	--Reforge button
+	local tFrameName = "ReforgingFrameReforgeButton"
+	local reforgeButton = _G[tFrameName]
+	if reforgeButton:IsVisible() then
+		local tFriendlyName = reforgeButton:GetText()
+		if not reforgeButton:IsEnabled() then
+			tFriendlyName = tFriendlyName .. "(" .. L["disabled"] .. ")"
+		end
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = reforgeButton,
+			textFirstLine = tFriendlyName,
+			childs = {},
+			func = function(self, downbutton)
+				self:Click()
+				C_Timer.After(0.1, function()
+					SkuOptions.currentMenuPosition.parent:OnUpdate()
+				end)
+			end,
+			click = true,
+		}
+	end
+
+	--Restore button
+	local tFrameName = "ReforgingFrameRestoreButton"
+	local restoreButton = _G[tFrameName]
+	if restoreButton:IsVisible() then
+		local tFriendlyName = restoreButton:GetText()
+		if not restoreButton:IsEnabled() then
+			tFriendlyName = tFriendlyName .. "(" .. L["disabled"] .. ")"
+		end
+		table.insert(aParentChilds, tFriendlyName)
+		aParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = restoreButton,
+			textFirstLine = tFriendlyName,
+			childs = {},
+			func = restoreButton:GetScript("OnClick"),
 			click = true,
 		}
 	end

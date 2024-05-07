@@ -176,6 +176,7 @@ SkuCore.interactFramesListManual = {
 	["PlayerTalentFrame"] = function(...) SkuCore:Build_TalentFrame(...) end,
 	["RolePollPopup"] = function(...) SkuCore:Build_RolePollPopup(...) end,
 	["GroupFinderFrame"] = function(...) SkuCore:Build_GroupFinderFrame(...) end,
+	["ReforgingFrame"] = function(...) SkuCore:Build_ReforgingFrame(...) end,
 	--["LFGListCreateRoleDialog"] = function(...) SkuCore:LFGListCreateRoleDialogFrame(...) end,
 	--["LFDRoleCheckPopup"] = function(...) SkuCore:LFDRoleCheckPopupFrame(...) end,
 }
@@ -205,6 +206,7 @@ SkuCore.interactFramesList = {
 	"SkillFrame",
 	"HonorFrame",
 	"PlayerTalentFrame",
+	"ReforgingFrame",
 	"InspectFrame",
 	"GuildBankFrame",
 	--"BankFrame",
