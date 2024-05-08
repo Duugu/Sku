@@ -1350,11 +1350,14 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 
 	local tNumSpellTabs = 1
 	if aIsPet == false then
-		tNumSpellTabs = GetNumSpellTabs()
+		tNumSpellTabs = 100 --hopefully it will never reach this number
 	end
 
 	for x = 1, tNumSpellTabs do
 		local name, texture, offset, numEntries, isGuild, offspecID = GetSpellTabInfo(x)
+		if not name then
+			break --end of tabs
+		end
 		local tNumEntries, token = HasPetSpells()
 		if aIsPet == true then
 			numEntries = tNumEntries or 0
