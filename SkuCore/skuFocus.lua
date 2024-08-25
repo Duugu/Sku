@@ -59,6 +59,7 @@ function SkuCore.SkuFocus:OnLogin()
          for x = 1, 8 do
             if aKey == SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_FOCUSSET"..x].key then
                SkuCore.SkuFocus:SetFocusUnitName(x, UnitName("target"))
+               return
             end
          end
       end)

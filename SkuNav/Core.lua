@@ -260,7 +260,7 @@ SkuNav.isAutoSelectTime = 0
 SkuNav.isAutoSelectEnabled = false
 
 
-local WaypointCache = {}
+ WaypointCache = {}
 local WaypointCacheLookupAll = {}
 local WaypointCacheLookupIdForCacheIndex = {}
 local WaypointCacheLookupCacheNameForId = {}

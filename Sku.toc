@@ -1,9 +1,9 @@
-## Interface: 30403
-## Interface-Wrath: 30403
-## Title: Sku (35.18)
+## Interface: 40400
+## Interface-Wrath: 30404
+## Title: Sku (40.0)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 35.18
+## Version: 40.0
 ## X-Curse-Project-ID: 880019
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
@@ -83,6 +83,13 @@ SkuDB\assets\WotLK\items_fixes.lua
 SkuDB\assets\WotLK\objects.lua
 SkuDB\assets\WotLK\objects_fixes.lua
 SkuDB\assets\WotLK\enchantIDs.lua
+
+SkuDB\assets\Cata\creatures.lua
+
+
+
+
+
 SkuDB\assets\tutorials.lua
 
 SkuMob\Core.lua

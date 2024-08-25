@@ -2,6 +2,25 @@
 - Sku Addon Release Notes
 -------------------------------------------------------------------------------------------------------	
 
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r40.0
+	INITIAL CATA RELEASE
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r35.19
+	- Tried to change the target sku focus x key code to remove lag.
+
+
+
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r35.18
 	- Fixed a bug with the route calculation that was sometimes generating incorrect routes leading into walls, etc.
