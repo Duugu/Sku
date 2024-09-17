@@ -1026,43 +1026,12 @@ function SkuQuest:PLAYER_LOGIN(...)
 	--apply fixed on tbc dbs
 	SkuDB:FixQuestDB(SkuDB)
 	SkuDB:FixItemDB(SkuDB)
-	SkuDB:FixCreaturesDB(SkuDB)
 	SkuDB:FixObjectsDB(SkuDB)
 
 	--apply fixed on wrath dbs
 	SkuDB:WotLKFixQuestDB(SkuDB.WotLK)
 	SkuDB:WotLKFixItemDB(SkuDB.WotLK)
-	SkuDB:WotLKFixCreaturesDB(SkuDB.WotLK)
 	SkuDB:WotLKFixObjectsDB(SkuDB.WotLK)
-
-	--merge creature dbs
-	local tcount = 0
-	for i, v in pairs(SkuDB.WotLK.NpcData.Data) do
-		if not SkuDB.NpcData.Data[i]	then
-			SkuDB.NpcData.Data[i] = v
-			tcount = tcount + 1
-		end
-	end
-
-	--take stormwind creatues from wrath data due to changed coordinates
-	for i, v in pairs(SkuDB.WotLK.NpcData.Data) do
-		if SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns] then
-			for areaid, spawndata in pairs(SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns]) do
-				if areaid == SkuDB.zoneIDs.STORMWIND_CITY then
-					if v[SkuDB.NpcData.Keys.spawns] then
-						for wareaid, wspandata in pairs(v[SkuDB.NpcData.Keys.spawns]) do
-							if wareaid == SkuDB.zoneIDs.STORMWIND_CITY then
-								SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns][wareaid] = wspandata
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-
-	SkuDB.NpcData.Names = SkuDB.WotLK.NpcData.Names
-	--print("NpcData", tcount)
 
 	--merge items dbs
 	local tcount = 0
