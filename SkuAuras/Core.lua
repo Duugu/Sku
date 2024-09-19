@@ -327,7 +327,7 @@ function SkuAuras:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 
 
 		end)
-		hooksecurefunc("RunMacroText", function(aMacroText) 
+		hooksecurefunc("RunMacro", function(aMacroText) 
 			--dprint("to implement RunMacroText", aMacroText) 
 
 

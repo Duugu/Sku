@@ -1677,8 +1677,8 @@ end
 function comparenames()
 	GameTooltip_SetDefaultAnchor(GameTooltip, UIParent) 
 	GameTooltip:Show()
-	for i,v in pairs(SkuDB.WotLK.NpcData.Names["enUS"]) do
-		if not SkuDB.WotLK.NpcData.Names["deDE"][i] and not SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] then
+	for i,v in pairs(SkuDB.NpcData.Names["enUS"]) do
+		if not SkuDB.WotLK.Names["deDE"][i] and not SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] then
 			print("look", i, v[1])
 			GameTooltip:ClearLines()
 			GameTooltip:SetHyperlink("unit:Creature-0-0-0-0-"..i) 
