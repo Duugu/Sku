@@ -1025,24 +1025,11 @@ function SkuQuest:PLAYER_LOGIN(...)
 
 	--apply fixed on tbc dbs
 	SkuDB:FixQuestDB(SkuDB)
-	SkuDB:FixItemDB(SkuDB)
 	SkuDB:FixObjectsDB(SkuDB)
 
 	--apply fixed on wrath dbs
 	SkuDB:WotLKFixQuestDB(SkuDB.WotLK)
-	SkuDB:WotLKFixItemDB(SkuDB.WotLK)
 	SkuDB:WotLKFixObjectsDB(SkuDB.WotLK)
-
-	--merge items dbs
-	local tcount = 0
-	for i, v in pairs(SkuDB.WotLK.itemDataTBC) do
-		if not SkuDB.itemDataTBC[i]	then
-			SkuDB.itemDataTBC[i] = v
-			tcount = tcount + 1
-		end
-	end	
-	SkuDB.itemLookup = SkuDB.WotLK.itemLookup
-	--print("itemDataTBC", tcount)
 
 	--merge object dbs
 	local tcount = 0
