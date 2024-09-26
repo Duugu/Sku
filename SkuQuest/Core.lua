@@ -1020,8 +1020,19 @@ function SkuQuest:UNIT_QUEST_LOG_CHANGED(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function applyFactionSpecificDataChanges()
+	if UnitFactionGroup("Player") == "Horde" then
+		SkuDB.itemDataTBC[56188][SkuDB.itemKeys.objectDrops] = {203410}
+		SkuDB.itemDataTBC[71034][SkuDB.itemKeys.objectDrops] = {209058}
+    else
+        SkuDB.itemDataTBC[56188][SkuDB.itemKeys.objectDrops] = {203403}
+		SkuDB.itemDataTBC[71034][SkuDB.itemKeys.objectDrops] = {209242}
+    end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:PLAYER_LOGIN(...)
-	--print("SkuQuest:PLAYER_LOGIN")
+	applyFactionSpecificDataChanges()
 
 	--apply fixed on tbc dbs
 	SkuDB:FixQuestDB(SkuDB)
