@@ -64,15 +64,12 @@ SkuDB\assets\quests.lua
 SkuDB\assets\creatures.lua
 SkuDB\assets\items.lua
 SkuDB\assets\objects.lua
-SkuDB\assets\objects_fixes.lua
 SkuDB\assets\spells.lua
 SkuDB\assets\polygons.lua
 SkuDB\assets\routedata_global.lua
 SkuDB\assets\wiki.lua
 SkuDB\assets\tasks.lua
 
-SkuDB\assets\WotLK\objects.lua
-SkuDB\assets\WotLK\objects_fixes.lua
 SkuDB\assets\WotLK\enchantIDs.lua
 
 
