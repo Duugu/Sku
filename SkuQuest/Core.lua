@@ -1035,11 +1035,9 @@ function SkuQuest:PLAYER_LOGIN(...)
 	applyFactionSpecificDataChanges()
 
 	--apply fixed on tbc dbs
-	SkuDB:FixQuestDB(SkuDB)
 	SkuDB:FixObjectsDB(SkuDB)
 
 	--apply fixed on wrath dbs
-	SkuDB:WotLKFixQuestDB(SkuDB.WotLK)
 	SkuDB:WotLKFixObjectsDB(SkuDB.WotLK)
 
 	--merge object dbs
@@ -1081,26 +1079,6 @@ function SkuQuest:PLAYER_LOGIN(...)
 		SkuDB.objectLookup.enUS[i] = SkuDB.WotLK.objectLookup.enUS[i]
 	end
 
-	--SkuDB.objectLookup = SkuDB.WotLK.objectLookup
-	--print("objectDataTBC", tcount)
-	
-	--merge quest dbs
-	local tcount = 0
-	for i, v in pairs(SkuDB.WotLK.questDataTBC) do
-		if not SkuDB.questDataTBC[i]	then
-			SkuDB.questDataTBC[i] = v
-			tcount = tcount + 1
-		end
-	end
-	SkuDB.questLookup = SkuDB.WotLK.questLookup
-
-	for i, v in pairs(SkuDB.WotLK.questDataTBC) do
-		for i1, v1 in pairs(SkuDB.questLookup) do
-			if v1[i] == nil then
-				v1[i] = {v[SkuDB.questKeys.name], nil, {v[SkuDB.questKeys.objectivesText],},}
-			end
-		end
-	end
 
 	-- do final stuff
 	SkuQuest:BuildQuestZoneCache()

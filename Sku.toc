@@ -61,7 +61,6 @@ SkuDB\Core.lua
 SkuDB\assets\maps.lua
 SkuDB\assets\default_waypoints.lua
 SkuDB\assets\quests.lua
-SkuDB\assets\quests_fixes.lua
 SkuDB\assets\creatures.lua
 SkuDB\assets\items.lua
 SkuDB\assets\objects.lua
@@ -72,8 +71,6 @@ SkuDB\assets\routedata_global.lua
 SkuDB\assets\wiki.lua
 SkuDB\assets\tasks.lua
 
-SkuDB\assets\WotLK\quests.lua
-SkuDB\assets\WotLK\quests_fixes.lua
 SkuDB\assets\WotLK\objects.lua
 SkuDB\assets\WotLK\objects_fixes.lua
 SkuDB\assets\WotLK\enchantIDs.lua
