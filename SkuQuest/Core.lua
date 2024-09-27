@@ -1018,15 +1018,85 @@ function SkuQuest:UNIT_QUEST_LOG_CHANGED(...)
 	SkuQuest:CheckQuestProgress(PLAYER_ENTERING_WORLD_flag)
 	SkuQuest:UpdateZoneAvailableQuestList()
 end
-
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function applyItemSpecificDataChangesHorde()
+	SkuDB.itemDataTBC[56188][SkuDB.itemKeys.objectDrops] = {203410}
+	SkuDB.itemDataTBC[71034][SkuDB.itemKeys.objectDrops] = {209058}
+end
+
+local function applyQuestSpecificDataChangesHorde()
+	SkuDB.questDataTBC[12318][SkuDB.questKeys.startedBy] = {}
+	SkuDB.questDataTBC[25619][SkuDB.questKeys.preQuestSingle] = {}
+	SkuDB.questDataTBC[25619][SkuDB.questKeys.preQuestGroup] = {25952,25953,25954,25955,25956}
+	SkuDB.questDataTBC[25858][SkuDB.questKeys.objectives] = {{{42072,nil,Questie.ICON_TYPE_TALK},{42071,nil,Questie.ICON_TYPE_TALK},{41455,nil,Questie.ICON_TYPE_TALK}}}
+	SkuDB.questDataTBC[25858][SkuDB.questKeys.preQuestSingle] = {}
+	SkuDB.questDataTBC[25858][SkuDB.questKeys.preQuestGroup] = {25964,25965}
+	SkuDB.questDataTBC[25629][SkuDB.questKeys.preQuestSingle] = {25973}
+	SkuDB.questDataTBC[25896][SkuDB.questKeys.preQuestSingle] = {25973}
+	SkuDB.questDataTBC[26111][SkuDB.questKeys.preQuestSingle] = {}
+	SkuDB.questDataTBC[26111][SkuDB.questKeys.preQuestGroup] = {26071,26072,26096}
+	SkuDB.questDataTBC[26191][SkuDB.questKeys.nextQuestInChain] = {25967}
+	SkuDB.questDataTBC[27203][SkuDB.questKeys.startedBy] = {{45244}}
+	SkuDB.questDataTBC[29067][SkuDB.questKeys.startedBy] = {{3347}}
+	SkuDB.questDataTBC[29067][SkuDB.questKeys.finishedBy] = {{3347}}
+	SkuDB.questDataTBC[29389][SkuDB.questKeys.preQuestGroup] = {25612,25807,25520,25372}
+	SkuDB.questDataTBC[29475][SkuDB.questKeys.startedBy] = {{11017,11031,16667,29513,52651}}
+	SkuDB.questDataTBC[29475][SkuDB.questKeys.finishedBy] = {{11017,11031,16667,29513,52651}}
+	SkuDB.questDataTBC[29475][SkuDB.questKeys.exclusiveTo] = {3526,3629,3633,4181,29476,29477,3630,3632,3634,3635,3637}
+	SkuDB.questDataTBC[29477][SkuDB.questKeys.startedBy] = {{11017,11031,16667,29513,52651}}
+	SkuDB.questDataTBC[29477][SkuDB.questKeys.finishedBy] = {{11017,11031,16667,29513,52651}}
+	SkuDB.questDataTBC[29477][SkuDB.questKeys.exclusiveTo] = {3630,3632,3634,3635,3637,29475,29476,3526,3629,3633,4181}
+	SkuDB.questDataTBC[29481][SkuDB.questKeys.startedBy] = {{3347}}
+	SkuDB.questDataTBC[29481][SkuDB.questKeys.finishedBy] = {{3347}}
+	SkuDB.questDataTBC[29482][SkuDB.questKeys.startedBy] = {{3347}}
+	SkuDB.questDataTBC[29482][SkuDB.questKeys.finishedBy] = {{3347}}
+	SkuDB.questDataTBC[29836][SkuDB.questKeys.exclusiveTo] = {13099}
+	SkuDB.questDataTBC[29836][SkuDB.questKeys.nextQuestInChain] = 29840
+end
+
+local function applyItemSpecificDataChangesAlliance()
+	SkuDB.itemDataTBC[56188][SkuDB.itemKeys.objectDrops] = {203403}
+	SkuDB.itemDataTBC[71034][SkuDB.itemKeys.objectDrops] = {209242}
+end
+
+local function applyQuestSpecificDataChangesAlliance()
+	SkuDB.questDataTBC[12318][SkuDB.questKeys.startedBy] = {{27584}}
+	SkuDB.questDataTBC[25513][SkuDB.questKeys.preQuestGroup] = {25065,25095}
+	SkuDB.questDataTBC[25619][SkuDB.questKeys.preQuestSingle] = {}
+	SkuDB.questDataTBC[25619][SkuDB.questKeys.preQuestGroup] = {25579,25580,25581,25582,25583}
+	SkuDB.questDataTBC[25629][SkuDB.questKeys.preQuestSingle] = {25911}
+	SkuDB.questDataTBC[25896][SkuDB.questKeys.preQuestSingle] = {25911}
+	SkuDB.questDataTBC[25858][SkuDB.questKeys.objectives] = {{{42072,nil,Questie.ICON_TYPE_TALK},{42071,nil,Questie.ICON_TYPE_TALK},{41455,nil,Questie.ICON_TYPE_TALK}}}
+	SkuDB.questDataTBC[25858][SkuDB.questKeys.preQuestSingle] = {}
+	SkuDB.questDataTBC[25858][SkuDB.questKeys.preQuestGroup] = {25753,25754}
+	SkuDB.questDataTBC[26111][SkuDB.questKeys.preQuestSingle] = {}
+	SkuDB.questDataTBC[26111][SkuDB.questKeys.preQuestGroup] = {26070,26072,26096}
+	SkuDB.questDataTBC[26191][SkuDB.questKeys.nextQuestInChain] = {25892}
+	SkuDB.questDataTBC[27203][SkuDB.questKeys.startedBy] = {{45226}}
+	SkuDB.questDataTBC[29067][SkuDB.questKeys.startedBy] = {{5499}}
+	SkuDB.questDataTBC[29067][SkuDB.questKeys.finishedBy] = {{5499}}
+	SkuDB.questDataTBC[29389][SkuDB.questKeys.preQuestGroup] = {25611,25807,25520,25372}
+	SkuDB.questDataTBC[29475][SkuDB.questKeys.startedBy] = {{5174,5518,16726,29513,52636}}
+	SkuDB.questDataTBC[29475][SkuDB.questKeys.finishedBy] = {{5174,5518,16726,29513,52636}}
+	SkuDB.questDataTBC[29475][SkuDB.questKeys.exclusiveTo] = {3526,3629,3633,4181,29476,29477,3630,3632,3634,3635,3637}
+	SkuDB.questDataTBC[29477][SkuDB.questKeys.startedBy] = {{5174,5518,16726,29513,52636}}
+	SkuDB.questDataTBC[29477][SkuDB.questKeys.finishedBy] = {{5174,5518,16726,29513,52636}}
+	SkuDB.questDataTBC[29477][SkuDB.questKeys.exclusiveTo] = {3630,3632,3634,3635,3637,29475,29476,3526,3629,3633,4181}
+	SkuDB.questDataTBC[29481][SkuDB.questKeys.startedBy] = {{5499}}
+	SkuDB.questDataTBC[29481][SkuDB.questKeys.finishedBy] = {{5499}}
+    SkuDB.questDataTBC[29482][SkuDB.questKeys.startedBy] = {{5499}}
+	SkuDB.questDataTBC[29482][SkuDB.questKeys.finishedBy] = {{5499}}
+    SkuDB.questDataTBC[29836][SkuDB.questKeys.exclusiveTo] = {13099}
+	SkuDB.questDataTBC[29836][SkuDB.questKeys.nextQuestInChain] = 29844
+end
+
 local function applyFactionSpecificDataChanges()
 	if UnitFactionGroup("Player") == "Horde" then
-		SkuDB.itemDataTBC[56188][SkuDB.itemKeys.objectDrops] = {203410}
-		SkuDB.itemDataTBC[71034][SkuDB.itemKeys.objectDrops] = {209058}
+		applyItemSpecificDataChangesHorde()
+		applyQuestSpecificDataChangesHorde()
     else
-        SkuDB.itemDataTBC[56188][SkuDB.itemKeys.objectDrops] = {203403}
-		SkuDB.itemDataTBC[71034][SkuDB.itemKeys.objectDrops] = {209242}
+        applyItemSpecificDataChangesAlliance()
+		applyQuestSpecificDataChangesAlliance()
     end
 end
 
@@ -1034,53 +1104,6 @@ end
 function SkuQuest:PLAYER_LOGIN(...)
 	applyFactionSpecificDataChanges()
 
-	--apply fixed on tbc dbs
-	SkuDB:FixObjectsDB(SkuDB)
-
-	--apply fixed on wrath dbs
-	SkuDB:WotLKFixObjectsDB(SkuDB.WotLK)
-
-	--merge object dbs
-	local tcount = 0
-	for i, v in pairs(SkuDB.WotLK.objectDataTBC) do
-		if not SkuDB.objectDataTBC[i]	then
-			SkuDB.objectDataTBC[i] = v
-			tcount = tcount + 1
-		end
-	end	
-
-	--take stormwind objects from wrath data due to changed coordinates
-	for i, v in pairs(SkuDB.WotLK.objectDataTBC) do
-		if SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns] then
-			for areaid, spawndata in pairs(SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns]) do
-				if areaid == SkuDB.zoneIDs.STORMWIND_CITY then
-					if SkuDB.WotLK.objectDataTBC[i][SkuDB.objectKeys.spawns] then
-						for wareaid, wspandata in pairs(SkuDB.WotLK.objectDataTBC[i][SkuDB.objectKeys.spawns]) do
-							if wareaid == SkuDB.zoneIDs.STORMWIND_CITY then
-								SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns][wareaid] = wspandata
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-
-	--SkuDB.objectResourceNames = SkuDB.WotLK.objectResourceNames
-
-	for i, v in pairs(SkuDB.WotLK.objectLookup.deDE) do
-		if not SkuDB.objectLookup.deDE[i] then
-			SkuDB.objectLookup.deDE[i] = v
-		end
-	end
-
-	SkuDB.objectLookup.enUS = {}
-	for i, v in pairs(SkuDB.objectLookup.deDE) do
-		SkuDB.objectLookup.enUS[i] = SkuDB.WotLK.objectLookup.enUS[i]
-	end
-
-
-	-- do final stuff
 	SkuQuest:BuildQuestZoneCache()
 
 	SkuOptions.db.char[MODULE_NAME] = SkuOptions.db.char[MODULE_NAME] or {}
