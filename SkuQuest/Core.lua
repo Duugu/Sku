@@ -1037,8 +1037,6 @@ local function applyQuestSpecificDataChangesHorde()
 	SkuDB.questDataTBC[26111][SkuDB.questKeys.preQuestGroup] = {26071,26072,26096}
 	SkuDB.questDataTBC[26191][SkuDB.questKeys.nextQuestInChain] = {25967}
 	SkuDB.questDataTBC[27203][SkuDB.questKeys.startedBy] = {{45244}}
-	SkuDB.questDataTBC[29067][SkuDB.questKeys.startedBy] = {{3347}}
-	SkuDB.questDataTBC[29067][SkuDB.questKeys.finishedBy] = {{3347}}
 	SkuDB.questDataTBC[29389][SkuDB.questKeys.preQuestGroup] = {25612,25807,25520,25372}
 	SkuDB.questDataTBC[29475][SkuDB.questKeys.startedBy] = {{11017,11031,16667,29513,52651}}
 	SkuDB.questDataTBC[29475][SkuDB.questKeys.finishedBy] = {{11017,11031,16667,29513,52651}}
@@ -1046,17 +1044,13 @@ local function applyQuestSpecificDataChangesHorde()
 	SkuDB.questDataTBC[29477][SkuDB.questKeys.startedBy] = {{11017,11031,16667,29513,52651}}
 	SkuDB.questDataTBC[29477][SkuDB.questKeys.finishedBy] = {{11017,11031,16667,29513,52651}}
 	SkuDB.questDataTBC[29477][SkuDB.questKeys.exclusiveTo] = {3630,3632,3634,3635,3637,29475,29476,3526,3629,3633,4181}
-	SkuDB.questDataTBC[29481][SkuDB.questKeys.startedBy] = {{3347}}
-	SkuDB.questDataTBC[29481][SkuDB.questKeys.finishedBy] = {{3347}}
-	SkuDB.questDataTBC[29482][SkuDB.questKeys.startedBy] = {{3347}}
-	SkuDB.questDataTBC[29482][SkuDB.questKeys.finishedBy] = {{3347}}
 	SkuDB.questDataTBC[29836][SkuDB.questKeys.exclusiveTo] = {13099}
 	SkuDB.questDataTBC[29836][SkuDB.questKeys.nextQuestInChain] = 29840
 end
 
 local function applyObjectSpecificDataChangesHorde()
 	SkuDB.objectDataTBC[186189][SkuDB.objectKeys.spawns] = {[SkuDB.zoneIDs.DUROTAR]={{41.56,17.56},{41.52,17.5},{41.39,17.42},{40.74,16.82},{40.34,16.81},{40.13,17.48},{40.39,18.04},{40.85,18.28},{40.9,18.31}}}
-	SkuDB.objectDataTBC[203461][SkuDB.objectKeys.spawns] = {[SkuDB.zoneIDs.zoneIDs.ABYSSAL_DEPTHS]={{51.49,60.41}}}
+	SkuDB.objectDataTBC[203461][SkuDB.objectKeys.spawns] = {[SkuDB.zoneIDs.ABYSSAL_DEPTHS]={{51.49,60.41}}}
 end
 
 local function applyNpcSpecificDataChangesHorde()
