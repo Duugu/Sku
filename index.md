@@ -14,8 +14,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Sku ERA r32.33](https://github.com/Duugu/SkuEra/releases/download/r32.33/Sku-r32.33-classic.zip) (October 6th 2024)<br>
 - [Wow Login Tool r1.8](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.8/WoW_Login_Tool-r1.8.zip) (March 18th 2024)<br>
-- [Sku ERA r32.31](https://github.com/Duugu/SkuEra/releases/download/r32.31/Sku-r32.31-classic.zip) (March 18th 2024)<br>
 - [Sku WRATH r35.18](https://github.com/Duugu/Sku/releases/download/r35.18/Sku-r35.18-wrath.zip) (March 5th 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -32,6 +32,14 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku Era r32.32
+- Toc updated
+- Fixed a bug with resource scanning and notifications on resources.
+- Fixed the trainer frame.
+- Fixed a bug with deeprun tram zone.
+- Fixed a bug with the quest rewards frame.
+- Fixed the Mob > Target Menu feature.
+
 ## Changes in Wow Login Tool r1.8
 - Tried to fix the only first character in the list is recognized issue that some users have. As the root cause of that issue still is unclear, it's just a try. Any feedback if it is working now is highly appreciated.
 - Added an 9th main menu entry Version without a submenu to output the current WoW Login Tool version.
