@@ -14,7 +14,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Sku ERA r32.33](https://github.com/Duugu/SkuEra/releases/download/r32.33/Sku-r32.33-classic.zip) (October 6th 2024)<br>
+- [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
 - [Wow Login Tool r1.8](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.8/WoW_Login_Tool-r1.8.zip) (March 18th 2024)<br>
 - [Sku WRATH r35.18](https://github.com/Duugu/Sku/releases/download/r35.18/Sku-r35.18-wrath.zip) (March 5th 2024)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
