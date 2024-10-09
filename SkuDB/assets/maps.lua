@@ -233,7 +233,7 @@ SkuDB.zoneIDs = {
     DARKMOON_FAIRE_ISLAND = 5861,
 }
 
-SkuDB.ExternalMapID = { --https://wow.tools/dbc/?dbc=uimap&build=1.13.7.38386&locale=deDE#page=1
+SkuDB.ExternalMapID = loadstring([[return { --https://wow.tools/dbc/?dbc=uimap&build=1.13.7.38386&locale=deDE#page=1
 [86] = {Name_lang = {["deDE"] = "Orgrimmar", ["enUS"] = "Orgrimmar",}, ParentExternalMapID = "1454", Type = "6", AreaId = 1637,},
 [113] = {Name_lang = {["deDE"] = "Nordend", ["enUS"] = "Northrend",}, ParentExternalMapID = "947", Type = "2", AreaId = -1,},
 [114] = {Name_lang = {["deDE"] = "Boreanische Tundra", ["enUS"] = "Borean Tundra",}, ParentExternalMapID = "113", Type = "3", AreaId = 3537,},
@@ -572,9 +572,9 @@ SkuDB.ExternalMapID = { --https://wow.tools/dbc/?dbc=uimap&build=1.13.7.38386&lo
 [2340] = {Name_lang = {["deDE"] = "Tol Barad", ["enUS"] = "Tol Barad",}, ParentExternalMapID = "947", Type = "3", AreaId = 5095,},
 
 
-}
+}]])()
  
-SkuDB.InternalAreaTable = {
+SkuDB.InternalAreaTable = loadstring([[return {
     [1] = {ZoneName = "DunMorogh", AreaName_lang = {["deDE"] = "Dun Morogh", ["enUS"] = "Dun Morogh", }, ContinentID = 0, ParentAreaID = 0, Faction = -1, Flags = 16449,},
     [2] = {ZoneName = "Longshore", AreaName_lang = {["deDE"] = "Die Endlose Küste", ["enUS"] = "Longshore", }, ContinentID = 0, ParentAreaID = 40, Faction = -1, Flags = 1073758272,},
     [3] = {ZoneName = "Badlands", AreaName_lang = {["deDE"] = "Ödland", ["enUS"] = "Badlands", }, ContinentID = 0, ParentAreaID = 0, Faction = -1, Flags = 16448,},
@@ -4434,4 +4434,4 @@ SkuDB.InternalAreaTable = {
 
 
 
-}
+}]])()

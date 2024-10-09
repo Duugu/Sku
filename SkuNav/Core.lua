@@ -1669,7 +1669,12 @@ function SkuNav:GetDirectionToAsString(tx, ty)
 		
 	local ep2x = (aP2x - aP1x)
 	local ep2y = (aP2y - aP1y)
-	local Wa = math.acos(ep2x / math.sqrt(ep2x^2 + ep2y^2)) * (180 / math.pi)
+	local denominator = math.sqrt(ep2x^2 + ep2y^2)
+	if denominator == 0 then
+		Wa = 0
+	else
+		Wa = math.acos(ep2x / denominator) * (180 / math.pi)
+	end
 	
 	if ep2y > 0 then
 		Wa = Wa * -1

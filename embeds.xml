@@ -12,7 +12,5 @@
   <Include file="Libs\AceSerializer-3.0\AceSerializer-3.0.xml"/>
   <Include file="Libs\AceComm-3.0\AceComm-3.0.xml"/>
   <Include file="Libs\LibRangeCheck-2.0\LibRangeCheck-2.0.lua"/>
-  <Include file="Libs\LibUIDropDownMenu\LibUIDropDownMenuTemplates.xml"/>
-  <Include file="Libs\LibUIDropDownMenu\LibUIDropDownMenu.xml"/>
   <Include file="Libs\LibSharedMedia-3.0\lib.xml"/>
 </Ui>

@@ -3180,11 +3180,11 @@ function SkuOptions:OnEnable()
 
 	--check if this profile already has specific sound settings (is not first load). copy current blizz settings if not.
 	if SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume == -1 then
-		SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume = math.floor(BlizzardOptionsPanel_GetCVarSafe("Sound_MasterVolume") * 100)
-		SkuOptions.db.profile["SkuOptions"].soundChannels.SFXVolume = math.floor(BlizzardOptionsPanel_GetCVarSafe("Sound_SFXVolume") * 100)
-		SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume = math.floor(BlizzardOptionsPanel_GetCVarSafe("Sound_MusicVolume") * 100)
-		SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume = math.floor(BlizzardOptionsPanel_GetCVarSafe("Sound_AmbienceVolume") * 100)
-		SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume = math.floor(BlizzardOptionsPanel_GetCVarSafe("Sound_DialogVolume") * 100)
+		SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume = math.floor(GetCVar("Sound_MasterVolume") * 100)
+		SkuOptions.db.profile["SkuOptions"].soundChannels.SFXVolume = math.floor(GetCVar("Sound_SFXVolume") * 100)
+		SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume = math.floor(GetCVar("Sound_MusicVolume") * 100)
+		SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume = math.floor(GetCVar("Sound_AmbienceVolume") * 100)
+		SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume = math.floor(GetCVar("Sound_DialogVolume") * 100)
 
 		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnableReverb = C_CVar.GetCVar("Sound_EnableReverb") == "1"
 		SkuOptions.db.profile["SkuOptions"].soundSettings.Sound_EnablePositionalLowPassFilter = C_CVar.GetCVar("Sound_EnablePositionalLowPassFilter") == "1"
@@ -3195,11 +3195,11 @@ function SkuOptions:OnEnable()
 	end
 
 	--set the sound channel volumes
-	BlizzardOptionsPanel_SetCVarSafe("Sound_MasterVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume / 100)
-	BlizzardOptionsPanel_SetCVarSafe("Sound_SFXVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.SFXVolume / 100)
-	BlizzardOptionsPanel_SetCVarSafe("Sound_MusicVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume / 100)
-	BlizzardOptionsPanel_SetCVarSafe("Sound_AmbienceVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume / 100)
-	BlizzardOptionsPanel_SetCVarSafe("Sound_DialogVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume / 100)
+	GetCVar("Sound_MasterVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MasterVolume / 100)
+	GetCVar("Sound_SFXVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.SFXVolume / 100)
+	GetCVar("Sound_MusicVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.MusicVolume / 100)
+	GetCVar("Sound_AmbienceVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.AmbienceVolume / 100)
+	GetCVar("Sound_DialogVolume", SkuOptions.db.profile["SkuOptions"].soundChannels.DialogVolume / 100)
 
 	--set more sound options
 	local tbValues = {["true"] = "1", ["false"] = "0"}

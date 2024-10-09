@@ -23,6 +23,7 @@ local tPowerTypes = {
 	["NOTHING"] = {name = L["nichts"], number = -1},
 	["MANA"] = {name = L["MANA"], number = 0},
 	["RAGE"] = {name = L["RAGE"], number = 1},
+	["FOCUS"] = {name = L["FOCUS"], number = 2},
 	["ENERGY"] = {name = L["ENERGY"], number = 3},
 	["RUNIC_POWER"] = {name = L["RUNIC_POWER"], number = 6},
 }
@@ -582,8 +583,13 @@ local beginTime = debugprofilestop()
 			if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.enabled == true then
 				ttimeMonPwr = ttimeMonPwr + time
 				if ttimeMonPwr > (SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyTimer) and tPowerMonitorPause == false then
-					local power = UnitPower("player", tPowerTypes[SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.type].number)
-					local powerMax = UnitPowerMax("player", tPowerTypes[SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.type].number)
+					local powerType = SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.type
+					if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.number == nil then
+						local uType, uToken, _, _, _ = UnitPowerType("player")
+						powerType = uToken
+					end
+					local power = UnitPower("player", tPowerTypes[powerType].number)
+					local powerMax = UnitPowerMax("player", tPowerTypes[powerType].number)
 					local pwrPer = math.floor((power / powerMax) * 100)
 					if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyStartAt >= 0 and (math.floor(pwrPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyStartAt) then
 						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.steps)

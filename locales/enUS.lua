@@ -1369,6 +1369,7 @@ L["Main Tanks"] = "Main Tanks"
 L["Major"] = "Major" --glyph type
 L["Male"] = "Male"
 L["MANA"] = "Mana"
+L["FOCUS"] = "Focus"
 L["Manually"]  = "Manually" --
 L["Maraudon"]  = "Maraudon" --the exact zone name. don't translate. take the ingame name instead.
 L["Markierung für Auto Verkaufen entfernen"]  = "Deselect for scrap auto sale" --
