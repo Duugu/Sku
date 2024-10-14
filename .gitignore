@@ -1,3 +1,4 @@
 # vsc
 /Sku.code-workspace
 .DS_Store
+.vscode/settings.json
