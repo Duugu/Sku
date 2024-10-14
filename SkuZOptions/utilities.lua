@@ -1432,17 +1432,7 @@ end
 
 --/script SkuSwitchDataToLK()
 function SkuSwitchDataToLK()
-
-
-	local tcount = 0
-	for i, v in pairs(SkuDB.WotLK.NpcData.Data) do
-		if not SkuDB.NpcData.Data[i]	then
-			--print(i, v, v[1])
-			SkuDB.NpcData.Data[i] = v
-			tcount = tcount + 1
-		end
-	end
-	print("NpcData", tcount)
+	
 	local tcount = 0
 	for i, v in pairs(SkuDB.WotLK.itemDataTBC) do
 		if not SkuDB.itemDataTBC[i]	then
@@ -1687,8 +1677,8 @@ end
 function comparenames()
 	GameTooltip_SetDefaultAnchor(GameTooltip, UIParent) 
 	GameTooltip:Show()
-	for i,v in pairs(SkuDB.WotLK.NpcData.Names["enUS"]) do
-		if not SkuDB.WotLK.NpcData.Names["deDE"][i] and not SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] then
+	for i,v in pairs(SkuDB.NpcData.Names["enUS"]) do
+		if not SkuDB.WotLK.Names["deDE"][i] and not SkuOptions.db.profile["SkuNav"].tNames["deDE"][i] then
 			print("look", i, v[1])
 			GameTooltip:ClearLines()
 			GameTooltip:SetHyperlink("unit:Creature-0-0-0-0-"..i) 
