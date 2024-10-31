@@ -14,17 +14,17 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Sku CATA r40.00](https://github.com/Duugu/Sku/releases/download/r40.00/Sku-r40.00-cata.zip) (October 31st 2024)<br>
 - [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
+
+*Older updates:* <br>
 - [Wow Login Tool r1.8](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.8/WoW_Login_Tool-r1.8.zip) (March 18th 2024)<br>
-- [Sku WRATH r35.18](https://github.com/Duugu/Sku/releases/download/r35.18/Sku-r35.18-wrath.zip) (March 5th 2024)<br>
+- [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
 - [SkuBeaconSoundsets r22](https://github.com/Duugu/SkuBeaconSoundsets/releases/download/r22/SkuBeaconSoundsets-r22-wrath.zip) (October 11th 2023)<br>
 - [SkuCustomBeaconsAdditional r32](https://github.com/Duugu/SkuCustomBeaconsAdditional/releases/download/r32/SkuCustomBeaconsAdditional-r32-wrath.zip) (October 11th 2023)<br>
 - [SkuCustomBeaconsEssential r32](https://github.com/Duugu/SkuCustomBeaconsEssential/releases/download/r32/SkuCustomBeaconsEssential-r32-wrath.zip) (October 11th 2023)<br>
-
-*Older updates:* <br>
-- [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 
 *Addons for sighted players:* <br>
 - [SkuMapper r3.4](https://github.com/Duugu/SkuMapper/releases/download/r3.4/SkuMapper-r3.4-wrath.zip) (November 15th 2023), mapping addon for sighted players<br>
@@ -32,6 +32,10 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r40.00
+- Cata related updates and bug fixes.
+- Routes in Kalimdor and Eastern Kingdoms are still from Wrath and not working/outdated for a lot of zones. May work partly for some zones like Stormwind, or almost full like Ironforge.
+
 ## Changes in Sku Era r32.32
 - Toc updated
 - Fixed a bug with resource scanning and notifications on resources.
