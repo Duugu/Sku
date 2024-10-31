@@ -913,18 +913,18 @@ function SkuCore:OnEnable()
 	f:SetScript("OnUpdate", function(self, time)
 		if ClassTrainerFrame and tClassTrainerFrameHooked == false then
 			tClassTrainerFrameHooked = true
-			SetTrainerServiceTypeFilter("available", 1)
-			SetTrainerServiceTypeFilter("unavailable", 0)
-			SetTrainerServiceTypeFilter("used", 0)
+			SetTrainerServiceTypeFilter("available", true)
+			SetTrainerServiceTypeFilter("unavailable", false)
+			SetTrainerServiceTypeFilter("used", false)
 			if _G["ClassTrainerSkill2"] then
 				C_Timer.After(0.1, function()
 					_G["ClassTrainerSkill2"]:Click("LeftMouse")
 				end)
 			end
 			ClassTrainerFrame:HookScript("OnShow", function()
-				SetTrainerServiceTypeFilter("available", 1)
-				SetTrainerServiceTypeFilter("unavailable", 0)
-				SetTrainerServiceTypeFilter("used", 0)
+				SetTrainerServiceTypeFilter("available", true)
+				SetTrainerServiceTypeFilter("unavailable", false)
+				SetTrainerServiceTypeFilter("used", false)
 				if _G["ClassTrainerSkill2"] then
 					C_Timer.After(0.1, function()
 						_G["ClassTrainerSkill2"]:Click("LeftMouse")
