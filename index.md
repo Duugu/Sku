@@ -32,6 +32,11 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r40.01
+- Broken waypoints in TBC and Lich King zones fixed.
+- Broken orgimmar waypoints fixed.
+
+-------------------------------------------------------------------------------------------------------
 ## Changes in Sku r40.00
 - Cata related updates and bug fixes.
 - Routes in Kalimdor and Eastern Kingdoms are still from Wrath and not working/outdated for a lot of zones. May work partly for some zones like Stormwind, or almost full like Ironforge.
