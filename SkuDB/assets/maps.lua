@@ -234,7 +234,7 @@ SkuDB.zoneIDs = {
 }
 
 SkuDB.ExternalMapID = loadstring([[return { --https://wow.tools/dbc/?dbc=uimap&build=1.13.7.38386&locale=deDE#page=1
-[86] = {Name_lang = {["deDE"] = "Orgrimmar", ["enUS"] = "Orgrimmar",}, ParentExternalMapID = "1454", Type = "6", AreaId = 1637,},
+--[86] = {Name_lang = {["deDE"] = "Orgrimmar", ["enUS"] = "Orgrimmar",}, ParentExternalMapID = "1454", Type = "6", AreaId = 1637,},
 [113] = {Name_lang = {["deDE"] = "Nordend", ["enUS"] = "Northrend",}, ParentExternalMapID = "947", Type = "2", AreaId = -1,},
 [114] = {Name_lang = {["deDE"] = "Boreanische Tundra", ["enUS"] = "Borean Tundra",}, ParentExternalMapID = "113", Type = "3", AreaId = 3537,},
 [115] = {Name_lang = {["deDE"] = "Drachenöde", ["enUS"] = "Dragonblight",}, ParentExternalMapID = "113", Type = "3", AreaId = 65,},

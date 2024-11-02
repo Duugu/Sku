@@ -72,9 +72,15 @@ SkuDB\assets\tasks.lua
 
 SkuDB\assets\WotLK\enchantIDs.lua   
 
+SkuDB\assets\WotLK\creatures.lua
+SkuDB\assets\WotLK\objects.lua
+SkuDB\assets\WotLK\creatures_fixes.lua
+SkuDB\assets\WotLK\objects_fixes.lua
 
-
-
+SkuDB\assets\TBC\creatures.lua
+SkuDB\assets\TBC\objects.lua
+SkuDB\assets\TBC\creatures_fixes.lua
+SkuDB\assets\TBC\objects_fixes.lua
 
 SkuDB\assets\tutorials.lua
 

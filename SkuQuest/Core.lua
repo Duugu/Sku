@@ -1177,8 +1177,85 @@ local function applyFactionSpecificDataChanges()
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+local function isTbcOrLkZone(areaIndex)
+	local tbcAndLkContintentIds = {
+		[530] = true,
+		[571] = true, 
+		[609] = true,
+	}
+
+	if SkuDB.InternalAreaTable[areaIndex] and tbcAndLkContintentIds[SkuDB.InternalAreaTable[areaIndex].ContinentID] and SkuDB.InternalAreaTable[areaIndex].ParentAreaID == 0 then
+		return true
+	end
+
+	return false
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuQuest:PLAYER_LOGIN(...)
 	applyFactionSpecificDataChanges()
+
+	--update creatures and objects tables from TBC and WOTLK tables for all TBC and LK zone spawns to have appropiate spawn data for existing route/like data
+	
+	--apply fixes to TBC and LK tables
+	SkuDB:TBCFixObjectsDB(SkuDB.oldExpansionsData.TBC)
+	SkuDB:TBCFixCreaturesDB(SkuDB.oldExpansionsData.TBC)
+	SkuDB:WotLKFixObjectsDB(SkuDB.oldExpansionsData.WotLK)
+	SkuDB:WotLKFixCreaturesDB(SkuDB.oldExpansionsData.WotLK)
+
+	--update cata creatures with appropiate data from tbc and lk
+	for i, v in pairs(SkuDB.oldExpansionsData.WotLK.NpcData.Data) do
+		if SkuDB.NpcData.Data[i] then
+			if v[SkuDB.NpcData.Keys.spawns] then
+				for areaIndex, areaValue in pairs(v[SkuDB.NpcData.Keys.spawns]) do
+					if isTbcOrLkZone(areaIndex) == true then
+						SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns] = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns] or {}
+						SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns][areaIndex] = areaValue
+					end
+				end
+			end
+		end
+	end
+
+	for i, v in pairs(SkuDB.oldExpansionsData.TBC.NpcData.Data) do
+		if SkuDB.NpcData.Data[i] then
+			if v[SkuDB.NpcData.Keys.spawns] then
+				for areaIndex, areaValue in pairs(v[SkuDB.NpcData.Keys.spawns]) do
+					if isTbcOrLkZone(areaIndex) == true then
+						SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns] = SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns] or {}
+						SkuDB.NpcData.Data[i][SkuDB.NpcData.Keys.spawns][areaIndex] = areaValue
+					end
+				end
+			end
+		end
+	end
+
+	--update cata objects with appropiate data from tbc and lk
+	for i, v in pairs(SkuDB.oldExpansionsData.WotLK.objectDataTBC) do
+		if SkuDB.objectDataTBC[i] then
+			if v[SkuDB.objectKeys.spawns] then
+				for areaIndex, areaValue in pairs(v[SkuDB.objectKeys.spawns]) do
+					if isTbcOrLkZone(areaIndex) == true then
+						SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns] = SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns] or {}
+						SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns][areaIndex] = areaValue
+					end
+				end
+			end
+		end
+	end
+
+	for i, v in pairs(SkuDB.oldExpansionsData.TBC.objectDataTBC) do
+		if SkuDB.objectDataTBC[i] then
+			if v[SkuDB.objectKeys.spawns] then
+				for areaIndex, areaValue in pairs(v[SkuDB.objectKeys.spawns]) do
+					if isTbcOrLkZone(areaIndex) == true then
+						SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns] = SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns] or {}
+						SkuDB.objectDataTBC[i][SkuDB.objectKeys.spawns][areaIndex] = areaValue
+					end
+				end
+			end
+		end
+	end
 
 	SkuQuest:BuildQuestZoneCache()
 
