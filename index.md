@@ -27,8 +27,7 @@ DEUTSCH - Erste Schritte:<br>
 - [SkuCustomBeaconsEssential r32](https://github.com/Duugu/SkuCustomBeaconsEssential/releases/download/r32/SkuCustomBeaconsEssential-r32-wrath.zip) (October 11th 2023)<br>
 
 *Addons for sighted players:* <br>
-- [SkuMapper r4.2](https://github.com/Duugu/SkuMapper/releases/download/r4.2/SkuMapper-r4.2-cata.zip) (November 4th 2024), mapping addon for sighted players<br>
-- [SkuFluegel r6](https://github.com/Duugu/SkuFluegel/releases/download/r6a/SkuFluegel-r6a-wrath.zip) (Sep 1st, 2022), addon for sighted players<br>
+- [SkuMapper r4.3](https://github.com/Duugu/SkuMapper/releases/download/r4.3/SkuMapper-r4.3-cata.zip) (November 13th 2024), mapping addon for sighted players<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
