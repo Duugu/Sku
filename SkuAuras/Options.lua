@@ -192,7 +192,8 @@ function SkuAuras:BuildAuraTooltip(aCurrentMenuItem, aAuraName)
 	
 	local tString = L["Aura Bedingungen:\r\n"]
 	for x = 1, #tConditions do
-		tString = tString..x..": "..tConditions[x].attribute.." "..(tConditions[x].operator or "").." "..(tConditions[x].value or "").."\r\n"
+		print(x, tConditions[x].attribute,(tConditions[x].operator or ""),(tConditions[x].value or ""))
+		tString = tString..x..": "..tConditions[x].attribute.." "..(tConditions[x].operator or "").." "..tostring((tConditions[x].value or "")).."\r\n"
 	end
 	table.insert(tSections, tString)
 

@@ -259,13 +259,13 @@ SkuNav.lastSelectedWaypointFullName = nil
 SkuNav.isAutoSelectTime = 0
 SkuNav.isAutoSelectEnabled = false
 
-
+ClosestWaypointsCache = {}
  WaypointCache = {}
-local WaypointCacheLookupAll = {}
+ WaypointCacheLookupAll = {}
 local WaypointCacheLookupIdForCacheIndex = {}
 local WaypointCacheLookupCacheNameForId = {}
 
-local WaypointCacheLookupPerContintent = {}
+WaypointCacheLookupPerContintent = {}
 function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 	--print("CreateWaypointCache")
 	
@@ -364,12 +364,34 @@ function SkuNav:CreateWaypointCache(aAddLocalizedNames)
 
 	C_Timer.After(1, function() --this is to avoid script timeouts as the full cache building could take to long
 		--add objects
+		
 		for i, v in pairs(SkuDB.objectLookup[Sku.Loc]) do
+
 			--we don't want stuff like ores, herbs, etc. as default
 			if not SkuDB.objectResourceNames[Sku.Loc][v] or SkuOptions.db.profile[MODULE_NAME].showGatherWaypoints == true then
 				if SkuDB.objectDataTBC[i] then
+
+					--and we never want chairs, barrels, campfires, etc.
+					local isOk = true
+					for idToIgnore, _ in pairs(SkuDB.objectsToIgnore) do
+						if SkuDB.objectDataTBC[idToIgnore] then
+							if SkuDB.objectDataTBC[i][1] == SkuDB.objectDataTBC[idToIgnore][1] then
+								isOk = false
+							end
+						end
+					end
+
+					--we never want stuff with specific strings in the name
+					if isOk ~= false then
+						for _, tStringToLookFor in pairs(SkuDB.objectsToIgnoreByName) do
+							if sfind(slower(SkuDB.objectDataTBC[i][1]), slower(tStringToLookFor)) then
+								isOk = false
+							end
+						end
+					end
+
 					local tSpawns = SkuDB.objectDataTBC[i][4]
-					if tSpawns then
+					if isOk == true and tSpawns then
 						for is, vs in pairs(tSpawns) do
 							local isUiMap = SkuNav:GetUiMapIdFromAreaId(is)
 							--we don't care for stuff that isn't in the open world
@@ -1089,6 +1111,7 @@ end
 function SkuNav:OnInitialize()
 	--dprint("SkuNav OnInitialize")
 	SkuNav:RegisterEvent("PLAYER_LOGIN")
+	SkuNav:RegisterEvent("PLAYER_LOGOUT")
 	SkuNav:RegisterEvent("PLAYER_ENTERING_WORLD")
 	SkuNav:RegisterEvent("PLAYER_LEAVING_WORLD")
 	SkuNav:RegisterEvent("ZONE_CHANGED_NEW_AREA")
@@ -3026,6 +3049,12 @@ function SkuNav:PLAYER_UNGHOST(...)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:PLAYER_LOGOUT(...)
+
+	SkuOptions.db.global["SkuNav"].closestWaypointsCache = ClosestWaypointsCache
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
 function SkuNav:PLAYER_LOGIN(...)
 	dprint("PLAYER_LOGIN", ...)
 	SkuNav.MinimapFull = false
@@ -3074,6 +3103,24 @@ function SkuNav:PLAYER_LOGIN(...)
 	]]
 
 	--SkuNav:SkuNavMMOpen()
+
+
+	ClosestWaypointsCache = SkuOptions.db.global["SkuNav"].closestWaypointsCache
+
+	C_Timer.After(60, function()
+		local isNew = false
+		if not ClosestWaypointsCache then
+			isNew = true
+		end
+
+		local version = GetAddOnMetadata("Sku", "Version")
+		if not SkuOptions.db.global["SkuNav"].lastVersion or SkuOptions.db.global["SkuNav"].lastVersion ~= version then
+			isNew = true
+			SkuOptions.db.global["SkuNav"].lastVersion = version
+		end
+
+		SkuNav:CalculateCloseWaypointsCache(isNew)
+	end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3182,6 +3229,9 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		local tWaypointName = L["Quick waypoint"]..";"..x
 		SkuNav:UpdateQuickWP(tWaypointName, true)
 	end			
+
+
+	
 end
 
 local old_ZONE_CHANGED_X = ""
@@ -3873,4 +3923,110 @@ function SkuNav:GetClosestWaypointFromBaseName(aBaseName, aOriginWaypointName)
 			end
 		end		
 	end
+end
+
+---------------------------------------------------------------------------------------------------------------------------------------
+local tSkuCoroutineControlFrameOnUpdateTimer = 0
+local tCounter = 0
+local tProgressStep = 10000
+function SkuNav:CalculateCloseWaypointsCache(aFullRecalculation)
+	if aFullRecalculation == true then
+		ClosestWaypointsCache = {}
+	end
+
+	local lastPrint = 0
+	local overall = 0
+
+	for ci, cv in pairs(SkuDB.ContinentIds) do
+		for i, v in pairs(WaypointCacheLookupPerContintent[ci]) do
+			if not ClosestWaypointsCache[v] then
+				if WaypointCache[i].typeId ~= 3 and not WaypointCache[i].links.byName then
+					overall = overall + 1
+				end
+			end
+		end
+	end
+
+	if overall == 0 then
+		return
+	end
+
+	print("Starting one-time close waypoint cache background calculation. Performance may be degraded until this completed. Remaining steps:", floor(overall/tProgressStep))
+	
+	tCounter = 0
+
+	local co = coroutine.create(function()
+		local tNumberDone = 0
+		for ci, cv in pairs(SkuDB.ContinentIds) do
+			for i, v in pairs(WaypointCacheLookupPerContintent[ci]) do
+				if WaypointCache[i].typeId ~= 3 and not WaypointCache[i].links.byName then
+					if not ClosestWaypointsCache[v] then
+						local taWpNameX, taWpNameY = WaypointCache[i].worldX, WaypointCache[i].worldY
+
+						local tFoundWp = {
+							name = "na",
+							distance = 100000,
+						}
+						for tWpIndex, tWpName in pairs(WaypointCacheLookupPerContintent[ci]) do
+							if WaypointCache[tWpIndex].links.byId then
+								local sx, sy, dx, dy = WaypointCache[tWpIndex].worldX, WaypointCache[tWpIndex].worldY, taWpNameX, taWpNameY
+								local tDistance = floor(sqrt((sx - dx) ^ 2 + (sy - dy) ^ 2)), sqrt((sx - dx) ^ 2 + (sy - dy) ^ 2)
+								if tDistance < 200 then
+									if tDistance < tFoundWp.distance then
+										tFoundWp.name = tWpName
+										tFoundWp.distance = tDistance
+										if tDistance < 50 then
+											break
+										end
+									end
+								end
+							end
+						end
+
+						ClosestWaypointsCache[WaypointCache[i].name] = tFoundWp
+						tCounter = tCounter + 1
+
+						if lastPrint < math.floor(tCounter/tProgressStep) then
+							lastPrint = math.floor(tCounter/tProgressStep)
+							SkuOptions.db.global["SkuNav"].closestWaypointsCache = ClosestWaypointsCache
+							print("Close waypoint cache calculation progress:", lastPrint, "of", floor(overall/tProgressStep))
+						end
+	
+						if tNumberDone > 0 then
+							tNumberDone = 0
+							coroutine.yield()
+						end
+						tNumberDone = tNumberDone + 1								
+					else
+						--print("there", i)
+					end
+		
+				end
+
+			end
+		end
+	end)
+
+	local tCoCompleted = false
+	local tSkuCoroutineControlFrame = _G["SkuCoroutineControlFrame"] or CreateFrame("Frame", "SkuCoroutineControlFrame", UIParent)
+	tSkuCoroutineControlFrame:SetPoint("CENTER")
+	tSkuCoroutineControlFrame:SetSize(50, 50)
+	tSkuCoroutineControlFrame:SetScript("OnUpdate", function(self, time)
+		tSkuCoroutineControlFrameOnUpdateTimer = tSkuCoroutineControlFrameOnUpdateTimer + time
+		if tSkuCoroutineControlFrameOnUpdateTimer < 0.01 then return end
+
+		if coroutine.status(co) == "suspended" then
+			coroutine.resume(co)
+		else
+			if tCoCompleted == false then
+				print("Close waypoint cache calculation completed")
+				tCoCompleted = true
+				SkuOptions.db.global["SkuNav"].closestWaypointsCache = ClosestWaypointsCache
+			end
+		end
+
+	end)
+
+
+
 end

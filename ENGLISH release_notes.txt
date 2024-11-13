@@ -4,21 +4,25 @@
 
 
 -------------------------------------------------------------------------------------------------------
-Changes in Sku r40.0
-	INITIAL CATA RELEASE
-
-
-
-
-
+Changes in Sku r40.1
+	- menu speed enhanced
+	- Blizzard has added a load of senseless objects with Cata. Chairs, campfires, lamps, and a lot more. I've removed a lot of those objects. But there are still loads of objects with no use. Like sign posts. I can't remove them. So, a waypoint like "object 50501 hunter rise thunder bluff 2" most likely doesn't mean this is on hunter rise in thunder bluff. It just is a sign post somewhere, showing the direction to the hunter rise.
+	- close waypoints to routes targets by distance list added, with CLOSE prefix
+	- waypoint > close route now lets you select an entry point and is listing up to 10 linked waypoints close to the destination to choose from
+	- close routes cache calculation added
+	- a lot of map issues fixed	
 
 
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r40.0
+	INITIAL CATA RELEASE
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r35.19
 	- Tried to change the target sku focus x key code to remove lag.
-
 
 
 -------------------------------------------------------------------------------------------------------
