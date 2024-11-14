@@ -14,7 +14,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Sku CATA r40.01](https://github.com/Duugu/Sku/releases/download/r40.01/Sku-r40.01-cata.zip) (November 2nd 2024)<br>
+- [Sku CATA r40.02](https://github.com/Duugu/Sku/releases/download/r40.02/Sku-r40.02-cata.zip) (November 13th 2024)<br>
 - [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
 
 *Older updates:* <br>
