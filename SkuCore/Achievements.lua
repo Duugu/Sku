@@ -62,7 +62,7 @@ function SkuCore:AchievementsInsertAchievement(aParent, aCatId, aAvmtId)
       if achievementcompleted == true then
          tName = tName.." ("..L["Completed"]..")"
       end
-      local tNewMenuEntryAvmt = SkuOptions:InjectMenuItems(aParent, {tName}, SkuGenericMenuItem)
+      local tNewMenuEntryAvmt = InjectMenuItemsNew(aParent, {tName}, SkuGenericMenuItem)
       tNewMenuEntryAvmt.OnEnter = function(self, aValue, aName)
          SkuOptions.currentMenuPosition.textFull = tCriteriaString
       end
@@ -78,7 +78,7 @@ function SkuCore:AchievementsInsertStatistic(aParent, aCatId, aAvmtId)
       if value == "--" then
          value = L["NA"]
       end
-      local tNewMenuEntryAvmt = SkuOptions:InjectMenuItems(aParent, {AchievementsCleanupQuantityString(name)..": "..AchievementsCleanupQuantityString(value)}, SkuGenericMenuItem)
+      local tNewMenuEntryAvmt = InjectMenuItemsNew(aParent, {AchievementsCleanupQuantityString(name)..": "..AchievementsCleanupQuantityString(value)}, SkuGenericMenuItem)
       tNewMenuEntryAvmt.OnEnter = function(self, aValue, aName)
          SkuOptions.currentMenuPosition.textFull = tCriteriaString
       end
@@ -89,7 +89,7 @@ end
 function SkuCore:AchievementsAchievementsBuilder(aParent, aCatId, aCatListProvider)
    if aCatId == 0 then
       --summary
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {LATEST_UNLOCKED_ACHIEVEMENTS}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(aParent, {LATEST_UNLOCKED_ACHIEVEMENTS}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.BuildChildren = function(self)
          for i, avmtId in pairs({GetLatestCompletedAchievements()}) do
@@ -109,7 +109,7 @@ function SkuCore:AchievementsAchievementsBuilder(aParent, aCatId, aCatListProvid
             tCatsStrings = tCatsStrings.."\r\n"..data.name.." "..completed.."/"..total
          end
       end
-      local tNewMenuEntrySub = SkuOptions:InjectMenuItems(aParent, {ACHIEVEMENTS_COMPLETED.." "..numCompleted.."/"..numAchievements}, SkuGenericMenuItem)
+      local tNewMenuEntrySub = InjectMenuItemsNew(aParent, {ACHIEVEMENTS_COMPLETED.." "..numCompleted.."/"..numAchievements}, SkuGenericMenuItem)
       tNewMenuEntrySub.OnEnter = function(self, aValue, aName)
          SkuOptions.currentMenuPosition.textFull = tCatsStrings
       end      
@@ -162,7 +162,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:AchievementsMenuBuilder()
    local tCatsList = SkuCore:AchievementsBuildCatsList(GetCategoryList())
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Achievements"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Achievements"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
       for id, data in pairs(tCatsList) do
@@ -171,7 +171,7 @@ function SkuCore:AchievementsMenuBuilder()
          if not total or total == 0 then
             tNumString = ""
          end
-         local tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {data.name..tNumString}, SkuGenericMenuItem)
+         local tNewMenuEntryCat = InjectMenuItemsNew(self, {data.name..tNumString}, SkuGenericMenuItem)
          tNewMenuEntryCat.dynamic = true
          tNewMenuEntryCat.filterable = true
          tNewMenuEntryCat.BuildChildren = function(self)
@@ -182,7 +182,7 @@ function SkuCore:AchievementsMenuBuilder()
                if not total or total == 0 then
                   tNumString = ""
                end               
-               local tNewMenuEntryCatSub = SkuOptions:InjectMenuItems(self, {catdata.name..tNumString}, SkuGenericMenuItem)
+               local tNewMenuEntryCatSub = InjectMenuItemsNew(self, {catdata.name..tNumString}, SkuGenericMenuItem)
                tNewMenuEntryCatSub.dynamic = true
                tNewMenuEntryCatSub.filterable = true
                tNewMenuEntryCatSub.BuildChildren = function(self)
@@ -194,11 +194,11 @@ function SkuCore:AchievementsMenuBuilder()
    end
 
    local tCatsList = SkuCore:AchievementsBuildCatsList(GetStatisticsCategoryList())
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Statistics"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Statistics"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
       for id, data in pairs(tCatsList) do
-         local tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {data.name}, SkuGenericMenuItem)
+         local tNewMenuEntryCat = InjectMenuItemsNew(self, {data.name}, SkuGenericMenuItem)
          tNewMenuEntryCat.dynamic = true
          tNewMenuEntryCat.filterable = true
          tNewMenuEntryCat.BuildChildren = function(self)

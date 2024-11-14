@@ -115,36 +115,36 @@ SkuAdventureGuide.defaults = {
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuAdventureGuide:MenuBuilder(aParentEntry)
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Tutorials"]}, SkuGenericMenuItem)
+	local tNewMenuEntry = InjectMenuItemsNew(aParentEntry, {L["Tutorials"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Tutorial list"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Tutorial list"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuAdventureGuide.Tutorial:TutorialsMenuBuilder(self, true)
 		end		
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Tutorial Editor"].." ("..L["for tutorial creators"]..")"}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Tutorial Editor"].." ("..L["for tutorial creators"]..")"}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			SkuAdventureGuide.Tutorial:EditorMenuBuilder(self)
 		end		
 
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Tutorial help"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["Tutorial help"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.filterable = true
       tNewMenuEntry.BuildChildren = function(self)
-			SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["In this help you will find information about our tutorials for newbies. Press down arrow or up arrow to listen to the info, or press Escape to close this help. Press F1 to open the help again."])}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["In this help you will find information about our tutorials for newbies. Press down arrow or up arrow to listen to the info, or press Escape to close this help. Press F1 to open the help again."])}, SkuGenericMenuItem)
 			local tBestTutName, tLocRaceText, tLocClassText, tBestTutGuid = SkuAdventureGuide.Tutorial:GetBestTutorialNameForFirstTimeUser()
 			if tBestTutGuid then
 				--If valid race + class
-				SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it."])}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["First a few infos: If you are following the tutorial, you should strictly follow the instructions from the tutorial. Listen carefully to what you are supposed to do, and then do exactly that. Don't do anything else while the tutorial is running. Do not deviate from the tutorial. Otherwise the tutorial will not work anymore!"])}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["The tutorial will take about 2 hours. You can log out at any time and continue the tutorial later via this help. Just press F1 again after logging in."])}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["For you as (%race%) (%class%) there is a tutorial. Use down arrow to learn how to start it."])}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["First a few infos: If you are following the tutorial, you should strictly follow the instructions from the tutorial. Listen carefully to what you are supposed to do, and then do exactly that. Don't do anything else while the tutorial is running. Do not deviate from the tutorial. Otherwise the tutorial will not work anymore!"])}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["The tutorial will take about 2 hours. You can log out at any time and continue the tutorial later via this help. Just press F1 again after logging in."])}, SkuGenericMenuItem)
 				local tProgress = SkuOptions.db.char[MODULE_NAME].Tutorials.progress[tBestTutGuid]
 				if tProgress == nil or tProgress < #SkuDB.AllLangs.Tutorials[tBestTutGuid].steps and tProgress < 1 then
 					--if step 1
-					local tNewMenuEntryC = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Press ENTER now, to start your tutorial."])}, SkuGenericMenuItem)
+					local tNewMenuEntryC = InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Press ENTER now, to start your tutorial."])}, SkuGenericMenuItem)
 					tNewMenuEntryC.isSelect = true
 					tNewMenuEntryC.OnAction = function(self, aValue, aName)
 						SkuAdventureGuide.Tutorial:StopCurrentTutorial()
@@ -153,7 +153,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 					end
 				else	
 					--if step > 1
-					local tNewMenuEntryC = SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Press ENTER, to continue your tutorial."])}, SkuGenericMenuItem)
+					local tNewMenuEntryC = InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Press ENTER, to continue your tutorial."])}, SkuGenericMenuItem)
 					tNewMenuEntryC.isSelect = true
 					tNewMenuEntryC.OnAction = function(self, aValue, aName)
 						SkuAdventureGuide.Tutorial:StopCurrentTutorial()
@@ -163,18 +163,18 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 				end
 			else
 				--If not valid race + class
-				SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Unfortunately there is no tutorial for you as (%race%) (%class%) yet. The Sku addon contains tutorials for (Human) Warriors, Paladins, Rogues, Priests, Mages, and Warlocks, and for (Night Elf) Hunters, and Druids."])}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["If you would like to be supported by a tutorial, you can logout now by typing /logout and pressing enter."])}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Then you can create a second character using one of the mentioned race and class combinations. With the second character you can play the tutorial. That takes about 2 hours."])}, SkuGenericMenuItem)
-				SkuOptions:InjectMenuItems(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Afterwards you have mastered the basics and can return to your first character and play it without assistance, or you can continue playing with the second character."])}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Unfortunately there is no tutorial for you as (%race%) (%class%) yet. The Sku addon contains tutorials for (Human) Warriors, Paladins, Rogues, Priests, Mages, and Warlocks, and for (Night Elf) Hunters, and Druids."])}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["If you would like to be supported by a tutorial, you can logout now by typing /logout and pressing enter."])}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Then you can create a second character using one of the mentioned race and class combinations. With the second character you can play the tutorial. That takes about 2 hours."])}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {SkuAdventureGuide.Tutorial:ReplacePlaceholders(L["Afterwards you have mastered the basics and can return to your first character and play it without assistance, or you can continue playing with the second character."])}, SkuGenericMenuItem)
 			end
       end
 	end
 
-	local tNewMenuParentEntryWiki =  SkuOptions:InjectMenuItems(aParentEntry, {L["Wiki"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntryWiki =  InjectMenuItemsNew(aParentEntry, {L["Wiki"]}, SkuGenericMenuItem)
 	tNewMenuParentEntryWiki.dynamic = true
 	tNewMenuParentEntryWiki.BuildChildren = function(self)
-		local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuParentEntryWiki, {L["Link History"]}, SkuGenericMenuItem)
+		local tNewMenuParentEntry =  InjectMenuItemsNew(tNewMenuParentEntryWiki, {L["Link History"]}, SkuGenericMenuItem)
 		tNewMenuParentEntry.dynamic = true
 		tNewMenuParentEntry.filterable = true
 		tNewMenuParentEntry.BuildChildren = function(self)
@@ -186,7 +186,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 							--check if that link actually is redirect and has a valid final target in that case
 							local tFinalLink = SkuOptions:GetLinkFinalRedirectTarget(tDataLink)
 							if tFinalLink then
-								local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tDataLink}, SkuGenericMenuItem)
+								local tNewMenuEntry = InjectMenuItemsNew(self, {tDataLink}, SkuGenericMenuItem)
 								--tNewMenuEntry.dynamic = true
 								tNewMenuEntry.filterable = true
 								tNewMenuEntry.OnEnter = function(self, aValue, aName)
@@ -202,11 +202,11 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 					end
 				end
 			else
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, {L["Empty"]}, SkuGenericMenuItem)
 			end
 		end
 
-		local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuParentEntryWiki, {L["All entries"]}, SkuGenericMenuItem)
+		local tNewMenuParentEntry =  InjectMenuItemsNew(tNewMenuParentEntryWiki, {L["All entries"]}, SkuGenericMenuItem)
 		tNewMenuParentEntry.dynamic = true
 		tNewMenuParentEntry.filterable = true
 		tNewMenuParentEntry.BuildChildren = function(self)
@@ -214,7 +214,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 				if string.len(v.content) > 0 and v.content ~= "\r\n" then
 					local tFinalLink = SkuOptions:GetLinkFinalRedirectTarget(i)
 					if tFinalLink then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
+						local tNewMenuEntry = InjectMenuItemsNew(self, {i}, SkuGenericMenuItem)
 						--tNewMenuEntry.dynamic = true
 						tNewMenuEntry.filterable = true
 						tNewMenuEntry.OnEnter = function(self, aValue, aName)
@@ -231,7 +231,7 @@ function SkuAdventureGuide:MenuBuilder(aParentEntry)
 		end
 	end
 
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	local tNewMenuEntry =  InjectMenuItemsNew(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuAdventureGuide.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end

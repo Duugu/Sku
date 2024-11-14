@@ -235,7 +235,7 @@ local function BuildReactionsMenu(aEventID, aParent)
 
    if tReactionsAvailable == true then
       if tEvent.numInvitees == L["Querying data..."] or tEvent.inviteStatus == L["Querying data..."] then
-         local tSubNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["Is querying..."]}, SkuGenericMenuItem)
+         local tSubNewMenuEntry = InjectMenuItemsNew(aParent, {L["Is querying..."]}, SkuGenericMenuItem)
          aParent.dynamic = true
          return true
       else
@@ -244,7 +244,7 @@ local function BuildReactionsMenu(aEventID, aParent)
             if ( _CalendarFrame_IsSignUpEvent(tEvent.calendarType, tEvent.inviteType) ) then
                if ( tEvent.inviteStatus == Enum.CalendarStatus.NotSignedup ) then
                   -- sign up
-                  local tSubNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {CALENDAR_SIGNUP}, SkuGenericMenuItem)
+                  local tSubNewMenuEntry = InjectMenuItemsNew(aParent, {CALENDAR_SIGNUP}, SkuGenericMenuItem)
                   tSubNewMenuEntry.isSelect = true
                   tSubNewMenuEntry.OnAction = function(self, aValue, aName)
                      if ( tEvent.inviteType == Enum.CalendarInviteType.Signup ) then
@@ -263,7 +263,7 @@ local function BuildReactionsMenu(aEventID, aParent)
             elseif ( tEvent.modStatus ~= "CREATOR" ) then
                -- accept invitation
                if ( tEvent.inviteStatus ~= Enum.CalendarStatus.Available ) then
-                  local tSubNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {ACCEPT}, SkuGenericMenuItem)
+                  local tSubNewMenuEntry = InjectMenuItemsNew(aParent, {ACCEPT}, SkuGenericMenuItem)
                   tSubNewMenuEntry.isSelect = true
                   tSubNewMenuEntry.OnAction = function(self, aValue, aName)
                      if ( tEvent.inviteType == Enum.CalendarInviteType.Signup ) then
@@ -281,7 +281,7 @@ local function BuildReactionsMenu(aEventID, aParent)
                end
                -- tentative invitation
                if ( tEvent.inviteStatus ~= Enum.CalendarStatus.Tentative ) then
-                  local tSubNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {CALENDAR_VIEW_EVENT_TENTATIVE}, SkuGenericMenuItem)
+                  local tSubNewMenuEntry = InjectMenuItemsNew(aParent, {CALENDAR_VIEW_EVENT_TENTATIVE}, SkuGenericMenuItem)
                   tSubNewMenuEntry.isSelect = true
                   tSubNewMenuEntry.OnAction = function(self, aValue, aName)
                      SkuCore:CalendarQueryQueueAddQuery(aEventID, tEvent.month, tEvent.day, tEvent.index, true, function() end)                        
@@ -294,7 +294,7 @@ local function BuildReactionsMenu(aEventID, aParent)
                end
                -- decline invitation
                if ( tEvent.inviteStatus ~= Enum.CalendarStatus.Declined ) then
-                  local tSubNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {DECLINE}, SkuGenericMenuItem)
+                  local tSubNewMenuEntry = InjectMenuItemsNew(aParent, {DECLINE}, SkuGenericMenuItem)
                   tSubNewMenuEntry.isSelect = true
                   tSubNewMenuEntry.OnAction = function(self, aValue, aName)
                      SkuCore:CalendarQueryQueueAddQuery(aEventID, tEvent.month, tEvent.day, tEvent.index, true, function() end)                        
@@ -311,7 +311,7 @@ local function BuildReactionsMenu(aEventID, aParent)
          --if ( _CalendarFrame_CanRemoveEvent(tEvent.modStatus, tEvent.calendarType, tEvent.inviteType, tEvent.inviteStatus) ) then --
          if tEvent.inviteStatus == Enum.CalendarStatus.Signedup and tEvent.calendarType == "GUILD_EVENT" then
             -- remove event
-            local tSubNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {CALENDAR_VIEW_EVENT_REMOVE}, SkuGenericMenuItem)
+            local tSubNewMenuEntry = InjectMenuItemsNew(aParent, {CALENDAR_VIEW_EVENT_REMOVE}, SkuGenericMenuItem)
             tSubNewMenuEntry.isSelect = true
             tSubNewMenuEntry.OnAction = function(self, aValue, aName)
                SkuCore:CalendarQueryQueueAddQuery(aEventID, tEvent.month, tEvent.day, tEvent.index, true, function() end)                        
@@ -325,7 +325,7 @@ local function BuildReactionsMenu(aEventID, aParent)
          end
          
          if tHasEntries == false then
-            local tSubNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["Empty"]}, SkuGenericMenuItem)
+            local tSubNewMenuEntry = InjectMenuItemsNew(aParent, {L["Empty"]}, SkuGenericMenuItem)
          end
          aParent.dynamic = true
          return true
@@ -706,11 +706,11 @@ end
 function SkuCore:CalendarMenuBuilder()
    local retVal
 
-   local tNewMenuEntryNewEvents = SkuOptions:InjectMenuItems(self, {L["New events"]}, SkuGenericMenuItem)
+   local tNewMenuEntryNewEvents = InjectMenuItemsNew(self, {L["New events"]}, SkuGenericMenuItem)
    tNewMenuEntryNewEvents.dynamic = true
    tNewMenuEntryNewEvents.filterable = true
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Events"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Events"]}, SkuGenericMenuItem)
    retVal = tNewMenuEntry
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
@@ -783,7 +783,7 @@ function SkuCore:CalendarMenuBuilder()
                         (self.name == L["New events"] and (event.calendarType ~= "RAID_LOCKOUT" or event.calendarType ~= "RAID_RESET") and SkuOptions.db.char[MODULE_NAME].calendar.seen[event.eventID] == nil) 
                      then
                         tHasShownEvent = true
-                        local tNewMenuEntry = SkuOptions:InjectMenuItems(aSelf, {
+                        local tNewMenuEntry = InjectMenuItemsNew(aSelf, {
                            GetDateStringFromCurrentMonth(month, day)..": "..
                            (Enum.CalendarTypeStrings[event.calendarType] or "").." "..
                            (Enum.CalendarSequenceTypesStrings[event.sequenceType] or "")..";"..
@@ -841,14 +841,14 @@ function SkuCore:CalendarMenuBuilder()
       end
 
       if self.name == L["New events"] and tHasShownEvent == false then
-         SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+         InjectMenuItemsNew(self, {L["Empty"]}, SkuGenericMenuItem)
       end
    end
 
    tNewMenuEntryNewEvents.BuildChildren = tNewMenuEntry.BuildChildren
 
    --[[
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["New event"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["New event"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
@@ -860,18 +860,18 @@ function SkuCore:CalendarMenuBuilder()
    end
    ]]
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Options"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Options"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
       --
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Filter"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["Filter"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.BuildChildren = function(self)
          for i, v in pairs(SkuCore.Calendar.CALENDAR_FILTER_CVARS) do
             --if "skuCalendarHideAllHolidays" ~= v.cvar then
             SkuOptions.db.char[MODULE_NAME].calendar.filters[v.cvar] = tonumber(GetCVar(v.cvar))
             --end
-            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v.text}, SkuGenericMenuItem)
+            local tNewMenuEntry = InjectMenuItemsNew(self, {v.text}, SkuGenericMenuItem)
             tNewMenuEntry.isSelect = true
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
@@ -892,14 +892,14 @@ function SkuCore:CalendarMenuBuilder()
                --end
             end
             tNewMenuEntry.BuildChildren = function(self)
-               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show"]}, SkuGenericMenuItem)
-               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Hide"]}, SkuGenericMenuItem)
+               local tNewMenuEntry = InjectMenuItemsNew(self, {L["Show"]}, SkuGenericMenuItem)
+               local tNewMenuEntry = InjectMenuItemsNew(self, {L["Hide"]}, SkuGenericMenuItem)
             end      
          end
       end   
       
       --
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Shown days for multi day events"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["Shown days for multi day events"]}, SkuGenericMenuItem)
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
@@ -914,12 +914,12 @@ function SkuCore:CalendarMenuBuilder()
       end
       tNewMenuEntry.BuildChildren = function(self)
          for x = 1, #tMultiShownSettingValues do
-            SkuOptions:InjectMenuItems(self, {tMultiShownSettingValues[x]}, SkuGenericMenuItem)
+            InjectMenuItemsNew(self, {tMultiShownSettingValues[x]}, SkuGenericMenuItem)
          end
       end
 
       --
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Notify on new player and guild events"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["Notify on new player and guild events"]}, SkuGenericMenuItem)
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
@@ -937,12 +937,12 @@ function SkuCore:CalendarMenuBuilder()
          end   
       end
       tNewMenuEntry.BuildChildren = function(self)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["On"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["Off"]}, SkuGenericMenuItem)
       end
 
       --
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Notify on new holiday events"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["Notify on new holiday events"]}, SkuGenericMenuItem)
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
@@ -960,8 +960,8 @@ function SkuCore:CalendarMenuBuilder()
          end   
       end
       tNewMenuEntry.BuildChildren = function(self)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["On"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["Off"]}, SkuGenericMenuItem)
       end      
    end
 

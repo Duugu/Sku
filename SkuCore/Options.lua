@@ -1106,7 +1106,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function MacrosMenuBuilder(aParentEntry)
-	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Macros"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {L["Macros"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.filterable = true
 	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
@@ -1121,7 +1121,7 @@ local function MacrosMenuBuilder(aParentEntry)
 			for x = 1, global do
 				local name, icon, body, isLocal = GetMacroInfo(x)
 				if name then
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
+					local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {name}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.macroID = x
 						SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = name, body
@@ -1134,7 +1134,7 @@ local function MacrosMenuBuilder(aParentEntry)
 			for x = tGlobalOffset, tGlobalOffset + perChar do
 				local name, icon, body, isLocal = GetMacroInfo(x)
 				if name then
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
+					local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {name}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.macroID = x
 						SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = name, body
@@ -1145,14 +1145,14 @@ local function MacrosMenuBuilder(aParentEntry)
 		end
 
 		if tHasEntries == false then
-			SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {L["Menu empty"]}, SkuGenericMenuItem)
 		end
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function EquipmentSetActionMenuBuilder(aParentEntry)
-	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Equipment sets"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {L["Equipment sets"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.filterable = true
 	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
@@ -1163,7 +1163,7 @@ local function EquipmentSetActionMenuBuilder(aParentEntry)
 		for x = 0, C_EquipmentSet.GetNumEquipmentSets() do
 			local name, iconFileID, setID, isEquipped, numItems, numEquipped, numInInventory, numLost, numIgnored = C_EquipmentSet.GetEquipmentSetInfo(x)
 			if name then
-				local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
+				local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {name}, SkuGenericMenuItem)
 				tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 					self.selectTarget.equipmentSetID = x
 					_G["SkuScanningTooltip"]:ClearLines()
@@ -1180,14 +1180,14 @@ local function EquipmentSetActionMenuBuilder(aParentEntry)
 		end
 
 		if tHasEntries == false then
-			SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {L["Menu empty"]}, SkuGenericMenuItem)
 		end
 	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CompanionMenuBuilder(aParentEntry)
-	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Companions"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {L["Companions"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.filterable = true
 	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
@@ -1197,7 +1197,7 @@ local function CompanionMenuBuilder(aParentEntry)
 		self.selectTarget.companionPetId = nil
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
-		local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Pets"]}, SkuGenericMenuItem)
+		local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Pets"]}, SkuGenericMenuItem)
 		tNewMenuSubSubEntry.dynamic = true
 		tNewMenuSubSubEntry.filterable = true
 		tNewMenuSubSubEntry.BuildChildren = function(self)
@@ -1207,7 +1207,7 @@ local function CompanionMenuBuilder(aParentEntry)
 				for x = 1, numPets do
 					local petID, speciesID, owned, customName, level, favorite, isRevoked, speciesName, icon, petType, companionID, tooltip, description, isWild, canBattle, isTradeable, isUnique, obtainable = C_PetJournal.GetPetInfoByIndex(x)
 					if owned == true then
-						local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {speciesName}, SkuGenericMenuItem)
+						local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {speciesName}, SkuGenericMenuItem)
 						tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 							self.selectTarget.companionType = "CRITTER"
 							self.selectTarget.companionID = x
@@ -1227,11 +1227,11 @@ local function CompanionMenuBuilder(aParentEntry)
 			end
 
 			if tHasEntries == false then
-				SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {L["Menu empty"]}, SkuGenericMenuItem)
 			end
 		end
 
-		local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Mounts"]}, SkuGenericMenuItem)
+		local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Mounts"]}, SkuGenericMenuItem)
 		tNewMenuSubSubEntry.dynamic = true
 		tNewMenuSubSubEntry.filterable = true
 		tNewMenuSubSubEntry.BuildChildren = function(self)
@@ -1241,7 +1241,7 @@ local function CompanionMenuBuilder(aParentEntry)
 			for x = 1, #tMountIDs do
 				local name, spellID, icon, isActive, isUsable, sourceType, isFavorite, isFactionSpecific, faction, shouldHideOnChar, isCollected, mountID = C_MountJournal.GetMountInfoByID(tMountIDs[x])
 				if (isCollected == true and shouldHideOnChar ~= true) and ((isFactionSpecific == true and ((faction == 0 and tFaction == "Horde") or (faction == 1 and tFaction == "Alliance") or (faction == nil))) or isFactionspecific == false or faction == nil) then
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
+					local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {name}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.companionType = "MOUNT"
 						self.selectTarget.companionID = spellID
@@ -1260,7 +1260,7 @@ local function CompanionMenuBuilder(aParentEntry)
 			end
 
 			if tHasEntries == false then
-				SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {L["Menu empty"]}, SkuGenericMenuItem)
 			end
 		end
 	end
@@ -1268,7 +1268,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ItemsMenuBuilder(aParentEntry)
-	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Items"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {L["Items"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.filterable = true
 	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
@@ -1281,7 +1281,7 @@ local function ItemsMenuBuilder(aParentEntry)
 				local itemLink = GetContainerItemLink(bag, slot)
 				local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
 				if itemLink then
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
+					local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.itemID = itemID
 						_G["SkuScanningTooltip"]:ClearLines()
@@ -1299,7 +1299,7 @@ local function ItemsMenuBuilder(aParentEntry)
 		end
 
 		if tHasEntries == false then
-			SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {L["Menu empty"]}, SkuGenericMenuItem)
 		end
 	end
 end
@@ -1307,7 +1307,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function ToysMenuBuilder(aParentEntry)
-	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Toys"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {L["Toys"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.filterable = true
 	tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
@@ -1320,7 +1320,7 @@ local function ToysMenuBuilder(aParentEntry)
 			if itemID and PlayerHasToy(itemID) == true then
 				local _, toyName = C_ToyBox.GetToyInfo(itemID)
 				if toyName then
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {toyName}, SkuGenericMenuItem)
+					local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {toyName}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.itemID = itemID
 						_G["SkuScanningTooltip"]:ClearLines()
@@ -1338,7 +1338,7 @@ local function ToysMenuBuilder(aParentEntry)
 		end
 
 		if tHasEntries == false then
-			SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {L["Menu empty"]}, SkuGenericMenuItem)
 		end
 	end
 end
@@ -1346,7 +1346,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWithCurrentPetControlAction)
 	aIsPet = aIsPet or false
-	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Assign nothing"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {L["Assign nothing"]}, SkuGenericMenuItem)
 
 	local tNumSpellTabs = 1
 	if aIsPet == false then
@@ -1365,9 +1365,9 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 		
 		local tNewMenuSubEntry
 		if aIsPet == true then
-			tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {_G["PET_TYPE_"..token]}, SkuGenericMenuItem)
+			tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {_G["PET_TYPE_"..token]}, SkuGenericMenuItem)
 		else
-			tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {name}, SkuGenericMenuItem)
+			tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {name}, SkuGenericMenuItem)
 		end
 
 		tNewMenuSubEntry.dynamic = true
@@ -1380,11 +1380,41 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 			if numEntries > 0 then
 				for y = offset + 1, offset + numEntries do
 					local spellName, spellSubName, spellID = GetSpellBookItemName(y, aBooktype) --BOOKTYPE_PET
-					if spellID then
+					local slotType, flyoutID = GetSpellBookItemInfo(y, aBooktype)
+					if slotType == "FLYOUT" then
+						local name, description, numSlots, isKnown = GetFlyoutInfo(flyoutID)
+						if isKnown == true then
+							for subslots = 1, numSlots do
+								local flyoutSpellID, overrideSpellID, isKnownsubslot, subspellName, slotSpecID = GetFlyoutSlotInfo(flyoutID, subslots)
+								if isKnownsubslot == true then
+									if flyoutSpellID then
+										local tIsPassive = IsPassiveSpell(flyoutSpellID)
+										local isKnown = IsSpellKnown(flyoutSpellID, aIsPet)
+										if not tIsPassive and isKnown then
+											local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {subspellName..";"..(spellSubName or "")}, SkuGenericMenuItem)
+											tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
+												self.selectTarget.petDefaultControlId = nil
+												self.selectTarget.spellID = flyoutSpellID
+												_G["SkuScanningTooltip"]:ClearLines()
+												_G["SkuScanningTooltip"]:SetSpellByID(flyoutSpellID)
+												if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "asd" then
+													if TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()) ~= "" then
+														local tText = SkuChat:Unescape(TooltipLines_helper(_G["SkuScanningTooltip"]:GetRegions()))
+														SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore:ItemName_helper(tText)
+													end
+												end
+											end
+											tHasEntries = true
+										end
+									end									
+								end
+							end
+						end
+					elseif spellID then
 						local tIsPassive = IsPassiveSpell(spellID)
 						local isKnown = IsSpellKnown(spellID, aIsPet)
 						if not tIsPassive and isKnown then
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {spellName..";"..spellSubName}, SkuGenericMenuItem)
+							local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {spellName..";"..(spellSubName or "")}, SkuGenericMenuItem)
 							tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 								self.selectTarget.petDefaultControlId = nil
 								self.selectTarget.spellID = spellID
@@ -1404,7 +1434,7 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 			end
 			if aIsPet == true then
 				for i, v in pairs(aButtonsWithCurrentPetControlAction) do
-					local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {_G[i]}, SkuGenericMenuItem)
+					local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {_G[i]}, SkuGenericMenuItem)
 					tNewMenuSubSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.spellID = nil
 						self.selectTarget.petDefaultControlId = v
@@ -1423,7 +1453,7 @@ local function SpellBookMenuBuilder(aParentEntry, aBooktype, aIsPet, aButtonsWit
 			end
 
 			if tHasEntries == false then
-				local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Menu empty"]}, SkuGenericMenuItem)
+				local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Menu empty"]}, SkuGenericMenuItem)
 			end
 		end
 	end
@@ -1435,7 +1465,7 @@ local function EquipmentSetsManagerMenuBuilder(aParentEntry, aSetId)
 
 	local tNewMenuSubSubEntry
 	if aSetId then
-		tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Equip"]}, SkuGenericMenuItem)
+		tNewMenuSubSubEntry = InjectMenuItemsNew(aParentEntry, {L["Equip"]}, SkuGenericMenuItem)
 		tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
 			C_EquipmentSet.UseEquipmentSet(aSetId) 
 			C_Timer.After(0.001, function()
@@ -1443,9 +1473,9 @@ local function EquipmentSetsManagerMenuBuilder(aParentEntry, aSetId)
 			end)
 		end
 
-		tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Update"]}, SkuGenericMenuItem)
+		tNewMenuSubSubEntry = InjectMenuItemsNew(aParentEntry, {L["Update"]}, SkuGenericMenuItem)
 	else
-		tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["erstellen"]}, SkuGenericMenuItem)
+		tNewMenuSubSubEntry = InjectMenuItemsNew(aParentEntry, {L["erstellen"]}, SkuGenericMenuItem)
 	end
 
 	tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
@@ -1481,7 +1511,7 @@ local function EquipmentSetsManagerMenuBuilder(aParentEntry, aSetId)
 	end
 
 	if aSetId then
-		tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Delete"]}, SkuGenericMenuItem)
+		tNewMenuSubSubEntry = InjectMenuItemsNew(aParentEntry, {L["Delete"]}, SkuGenericMenuItem)
 		tNewMenuSubSubEntry.isSelect = true
 		tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
 			--deleted
@@ -1513,7 +1543,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 			local tButtonName =""
 			tButtonName = ButtonContentNameHelper(actionType, id, subType, aActionBarName, x)
 			
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Button"].." "..(x - tNameNumberMod)..(tAdditionalTotemBarNameParts[tActionBarData[aActionBarName].buttonName..x] or "")..";"..tButtonName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(aParentEntry, {L["Button"].." "..(x - tNameNumberMod)..(tAdditionalTotemBarNameParts[tActionBarData[aActionBarName].buttonName..x] or "")..";"..tButtonName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.buttonObj = _G[tActionBarData[aActionBarName].buttonName..x]
@@ -1636,7 +1666,7 @@ local function ActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 				CompanionMenuBuilder(self)
 				EquipmentSetActionMenuBuilder(self)
 				MacrosMenuBuilder(self)
-				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Bind key"]}, SkuGenericMenuItem)
+				local tNewMenuSubEntry = InjectMenuItemsNew(self, {L["Bind key"]}, SkuGenericMenuItem)
 			end
 		end
 	end
@@ -1670,7 +1700,7 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 		if tButtonObj then
 			local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(x);
 			local tButtonName = ButtonContentNameHelper("pet", x, subType, aActionBarName, x) --_G[name] or name or L["empty"] 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Button"].." "..x..";"..tButtonName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(aParentEntry, {L["Button"].." "..x..";"..tButtonName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.buttonObj = _G[tActionBarData[aActionBarName].buttonName..x]
@@ -1723,7 +1753,7 @@ local function PetActionBarMenuBuilder(aParentEntry, aActionBarName, aBooktype)
 			end
 			tNewMenuEntry.BuildChildren = function(self)
 				SpellBookMenuBuilder(self, aBooktype, true, tButtonsWithCurrentPetControlAction)
-				local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Bind key"]}, SkuGenericMenuItem)
+				local tNewMenuSubEntry = InjectMenuItemsNew(self, {L["Bind key"]}, SkuGenericMenuItem)
 			end
 		end
 	end
@@ -1732,7 +1762,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function RangecheckMenuBuilder(aParent, aType)
 	local tEntriesFound = false
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["Do range check on target change"]}, SkuGenericMenuItem)
+	local tNewMenuEntry = InjectMenuItemsNew(aParent, {L["Do range check on target change"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.isSelect = true
@@ -1751,8 +1781,8 @@ local function RangecheckMenuBuilder(aParent, aType)
 		end
 	end
 	tNewMenuEntry.BuildChildren = function(self)
-		SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-		SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+		InjectMenuItemsNew(self, {L["On"]}, SkuGenericMenuItem)
+		InjectMenuItemsNew(self, {L["Off"]}, SkuGenericMenuItem)
 	end
 
 
@@ -1770,7 +1800,7 @@ local function RangecheckMenuBuilder(aParent, aType)
 					tIsConfiguredWith = ";"..SkuCore.RangeCheckSounds[SkuOptions.db.char[MODULE_NAME].RangeChecks[aType][i].sound]
 				end
 			end
-			local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {i..tIsConfiguredWith}, SkuGenericMenuItem)
+			local tNewSubMenuEntry = InjectMenuItemsNew(aParent, {i..tIsConfiguredWith}, SkuGenericMenuItem)
 			tEntriesFound = true
 			tNewSubMenuEntry.dynamic = true
 			tNewSubMenuEntry.isSelect = true
@@ -1788,16 +1818,16 @@ local function RangecheckMenuBuilder(aParent, aType)
 				self.name = tRange..";"..aName
 			end
 			tNewSubMenuEntry.BuildChildren = function(self)
-				local tNewSubSoundMenuEntry = SkuOptions:InjectMenuItems(self, {L["vocalized"]}, SkuGenericMenuItem)
+				local tNewSubSoundMenuEntry = InjectMenuItemsNew(self, {L["vocalized"]}, SkuGenericMenuItem)
 				for x, v in pairs(SkuCore.RangeCheckSounds) do
-					local tNewSubSoundMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					local tNewSubSoundMenuEntry = InjectMenuItemsNew(self, {v}, SkuGenericMenuItem)
 					tNewSubSoundMenuEntry.dynamic = true
 				end
 			end
 		end
 	end
 	if tEntriesFound == false then
-		local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["ranges still loading"]}, SkuGenericMenuItem)
+		local tNewSubMenuEntry = InjectMenuItemsNew(aParent, {L["ranges still loading"]}, SkuGenericMenuItem)
 	end
 
 end
@@ -1820,13 +1850,13 @@ end
 
 function SkuCore:MenuBuilder(aParentEntry)
 	--dprint("SkuCore:MenuBuilder", aParentEntry)
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Mail"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Mail"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.OnAction = function(self, aValue, aName)
 	end
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["New letter"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["New letter"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.isSelect = true
 		--tNewMenuEntry.ttsEngine = 2
@@ -1876,46 +1906,46 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 		end
 		tNewMenuEntry.BuildChildren = function(self)
-			local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Recepient"]}, SkuGenericMenuItem)
+			local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Recepient"]}, SkuGenericMenuItem)
 			--tNewMenuParentEntrySubSub.ttsEngine = 2
-			local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Topic"]}, SkuGenericMenuItem)
+			local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Topic"]}, SkuGenericMenuItem)
 			--tNewMenuParentEntrySubSub.ttsEngine = 2
-			local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
+			local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Text"]}, SkuGenericMenuItem)
 			--tNewMenuParentEntrySubSub.ttsEngine = 2
-			local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Gold"]}, SkuGenericMenuItem)
+			local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Gold"]}, SkuGenericMenuItem)
 			--tNewMenuParentEntrySubSub.ttsEngine = 2
 			tNewMenuParentEntrySubSub.dynamic = true
 			tNewMenuParentEntrySubSub.BuildChildren = function(self)
 				for x = 1, 9 do
-					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {"0;"..L["KommaNumbers"]..";0;"..(x * 1)}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {"0;"..L["KommaNumbers"]..";0;"..(x * 1)}, SkuGenericMenuItem)
 					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 9 do
-					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {"0;"..L["KommaNumbers"]..";"..(x * 1)}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {"0;"..L["KommaNumbers"]..";"..(x * 1)}, SkuGenericMenuItem)
 					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 25 do
-					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x}, SkuGenericMenuItem)
 					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 15 do
-					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*5 + 25}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x*5 + 25}, SkuGenericMenuItem)
 					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 20 do
-					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*10 + 100}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x*10 + 100}, SkuGenericMenuItem)
 					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 20 do
-					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*20 + 300}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x*20 + 300}, SkuGenericMenuItem)
 					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 				for x = 1, 23 do
-					local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*50 + 700}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x*50 + 700}, SkuGenericMenuItem)
 					tNewMenuParentEntrySubSubItem.noMenuNumbers = true
 				end
 			end
-			local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Items"]}, SkuGenericMenuItem)
+			local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Items"]}, SkuGenericMenuItem)
 			tNewMenuParentEntrySubSub.filterable = true
 			tNewMenuParentEntrySubSub.dynamic = true
 			tNewMenuParentEntrySubSub.BuildChildren = function(self)
@@ -1930,18 +1960,18 @@ function SkuCore:MenuBuilder(aParentEntry)
 							local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
 							local isQuestItem = GetContainerItemQuestInfo(bag, slot)
 							if itemLink and isQuestItem ~= true and SkuCore:IsItemSoulbound(bag, slot) ~= true then
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
+								local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
 							end
 						end
 					end
 				end
 			end
 			--tNewMenuParentEntrySubSub.ttsEngine = 2
-			local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Send"]}, SkuGenericMenuItem)
+			local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Send"]}, SkuGenericMenuItem)
 			--tNewMenuParentEntrySubSub.ttsEngine = 2
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Open all"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Open all"]}, SkuGenericMenuItem)
 		--tNewMenuEntry.ttsEngine = 2
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
 			local numItems, totalItems = GetInboxNumItems()
@@ -2030,7 +2060,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 				else
 					tSubject = x.." "..sender.." - "..(subject or L["No topic"])
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tSubject}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, {tSubject}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.ttsEngine = 2
 				tNewMenuEntry.isSelect = true
@@ -2087,7 +2117,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 				end
 
 				tNewMenuEntry.BuildChildren = function(self)
-					local tNewMenuParentEntrySub = SkuOptions:InjectMenuItems(self, {L["Reply"]}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySub = InjectMenuItemsNew(self, {L["Reply"]}, SkuGenericMenuItem)
 					tNewMenuParentEntrySub.dynamic = true
 					tNewMenuParentEntrySub.isSelect = true
 					tNewMenuParentEntrySub.ttsEngine = 2
@@ -2124,33 +2154,33 @@ function SkuCore:MenuBuilder(aParentEntry)
 						end
 					end
 					tNewMenuParentEntrySub.BuildChildren = function(self)
-						--local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Recepient"]}, SkuGenericMenuItem)
+						--local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Recepient"]}, SkuGenericMenuItem)
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						--local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Topic"]}, SkuGenericMenuItem)
+						--local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Topic"]}, SkuGenericMenuItem)
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
+						local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Text"]}, SkuGenericMenuItem)
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Gold"]}, SkuGenericMenuItem)
+						local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Gold"]}, SkuGenericMenuItem)
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
 						tNewMenuParentEntrySubSub.dynamic = true
 						tNewMenuParentEntrySubSub.BuildChildren = function(self)
 							for x = 1, 25 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+								local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x}, SkuGenericMenuItem)
 							end
 							for x = 1, 15 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*5 + 25}, SkuGenericMenuItem)
+								local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x*5 + 25}, SkuGenericMenuItem)
 							end
 							for x = 1, 20 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*10 + 100}, SkuGenericMenuItem)
+								local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x*10 + 100}, SkuGenericMenuItem)
 							end
 							for x = 1, 20 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*20 + 300}, SkuGenericMenuItem)
+								local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x*20 + 300}, SkuGenericMenuItem)
 							end
 							for x = 1, 23 do
-								local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {x*50 + 700}, SkuGenericMenuItem)
+								local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {x*50 + 700}, SkuGenericMenuItem)
 							end
 						end
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Items"]}, SkuGenericMenuItem)
+						local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Items"]}, SkuGenericMenuItem)
 						tNewMenuParentEntrySubSub.dynamic = true
 						tNewMenuParentEntrySubSub.BuildChildren = function(self)
 							for bag = BACKPACK_CONTAINER, NUM_BAG_SLOTS do
@@ -2164,30 +2194,30 @@ function SkuCore:MenuBuilder(aParentEntry)
 										local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID = GetContainerItemInfo(bag, slot)
 										if itemLink then
 											--dprint(bag, slot, itemLink)
-											local tNewMenuParentEntrySubSubItem = SkuOptions:InjectMenuItems(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
+											local tNewMenuParentEntrySubSubItem = InjectMenuItemsNew(self, {bag.." "..slot..": "..C_Item.GetItemNameByID(itemLink).." ("..itemCount..")"}, SkuGenericMenuItem)
 										end
 									end
 								end
 							end
 						end
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
-						local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Send"]}, SkuGenericMenuItem)
+						local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Send"]}, SkuGenericMenuItem)
 						--tNewMenuParentEntrySubSub.ttsEngine = 2
 					end
 
 					if hasItem or (money and money > 0) then
-						local tNewMenuParentEntrySub = SkuOptions:InjectMenuItems(self, {L["Attachments"]}, SkuGenericMenuItem)
+						local tNewMenuParentEntrySub = InjectMenuItemsNew(self, {L["Attachments"]}, SkuGenericMenuItem)
 						tNewMenuParentEntrySub.dynamic = true
 						--tNewMenuParentEntrySub.ttsEngine = 2
 						tNewMenuParentEntrySub.BuildChildren = function(self)
 							if (money and money > 0 and CODAmount == 0) then
-								local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Take gold"]}, SkuGenericMenuItem)
+								local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Take gold"]}, SkuGenericMenuItem)
 								--tNewMenuParentEntrySubSub.dynamic = true
 								--tNewMenuParentEntrySubSub.ttsEngine = 2
 							end
 
 							if hasItem then
-								local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {L["Take all"]}, SkuGenericMenuItem)
+								local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {L["Take all"]}, SkuGenericMenuItem)
 								--tNewMenuParentEntrySubSub.dynamic = true
 								--tNewMenuParentEntrySubSub.ttsEngine = 2
 								for y = 1, ATTACHMENTS_MAX_RECEIVE do
@@ -2196,7 +2226,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 									if itemLink then
 										local name = GetInboxItem(x, y)
 										name = name or L["Empty"]
-										local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {y.." "..name}, SkuGenericMenuItem)
+										local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {y.." "..name}, SkuGenericMenuItem)
 										--tNewMenuParentEntrySubSub.dynamic = true
 										--tNewMenuParentEntrySubSub.ttsEngine = 2
 										tNewMenuParentEntrySubSub.OnEnter = function(self, aValue, aName)
@@ -2221,7 +2251,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 						end
 					end
 
-					local tNewMenuParentEntrySub = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
+					local tNewMenuParentEntrySub = InjectMenuItemsNew(self, {L["Delete"]}, SkuGenericMenuItem)
 					--tNewMenuParentEntrySub.dynamic = true
 					--tNewMenuParentEntrySub.ttsEngine = 2
 				end
@@ -2229,15 +2259,15 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Achievements"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Achievements"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.AchievementsMenuBuilder
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Equipment manager"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Equipment manager"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["New set"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["New set"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2252,7 +2282,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					if isEquipped == true then
 						tise = " ("..L["Equipped"]..")"
 					end
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {name..tise}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(self, {name..tise}, SkuGenericMenuItem)
 					tNewMenuEntry.dynamic = true
 					tNewMenuEntry.filterable = true
 					tNewMenuEntry.BuildChildren = function(self)
@@ -2263,34 +2293,34 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Action bars"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Action bars"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MainMenuBar"].friendlyName}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["MainMenuBar"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
 			ActionBarMenuBuilder(self, "MainMenuBar", BOOKTYPE_SPELL)
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarBottomLeft"].friendlyName}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["MultiBarBottomLeft"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
 			ActionBarMenuBuilder(self, "MultiBarBottomLeft", BOOKTYPE_SPELL)
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarBottomRight"].friendlyName}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["MultiBarBottomRight"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
 			ActionBarMenuBuilder(self, "MultiBarBottomRight", BOOKTYPE_SPELL)
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarRight"].friendlyName}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["MultiBarRight"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
 			ActionBarMenuBuilder(self, "MultiBarRight", BOOKTYPE_SPELL)
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiBarLeft"].friendlyName}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["MultiBarLeft"].friendlyName}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2299,7 +2329,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 		--if HasPetSpells() then
 		if _G["PetActionBarFrame"] and _G["PetActionBarFrame"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["PetBar"].friendlyName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["PetBar"].friendlyName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
@@ -2307,7 +2337,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 		end
 		if _G["OverrideActionBar"] and _G["OverrideActionBar"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["OverrideActionBar"].friendlyName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["OverrideActionBar"].friendlyName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
@@ -2315,21 +2345,21 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 		end
 		if _G["MultiCastActionBarFrame"] and _G["MultiCastActionBarFrame"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar1"].friendlyName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["MultiCastActionBar1"].friendlyName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
 				ActionBarMenuBuilder(self, "MultiCastActionBar1", BOOKTYPE_SPELL)
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar2"].friendlyName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["MultiCastActionBar2"].friendlyName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
 				ActionBarMenuBuilder(self, "MultiCastActionBar2", BOOKTYPE_SPELL)
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["MultiCastActionBar3"].friendlyName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["MultiCastActionBar3"].friendlyName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
@@ -2338,7 +2368,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end		
 		--[[
 		if _G["ShapeshiftBar"] and _G["ShapeshiftBar"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["ShapeshiftBar"].friendlyName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["ShapeshiftBar"].friendlyName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
@@ -2348,7 +2378,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 		]]
 		--[[
 		if _G["StanceBarFrame"] and _G["StanceBarFrame"]:IsShown() == true then
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tActionBarData["StanceBarFrame"].friendlyName}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {tActionBarData["StanceBarFrame"].friendlyName}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.filterable = true
 			tNewMenuEntry.BuildChildren = function(self)
@@ -2357,26 +2387,26 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end		
 		]]
 
-		--local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {"Einstellungen"}, SkuGenericMenuItem)
+		--local tNewMenuEntry = InjectMenuItemsNew(self, {"Einstellungen"}, SkuGenericMenuItem)
 		--tNewMenuEntry.dynamic = true
 		--tNewMenuEntry.BuildChildren = function(self)
 		--end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Entfernung"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Entfernung"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Freundlich"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Freundlich"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Friendly")
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Feindlich"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Feindlich"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Hostile")
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Unbekannt"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Unbekannt"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
 			RangecheckMenuBuilder(self, "Misc")
@@ -2387,7 +2417,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Range for group members in range checks"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Range for group members in range checks"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -2404,30 +2434,30 @@ function SkuCore:MenuBuilder(aParentEntry)
 			local tEntriesFound = false
 			for i = 1, 100 do 
 				if SkuCore.RangeCheckValues.Ranges[aType][i] then 
-					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
+					local tNewSubMenuEntry = InjectMenuItemsNew(self, {i}, SkuGenericMenuItem)
 					tEntriesFound = true
 				end
 			end
 			if tEntriesFound == false then
-				local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["leer"]}, SkuGenericMenuItem)
+				local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["leer"]}, SkuGenericMenuItem)
 			end
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Spiel Tastenbelegung"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Spiel Tastenbelegung"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.BuildChildren = function(self)
-			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
+			local tNewMenuEntry1 = InjectMenuItemsNew(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
 			tNewMenuEntry1.OnAction = function(self, aValue, aName)
 				SkuCore:ResetBindings()
 				SkuOptions.Voice:OutputStringBTtts(L["Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt."], true, true, 0.2)						
 			end
-			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
+			local tNewMenuEntry1 = InjectMenuItemsNew(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2456,9 +2486,9 @@ function SkuCore:MenuBuilder(aParentEntry)
 			--for categoryConst, v in pairs(tBindings) do
 				local tNewMenuEntryCat 
 				if _G[categoryConst] then
-					tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {_G[categoryConst]}, SkuGenericMenuItem)
+					tNewMenuEntryCat = InjectMenuItemsNew(self, {_G[categoryConst]}, SkuGenericMenuItem)
 				else
-					tNewMenuEntryCat = SkuOptions:InjectMenuItems(self, {categoryConst}, SkuGenericMenuItem)
+					tNewMenuEntryCat = InjectMenuItemsNew(self, {categoryConst}, SkuGenericMenuItem)
 				end
 				tNewMenuEntryCat.dynamic = true
 				tNewMenuEntryCat.filterable = true
@@ -2506,7 +2536,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 										tFriendlyKey2 = gsub(tFriendlyKey2, "%-%-", "-"..L["Minus"])
 									end
 
-									local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {_G["BINDING_NAME_" .. commandConst2]..(tAdditionalTotemBarNameParts[commandConst2] or "")..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])}, SkuGenericMenuItem)
+									local tNewMenuEntryKey = InjectMenuItemsNew(self, {_G["BINDING_NAME_" .. commandConst2]..(tAdditionalTotemBarNameParts[commandConst2] or "")..L[" Taste 1: "]..(tFriendlyKey1 or L["nichts"])}, SkuGenericMenuItem)
 									tNewMenuEntryKey.isSelect = true
 									tNewMenuEntryKey.dynamic = true
 									tNewMenuEntryKey.OnAction = function(self, aValue, aName)
@@ -2518,8 +2548,8 @@ function SkuCore:MenuBuilder(aParentEntry)
 									tNewMenuEntryKey.index = v1.index
 									
 									tNewMenuEntryKey.BuildChildren = function(self)
-										local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Neu belegen"]}, SkuGenericMenuItem)
-										local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
+										local tNewMenuEntryKeyAction = InjectMenuItemsNew(self, {L["Neu belegen"]}, SkuGenericMenuItem)
+										local tNewMenuEntryKeyAction = InjectMenuItemsNew(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
 									end										
 								end
 							end
@@ -2530,20 +2560,20 @@ function SkuCore:MenuBuilder(aParentEntry)
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Sku Tastenbelegung"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Sku Tastenbelegung"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Alles zurücksetzen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.BuildChildren = function(self)
-			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
+			local tNewMenuEntry1 = InjectMenuItemsNew(self, {L["Wirklich zurücksetzen? (keine weitere Warnung)"]}, SkuGenericMenuItem)
 			tNewMenuEntry1.OnAction = function(self, aValue, aName)
 				SkuOptions:SkuKeyBindsResetBindings()
 				SkuOptions.Voice:OutputStringBTtts(L["Alle Tasten Belegungen wurden auf die Standardeinstellungen zurückgesetzt."], true, true, 0.2)						
 			end
-			local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
+			local tNewMenuEntry1 = InjectMenuItemsNew(self, {L["Oh nein hilfe! Ich bin ein Trottel und will doch nicht zurücksetzen"]}, SkuGenericMenuItem)
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Taste zuweisen"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -2579,7 +2609,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					tFriendlyKey1 = gsub(tFriendlyKey1, "%-%-", "-"..L["Minus"])
 				end
 
-				local tNewMenuEntryKey = SkuOptions:InjectMenuItems(self, {L[tBindingConst].." "..L["Taste"]..":"..(tFriendlyKey1 or L["nichts"])}, SkuGenericMenuItem)
+				local tNewMenuEntryKey = InjectMenuItemsNew(self, {L[tBindingConst].." "..L["Taste"]..":"..(tFriendlyKey1 or L["nichts"])}, SkuGenericMenuItem)
 				tNewMenuEntryKey.isSelect = true
 				tNewMenuEntryKey.dynamic = true
 				tNewMenuEntryKey.OnAction = function(self, aValue, aName)
@@ -2705,14 +2735,14 @@ function SkuCore:MenuBuilder(aParentEntry)
 				--tNewMenuEntryKey.index = v1.index
 				
 				tNewMenuEntryKey.BuildChildren = function(self)
-					local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Neu belegen"]}, SkuGenericMenuItem)
-					local tNewMenuEntryKeyAction = SkuOptions:InjectMenuItems(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
+					local tNewMenuEntryKeyAction = InjectMenuItemsNew(self, {L["Neu belegen"]}, SkuGenericMenuItem)
+					local tNewMenuEntryKeyAction = InjectMenuItemsNew(self, {L["Belegung löschen"]}, SkuGenericMenuItem)
 				end
 			end
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Scan settings"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Scan settings"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
 		for x = 1, 8 do
@@ -2721,7 +2751,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 				tText = tText..", "..L[SkuCore.ScanObjects[vDb]]
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["SKU_KEY_SCAN"..x].." "..tText}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {L["SKU_KEY_SCAN"..x].." "..tText}, SkuGenericMenuItem)
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.scanNumber = nil
@@ -2776,11 +2806,11 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 
 			tNewMenuEntry.BuildChildren = function(self)
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["type"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, {L["type"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					for y = 1, #SkuCore.ScanTypes  do
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuCore.ScanTypes[y].name}, SkuGenericMenuItem)
+						local tNewMenuEntry = InjectMenuItemsNew(self, {SkuCore.ScanTypes[y].name}, SkuGenericMenuItem)
 						tNewMenuEntry.OnEnter = function(self, aValue, aName)
 							SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = SkuCore.ScanTypes[y].name, SkuCore.ScanTypes[y].desc
 							self.selectTarget.tAction = "type"
@@ -2789,7 +2819,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 					end
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["add object"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, {L["add object"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					local tEmpty = true
@@ -2802,7 +2832,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 						end
 						if tFound == false then
 							tEmpty = false
-							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[v]}, SkuGenericMenuItem)
+							local tNewMenuEntry = InjectMenuItemsNew(self, {L[v]}, SkuGenericMenuItem)
 							tNewMenuEntry.OnEnter = function(self, aValue, aName)
 								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = "", ""
 								self.selectTarget.tAction = "add"
@@ -2810,10 +2840,10 @@ function SkuCore:MenuBuilder(aParentEntry)
 						end
 					end
 					if tEmpty == true then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+						local tNewMenuEntry = InjectMenuItemsNew(self, {L["Empty"]}, SkuGenericMenuItem)
 					end
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["remove object"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, {L["remove object"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					local tEmpty = true
@@ -2826,7 +2856,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 						end
 						if tFound == true then
 							tEmpty = false
-							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[v]}, SkuGenericMenuItem)
+							local tNewMenuEntry = InjectMenuItemsNew(self, {L[v]}, SkuGenericMenuItem)
 							tNewMenuEntry.OnEnter = function(self, aValue, aName)
 								SkuOptions.currentMenuPosition.textFirstLine, SkuOptions.currentMenuPosition.textFull = "", ""
 								self.selectTarget.tAction = "remove"
@@ -2834,7 +2864,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 						end
 					end
 					if tEmpty == true then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+						local tNewMenuEntry = InjectMenuItemsNew(self, {L["Empty"]}, SkuGenericMenuItem)
 					end
 
 				end
@@ -2844,49 +2874,49 @@ function SkuCore:MenuBuilder(aParentEntry)
 	end
 
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Auktionshaus"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Auktionshaus"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.AuctionHouseMenuBuilder
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Monitor"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Monitor"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.MonitorMenuBuilder
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Calendar"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Calendar"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.CalendarMenuBuilder
 
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Dial Targeting"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Dial Targeting"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.DialTargetingMenuBuilder
 
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Social"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Social"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.FriendsMenuBuilder
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Damage Meter"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Damage Meter"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.DamageMeterMenuBuilder
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Macros"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Macros"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.MacroMenuBuilder
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Best In Slot"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Best In Slot"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.bisMenuBuilder
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Atlas Loot"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Atlas Loot"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.filterable = true
 	tNewMenuParentEntry.BuildChildren = SkuCore.alIntegrationMenuBuilder
@@ -2900,14 +2930,14 @@ function SkuCore:MenuBuilder(aParentEntry)
 		[4] = L["25 Player"],
 	}
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Dungeon and raid settings"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Dungeon and raid settings"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Party"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Party"]}, SkuGenericMenuItem)
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Difficulty"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {L["Difficulty"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -2923,16 +2953,16 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 			tNewMenuEntry.BuildChildren = function(self)
 				for i, v in pairs(tDungeonDifficultyIDs) do
-					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					local tNewSubMenuEntry = InjectMenuItemsNew(self, {v}, SkuGenericMenuItem)
 				end
 			end
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Raid"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Raid"]}, SkuGenericMenuItem)
 		tNewMenuEntry.isSelect = true
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Difficulty"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {L["Difficulty"]}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.isSelect = true
 			tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -2948,7 +2978,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 			end
 			tNewMenuEntry.BuildChildren = function(self)
 				for i, v in pairs(tRaidDifficultyIDs) do
-					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+					local tNewSubMenuEntry = InjectMenuItemsNew(self, {v}, SkuGenericMenuItem)
 				end
 			end
 		end
@@ -2956,7 +2986,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 	end
 
 	if Sku.IsWrathICC then
-		local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Heirlooms"]}, SkuGenericMenuItem)
+		local tNewMenuParentEntry =  InjectMenuItemsNew(aParentEntry, {L["Heirlooms"]}, SkuGenericMenuItem)
 		tNewMenuParentEntry.dynamic = true
 		tNewMenuParentEntry.filterable = true
 		tNewMenuParentEntry.BuildChildren = SkuCore.HeirloomsMenuBuilder
@@ -2969,7 +2999,7 @@ function SkuCore:MenuBuilder(aParentEntry)
 
 
 
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	local tNewMenuEntry =  InjectMenuItemsNew(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuCore.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end

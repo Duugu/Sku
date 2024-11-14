@@ -142,7 +142,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:bisMenuBuilder()
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lists"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Lists"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
@@ -152,7 +152,7 @@ function SkuCore:bisMenuBuilder()
          if tClassSpecs[x] and tClassSpecs[x][0] then
             local className = tClassSpecs[x][0]
             if (SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass == L["On"] and x == classId) or SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass ~= L["On"] then
-               local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[className]}, SkuGenericMenuItem)
+               local tNewMenuEntry = InjectMenuItemsNew(self, {L[className]}, SkuGenericMenuItem)
                tNewMenuEntry.dynamic = true
                tNewMenuEntry.filterable = true
                tNewMenuEntry.BuildChildren = function(self)
@@ -160,16 +160,16 @@ function SkuCore:bisMenuBuilder()
                      if tClassSpecs[x][specNumber] then
                         local specName = tClassSpecs[x][specNumber]
                         if bisListData[className][specName] then
-                           local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[specName]}, SkuGenericMenuItem)
+                           local tNewMenuEntry = InjectMenuItemsNew(self, {L[specName]}, SkuGenericMenuItem)
                            tNewMenuEntry.dynamic = true
                            tNewMenuEntry.filterable = true
                            tNewMenuEntry.BuildChildren = function(self)
                               for i, v in pairs(bisListData[className][specName][phaseName]) do
-                                 local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L[v.slot_name] or v.slot_name}, SkuGenericMenuItem)
+                                 local tNewMenuEntry = InjectMenuItemsNew(self, {L[v.slot_name] or v.slot_name}, SkuGenericMenuItem)
                                  tNewMenuEntry.dynamic = true
                                  tNewMenuEntry.filterable = true
                                  tNewMenuEntry.BuildChildren = function(self)
-                                    local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enchants"]}, SkuGenericMenuItem)
+                                    local tNewMenuEntry = InjectMenuItemsNew(self, {L["Enchants"]}, SkuGenericMenuItem)
                                     tNewMenuEntry.dynamic = true
                                     tNewMenuEntry.filterable = true
                                     tNewMenuEntry.BuildChildren = function(self)
@@ -178,7 +178,7 @@ function SkuCore:bisMenuBuilder()
                                           if v.enhs[eIndex].type == "item" then
                                              local itemName = GetItemInfo(v.enhs[eIndex].id) 
                                              if itemName then
-                                                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+                                                local tNewMenuEntry = InjectMenuItemsNew(self, {itemName}, SkuGenericMenuItem)
                                                 tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
                                                    local aId = v.enhs[eIndex].id
                                                    C_Timer.After(0.1, function()
@@ -200,7 +200,7 @@ function SkuCore:bisMenuBuilder()
                                           elseif v.enhs[eIndex].type == "spell" then
                                              local itemName = GetSpellInfo(v.enhs[eIndex].id) 
                                              if itemName then
-                                                local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+                                                local tNewMenuEntry = InjectMenuItemsNew(self, {itemName}, SkuGenericMenuItem)
                                                 tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
                                                    local aId = v.enhs[eIndex].id
                                                    C_Timer.After(0.1, function()
@@ -226,7 +226,7 @@ function SkuCore:bisMenuBuilder()
                                        if v[itemIndex] ~= -1 then
                                           local itemName = GetItemInfo(v[itemIndex]) 
                                           if itemName then
-                                             local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {itemIndex.." "..itemName}, SkuGenericMenuItem)
+                                             local tNewMenuEntry = InjectMenuItemsNew(self, {itemIndex.." "..itemName}, SkuGenericMenuItem)
                                              tNewMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
                                                 local aId = v[itemIndex]
                                                 SkuCore:getItemComparisnSections(aId)
@@ -282,11 +282,11 @@ function SkuCore:bisMenuBuilder()
          end
       end
    end
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Options"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Options"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Phase"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["Phase"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -297,11 +297,11 @@ function SkuCore:bisMenuBuilder()
       end
       tNewMenuEntry.BuildChildren = function(self)
          for x = 1, #tPhases do
-            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tPhases[x]}, SkuGenericMenuItem)
+            local tNewMenuEntry = InjectMenuItemsNew(self, {tPhases[x]}, SkuGenericMenuItem)
          end
       end
 
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Show your class only"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["Show your class only"]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -311,8 +311,8 @@ function SkuCore:bisMenuBuilder()
          return SkuOptions.db.char[MODULE_NAME].bis.fiters.onlyPlayerClass or L["On"]
       end
       tNewMenuEntry.BuildChildren = function(self)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["On"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["Off"]}, SkuGenericMenuItem)
       end
    end
 end

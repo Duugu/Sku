@@ -24,13 +24,13 @@ function SkuCore:HeirloomsMenuBuilder()
    end
 
    for iCat, vCat in pairs(tItems) do
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {_G[iCat]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {_G[iCat]}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       tNewMenuEntry.filterable = true
       tNewMenuEntry.BuildChildren = function(self)         
          for iItem, _ in pairs(vCat) do
             local itemName = GetItemInfo(iItem)
-            local tNewMenuParentEntrySubSub = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+            local tNewMenuParentEntrySubSub = InjectMenuItemsNew(self, {itemName}, SkuGenericMenuItem)
             tNewMenuParentEntrySubSub.OnEnter = function(self, aValue, aName)
                _G["SkuScanningTooltip"]:ClearLines()
                _G["SkuScanningTooltip"]:SetItemByID(iItem)
@@ -42,7 +42,7 @@ function SkuCore:HeirloomsMenuBuilder()
                end
             end
             tNewMenuParentEntrySubSub.BuildChildren = function(self)         
-               tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Create"]}, SkuGenericMenuItem)
+               tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Create"]}, SkuGenericMenuItem)
                tNewMenuSubSubEntry.OnAction = function(self, aValue, aName)
                   C_Heirloom.CreateHeirloom(iItem)
                   C_Timer.After(0.001, function()
@@ -56,7 +56,7 @@ function SkuCore:HeirloomsMenuBuilder()
    end
 
    if tHasEntries == false then
-      SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["Empty"]}, SkuGenericMenuItem)
    end
    
 

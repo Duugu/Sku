@@ -1890,51 +1890,51 @@ function SkuOptions:CreateMainFrame()
 			SkuChat:CloseChat()
 
 			if #SkuOptions.Menu == 0 then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuNavMenuEntry"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["SkuNavMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuNav:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuMobMenuEntry"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["SkuMobMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuMob:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuChatMenuEntry"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["SkuChatMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuChat:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuQuestMenuEntry"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["SkuQuestMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuQuest:MenuBuilder(tNewMenuEntry)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuCoreMenuEntry"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["SkuCoreMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuCore:MenuBuilder(tNewMenuEntry)
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuAurasMenuEntry"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["SkuAurasMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuAuras:MenuBuilder(tNewMenuEntry)
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuAdventureGuideMenuEntry"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["SkuAdventureGuideMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuAdventureGuide:MenuBuilder(tNewMenuEntry)
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["SkuOptionsMenuEntry"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["SkuOptionsMenuEntry"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuOptions:MenuBuilder(tNewMenuEntry)
 				end
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Local"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["Local"]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.BuildChildren = function(self)
 					SkuOptions:MenuBuilderLocal(self, {L["Empty"]}, function(a, b, c, d) 
@@ -3610,16 +3610,16 @@ function SkuOptions:ConfirmationDialog(aParent,onOkFunc, message, yesText,noText
 	message=message or L["ConfirmationMessage"]
 	yesText=yesText or L["Yes"]
 	noText=noText or L["No"]
-	local messageEntry = SkuOptions:InjectMenuItems(aParent, {message }, SkuGenericMenuItem)
+	local messageEntry = InjectMenuItemsNew(aParent, {message }, SkuGenericMenuItem)
 	messageEntry.dynamic = true
 	messageEntry.BuildChildren = function(self)
-		local yesEntry = SkuOptions:InjectMenuItems(self, {yesText}, SkuGenericMenuItem)
+		local yesEntry = InjectMenuItemsNew(self, {yesText}, SkuGenericMenuItem)
 		yesEntry.OnAction = function(param) 
 			onOkFunc(param)
 			--SkuOptions:CloseMenu()
 		end
 
-		local noEntry = SkuOptions:InjectMenuItems(self, {noText}, SkuGenericMenuItem)
+		local noEntry = InjectMenuItemsNew(self, {noText}, SkuGenericMenuItem)
 		noEntry.OnAction = function(self)
 			--SkuOptions:CloseMenu()
 		end
@@ -3654,14 +3654,14 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 		if #aGossipListTable[index].childs == 0 then
 			--dprint(aTab, x, "ENTRIY: "..aGossipListTable[index].textFirstLine)
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenuTable, {aGossipListTable[index].textFirstLine}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(aParentMenuTable, {aGossipListTable[index].textFirstLine}, SkuGenericMenuItem)
 			if aGossipListTable[index].noMenuNumbers then
 				tNewMenuEntry.noMenuNumbers = true
 			end
 			tNewMenuEntry.filterable = true
 			if aGossipListTable[index].textFull then
 				--[[if aGossipListTable[index].textFull ~= "" then
-					local tNewSubMenuEntry = SkuOptions:InjectMenuItems(tNewMenuEntry, {"Anzeigen"}, SkuGenericMenuItem)
+					local tNewSubMenuEntry = InjectMenuItemsNew(tNewMenuEntry, {"Anzeigen"}, SkuGenericMenuItem)
 					tNewSubMenuEntry.OnAction = function()
 						--print("anzeigen: ", aGossipListTable[index].textFull)
 					end
@@ -3695,12 +3695,12 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								if aGossipListTable[index].obj.numInStock and aGossipListTable[index].obj.numInStock ~= -1 then
 									tStock = aGossipListTable[index].obj.numInStock
 								end
-								local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Kaufen"]}, SkuGenericMenuItem)
+								local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Kaufen"]}, SkuGenericMenuItem)
 								tNewSubMenuEntry.filterable = true
 								tNewSubMenuEntry.dynamic = true
 								tNewSubMenuEntry.BuildChildren = function(self)
 									for tN = 1, tStock do
-										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tN}, SkuGenericMenuItem)
+										local tNewSubMenuEntry = InjectMenuItemsNew(self, {tN}, SkuGenericMenuItem)
 										tNewSubMenuEntry.OnAction = function()
 											local trem = tN - (20 * math.floor(tN / 20))
 											tN = math.floor(tN / 20)
@@ -3724,7 +3724,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 							end
 	
-							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Left click"]}, SkuGenericMenuItem)
+							local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Left click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
 								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 								if aGossipListTable[index].obj.GetParent then
@@ -3762,7 +3762,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								end
 							end
 
-							local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Right click"]}, SkuGenericMenuItem)
+							local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Right click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
 								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." RightButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 								--print("rechts mac", aGossipListTable[index].containerFrameName, aGossipListTable[index].isBag, _G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID(), tNewSubMenuEntry.macrotext)
@@ -3790,7 +3790,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 							if aGossipListTable[index].containerFrameName and _G[aGossipListTable[index].containerFrameName] then
 								if _G[aGossipListTable[index].containerFrameName].GetBag and _G[aGossipListTable[index].containerFrameName]:GetBag() and _G[aGossipListTable[index].containerFrameName]:GetID() then
-									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Socketing"]}, SkuGenericMenuItem)
+									local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Socketing"]}, SkuGenericMenuItem)
 									tNewSubMenuEntry.macrotext = "/script SocketContainerItem(".._G[aGossipListTable[index].containerFrameName]:GetBag()..", ".._G[aGossipListTable[index].containerFrameName]:GetID()..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 									--dprint("sock mac bag", aGossipListTable[index].containerFrameName, tNewSubMenuEntry.macrotext)
 								else
@@ -3816,12 +3816,12 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									}
 									for x = 1, #tContainerSlotIDs do
 										if tContainerSlotIDs[x] == aGossipListTable[index].containerFrameName then
-											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Socketing"]}, SkuGenericMenuItem)
+											local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Socketing"]}, SkuGenericMenuItem)
 											tNewSubMenuEntry.macrotext = "/script SocketInventoryItem("..x..") SkuCore:CheckFrames()  C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"
 
 											local itemLink = GetInventoryItemLink("player", x)
 											if itemLink then
-												local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {L["Add Link to chat"]}, SkuGenericMenuItem)
+												local tNewMenuEntryItem = InjectMenuItemsNew(self, {L["Add Link to chat"]}, SkuGenericMenuItem)
 												tNewMenuEntryItem.OnAction = function(self, a, b)
 													if itemLink then
 														ChatFrame1EditBox:Show()
@@ -3859,7 +3859,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 										SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds = {}
 									end
 									if SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] then
-										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Markierung für Auto Verkaufen entfernen"]}, SkuGenericMenuItem)
+										local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Markierung für Auto Verkaufen entfernen"]}, SkuGenericMenuItem)
 										tNewSubMenuEntry.OnAction = function(self, a, b)
 											local tItemId
 											if aGossipListTable[index].obj.info then
@@ -3871,7 +3871,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											SkuOptions.db.char["SkuCore"].SellJunkCustomItemIds[tItemId] = nil
 										end
 									else
-										local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Für Auto Verkaufen markieren"]}, SkuGenericMenuItem)
+										local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Für Auto Verkaufen markieren"]}, SkuGenericMenuItem)
 										tNewSubMenuEntry.OnAction = function(self, a, b)
 											local tItemId
 											if aGossipListTable[index].obj.info then
@@ -3888,7 +3888,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 
 							if tItemId then
 								if _G[aGossipListTable[index].containerFrameName] then
-									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zerstören"]}, SkuGenericMenuItem)
+									local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Zerstören"]}, SkuGenericMenuItem)
 									tNewSubMenuEntry.OnAction = function(self, a, b)
 										local tItemId
 										if aGossipListTable[index].obj.info then
@@ -3926,7 +3926,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								if _G[aGossipListTable[index].containerFrameName] then
 									if _G[aGossipListTable[index].containerFrameName].count then
 										if _G[aGossipListTable[index].containerFrameName].count > 1 then
-											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["split"]}, SkuGenericMenuItem)
+											local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["split"]}, SkuGenericMenuItem)
 											tNewSubMenuEntry.isSelect = true
 											tNewSubMenuEntry.dynamic = true
 											tNewSubMenuEntry.OnAction = function(self, a, amount)
@@ -3946,13 +3946,13 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											end
 											tNewSubMenuEntry.BuildChildren = function(self)
 												for x = 1, _G[aGossipListTable[index].containerFrameName].count do
-													local tNewMenuSubEntryNumber = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+													local tNewMenuSubEntryNumber = InjectMenuItemsNew(self, {x}, SkuGenericMenuItem)
 												end
 											end
 										end
 									end
 
-									local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add Link to chat"]}, SkuGenericMenuItem)
+									local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Add Link to chat"]}, SkuGenericMenuItem)
 									tNewSubMenuEntry.OnAction = function(self, a, amount)
 										local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(_G[aGossipListTable[index].containerFrameName]:GetBag(), _G[aGossipListTable[index].containerFrameName]:GetID())
 										if itemLink then
@@ -3965,7 +3965,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 								else
 									if aGossipListTable[index].obj and aGossipListTable[index].obj.info.count then
 										if aGossipListTable[index].obj.info.count > 1 then
-											local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["split"]}, SkuGenericMenuItem)
+											local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["split"]}, SkuGenericMenuItem)
 											tNewSubMenuEntry.isSelect = true
 											tNewSubMenuEntry.dynamic = true
 											tNewSubMenuEntry.OnAction = function(self, a, amount)
@@ -3985,7 +3985,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 											end
 											tNewSubMenuEntry.BuildChildren = function(self)
 												for x = 1, aGossipListTable[index].obj.info.count do
-													local tNewMenuSubEntryNumber = SkuOptions:InjectMenuItems(self, {x}, SkuGenericMenuItem)
+													local tNewMenuSubEntryNumber = InjectMenuItemsNew(self, {x}, SkuGenericMenuItem)
 												end
 											end
 										end
@@ -4001,7 +4001,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			end
 		else
 			--dprint(aTab, x, "SUB: "..aGossipListTable[index].textFirstLine)
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenuTable, {aGossipListTable[index].textFirstLine}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(aParentMenuTable, {aGossipListTable[index].textFirstLine}, SkuGenericMenuItem)
 			tNewMenuEntry.filterable = true
 			if aGossipListTable[index].noMenuNumbers then
 				tNewMenuEntry.noMenuNumbers = true
@@ -4051,13 +4051,13 @@ end
 function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPath)
 	for i, v in SkuSpairs(aArgTable, function(t, a, b) if t[b].order and t[a].order then return t[b].order > t[a].order end end) do
 		if v.args and v.forAudioMenu ~= false then
-			local tParentMenu =  SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
+			local tParentMenu =  InjectMenuItemsNew(aParentMenu, {v.name}, SkuGenericMenuItem)
 			--tParentMenu.dynamic = true
 			tParentMenu.filterable = true
 			SkuOptions:IterateOptionsArgs(v.args, tParentMenu, tProfileParentPath[i])
 		else
 			if v.type == "toggle" then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(aParentMenu, {v.name}, SkuGenericMenuItem)
 				tNewMenuEntry.optionsPath = aArgTable
 				tNewMenuEntry.profilePath = tProfileParentPath
 				tNewMenuEntry.profileIndex = i
@@ -4076,8 +4076,8 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					--PlaySound(835)
 				end
 				tNewMenuEntry.BuildChildren = function(self)
-					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-					tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+					tNewMenuEntry = InjectMenuItemsNew(self, {L["On"]}, SkuGenericMenuItem)
+					tNewMenuEntry = InjectMenuItemsNew(self, {L["Off"]}, SkuGenericMenuItem)
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 					local tValue = L["On"]
@@ -4091,7 +4091,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				end
 
 			elseif v.type == "select" then
-				local tNewMenuEntry =SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
+				local tNewMenuEntry =InjectMenuItemsNew(aParentMenu, {v.name}, SkuGenericMenuItem)
 				tNewMenuEntry.optionsPath = aArgTable
 				tNewMenuEntry.profilePath = tProfileParentPath
 				tNewMenuEntry.profileIndex = i
@@ -4134,7 +4134,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					end
 
 					for key, value in ipairs(tFinalMenuEntries) do
-						SkuOptions:InjectMenuItems(self, {value}, SkuGenericMenuItem)
+						InjectMenuItemsNew(self, {value}, SkuGenericMenuItem)
 					end
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
@@ -4148,7 +4148,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					return tValue
 				end
 			elseif v.type == "range" then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(aParentMenu, {v.name}, SkuGenericMenuItem)
 				tNewMenuEntry.optionsPath = aArgTable
 				tNewMenuEntry.profilePath = tProfileParentPath
 				tNewMenuEntry.profileIndex = i
@@ -4170,10 +4170,10 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 					local tList = {}
 					for q = self.rangeMax, self.rangeMin, -1 do
 						--table.insert(tList, q)
-						local tNewSMenuEntry =SkuOptions:InjectMenuItems(self, {q}, SkuGenericMenuItem)
+						local tNewSMenuEntry =InjectMenuItemsNew(self, {q}, SkuGenericMenuItem)
 						tNewSMenuEntry.noMenuNumbers = true
 					end
-					--SkuOptions:InjectMenuItems(self, tList, SkuGenericMenuItem)
+					--InjectMenuItemsNew(self, tList, SkuGenericMenuItem)
 				end
 				tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 					return self.optionsPath[self.profileIndex]:get()
@@ -4181,7 +4181,7 @@ function SkuOptions:IterateOptionsArgs(aArgTable, aParentMenu, tProfileParentPat
 				end
 
 			elseif v.type == "execute" then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentMenu, {v.name}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(aParentMenu, {v.name}, SkuGenericMenuItem)
 				tNewMenuEntry.optionsPath = aArgTable
 				tNewMenuEntry.profilePath = tProfileParentPath
 				tNewMenuEntry.profileIndex = i

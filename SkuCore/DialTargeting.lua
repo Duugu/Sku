@@ -402,7 +402,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DialTargetingMenuBuilder()
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Enabled"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
@@ -414,13 +414,13 @@ function SkuCore:DialTargetingMenuBuilder()
       SkuCore:DialTargeting_EndableDisable()
    end
    tNewMenuEntry.BuildChildren = function(self)
-      SkuOptions:InjectMenuItems(self, {L["Party"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Raid"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Party and Raid"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["Party"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["Raid"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["Party and Raid"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["Off"]}, SkuGenericMenuItem)
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Key Sound"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Key Sound"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
@@ -431,13 +431,13 @@ function SkuCore:DialTargetingMenuBuilder()
       SkuOptions.db.profile[MODULE_NAME].dialTargeting.keySound = aName
    end
    tNewMenuEntry.BuildChildren = function(self)
-      SkuOptions:InjectMenuItems(self, {L["No sound"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["On first key"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["On second key"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["On first and second key"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["No sound"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["On first key"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["On second key"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["On first and second key"]}, SkuGenericMenuItem)
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Single key action in raids up to 10 players"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Single key action in raids up to 10 players"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.isSelect = true
@@ -449,8 +449,8 @@ function SkuCore:DialTargetingMenuBuilder()
       SkuCore:DialTargeting_EndableDisable()
    end
    tNewMenuEntry.BuildChildren = function(self)
-      SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-      SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["On"]}, SkuGenericMenuItem)
+      InjectMenuItemsNew(self, {L["Off"]}, SkuGenericMenuItem)
    end
    
 

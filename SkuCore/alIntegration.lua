@@ -203,7 +203,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
          return
       end
       --print("7)", "        ", "set", aId, AtlasLoot.Data.ItemSet.GetSetName(aId))
-      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["Set"].." "..AtlasLoot.Data.ItemSet.GetSetName(aId)}, SkuGenericMenuItem)
+      local tNewSubMenuEntry = InjectMenuItemsNew(aParent, {L["Set"].." "..AtlasLoot.Data.ItemSet.GetSetName(aId)}, SkuGenericMenuItem)
       tNewSubMenuEntry.dynamic = true
       tNewSubMenuEntry.filterable = true
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
@@ -246,7 +246,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
       end
       --print("7)", "        ", "item", SkuChat:Unescape(C_Item.GetItemNameByID(aId)))
       --print(itemID, itemType, itemSubType, itemEquipLoc, icon, classID, subclassID)
-      local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuChat:Unescape(C_Item.GetItemNameByID(aId))}, SkuGenericMenuItem)
+      local tNewSubMenuEntry = InjectMenuItemsNew(aParent, {SkuChat:Unescape(C_Item.GetItemNameByID(aId))}, SkuGenericMenuItem)
       tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
          SkuCore:getItemComparisnSections(aId)
          C_Timer.After(0.1, function()
@@ -326,12 +326,12 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
             if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] then
                for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType] do
                   if SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[invType][q] == itemLink then
-                     local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Remove from favorites"]}, SkuGenericMenuItem)
+                     local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Remove from favorites"]}, SkuGenericMenuItem)
                      return
                   end
                end
             end
-            local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Add to favorites"]}, SkuGenericMenuItem)
+            local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Add to favorites"]}, SkuGenericMenuItem)
          end
       end
       
@@ -339,7 +339,7 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
       local tName = GetSpellInfo(aId)
       if tName then
          --print("7)", "        ", "spell", aId, tName)
-         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {SkuChat:Unescape(tName)}, SkuGenericMenuItem)
+         local tNewSubMenuEntry = InjectMenuItemsNew(aParent, {SkuChat:Unescape(tName)}, SkuGenericMenuItem)
          tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
             _G["SkuScanningTooltip"]:SetSpellByID(aId)
 
@@ -384,12 +384,12 @@ function SkuCore:alIntegrationItemMenuBuilder(aParent, aType, aId, aNpcId, aInte
 
    elseif aType == "collection" then
       --print("7)", "        ", "coll", aId)
-      --local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {aId}, SkuGenericMenuItem)
+      --local tNewSubMenuEntry = InjectMenuItemsNew(aParent, {aId}, SkuGenericMenuItem)
 
 
    elseif aType == "ac" then
       --print("7)", "        ", "ac", aId)
-      --local tNewSubMenuEntry = SkuOptions:InjectMenuItems(aParent, {aId}, SkuGenericMenuItem)
+      --local tNewSubMenuEntry = InjectMenuItemsNew(aParent, {aId}, SkuGenericMenuItem)
 
 
    end
@@ -398,14 +398,14 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:alIntegrationMenuBuilder()
    if not AtlasLoot then
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["AtlasLoot addon missing"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["AtlasLoot addon missing"]}, SkuGenericMenuItem)
    end
 
    if tItemDropTable == nil then
       SkuCore:alIntegrationQueryAll()
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Search"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Search"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
@@ -414,7 +414,7 @@ function SkuCore:alIntegrationMenuBuilder()
       end
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Lists"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Lists"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
       --modules
@@ -424,13 +424,13 @@ function SkuCore:alIntegrationMenuBuilder()
          if AtlasLoot.Loader:IsModuleLoaded(tModules.module[pluginIndex].addonName) == false then
             --print("2)", "loader", AtlasLoot.Loader:LoadModule(tModules.module[pluginIndex].addonName, LoadAtlasLootModule, LOADER_STRING))
          end
-         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tModules.module[pluginIndex].tt_title}, SkuGenericMenuItem)
+         local tNewSubMenuEntry = InjectMenuItemsNew(self, {tModules.module[pluginIndex].tt_title}, SkuGenericMenuItem)
          tNewSubMenuEntry.dynamic = true
          tNewSubMenuEntry.filterable = true
          tNewSubMenuEntry.BuildChildren = function(self)
             --expansions
             for selectedGameVersion = 1, #tExpansions do
-               local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {tExpansions[selectedGameVersion]}, SkuGenericMenuItem)
+               local tNewSubMenuEntry = InjectMenuItemsNew(self, {tExpansions[selectedGameVersion]}, SkuGenericMenuItem)
                tNewSubMenuEntry.dynamic = true
                tNewSubMenuEntry.filterable = true
                tNewSubMenuEntry.BuildChildren = function(self)
@@ -448,7 +448,7 @@ function SkuCore:alIntegrationMenuBuilder()
                         local tt_text		= moduleData[contentInteralName]:GetInfo()
             
                         --print("3)", "  ", moduleIndex, tDifficulties, contentTypeName, contentIndex, contentInteralName, name, tt_title, tt_text)
-                        local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
+                        local tNewSubMenuEntry = InjectMenuItemsNew(self, {SkuChat:Unescape(moduleData[contentInteralName]:GetName())}, SkuGenericMenuItem)
                         tNewSubMenuEntry.dynamic = true
                         tNewSubMenuEntry.filterable = true
                         tNewSubMenuEntry.BuildChildren = function(self)
@@ -474,7 +474,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                  end
 
                                  --print("4)", "   ", bossIndex, tabVal.ExtraList, moduleData[contentInteralName].__numDiffEntrys, name, coinTexture, tt_title, tt_text)
-                                 local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
+                                 local tNewSubMenuEntry = InjectMenuItemsNew(self, {SkuChat:Unescape(moduleData[contentInteralName]:GetNameForItemTable(bossIndex))}, SkuGenericMenuItem)
                                  tNewSubMenuEntry.dynamic = true
                                  tNewSubMenuEntry.filterable = true
                                  tNewSubMenuEntry.BuildChildren = function(self)
@@ -485,7 +485,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                           local tt_title = bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name
                   
                                           --print("5)", "    ", difficultyIndex, name, tt_title, moduleData:GetDifficulty(contentInteralName, bossIndex, difficultyIndex))
-                                          local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name)}, SkuGenericMenuItem)
+                                          local tNewSubMenuEntry = InjectMenuItemsNew(self, {SkuChat:Unescape(bossData[difficultyIndex].diffName or tDifficulties[difficultyIndex].name)}, SkuGenericMenuItem)
                                           tNewSubMenuEntry.dynamic = true
                                           tNewSubMenuEntry.filterable = true
                                           tNewSubMenuEntry.BuildChildren = function(self)
@@ -535,7 +535,7 @@ function SkuCore:alIntegrationMenuBuilder()
                                                    end
                                                 end
                                              else
-                                                local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+                                                local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Empty"]}, SkuGenericMenuItem)
                                              end
                                           end
                                        end
@@ -552,14 +552,14 @@ function SkuCore:alIntegrationMenuBuilder()
       end
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Favorites"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Favorites"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
       for x = 1, #SkuCore.favoriteSlots do
          if SkuCore.favoriteSlots[x][1] then
             --print(SkuCore.favoriteSlots[x][1], _G[SkuCore.favoriteSlots[x][1]])
-            local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {_G[SkuCore.favoriteSlots[x][1]]}, SkuGenericMenuItem)
+            local tNewMenuEntry = InjectMenuItemsNew(self, {_G[SkuCore.favoriteSlots[x][1]]}, SkuGenericMenuItem)
             tNewMenuEntry.dynamic = true
             tNewMenuEntry.filterable = true
             tNewMenuEntry.BuildChildren = function(self)
@@ -568,7 +568,7 @@ function SkuCore:alIntegrationMenuBuilder()
                      local tPlainName = SkuChat:Unescape(SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x][y])
                      tPlainName = string.gsub(tPlainName, "%[", "")
                      tPlainName = string.gsub(tPlainName, "%]", "")
-                     local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {y.." "..tPlainName}, SkuGenericMenuItem)
+                     local tNewMenuEntry = InjectMenuItemsNew(self, {y.." "..tPlainName}, SkuGenericMenuItem)
                      tNewMenuEntry.dynamic = true
                      tNewMenuEntry.isSelect = true
                      tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -637,29 +637,29 @@ function SkuCore:alIntegrationMenuBuilder()
                         end)
                      end
                      tNewMenuEntry.BuildChildren = function(self)
-                        local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["remove"]}, SkuGenericMenuItem)
+                        local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["remove"]}, SkuGenericMenuItem)
                         if y > 1 then
-                           local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Up"]}, SkuGenericMenuItem)
+                           local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Up"]}, SkuGenericMenuItem)
                         end
                         if y < #SkuOptions.db.char[MODULE_NAME].alIntegration.favorites[x] then
-                           local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Down"]}, SkuGenericMenuItem)
+                           local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Down"]}, SkuGenericMenuItem)
                         end
                      end
                   end
                else
-                  local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+                  local tNewMenuEntry = InjectMenuItemsNew(self, {L["Empty"]}, SkuGenericMenuItem)
                end
             end
          end
       end
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Loot history"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Loot history"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.filterable = true
    tNewMenuEntry.BuildChildren = function(self)
       if #SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory > 0 then
-         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Clear list"]}, SkuGenericMenuItem)
+         local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Clear list"]}, SkuGenericMenuItem)
          tNewSubMenuEntry.isSelect = true
          tNewSubMenuEntry.OnAction = function(self, aValue, aName)
             if aName == L["Clear list"] then
@@ -673,7 +673,7 @@ function SkuCore:alIntegrationMenuBuilder()
          for q = 1, #SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory do
             local itemName = GetItemInfo(SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[q]) 
             if itemName then
-               local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {itemName}, SkuGenericMenuItem)
+               local tNewSubMenuEntry = InjectMenuItemsNew(self, {itemName}, SkuGenericMenuItem)
                tNewSubMenuEntry.OnEnter = function(self, aValue, aName, aEnterFlag)
                   local aId = SkuOptions.db.char[MODULE_NAME].alIntegration.lootHistory[q]
                   
@@ -718,7 +718,7 @@ function SkuCore:alIntegrationMenuBuilder()
             end
          end
       else
-         local tNewSubMenuEntry = SkuOptions:InjectMenuItems(self, {L["Empty"]}, SkuGenericMenuItem)
+         local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Empty"]}, SkuGenericMenuItem)
       end
 
       

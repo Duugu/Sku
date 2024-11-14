@@ -332,7 +332,7 @@ SkuGenericMenuItem = {
 		if self.dynamic == true then
 			self.children = {}
 			if self.isMultiselect == true then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Nothing selected"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, {L["Nothing selected"]}, SkuGenericMenuItem)
 				self.selectTarget = tNewMenuEntry
 			end
 			if self.isSelect == true then
@@ -712,7 +712,7 @@ SkuGenericMenuItemNew = {
 		if self.dynamic == true then
 			self.children = {}
 			if self.isMultiselect == true then
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Nothing selected"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, {L["Nothing selected"]}, SkuGenericMenuItem)
 				self.selectTarget = tNewMenuEntry
 			end
 			if self.isSelect == true then
@@ -865,7 +865,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {aEntryName}, SkuGenericMenuItem)
+	local tNewMenuEntry = InjectMenuItemsNew(aParent, {aEntryName}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.isMultiselect = true
 	tNewMenuEntry.filterable = true
@@ -873,32 +873,32 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 	tNewMenuEntry.BuildChildren = function(self)
 		self.parent.oldWpName = SkuOptions.db.profile.SkuNav.selectedWaypoint
 		if GetSubZoneText() ~= "" then
-			SkuOptions:InjectMenuItems(self, {GetSubZoneText()}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {GetSubZoneText()}, SkuGenericMenuItem)
 		end
 		if GetSubZoneText() ~= GetZoneText() then
-			SkuOptions:InjectMenuItems(self, {GetZoneText()}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {GetZoneText()}, SkuGenericMenuItem)
 		end
 		if UnitName("target") then
 			local name, realm = UnitName("target")
-			SkuOptions:InjectMenuItems(self, {name}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {name}, SkuGenericMenuItem)
 		end
 		--[[
 		if UnitPosition("player") then
 			local x, y = UnitPosition("player")
-			SkuOptions:InjectMenuItems(self, {string.format("%d", x)..";"..string.format("%d", y)}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {string.format("%d", x)..";"..string.format("%d", y)}, SkuGenericMenuItem)
 		end
 		]]
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Size"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Size"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.BuildChildren = function(self)
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Small"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {L["Small"]}, SkuGenericMenuItem)
 			tNewMenuEntry.OnEnter = function(self, aValue, aName)
 				--dprint("OnEnter Klein", self.name, value, aValue, self.selectTarget.name)
 				self.selectTarget.TMPSize = 1
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Large"]}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {L["Large"]}, SkuGenericMenuItem)
 			tNewMenuEntry.OnEnter = function(self, aValue, aName)
 				--dprint("OnEnter Groß", self.name, value, aValue, self.selectTarget.name)
 				self.selectTarget.TMPSize = 5
@@ -908,16 +908,16 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		if SkuQuest then
 			if SkuQuest:GetQuestTitlesList()  then
 				if #SkuQuest:GetQuestTitlesList() > 0 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Quests"]}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(self, {L["Quests"]}, SkuGenericMenuItem)
 						tNewMenuEntry.dynamic = true
 						tNewMenuEntry.BuildChildren = function(self)
-							local tNewMenuEntry = SkuOptions:InjectMenuItems(self, SkuQuest:GetQuestTitlesList(), SkuGenericMenuItem)
+							local tNewMenuEntry = InjectMenuItemsNew(self, SkuQuest:GetQuestTitlesList(), SkuGenericMenuItem)
 						end
 				end
 			end
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["NPC names"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["NPC names"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -966,31 +966,31 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 					for z = 1, #tSortedWaypointList do
 						--dprint(z, tSortedWaypointList[z])
 						local tMenuName = tSortedWaypointList[z]
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {tMenuName}, SkuGenericMenuItem)
+						local tNewMenuEntry = InjectMenuItemsNew(self, {tMenuName}, SkuGenericMenuItem)
 					end
 				end
 			end
 		end
 
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Zonen names"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["Zonen names"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
 			local tWaypointList = {}
 			for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones do
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, {SkuDB.DefaultWaypoints[Sku.Loc].Zones[q]}, SkuGenericMenuItem)
 				tNewMenuEntry.dynamic = true
 				tNewMenuEntry.filterable = true
 				tNewMenuEntry.BuildChildren = function(self)--continents
 					for q = 1, #SkuDB.DefaultWaypoints[Sku.Loc].Zones[self.name] do
-						local tNewMenuEntry1 = SkuOptions:InjectMenuItems(self, {SkuDB.DefaultWaypoints[Sku.Loc].Zones[self.name][q]}, SkuGenericMenuItem)
+						local tNewMenuEntry1 = InjectMenuItemsNew(self, {SkuDB.DefaultWaypoints[Sku.Loc].Zones[self.name][q]}, SkuGenericMenuItem)
 					end
 				end
 			end
 		end
 
 		--npc namen, quests von oben noch hinzufügen
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All alphabetically"]}, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, {L["All alphabetically"]}, SkuGenericMenuItem)
 		tNewMenuEntry.dynamic = true
 		tNewMenuEntry.filterable = true
 		tNewMenuEntry.BuildChildren = function(self)
@@ -1014,18 +1014,18 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 				table.insert(tSortedGlossary, k)
 			end
 
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tSortedGlossary, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, tSortedGlossary, SkuGenericMenuItem)
 		end
 
 		for i, v in pairs(SkuOptions.Glossary1[Sku.Loc]) do
-			local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
+			local tNewMenuEntry = InjectMenuItemsNew(self, {i}, SkuGenericMenuItem)
 			tNewMenuEntry.dynamic = true
 			tNewMenuEntry.BuildChildren = function(self)
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(self, v, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(self, v, SkuGenericMenuItem)
 			end
 		end
 
-		--SkuOptions:InjectMenuItems(self, {"Ab hier komplette Wortliste"}, SkuGenericMenuItem)
+		--InjectMenuItemsNew(self, {"Ab hier komplette Wortliste"}, SkuGenericMenuItem)
 		local tFullGlossary = {}
 		local tIndex = 1
 		for i, v in pairs(SkuOptions.Glossary1[Sku.Loc]) do
@@ -1045,7 +1045,7 @@ function SkuOptions:BuildMenuSegment_TitleBuilder(aParent, aEntryName)
 		for k,v in SkuSpairs(tFullGlossary) do
 			table.insert(tSortedGlossary, k)
 		end	
-		local tSubMenu = SkuOptions:InjectMenuItems(self, tSortedGlossary, SkuGenericMenuItem)
+		local tSubMenu = InjectMenuItemsNew(self, tSortedGlossary, SkuGenericMenuItem)
 		tSubMenu.removeFilter = true
 		
 	end

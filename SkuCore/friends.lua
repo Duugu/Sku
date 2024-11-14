@@ -24,7 +24,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function tAddFriendSubmenu(aParent, aIndex, aOnline, aIsBnet)
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["edit note"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(aParent, {L["edit note"]}, SkuGenericMenuItem)
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.OnAction = function(self)
       SkuOptions:EditBoxShow(
@@ -51,7 +51,7 @@ local function tAddFriendSubmenu(aParent, aIndex, aOnline, aIsBnet)
 
 
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["remove"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(aParent, {L["remove"]}, SkuGenericMenuItem)
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.OnAction = function(self)
       if aIsBnet then
@@ -68,7 +68,7 @@ local function tAddFriendSubmenu(aParent, aIndex, aOnline, aIsBnet)
    end  
 
    if aOnline == true then
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["invite"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(aParent, {L["invite"]}, SkuGenericMenuItem)
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.OnAction = function(self)
          if not aIsBnet then
@@ -77,7 +77,7 @@ local function tAddFriendSubmenu(aParent, aIndex, aOnline, aIsBnet)
          end
       end  
 
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {L["whisper"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(aParent, {L["whisper"]}, SkuGenericMenuItem)
       tNewMenuEntry.isSelect = true
       tNewMenuEntry.OnAction = function(self)
          if aIsBnet then
@@ -111,7 +111,7 @@ local function tAddWowFriend(aParent, aIndex, aOnline)
    mobile	boolean	
    ]]   
    if info.connected == true and aOnline == true then
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {"wow: "..info.name.." - online"}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(aParent, {"wow: "..info.name.." - online"}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       local tText = info.name.."\r\n"
       if info.dnd == true then
@@ -135,7 +135,7 @@ local function tAddWowFriend(aParent, aIndex, aOnline)
       end
 
    elseif info.connected ~= true and aOnline ~= true then
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {"wow: "..info.name.." - offline"}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(aParent, {"wow: "..info.name.." - offline"}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       if info.notes then
          tNewMenuEntry.textFull = L["note"]..": "..info.notes.."\r\n"
@@ -220,7 +220,7 @@ local function tAddBnetFriend(aParent, aIndex, aOnline)
       BNET_CLIENT_ARCLIGHT	GRY	Warcraft Arclight Rumble
    ]]
    if accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline == true and aOnline == true then
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {"Bnet: "..accountInfo.battleTag.." - online"}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(aParent, {"Bnet: "..accountInfo.battleTag.." - online"}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       local tText = accountInfo.battleTag.."\r\n"
       if accountInfo.isDND == true then
@@ -262,7 +262,7 @@ local function tAddBnetFriend(aParent, aIndex, aOnline)
       end
 
    elseif accountInfo and accountInfo.gameAccountInfo and accountInfo.gameAccountInfo.isOnline ~= true and aOnline ~= true then
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, {"Bnet: "..accountInfo.battleTag.." - offline"}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(aParent, {"Bnet: "..accountInfo.battleTag.." - offline"}, SkuGenericMenuItem)
       tNewMenuEntry.dynamic = true
       local tText = accountInfo.battleTag.."\r\n"
       if accountInfo.note and accountInfo.note ~= "" then
@@ -280,18 +280,18 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:FriendsMenuBuilder()
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Contacts"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Contacts"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
 
-      local tNewMenuEntryContacts = SkuOptions:InjectMenuItems(self, {L["Friend List"]}, SkuGenericMenuItem)
+      local tNewMenuEntryContacts = InjectMenuItemsNew(self, {L["Friend List"]}, SkuGenericMenuItem)
       tNewMenuEntryContacts.dynamic = true
       tNewMenuEntryContacts.filterable = true
       tNewMenuEntryContacts.OnEnter = function(self, aValue, aName, aEnterFlag)
          C_FriendList.ShowFriends()
       end
       tNewMenuEntryContacts.BuildChildren = function(self)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["add friend"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["add friend"]}, SkuGenericMenuItem)
          tNewMenuEntry.isSelect = true
          tNewMenuEntry.OnAction = function(self)
             SkuOptions:EditBoxShow("", function(self)
@@ -323,27 +323,27 @@ function SkuCore:FriendsMenuBuilder()
          end      
       end
       
-      local tNewMenuEntryIgnore = SkuOptions:InjectMenuItems(self, {L["Ignore List"]}, SkuGenericMenuItem)
+      local tNewMenuEntryIgnore = InjectMenuItemsNew(self, {L["Ignore List"]}, SkuGenericMenuItem)
       tNewMenuEntryIgnore.dynamic = true
       tNewMenuEntryIgnore.BuildChildren = function(self)
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["noch nicht implementiert"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["noch nicht implementiert"]}, SkuGenericMenuItem)
       end
 
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Who"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Who"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
 
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["noch nicht implementiert"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["noch nicht implementiert"]}, SkuGenericMenuItem)
 
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Guild"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Guild"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
 
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["noch nicht implementiert"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["noch nicht implementiert"]}, SkuGenericMenuItem)
 
    end
 end

@@ -987,16 +987,16 @@ SkuOptions.defaults = {
 
 --------------------------------------------------------------------------------------------------------------------------------------
 function SkuOptions:MenuBuilder(aParentEntry)
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	local tNewMenuEntry =  InjectMenuItemsNew(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuOptions.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Overview pages"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(tNewMenuEntry, {L["Overview pages"]}, SkuGenericMenuItem)
 	tNewMenuParentEntry.dynamic = true
 	tNewMenuParentEntry.BuildChildren = function(self)
 		for q = 1, 2 do
-			local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(self, {L["Overview page "]..q}, SkuGenericMenuItem)
+			local tNewMenuParentEntry =  InjectMenuItemsNew(self, {L["Overview page "]..q}, SkuGenericMenuItem)
 			tNewMenuParentEntry.dynamic = true
 			tNewMenuParentEntry.isSelect = true
 			tNewMenuParentEntry.pageId = nil
@@ -1056,7 +1056,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 						tPosName = L["hidden"]
 						tNumberItems = tNumberItems - 1
 					end
-					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections[tSorted[x]].locName..";"..tPosName}, SkuGenericMenuItem)
+					local tNewMenuSubEntry = InjectMenuItemsNew(self, {SkuOptions.db.profile[MODULE_NAME].overviewPages[q].overviewSections[tSorted[x]].locName..";"..tPosName}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
 					tNewMenuSubEntry.OnEnter = function(self, aValue, aName)
 						self.selectTarget.pageId = q
@@ -1065,15 +1065,15 @@ function SkuOptions:MenuBuilder(aParentEntry)
 
 					tNewMenuSubEntry.BuildChildren = function(self)
 						if tPos > 1 and tPos < 999 then
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Up"]}, SkuGenericMenuItem)
+							local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Up"]}, SkuGenericMenuItem)
 						end
 						if tPos < tNumberItems then
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Down"]}, SkuGenericMenuItem)
+							local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Down"]}, SkuGenericMenuItem)
 						end
 						if tPos == 999 then
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Show"]}, SkuGenericMenuItem)
+							local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Show"]}, SkuGenericMenuItem)
 						else
-							local tNewMenuSubSubEntry = SkuOptions:InjectMenuItems(self, {L["Hide"]}, SkuGenericMenuItem)
+							local tNewMenuSubSubEntry = InjectMenuItemsNew(self, {L["Hide"]}, SkuGenericMenuItem)
 						end
 
 					end
@@ -1082,8 +1082,8 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		end
 	end
 
-	local tNewMenuParentEntry =  SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Profil"]}, SkuGenericMenuItem)
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Auswählen"]}, SkuGenericMenuItem)
+	local tNewMenuParentEntry =  InjectMenuItemsNew(tNewMenuEntry, {L["Profil"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =InjectMenuItemsNew(tNewMenuParentEntry, {L["Auswählen"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -1092,13 +1092,13 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tList = SkuOptions.db:GetProfiles()
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tList, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, tList, SkuGenericMenuItem)
 	end
 	tNewMenuSubEntry.GetCurrentValue = function(self, aValue, aName)
 		return SkuOptions.db:GetCurrentProfile()
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["New"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =InjectMenuItemsNew(tNewMenuParentEntry, {L["New"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = false
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -1126,7 +1126,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		end)
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Kopieren von"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =InjectMenuItemsNew(tNewMenuParentEntry, {L["Kopieren von"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -1135,13 +1135,13 @@ function SkuOptions:MenuBuilder(aParentEntry)
 	end
 	tNewMenuSubEntry.BuildChildren = function(self)
 		local tList = SkuOptions.db:GetProfiles()
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tList, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, tList, SkuGenericMenuItem)
 	end
 	tNewMenuSubEntry.GetCurrentValue = function(self, aValue, aName)
 		return SkuOptions.db:GetCurrentProfile()
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {"Löschen"}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =InjectMenuItemsNew(tNewMenuParentEntry, {"Löschen"}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.isSelect = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
@@ -1156,10 +1156,10 @@ function SkuOptions:MenuBuilder(aParentEntry)
 				table.insert(tClean, v)
 			end
 		end
-		local tNewMenuEntry = SkuOptions:InjectMenuItems(self, tClean, SkuGenericMenuItem)
+		local tNewMenuEntry = InjectMenuItemsNew(self, tClean, SkuGenericMenuItem)
 	end
 	
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuParentEntry, {L["Zurücksetzen"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =InjectMenuItemsNew(tNewMenuParentEntry, {L["Zurücksetzen"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		SkuOptions.db:ResetProfile()
@@ -1173,7 +1173,7 @@ function SkuOptions:MenuBuilder(aParentEntry)
 		SkuCore:UpdateCurrentTalentSet()
 	end
 
-	local tNewMenuSubEntry =SkuOptions:InjectMenuItems(tNewMenuEntry, {L["Fehlende Audio Wörter kopieren"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry =InjectMenuItemsNew(tNewMenuEntry, {L["Fehlende Audio Wörter kopieren"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.OnAction = function(self, aValue, aName)
 		if SkuOptions.db.realm then

@@ -4,7 +4,7 @@ local L = Sku.L
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 local function CreateTextBox(aParent, name, message, setterFunction, aMultilineFlag, aContent)
-    local tNewTextMenuEntry = SkuOptions:InjectMenuItems(aParent, { name }, SkuGenericMenuItem)
+    local tNewTextMenuEntry = InjectMenuItemsNew(aParent, { name }, SkuGenericMenuItem)
 
     tNewTextMenuEntry.OnAction = function(self)
         PlaySound(88)
@@ -26,14 +26,14 @@ local function MacroMenuBuilderNew(aParent)
         end)
     end)
 
-    local tScopeMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["MacroScope"] }, SkuGenericMenuItem)
+    local tScopeMenuEntry = InjectMenuItemsNew(aParent, { L["MacroScope"] }, SkuGenericMenuItem)
     tScopeMenuEntry.dynamic = true
     tScopeMenuEntry.BuildChildren = function(self)
-        local tGlobalMenuEntry = SkuOptions:InjectMenuItems(self, { L["MacroScopeGlobal"] }, SkuGenericMenuItem)
+        local tGlobalMenuEntry = InjectMenuItemsNew(self, { L["MacroScopeGlobal"] }, SkuGenericMenuItem)
         tGlobalMenuEntry.OnAction = function(self)
             aParent["MacroScope"] = nil
         end
-        local tCharMenuEntry = SkuOptions:InjectMenuItems(self, { L["MacroScopeChar"] }, SkuGenericMenuItem)
+        local tCharMenuEntry = InjectMenuItemsNew(self, { L["MacroScopeChar"] }, SkuGenericMenuItem)
         tCharMenuEntry.OnAction = function(self)
             aParent["MacroScope"] = 1
         end
@@ -47,7 +47,7 @@ local function MacroMenuBuilderNew(aParent)
         end)
     end, true)
 
-    local tCreateMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["CreateMacro"] }, SkuGenericMenuItem)
+    local tCreateMenuEntry = InjectMenuItemsNew(aParent, { L["CreateMacro"] }, SkuGenericMenuItem)
     tCreateMenuEntry.OnAction = function(self)
         if aParent["Name"] == nil or aParent["Name"] == '' then
             SkuOptions.Voice:OutputStringBTtts(L["MissingMacroName"], false, true, 0.2)
@@ -70,7 +70,7 @@ end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 function MacroMenuBuilderEntryButtons(aParent)
-    local tDeleteEntry = SkuOptions:InjectMenuItems(aParent, { L["Delete"] }, SkuGenericMenuItem)
+    local tDeleteEntry = InjectMenuItemsNew(aParent, { L["Delete"] }, SkuGenericMenuItem)
     tDeleteEntry.dynamic = true
     tDeleteEntry.BuildChildren = function(menuEntry) 
         SkuOptions:ConfirmationDialog(menuEntry, function(self)
@@ -113,7 +113,7 @@ function MacroMenuBuilderList(aParent, isGlobal)
 
     for i = from, to do
         local name, iconTexture, body, isLocal = GetMacroInfo(i)
-        local tListEntry = SkuOptions:InjectMenuItems(aParent, { name }, SkuGenericMenuItem)
+        local tListEntry = InjectMenuItemsNew(aParent, { name }, SkuGenericMenuItem)
         tListEntry.dynamic = true
         tListEntry["Id"] = i
         tListEntry.BuildChildren = MacroMenuBuilderEntryButtons
@@ -133,13 +133,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:MacroMenuBuilder()
     local aParent = self
-    local tNewMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["NewMacro"] }, SkuGenericMenuItem)
+    local tNewMenuEntry = InjectMenuItemsNew(aParent, { L["NewMacro"] }, SkuGenericMenuItem)
     tNewMenuEntry.dynamic = true
     tNewMenuEntry.BuildChildren = MacroMenuBuilderNew
-    local tGlobalMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["MacroScopeGlobal"] }, SkuGenericMenuItem)
+    local tGlobalMenuEntry = InjectMenuItemsNew(aParent, { L["MacroScopeGlobal"] }, SkuGenericMenuItem)
     tGlobalMenuEntry.dynamic = true
     tGlobalMenuEntry.BuildChildren = MacroMenuBuilderGlobalList
-    local tCharMenuEntry = SkuOptions:InjectMenuItems(aParent, { L["MacroScopeChar"] }, SkuGenericMenuItem)
+    local tCharMenuEntry = InjectMenuItemsNew(aParent, { L["MacroScopeChar"] }, SkuGenericMenuItem)
     tCharMenuEntry.dynamic = true
     tCharMenuEntry.BuildChildren = MacroMenuBuilderCharList
 end

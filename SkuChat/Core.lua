@@ -2399,7 +2399,7 @@ function SkuChat:OnInitialize()
 				if tWpName then
 					local tWpObj = SkuNav:GetWaypointData2(tWpName)
 					if tWpObj then
-						local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Start route to waypoint"]}, SkuGenericMenuItem)
+						local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["Start route to waypoint"]}, SkuGenericMenuItem)
 						tNewMenuEntry.isSelect = true
 						tNewMenuEntry.OnAction = function(self)
 							--print("tWpName", tWpName)
@@ -2427,7 +2427,7 @@ function SkuChat:OnInitialize()
 						end
 						_G["SkuScanningTooltip"]:ClearLines()
 						if ltSkuCurrentLineDatalinktTextFirstLine ~= "" then
-							local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["link"].." "..w.." "..ltSkuCurrentLineDatalinktTextFirstLine}, SkuGenericMenuItem)
+							local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["link"].." "..w.." "..ltSkuCurrentLineDatalinktTextFirstLine}, SkuGenericMenuItem)
 							tNewMenuEntry.tSkuCurrentLineDatalinktTextFirstLine = ltSkuCurrentLineDatalinktTextFirstLine
 							tNewMenuEntry.tSkuCurrentLineDatalinktItemId = SkuGetItemIdFromItemLink(tLineDataitemLinks[w]) 
 							local ttf = SkuCore:AuctionHouseGetAuctionPriceHistoryData(tNewMenuEntry.tSkuCurrentLineDatalinktItemId)
@@ -2456,7 +2456,7 @@ function SkuChat:OnInitialize()
 
 
 				--
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["send to channel"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["send to channel"]}, SkuGenericMenuItem)
 				tNewMenuEntry.OnEnter = function(self, aValue, aName)
 					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 				end
@@ -2471,7 +2471,7 @@ function SkuChat:OnInitialize()
 					end
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["send item link to channel"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["send item link to channel"]}, SkuGenericMenuItem)
 				tNewMenuEntry.OnEnter = function(self, aValue, aName)
 					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 				end
@@ -2501,7 +2501,7 @@ function SkuChat:OnInitialize()
 						for slotId = 1, tNumSlots do
 							local icon, itemCount, locked, quality, readable, lootable, itemLink, isFiltered, noValue, itemID, isBound = GetContainerItemInfo(bagId, slotId)
 							if itemLink then
-								local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(itemLink).." ("..L["Bag"]..")"}, SkuGenericMenuItem)
+								local tNewMenuEntryItem = InjectMenuItemsNew(self, {SkuChat:Unescape(itemLink).." ("..L["Bag"]..")"}, SkuGenericMenuItem)
 								tNewMenuEntryItem.OnAction = function(self, a, b)
 									if tAccessID then
 										SkuChat:SetEditboxToCustom("CHANNEL", tAccessID, itemLink)
@@ -2518,7 +2518,7 @@ function SkuChat:OnInitialize()
 					for slotId = 1, 40 do
 						local itemLink = GetInventoryItemLink("player", slotId)
 						if itemLink then
-							local tNewMenuEntryItem = SkuOptions:InjectMenuItems(self, {SkuChat:Unescape(itemLink).." ("..L["Equipped"]..")"}, SkuGenericMenuItem)
+							local tNewMenuEntryItem = InjectMenuItemsNew(self, {SkuChat:Unescape(itemLink).." ("..L["Equipped"]..")"}, SkuGenericMenuItem)
 							tNewMenuEntryItem.OnAction = function(self, a, b)
 								if tAccessID then
 									SkuChat:SetEditboxToCustom("CHANNEL", tAccessID, itemLink)
@@ -2534,7 +2534,7 @@ function SkuChat:OnInitialize()
 
 				--whisper
 				if tLineData.arg2 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["whisper sender"]}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["whisper sender"]}, SkuGenericMenuItem)
 					tNewMenuEntry.OnEnter = function(self, aValue, aName)
 						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 					end
@@ -2551,7 +2551,7 @@ function SkuChat:OnInitialize()
 	
 				--invite
 				if tLineData.arg2 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["invite sender"]}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["invite sender"]}, SkuGenericMenuItem)
 					tNewMenuEntry.OnEnter = function(self, aValue, aName)
 						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 					end
@@ -2571,7 +2571,7 @@ function SkuChat:OnInitialize()
 
 				--copy sender name
 				if tLineData.arg2 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["copy sender name"]}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["copy sender name"]}, SkuGenericMenuItem)
 					tNewMenuEntry.OnEnter = function(self, aValue, aName)
 						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 					end
@@ -2587,7 +2587,7 @@ function SkuChat:OnInitialize()
 				end
 
 				--copy line
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["copy chat line"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["copy chat line"]}, SkuGenericMenuItem)
 				tNewMenuEntry.OnEnter = function(self, aValue, aName)
 					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 				end
@@ -2602,7 +2602,7 @@ function SkuChat:OnInitialize()
 				end
 
 				--copy all lines
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["copy all chat lines"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["copy all chat lines"]}, SkuGenericMenuItem)
 				tNewMenuEntry.OnEnter = function(self, aValue, aName)
 					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 				end
@@ -2631,7 +2631,7 @@ function SkuChat:OnInitialize()
 
 				--add friend
 				if tLineData.arg2 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["add sender to friend list"]}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["add sender to friend list"]}, SkuGenericMenuItem)
 					tNewMenuEntry.OnEnter = function(self, aValue, aName)
 						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 					end
@@ -2651,7 +2651,7 @@ function SkuChat:OnInitialize()
 
 				--ignore
 				if tLineData.arg2 then
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["ignore sender"]}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["ignore sender"]}, SkuGenericMenuItem)
 					tNewMenuEntry.OnEnter = function(self, aValue, aName)
 						tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 					end
@@ -2665,7 +2665,7 @@ function SkuChat:OnInitialize()
 					end
 				end	
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Clear history"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["Clear history"]}, SkuGenericMenuItem)
 				tNewMenuEntry.OnEnter = function(self, aValue, aName)
 					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 				end
@@ -2685,7 +2685,7 @@ function SkuChat:OnInitialize()
 				C_Timer.After(0.01, function() CloseChatMenuHelper() end)
 				end
 
-				local tNewMenuEntry = SkuOptions:InjectMenuItems(SkuOptions.Menu, {L["Delete tab"]}, SkuGenericMenuItem)
+				local tNewMenuEntry = InjectMenuItemsNew(SkuOptions.Menu, {L["Delete tab"]}, SkuGenericMenuItem)
 				tNewMenuEntry.OnEnter = function(self, aValue, aName)
 					tSkuCurrentLineDatalinktTextFirstLine, tSkuCurrentLineDatalinktTextFull, tSkuCurrentLineDatalinktItemId = "", "", ""
 				end

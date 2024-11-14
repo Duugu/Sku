@@ -552,12 +552,12 @@ end
 function SkuChat:MenuBuilder(aParentEntry)
 	BN_WHISPER = L["Battle Net whisper"]
 
-	local tNewMenuSubEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Tabs"]}, SkuGenericMenuItem)
+	local tNewMenuSubEntry = InjectMenuItemsNew(aParentEntry, {L["Tabs"]}, SkuGenericMenuItem)
 	tNewMenuSubEntry.dynamic = true
 	tNewMenuSubEntry.filterable = true
 	tNewMenuSubEntry.BuildChildren = function(self)
 		for x = 1, #SkuOptions.db.profile["SkuChat"].tabs do
-			local tTabEntry = SkuOptions:InjectMenuItems(self, {SkuOptions.db.profile["SkuChat"].tabs[x].name}, SkuGenericMenuItem)
+			local tTabEntry = InjectMenuItemsNew(self, {SkuOptions.db.profile["SkuChat"].tabs[x].name}, SkuGenericMenuItem)
 			if SkuOptions.db.profile["SkuChat"].tabs[x].name == L["Combat Log"] or SkuOptions.db.profile["SkuChat"].tabs[x].name == L["Audio Log"] then
 				tTabEntry.dynamic = false
 				
@@ -569,7 +569,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 				tTabEntry.filterable = true
 				tTabEntry.tabIndex = x
 				tTabEntry.BuildChildren = function(self)
-					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["Rename"]}, SkuGenericMenuItem)
+					local tNewTabEntry = InjectMenuItemsNew(self, {L["Rename"]}, SkuGenericMenuItem)
 					tNewTabEntry.isSelect = true
 					tNewTabEntry.OnAction = function(self, aValue, aName)
 						--print("OnAction Rename", "aValue", aValue, "aName", aName, self.name, self.parent.name, self.parent.tabIndex)
@@ -586,7 +586,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 							end
 						end)					
 					end
-					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
+					local tNewTabEntry = InjectMenuItemsNew(self, {L["Delete"]}, SkuGenericMenuItem)
 					tNewTabEntry.isSelect = true
 					tNewTabEntry.OnAction = function(self, aValue, aName)
 						--print("OnAction Delete", "aValue", aValue, "aName", aName, self.name, self.parent.name)
@@ -595,7 +595,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 						SkuOptions.Voice:OutputStringBTtts(L["Deleted"], false, true, 0.2, nil, nil, nil, 2)
 					end
 			
-					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["set all message types and channels to inactive"]}, SkuGenericMenuItem)
+					local tNewTabEntry = InjectMenuItemsNew(self, {L["set all message types and channels to inactive"]}, SkuGenericMenuItem)
 					tNewTabEntry.isSelect = true
 					tNewTabEntry.tabIndex = x
 					tNewTabEntry.OnAction = function(self, aValue, aName)
@@ -612,7 +612,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 						self.parent:OnUpdate(self.parent)
 					end
 
-					local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["set all message types and channels to text"]}, SkuGenericMenuItem)
+					local tNewTabEntry = InjectMenuItemsNew(self, {L["set all message types and channels to text"]}, SkuGenericMenuItem)
 					tNewTabEntry.isSelect = true
 					tNewTabEntry.tabIndex = x
 					tNewTabEntry.OnAction = function(self, aValue, aName)
@@ -629,13 +629,13 @@ function SkuChat:MenuBuilder(aParentEntry)
 						self.parent:OnUpdate(self.parent)
 					end
 
-					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Nachrichtentypen"]}, SkuGenericMenuItem)
+					local tNewMenuSubEntry = InjectMenuItemsNew(self, {L["Nachrichtentypen"]}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
 					tNewMenuSubEntry.filterable = true
 					tNewMenuSubEntry.BuildChildren = function(self)
 						for i, v in pairs(SkuChat.ChatFrameMessageTypes) do
 							if i ~= "SKU" then
-								local tCatEntry = SkuOptions:InjectMenuItems(self, {_G[i]}, SkuGenericMenuItem)
+								local tCatEntry = InjectMenuItemsNew(self, {_G[i]}, SkuGenericMenuItem)
 								tCatEntry.dynamic = true
 								tCatEntry.filterable = true
 								tCatEntry.catType = i
@@ -655,7 +655,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 											tName = tName.." ("..L["Inactive"]..")"
 										end
 
-										local tTypeEntry = SkuOptions:InjectMenuItems(self, {tName}, SkuGenericMenuItem)
+										local tTypeEntry = InjectMenuItemsNew(self, {tName}, SkuGenericMenuItem)
 										tTypeEntry.dynamic = true
 										tTypeEntry.isSelect = true
 										tTypeEntry.typeType = w
@@ -681,14 +681,14 @@ function SkuChat:MenuBuilder(aParentEntry)
 										end
 										tTypeEntry.BuildChildren = function(self)
 											if tActive == play then
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
+												local tEDEntry = InjectMenuItemsNew(self, {L["Text"]}, SkuGenericMenuItem)
+												local tEDEntry = InjectMenuItemsNew(self, {L["Inactive"]}, SkuGenericMenuItem)
 											elseif tActive == true then
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
+												local tEDEntry = InjectMenuItemsNew(self, {L["Audio"]}, SkuGenericMenuItem)
+												local tEDEntry = InjectMenuItemsNew(self, {L["Inactive"]}, SkuGenericMenuItem)
 											else
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
-												local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
+												local tEDEntry = InjectMenuItemsNew(self, {L["Audio"]}, SkuGenericMenuItem)
+												local tEDEntry = InjectMenuItemsNew(self, {L["Text"]}, SkuGenericMenuItem)
 											end
 										end
 									end
@@ -697,7 +697,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 						end
 					end
 
-					local tNewMenuSubEntry = SkuOptions:InjectMenuItems(self, {L["Channels"]}, SkuGenericMenuItem)
+					local tNewMenuSubEntry = InjectMenuItemsNew(self, {L["Channels"]}, SkuGenericMenuItem)
 					tNewMenuSubEntry.dynamic = true
 					tNewMenuSubEntry.filterable = true
 					tNewMenuSubEntry.BuildChildren = function(self)
@@ -724,7 +724,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 								SkuOptions.db.profile["SkuChat"].tabs[x].channels[#SkuOptions.db.profile["SkuChat"].tabs[x].channels + 1] = {name = tChannelList[q + 1], status = false}
 							end
 
-							local tTypeEntry = SkuOptions:InjectMenuItems(self, {tNumber.."#"..tChannelList[q + 1].." ("..tStatus..")"}, SkuGenericMenuItem)
+							local tTypeEntry = InjectMenuItemsNew(self, {tNumber.."#"..tChannelList[q + 1].." ("..tStatus..")"}, SkuGenericMenuItem)
 							tTypeEntry.dynamic = true
 							tTypeEntry.isSelect = true
 							tTypeEntry.shortName = tChannelList[q + 1] 
@@ -747,20 +747,20 @@ function SkuChat:MenuBuilder(aParentEntry)
 							end
 							tTypeEntry.BuildChildren = function(self)
 								if tActive == play then
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
+									local tEDEntry = InjectMenuItemsNew(self, {L["Text"]}, SkuGenericMenuItem)
+									local tEDEntry = InjectMenuItemsNew(self, {L["Inactive"]}, SkuGenericMenuItem)
 								elseif tActive == true then
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Inactive"]}, SkuGenericMenuItem)
+									local tEDEntry = InjectMenuItemsNew(self, {L["Audio"]}, SkuGenericMenuItem)
+									local tEDEntry = InjectMenuItemsNew(self, {L["Inactive"]}, SkuGenericMenuItem)
 								else
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Audio"]}, SkuGenericMenuItem)
-									local tEDEntry = SkuOptions:InjectMenuItems(self, {L["Text"]}, SkuGenericMenuItem)
+									local tEDEntry = InjectMenuItemsNew(self, {L["Audio"]}, SkuGenericMenuItem)
+									local tEDEntry = InjectMenuItemsNew(self, {L["Text"]}, SkuGenericMenuItem)
 								end
 							end
 						end
 					end			
 					
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Audio notification on chat message"]}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(self, {L["Audio notification on chat message"]}, SkuGenericMenuItem)
 					tNewMenuEntry.dynamic = true
 					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.filterable = true
@@ -773,7 +773,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 					end
 					tNewMenuEntry.BuildChildren = function(self)
 						for i, v in pairs(SkuCore.outputSoundFiles) do
-							tNewMenuEntry = SkuOptions:InjectMenuItems(self, {v}, SkuGenericMenuItem)
+							tNewMenuEntry = InjectMenuItemsNew(self, {v}, SkuGenericMenuItem)
 						end
 					end
 					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
@@ -784,7 +784,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 						end
 					end
 					--[[
-					local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Audio notification on chat message"]}, SkuGenericMenuItem)
+					local tNewMenuEntry = InjectMenuItemsNew(self, {L["Audio notification on chat message"]}, SkuGenericMenuItem)
 					tNewMenuEntry.dynamic = true
 					tNewMenuEntry.isSelect = true
 					tNewMenuEntry.OnAction = function(self, aValue, aName)
@@ -795,8 +795,8 @@ function SkuChat:MenuBuilder(aParentEntry)
 						end
 					end
 					tNewMenuEntry.BuildChildren = function(self)
-						tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["On"]}, SkuGenericMenuItem)
-						tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Off"]}, SkuGenericMenuItem)
+						tNewMenuEntry = InjectMenuItemsNew(self, {L["On"]}, SkuGenericMenuItem)
+						tNewMenuEntry = InjectMenuItemsNew(self, {L["Off"]}, SkuGenericMenuItem)
 					end
 					tNewMenuEntry.GetCurrentValue = function(self, aValue, aName)
 						local tValue = L["On"]
@@ -812,7 +812,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 			end
 		end
 
-		local tNewTabEntry = SkuOptions:InjectMenuItems(self, {L["New Tab"]}, SkuGenericMenuItem)
+		local tNewTabEntry = InjectMenuItemsNew(self, {L["New Tab"]}, SkuGenericMenuItem)
 		tNewTabEntry.isSelect = true
 		tNewTabEntry.OnAction = function(self, aValue, aName)
 			--print("OnAction New Tab", "aValue", aValue, "aName", aName, self.name, self.parent.name)
@@ -832,7 +832,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 	end
 
 
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Filters"]}, SkuGenericMenuItem)
+	local tNewMenuEntry = InjectMenuItemsNew(aParentEntry, {L["Filters"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.filterable = true
 	tNewMenuEntry.isSelect = true
@@ -868,28 +868,28 @@ function SkuChat:MenuBuilder(aParentEntry)
 		end
 	end
 	tNewMenuEntry.BuildChildren = function(self)
-		local tEntry = SkuOptions:InjectMenuItems(self, {L["Add new entry"]}, SkuGenericMenuItem)
+		local tEntry = InjectMenuItemsNew(self, {L["Add new entry"]}, SkuGenericMenuItem)
 		tEntry.OnEnter = function(self, aValue, aName)
 			self.selectTarget.deleteName = nil
 		end			
 
 		for i, v in pairs(SkuOptions.db.profile[MODULE_NAME].chatSettings.filter.terms) do
-			local tEntry = SkuOptions:InjectMenuItems(self, {i}, SkuGenericMenuItem)
+			local tEntry = InjectMenuItemsNew(self, {i}, SkuGenericMenuItem)
 			tEntry.dynamic = true
 			tEntry.OnEnter = function(self, aValue, aName)
 				self.selectTarget.deleteName = i
 			end			
 			tEntry.BuildChildren = function(self)
-				SkuOptions:InjectMenuItems(self, {L["Delete"]}, SkuGenericMenuItem)
+				InjectMenuItemsNew(self, {L["Delete"]}, SkuGenericMenuItem)
 			end
 		end
 	end
 
 	-- combat log
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Combat Log"]}, SkuGenericMenuItem)
+	local tNewMenuEntry = InjectMenuItemsNew(aParentEntry, {L["Combat Log"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
-		local tEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+		local tEntry = InjectMenuItemsNew(self, {L["Enabled"]}, SkuGenericMenuItem)
 		tEntry.dynamic = true
 		tEntry.isSelect = true
 		tEntry.GetCurrentValue = function(self, aValue, aName)
@@ -908,11 +908,11 @@ function SkuChat:MenuBuilder(aParentEntry)
 			SkuChat:InitCombatLogTab()	
 		end
 		tEntry.BuildChildren = function(self)
-			SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {L["No"]}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {L["Yes"]}, SkuGenericMenuItem)
 		end		
 
-		local tFiltersEntry = SkuOptions:InjectMenuItems(self, {L["Filters"]}, SkuGenericMenuItem)
+		local tFiltersEntry = InjectMenuItemsNew(self, {L["Filters"]}, SkuGenericMenuItem)
 		tFiltersEntry.dynamic = true
 		tFiltersEntry.BuildChildren = function(self)
 			for i, v in pairs(SkuOptions.db.global["SkuChat"].CombatLogFilters) do
@@ -921,10 +921,10 @@ function SkuChat:MenuBuilder(aParentEntry)
 					tName = tName.." ("..L["current filter"]..")"
 				end
 
-				local tFilterEntry = SkuOptions:InjectMenuItems(self, {tName}, SkuGenericMenuItem)
+				local tFilterEntry = InjectMenuItemsNew(self, {tName}, SkuGenericMenuItem)
 				tFilterEntry.dynamic = true
 				tFilterEntry.BuildChildren = function(self)
-					local tNewFilterEntry = SkuOptions:InjectMenuItems(self, {L["Select"]}, SkuGenericMenuItem)
+					local tNewFilterEntry = InjectMenuItemsNew(self, {L["Select"]}, SkuGenericMenuItem)
 					tNewFilterEntry.isSelect = true
 					tNewFilterEntry.OnAction = function(self, aValue, aName)
 						SkuOptions.db.profile["SkuChat"].CombatLog.currentFilter = i
@@ -936,7 +936,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 						end)
 					end
 
-					local tEventsEntry = SkuOptions:InjectMenuItems(self, {L["Events"]}, SkuGenericMenuItem)
+					local tEventsEntry = InjectMenuItemsNew(self, {L["Events"]}, SkuGenericMenuItem)
 					tEventsEntry.dynamic = true
 					tEventsEntry.BuildChildren = function(self)
 						for iMainMtype, vMainMtype in pairs(SkuChat.CombatConfigMessageTypes) do
@@ -947,7 +947,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 								end
 							end
 							local tMenuname = vMainMtype.text .. (tEnabled == true and " (enabled)" or "")
-							local tEventEntry = SkuOptions:InjectMenuItems(self, {tMenuname}, SkuGenericMenuItem)
+							local tEventEntry = InjectMenuItemsNew(self, {tMenuname}, SkuGenericMenuItem)
 							tEventEntry.dynamic = true
 							tEventEntry.isSelect = true
 							tEventEntry.GetCurrentValue = function(self, aValue, aName)
@@ -975,14 +975,14 @@ function SkuChat:MenuBuilder(aParentEntry)
 								end)								
 							end
 							tEventEntry.BuildChildren = function(self)
-								SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-								SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+								InjectMenuItemsNew(self, {L["No"]}, SkuGenericMenuItem)
+								InjectMenuItemsNew(self, {L["Yes"]}, SkuGenericMenuItem)
 							end	
 					
 						end
 					end
 
-					local tEventsEntry = SkuOptions:InjectMenuItems(self, {L["Source"]}, SkuGenericMenuItem)
+					local tEventsEntry = InjectMenuItemsNew(self, {L["Source"]}, SkuGenericMenuItem)
 					tEventsEntry.dynamic = true
 					tEventsEntry.BuildChildren = function(self)
 						for iMainMtype, vMainMtype in pairs(SkuChat.CombatConfigUnitTypes) do
@@ -992,7 +992,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 							end
 
 							local tMenuname = vMainMtype.text .. (tEnabled == true and " (enabled)" or "")
-							local tEventEntry = SkuOptions:InjectMenuItems(self, {tMenuname}, SkuGenericMenuItem)
+							local tEventEntry = InjectMenuItemsNew(self, {tMenuname}, SkuGenericMenuItem)
 							tEventEntry.dynamic = true
 							tEventEntry.isSelect = true
 							tEventEntry.GetCurrentValue = function(self, aValue, aName)
@@ -1016,14 +1016,14 @@ function SkuChat:MenuBuilder(aParentEntry)
 								end)								
 							end
 							tEventEntry.BuildChildren = function(self)
-								SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-								SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+								InjectMenuItemsNew(self, {L["No"]}, SkuGenericMenuItem)
+								InjectMenuItemsNew(self, {L["Yes"]}, SkuGenericMenuItem)
 							end	
 					
 						end
 					end
 
-					local tEventsEntry = SkuOptions:InjectMenuItems(self, {L["Destination"]}, SkuGenericMenuItem)
+					local tEventsEntry = InjectMenuItemsNew(self, {L["Destination"]}, SkuGenericMenuItem)
 					tEventsEntry.dynamic = true
 					tEventsEntry.BuildChildren = function(self)
 						for iMainMtype, vMainMtype in pairs(SkuChat.CombatConfigUnitTypes) do
@@ -1033,7 +1033,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 							end
 
 							local tMenuname = vMainMtype.text .. (tEnabled == true and " (enabled)" or "")
-							local tEventEntry = SkuOptions:InjectMenuItems(self, {tMenuname}, SkuGenericMenuItem)
+							local tEventEntry = InjectMenuItemsNew(self, {tMenuname}, SkuGenericMenuItem)
 							tEventEntry.dynamic = true
 							tEventEntry.isSelect = true
 							tEventEntry.GetCurrentValue = function(self, aValue, aName)
@@ -1057,15 +1057,15 @@ function SkuChat:MenuBuilder(aParentEntry)
 								end)								
 							end
 							tEventEntry.BuildChildren = function(self)
-								SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-								SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+								InjectMenuItemsNew(self, {L["No"]}, SkuGenericMenuItem)
+								InjectMenuItemsNew(self, {L["Yes"]}, SkuGenericMenuItem)
 							end	
 					
 						end
 					end
 
 					if i > 3 then
-						local tNewFilterEntry = SkuOptions:InjectMenuItems(self, {L["Delete this filter"]}, SkuGenericMenuItem)
+						local tNewFilterEntry = InjectMenuItemsNew(self, {L["Delete this filter"]}, SkuGenericMenuItem)
 						tNewFilterEntry.isSelect = true
 						tNewFilterEntry.OnAction = function(self, aValue, aName)
 							SkuOptions.db.global["SkuChat"].CombatLogFilters[i] = nil
@@ -1086,7 +1086,7 @@ function SkuChat:MenuBuilder(aParentEntry)
 				end
 			end
 
-			local tNewFilterEntry = SkuOptions:InjectMenuItems(self, {L["Add new filter"]}, SkuGenericMenuItem)
+			local tNewFilterEntry = InjectMenuItemsNew(self, {L["Add new filter"]}, SkuGenericMenuItem)
 			tNewFilterEntry.isSelect = true
 			tNewFilterEntry.OnAction = function(self, aValue, aName)
 				SkuOptions:EditBoxShow(
@@ -1159,10 +1159,10 @@ function SkuChat:MenuBuilder(aParentEntry)
 	end
 
 	--audio log
-	local tNewMenuEntry = SkuOptions:InjectMenuItems(aParentEntry, {L["Audio Log"]}, SkuGenericMenuItem)
+	local tNewMenuEntry = InjectMenuItemsNew(aParentEntry, {L["Audio Log"]}, SkuGenericMenuItem)
 	tNewMenuEntry.dynamic = true
 	tNewMenuEntry.BuildChildren = function(self)
-		local tEntry = SkuOptions:InjectMenuItems(self, {L["Enabled"]}, SkuGenericMenuItem)
+		local tEntry = InjectMenuItemsNew(self, {L["Enabled"]}, SkuGenericMenuItem)
 		tEntry.dynamic = true
 		tEntry.isSelect = true
 		tEntry.GetCurrentValue = function(self, aValue, aName)
@@ -1181,13 +1181,13 @@ function SkuChat:MenuBuilder(aParentEntry)
 			SkuChat:InitAudioLogTab()
 		end
 		tEntry.BuildChildren = function(self)
-			SkuOptions:InjectMenuItems(self, {L["No"]}, SkuGenericMenuItem)
-			SkuOptions:InjectMenuItems(self, {L["Yes"]}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {L["No"]}, SkuGenericMenuItem)
+			InjectMenuItemsNew(self, {L["Yes"]}, SkuGenericMenuItem)
 		end	
 	end
 
 
-	local tNewMenuEntry =  SkuOptions:InjectMenuItems(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
+	local tNewMenuEntry =  InjectMenuItemsNew(aParentEntry, {L["Options"]}, SkuGenericMenuItem)
 	tNewMenuEntry.filterable = true
 	SkuOptions:IterateOptionsArgs(SkuChat.options.args, tNewMenuEntry, SkuOptions.db.profile[MODULE_NAME])
 end

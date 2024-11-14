@@ -5,13 +5,14 @@
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r40.1
-	- menu speed enhanced
-	- Blizzard has added a load of senseless objects with Cata. Chairs, campfires, lamps, and a lot more. I've removed a lot of those objects. But there are still loads of objects with no use. Like sign posts. I can't remove them. So, a waypoint like "object 50501 hunter rise thunder bluff 2" most likely doesn't mean this is on hunter rise in thunder bluff. It just is a sign post somewhere, showing the direction to the hunter rise.
-	- close waypoints to routes targets by distance list added, with CLOSE prefix
-	- waypoint > close route now lets you select an entry point and is listing up to 10 linked waypoints close to the destination to choose from
-	- close routes cache calculation added
-	- a lot of map issues fixed	
-
+	- Map data / routes are still the old ones from Wrath. Maybe they are update with the next update.
+	- The audio menu speed is enhanced a lot.
+	- A lot of meaningless objects are removed. Blizzard has added a load of senseless objects with Cata. Chairs, campfires, lamps, and a lot more. I've removed a lot of those objects. But there are still loads of objects with no use. Like sign posts. I can't remove them. So, a waypoint like "object 50501 hunter rise thunder bluff 2" most likely doesn't mean this is on hunter rise in thunder bluff. It just is a sign post somewhere, showing the direction to the hunter rise.
+	- All default waypoints to creatures and objects are added to the shift + f10 Destinations by Distance list. So, this list now has also routes to waypoints that are not directly linked by mappers, and where you had to use shift + f9 > ... > Close route before. These waypoints are prefix with "Close".
+	- The newly added "Close" routes in the shift + f10 menu are depending on a pre-calculated table of close linked waypoints. This pre-calculated table is build by Sku on the very first time you're logging in and will be saved. The calculation is done in the background and will degrade the frame rate. It shouldn't have much noticable effects (at least if your computer isn't from the last century). It may take up to 2 hours or even more. If it is completed, the pre-calculation won't happen again until a Sku update is adding new map data. If you're logging out or reloading before the pre-calculation is completed, it will be continued on next login / after reload. The shift + f10 menu will list only close routes with already pre-calculation completed for them. Therefore, you won't find a lot of them directly after first login, and their number will grow and grow, until the full pre-calculation is completed.
+	- The Navigation > Waypoint > Select > Current Map by Distance > ... > Close route (shift + f9) menu now has an entry point selection like the routes menu (shift + f10), instead of just silently taking the closest linked waypoint an an entry point. Additionally the menu is listing up to 10 close waypoints to select from, instead of just taking the closest one.
+	- A lot of map issues are fixed. Like with Strangle, Barrens, etc.
+	- Adapted the action button menu to the new flyouts.
 
 
 

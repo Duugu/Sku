@@ -206,11 +206,11 @@ end
 ---------------------------------------------------------------------------------------------------------------------------------------
 function SkuCore:DamageMeterMenuBuilder()
    if Details == nil then
-      local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
+      local tNewMenuEntry = InjectMenuItemsNew(self, {L["Details addon not installed"]}, SkuGenericMenuItem)
       return
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Reports"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Reports"]}, SkuGenericMenuItem)
    tNewMenuEntry.dynamic = true
    tNewMenuEntry.BuildChildren = function(self)
       local tEmpty = true
@@ -226,12 +226,12 @@ function SkuCore:DamageMeterMenuBuilder()
 
          local tAll
          if tCombatId == -1 then
-            tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["All fights"]}, SkuGenericMenuItem)
+            tNewMenuEntry = InjectMenuItemsNew(self, {L["All fights"]}, SkuGenericMenuItem)
             tAll = true
          elseif tCombatId == 0 then
-            tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Current fight"].. " "..(Combat.enemy or L["unknown"]).." "..tTime}, SkuGenericMenuItem)
+            tNewMenuEntry = InjectMenuItemsNew(self, {L["Current fight"].. " "..(Combat.enemy or L["unknown"]).." "..tTime}, SkuGenericMenuItem)
          else
-            tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Fight"].." "..tCombatId.. " "..(Combat.enemy or L["unknown"]).." "..tTime}, SkuGenericMenuItem)
+            tNewMenuEntry = InjectMenuItemsNew(self, {L["Fight"].." "..tCombatId.. " "..(Combat.enemy or L["unknown"]).." "..tTime}, SkuGenericMenuItem)
          end
          tNewMenuEntry.combatID = tCombatId
          tNewMenuEntry.OnEnter = function(self, aValue, aName)
@@ -256,7 +256,7 @@ function SkuCore:DamageMeterMenuBuilder()
                   if (Combat.playing_solo == true and actor.displayName == tPlayerName) or (Combat.playing_solo ~= true and Combat.raid_roster[actor.displayName]) or tAll == true then
                      self.dynamic = true
                      local efDPS = math.floor(actor.total / Combat:GetCombatTime())
-                     tNewMenuEntrysub = SkuOptions:InjectMenuItems(self, {actor.nome.." "..(SkuQuest.classesFriendly[actor.classe] or L["unknown"]).." "..efDPS.." DPS"}, SkuGenericMenuItem)                  
+                     tNewMenuEntrysub = InjectMenuItemsNew(self, {actor.nome.." "..(SkuQuest.classesFriendly[actor.classe] or L["unknown"]).." "..efDPS.." DPS"}, SkuGenericMenuItem)                  
                      if actor.spells and actor.spells._ActorTable then
                         tNewMenuEntrysub.spells = actor.spells._ActorTable
                      end
@@ -299,11 +299,11 @@ function SkuCore:DamageMeterMenuBuilder()
          Combat = Details:GetCombat(tCombatId) -- -1 all
       end
       if tEmpty == true then
-         local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["empty"]}, SkuGenericMenuItem)
+         local tNewMenuEntry = InjectMenuItemsNew(self, {L["empty"]}, SkuGenericMenuItem)
       end
    end
 
-   local tNewMenuEntry = SkuOptions:InjectMenuItems(self, {L["Clear data"]}, SkuGenericMenuItem)
+   local tNewMenuEntry = InjectMenuItemsNew(self, {L["Clear data"]}, SkuGenericMenuItem)
    tNewMenuEntry.isSelect = true
    tNewMenuEntry.OnAction = function(self, aValue, aName)
       Details:ResetSegmentData()
