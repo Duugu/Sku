@@ -1,8 +1,3 @@
-This addon is not longer in active development.
-
-
-----------------------------------------------------------------------------
-
 If you are a first time user of the Sku addon, you need to follow the installation / setup instructions before installing updates from this page:<br>
 ENGLISH - First Steps Guide:<br>
 <a href="https://duugu.github.io/Sku/first_steps_en.html">https://duugu.github.io/Sku/first_steps_en.html</a><br>
@@ -27,7 +22,7 @@ DEUTSCH - Erste Schritte:<br>
 - [SkuCustomBeaconsEssential r32](https://github.com/Duugu/SkuCustomBeaconsEssential/releases/download/r32/SkuCustomBeaconsEssential-r32-wrath.zip) (October 11th 2023)<br>
 
 *Addons for sighted players:* <br>
-- [SkuMapper r4.3](https://github.com/Duugu/SkuMapper/releases/download/r4.3/SkuMapper-r4.3-cata.zip) (November 13th 2024), mapping addon for sighted players<br>
+- [SkuMapper r4.4](https://github.com/Duugu/SkuMapper/releases/download/r4.4/SkuMapper-r4.4-cata.zip) (November 24th 2024), mapping addon for sighted players<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
