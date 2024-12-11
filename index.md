@@ -26,7 +26,7 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
-## Changes in Wow Login Tool r1.8
+## Changes in Wow Login Tool r1.9.1
 - Updated the tool for Classic Era, Classic Cataclysm, and Retail. Don't forget to copy the contents of CopyTheContentOfThisFolderToInterface and overwrite the existing files!
 - Retail specific: if any of your favorite character slots is empty (ignore this, if you don't know what favorite slots are), then the tool will move characters up until all fav slots are used.
 - Issues and bugs are possible. Please report them.
