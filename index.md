@@ -9,11 +9,11 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Wow Login Tool r1.9.1](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.9.1/WoW_Login_Tool-r1.9.1.zip) (December 11th 2024)<br>
 - [Sku CATA r40.02](https://github.com/Duugu/Sku/releases/download/r40.2/Sku-r40.2-cata.zip) (November 13th 2024)<br>
 - [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
 
 *Older updates:* <br>
-- [Wow Login Tool r1.8](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.8/WoW_Login_Tool-r1.8.zip) (March 18th 2024)<br>
 - [SkuAudioData fast de r3 (GERMAN)](https://github.com/Duugu/SkuAudioData_fast_de/releases/download/r3/SkuAudioData_fast_de-r3-wrath.zip) (April 15th 2023)<br>
 - [SkuAudioData_en r12 (ENGLISH)](https://github.com/Duugu/SkuAudioData_en/releases/download/r12/SkuAudioData_en-r12-wrath.zip) (October 11th 2023)<br>
 - [SkuAudioData r40 (GERMAN)](https://github.com/Duugu/SkuAudioData/releases/download/r40/SkuAudioData-r40-wrath.zip) (October 11th 2023)<br>
@@ -26,6 +26,15 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Wow Login Tool r1.8
+- Updated the tool for Classic Era, Classic Cataclysm, and Retail. Don't forget to copy the contents of CopyTheContentOfThisFolderToInterface and overwrite the existing files!
+- Retail specific: if any of your favorite character slots is empty (ignore this, if you don't know what favorite slots are), then the tool will move characters up until all fav slots are used.
+- Issues and bugs are possible. Please report them.
+- Known issues:
+	- In era/cata processing the character selection screen can take quite a while (one minute or more) for if there is no existing character on the selected server
+	- In retail some servers are locked for players without existing characters on them. The tool can't detect them. They can be selected. But creating a character will fail and the tool will report an incorrect character name.
+
+
 ## Changes in Sku r40.02
 - Map data / routes are still the old ones from Wrath. Maybe they are update with the next update.
 - The audio menu speed is enhanced a lot.
