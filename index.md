@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Wow Login Tool r1.9.1](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.9.1/WoW_Login_Tool-r1.9.1.zip) (December 11th 2024)<br>
+- [Wow Login Tool r1.10](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.10/WoW_Login_Tool-r1.10.zip) (December 12th 2024)<br>
 - [Sku CATA r40.02](https://github.com/Duugu/Sku/releases/download/r40.2/Sku-r40.2-cata.zip) (November 13th 2024)<br>
 - [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
 
@@ -26,6 +26,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Wow Login Tool r1.10
+- Added low res textures, hopefully making the tool work with retail and low screen resolutions.
+
 ## Changes in Wow Login Tool r1.9.1
 - Updated the tool for Classic Era, Classic Cataclysm, and Retail. Don't forget to copy the contents of CopyTheContentOfThisFolderToInterface and overwrite the existing files!
 - Retail specific: if any of your favorite character slots is empty (ignore this, if you don't know what favorite slots are), then the tool will move characters up until all fav slots are used.
