@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Wow Login Tool r1.11](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.11/WoW_Login_Tool-r1.11.zip) (December 13th 2024)<br>
+- [Wow Login Tool r1.12](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.12/WoW_Login_Tool-r1.12.zip) (December 13th 2024)<br>
 - [Sku CATA r40.02](https://github.com/Duugu/Sku/releases/download/r40.2/Sku-r40.2-cata.zip) (November 13th 2024)<br>
 - [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
 
@@ -26,6 +26,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Wow Login Tool r1.12
+- Added a log (log.txt in scripts root folder) to make troubleshoting easier. The existing log content is deleted on each script start.
+
 ## Changes in Wow Login Tool r1.11
 - Added a key bind to take a full screen screenshot and add it to the Windows clipboard: control + alt + f2
 
