@@ -368,6 +368,53 @@ SkuOptions.options = {
 			},
 		},
 	
+		debugModule={
+			name = L["Debug Module"],
+			type = "group",
+			order = 30,
+			args= {
+				chatNotification = {
+					order = 1,
+					name = L["Output errors in chat"] ,
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].debugModule.chatNotification = val
+						Sku.debugModule:SetErrorNotifications()
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].debugModule.chatNotification
+					end
+				},
+				audioNotification = {
+					order = 2,
+					name = L["Sku audio notification on errors"] ,
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].debugModule.audioNotification = val
+						Sku.debugModule:SetErrorNotifications()
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].debugModule.audioNotification
+					end
+				},
+				bugsackAudioNotificationEnabled = {
+					order = 3,
+					name = L["Bugsack audio notification enabled"] ,
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].debugModule.bugsackAudioNotificationEnabled = val
+						Sku.debugModule:SetErrorNotifications()
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].debugModule.bugsackAudioNotificationEnabled
+					end
+				},
+			},
+		},
+
 		allModules={
 			name = L["Schnellwahl"],
 			type = "group",
@@ -982,6 +1029,11 @@ SkuOptions.defaults = {
 	debugOptions = {
 		soundOnError = false,
 		showError = L["fehler anzeigen default"],
+		},
+		debugModule = {
+			chatNotification = false,
+			audioNotification = false,
+			bugsackAudioNotificationEnabled = false,
 		},
 	}
 

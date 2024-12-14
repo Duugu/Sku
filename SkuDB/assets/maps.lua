@@ -8,6 +8,7 @@ SkuDB.ContinentIds = {
     [730] = {Name_lang = {["deDE"] = "The Maelstrom", ["enUS"] = "The Maelstrom",},}, 
     [648] = {Name_lang = {["deDE"] = "lostisles", ["enUS"] = "lostisles",},}, 
     [728] = {Name_lang = {["deDE"] = "thebattleforgilneas", ["enUS"] = "thebattleforgilneas",},}, 
+    [861] = {Name_lang = {["deDE"] = "Geschmolzene Front", ["enUS"] = "Molten Front",},}, 
 }
 
 SkuDB.zoneIDs = {

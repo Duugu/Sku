@@ -3104,23 +3104,7 @@ function SkuNav:PLAYER_LOGIN(...)
 
 	--SkuNav:SkuNavMMOpen()
 
-
 	ClosestWaypointsCache = SkuOptions.db.global["SkuNav"].closestWaypointsCache
-
-	C_Timer.After(60, function()
-		local isNew = false
-		if not ClosestWaypointsCache then
-			isNew = true
-		end
-
-		local version = GetAddOnMetadata("Sku", "Version")
-		if not SkuOptions.db.global["SkuNav"].lastVersion or SkuOptions.db.global["SkuNav"].lastVersion ~= version then
-			isNew = true
-			SkuOptions.db.global["SkuNav"].lastVersion = version
-		end
-
-		SkuNav:CalculateCloseWaypointsCache(isNew)
-	end)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -3230,7 +3214,9 @@ function SkuNav:PLAYER_ENTERING_WORLD(aEvent, aIsInitialLogin, aIsReloadingUi)
 		SkuNav:UpdateQuickWP(tWaypointName, true)
 	end			
 
-
+	C_Timer.After(90, function()
+		SkuNav:RestartCalculateCloseWaypointsCache()
+	end)	
 	
 end
 
@@ -3929,7 +3915,14 @@ end
 local tSkuCoroutineControlFrameOnUpdateTimer = 0
 local tCounter = 0
 local tProgressStep = 10000
+local calculateCloseWaypointsCacheCoroutine = nil
 function SkuNav:CalculateCloseWaypointsCache(aFullRecalculation)
+	if SkuOptions.db.profile[MODULE_NAME].cacheCalculation.enabled ~= true then
+		return
+	end
+	
+	local tFirstTick = false
+
 	if aFullRecalculation == true then
 		ClosestWaypointsCache = {}
 	end
@@ -3951,16 +3944,19 @@ function SkuNav:CalculateCloseWaypointsCache(aFullRecalculation)
 		return
 	end
 
-	print("Starting one-time close waypoint cache background calculation. Performance may be degraded until this completed. Remaining steps:", floor(overall/tProgressStep))
-	
 	tCounter = 0
 
-	local co = coroutine.create(function()
+	calculateCloseWaypointsCacheCoroutine = coroutine.create(function()
 		local tNumberDone = 0
 		for ci, cv in pairs(SkuDB.ContinentIds) do
 			for i, v in pairs(WaypointCacheLookupPerContintent[ci]) do
 				if WaypointCache[i].typeId ~= 3 and not WaypointCache[i].links.byName then
 					if not ClosestWaypointsCache[v] then
+						if SkuOptions.db.profile[MODULE_NAME].cacheCalculation.enabled ~= true then
+							return
+						end
+
+						local tSpeed = SkuOptions.db.profile[MODULE_NAME].cacheCalculation.speed * 1000						
 						local taWpNameX, taWpNameY = WaypointCache[i].worldX, WaypointCache[i].worldY
 
 						local tFoundWp = {
@@ -3968,6 +3964,11 @@ function SkuNav:CalculateCloseWaypointsCache(aFullRecalculation)
 							distance = 100000,
 						}
 						for tWpIndex, tWpName in pairs(WaypointCacheLookupPerContintent[ci]) do
+							local fPlayerPosX = UnitPosition("player")
+							if not fPlayerPosX then
+								coroutine.yield()
+							end
+
 							if WaypointCache[tWpIndex].links.byId then
 								local sx, sy, dx, dy = WaypointCache[tWpIndex].worldX, WaypointCache[tWpIndex].worldY, taWpNameX, taWpNameY
 								local tDistance = floor(sqrt((sx - dx) ^ 2 + (sy - dy) ^ 2)), sqrt((sx - dx) ^ 2 + (sy - dy) ^ 2)
@@ -3980,29 +3981,25 @@ function SkuNav:CalculateCloseWaypointsCache(aFullRecalculation)
 										end
 									end
 								end
+
+								if tNumberDone > tSpeed then
+									tNumberDone = 0
+									coroutine.yield()
+								end
+								tNumberDone = tNumberDone + 1										
 							end
 						end
 
 						ClosestWaypointsCache[WaypointCache[i].name] = tFoundWp
-						tCounter = tCounter + 1
 
+						tCounter = tCounter + 1
 						if lastPrint < math.floor(tCounter/tProgressStep) then
 							lastPrint = math.floor(tCounter/tProgressStep)
 							SkuOptions.db.global["SkuNav"].closestWaypointsCache = ClosestWaypointsCache
-							print("Close waypoint cache calculation progress:", lastPrint, "of", floor(overall/tProgressStep))
+							print("Close waypoint cache calculation:", lastPrint, "of", floor(overall/tProgressStep))
 						end
-	
-						if tNumberDone > 0 then
-							tNumberDone = 0
-							coroutine.yield()
-						end
-						tNumberDone = tNumberDone + 1								
-					else
-						--print("there", i)
 					end
-		
 				end
-
 			end
 		end
 	end)
@@ -4015,18 +4012,40 @@ function SkuNav:CalculateCloseWaypointsCache(aFullRecalculation)
 		tSkuCoroutineControlFrameOnUpdateTimer = tSkuCoroutineControlFrameOnUpdateTimer + time
 		if tSkuCoroutineControlFrameOnUpdateTimer < 0.01 then return end
 
-		if coroutine.status(co) == "suspended" then
-			coroutine.resume(co)
-		else
-			if tCoCompleted == false then
-				print("Close waypoint cache calculation completed")
-				tCoCompleted = true
-				SkuOptions.db.global["SkuNav"].closestWaypointsCache = ClosestWaypointsCache
+		local fPlayerPosX = UnitPosition("player")
+		if fPlayerPosX then
+			if coroutine.status(calculateCloseWaypointsCacheCoroutine) == "suspended" and SkuOptions.db.profile[MODULE_NAME].cacheCalculation.enabled == true then
+				if tFirstTick == false then
+					print("One-time close waypoint cache background calculation. Remaining steps:", floor(overall/tProgressStep))
+					tFirstTick = true
+				end
+
+				coroutine.resume(calculateCloseWaypointsCacheCoroutine)
+			elseif  SkuOptions.db.profile[MODULE_NAME].cacheCalculation.enabled == true then
+				if tCoCompleted == false then
+					print("Close waypoint cache calculation completed")
+					tCoCompleted = true
+					SkuOptions.db.global["SkuNav"].closestWaypointsCache = ClosestWaypointsCache
+				end
 			end
 		end
-
 	end)
+end
 
+---------------------------------------------------------------------------------------------------------------------------------------
+function SkuNav:RestartCalculateCloseWaypointsCache()
+	if SkuOptions.db.profile["SkuNav"].cacheCalculation.enabled == true then
+		local isNew = false
+		if not ClosestWaypointsCache then
+			isNew = true
+		end
 
+		local version = SkuDB.routedata.version
+		if not SkuOptions.db.global["SkuNav"].lastVersion or SkuOptions.db.global["SkuNav"].lastVersion ~= version then
+			isNew = true
+			SkuOptions.db.global["SkuNav"].lastVersion = version
+		end
 
+		SkuNav:CalculateCloseWaypointsCache(isNew)
+	end
 end

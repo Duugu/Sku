@@ -588,28 +588,30 @@ local beginTime = debugprofilestop()
 						local uType, uToken, _, _, _ = UnitPowerType("player")
 						powerType = uToken
 					end
-					local power = UnitPower("player", tPowerTypes[powerType].number)
-					local powerMax = UnitPowerMax("player", tPowerTypes[powerType].number)
-					local pwrPer = math.floor((power / powerMax) * 100)
-					if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyStartAt >= 0 and (math.floor(pwrPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyStartAt) then
-						local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.steps)
-						local tNumberToUtterance = ((math.floor(pwrPer / tsinglestep)) * tsinglestep) / 10
+					if powerType and tPowerTypes[powerType].number then
+						local power = UnitPower("player", tPowerTypes[powerType].number)
+						local powerMax = UnitPowerMax("player", tPowerTypes[powerType].number)
+						local pwrPer = math.floor((power / powerMax) * 100)
+						if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyStartAt >= 0 and (math.floor(pwrPer / 10) <= SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyStartAt) then
+							local tsinglestep = math.floor(100 / SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.steps)
+							local tNumberToUtterance = ((math.floor(pwrPer / tsinglestep)) * tsinglestep) / 10
 
-						tPrevPwrDir = pwrPer > tPrevPwrPer
-						local tPrevNumberToUtteranceOutput = tNumberToUtterance
-						if tPrevPwrDir == false then
-							tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
+							tPrevPwrDir = pwrPer > tPrevPwrPer
+							local tPrevNumberToUtteranceOutput = tNumberToUtterance
+							if tPrevPwrDir == false then
+								tPrevNumberToUtteranceOutput = tPrevNumberToUtteranceOutput + 1
+							end
+
+							tPrevPwrPer = pwrPer
+
+							if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
+								C_Timer.After(0.25, function()
+									SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.voice].path)
+								end)
+							end							
 						end
-
-						tPrevPwrPer = pwrPer
-
-						if SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.silentOn100and0 == false or (tPrevNumberToUtteranceOutput < 10 and tPrevNumberToUtteranceOutput > 0) then
-							C_Timer.After(0.25, function()
-								SkuCore:MonitorOutputPlayerPercent(tPrevNumberToUtteranceOutput, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.continouslyVolume, SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.instancesOnly, tVoices[SkuOptions.db.char[MODULE_NAME].aq[SkuCore.talentSet].player.power.voice].path)
-							end)
-						end							
+						ttimeMonPwr = 0
 					end
-					ttimeMonPwr = 0
 				end
 			end
 

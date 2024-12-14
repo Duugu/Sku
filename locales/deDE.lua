@@ -2656,3 +2656,11 @@ L[" set to nothing"] = " auf nichts festgelegt"
 L[" set to "] = " festgelegt auf "
 L["not available in combat"] = "nicht im kampf möglich"
 L["via"] = "über"
+
+L["Cache Calculation"] = "Cache-Berechnung"
+L["Speed (lower = better performance)"] = "Geschwindigkeit (niedriger = bessere Leistung)"
+
+L["Debug Module"] = "Debug Module"
+L["Output errors in chat"] = "Output errors in chat"
+L["Sku audio notification on errors"] = "Sku audio notification on errors"
+L["Bugsack audio notification enabled"] = "Bugsack audio notification enabled"

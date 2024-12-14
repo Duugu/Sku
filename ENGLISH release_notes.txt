@@ -4,7 +4,19 @@
 
 
 -------------------------------------------------------------------------------------------------------
-Changes in Sku r40.1
+Changes in Sku r40.3
+	- Limited the default one-time close routes background calculation speed to a value that should have no or very minor effects on the game performance. Will take much longer to complete the process though.
+	- Changed the close routes background calculation to automatically stop while you're in dungeons / raids / other instanced areas
+	- Added options under Navigation > Options > Cache Calculation to enable/disable the close routes background calculation and to set the calculation speed aka performance loss (lower speed means better performance, default is 3)
+	- Added a slash command /sku calc to enable/disable the close routes background calculation
+	- A lot of Spirit Healer waypoints added
+	- Fixed the Molten Front area
+	- LFD menu fixed
+	- Debug module added
+
+
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r40.2
 	- Map data / routes are still the old ones from Wrath. Maybe they are update with the next update.
 	- The audio menu speed is enhanced a lot.
 	- A lot of meaningless objects are removed. Blizzard has added a load of senseless objects with Cata. Chairs, campfires, lamps, and a lot more. I've removed a lot of those objects. But there are still loads of objects with no use. Like sign posts. I can't remove them. So, a waypoint like "object 50501 hunter rise thunder bluff 2" most likely doesn't mean this is on hunter rise in thunder bluff. It just is a sign post somewhere, showing the direction to the hunter rise.
@@ -15,6 +27,10 @@ Changes in Sku r40.1
 	- Adapted the action button menu to the new flyouts.
 
 
+-------------------------------------------------------------------------------------------------------
+Changes in Sku r40.1
+	- Broken waypoints in TBC and Lich King zones fixed.
+	- Broken orgimmar waypoints fixed.
 
 -------------------------------------------------------------------------------------------------------
 Changes in Sku r40.0

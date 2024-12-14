@@ -417,7 +417,7 @@ function SkuCore:Build_LFDQueueFrame(aParentChilds)
          end
 
          --dungeon types
-         local tSelectedValue = UIDropDownMenu_GetSelectedValue(_G["LFDQueueFrameTypeDropDown"]) or "nil"
+         local tSelectedValue = LFDQueueFrame.type or "nil"
          local tSelectedName = L["specific"]
          if tSelectedValue then
             if type(tSelectedValue) == "number" then

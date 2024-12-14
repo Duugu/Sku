@@ -335,10 +335,6 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].outputDistance
 			end
 		},
-
-
-
-		
 		routesMaxDistance = {
 			order = 20,
 			name = L["Maximum distance for destinations in routes list"],
@@ -352,6 +348,39 @@ SkuNav.options = {
 				return SkuOptions.db.profile[MODULE_NAME].routesMaxDistance
 			end
 		},
+	cacheCalculation={
+		name = L["Cache Calculation"],
+		type = "group",
+		order = 21,
+		args= {
+				enabled = {
+					order = 1,
+					name = L["Enabled"],
+					desc = "",
+					type = "toggle",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].cacheCalculation.enabled = val
+					end,
+					get = function(info)
+						SkuNav:RestartCalculateCloseWaypointsCache()
+						return SkuOptions.db.profile[MODULE_NAME].cacheCalculation.enabled
+					end
+				},
+				speed = {
+					order = 2,
+					name = L["Speed (lower = better performance)"] ,
+					desc = "",
+					type = "range",
+					set = function(info,val)
+						SkuOptions.db.profile[MODULE_NAME].cacheCalculation.speed = val
+					end,
+					get = function(info)
+						return SkuOptions.db.profile[MODULE_NAME].cacheCalculation.speed
+					end
+				},	
+						
+			},		
+		},		
 	}
 }
 
@@ -388,6 +417,10 @@ SkuNav.defaults = {
 	},
 	outputDistance = 0,
 	routesMaxDistance = 5000,
+	cacheCalculation = {
+		enabled = true,
+		speed = 3,
+	},
 }
 
 local slower = string.lower

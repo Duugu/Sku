@@ -1,9 +1,9 @@
 ## Interface: 40401
 ## Interface-Wrath: 30404
-## Title: Sku (40.1)
+## Title: Sku (40.3)
 ## SavedVariables: SkuOptionsDB, SkuTranslatedData
 ## Dependencies: SkuBeaconSoundsets
-## Version: 40.1
+## Version: 40.3
 ## X-Curse-Project-ID: 880019
 
 SkuAudioData\assets\SkuAudioFileIndex.lua
@@ -113,3 +113,5 @@ SkuZOptions\data.lua
 SkuZOptions\templates.lua
 SkuZOptions\Options.lua
 SkuZOptions\SkuKeyBinds.lua
+
+debug\core.lua

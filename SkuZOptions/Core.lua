@@ -59,6 +59,7 @@ function SkuOptions:CloseMenu()
 	if SkuOptions:IsMenuOpen() == true then
 		_G["OnSkuOptionsMain"]:GetScript("OnClick")(_G["OnSkuOptionsMain"], SkuOptions.db.profile["SkuOptions"].SkuKeyBinds["SKU_KEY_OPENMENU"].key)
 		_G["SkuDebug"]:Hide()
+		Sku.debugModule:SetErrorNotifications()
 	end
 end
 
@@ -227,6 +228,18 @@ function SkuOptions:SlashFunc(input, aSilent)
 	input:gsub(pattern, function(c) fields[#fields+1] = c end)
 
 	if fields then
+		if fields[1] == "calc" then
+			if SkuOptions.db.profile["SkuNav"].cacheCalculation.enabled == true then
+				SkuOptions.db.profile["SkuNav"].cacheCalculation.enabled = false
+				print("Close waypoint cache calculation "..L["Aus"])
+			elseif SkuOptions.db.profile["SkuNav"].cacheCalculation.enabled == false then
+				SkuOptions.db.profile["SkuNav"].cacheCalculation.enabled = true
+				print("Close waypoint cache calculation "..L["Ein"])
+			end
+					
+			SkuNav:RestartCalculateCloseWaypointsCache()
+		end
+
 		if fields[1] == "version" then
 			local name, title, notes, enabled, loadable, reason, security = GetAddOnInfo("Sku")
 			print(title)
@@ -3047,6 +3060,8 @@ function SkuOptions:OnInitialize()
 	SkuOptions:CreateMainFrame()
 	SkuOptions.Filterstring = ""
 	SkuOptions:CreateMenuFrame()
+
+	Sku.debugModule:SetErrorNotifications(SkuOptions.db.profile["SkuOptions"].debugModule.chatNotification, SkuOptions.db.profile["SkuOptions"].debugModule.audioNotification, SkuOptions.db.profile["SkuOptions"].debugModule.bugsackAudioNotificationEnabled)
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
