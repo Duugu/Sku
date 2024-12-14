@@ -9,7 +9,7 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
-- [Wow Login Tool r1.14](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.14/WoW_Login_Tool-r1.14.zip) (December 14th 2024)<br>
+- [Wow Login Tool r1.15](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.15/WoW_Login_Tool-r1.15.zip) (December 14th 2024)<br>
 - [Sku CATA r40.02](https://github.com/Duugu/Sku/releases/download/r40.2/Sku-r40.2-cata.zip) (November 13th 2024)<br>
 - [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
 
@@ -26,6 +26,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Wow Login Tool r1.13
+- Second try to fix the Retail Outdated Addons bug.
+  
 ## Changes in Wow Login Tool r1.13
 - Tried to fix an issue with some screen resolutions and retail.
   
