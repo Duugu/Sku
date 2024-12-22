@@ -10,6 +10,8 @@ Changes in Sku r40.3
 	- Added options under Navigation > Options > Cache Calculation to enable/disable the close routes background calculation and to set the calculation speed aka performance loss (lower speed means better performance, default is 3)
 	- Added a slash command /sku calc to enable/disable the close routes background calculation
 	- A lot of Spirit Healer waypoints added
+	- Fixed resource notifications (mining notes, herbs)
+	- Added localized names for all resources (mining notes, herbs) for resource notifications if the game language isn't set to English
 	- Fixed the Molten Front area
 	- LFD menu fixed
 	- Debug module added

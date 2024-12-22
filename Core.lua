@@ -9,7 +9,8 @@ Sku.L = LibStub("AceLocale-3.0"):GetLocale("Sku", false)
 Sku.Loc = Sku.L["locale"]
 Sku.Locs = {"enUS", "deDE",}
 
-Sku.LocsPartly = {["deDE"] = true, ["enUS"] = true, ["zhCN"] = true, ["ruRU"] = true,}
+Sku.LocsPartly = {["deDE"] = true, ["enUS"] = true, ["zhCN"] = true, ["ruRU"] = true, ["frFR"] = true, ["esES"] = true, ["ptBR"] = true, ["koKO"] = true, ["itIT"] = true,}
+
 Sku.LocP = GetLocale()
 if not Sku.LocsPartly[GetLocale()] then
 	Sku.LocP = "enUS"
