@@ -1,4 +1,3 @@
-If you are a first time user of the Sku addon, you need to follow the installation / setup instructions before installing updates from this page:<br>
 ENGLISH - First Steps Guide:<br>
 <a href="https://duugu.github.io/Sku/first_steps_en.html">https://duugu.github.io/Sku/first_steps_en.html</a><br>
 DEUTSCH - Erste Schritte:<br>
@@ -9,8 +8,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Sku CATA r40.03](https://github.com/Duugu/Sku/releases/download/r40.3/Sku-r40.3-cata.zip) (November 27th 2024)<br>
 - [Wow Login Tool r1.15](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.15/WoW_Login_Tool-r1.15.zip) (December 14th 2024)<br>
-- [Sku CATA r40.02](https://github.com/Duugu/Sku/releases/download/r40.2/Sku-r40.2-cata.zip) (November 13th 2024)<br>
 - [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
 
 *Older updates:* <br>
@@ -26,6 +25,18 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Sku r40.03
+- Limited the default one-time close routes background calculation speed to a value that should have no or very minor effects on the game performance. Will take much longer to complete the process though.
+- Changed the close routes background calculation to automatically stop while you're in dungeons / raids / other instanced areas
+- Added options under Navigation > Options > Cache Calculation to enable/disable the close routes background calculation and to set the calculation speed aka performance loss (lower speed means better performance, default is 3)
+- Added a slash command /sku calc to enable/disable the close routes background calculation
+- A lot of Spirit Healer waypoints added
+- Fixed resource notifications (mining notes, herbs)
+- Added localized names for all resources (mining notes, herbs) for resource notifications if the game language isn't set to English
+- Fixed the Molten Front area
+- LFD menu fixed
+- Debug module added
+ 
 ## Changes in Wow Login Tool r1.13
 - Second try to fix the Retail Outdated Addons bug.
   
