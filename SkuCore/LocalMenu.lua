@@ -2031,12 +2031,12 @@ end
 local function Build_TalentFramePlayerGlyphsTab(aParentChilds)
 	if IsGlyphFlagSet(GLYPH_FILTER_KNOWN) == false then
 		ToggleGlyphFilter(GLYPH_FILTER_KNOWN)
-		GlyphFrame_UpdateGlyphList()
+		--GlyphFrame_UpdateGlyphList()
 	end
 	
 	if IsGlyphFlagSet(GLYPH_FILTER_UNKNOWN) == true then
 		ToggleGlyphFilter(GLYPH_FILTER_UNKNOWN)
-		GlyphFrame_UpdateGlyphList()
+		--GlyphFrame_UpdateGlyphList()
 	end
 	
 	GlyphFrame.scrollFrame.stepSize = 250
