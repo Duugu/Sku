@@ -272,7 +272,6 @@ SkuGenericMenuItem = {
 
 		if SkuCore.inCombat ~= true then
 			if self.macrotext then
-				--dprint("macrotext", self.macrotext)
 				if _G["SecureOnSkuOptionsMainOption1"] then
 					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("type","macro")
 					_G["SecureOnSkuOptionsMainOption1"]:SetAttribute("macrotext", self.macrotext)

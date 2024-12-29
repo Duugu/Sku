@@ -1482,6 +1482,7 @@ local function GetTooltipLines(aObj, aTooltipObject)
 	end
 
 	local tFirstText
+	local tSecondText
 	local tTooltipText = ""
 	for i = 1, select("#", tTooltipObj:GetRegions()) do
 		local region = select(i, tTooltipObj:GetRegions())
@@ -1490,6 +1491,10 @@ local function GetTooltipLines(aObj, aTooltipObject)
 			if text then
 				if not tFirstText then
 					tFirstText = text
+				else
+					if not tSecondText then
+						tSecondText = text
+					end
 				end
 				if i == 1 and tQualityString and SkuOptions.db.profile["SkuCore"].itemSettings.ShowItemQality == true then
 					tTooltipText = tTooltipText..text.." ("..tQualityString..")\r\n"
@@ -1501,7 +1506,7 @@ local function GetTooltipLines(aObj, aTooltipObject)
 		end
 	end
 
-	return tFirstText, tTooltipText
+	return tFirstText, tTooltipText, tSecondText
 end
 
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -1871,8 +1876,9 @@ local function Build_GlyphSlot(aParentChilds, index)
 	if not glyphSlotButton or not glyphSlotButton:IsVisible() then
 		return
 	end
-	local ttFirst, ttFull = GetTooltipLines(glyphSlotButton)
-	local tFriendlyName = "" .. index .. ": " .. ttFirst
+	local ttFirst, ttFull, ttSecond = GetTooltipLines(glyphSlotButton)
+	ttSecond = ttSecond or ""
+	local tFriendlyName = "" .. index .. ": " .. ttSecond.."; "..ttFirst
 	table.insert(aParentChilds, tFriendlyName)
 	aParentChilds[tFriendlyName] = {
 		frameName = tFrameName,
@@ -1883,6 +1889,8 @@ local function Build_GlyphSlot(aParentChilds, index)
 		textFull = ttFull,
 		childs = {},
 		func = glyphSlotButton:GetScript("OnClick"),
+		containerFrameName = tFrameName,
+		doSecure = true,
 		click = true,
 	}
 end
@@ -1920,6 +1928,30 @@ function Build_KnownGlyphs(aParentChilds)
 		click = false,
 	}
 	local tParentChilds = aParentChilds[tFriendlyName].childs
+
+	if _G["GlyphFrameScrollFrameScrollBarScrollUpButton"]:IsEnabled() == true then
+		local button = _G["GlyphFrameScrollFrameScrollBarScrollUpButton"]
+		local tFrameName = button:GetName()
+		local ttFirst, ttFull = GetTooltipLines(button)
+		local tFriendlyName = "Scroll Up"
+		table.insert(tParentChilds, tFriendlyName)
+		tParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = button,
+			textFirstLine = tFriendlyName,
+			textFull = ttFull,
+			childs = {},
+			func = function()
+				HybridScrollFrame_OnMouseWheel(GlyphFrame.scrollFrame, 1)
+			end,
+			doSecure = true,
+			click = true,
+		}
+	end
+
+
 	local buttons = GlyphFrame.scrollFrame.buttons
 	local headerNum = 1
 	for i=1,#buttons do
@@ -1941,8 +1973,8 @@ function Build_KnownGlyphs(aParentChilds)
 						obj = headerButton,
 						textFirstLine = tFriendlyName,
 						childs = {},
-						func = headerButton:GetScript("OnClick"),
-						click = true,
+						--func = headerButton:GetScript("OnClick"),
+						--click = true,
 					}
 				end
 				headerNum = headerNum + 1
@@ -1953,7 +1985,6 @@ function Build_KnownGlyphs(aParentChilds)
 				if isKnown then
 					tFriendlyName = tFriendlyName .. " (Known)" --Localize later
 				end
-				
 				table.insert(tParentChilds, tFriendlyName)
 				tParentChilds[tFriendlyName] = {
 					frameName = tFrameName,
@@ -1963,15 +1994,53 @@ function Build_KnownGlyphs(aParentChilds)
 					textFirstLine = tFriendlyName,
 					textFull = ttFull,
 					childs = {},
+					containerFrameName = tFrameName,
 					func =button:GetScript("OnClick"),
+					doSecure = true,
 					click = true,
 				}
 			end
 		end
 	end
+
+	if _G["GlyphFrameScrollFrameScrollBarScrollDownButton"]:IsEnabled() == true then
+		local button = _G["GlyphFrameScrollFrameScrollBarScrollDownButton"]
+		local tFrameName = button:GetName()
+		local ttFirst, ttFull = GetTooltipLines(button)
+		local tFriendlyName = "Scroll Down"
+		table.insert(tParentChilds, tFriendlyName)
+		tParentChilds[tFriendlyName] = {
+			frameName = tFrameName,
+			RoC = "Child",
+			type = "Button",
+			obj = button,
+			textFirstLine = tFriendlyName,
+			textFull = ttFull,
+			childs = {},
+			--containerFrameName = tFrameName,
+			func = function()
+				HybridScrollFrame_OnMouseWheel(GlyphFrame.scrollFrame, -1)
+			end,
+			doSecure = true,
+			click = true,
+		}
+	end
+
 end
 
 local function Build_TalentFramePlayerGlyphsTab(aParentChilds)
+	if IsGlyphFlagSet(GLYPH_FILTER_KNOWN) == false then
+		ToggleGlyphFilter(GLYPH_FILTER_KNOWN)
+		GlyphFrame_UpdateGlyphList()
+	end
+	
+	if IsGlyphFlagSet(GLYPH_FILTER_UNKNOWN) == true then
+		ToggleGlyphFilter(GLYPH_FILTER_UNKNOWN)
+		GlyphFrame_UpdateGlyphList()
+	end
+	
+	GlyphFrame.scrollFrame.stepSize = 250
+
 	Build_GlyphSlots(aParentChilds)
 	Build_KnownGlyphs(aParentChilds)
 end
@@ -2050,7 +2119,7 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 		if frameTab and frameTab:IsVisible() then
 			local tFriendlyName = frameTab:GetText()
 			if selectedTab == x then
-				tFriendlyName = tFriendlyName .. "(" .. L["selected"] .. ")"
+				tFriendlyName = tFriendlyName .. " (" .. L["selected"] .. ")"
 			end
 			table.insert(aParentChilds, tFriendlyName)
 			aParentChilds[tFriendlyName] = {
@@ -2060,6 +2129,8 @@ function SkuCore:Build_TalentFrame(aParentChilds)
 				obj = frameTab,
 				textFirstLine = tFriendlyName,
 				func = frameTab:GetScript("OnClick"),
+				containerFrameName = tFrameName,
+				doSecure = true,
 				childs = {},
 				click = frameTab:IsEnabled(),
 			}

@@ -3703,7 +3703,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 			if tNewMenuEntry and aGossipListTable[index].click == true then
 				if aGossipListTable[index].func then
 					tNewMenuEntry.BuildChildren = function(self)
-						if ((aGossipListTable[index].isBag and CursorHasItem())) or not aGossipListTable[index].isBag or aGossipListTable[index].isPurchasable then
+						if ((aGossipListTable[index].isBag and CursorHasItem())) or not aGossipListTable[index].isBag or aGossipListTable[index].isPurchasable or aGossipListTable[index].doSecure then
 							self.children = {}
 							if aGossipListTable[index] and aGossipListTable[index].obj and aGossipListTable[index].obj.GetName and aGossipListTable[index].obj:GetName() and string.find(aGossipListTable[index].obj:GetName(), "MerchantItem") then
 								local tStock = 1000
@@ -3738,7 +3738,7 @@ local function SkuIterateGossipList(aGossipListTable, aParentMenuTable, aTab)
 									end
 								end
 							end
-	
+
 							local tNewSubMenuEntry = InjectMenuItemsNew(self, {L["Left click"]}, SkuGenericMenuItem)
 							if aGossipListTable[index].containerFrameName then
 								tNewSubMenuEntry.macrotext = "/click "..aGossipListTable[index].containerFrameName.." LeftButton\r\n/script SkuCore:CheckFrames() C_Timer.After(0.35, function() SkuOptions.currentMenuPosition:OnUpdate() end)"

@@ -4,6 +4,13 @@
 
 
 -------------------------------------------------------------------------------------------------------
+Changes in Sku r40.4
+	- Fixed taint errors with the glyph menu
+	- Set list of glyphs to show only known glyphs
+	- Added scroll up / scroll down menu entries to the start / end of the known glyphs list if there are more glyphs than the scroll list can show (10)
+
+
+-------------------------------------------------------------------------------------------------------
 Changes in Sku r40.3
 	- Limited the default one-time close routes background calculation speed to a value that should have no or very minor effects on the game performance. Will take much longer to complete the process though.
 	- Changed the close routes background calculation to automatically stop while you're in dungeons / raids / other instanced areas
