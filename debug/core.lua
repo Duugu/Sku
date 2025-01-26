@@ -322,7 +322,9 @@ local events = {}
 do
    local frame = CreateFrame("Frame")
    frame:SetScript("OnEvent", function(_, event, ...)
-      events[event](events, event, ...)
+      if event and events[event] then
+         events[event](events, event, ...)
+      end
    end)
    frame:RegisterEvent("ADDON_LOADED")
    frame:RegisterEvent("ADDON_ACTION_BLOCKED")

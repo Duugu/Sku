@@ -4363,7 +4363,7 @@ SkuDB.InternalAreaTable = loadstring([[return {
     [100393] = {ZoneName = "0", AreaName_lang = {["deDE"] = "Kavernen des Schattenhammers", ["enUS"] = "Twilight's Run", }, ContinentID = 1, ParentAreaID = 3426, Faction = -1, Flags = -1,},
     [100394] = {ZoneName = "0", AreaName_lang = {["deDE"] = "Friedhof der Zwillingsspitze", ["enUS"] = "Twinspire Graveyard", }, ContinentID = 530, ParentAreaID = 3521, Faction = -1, Flags = -1,},
     [100395] = {ZoneName = "0", AreaName_lang = {["deDE"] = "Uldaman", ["enUS"] = "Uldaman", }, ContinentID = 0, ParentAreaID = 1897, Faction = -1, Flags = -1,},
-    [100396] = {ZoneName = "0", AreaName_lang = {["deDE"] = "Uldum", ["enUS"] = "Uldum", }, ContinentID = 1, ParentAreaID = 990, Faction = -1, Flags = -1,},
+    --[100396] = {ZoneName = "0", AreaName_lang = {["deDE"] = "Uldum", ["enUS"] = "Uldum", }, ContinentID = 1, ParentAreaID = 990, Faction = -1, Flags = -1,},
     [100397] = {ZoneName = "0", AreaName_lang = {["deDE"] = "Umbrafennsee", ["enUS"] = "Umbrafen Lake", }, ContinentID = 530, ParentAreaID = 3655, Faction = -1, Flags = -1,},
     [100398] = {ZoneName = "0", AreaName_lang = {["deDE"] = "Wird angegriffen", ["enUS"] = "Under Attack", }, ContinentID = 0, ParentAreaID = 139, Faction = -1, Flags = -1,},
     --[100399] = {ZoneName = "0", AreaName_lang = {["deDE"] = "Unterstadt", ["enUS"] = "Undercity", }, ContinentID = 0, ParentAreaID = 85, Faction = -1, Flags = -1,},
