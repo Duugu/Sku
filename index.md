@@ -8,8 +8,8 @@ DEUTSCH - Erste Schritte:<br>
 # Updates
 
 *Last updates:* <br>
+- [Wow Login Tool r1.16](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.16/WoW_Login_Tool-r1.16.zip) (February 17th 2025)<br>
 - [Sku CATA r40.03](https://github.com/Duugu/Sku/releases/download/r40.3/Sku-r40.3-cata.zip) (November 27th 2024)<br>
-- [Wow Login Tool r1.15](https://github.com/Duugu/WoW-Login-Tool/releases/download/r1.15/WoW_Login_Tool-r1.15.zip) (December 14th 2024)<br>
 - [Sku ERA r32.32](https://github.com/Duugu/SkuEra/releases/download/r32.32/Sku-r32.32-classic.zip) (October 6th 2024)<br>
 
 *Older updates:* <br>
@@ -25,6 +25,9 @@ DEUTSCH - Erste Schritte:<br>
 
 # Release notes
 -------------------------------------------------------------------------------------------------------
+## Changes in Wow Login Tool r1.16
+- Fixed a bug with character creation on Classic Era.
+
 ## Changes in Sku r40.03
 - Limited the default one-time close routes background calculation speed to a value that should have no or very minor effects on the game performance. Will take much longer to complete the process though.
 - Changed the close routes background calculation to automatically stop while you're in dungeons / raids / other instanced areas
