@@ -1,3 +1,19 @@
+Hey! Unfortunately this project is, more or less, outdated and discontinued.
+
+Parts of the addon are already broken, or are supposed to break with upcoming WoW updates. Still using them to play WoW Classic most likely will lead to a degraded experience.
+If you would like to play WoW, I would suggest to take a look at the Blindslash addon for blind or limited sight players. It is for WoW Retail (the modern version of the game), and still in active development. Feel free to join their Discord for more details:
+<a href="https://discord.gg/USvX2YuE5n">https://discord.gg/USvX2YuE5n</a><br>
+
+There may or may not be updates to the Sku Git repositories, though. If you would like to check / download, here are direct links to the repos:
+- Sku for Era, Sod, Anniversary (<a href="https://github.com/Duugu/SkuEra">https://github.com/Duugu/SkuEra</a><br>
+- Sku for Cataclysm: <a href="https://github.com/Duugu/Sku">https://github.com/Duugu/Sku</a><br>
+
+The guides and links below are outdated and won't be updated anymore. I won't suggest to use them anymore. 
+
+-------------------------------------------------------------------------------------------------------
+
+THE BELOW IS OUTDATED / LEGACY CONTENT
+
 ENGLISH - First Steps Guide:<br>
 <a href="https://duugu.github.io/Sku/first_steps_en.html">https://duugu.github.io/Sku/first_steps_en.html</a><br>
 DEUTSCH - Erste Schritte:<br>
