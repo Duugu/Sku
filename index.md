@@ -3,6 +3,7 @@ Hey! Unfortunately this project is, more or less, outdated and discontinued.
 Parts of the addon are already broken, or are supposed to break with upcoming WoW updates. Still using them to play WoW Classic most likely will lead to a degraded experience.
 If you would like to play WoW, I would suggest to take a look at the Blindslash addon for blind or limited sight players. It is for WoW Retail (the modern version of the game), and still in active development. Feel free to join their Discord for more details:
 <a href="https://discord.gg/USvX2YuE5n">https://discord.gg/USvX2YuE5n</a><br>
+Alternatively you should start with WoW Classic Era (that's the original, unchanged WoW). I will try to keep Sku updated and running for this game flavor, as there are no or very few changes to expect. To download Sku for Era, go to the GitHub repo here (link below).  
 
 There may or may not be updates to the Sku Git repositories, though. If you would like to check / download, here are direct links to the repos:
 - Sku for Era, Sod, Anniversary (<a href="https://github.com/Duugu/SkuEra">https://github.com/Duugu/SkuEra</a><br>
